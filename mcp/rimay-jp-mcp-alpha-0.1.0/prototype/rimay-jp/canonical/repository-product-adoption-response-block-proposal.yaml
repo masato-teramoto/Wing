@@ -1,0 +1,114 @@
+contract_version: 0.2.0
+plan_id: RPADP-RESPONSE-BLOCK-01
+recorded_at: '2026-08-17'
+capability_matrix_binding:
+  path: reports/compatibility/rimay-capability-matrix.yaml
+  capability_signature: sha256:5341b6f2d8beb1840f376e4b466b22943bebc6b2a5f5fc7dc7ea3769ab39bcc1
+claim_boundary:
+  decides_paper_conformance: false
+  requires_paper_evidence_resolution: false
+  withholds_paper_claim_when_evidence_unresolved: true
+decisions:
+- decision_id: B5P-RESPONSE-BLOCK-01
+  capability_id: CAP-RESPONSE-BLOCK
+  decision_status: accepted
+  implementation_disposition: implement_product
+  decision_ruling_ref: RC-038
+  decision_ruling_sha256: sha256:bc4f116d5fc519cb81b71ba0603fc439b454957710fd07896bf59781d3a9d92a
+  quality_contract:
+    objective: >-
+      Itemized Response Blockの項目順、順次実行、bullet、connector、Atomic Response参照を
+      欠落なく保持し、単一応答への縮退と表層からの意味再推測を防ぐ。
+    user_value: &user_value_axis
+      status: satisfied
+      refs:
+      - &quality_packet
+        path: reports/compatibility/rimay-b5p-response-block-quality-20260817.md
+        selector: §2 user_value
+        sha256: sha256:dc52cb053a2d35adf435f2e85be95978d632ce3b2b2562aa907850fec43c3c4d
+    information_preservation: &information_preservation_axis
+      status: satisfied
+      refs:
+      - <<: *quality_packet
+        selector: §3 information_preservation
+      - &repository_document
+        path: core/rimay_jp_core/repository_document.py
+        selector: _itemized_record / _response_structure / validation
+        sha256: sha256:66499b72ab391b7ed65721a0faac790c1259bfe6c3fc59cff07141a2cb5e3e2b
+      - &repository_document_tests
+        path: tests/conformance/test_repository_document.py
+        selector: itemized sequence, bullet, connector and tamper fixtures
+        sha256: sha256:ae653f627a515feb2cf6018716555bc8b0e1c390fe8383f5a4ed31372a877ef1
+      - &candidate_schema
+        path: canonical/candidates/canonical-requirement-response-block-0.8.0.schema.json
+        selector: responseBlock / rimayCore.response_block
+        sha256: sha256:dc5e26227ca5e9e5dafef26bc0cccbdd9f2355c25daf7669ccbbd1da10d39a0a
+      - &candidate_implementation
+        path: core/rimay_jp_core/response_block_candidate.py
+        selector: projection / diagnostics / roundtrip / migration boundary
+        sha256: sha256:6adeeedc0aefee4b3a04d440b2895c31d4975b067a8c0fa5879e74ec29ecbee9
+      - &candidate_tests
+        path: tests/conformance/test_response_block_candidate.py
+        selector: candidate and fixed Grammar conformance fixtures
+        sha256: sha256:bf98fcf97fec762abaf445efcc964e2f3d2f6656291c453e2e8d8de0bc185643
+    ambiguity_control: &ambiguity_control_axis
+      status: satisfied
+      refs:
+      - <<: *quality_packet
+        selector: §4 ambiguity_control
+      - *repository_document
+      - *repository_document_tests
+      - *candidate_schema
+      - *candidate_implementation
+      - *candidate_tests
+    structured_diagnostic: &structured_diagnostic_axis
+      status: satisfied
+      refs:
+      - <<: *quality_packet
+        selector: §5 structured_diagnostic
+      - *candidate_implementation
+      - *candidate_tests
+    semantic_roundtrip: &semantic_roundtrip_axis
+      status: satisfied
+      refs:
+      - <<: *quality_packet
+        selector: §6 semantic_roundtrip
+      - *candidate_implementation
+      - *candidate_tests
+    migration_safety: &migration_safety_axis
+      status: satisfied
+      refs:
+      - <<: *quality_packet
+        selector: §7 migration_safety
+      - *candidate_schema
+      - *candidate_implementation
+      - &candidate_generator
+        path: scripts/build_response_block_candidate.py
+        selector: deterministic candidate Schema generator/checker
+        sha256: sha256:c70615d57693d4f7900d9d80d67363db9e4d1ff064512221e7b699ba716cdc8e
+      - *candidate_tests
+    japanese_parity_impact: &japanese_parity_axis
+      status: satisfied
+      refs:
+      - <<: *quality_packet
+        selector: §8 japanese_parity_impact
+      - *candidate_implementation
+      - *candidate_tests
+- decision_id: B5P-RESPONSE-BLOCK-LEXICAL-01
+  capability_id: CAP-LEXICAL-STRUCTURE
+  decision_status: accepted
+  implementation_disposition: implement_product
+  decision_ruling_ref: RC-039
+  decision_ruling_sha256: sha256:d9f6b911022ca97e155c4ea7aeb440423a934a2c6eb1a700f981555d30fa2299
+  quality_contract:
+    objective: >-
+      BULLET／HYPHENとinteger bulletをResponse Block itemのidentity／presentation metadataとして
+      保持し、bullet改変やitem境界消失を検出する。
+    user_value: *user_value_axis
+    information_preservation: *information_preservation_axis
+    ambiguity_control: *ambiguity_control_axis
+    structured_diagnostic: *structured_diagnostic_axis
+    semantic_roundtrip: *semantic_roundtrip_axis
+    migration_safety: *migration_safety_axis
+    japanese_parity_impact: *japanese_parity_axis
+product_signature: sha256:7f0d00e87e212c70c74030d0bc598cd08e5d82cf243c5e54afaf00f1a2915b96

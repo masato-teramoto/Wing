@@ -1,0 +1,221 @@
+# Normalized Issue Code Catalog v0.1（ADR-0012 D5/D6、統合レビューv0.2 §6.3）
+#
+# normalized_issue_code = 根因の共通キー。スメル名（quality_labels）はビューであり
+# 原因識別子にしない。maps_from で既存のfindingコード（finding-code-catalog.yaml）と
+# reqsmellの9スメル・Rule IDから本カタログへ正規化する。
+# stage: raw_text（Pre-Canonical）/ canonical（Post-Normalization）/ both
+catalog_version: 0.3.0
+profile_version: rimay-jp-mvp-0.1.0
+
+# §6合意（2026-08-04）のBlocking選定は **ADR-0013（2026-08-05）で改訂**:
+# - Canonical段のQuality Core（reqsmellによる日本語再解析）を廃止したため、
+#   選定コードは現在空。MULTIPLE_PRIMARY_ACTIONSはPre-Canonical診断
+#   （raw-text-quality-gate所有・恒久Advisory・分割候補の起動）へ移管。
+# - 承認遮断はコアValidator由来のblocking（必須Role欠落等）と、
+#   正規化保証（normalization.coverage: 未解釈spanの残存、ADR-0013 Phase 3）が担う。
+# - raw_text段は恒久Advisory（非排除ゲート、ADR-0012 D5）: 変更なし。
+rollout:
+  mode: blocking            # shadow → advisory → blocking（機構は維持）
+  blocking_issue_codes: []  # ADR-0013改訂: Quality Core廃止に伴い選定なし
+
+issue_codes:
+  # ---- 分類・表層（Raw Text Quality Gate） ----
+  - code: NOT_A_REQUIREMENT
+    stage: raw_text
+    description: 要求ではない情報（背景・目的・意見等）が要求として扱われている
+    quality_labels: [not_a_requirement, correctness]
+    maps_from: {smells: [not_a_requirement], rimay_findings: []}
+    repair_disposition: RECLASSIFY
+    owner_validator: information-classifier
+
+  - code: INCORRECT_SEGMENT_ORDER
+    stage: raw_text
+    description: 条件節・主体・応答の標準表層順序（§5/§8.3）に違反
+    quality_labels: [incorrect_order_requirement, correctness]
+    maps_from: {smells: [incorrect_order_requirement], rimay_findings: [JP-CASE]}
+    repair_disposition: AUTO_SURFACE_REWRITE   # Serializer再生成で決定論的に修復可能
+    owner_validator: raw-text-quality-gate
+
+  - code: PASSIVE_VOICE
+    stage: raw_text
+    description: 主文が受動態（§8.4違反）。Actor欠落の候補シグナル
+    quality_labels: [passive_voice, completeness]
+    maps_from: {smells: [passive_voice], rimay_findings: [JP-MODAL]}
+    repair_disposition: ASK_USER               # 能動態化には主体の確定が必要
+    owner_validator: raw-text-quality-gate
+
+  - code: COORDINATION_AMBIGUITY
+    stage: raw_text
+    description: AND/ORの係り範囲が曖昧（§8.3/§16 JP-COORD）
+    quality_labels: [coordination_ambiguity, clarity]
+    maps_from: {smells: [coordination_ambiguity], rimay_findings: [JP-COORD]}
+    repair_disposition: PROPOSE_SPLIT
+    owner_validator: raw-text-quality-gate
+
+  - code: IMPRECISE_ACTION_VERB
+    stage: raw_text
+    description: 意味が広い・曖昧な動詞（出力する等）。Action候補が複数
+    quality_labels: [not_precise_verb, clarity]
+    maps_from: {smells: [not_precise_verb], rimay_findings: []}
+    repair_disposition: ASK_USER               # ASK_ACTION_MEANING（候補提示・自動confirmed禁止）
+    owner_validator: candidate-extractor
+
+  # ---- 構造・完全性（Canonical Validation） ----
+  - code: MULTIPLE_PRIMARY_ACTIONS
+    stage: raw_text   # ADR-0013: 自由文の複数動作＝Pre-Canonical分割候補へ移管
+    description: 自由文の一文に複数の主要動作（§8.2違反の分割候補。Canonical段は日本語を再解析しない）
+    quality_labels: [non_atomic_requirement, atomicity]
+    maps_from: {smells: [non_atomic_requirement], rimay_findings: [COMPLEXITY, JP-COORD]}
+    repair_disposition: PROPOSE_SPLIT
+    owner_validator: raw-text-quality-gate
+
+  - code: MISSING_RESPONSE_ACTOR
+    stage: canonical
+    description: 応答主体の欠落
+    quality_labels: [incomplete_system_response, completeness]
+    maps_from: {smells: [incomplete_system_response], rimay_findings: [JP-OMISSION]}
+    repair_disposition: ASK_USER
+    owner_validator: required-role-validator
+
+  - code: MISSING_MODALITY
+    stage: canonical
+    description: モダリティ（必須・禁止）が未確定
+    quality_labels: [incomplete_requirement, completeness]
+    maps_from: {smells: [incomplete_requirement], rimay_findings: [JP-MODAL]}
+    repair_disposition: ASK_USER
+    owner_validator: required-role-validator
+
+  - code: MISSING_CONDITION_ACTOR
+    stage: canonical
+    description: トリガー条件の主体欠落
+    quality_labels: [incomplete_condition, completeness]
+    maps_from: {smells: [incomplete_condition], rimay_findings: [JP-OMISSION]}
+    repair_disposition: ASK_USER
+    owner_validator: condition-validator
+
+  - code: INCOMPLETE_TRIGGER_EVENT
+    stage: canonical
+    description: トリガー事象の動作・対象が不足（描画前提を満たさない）
+    quality_labels: [incomplete_condition, completeness]
+    maps_from: {smells: [incomplete_condition], rimay_findings: [RIMAY-ROLE]}
+    repair_disposition: ASK_USER
+    owner_validator: condition-validator
+
+  - code: MISSING_REQUIRED_ROLE
+    stage: canonical
+    description: Action格フレームの必須Role欠落（宛先・保存先・更新後値・判定規則等）
+    quality_labels: [incomplete_system_response, completeness]
+    maps_from:
+      smells: [incomplete_system_response]
+      rimay_findings: [JP-OMISSION]
+      rule_id_examples: [SEND.required_destination, STORE.required_location,
+                         UPDATE.required_result_value, VERIFY.required_rule]
+    repair_disposition: ASK_USER
+    parameterized_by: role   # target_pathsで具体Role（/rimay_core/response/<field>）を示す
+    owner_validator: action-frame-validator
+
+  - code: UNREGISTERED_TERM
+    stage: both
+    description: 用語辞書に未登録の語
+    quality_labels: [completeness]
+    maps_from: {smells: [], rimay_findings: [JP-LEXICAL]}
+    repair_disposition: ROUTE_KNOWLEDGE        # 辞書検索→なければ用語追加Backlog＋質問
+    owner_validator: terminology-validator
+
+  # ADR-0014: 語彙形成ループ（blockingの正本はfinding-code-catalog側）
+  - code: TERM_APPROVAL_PENDING
+    stage: canonical
+    description: 未公開Term Candidateへのスロット依存（承認・公開・伝播待ち）
+    quality_labels: [completeness]
+    maps_from: {smells: [], rimay_findings: [TERM_APPROVAL_PENDING]}
+    repair_disposition: HUMAN_REVIEW           # 承認は人間のみ
+    owner_validator: terminology-validator
+
+  - code: AMBIGUOUS_TERM
+    stage: both
+    description: 同表記が複数概念に一致（homonym）。自動確定禁止
+    quality_labels: [unambiguity]
+    maps_from: {smells: [], rimay_findings: [AMBIGUOUS_TERM]}
+    repair_disposition: ASK_USER               # 適用範囲の確認質問
+    owner_validator: terminology-validator
+
+  - code: DEPRECATED_TERM
+    stage: canonical
+    description: 廃止・統合済み用語の参照（後継への置換を促す）
+    quality_labels: [consistency]
+    maps_from: {smells: [], rimay_findings: [DEPRECATED_TERM]}
+    repair_disposition: ASK_USER               # 後継用語の確認
+    owner_validator: terminology-validator
+
+  - code: AMBIGUOUS_TIME_EXPRESSION
+    stage: both
+    description: 測定不能な時間表現（速やかに等）
+    quality_labels: [clarity, verifiability]
+    maps_from: {smells: [], rimay_findings: [QUALITY-AMBIGUOUS]}
+    repair_disposition: ASK_USER               # ASK_MEASURABLE_CRITERIA
+    owner_validator: quality-validator
+
+  - code: DEICTIC_REFERENCE
+    stage: raw_text
+    description: 指示語（これ・それ・当該・上記）の使用（§8.9違反）
+    quality_labels: [clarity]
+    maps_from: {smells: [], rimay_findings: [QUALITY-DEICTIC]}
+    repair_disposition: ASK_USER
+    owner_validator: quality-validator
+
+  - code: STATE_VALUE_OUT_OF_MODEL
+    stage: canonical
+    description: 状態値が状態モデルに未定義
+    quality_labels: [correctness]
+    maps_from: {smells: [], rimay_findings: [DOMAIN]}
+    repair_disposition: ROUTE_KNOWLEDGE        # 状態モデル候補提示→人間判断
+    owner_validator: domain-validator
+
+  - code: UNSUPPORTED_CONSTRUCT
+    stage: both
+    description: Supported Profile外の構文・条件・Action
+    quality_labels: [correctness]
+    maps_from: {smells: [], rimay_findings: [PROFILE-OUT, RIMAY-ACTION, RIMAY-MODAL]}
+    repair_disposition: HUMAN_REVIEW           # 未対応判定・拡張候補化
+    owner_validator: profile-validator
+
+  - code: SEMANTIC_PROJECTION_MISMATCH
+    stage: canonical
+    description: AST射影意味等価の不成立（Serializer/Adapter欠陥）
+    quality_labels: [correctness]
+    maps_from: {smells: [], rimay_findings: [AST-EQUIVALENCE]}
+    repair_disposition: HUMAN_REVIEW           # 実装欠陥としてregression化
+    owner_validator: equivalence-checker
+
+  - code: GRAMMAR_CONFORMANCE_MISMATCH
+    stage: canonical
+    description: 原典Grammar準拠差分（rimay_action_id/emse_rule_id束縛・operator集合・full consumption。semanticとは別軸＝主計画D4）
+    quality_labels: [correctness]
+    maps_from: {smells: [], rimay_findings: [RIMAY-CONFORMANCE]}
+    repair_disposition: HUMAN_REVIEW           # 束縛裁定（Gate B）または実装是正
+    owner_validator: equivalence-checker
+
+  - code: EXTENSION_LOSS
+    stage: canonical
+    description: extensionsのsidecar欠落またはmanifest不整合
+    quality_labels: [completeness]
+    maps_from: {smells: [], rimay_findings: [SIDECAR-LOSS, SIDECAR-STALE]}
+    repair_disposition: HUMAN_REVIEW
+    owner_validator: sidecar-validator
+
+  # ---- Step 4追加（finding正規化の全域化のため） ----
+  - code: KNOWLEDGE_GAP
+    stage: both
+    description: 必要な知識源が存在しない・選択できない・競合している
+    quality_labels: [completeness]
+    maps_from: {smells: [], rimay_findings: [KNOWLEDGE-ROUTE, KNOWLEDGE-CONFLICT]}
+    repair_disposition: ROUTE_KNOWLEDGE
+    owner_validator: domain-validator
+
+  - code: UNCLASSIFIED
+    stage: both
+    description: 既存issue codeへ写像できないfinding（写像表の改善対象として記録）
+    quality_labels: []
+    maps_from: {smells: [], rimay_findings: [JP-MORPH, COMPLEXITY, GENERATOR, FEEDBACK-UNMAPPED, FREE-TEXT]}
+    repair_disposition: HUMAN_REVIEW
+    owner_validator: validation-router

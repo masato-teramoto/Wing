@@ -1,0 +1,652 @@
+# -*- coding: utf-8 -*-
+"""固定Repository構文木からCanonical候補への組み込みadapter。"""
+from __future__ import annotations
+
+import os
+import sys
+from pathlib import Path
+
+import pytest
+
+
+RIMAY_JP = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(RIMAY_JP / "core"))
+
+from rimay_jp_core.repository_canonical import (  # noqa: E402
+    ACTION_ROLE_PATHS, EVENT_OBJECT_FIELD_BY_RULE,
+    REPOSITORY_GRAMMAR_PROJECTION_REFERENCE,
+    default_repository_adapter_registry,
+)
+from rimay_jp_core.repository_grammar import (  # noqa: E402
+    compile_fixed_grammar, compile_xtext_grammar,
+    direct_syntax_rule_children,
+)
+from rimay_jp_core.repository_linker import link_repository_syntax  # noqa: E402
+from rimay_jp_core.schema_check import validate_schema  # noqa: E402
+from rimay_jp_core.validator import validate  # noqa: E402
+from rimay_jp_core.lexicon import case_frames  # noqa: E402
+
+
+GRAMMAR = '''grammar example.Canonical with org.eclipse.xtext.common.Terminals
+generate canonical "https://example.invalid/canonical"
+CNLFunctionalRequirements: ('Actors:' actors+=Actor*)? requirements+=Requirement*;
+Actor: 'actor' name=ID;
+Requirement: (scope=Scope)? pattern=(WithoutCondition|WithCondition) '.';
+Scope: 'For' scope_text+=ScopeText ('and' scope_text+=ScopeText)? ',';
+ScopeText: scope+=STRING;
+WithoutCondition: system_response=SystemResponse;
+WithCondition: condition+=ConditionStructure
+  (connector+=('and'|'or') condition+=ConditionStructure)*
+  ',' system_response=SystemResponse;
+ConditionStructure: IfStructure | WhileStructure | WhenStructure | TemporalStructure;
+IfStructure: keyword='If' conditions=PreconditionStructure;
+WhileStructure: keyword='While' preconditions=PreconditionStructure;
+WhenStructure: keyword='When' trigger=(Trigger|FreeExpression);
+TemporalStructure: RepeatOnce;
+RepeatOnce: advice_keyword=('Before'|'After') event=Trigger;
+PreconditionStructure: condition=Condition;
+Condition: value=InstanceOrPropertyOperatorValue;
+InstanceOrPropertyOperatorValue:
+  (modifier=Modifier)? non_ui_instance_or_property=STRING rest=OperatorValuesExpr;
+OperatorValuesExpr: operator=(Compare|Contains|OtherOperators)
+  (value_modifier+=Modifier)? valuesExpression=MultiValuesExpr
+  (additional_information=FreeExpression)?;
+Compare: is_are='is' (not='not')?
+  comparison=(EqualsTo|GreaterThan|LessThan|GreaterOrEqualTo|LessOrEqualTo)?;
+EqualsTo: 'equal' 'to';
+GreaterThan: 'greater' 'than';
+LessThan: 'less' 'than';
+GreaterOrEqualTo: 'greater' 'than' 'or' 'equal' 'to';
+LessOrEqualTo: 'less' 'than' 'or' 'equal' 'to';
+Contains: contains=('contains'|'has') negation=Negation?;
+Negation: 'not';
+OtherOperators: 'is' 'available';
+MultiValuesExpr: values=ValueOrValue;
+ValueOrValue returns MultiValuesExpr:
+  ValueAndValue ({ValueOrValue.multileft=current} ('OR') right=ValueAndValue)*;
+ValueAndValue returns MultiValuesExpr:
+  ValuePrimaryExpression ({ValueAndValue.multileft=current} ('AND') right=ValuePrimaryExpression)*;
+ValuePrimaryExpression returns MultiValuesExpr:
+  '(' MultiValuesExpr ')' | value=AtomicValue;
+AtomicValue: value=STRING;
+FreeExpression: free_format_text=STRING;
+Modifier: article=('a'|'an'|'the');
+Trigger: actor=[Actor|ID] actions=ActionsExpression;
+ActionsExpression: expression=AtomicActionInTrigger;
+AtomicActionInTrigger: action=ActionPhrase;
+SystemResponse:
+  system_name=[Actor|ID] modal_verb=ModalVerb response_block=AtomicSystemResponse;
+enum ModalVerb: SHALL='shall' | MUST='must';
+AtomicSystemResponse: ('not')? system_response=ActionPhrase;
+ActionPhrase: CREATE_26_4 | UnsupportedAction;
+CREATE_26_4: verb='compute' property=STRING ('using' artifact=STRING)?;
+UnsupportedAction: 'frobnicate' value=STRING;
+'''
+
+
+def _project(text: str):
+    grammar = compile_xtext_grammar(GRAMMAR)
+    parsed = grammar.recognizer().parse_syntax(
+        text, start_rule="CNLFunctionalRequirements")
+    assert parsed.accepted
+    linked = link_repository_syntax(grammar, parsed, text)
+    assert linked.succeeded
+    projection = default_repository_adapter_registry().project(
+        parsed, text, linked, grammar)
+    return grammar, parsed, linked, projection
+
+
+def test_builtin_adapter_projects_a_linked_calculate_requirement_to_valid_canonical():
+    text = 'Actors: actor SystemA SystemA must compute "Result" using "Input".'
+    _, parsed, linked, projection = _project(text)
+    assert projection.status == "adapted_candidate"
+    assert projection.unresolved_paths == ()
+    canonical = projection.canonical_candidate
+    assert canonical["source"]["text"] == text
+    assert canonical["rimay_core"] == {
+        "scope": None,
+        "conditions": [],
+        "response": {
+            "actor": "SystemA", "modality": "MUST",
+            "action": {"family": "CALCULATE", "rimay_action_id": "CREATE_26_4"},
+            "result": "Result", "input": "Input",
+        },
+    }
+    assert validate_schema(canonical) == []
+    assert not any(item["blocking"] for item in validate(canonical, phase2_slice=False))
+    assert canonical["requirement_id"].startswith("REQ-REPOSITORY-")
+    assert parsed.grammar_source_sha256 == linked.grammar_source_sha256
+    assert not parsed.grammar_source_sha256.startswith("sha256:sha256:")
+
+
+def test_missing_required_role_stays_explicit_and_validator_blocks_candidate():
+    text = 'Actors: actor SystemA SystemA must compute "Result".'
+    _, _, _, projection = _project(text)
+    assert projection.status == "adapted_candidate"
+    assert projection.unresolved_paths == ("/rimay_core/response/input",)
+    assert any(item["blocking"] and item.get("path") == "/rimay_core/response/input"
+               for item in validate(projection.canonical_candidate, phase2_slice=False))
+
+
+def test_negative_modality_is_derived_from_atomic_response_not_action_text():
+    text = 'Actors: actor SystemA SystemA must not compute "Result".'
+    _, _, _, projection = _project(text)
+    assert projection.canonical_candidate["rimay_core"]["response"]["modality"] == \
+        "MUST_NOT"
+    assert projection.unresolved_paths == ()
+    assert not any(item["blocking"] for item in
+                   validate(projection.canonical_candidate, phase2_slice=False))
+
+
+@pytest.mark.parametrize(("surface", "operator"), [
+    ('is', 'IS'),
+    ('is not', 'NOT_EQUALS'),
+])
+def test_single_repository_predicate_is_projected_without_surface_reparsing(
+        surface, operator):
+    text = ('Actors: actor SystemA '
+            f'If "Status" {surface} "Open", '
+            'SystemA must compute "Result" using "Input".')
+    _, _, _, projection = _project(text)
+    assert projection.unresolved_paths == ()
+    assert projection.canonical_candidate["rimay_core"]["conditions"] == [{
+        "type": "IF",
+        "predicate": {"subject": "Status", "operator": operator, "value": "Open"},
+    }]
+    assert validate_schema(projection.canonical_candidate) == []
+
+
+@pytest.mark.parametrize(("surface", "operator"), [
+    ("is equal to", "EQUALS"),
+    ("is greater than", "GREATER_THAN"),
+    ("is less than", "LESS_THAN"),
+    ("is greater than or equal to", "GREATER_OR_EQUAL"),
+    ("is less than or equal to", "LESS_OR_EQUAL"),
+    ("contains", "CONTAINS"),
+])
+def test_repository_operator_branches_are_projected_from_typed_rules(surface, operator):
+    text = ('Actors: actor SystemA '
+            f'If "Amount" {surface} "100", '
+            'SystemA must compute "Result" using "Input".')
+    _, _, _, projection = _project(text)
+    assert projection.unresolved_paths == ()
+    assert projection.canonical_candidate["rimay_core"]["conditions"] == [{
+        "type": "IF",
+        "predicate": {"subject": "Amount", "operator": operator, "value": "100"},
+    }]
+
+
+@pytest.mark.parametrize("surface", [
+    "is not greater than",
+    "contains not",
+    "is available",
+])
+def test_repository_operator_shapes_without_canonical_equivalents_fail_closed(surface):
+    text = ('Actors: actor SystemA '
+            f'If "Amount" {surface} "100", '
+            'SystemA must compute "Result" using "Input".')
+    _, _, _, projection = _project(text)
+    assert projection.status == "adapted_candidate"
+    assert projection.unresolved_paths == ("/rimay_core/conditions",)
+    assert "conditions" not in projection.canonical_candidate["rimay_core"]
+
+
+@pytest.mark.parametrize("predicate", [
+    'a "Amount" is greater than "100"',
+    '"Amount" is greater than a "100"',
+    '"Amount" is greater than "100" "recently"',
+    '"Amount" is greater than ("100")',
+    '"Amount" is greater than "100" OR "200"',
+    '"Amount" is greater than "100 USD"',
+])
+def test_repository_comparison_residuals_are_not_scalarized(predicate):
+    text = ('Actors: actor SystemA '
+            f'If {predicate}, '
+            'SystemA must compute "Result" using "Input".')
+    _, _, _, projection = _project(text)
+    assert projection.status == "adapted_candidate"
+    assert projection.unresolved_paths == ("/rimay_core/conditions",)
+    assert "conditions" not in projection.canonical_candidate["rimay_core"]
+
+
+@pytest.mark.parametrize(("surface", "expected"), [
+    ('"100,000 JPY"', {"value": "100000", "unit": "JPY"}),
+    ('"100 BTC"', {"value": "100 BTC"}),
+])
+def test_money_projection_uses_the_closed_product_currency_contract(surface, expected):
+    text = ('Actors: actor SystemA '
+            f'If "Amount" is greater than {surface}, '
+            'SystemA must compute "Result" using "Input".')
+    _, _, _, projection = _project(text)
+    predicate = projection.canonical_candidate["rimay_core"]["conditions"][0]["predicate"]
+    assert {key: predicate[key] for key in expected} == expected
+    assert ("unit" in predicate) == ("unit" in expected)
+
+
+def test_repository_projection_has_distinct_provenance_from_profile_conformance():
+    text = ('Actors: actor SystemA '
+            'If "Amount" is greater than "100", '
+            'SystemA must compute "Result" using "Input".')
+    _, _, _, projection = _project(text)
+    canonical = projection.canonical_candidate
+    mapped_paths = {
+        "/rimay_core/conditions/0/type",
+        "/rimay_core/response/action/family",
+        "/rimay_core/response/action/rimay_action_id",
+    }
+    provenance = {item["path"]: item for item in canonical["provenance"]}
+    assert {
+        (provenance[path]["resolution_method"], provenance[path].get("reference"))
+        for path in mapped_paths
+    } == {("rule_application", REPOSITORY_GRAMMAR_PROJECTION_REFERENCE)}
+    assert {
+        item["path"] for item in canonical["provenance"]
+        if item.get("reference") == REPOSITORY_GRAMMAR_PROJECTION_REFERENCE
+    } == mapped_paths
+    assert all(item["resolution_method"] != "profile_mapping"
+               for item in canonical["provenance"])
+    assert all(item["resolution_method"] != "repository_grammar_projection"
+               for item in canonical["provenance"])
+    assert validate_schema(canonical) == []
+
+
+def test_single_repository_trigger_is_projected_from_typed_action_roles():
+    text = ('Actors: actor SystemA '
+            'After SystemA compute "Prior Result" using "Prior Input", '
+            'SystemA must compute "Result" using "Input".')
+    _, _, _, projection = _project(text)
+    assert projection.unresolved_paths == ()
+    assert projection.canonical_candidate["rimay_core"]["conditions"] == [{
+        "type": "AFTER",
+        "event": {"actor": "SystemA", "action": {
+            "family": "CALCULATE", "rimay_action_id": "CREATE_26_4"},
+                  "object": "Prior Result"},
+    }]
+    provenance = {item["path"]: item
+                  for item in projection.canonical_candidate["provenance"]}
+    event_action_paths = {
+        "/rimay_core/conditions/0/event/action/family",
+        "/rimay_core/conditions/0/event/action/rimay_action_id",
+    }
+    assert {
+        (provenance[path]["resolution_method"], provenance[path].get("reference"))
+        for path in event_action_paths
+    } == {("rule_application", REPOSITORY_GRAMMAR_PROJECTION_REFERENCE)}
+    assert validate_schema(projection.canonical_candidate) == []
+
+
+def test_unadopted_repository_trigger_keeps_rule_identity_and_explicit_gaps():
+    text = ('Actors: actor SystemA '
+            'After SystemA frobnicate "Prior Value", '
+            'SystemA must compute "Result" using "Input".')
+    _, _, _, projection = _project(text)
+    assert projection.status == "adapted_candidate"
+    assert projection.unresolved_paths == (
+        "/rimay_core/conditions/0/event/action/family",
+        "/rimay_core/conditions/0/event/object",
+    )
+    canonical = projection.canonical_candidate
+    assert canonical["rimay_core"]["conditions"] == [{
+        "type": "AFTER",
+        "event": {"actor": "SystemA", "action": {
+            "family": None, "rimay_action_id": "UnsupportedAction"}},
+    }]
+    provenance = {item["path"]: item for item in canonical["provenance"]}
+    assert provenance["/rimay_core/conditions/0/event/action/rimay_action_id"] \
+        ["reference"] == REPOSITORY_GRAMMAR_PROJECTION_REFERENCE
+    assert "/rimay_core/conditions/0/event/action/family" not in provenance
+    assert validate_schema(canonical) == []
+
+
+@pytest.mark.parametrize("condition", [
+    'If "A" is "B" and If "C" is "D"',
+    'When "opaque free text"',
+])
+def test_condition_shapes_that_canonical_cannot_preserve_fail_closed(condition):
+    text = (f'Actors: actor SystemA {condition}, '
+            'SystemA must compute "Result" using "Input".')
+    _, _, _, projection = _project(text)
+    assert projection.status == "adapted_candidate"
+    assert projection.unresolved_paths == ("/rimay_core/conditions",)
+    assert "conditions" not in projection.canonical_candidate["rimay_core"]
+
+
+def test_single_repository_scope_is_projected_to_canonical_function():
+    text = ('Actors: actor SystemA '
+            'For "Billing", SystemA must compute "Result" using "Input".')
+    _, _, _, projection = _project(text)
+    assert projection.unresolved_paths == ()
+    assert projection.canonical_candidate["rimay_core"]["scope"] == {
+        "function": "Billing"}
+    assert validate_schema(projection.canonical_candidate) == []
+
+
+def test_two_repository_scope_values_are_not_silently_collapsed():
+    text = ('Actors: actor SystemA '
+            'For "Billing" and "Reporting", '
+            'SystemA must compute "Result" using "Input".')
+    _, _, _, projection = _project(text)
+    assert projection.unresolved_paths == ("/rimay_core/scope",)
+    assert "scope" not in projection.canonical_candidate["rimay_core"]
+
+
+def test_unadopted_repository_action_preserves_rule_identity_without_guessing_family():
+    text = 'Actors: actor SystemA SystemA must frobnicate "Value".'
+    _, _, _, projection = _project(text)
+    assert projection.status == "adapted_candidate"
+    canonical = projection.canonical_candidate
+    assert canonical["rimay_core"]["response"]["action"] == {
+        "family": None, "rimay_action_id": "UnsupportedAction"}
+    assert projection.unresolved_paths == ("/rimay_core/response/action/family",)
+    provenance = {item["path"]: item for item in canonical["provenance"]}
+    action_id_provenance = \
+        provenance["/rimay_core/response/action/rimay_action_id"]
+    assert {
+        key: action_id_provenance[key]
+        for key in ("path", "source_span", "resolution_method", "reference")
+    } == {
+        "path": "/rimay_core/response/action/rimay_action_id",
+        "source_span": "frobnicate \"Value\"",
+        "resolution_method": "rule_application",
+        "reference": REPOSITORY_GRAMMAR_PROJECTION_REFERENCE,
+    }
+    assert "/rimay_core/response/action/family" not in provenance
+    assert validate_schema(canonical) == []
+    assert any(item["blocking"] and
+               item.get("path") == "/rimay_core/response/action/family"
+               for item in validate(canonical, phase2_slice=False))
+
+
+def test_multiple_requirements_are_rejected_instead_of_selecting_the_first():
+    text = ('Actors: actor SystemA '
+            'SystemA must compute "A" using "B". '
+            'SystemA must compute "C" using "D".')
+    _, _, _, projection = _project(text)
+    assert projection.status == "adapter_scope_unsupported"
+    assert projection.canonical_candidate is None
+    assert "exactly one Requirement, got 2" in projection.reason
+
+
+def test_action_role_contract_is_closed_to_the_ten_product_action_frames():
+    expected = {
+        "SEND_11_1_1", "DS_UPDATE", "ENGENDER_27", "KEEP_15_2",
+        "OBTAIN_13_5_2", "REFLEXIVE_APPEARANCE_48_1_2", "REMOVE_10_1",
+        "DS_VALIDATE", "CREATE_26_4", "SAY_37_7",
+    }
+    assert set(ACTION_ROLE_PATHS) == expected
+    assert set(EVENT_OBJECT_FIELD_BY_RULE) == expected
+    assert {frame["rimay_action_id"] for frame in case_frames().values()} == expected
+    assert all(paths and len(paths) == len(set(paths)) and
+               all(path and all(isinstance(feature, str) and feature for feature in path)
+                   for path in paths)
+               for roles in ACTION_ROLE_PATHS.values() for paths in roles.values())
+
+
+@pytest.mark.grammar
+def test_builtin_adapter_is_source_bound_to_fixed_repository_grammar():
+    path = os.environ.get("RIMAY_FIXED_GRAMMAR")
+    if not path:
+        pytest.skip("RIMAY_FIXED_GRAMMAR 未指定")
+    grammar = compile_fixed_grammar(path)
+    assert set(ACTION_ROLE_PATHS) <= set(grammar.by_name)
+
+    def walk_ir(node):
+        yield node
+        for child in node.get("children", []):
+            yield from walk_ir(child)
+        if isinstance(node.get("child"), dict):
+            yield from walk_ir(node["child"])
+
+    for rule, roles in ACTION_ROLE_PATHS.items():
+        pending, seen, actual_features = [rule], set(), set()
+        while pending:
+            current = pending.pop()
+            if current in seen or current not in grammar.by_name:
+                continue
+            seen.add(current)
+            for node in walk_ir(grammar.by_name[current].expression):
+                if node["kind"] == "assignment":
+                    actual_features.add(node["feature"])
+                elif node["kind"] == "rule_ref":
+                    pending.append(node["name"])
+        assert {feature for paths in roles.values() for path in paths for feature in path} <= \
+            actual_features, rule
+    cases = [
+        ('SystemA must pass "Invoice" to "Customer".',
+         "SEND", "SEND_11_1_1", {"theme": "Invoice", "destination": "Customer"}),
+        ('SystemA must update "Prop" into "Val".',
+         "UPDATE", "DS_UPDATE", {"property": "Prop", "result_value": "Val"}),
+        ('SystemA must generate "Invoice" in "OrderData".',
+         "CREATE", "ENGENDER_27", {"theme": "Invoice"}),
+        ('SystemA must store value "AuditLog" in "DB".',
+         "STORE", "KEEP_15_2", {"theme": "AuditLog", "location": "DB"}),
+        ('SystemA must accept "OrderData" from "Sender".',
+         "RECEIVE", "OBTAIN_13_5_2", {"theme": "OrderData", "source": "Sender"}),
+        ('SystemA must display "OrderList" on "Screen" Widget.',
+         "DISPLAY", "REFLEXIVE_APPEARANCE_48_1_2",
+         {"theme": "OrderList", "display_location": "Screen"}),
+        ('SystemA must delete "AuditLog".',
+         "DELETE", "REMOVE_10_1", {"theme": "AuditLog"}),
+        ('SystemA must validate "Signature" by checking that following "Rule".',
+         "VERIFY", "DS_VALIDATE", {"theme": "Signature", "rule": "Rule"}),
+        ('SystemA must compute "Result" using "Input".',
+         "CALCULATE", "CREATE_26_4", {"result": "Result", "input": "Input"}),
+        ('SystemA must notify "Notice" to "Customer".',
+         "NOTIFY", "SAY_37_7", {"content": "Notice", "destination": "Customer"}),
+    ]
+    for requirement, family, rule, roles in cases:
+        declarations = "Actors: actor SystemA\n"
+        if family == "DISPLAY":
+            declarations = "UI_Component_Types: Widget\n" + declarations
+        text = declarations + requirement
+        parsed = grammar.recognizer().parse_syntax(
+            text, start_rule="CNLFunctionalRequirements")
+        linked = link_repository_syntax(grammar, parsed, text)
+        projection = default_repository_adapter_registry().project(
+            parsed, text, linked, grammar)
+        assert parsed.accepted and linked.succeeded, requirement
+        assert projection.status == "adapted_candidate", requirement
+        assert projection.unresolved_paths == (), requirement
+        canonical = projection.canonical_candidate
+        assert canonical["rimay_core"]["response"] == {
+            "actor": "SystemA", "modality": "MUST",
+            "action": {"family": family, "rimay_action_id": rule}, **roles,
+        }, requirement
+        assert validate_schema(canonical) == [], requirement
+        assert not any(item["blocking"] for item in
+                       validate(canonical, phase2_slice=False)), requirement
+
+
+@pytest.mark.grammar
+def test_builtin_adapter_projects_all_five_fixed_repository_condition_types():
+    path = os.environ.get("RIMAY_FIXED_GRAMMAR")
+    if not path:
+        pytest.skip("RIMAY_FIXED_GRAMMAR 未指定")
+    grammar = compile_fixed_grammar(path)
+    cases = [
+        ('Actors: actor NotificationSystem, actor AdministratorEmailAddress\n'
+         'If "Validation Result" is "Failed", NotificationSystem must notify '
+         '"Error Detail" to "Administrator Email Address".',
+         {"type": "IF", "predicate": {"subject": "Validation Result",
+          "operator": "IS", "value": "Failed"}}),
+        ('Actors: actor SystemA\n'
+         'If "Order Amount" is greater than or equal to "100,000 JPY", '
+         'SystemA must compute "Approval Amount" using "Order Data".',
+         {"type": "IF", "predicate": {"subject": "Order Amount",
+          "operator": "GREATER_OR_EQUAL", "value": "100000", "unit": "JPY"}}),
+        ('Actors: actor OrderManagementSystem\n'
+         'While "Maintenance Mode" is "Active", OrderManagementSystem must not '
+         'update "Order Status".',
+         {"type": "WHILE", "predicate": {"subject": "Maintenance Mode",
+          "operator": "IS", "value": "Active"}}),
+        ('Actors: actor OrderManagementSystem\n'
+         'When OrderManagementSystem accepts "Order Data", OrderManagementSystem '
+         'must validate "Order Data" by checking that following '
+         '"Input Validation Rule".',
+         {"type": "WHEN", "event": {"actor": "OrderManagementSystem",
+          "action": {"family": "RECEIVE", "rimay_action_id": "OBTAIN_13_5_2"},
+          "object": "Order Data"}}),
+        ('Actors: actor SystemA, actor SystemB\n'
+         'Before SystemA passes "Instruction" to SystemB, SystemA must validate '
+         '"Instruction" by checking that following "Rule".',
+         {"type": "BEFORE", "event": {"actor": "SystemA",
+          "action": {"family": "SEND", "rimay_action_id": "SEND_11_1_1"},
+          "object": "Instruction"}}),
+        ('Actors: actor OrderManagementSystem\n'
+         'After OrderManagementSystem validates "Order Data", '
+         'OrderManagementSystem must compute "Total Amount" using "Order Data".',
+         {"type": "AFTER", "event": {"actor": "OrderManagementSystem",
+          "action": {"family": "VERIFY", "rimay_action_id": "DS_VALIDATE"},
+          "object": "Order Data"}}),
+    ]
+    for text, condition in cases:
+        parsed = grammar.recognizer().parse_syntax(
+            text, start_rule="CNLFunctionalRequirements")
+        assert parsed.accepted, text
+        linked = link_repository_syntax(grammar, parsed, text)
+        assert linked.succeeded, text
+        projection = default_repository_adapter_registry().project(
+            parsed, text, linked, grammar)
+        assert projection.status == "adapted_candidate", text
+        assert projection.unresolved_paths == (), text
+        canonical = projection.canonical_candidate
+        assert canonical["rimay_core"]["conditions"] == [condition], text
+        assert validate_schema(canonical) == [], text
+        assert not any(item["blocking"] for item in
+                       validate(canonical, phase2_slice=False)), text
+
+
+@pytest.mark.grammar
+def test_fixed_repository_comparison_residuals_are_not_scalarized():
+    path = os.environ.get("RIMAY_FIXED_GRAMMAR")
+    if not path:
+        pytest.skip("RIMAY_FIXED_GRAMMAR 未指定")
+    grammar = compile_fixed_grammar(path)
+    predicates = [
+        'a "Amount" is greater than "100"',
+        '"Amount" is greater than a "100"',
+        '"Amount" is greater than "100" "recently"',
+        '"Amount" is greater than ("100")',
+        '"Amount" is greater than "100" OR "200"',
+        '"Amount" is greater than "100 USD"',
+    ]
+    for predicate in predicates:
+        text = ('Actors: actor SystemA '
+                f'If {predicate}, '
+                'SystemA must compute "Result" using "Input".')
+        parsed = grammar.recognizer().parse_syntax(
+            text, start_rule="CNLFunctionalRequirements")
+        assert parsed.accepted and parsed.ambiguity_detected is False, predicate
+        linked = link_repository_syntax(grammar, parsed, text)
+        assert linked.succeeded, predicate
+        projection = default_repository_adapter_registry().project(
+            parsed, text, linked, grammar)
+        assert projection.status == "adapted_candidate", predicate
+        assert projection.unresolved_paths == ("/rimay_core/conditions",), predicate
+        assert "conditions" not in projection.canonical_candidate["rimay_core"], predicate
+
+
+@pytest.mark.grammar
+def test_builtin_adapter_projects_one_fixed_repository_scope_without_guessing():
+    path = os.environ.get("RIMAY_FIXED_GRAMMAR")
+    if not path:
+        pytest.skip("RIMAY_FIXED_GRAMMAR 未指定")
+    grammar = compile_fixed_grammar(path)
+    text = ('Actors: actor SystemA, actor Manager\n'
+            'For "Billing", SystemA must pass "Invoice" to Manager.')
+    parsed = grammar.recognizer().parse_syntax(
+        text, start_rule="CNLFunctionalRequirements")
+    assert parsed.accepted
+    linked = link_repository_syntax(grammar, parsed, text)
+    assert linked.succeeded
+    projection = default_repository_adapter_registry().project(
+        parsed, text, linked, grammar)
+    assert projection.status == "adapted_candidate"
+    assert projection.unresolved_paths == ()
+    canonical = projection.canonical_candidate
+    assert canonical["rimay_core"]["scope"] == {"function": "Billing"}
+    assert validate_schema(canonical) == []
+    assert not any(item["blocking"] for item in
+                   validate(canonical, phase2_slice=False))
+
+
+@pytest.mark.grammar
+def test_fixed_repository_action_without_product_family_keeps_exact_rule_identity():
+    """Repository support and product adoption remain separate claim axes."""
+    path = os.environ.get("RIMAY_FIXED_GRAMMAR")
+    if not path:
+        pytest.skip("RIMAY_FIXED_GRAMMAR 未指定")
+    grammar = compile_fixed_grammar(path)
+    text = 'Actors: actor SystemA\nSystemA must calculate.'
+    parsed = grammar.recognizer().parse_syntax(
+        text, start_rule="CNLFunctionalRequirements")
+    assert parsed.accepted and parsed.ambiguity_detected is False
+    linked = link_repository_syntax(grammar, parsed, text)
+    assert linked.succeeded
+    projection = default_repository_adapter_registry().project(
+        parsed, text, linked, grammar)
+    assert projection.status == "adapted_candidate"
+    assert projection.unresolved_paths == ("/rimay_core/response/action/family",)
+    canonical = projection.canonical_candidate
+    assert canonical["rimay_core"]["response"]["action"] == {
+        "family": None, "rimay_action_id": "DS_CALCULATE"}
+    assert validate_schema(canonical) == []
+    assert any(item["blocking"] and
+               item.get("path") == "/rimay_core/response/action/family"
+               for item in validate(canonical, phase2_slice=False))
+
+
+@pytest.mark.grammar
+def test_all_fixed_repository_action_dispatches_preserve_the_selected_rule_id():
+    """The 50-rule dispatch population is exact, not a representative sample."""
+    path = os.environ.get("RIMAY_FIXED_GRAMMAR")
+    if not path:
+        pytest.skip("RIMAY_FIXED_GRAMMAR 未指定")
+    grammar = compile_fixed_grammar(path)
+
+    def walk_ir(node):
+        yield node
+        for child in node.get("children", []):
+            yield from walk_ir(child)
+        if isinstance(node.get("child"), dict):
+            yield from walk_ir(node["child"])
+
+    direct_actions = sorted(
+        node["name"] for node in walk_ir(grammar.by_name["ActionPhrase"].expression)
+        if node["kind"] == "rule_ref")
+    assert len(direct_actions) == len(set(direct_actions)) == 50
+
+    recognizer = grammar.recognizer()
+    for rule in direct_actions:
+        surface = recognizer.synthesize_minimal(rule)
+        parsed = recognizer.parse_syntax(surface, start_rule="ActionPhrase")
+        assert parsed.accepted and parsed.ambiguity_detected is False, rule
+        assert [node["name"] for node in direct_syntax_rule_children(parsed.tree)] == [rule]
+
+
+@pytest.mark.grammar
+def test_fixed_repository_trigger_without_product_family_keeps_exact_rule_identity():
+    path = os.environ.get("RIMAY_FIXED_GRAMMAR")
+    if not path:
+        pytest.skip("RIMAY_FIXED_GRAMMAR 未指定")
+    grammar = compile_fixed_grammar(path)
+    text = ('Actors: actor SystemA\n'
+            'After SystemA calculate, '
+            'SystemA must compute "Result" using "Input".')
+    parsed = grammar.recognizer().parse_syntax(
+        text, start_rule="CNLFunctionalRequirements")
+    assert parsed.accepted and parsed.ambiguity_detected is False
+    linked = link_repository_syntax(grammar, parsed, text)
+    assert linked.succeeded
+    projection = default_repository_adapter_registry().project(
+        parsed, text, linked, grammar)
+    assert projection.status == "adapted_candidate"
+    assert projection.unresolved_paths == (
+        "/rimay_core/conditions/0/event/action/family",
+        "/rimay_core/conditions/0/event/object",
+    )
+    assert projection.canonical_candidate["rimay_core"]["conditions"] == [{
+        "type": "AFTER",
+        "event": {"actor": "SystemA", "action": {
+            "family": None, "rimay_action_id": "DS_CALCULATE"}},
+    }]

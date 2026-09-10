@@ -1,0 +1,37 @@
+# 条件終端表現 → Condition Type（構想書 §9）
+# 条件種別ごとに日本語表現を固定し、一意に判定可能にする。
+conditions:
+  - type: WHILE
+    meaning: 状態が継続している期間
+    japanese_terminal: である間
+    english_keyword: While
+
+  - type: WHEN
+    meaning: 事象の発生（トリガー）
+    japanese_terminal: したとき
+    english_keyword: When
+
+  - type: IF
+    meaning: 真偽条件（事前条件）
+    japanese_terminal: である場合
+    english_keyword: If
+
+  - type: WHERE
+    meaning: 機能・構成への適用
+    japanese_terminal: を備える構成では
+    english_keyword: Where
+
+  - type: BEFORE
+    meaning: 事象より前
+    japanese_terminal: する前に
+    english_keyword: Before
+
+  - type: AFTER
+    meaning: 事象より後
+    japanese_terminal: した後に
+    english_keyword: After
+
+  - type: EVERY
+    meaning: 周期的実行
+    japanese_terminal: ごとに
+    english_keyword: Every

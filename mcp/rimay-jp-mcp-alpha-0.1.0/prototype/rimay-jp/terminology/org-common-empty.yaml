@@ -1,0 +1,4 @@
+# sample fixtureの組織共通語彙。seed 42語を組織承認済みと偽らないため空とする。
+snapshot_contract_version: 1.0.0
+scope: org:common
+terms: []

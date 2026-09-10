@@ -1,0 +1,22 @@
+id: non_atomic_requirement
+name: Non-atomic requirement
+language: en
+quality_attribute: atomicity
+definition: See catalog/source for the definition of 'Non-atomic requirement'.
+citation:
+  document: Automated Smell Detection and Recommendation in NL Requirements (Veizaga,
+    Shin & Briand, 2023; arXiv:2305.07097)
+  locator: §4.1 Table 3 (Non-atomic requirement); §5.3 Rules
+detector:
+  type: segment_count
+  params:
+    check: non_atomic
+default_severity: high
+explanation_template: This requirement describes more than one action in its system
+  response; split it into one action per requirement.
+examples:
+  positive:
+  - System-A must add System-B to the downstream systems and allow System-C to subscribe
+    to the reporting flow.
+  negative:
+  - System-A must add System-B to the downstream systems.

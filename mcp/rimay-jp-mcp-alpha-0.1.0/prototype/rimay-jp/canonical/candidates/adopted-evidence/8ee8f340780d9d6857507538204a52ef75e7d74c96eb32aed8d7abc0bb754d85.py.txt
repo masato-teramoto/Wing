@@ -1,0 +1,848 @@
+"""Active Condition expression boundary for Canonical 0.7.0 and later.
+
+The frozen candidate remains adoption evidence. This runtime entry point adds
+stable leaf traversal and the compatibility Store reader used by active
+consumers. Historical 0.6 records keep their legacy flat condition shape:
+without connector evidence, changing that shape would invent semantics and
+invalidate pointer-bearing metadata.
+"""
+from __future__ import annotations
+
+import copy
+import hashlib
+import json
+from dataclasses import dataclass
+from typing import Callable, Iterable, Iterator
+
+from . import PROFILE_VERSION, SCHEMA_VERSION, __version__ as ENGINE_VERSION
+from .condition_expression_candidate import (
+    CONDITION_EXPRESSION_CANDIDATE_VERSION,
+    ConditionExpressionError,
+    canonical_condition_expression_meaning,
+    canonical_condition_expression_shape,
+    condition_core_findings,
+    condition_expression_findings,
+    migrate_requirement_to_condition_expression,
+    parse_rendered_condition_expression,
+    project_repository_condition_expression,
+    quarantine_composite_condition_expression_for_rollback,
+    render_condition_expression,
+    replay_condition_expression_migration,
+    repository_condition_expression_shape,
+    restore_quarantined_condition_expression,
+    rollback_requirement_from_condition_expression,
+)
+from .response_expression import (
+    ResponseExpressionError,
+    response_core_findings,
+)
+from .response_expression_candidate import migrate_requirement_to_response_expression
+from .response_block import (
+    ResponseBlockError,
+    migrate_requirement_to_response_block_candidate,
+)
+from .atomic_response import (
+    AtomicResponseError,
+    migrate_requirement_to_atomic_response_candidate,
+)
+from .semantic_values import split_money
+
+CONDITION_EXPRESSION_VERSION = "0.7.0"
+MULTI_VALUE_RUNTIME_VERSION = "1.0.0"
+OPERATOR_VALUE_RUNTIME_VERSION = "1.1.0"
+OPERATOR_VALUE_CANDIDATE_VERSION = "0.1.0"
+MULTI_VALUE_CANDIDATE_VERSION = "0.1.0"
+if tuple(map(int, SCHEMA_VERSION.split("."))) < (0, 7, 0) or \
+        CONDITION_EXPRESSION_CANDIDATE_VERSION != CONDITION_EXPRESSION_VERSION:
+    raise RuntimeError("active Condition expression and Canonical Schema versions diverged")
+if tuple(map(int, SCHEMA_VERSION.split("."))) < (1, 0, 0):
+    raise RuntimeError("active Multi-value runtime requires Canonical 1.0 or later")
+if SCHEMA_VERSION != OPERATOR_VALUE_RUNTIME_VERSION:
+    raise RuntimeError("active Operator value runtime and Canonical Schema versions diverged")
+
+
+@dataclass
+class MultiValueRuntimeError(ValueError):
+    code: str
+    path: str
+    message: str
+
+    def __str__(self) -> str:
+        return f"{self.code} at {self.path}: {self.message}"
+
+
+def validate_value_expression(expression: object, *, path: str) -> None:
+    """Validate the active closed value/group/and/or tree."""
+    if not isinstance(expression, dict):
+        raise MultiValueRuntimeError(
+            "MULTI_VALUE_INVALID_NODE", path, "node must be an object")
+    kind = expression.get("kind")
+    if kind == "value":
+        if set(expression) - {"kind", "value", "unit"} or \
+                not {"kind", "value"} <= set(expression):
+            raise MultiValueRuntimeError(
+                "MULTI_VALUE_INVALID_LEAF", path,
+                "leaf must contain kind, value, and optional unit")
+        value = expression.get("value")
+        if not isinstance(value, str) or not value or value != value.strip() or \
+                any(mark in value for mark in ('"', "'", "「", "」", "\n", "\r")):
+            raise MultiValueRuntimeError(
+                "MULTI_VALUE_INVALID_VALUE", path + "/value",
+                "value must be non-empty, trim-stable, and delimiter-free")
+        unit = expression.get("unit")
+        if unit is not None and unit != "JPY":
+            raise MultiValueRuntimeError(
+                "MULTI_VALUE_UNSUPPORTED_UNIT", path + "/unit",
+                "atomic unit semantics remain closed to JPY")
+        if unit == "JPY" and split_money(f"{value} JPY") is None:
+            raise MultiValueRuntimeError(
+                "MULTI_VALUE_INVALID_UNIT_VALUE", path + "/value",
+                "JPY leaf must contain a numeric scalar")
+        if split_money(value) is not None:
+            raise MultiValueRuntimeError(
+                "MULTI_VALUE_EMBEDDED_UNIT", path + "/value",
+                "recognized money must use the separate unit field")
+        return
+    if kind == "group":
+        if set(expression) != {"kind", "expression"}:
+            raise MultiValueRuntimeError(
+                "MULTI_VALUE_INVALID_GROUP", path, "group shape is closed")
+        validate_value_expression(expression["expression"], path=path + "/expression")
+        return
+    if kind in {"and", "or"}:
+        if set(expression) != {"kind", "left", "right"}:
+            raise MultiValueRuntimeError(
+                "MULTI_VALUE_INVALID_BINARY", path, "binary shape is closed")
+        validate_value_expression(expression["left"], path=path + "/left")
+        validate_value_expression(expression["right"], path=path + "/right")
+        return
+    raise MultiValueRuntimeError(
+        "MULTI_VALUE_INVALID_NODE", path, f"unsupported node kind {kind!r}")
+
+
+def iter_condition_expression_leaves(
+    expression: dict,
+    *,
+    path: str = "/rimay_core/condition_expression",
+) -> Iterator[tuple[str, dict]]:
+    """Yield ``(CanonicalPointer, condition)`` in stable left-to-right order."""
+    kind = expression.get("kind") if isinstance(expression, dict) else None
+    if kind == "condition":
+        condition = expression.get("condition")
+        if not isinstance(condition, dict):
+            raise ConditionExpressionError(
+                "CONDITION_EXPRESSION_INVALID_LEAF", path + "/condition",
+                "condition must be an object")
+        yield path + "/condition", condition
+        return
+    if kind in {"and", "or"}:
+        yield from iter_condition_expression_leaves(
+            expression.get("left"), path=path + "/left")
+        yield from iter_condition_expression_leaves(
+            expression.get("right"), path=path + "/right")
+        return
+    raise ConditionExpressionError(
+        "CONDITION_EXPRESSION_INVALID_NODE", path, f"unsupported kind {kind!r}")
+
+
+def iter_core_conditions(core: dict) -> Iterator[tuple[str, dict]]:
+    """Traverse either legacy flat conditions or the active expression tree."""
+    problems = condition_core_findings(core)
+    if problems:
+        first = problems[0]
+        raise ConditionExpressionError(first["code"], first["path"], first["message"])
+    expression = core.get("condition_expression")
+    if expression is not None:
+        yield from iter_condition_expression_leaves(expression)
+        return
+    conditions = core.get("conditions") or []
+    if not isinstance(conditions, list):
+        raise ConditionExpressionError(
+            "CONDITION_EXPRESSION_INVALID_CONDITIONS", "/rimay_core/conditions",
+            "conditions must be an array")
+    for index, condition in enumerate(conditions):
+        if not isinstance(condition, dict):
+            raise ConditionExpressionError(
+                "CONDITION_EXPRESSION_INVALID_LEAF",
+                f"/rimay_core/conditions/{index}", "condition must be an object")
+        yield f"/rimay_core/conditions/{index}", condition
+
+
+def iter_predicate_value_leaves(
+    predicate: dict,
+    *,
+    path: str,
+) -> Iterator[tuple[str, dict]]:
+    """Yield scalar or tree value leaves in stable left-to-right pointer order."""
+    if not isinstance(predicate, dict):
+        raise MultiValueRuntimeError(
+            "MULTI_VALUE_INVALID_PREDICATE", path, "predicate must be an object")
+    has_scalar = "value" in predicate or "unit" in predicate
+    has_tree = "value_expression" in predicate
+    if has_scalar and has_tree:
+        raise MultiValueRuntimeError(
+            "MULTI_VALUE_DUAL_AUTHORITY", path,
+            "scalar value/unit and value_expression are mutually exclusive")
+    if has_tree:
+        root = predicate["value_expression"]
+        validate_value_expression(root, path=path + "/value_expression")
+
+        def visit(node: dict, node_path: str) -> Iterator[tuple[str, dict]]:
+            if node["kind"] == "value":
+                yield node_path, node
+            elif node["kind"] == "group":
+                yield from visit(node["expression"], node_path + "/expression")
+            else:
+                yield from visit(node["left"], node_path + "/left")
+                yield from visit(node["right"], node_path + "/right")
+
+        yield from visit(root, path + "/value_expression")
+        return
+    if "value" not in predicate:
+        raise MultiValueRuntimeError(
+            "MULTI_VALUE_MISSING_AUTHORITY", path,
+            "predicate must contain scalar value or value_expression")
+    leaf = {"kind": "value", "value": predicate.get("value")}
+    if "unit" in predicate:
+        leaf["unit"] = predicate.get("unit")
+    yield path, leaf
+
+
+def validate_predicate_authority(predicate: object, *, path: str) -> None:
+    """Validate the orthogonal identity/value authority contract for 1.1."""
+    if not isinstance(predicate, dict):
+        raise MultiValueRuntimeError(
+            "OPERATOR_VALUE_INVALID_PREDICATE", path, "predicate must be an object")
+    has_subject = "subject" in predicate
+    has_operand = "operand" in predicate
+    if has_subject == has_operand:
+        raise MultiValueRuntimeError(
+            "OPERATOR_VALUE_IDENTITY_AUTHORITY", path,
+            "exactly one of subject and operand is required")
+    if has_subject:
+        subject = predicate.get("subject")
+        if not isinstance(subject, str) or not subject:
+            raise MultiValueRuntimeError(
+                "OPERATOR_VALUE_INVALID_SUBJECT", path + "/subject",
+                "legacy subject must be a non-empty string")
+    else:
+        try:
+            from .operator_value_expression_candidate import validate_operator_operand
+            validate_operator_operand(predicate.get("operand"), path=path + "/operand")
+        except ValueError as exc:
+            raise MultiValueRuntimeError(exc.code, exc.path, exc.message) from exc
+        if "value_expression" not in predicate or "value" in predicate or "unit" in predicate:
+            raise MultiValueRuntimeError(
+                "OPERATOR_VALUE_TYPED_REQUIRES_TREE", path,
+                "typed operand requires value_expression and forbids scalar value/unit")
+    list(iter_predicate_value_leaves(predicate, path=path))
+
+
+def iter_operator_operand_leaves(operand: dict, *, path: str) -> Iterator[str]:
+    """Yield every semantic typed-operand leaf pointer in stable order."""
+    try:
+        from .operator_value_expression_candidate import validate_operator_operand
+        validate_operator_operand(operand, path=path)
+    except ValueError as exc:
+        raise MultiValueRuntimeError(exc.code, exc.path, exc.message) from exc
+    for field in ("wrapper", "kind", "name"):
+        yield path + "/" + field
+    if "defined_in_type" in operand:
+        yield path + "/defined_in_type/kind"
+        yield path + "/defined_in_type/name"
+    if "label" in operand:
+        yield path + "/label"
+    if "component_type" in operand:
+        yield path + "/component_type"
+
+
+def operator_operand_identity(operand: dict) -> str:
+    """Return a deterministic identity without guessing away wrapper semantics."""
+    from .operator_value_expression_candidate import validate_operator_operand
+    validate_operator_operand(operand)
+    parts = [operand["wrapper"], operand["kind"], operand["name"]]
+    defined = operand.get("defined_in_type")
+    if defined:
+        parts.extend(["defined_in_type", defined["kind"], defined["name"]])
+    if "label" in operand:
+        parts.extend(["label", operand["label"]])
+    if "component_type" in operand:
+        parts.extend(["component_type", operand["component_type"]])
+    return ":".join(parts)
+
+
+def _pointer_value(document: dict, pointer: str):
+    node = document
+    for token in pointer.strip("/").split("/"):
+        token = token.replace("~1", "/").replace("~0", "~")
+        node = node[int(token)] if isinstance(node, list) else node[token]
+    return node
+
+
+def _rebase_pointer_metadata(document: dict, replacements: dict[str, str]) -> None:
+    """Rebase exact value/unit pointers; reject metadata that would be orphaned."""
+    authority_roots = tuple(dict.fromkeys(
+        key.split("/value_expression", 1)[0] + "/value_expression"
+        for key in replacements
+        if "/value_expression" in key
+    ))
+
+    def target(pointer: object) -> object:
+        if not isinstance(pointer, str):
+            return pointer
+        if pointer in replacements:
+            return replacements[pointer]
+        if any(pointer == root or pointer.startswith(root + "/")
+               for root in authority_roots):
+            raise MultiValueRuntimeError(
+                "MULTI_VALUE_POINTER_REBASE_UNSUPPORTED", pointer,
+                "only semantic singleton value/unit metadata can be rebased")
+        return pointer
+
+    resolution = document.get("resolution") or {}
+    slots = resolution.get("slots") or {}
+    rebased: dict = {}
+    for pointer, state in slots.items():
+        new_pointer = target(pointer)
+        if new_pointer in rebased:
+            raise MultiValueRuntimeError(
+                "MULTI_VALUE_POINTER_REBASE_COLLISION", str(new_pointer),
+                "pointer rebase would overwrite an existing slot")
+        rebased[new_pointer] = state
+    if isinstance(resolution, dict):
+        resolution["slots"] = rebased
+    for entry in document.get("provenance") or []:
+        if isinstance(entry, dict) and "path" in entry:
+            entry["path"] = target(entry["path"])
+    approval = document.get("approval") or {}
+    if isinstance(approval.get("approved_slots"), list):
+        approval["approved_slots"] = [target(item) for item in approval["approved_slots"]]
+
+
+def _singleton_leaf(expression: dict, path: str) -> tuple[dict | None, str]:
+    node, node_path = expression, path
+    while isinstance(node, dict) and node.get("kind") == "group":
+        node = node.get("expression")
+        node_path += "/expression"
+    if isinstance(node, dict) and node.get("kind") == "value":
+        return node, node_path
+    return None, node_path
+
+
+def migrate_requirement_to_multi_value_runtime(document: dict) -> dict:
+    """Migrate 0.5--1.0 documents without lifting scalar predicates into trees."""
+    return _migrate_store_canonical(document)
+
+
+def rollback_requirement_from_multi_value_runtime(document: dict) -> dict:
+    """Rollback only singleton trees to 0.9, with deterministic metadata rebasing."""
+    if document.get("schema_version") not in {
+            MULTI_VALUE_RUNTIME_VERSION, OPERATOR_VALUE_RUNTIME_VERSION}:
+        raise MultiValueRuntimeError(
+            "MULTI_VALUE_ROLLBACK_VERSION", "/schema_version",
+            "rollback input must use Canonical 1.0.0 or 1.1.0")
+    rolled_back = copy.deepcopy(document)
+    replacements: dict[str, str] = {}
+    for condition_path, condition in iter_core_conditions(rolled_back["rimay_core"]):
+        predicate = condition.get("predicate") or {}
+        if "operand" in predicate:
+            raise MultiValueRuntimeError(
+                "OPERATOR_VALUE_ROLLBACK_REQUIRES_QUARANTINE",
+                condition_path + "/predicate/operand",
+                "typed operand identity must be quarantined before Multi-value rollback")
+        if "value_expression" not in predicate:
+            continue
+        expression_path = condition_path + "/predicate/value_expression"
+        validate_value_expression(predicate["value_expression"], path=expression_path)
+        leaf, leaf_path = _singleton_leaf(predicate["value_expression"], expression_path)
+        if leaf is None:
+            raise MultiValueRuntimeError(
+                "MULTI_VALUE_ROLLBACK_REQUIRES_QUARANTINE", expression_path,
+                "AND/OR value trees cannot roll back without information loss")
+        scalar = {
+            "subject": predicate.get("subject"),
+            "operator": predicate.get("operator"),
+            "value": leaf["value"],
+        }
+        replacements[leaf_path + "/value"] = condition_path + "/predicate/value"
+        if "unit" in leaf:
+            scalar["unit"] = leaf["unit"]
+            replacements[leaf_path + "/unit"] = condition_path + "/predicate/unit"
+        condition["predicate"] = scalar
+    _rebase_pointer_metadata(rolled_back, replacements)
+    rolled_back["schema_version"] = "0.9.0"
+    rolled_back["profile_version"] = "rimay-jp-mvp-0.3.0"
+    rolled_back.pop("validation_state", None)
+    return rolled_back
+
+
+def quarantine_multi_value_for_rollback(document: dict) -> dict:
+    """Create a 0.9-readable placeholder plus hash-bound records for every tree."""
+    if document.get("schema_version") not in {
+            MULTI_VALUE_RUNTIME_VERSION, OPERATOR_VALUE_RUNTIME_VERSION}:
+        raise MultiValueRuntimeError(
+            "MULTI_VALUE_QUARANTINE_VERSION", "/schema_version",
+            "quarantine input must use Canonical 1.0.0 or 1.1.0")
+    quarantined = copy.deepcopy(document)
+    records: list[dict] = []
+    for condition_path, condition in iter_core_conditions(quarantined["rimay_core"]):
+        predicate = condition.get("predicate") or {}
+        if "operand" in predicate:
+            raise MultiValueRuntimeError(
+                "OPERATOR_VALUE_ROLLBACK_REQUIRES_QUARANTINE",
+                condition_path + "/predicate/operand",
+                "typed operand identity must use Operator value quarantine")
+        if "value_expression" not in predicate:
+            continue
+        pointer = condition_path + "/predicate/value_expression"
+        expression = copy.deepcopy(predicate["value_expression"])
+        validate_value_expression(expression, path=pointer)
+        payload = json.dumps(
+            expression, ensure_ascii=False, sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+        records.append({
+            "kind": "RIMAY_JP_MULTI_VALUE_QUARANTINE",
+            "canonical_pointer": pointer,
+            "candidate_version": MULTI_VALUE_CANDIDATE_VERSION,
+            "payload_sha256": "sha256:" + hashlib.sha256(payload).hexdigest(),
+            "payload": expression,
+        })
+        condition["predicate"] = {
+            "subject": predicate.get("subject"),
+            "operator": predicate.get("operator"),
+            "value": None,
+        }
+    if not records:
+        raise MultiValueRuntimeError(
+            "MULTI_VALUE_QUARANTINE_NOT_REQUIRED", "/rimay_core",
+            "document has no value_expression authority")
+    semantics = quarantined.setdefault("extensions", {}).setdefault(
+        "additional_semantics", [])
+    if not isinstance(semantics, list) or any(
+            isinstance(item, dict) and
+            item.get("kind") == "RIMAY_JP_MULTI_VALUE_QUARANTINE"
+            for item in semantics):
+        raise MultiValueRuntimeError(
+            "MULTI_VALUE_QUARANTINE_CONFLICT", "/extensions/additional_semantics",
+            "multi-value quarantine target is invalid or occupied")
+    semantics.extend(records)
+    quarantined["schema_version"] = "0.9.0"
+    quarantined["profile_version"] = "rimay-jp-mvp-0.3.0"
+    quarantined.pop("validation_state", None)
+    return quarantined
+
+
+def restore_quarantined_multi_value(document: dict) -> dict:
+    """Restore every hash-bound tree without changing its original pointer."""
+    restored = copy.deepcopy(document)
+    extensions = restored.get("extensions") or {}
+    semantics = extensions.get("additional_semantics")
+    records = [item for item in semantics or [] if isinstance(item, dict) and
+               item.get("kind") == "RIMAY_JP_MULTI_VALUE_QUARANTINE"]
+    if not records:
+        raise MultiValueRuntimeError(
+            "MULTI_VALUE_QUARANTINE_MISSING", "/extensions/additional_semantics",
+            "multi-value quarantine record is absent")
+    for record in records:
+        if set(record) != {"kind", "canonical_pointer", "candidate_version",
+                           "payload_sha256", "payload"} or \
+                record.get("candidate_version") != MULTI_VALUE_CANDIDATE_VERSION:
+            raise MultiValueRuntimeError(
+                "MULTI_VALUE_QUARANTINE_INVALID", "/extensions/additional_semantics",
+                "quarantine envelope is invalid")
+        payload = record["payload"]
+        validate_value_expression(payload, path=record["canonical_pointer"])
+        digest = "sha256:" + hashlib.sha256(json.dumps(
+            payload, ensure_ascii=False, sort_keys=True,
+            separators=(",", ":")).encode("utf-8")).hexdigest()
+        if digest != record.get("payload_sha256"):
+            raise MultiValueRuntimeError(
+                "MULTI_VALUE_QUARANTINE_TAMPERED", record["canonical_pointer"],
+                "quarantine payload hash does not match")
+        predicate_pointer = record["canonical_pointer"].removesuffix("/value_expression")
+        predicate = _pointer_value(restored, predicate_pointer)
+        if not isinstance(predicate, dict) or set(predicate) != {
+                "subject", "operator", "value"} or predicate.get("value") is not None:
+            raise MultiValueRuntimeError(
+                "MULTI_VALUE_QUARANTINE_TARGET_CHANGED", predicate_pointer,
+                "rollback placeholder was modified")
+        predicate.pop("value")
+        predicate["value_expression"] = copy.deepcopy(payload)
+    extensions["additional_semantics"] = [item for item in semantics if item not in records]
+    if not extensions["additional_semantics"]:
+        extensions.pop("additional_semantics")
+    restored["schema_version"] = SCHEMA_VERSION
+    restored["profile_version"] = PROFILE_VERSION
+    restored.pop("validation_state", None)
+    return restored
+
+
+def _rebase_operator_metadata(document: dict, replacements: dict[str, str]) -> None:
+    """Rebase only explicitly lossless predicate leaves and reject collisions."""
+    def target(pointer: object) -> object:
+        if not isinstance(pointer, str):
+            return pointer
+        return replacements.get(pointer, pointer)
+
+    resolution = document.get("resolution") or {}
+    slots = resolution.get("slots") or {}
+    rebased: dict = {}
+    for pointer, state in slots.items():
+        new_pointer = target(pointer)
+        if new_pointer in rebased:
+            raise MultiValueRuntimeError(
+                "OPERATOR_VALUE_POINTER_REBASE_COLLISION", str(new_pointer),
+                "pointer rebase would overwrite an existing slot")
+        rebased[new_pointer] = state
+    if isinstance(resolution, dict):
+        resolution["slots"] = rebased
+    for entry in document.get("provenance") or []:
+        if isinstance(entry, dict) and "path" in entry:
+            entry["path"] = target(entry["path"])
+    approval = document.get("approval") or {}
+    if isinstance(approval.get("approved_slots"), list):
+        approval["approved_slots"] = [target(item) for item in approval["approved_slots"]]
+
+
+def migrate_requirement_to_operator_value_runtime(
+    document: dict,
+    operands_by_predicate_pointer: dict[str, dict],
+) -> dict:
+    """Explicitly type selected legacy predicates; normal Store replay never calls this."""
+    if not isinstance(operands_by_predicate_pointer, dict) or not \
+            operands_by_predicate_pointer:
+        raise MultiValueRuntimeError(
+            "OPERATOR_VALUE_MIGRATION_MAPPING", "/operands_by_predicate_pointer",
+            "one or more explicit predicate-pointer operands are required")
+    migrated = _migrate_store_canonical(document)
+    from .operator_value_expression_candidate import migrate_active_condition
+    remaining = set(operands_by_predicate_pointer)
+    replacements: dict[str, str] = {}
+    for condition_path, condition in iter_core_conditions(migrated["rimay_core"]):
+        predicate_path = condition_path + "/predicate"
+        if predicate_path not in operands_by_predicate_pointer:
+            continue
+        old_predicate = condition.get("predicate") or {}
+        try:
+            typed = migrate_active_condition(
+                {"type": condition.get("type"), "predicate": copy.deepcopy(old_predicate)},
+                operands_by_predicate_pointer[predicate_path],
+            )
+        except ValueError as exc:
+            raise MultiValueRuntimeError(exc.code, predicate_path + exc.path.removeprefix(
+                "/condition/predicate"), exc.message) from exc
+        if "repository_trace" in condition:
+            typed["repository_trace"] = copy.deepcopy(condition["repository_trace"])
+        condition.clear()
+        condition.update(typed)
+        replacements[predicate_path + "/subject"] = predicate_path + "/operand/name"
+        if "value_expression" not in old_predicate:
+            replacements[predicate_path + "/value"] = \
+                predicate_path + "/value_expression/value"
+            if "unit" in old_predicate:
+                replacements[predicate_path + "/unit"] = \
+                    predicate_path + "/value_expression/unit"
+        remaining.remove(predicate_path)
+    if remaining:
+        raise MultiValueRuntimeError(
+            "OPERATOR_VALUE_MIGRATION_POINTER", sorted(remaining)[0],
+            "explicit operand pointer does not identify a predicate")
+    _rebase_operator_metadata(migrated, replacements)
+    migrated["schema_version"] = OPERATOR_VALUE_RUNTIME_VERSION
+    migrated["profile_version"] = PROFILE_VERSION
+    migrated.pop("validation_state", None)
+    return migrated
+
+
+def _stable_sha256(value: object) -> str:
+    payload = json.dumps(
+        value, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+    ).encode("utf-8")
+    return "sha256:" + hashlib.sha256(payload).hexdigest()
+
+
+def quarantine_operator_value_for_rollback(document: dict) -> dict:
+    """Create a 1.0-readable placeholder and preserve typed data plus metadata."""
+    if document.get("schema_version") != OPERATOR_VALUE_RUNTIME_VERSION:
+        raise MultiValueRuntimeError(
+            "OPERATOR_VALUE_QUARANTINE_VERSION", "/schema_version",
+            "quarantine input must use Canonical 1.1.0")
+    quarantined = copy.deepcopy(document)
+    records: list[dict] = []
+    resolution_slots = (quarantined.get("resolution") or {}).get("slots") or {}
+    provenance = quarantined.get("provenance") or []
+    approval = quarantined.get("approval") or {}
+    approved_slots = approval.get("approved_slots") or []
+    for condition_path, condition in iter_core_conditions(quarantined["rimay_core"]):
+        predicate = condition.get("predicate") or {}
+        if "operand" not in predicate:
+            continue
+        predicate_path = condition_path + "/predicate"
+        try:
+            from .operator_value_expression_candidate import \
+                quarantine_operator_value_condition
+            condition_record = quarantine_operator_value_condition({
+                "type": condition["type"], "predicate": copy.deepcopy(predicate)})
+        except ValueError as exc:
+            raise MultiValueRuntimeError(exc.code, predicate_path, exc.message) from exc
+        owned_slots = {key: copy.deepcopy(value) for key, value in resolution_slots.items()
+                       if key == predicate_path or key.startswith(predicate_path + "/")}
+        owned_provenance = [copy.deepcopy(item) for item in provenance
+                            if isinstance(item, dict) and isinstance(item.get("path"), str)
+                            and (item["path"] == predicate_path or
+                                 item["path"].startswith(predicate_path + "/"))]
+        owned_approved = [item for item in approved_slots if isinstance(item, str) and
+                          (item == predicate_path or item.startswith(predicate_path + "/"))]
+        for key in owned_slots:
+            resolution_slots.pop(key)
+        provenance[:] = [item for item in provenance if item not in owned_provenance]
+        if isinstance(approval.get("approved_slots"), list):
+            approval["approved_slots"] = [item for item in approved_slots
+                                          if item not in owned_approved]
+        payload = {
+            "condition_quarantine": condition_record,
+            "resolution_slots": owned_slots,
+            "provenance": owned_provenance,
+            "approved_slots": owned_approved,
+        }
+        placeholder = {
+            "type": condition["type"],
+            "predicate": {"subject": predicate["operand"]["name"],
+                          "operator": predicate["operator"], "value": None},
+        }
+        condition.clear()
+        condition.update(copy.deepcopy(placeholder))
+        records.append({
+            "kind": "RIMAY_JP_OPERATOR_VALUE_EXPRESSION_QUARANTINE",
+            "canonical_pointer": predicate_path,
+            "candidate_version": OPERATOR_VALUE_CANDIDATE_VERSION,
+            "placeholder_sha256": _stable_sha256(placeholder),
+            "payload_sha256": _stable_sha256(payload),
+            "payload": payload,
+        })
+    if not records:
+        raise MultiValueRuntimeError(
+            "OPERATOR_VALUE_QUARANTINE_NOT_REQUIRED", "/rimay_core",
+            "document has no typed operand authority")
+    semantics = quarantined.setdefault("extensions", {}).setdefault(
+        "additional_semantics", [])
+    if not isinstance(semantics, list) or any(
+            isinstance(item, dict) and item.get("kind") ==
+            "RIMAY_JP_OPERATOR_VALUE_EXPRESSION_QUARANTINE" for item in semantics):
+        raise MultiValueRuntimeError(
+            "OPERATOR_VALUE_QUARANTINE_CONFLICT", "/extensions/additional_semantics",
+            "operator-value quarantine target is invalid or occupied")
+    semantics.extend(records)
+    quarantined["schema_version"] = "1.0.0"
+    quarantined["profile_version"] = "rimay-jp-mvp-0.4.0"
+    quarantined.pop("validation_state", None)
+    return quarantined
+
+
+def restore_quarantined_operator_value(document: dict) -> dict:
+    """Restore typed conditions and their exact pointer metadata after hash checks."""
+    restored = copy.deepcopy(document)
+    semantics = ((restored.get("extensions") or {}).get("additional_semantics") or [])
+    records = [item for item in semantics if isinstance(item, dict) and item.get("kind") ==
+               "RIMAY_JP_OPERATOR_VALUE_EXPRESSION_QUARANTINE"]
+    if not records:
+        raise MultiValueRuntimeError(
+            "OPERATOR_VALUE_QUARANTINE_MISSING", "/extensions/additional_semantics",
+            "operator-value quarantine record is absent")
+    slots = restored.setdefault("resolution", {}).setdefault("slots", {})
+    provenance = restored.setdefault("provenance", [])
+    approval = restored.get("approval") or {}
+    approved_slots = approval.get("approved_slots")
+    for record in records:
+        required = {"kind", "canonical_pointer", "candidate_version",
+                    "placeholder_sha256", "payload_sha256", "payload"}
+        if set(record) != required or record.get("candidate_version") != \
+                OPERATOR_VALUE_CANDIDATE_VERSION or \
+                _stable_sha256(record.get("payload")) != record.get("payload_sha256"):
+            raise MultiValueRuntimeError(
+                "OPERATOR_VALUE_QUARANTINE_TAMPERED", "/extensions/additional_semantics",
+                "quarantine envelope or payload hash does not match")
+        predicate_path = record["canonical_pointer"]
+        condition_pointer = predicate_path.removesuffix("/predicate")
+        condition = _pointer_value(restored, condition_pointer)
+        if _stable_sha256(condition) != record.get("placeholder_sha256"):
+            raise MultiValueRuntimeError(
+                "OPERATOR_VALUE_QUARANTINE_TARGET_CHANGED", predicate_path,
+                "rollback placeholder was modified")
+        payload = record["payload"]
+        try:
+            from .operator_value_expression_candidate import \
+                restore_operator_value_quarantine
+            typed = restore_operator_value_quarantine(payload["condition_quarantine"])
+        except ValueError as exc:
+            raise MultiValueRuntimeError(exc.code, predicate_path, exc.message) from exc
+        for pointer in payload["resolution_slots"]:
+            if pointer in slots:
+                raise MultiValueRuntimeError(
+                    "OPERATOR_VALUE_QUARANTINE_COLLISION", pointer,
+                    "restored resolution slot would overwrite existing metadata")
+        existing_paths = {item.get("path") for item in provenance if isinstance(item, dict)}
+        if any(item.get("path") in existing_paths for item in payload["provenance"]):
+            raise MultiValueRuntimeError(
+                "OPERATOR_VALUE_QUARANTINE_COLLISION", predicate_path,
+                "restored provenance would collide with existing metadata")
+        condition.clear()
+        condition.update(typed)
+        slots.update(copy.deepcopy(payload["resolution_slots"]))
+        provenance.extend(copy.deepcopy(payload["provenance"]))
+        if isinstance(approved_slots, list):
+            for pointer in payload["approved_slots"]:
+                if pointer in approved_slots:
+                    raise MultiValueRuntimeError(
+                        "OPERATOR_VALUE_QUARANTINE_COLLISION", pointer,
+                        "restored approved slot would collide")
+                approved_slots.append(pointer)
+    extensions = restored["extensions"]
+    extensions["additional_semantics"] = [item for item in semantics if item not in records]
+    if not extensions["additional_semantics"]:
+        extensions.pop("additional_semantics")
+    restored["schema_version"] = OPERATOR_VALUE_RUNTIME_VERSION
+    restored["profile_version"] = PROFILE_VERSION
+    restored.pop("validation_state", None)
+    return restored
+
+
+def _migrate_store_from_0_7(canonical: dict) -> dict:
+    migrated = migrate_requirement_to_response_block_candidate(canonical)
+    return migrate_requirement_to_atomic_response_candidate(migrated)
+
+
+def _migrate_store_from_0_6(canonical: dict) -> dict:
+    migrated = copy.deepcopy(canonical)
+    migrated["schema_version"] = CONDITION_EXPRESSION_VERSION
+    migrated.pop("validation_state", None)
+    return _migrate_store_from_0_7(migrated)
+
+
+def _migrate_store_from_0_5(canonical: dict) -> dict:
+    migrated = migrate_requirement_to_response_expression(canonical)
+    migrated["schema_version"] = CONDITION_EXPRESSION_VERSION
+    migrated.pop("validation_state", None)
+    return _migrate_store_from_0_7(migrated)
+
+
+def _migrate_store_from_0_8(canonical: dict) -> dict:
+    return migrate_requirement_to_atomic_response_candidate(canonical)
+
+
+def _copy_store_canonical(canonical: dict) -> dict:
+    return copy.deepcopy(canonical)
+
+
+_STORE_CANONICAL_MIGRATORS: dict[str, Callable[[dict], dict]] = {
+    "0.5.0": _migrate_store_from_0_5,
+    "0.6.0": _migrate_store_from_0_6,
+    "0.7.0": _migrate_store_from_0_7,
+    "0.8.0": _migrate_store_from_0_8,
+    "0.9.0": _copy_store_canonical,
+    "1.0.0": _copy_store_canonical,
+    "1.1.0": _copy_store_canonical,
+}
+
+
+def _migrate_store_canonical(canonical: dict) -> dict:
+    """Read 0.5--1.1 without inferring connectors, items, frequency, typing, or trees."""
+    version = canonical.get("schema_version")
+    profile_before = canonical.get("profile_version")
+    migrate = _STORE_CANONICAL_MIGRATORS.get(version)
+    if migrate is None:
+        raise ConditionExpressionError(
+            "CONDITION_EXPRESSION_MIGRATION_VERSION", "/schema_version",
+            f"unsupported Store Canonical Schema {version!r}")
+    migrated = migrate(canonical)
+    migrated["schema_version"] = SCHEMA_VERSION
+    migrated["profile_version"] = PROFILE_VERSION
+    # scalar shapeは変えない。Schema／Profile／engine変更時は検証snapshotを失効する。
+    normalization = migrated.get("normalization") or {}
+    stale_profile = profile_before != PROFILE_VERSION
+    stale_engine = normalization.get("normalizer_version") not in (None, ENGINE_VERSION)
+    if version != SCHEMA_VERSION or stale_profile or stale_engine:
+        migrated.pop("validation_state", None)
+    return migrated
+
+
+def migrate_experience_store_records(records: Iterable[dict]) -> dict:
+    """Replay historical Canonical snapshots into the active 1.1 reader shape."""
+    migrated_records: list[dict] = []
+    canonical_count = 0
+    hash_churn: list[dict] = []
+    from .model import canonical_hash
+
+    for record in records:
+        migrated = copy.deepcopy(record)
+        if migrated.get("kind") == "canonical_revision":
+            canonical = ((migrated.get("payload") or {}).get("canonical"))
+            if not isinstance(canonical, dict):
+                raise ConditionExpressionError(
+                    "CONDITION_EXPRESSION_STORE_RECORD", "/payload/canonical",
+                    "canonical_revision must contain a Canonical object")
+            before_hash = canonical_hash(canonical)
+            canonical = _migrate_store_canonical(canonical)
+            response_findings = response_core_findings(
+                canonical.get("rimay_core"),
+                source_text=(canonical.get("source") or {}).get("text"),
+            )
+            response_error_type = (
+                ResponseBlockError if response_findings and
+                response_findings[0]["code"].startswith("RESPONSE_BLOCK_")
+                else AtomicResponseError if response_findings and
+                response_findings[0]["code"].startswith("ATOMIC_RESPONSE_")
+                else ResponseExpressionError
+            )
+            for findings, error_type in (
+                (response_findings, response_error_type),
+                (condition_core_findings(canonical.get("rimay_core")), ConditionExpressionError),
+            ):
+                if findings:
+                    first = findings[0]
+                    raise error_type(first["code"], first["path"], first["message"])
+            migrated["payload"]["canonical"] = canonical
+            after_hash = canonical_hash(canonical)
+            canonical_count += 1
+            hash_churn.append({
+                "record_id": migrated.get("record_id"),
+                "before": before_hash,
+                "after": after_hash,
+                "changed": before_hash != after_hash,
+            })
+        migrated_records.append(migrated)
+
+    payload = json.dumps(
+        migrated_records, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+    ).encode("utf-8")
+    return {
+        "records": migrated_records,
+        "record_count": len(migrated_records),
+        "canonical_count": canonical_count,
+        "hash_churn": hash_churn,
+        "replay_sha256": "sha256:" + hashlib.sha256(payload).hexdigest(),
+    }
+
+
+__all__ = [
+    "CONDITION_EXPRESSION_VERSION", "MULTI_VALUE_RUNTIME_VERSION",
+    "OPERATOR_VALUE_RUNTIME_VERSION",
+    "ConditionExpressionError", "MultiValueRuntimeError",
+    "canonical_condition_expression_meaning", "canonical_condition_expression_shape",
+    "condition_core_findings", "condition_expression_findings",
+    "iter_condition_expression_leaves", "iter_core_conditions",
+    "iter_operator_operand_leaves", "iter_predicate_value_leaves",
+    "migrate_experience_store_records", "migrate_requirement_to_operator_value_runtime",
+    "migrate_requirement_to_condition_expression",
+    "migrate_requirement_to_multi_value_runtime",
+    "parse_rendered_condition_expression", "project_repository_condition_expression",
+    "quarantine_composite_condition_expression_for_rollback",
+    "render_condition_expression", "replay_condition_expression_migration",
+    "operator_operand_identity", "quarantine_multi_value_for_rollback",
+    "quarantine_operator_value_for_rollback", "repository_condition_expression_shape",
+    "restore_quarantined_condition_expression", "restore_quarantined_multi_value",
+    "restore_quarantined_operator_value", "rollback_requirement_from_condition_expression",
+    "rollback_requirement_from_multi_value_runtime", "validate_predicate_authority",
+    "validate_value_expression",
+]

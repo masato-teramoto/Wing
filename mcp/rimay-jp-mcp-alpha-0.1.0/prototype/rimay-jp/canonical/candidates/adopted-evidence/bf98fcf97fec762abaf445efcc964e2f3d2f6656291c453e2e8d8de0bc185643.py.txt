@@ -1,0 +1,404 @@
+# -*- coding: utf-8 -*-
+"""CAP-RESPONSE-BLOCK/CAP-LEXICAL-STRUCTUREの隔離0.8.0 candidate。"""
+from __future__ import annotations
+
+import copy
+import json
+import os
+import sys
+from pathlib import Path
+
+import pytest
+from jsonschema import Draft202012Validator
+
+
+RIMAY_JP = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(RIMAY_JP / "core"))
+sys.path.insert(0, str(RIMAY_JP / "scripts"))
+
+from build_response_block_candidate import (  # noqa: E402
+    historical_base_schema,
+    rendered_candidate,
+)
+from rimay_jp_core.repository_document import (  # noqa: E402
+    project_repository_document, repository_document_problems,
+)
+from rimay_jp_core.repository_grammar import compile_fixed_grammar  # noqa: E402
+from rimay_jp_core.repository_linker import link_repository_syntax  # noqa: E402
+from rimay_jp_core.response_block_candidate import (  # noqa: E402
+    ACTIVE_CANONICAL_VERSION,
+    RESPONSE_BLOCK_CANDIDATE_VERSION,
+    ResponseBlockError,
+    build_response_block_candidate_schema,
+    canonical_response_block_meaning,
+    migrate_requirement_to_response_block_candidate,
+    parse_rendered_response_block,
+    project_repository_response_block,
+    quarantine_response_block_for_rollback,
+    render_response_block,
+    replay_response_block_migration,
+    response_block_core_findings,
+    response_block_findings,
+    restore_quarantined_response_block,
+    rollback_requirement_from_response_block_candidate,
+)
+from rimay_jp_core.validator import validate  # noqa: E402
+
+
+BASE_SCHEMA = RIMAY_JP / "canonical/canonical-requirement.schema.json"
+CANDIDATE_SCHEMA = (
+    RIMAY_JP / "canonical/candidates/"
+    "canonical-requirement-response-block-0.8.0.schema.json"
+)
+SOURCE = (
+    "do the following actions in sequence: "
+    "- SEND, and 2 CALCULATE or - DISPLAY"
+)
+
+
+def _response(label="SEND"):
+    return {
+        "actor": "SystemA", "modality": "MUST",
+        "action": {"family": label, "rimay_action_id": None},
+        "theme": label + "Object",
+    }
+
+
+def _span(fragment, *, start=0):
+    begin = SOURCE.index(fragment, start)
+    return {"start": begin, "end": begin + len(fragment)}
+
+
+def _repository_block():
+    first_start = SOURCE.index("-")
+    first_end = first_start + len("- SEND")
+    second_start = SOURCE.index("2 CALCULATE")
+    second_end = second_start + len("2 CALCULATE")
+    third_start = SOURCE.rindex("- DISPLAY")
+    third_end = third_start + len("- DISPLAY")
+    return {
+        "kind": "itemized",
+        "span": {"start": 0, "end": len(SOURCE)},
+        "source": SOURCE,
+        "in_sequence": {"span": _span("in sequence"), "source": "in sequence"},
+        "items": [
+            {
+                "index": 0,
+                "span": {"start": first_start, "end": first_end},
+                "source": SOURCE[first_start:first_end],
+                "connector_before": None,
+                "bullet": {"kind": "hyphen", "value": "-",
+                           "span": {"start": first_start, "end": first_start + 1},
+                           "source": "-"},
+                "atomic_response_index": 0,
+            },
+            {
+                "index": 1,
+                "span": {"start": second_start, "end": second_end},
+                "source": SOURCE[second_start:second_end],
+                "connector_before": {"kind": "comma_and", "span": _span(", and"),
+                                     "source": ", and"},
+                "bullet": {"kind": "integer", "value": "2",
+                           "span": {"start": second_start, "end": second_start + 1},
+                           "source": "2"},
+                "atomic_response_index": 1,
+            },
+            {
+                "index": 2,
+                "span": {"start": third_start, "end": third_end},
+                "source": SOURCE[third_start:third_end],
+                "connector_before": {"kind": "or", "span": _span("or", start=second_end),
+                                     "source": "or"},
+                "bullet": {"kind": "hyphen", "value": "-",
+                           "span": {"start": third_start, "end": third_start + 1},
+                           "source": "-"},
+                "atomic_response_index": 2,
+            },
+        ],
+    }
+
+
+def _project(index, _item):
+    return _response(("SEND", "CALCULATE", "DISPLAY")[index])
+
+
+def _projected():
+    return project_repository_response_block(_repository_block(), SOURCE, _project)
+
+
+def _document(requirement_id="REQ-RESPONSE-BLOCK-CANDIDATE"):
+    return {
+        "schema_version": ACTIVE_CANONICAL_VERSION,
+        "profile_version": "rimay-jp-mvp-0.1.0",
+        "requirement_id": requirement_id,
+        "revision": 1,
+        "status": "candidate",
+        "source": {"text": SOURCE},
+        "rimay_core": {"conditions": [], "response": _response()},
+        "extensions": {}, "resolution": {"slots": {}}, "provenance": [],
+    }
+
+
+def _schemas():
+    active = json.loads(BASE_SCHEMA.read_text(encoding="utf-8"))
+    base = historical_base_schema(active)
+    candidate = json.loads(CANDIDATE_SCHEMA.read_text(encoding="utf-8"))
+    return active, base, candidate
+
+
+def test_candidate_schema_is_deterministic_and_matches_promoted_active_shape():
+    active, base, candidate = _schemas()
+    assert candidate == build_response_block_candidate_schema(base)
+    assert CANDIDATE_SCHEMA.read_text(encoding="utf-8") == rendered_candidate()
+    Draft202012Validator.check_schema(candidate)
+    assert base["properties"]["schema_version"]["const"] == ACTIVE_CANONICAL_VERSION
+    assert active["properties"]["schema_version"]["const"] == "0.9.0"
+    assert candidate["properties"]["schema_version"]["const"] == \
+        RESPONSE_BLOCK_CANDIDATE_VERSION
+    assert "response_block" not in base["$defs"]["rimayCore"]["properties"]
+    assert "response_block" in candidate["$defs"]["rimayCore"]["properties"]
+    for name in (
+        "repositoryResponseBlockTrace", "repositoryResponseBlockItemTrace",
+        "responseBlockBullet", "responseBlockItem", "responseBlock",
+    ):
+        assert active["$defs"][name] == candidate["$defs"][name]
+    assert active["$defs"]["rimayCore"] == candidate["$defs"]["rimayCore"]
+
+
+def test_repository_itemized_block_projects_without_item_layout_or_trace_loss():
+    projected = _projected()
+    assert response_block_findings(projected, source_text=SOURCE) == ()
+    assert projected["in_sequence"] is True
+    assert [item["position"] for item in projected["items"]] == [0, 1, 2]
+    assert [item["bullet"] for item in projected["items"]] == [
+        {"kind": "hyphen", "value": "-"},
+        {"kind": "integer", "value": "2"},
+        {"kind": "hyphen", "value": "-"},
+    ]
+    assert [item["connector_before"] for item in projected["items"]] == [
+        None, "comma_and", "or"]
+    assert [item["repository_trace"]["atomic_response_index"]
+            for item in projected["items"]] == [0, 1, 2]
+    assert projected["repository_trace"]["repository_rule_id"] == \
+        "ResponseBlockItemized"
+
+
+def test_candidate_schema_accepts_block_and_rejects_all_response_dual_sources():
+    _, _, candidate = _schemas()
+    validator = Draft202012Validator(candidate)
+    document = _document()
+    document["schema_version"] = RESPONSE_BLOCK_CANDIDATE_VERSION
+    document["rimay_core"].pop("response")
+    document["rimay_core"]["response_block"] = _projected()
+    assert list(validator.iter_errors(document)) == []
+
+    dual = copy.deepcopy(document)
+    dual["rimay_core"]["response"] = _response()
+    assert list(validator.iter_errors(dual))
+    assert response_block_core_findings(dual["rimay_core"])[0]["code"] == \
+        "RESPONSE_BLOCK_DUAL_SOURCE"
+
+
+def test_projection_and_diagnostic_reject_tampering_duplicates_and_non_itemized():
+    changed = _repository_block()
+    changed["items"][1]["connector_before"]["kind"] = "or"
+    with pytest.raises(ResponseBlockError) as caught:
+        project_repository_response_block(changed, SOURCE, _project)
+    assert caught.value.code == "RESPONSE_BLOCK_CONNECTOR_TAMPERED"
+
+    changed = _repository_block()
+    changed["items"][2]["atomic_response_index"] = 1
+    with pytest.raises(ResponseBlockError) as caught:
+        project_repository_response_block(changed, SOURCE, _project)
+    assert caught.value.code == "RESPONSE_BLOCK_DUPLICATE_ATOMIC_INDEX"
+
+    changed = copy.deepcopy(_projected())
+    changed["items"][1]["position"] = 7
+    changed["items"][1]["repository_trace"]["repository_rule_id"] = "HYPHEN"
+    changed["items"][2]["repository_trace"]["source"] = "invented"
+    codes = {item["code"] for item in response_block_findings(
+        changed, source_text=SOURCE)}
+    assert {"RESPONSE_BLOCK_POSITION_MISMATCH",
+            "RESPONSE_BLOCK_TRACE_RULE_MISMATCH",
+            "RESPONSE_BLOCK_SOURCE_TAMPERED"} <= codes
+
+    with pytest.raises(ResponseBlockError) as caught:
+        project_repository_response_block(
+            {"kind": "expression"}, SOURCE, _project)
+    assert caught.value.code == "RESPONSE_BLOCK_NON_ITEMIZED_OUTSIDE_BATCH"
+
+
+def test_traced_block_requires_source_and_document_paths_reject_source_tampering():
+    projected = _projected()
+    assert {item["code"] for item in response_block_findings(projected)} >= {
+        "RESPONSE_BLOCK_SOURCE_REQUIRED"}
+
+    document = _document()
+    document["schema_version"] = RESPONSE_BLOCK_CANDIDATE_VERSION
+    document["rimay_core"].pop("response")
+    document["rimay_core"]["response_block"] = projected
+
+    tampered = copy.deepcopy(document)
+    tampered["source"]["text"] = "X" * len(SOURCE)
+    with pytest.raises(ResponseBlockError) as caught:
+        quarantine_response_block_for_rollback(tampered)
+    assert caught.value.code == "RESPONSE_BLOCK_SOURCE_TAMPERED"
+
+    findings = validate(tampered, phase2_slice=False)
+    assert any(
+        (item.get("evidence") or {}).get("response_block_code") ==
+        "RESPONSE_BLOCK_SOURCE_TAMPERED"
+        for item in findings
+    )
+
+    quarantined = quarantine_response_block_for_rollback(document)
+    quarantined["source"]["text"] = "X" * len(SOURCE)
+    with pytest.raises(ResponseBlockError) as caught:
+        restore_quarantined_response_block(quarantined)
+    assert caught.value.code == "RESPONSE_BLOCK_SOURCE_TAMPERED"
+
+
+def test_integer_bullet_contract_accepts_ascii_only_like_generated_schema():
+    repository = _repository_block()
+    repository["items"][1]["bullet"]["value"] = "１"
+    with pytest.raises(ResponseBlockError) as caught:
+        project_repository_response_block(repository, SOURCE, _project)
+    assert caught.value.code == "RESPONSE_BLOCK_BULLET_MISMATCH"
+
+    projected = _projected()
+    projected["items"][1]["bullet"]["value"] = "１"
+    codes = {item["code"] for item in response_block_findings(
+        projected, source_text=SOURCE)}
+    assert "RESPONSE_BLOCK_INVALID_BULLET" in codes
+
+    _, _, candidate_schema = _schemas()
+    document = _document()
+    document["schema_version"] = RESPONSE_BLOCK_CANDIDATE_VERSION
+    document["rimay_core"].pop("response")
+    document["rimay_core"]["response_block"] = projected
+    assert list(Draft202012Validator(candidate_schema).iter_errors(document))
+
+
+@pytest.mark.grammar
+def test_fixed_repository_itemized_sequence_feeds_candidate_directly():
+    path = os.environ.get("RIMAY_FIXED_GRAMMAR")
+    if not path:
+        pytest.skip("RIMAY_FIXED_GRAMMAR 未指定")
+    text = (
+        "Actors: actor SystemA "
+        "SystemA shall do the following actions in sequence: "
+        '- enable - cancel a "text".'
+    )
+    grammar = compile_fixed_grammar(path)
+    parsed = grammar.recognizer().parse_syntax(
+        text, start_rule="CNLFunctionalRequirements")
+    assert parsed.accepted and parsed.ambiguity_detected is False
+    linking = link_repository_syntax(grammar, parsed, text)
+    assert linking.succeeded
+    result = project_repository_document(parsed, text, linking, grammar)
+    assert result.status == "projected_document", result.reason
+    assert repository_document_problems(result.document, text) == []
+    structure = result.document["requirements"][0]["response_structure"]
+    candidate = project_repository_response_block(
+        structure, text, lambda index, _item: _response(f"ITEM-{index}"))
+    assert candidate["in_sequence"] is True
+    assert len(candidate["items"]) == 2
+    assert [item["bullet"]["value"] for item in candidate["items"]] == ["-", "-"]
+    assert response_block_findings(candidate, source_text=text) == ()
+
+
+def test_english_and_japanese_surfaces_roundtrip_the_same_block_meaning():
+    projected = _projected()
+
+    def render_leaf(response):
+        return response["action"]["family"]
+
+    english = render_response_block(
+        projected, render_leaf, language="en", source_text=SOURCE)
+    japanese = render_response_block(
+        projected, render_leaf, language="ja", source_text=SOURCE)
+    assert english.startswith("do the following actions in sequence:")
+    assert japanese.startswith("次の動作を実行する（順番に）:")
+    assert "connector=comma_and" in english
+    assert "接続=読点かつ" in japanese
+
+    responses = {name: _response(name) for name in ("SEND", "CALCULATE", "DISPLAY")}
+
+    def parse_leaf(text, position):
+        delimiter = text.find(" ; ", position)
+        end = len(text) if delimiter < 0 else delimiter
+        return responses[text[position:end]], end
+
+    parsed_en = parse_rendered_response_block(english, parse_leaf, language="en")
+    parsed_ja = parse_rendered_response_block(japanese, parse_leaf, language="ja")
+    expected = canonical_response_block_meaning(projected, source_text=SOURCE)
+    assert canonical_response_block_meaning(parsed_en) == expected
+    assert canonical_response_block_meaning(parsed_ja) == expected
+
+    with pytest.raises(ResponseBlockError) as caught:
+        parse_rendered_response_block("SEND and CALCULATE", parse_leaf, language="en")
+    assert caught.value.code == "RESPONSE_BLOCK_PARSE_PREFIX"
+    with pytest.raises(ResponseBlockError) as caught:
+        parse_rendered_response_block(
+            english.replace("item=2", "item=１"), parse_leaf, language="en")
+    assert caught.value.code == "RESPONSE_BLOCK_PARSE_BULLET"
+    with pytest.raises(ResponseBlockError) as caught:
+        render_response_block(
+            projected, lambda _response: "", language="ja", source_text=SOURCE)
+    assert caught.value.code == "RESPONSE_BLOCK_RENDER_EMPTY"
+
+
+def test_legacy_migration_is_shape_preserving_and_invalidates_validation_snapshot():
+    _, active, candidate = _schemas()
+    original = _document()
+    original["validation_state"] = {
+        "report_id": "VR-OLD", "blocking_findings": 0, "warning_findings": 0,
+        "validated_canonical_hash": "sha256:old",
+        "validator_registry_version": "0.3.0",
+    }
+    assert list(Draft202012Validator(active).iter_errors(original)) == []
+    migrated = migrate_requirement_to_response_block_candidate(original)
+    assert migrated["schema_version"] == RESPONSE_BLOCK_CANDIDATE_VERSION
+    assert migrated["rimay_core"] == original["rimay_core"]
+    assert "validation_state" not in migrated
+    assert list(Draft202012Validator(candidate).iter_errors(migrated)) == []
+    rolled_back = rollback_requirement_from_response_block_candidate(migrated)
+    expected = copy.deepcopy(original)
+    expected.pop("validation_state")
+    assert rolled_back == expected
+
+
+def test_itemized_rollback_fails_and_quarantine_restore_is_lossless_and_tamper_evident():
+    _, active, candidate = _schemas()
+    document = _document()
+    document["schema_version"] = RESPONSE_BLOCK_CANDIDATE_VERSION
+    document["rimay_core"].pop("response")
+    document["rimay_core"]["response_block"] = _projected()
+    assert list(Draft202012Validator(candidate).iter_errors(document)) == []
+
+    with pytest.raises(ResponseBlockError) as caught:
+        rollback_requirement_from_response_block_candidate(document)
+    assert caught.value.code == "RESPONSE_BLOCK_ROLLBACK_LOSSY"
+
+    quarantined = quarantine_response_block_for_rollback(document)
+    assert list(Draft202012Validator(active).iter_errors(quarantined)) == []
+    assert "response_block" not in quarantined["rimay_core"]
+    assert restore_quarantined_response_block(quarantined) == document
+
+    tampered = copy.deepcopy(quarantined)
+    tampered["extensions"]["additional_semantics"][0]["response_block"][
+        "items"][0]["bullet"]["value"] = "2"
+    with pytest.raises(ResponseBlockError) as caught:
+        restore_quarantined_response_block(tampered)
+    assert caught.value.code == "RESPONSE_BLOCK_QUARANTINE_INVALID"
+
+
+def test_store_replay_is_deterministic_and_does_not_mutate_inputs():
+    documents = [_document("REQ-RB-1"), _document("REQ-RB-2")]
+    original = copy.deepcopy(documents)
+    first = replay_response_block_migration(documents)
+    second = replay_response_block_migration(documents)
+    assert first == second
+    assert first["document_count"] == 2
+    assert first["replay_sha256"].startswith("sha256:")
+    assert documents == original

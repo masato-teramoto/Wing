@@ -1,0 +1,19 @@
+# Layer 1 segment schema — constraint / business rule (SBVR). No detection (FR-004).
+# Validated by schemas/layer1-structure.v2.schema.json.
+version: "1.0.0"
+artifact_type: constraint
+source_id: constraint/sbvr-2019
+segments:
+  - {id: subject, name: Subject, required: true, description: "Mandatory. The party/entity the rule governs."}
+  - {id: deontic_modality, name: Deontic modality, required: true, description: "Mandatory. Obligation / prohibition / permission operator."}
+  - {id: rule_statement, name: Rule statement, required: true, description: "Mandatory. The enforceable condition the modality applies to."}
+ordering: [subject, deontic_modality, rule_statement]
+quality_attributes:
+  - {id: clarity, description: "Modality is explicit and unambiguous."}
+  - {id: singular, description: "States one rule."}
+  - {id: verifiable, description: "Enforceable/checkable obligation."}
+enumerations:
+  deontic_modalities:
+    - {id: obligation, name: Obligation, description: "must / shall / is required to."}
+    - {id: prohibition, name: Prohibition, description: "must not / shall not."}
+    - {id: permission, name: Permission, description: "may / is permitted to."}

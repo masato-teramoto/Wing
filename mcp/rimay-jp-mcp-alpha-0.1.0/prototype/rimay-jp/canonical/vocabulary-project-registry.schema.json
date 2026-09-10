@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rimay-jp/vocabulary-project-registry.schema.json",
+  "title": "Vocabulary Project Registry v1.0.0",
+  "type": "object",
+  "required": ["registry_version", "organization", "projects"],
+  "additionalProperties": false,
+  "properties": {
+    "registry_version": {"const": "1.0.0"},
+    "organization": {"$ref": "#/$defs/entry"},
+    "projects": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {"$ref": "#/$defs/entry"},
+          {
+            "type": "object",
+            "required": ["project_id"],
+            "properties": {
+              "project_id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "$defs": {
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "project_id": {"type": "string"},
+        "fixture": {
+          "type": "object",
+          "description": "基盤リポジトリ内のproject:sample専用fixture。実案件では使用しない",
+          "required": ["snapshot_id", "terms_file"],
+          "additionalProperties": false,
+          "properties": {
+            "snapshot_id": {"type": "string"},
+            "terms_file": {
+              "type": "string",
+              "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"
+            },
+            "source_ref": {"type": "string"}
+          }
+        }
+      }
+    }
+  }
+}

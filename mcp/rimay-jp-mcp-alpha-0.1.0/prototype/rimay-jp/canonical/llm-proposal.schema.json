@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rimay-jp/llm-proposal.schema.json",
+  "title": "LLM Proposal (Phase 5 LLM実接続) v0.1",
+  "description": "LLM分類・抽出出力の契約。LLMは候補生成のみを行う実行役であり（llm-backend-design §1）、本契約はstatusフィールド自体を持たない＝confirmedを表現できない（構造的統制）。value非nullはproposed候補、value nullはunknown宣言として決定論アダプタが組み立てる。適合しない出力は拒否し、契約違反として測定する。",
+  "type": "object",
+  "required": ["classification", "rationale", "slots"],
+  "additionalProperties": false,
+  "properties": {
+    "classification": {
+      "enum": ["context", "problem", "goal", "stakeholder_view", "assumption",
+               "issue", "decision", "business_rule", "requirement_candidate"]
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 1
+    },
+    "slots": {
+      "type": "object",
+      "description": "キーは許可Pointer一覧（プロンプトの固定知識）内のCanonicalPointerのみ。一覧外・'*'入りは組立時に拒否・計数する",
+      "patternProperties": {
+        "^/(rimay_core|extensions)/[^*\\s]+$": {
+          "type": "object",
+          "required": ["value"],
+          "additionalProperties": false,
+          "properties": {
+            "value": { "type": ["string", "number", "null"] },
+            "source_span": {
+              "type": ["string", "null"],
+              "description": "原文中の該当表現（値の根拠。value非nullなら必須運用）"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

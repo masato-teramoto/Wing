@@ -1,0 +1,62 @@
+{
+  "updated_at": "{{ISO_8601_TIMESTAMP}}",
+
+  "current": {
+    "phase": 4,
+    "phase_name": "requirements 作成",
+    "waiting_for": "human_answer",
+    "next_action": "feature-name-b の requirements.md の未回答質問に回答する",
+    "open_blockers": 1
+  },
+
+  "phases": [
+    { "phase": 1, "name": "要求受入", "artifact": "要求一覧", "status": "approved", "updated_at": "2026-01-01T00:00:00+09:00", "gate_record": "[ゲート記録のパス]" },
+    { "phase": 2, "name": "Steering 作成", "artifact": "steering/ 7ファイル", "status": "approved", "updated_at": "2026-01-01T00:00:00+09:00", "gate_record": "[パス]" },
+    { "phase": 3, "name": "Feature 分割", "artifact": "feature-list.md", "status": "approved", "updated_at": "2026-01-01T00:00:00+09:00", "gate_record": "[パス]" },
+    { "phase": 4, "name": "requirements 作成", "artifact": "specs/*/requirements.md", "status": "draft", "updated_at": "2026-01-01T00:00:00+09:00", "gate_record": "[パス]" },
+    { "phase": 5, "name": "画面モック生成", "artifact": ".aidd/wireframe/*/pages/", "status": "not_started", "updated_at": "2026-01-01T00:00:00+09:00", "gate_record": "[パス]" }
+  ],
+
+  "steering": {
+    "product":        { "status": "approved", "updated_at": "2026-01-01T00:00:00+09:00", "waiting_for": null, "open_placeholders": 0 },
+    "tech":           { "status": "approved", "updated_at": "2026-01-01T00:00:00+09:00", "waiting_for": null, "open_placeholders": 0 },
+    "architecture":   { "status": "approved", "updated_at": "2026-01-01T00:00:00+09:00", "waiting_for": null, "open_placeholders": 0 },
+    "security":       { "status": "approved", "updated_at": "2026-01-01T00:00:00+09:00", "waiting_for": null, "open_placeholders": 0 },
+    "non-functional": { "status": "approved", "updated_at": "2026-01-01T00:00:00+09:00", "waiting_for": null, "open_placeholders": 0 },
+    "database":       { "status": "approved", "updated_at": "2026-01-01T00:00:00+09:00", "waiting_for": null, "open_placeholders": 0 },
+    "api-standards":  { "status": "approved", "updated_at": "2026-01-01T00:00:00+09:00", "waiting_for": null, "open_placeholders": 0 }
+  },
+
+  "features": [
+    {
+      "priority": 1,
+      "name": "[feature-name-a]",
+      "type": "Platform",
+      "documents": {
+        "requirements": { "status": "approved", "updated_at": "2026-01-01T00:00:00+09:00", "waiting_for": null, "open_placeholders": 0 },
+        "wireframe":    { "status": "n/a", "updated_at": "2026-01-01T00:00:00+09:00", "waiting_for": "[Phase 5 の対象外とした理由。UI を持たない feature は status を n/a にし、エントリを消さない]", "open_placeholders": 0 }
+      }
+    },
+    {
+      "priority": 2,
+      "name": "[feature-name-b]",
+      "type": "User",
+      "documents": {
+        "requirements": { "status": "draft", "updated_at": "2026-01-01T00:00:00+09:00", "waiting_for": "human_answer", "open_placeholders": 3 },
+        "wireframe":    { "status": "not_started", "updated_at": "2026-01-01T00:00:00+09:00", "waiting_for": null, "open_placeholders": 0 }
+      }
+    }
+  ],
+
+  "blockers": [
+    {
+      "target": ".aidd/feature-list.md",
+      "status_from": "approved",
+      "status_to": "review",
+      "return_to_phase": 3,
+      "detected_by": "phase-4-gate",
+      "reason": "requirements 作成中に feature 分割の不備が判明した",
+      "gate_record": "[パス]"
+    }
+  ]
+}

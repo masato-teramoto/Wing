@@ -1,0 +1,24 @@
+id: constraint_modality_not_wellformed
+name: Constraint modality not well-formed
+artifact_type: constraint
+language: en
+quality_attribute: clarity
+definition: >
+  A business rule / constraint must carry an explicit deontic modality — an obligation,
+  prohibition, or permission. A statement with no (or only a weak/ambiguous) modal operator
+  is not a well-formed constraint.
+definition_source_id: constraint/sbvr-2019    # SBVR (standard tier)
+method_source_id: general/arora-2015          # paper-tier template-conformance method (FR-040)
+implementable: deterministic
+detector:
+  type: modality
+  params: {}
+default_severity: medium
+explanation_template: "Constraint has {match} deontic modality; state an explicit must / must not / may."
+examples:
+  positive:
+    - "The vendor handles refunds within five days."
+    - "The vendor should protect card numbers."
+  negative:
+    - "The vendor must not store card numbers."
+    - "Subcontractors may access the staging environment."

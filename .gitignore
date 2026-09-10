@@ -1,0 +1,8 @@
+# デザインシステム（Phase 5 でタグ固定 clone。本体はコミットしない）
+ds/
+
+# Python（Rimay-JP MCP の実行時に生成される）
+__pycache__/
+*.py[cod]
+.venv/
+venv/

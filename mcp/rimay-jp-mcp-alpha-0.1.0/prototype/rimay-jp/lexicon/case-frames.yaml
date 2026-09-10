@@ -1,0 +1,107 @@
+# 動詞格フレームシード（構想書 §11）
+# MVP対象の Action Class 10種（構想書 §26 初期Action候補）。
+# 「に」等の多義助詞は、格フレーム・出現順序・用語型の組合せで Role を決定する（§11.3）。
+frame_set_version: 0.2.1   # 0.2.1: SEND.deadline宣言を削除（Gate B裁定change_profile_in_p3・RC-006）。0.2.0: DISPLAY ID是正（C4・RC-005）
+case_frames:
+  - family: CREATE
+    rimay_action_id: ENGENDER_27
+    japanese_canonical_verb: 生成する
+    required_roles: [agent, theme]
+    optional_roles: [source]
+    japanese_case_mapping:
+      agent: は
+      theme: を
+      source: から
+
+  - family: STORE
+    rimay_action_id: KEEP_15_2
+    japanese_canonical_verb: 保存する
+    required_roles: [agent, theme, location]
+    optional_roles: []
+    japanese_case_mapping:
+      agent: は
+      theme: を
+      location: に
+
+  - family: SEND
+    rimay_action_id: SEND_11_1_1
+    japanese_canonical_verb: 送信する
+    required_roles: [agent, theme, destination]
+    optional_roles: [source, channel]   # deadlineは宣言のみで全層未実装のため削除（期限はextensions.time_constraints[kind=DEADLINE]が正本。RC-006）
+    japanese_case_mapping:
+      agent: は
+      theme: を
+      destination: に
+      source: から
+      channel: で
+
+  - family: RECEIVE
+    rimay_action_id: OBTAIN_13_5_2
+    japanese_canonical_verb: 受信する
+    required_roles: [agent, theme, source]
+    optional_roles: [channel]
+    japanese_case_mapping:
+      agent: は
+      theme: を
+      source: から
+      channel: で
+
+  - family: DISPLAY
+    rimay_action_id: REFLEXIVE_APPEARANCE_48_1_2   # 旧SEE_30_1_1はD7 R-1・CG-09により誤対応（detect専用）
+    japanese_canonical_verb: 表示する
+    required_roles: [agent, theme, display_location]
+    optional_roles: []
+    japanese_case_mapping:
+      agent: は
+      theme: を
+      display_location: に
+
+  - family: UPDATE
+    rimay_action_id: DS_UPDATE
+    japanese_canonical_verb: 更新する
+    required_roles: [agent, property, result_value]
+    optional_roles: []
+    japanese_case_mapping:
+      agent: は
+      property: を
+      result_value: に
+
+  - family: DELETE
+    rimay_action_id: REMOVE_10_1
+    japanese_canonical_verb: 削除する
+    required_roles: [agent, theme]
+    optional_roles: []
+    japanese_case_mapping:
+      agent: は
+      theme: を
+
+  - family: VERIFY
+    rimay_action_id: DS_VALIDATE
+    japanese_canonical_verb: 検証する
+    required_roles: [agent, theme, rule]
+    optional_roles: []
+    japanese_case_mapping:
+      agent: は
+      theme: を
+      rule: に基づいて
+
+  - family: CALCULATE
+    rimay_action_id: CREATE_26_4
+    japanese_canonical_verb: 算出する
+    required_roles: [agent, input, result]
+    optional_roles: []
+    japanese_case_mapping:
+      agent: は
+      input: から
+      result: を
+
+  - family: NOTIFY
+    rimay_action_id: SAY_37_7
+    japanese_canonical_verb: 通知する
+    required_roles: [agent, destination, content]
+    optional_roles: [channel]
+    japanese_case_mapping:
+      agent: は
+      destination: に
+      content: を
+      channel: で

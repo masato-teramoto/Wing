@@ -1,0 +1,24 @@
+id: not_a_requirement
+name: Not a requirement
+language: ja
+quality_attribute: correctness
+definition: See catalog/source for the definition of 'Not a requirement'.
+citation:
+  document: Automated Smell Detection and Recommendation in NL Requirements (Veizaga,
+    Shin & Briand, 2023; arXiv:2305.07097)
+  locator: §4.1 Table 3 (Not a requirement); §5.3 Rules
+detector:
+  type: segment_count
+  params:
+    check: not_a_requirement
+default_severity: high
+explanation_template: This statement contains no requirement segment (no scope, condition,
+  or system response).
+examples:
+  positive:
+  - R6命令は元の命令。
+  negative:
+  - System-Aはそれを保存しなければならない。
+detection_basis:
+  description: スコープ・条件・システム応答のいずれの構成要素も持たない単なる記述であることを判定する。
+  citation: Japanese detection basis for arXiv:2305.07097; organization review

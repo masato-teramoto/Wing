@@ -1,0 +1,151 @@
+# 評価指標カタログ（SSOT、レビューP2-13）
+# 構想書§22・README成功条件・llm-backend-design§10で使う指標名はここで一元管理する。
+# aliasesは過去文書での別名。集計実装はidだけを参照する。
+metric_catalog_version: 0.1.0
+
+metrics:
+  # --- 変換・Grammar・意味保持（§22.1） ---
+  - id: PARSER_PASS_RATE_SUPPORTED
+    label_ja: Supported Canonical Parser通過率
+    target: "100%"
+  - id: PROJECTED_SEMANTIC_EQUIVALENCE_RATE
+    label_ja: 射影意味等価率
+    target: 主要正例100%、holdout 95%以上
+  - id: SIDECAR_COMPLETENESS
+    label_ja: sidecar完全性
+    target: "100%"
+  - id: SLOT_EXACT_MATCH_RATE
+    label_ja: スロット完全一致率
+    target: 90%以上
+  - id: UNSUPPORTED_DETECTION_RATE
+    label_ja: 未対応検出率
+    target: 95%以上
+  - id: UNREGISTERED_TERM_DETECTION_RATE
+    label_ja: 辞書未登録語検出率
+    target: "100%"
+  - id: FREE_EXPRESSION_RATE
+    label_ja: FreeExpression率
+    target: 20%以下
+
+  # --- 要求形成オーケストレーション（§22.2） ---
+  - id: INFORMATION_CLASSIFICATION_ACCURACY
+    label_ja: 情報分類精度
+    target: 90%以上（holdout）
+  - id: REQUIRED_SLOT_GAP_DETECTION_RATE
+    label_ja: 必須不足検出率
+    target: 95%以上
+  - id: KNOWLEDGE_ROUTE_PRECISION
+    label_ja: knowledge route precision
+    target: 85%以上
+  - id: KNOWLEDGE_ROUTE_RECALL
+    label_ja: knowledge route recall
+    target: 90%以上
+  - id: QUESTION_FITNESS_RATE
+    label_ja: 質問適合率
+    target: 85%以上
+  - id: QUESTION_EFFECTIVENESS_RATE
+    label_ja: 質問有効率
+    aliases:
+      - 質問回答後の対象スロット確定率
+    target: 80%以上
+  - id: UNKNOWN_RETENTION_RATE
+    label_ja: unknown保持率
+    target: "100%"
+  - id: FALSE_AUTO_CONFIRMATION_RATE
+    label_ja: 誤自動確定率
+    target: "0%"
+  - id: REPAIR_CONVERGENCE_RATE
+    label_ja: 修復収束率
+    target: 90%以上
+
+  # --- パイプライン到達（§22.5） ---
+  - id: STRAIGHT_THROUGH_RATE
+    label_ja: Straight-through率
+    target: 測定・ベースライン化
+  - id: ASSISTED_COMPLETION_RATE
+    label_ja: 対話支援完了率
+    aliases:
+      - End-to-End自動変換率  # 旧指標。v0.4で分解済み
+    target: 80%以上を目標
+  - id: MANUAL_CORRECTION_RATE
+    label_ja: 手動補正率
+    target: 測定・低減
+  - id: APPROVAL_RATE
+    label_ja: 承認率
+    target: 測定
+  - id: UNSUPPORTED_TERMINATION_RATE
+    label_ja: 未対応率
+    target: 測定・理由分類
+
+  # --- 要求スメル統合（統合レビューv0.2 §14.2、Step 3〜4導入） ---
+  - id: SMELL_PRECISION
+    label_ja: Smell Precision
+    target: 85%以上（rawtext Corpus。micro平均）
+  - id: SMELL_RECALL
+    label_ja: Smell Recall
+    target: 90%以上（rawtext Corpus。micro平均）
+  - id: POINTER_MAPPING_RATE
+    label_ja: Canonical Pointer対応率
+    target: 95%以上（canonical段findingのtarget_paths保有率）
+  - id: ISSUE_CODE_ACCURACY
+    label_ja: normalized issue code正解率
+    target: 95%以上
+  - id: DUP_FINDING_MERGE_PRECISION
+    label_ja: 重複finding統合精度
+    target: 95%以上（dedup不変条件の機械検査で担保）
+  - id: RULE_TRACE_RATE
+    label_ja: Rule版・出典追跡率
+    target: "100%"
+  - id: UNINTENDED_MEANING_CHANGE_RATE
+    label_ja: 意図しない意味変更率
+    target: 0%（Step 5 Gate。修復によるrimay_core変更は回答対象path配下＋表記専用pathに限る）
+  - id: REPAIR_RATIONALE_CONNECTION_RATE
+    label_ja: 質問へのfinding発火根拠接続率
+    target: "100%"（ASK_USER findingが質問のfinding_idsへ併合されている）
+  - id: PROJECTION_REBUILD_RATE
+    label_ja: Projection再構築率
+    target: "100%"（Step 7 Gate。Experience Storeから全Projectionを完全再生成できる）
+  - id: SIMILAR_CASE_USEFULNESS_RATE
+    label_ja: L4類似事例有効率
+    target: 測定（類似事例が質問・修復に寄与した割合。助言専用＝自動確定根拠に使わない）
+
+  # --- LLM知識供給効率（§22.4、Phase 5 LLM実接続で測定開始） ---
+  - id: LLM_SUPPLY_VOLUME
+    label_ja: 1要求あたり供給トークン量
+    target: 測定（replayでは文字数実測、ライブAPIではusage実測）
+  - id: CORE_CONTEXT_VOLUME
+    label_ja: 常時ロード知識量
+    target: 辞書件数と独立（Profile定数のみで構成することを機械検査）
+  - id: DYNAMIC_KNOWLEDGE_USE_RATE
+    label_ja: 動的知識利用率
+    target: 測定・改善
+  - id: MODEL_REGRESSION_DIFF
+    label_ja: モデル変更回帰差分
+    target: 全回記録（reports/llm-integration/metrics.json）
+  - id: VALIDATOR_CORRECTION_EFFECT
+    label_ja: Validator補正効果
+    target: 測定（LLM単体で検出されない問題のValidator検出件数）
+  - id: PATCH_REJECTION_RATE
+    label_ja: Canonical Patch拒否率
+    target: 理由別に測定
+
+  # --- 品質・下流・還流（§22.3） ---
+  - id: ACCEPTANCE_CRITERIA_GENERATION_RATE
+    label_ja: 受入基準生成可能率
+    target: 70%以上
+  - id: TEST_CANDIDATE_GENERATION_RATE
+    label_ja: テスト候補生成可能率
+    target: 70%以上
+  - id: DOWNSTREAM_TRACE_RATE
+    label_ja: 下流トレース率
+    target: "100%"
+  - id: FEEDBACK_MAPPING_ACCURACY
+    label_ja: フィードバック関連付け精度
+    aliases:
+      - フィードバック還流率
+    target: 90%以上（準備済みケース）
+  - id: REGRESSION_CORPUS_CONVERSION_RATE
+    label_ja: regression Corpus化率
+    aliases:
+      - 再発防止テスト化率
+    target: 80%以上

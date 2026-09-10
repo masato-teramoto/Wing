@@ -1,0 +1,47 @@
+# Artifact-type registry — the six in-scope types (FR-032/FR-045). requirement_set is out of scope.
+# Validated by schemas/artifact-types.schema.json. layer1_structure / layer2_catalog_dir paths are
+# created during the per-type migration (US1/US2). definition_source_id resolves via sources.yaml.
+version: "1.0.0"
+types:
+  - id: functional
+    name: Functional requirement
+    layer1_structure: knowledge/layer1/functional/structure.yaml
+    layer2_catalog_dir: knowledge/layer2/functional
+    definition_source_id: functional/veizaga-2021
+    implementable: deterministic
+    grounding_status: grounded
+  - id: acceptance_criteria
+    name: Acceptance criteria
+    layer1_structure: knowledge/layer1/acceptance_criteria/structure.yaml
+    layer2_catalog_dir: knowledge/layer2/acceptance_criteria
+    definition_source_id: acceptance/mavin-2009
+    implementable: deterministic
+    grounding_status: grounded
+  - id: user_story
+    name: User story
+    layer1_structure: knowledge/layer1/user_story/structure.yaml
+    layer2_catalog_dir: knowledge/layer2/user_story
+    definition_source_id: user_story/lucassen-2016
+    implementable: mixed
+    grounding_status: partial
+  - id: constraint
+    name: Constraint / business rule
+    layer1_structure: knowledge/layer1/constraint/structure.yaml
+    layer2_catalog_dir: knowledge/layer2/constraint
+    definition_source_id: constraint/sbvr-2019
+    implementable: mixed
+    grounding_status: partial
+  - id: non_functional
+    name: Non-functional requirement
+    layer1_structure: knowledge/layer1/non_functional/structure.yaml
+    layer2_catalog_dir: knowledge/layer2/non_functional
+    definition_source_id: nfr/qas-0000
+    implementable: mixed
+    grounding_status: partial
+  - id: glossary_term
+    name: Glossary / definition
+    layer1_structure: knowledge/layer1/glossary_term/structure.yaml
+    layer2_catalog_dir: knowledge/layer2/glossary_term
+    definition_source_id: glossary/iso-704-0000
+    implementable: deterministic
+    grounding_status: partial

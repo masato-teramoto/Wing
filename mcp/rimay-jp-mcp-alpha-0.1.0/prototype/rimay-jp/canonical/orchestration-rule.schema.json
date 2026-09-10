@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rimay-jp/orchestration-rule.schema.json",
+  "title": "Orchestration Rule",
+  "description": "要求形成オーケストレーション規則のSchema（構想書v0.5 §14.9・付録B）。when条件とaction.target_selectorはRuleSelector（'*'許可）を使用できる。Rule Engineは評価後に単一ノードのCanonicalPointerへ展開してから質問・Patch・findingを生成する。実行順序はstage（列挙順）→priority（小さいほど先）→Rule ID辞書順。",
+  "type": "object",
+  "required": ["rules"],
+  "additionalProperties": false,
+  "properties": {
+    "rule_set_version": { "type": "string" },
+    "profile_version": { "type": "string" },
+    "rules": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/rule" }
+    }
+  },
+  "$defs": {
+    "ruleSelector": {
+      "type": "string",
+      "description": "JSON Pointer Pattern。'*'（全要素）を許可。Ruleのマッチング専用",
+      "pattern": "^(/([^/~]|~[01])*)+$"
+    },
+    "rule": {
+      "type": "object",
+      "required": ["id", "stage", "priority", "trigger", "execution_mode", "when", "action"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^RULE-[A-Z0-9-]+$" },
+        "version": { "type": "string" },
+        "stage": {
+          "enum": [
+            "structural_completion",
+            "semantic_disambiguation",
+            "knowledge_conflict",
+            "exception_boundary",
+            "quality_constraint",
+            "downstream_generation"
+          ]
+        },
+        "priority": { "type": "integer", "minimum": 0 },
+        "trigger": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "enum": [
+              "normalize_completed",
+              "slot_updated",
+              "validation_completed",
+              "answer_received",
+              "knowledge_updated",
+              "status_changed"
+            ]
+          }
+        },
+        "execution_mode": {
+          "enum": ["monitor", "once", "repeatable"],
+          "description": "monitor=継続監視（done_when必須）、once=1回実行、repeatable=条件成立ごとに再実行可"
+        },
+        "when": { "$ref": "#/$defs/conditionExpr" },
+        "action": {
+          "type": "object",
+          "required": ["type"],
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "enum": [
+                "ASK_USER",
+                "ASK_ACTION_MEANING",
+                "ASK_MEASURABLE_CRITERIA",
+                "SEARCH_GLOSSARY",
+                "CHECK_STATE_MODEL",
+                "PROPOSE_REQUIREMENT_SPLIT",
+                "APPLY_PROFILE_MAPPING",
+                "GENERATE_ACCEPTANCE_CRITERIA",
+                "GENERATE_TEST_CANDIDATES"
+              ]
+            },
+            "target_selector": { "$ref": "#/$defs/ruleSelector" },
+            "question_template": { "type": "string" }
+          }
+        },
+        "done_when": { "$ref": "#/$defs/conditionExpr" },
+        "severity": { "enum": ["error", "warning", "info"] },
+        "rationale": { "type": "string" }
+      },
+      "if": { "properties": { "execution_mode": { "const": "monitor" } } },
+      "then": { "required": ["done_when"] }
+    },
+    "conditionExpr": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["all"],
+          "additionalProperties": false,
+          "properties": {
+            "all": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/conditionExpr" } }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["any"],
+          "additionalProperties": false,
+          "properties": {
+            "any": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/conditionExpr" } }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["not"],
+          "additionalProperties": false,
+          "properties": {
+            "not": { "$ref": "#/$defs/conditionExpr" }
+          }
+        },
+        { "$ref": "#/$defs/atomicCondition" }
+      ]
+    },
+    "atomicCondition": {
+      "type": "object",
+      "description": "value_at（値参照）／status_at（resolution状態参照）／meta_at（辞書一致・候補数等の派生情報参照）のいずれか1つを持つ。値参照と状態参照を混在させない",
+      "required": ["op"],
+      "additionalProperties": false,
+      "properties": {
+        "value_at": { "$ref": "#/$defs/ruleSelector" },
+        "status_at": { "$ref": "#/$defs/ruleSelector" },
+        "meta_at": { "$ref": "#/$defs/ruleSelector" },
+        "op": {
+          "enum": [
+            "equals",
+            "not_equals",
+            "in",
+            "not_in",
+            "greater_than",
+            "less_than",
+            "exists",
+            "dictionary_match",
+            "state_model_match",
+            "candidate_count_greater_than",
+            "action_count_greater_than",
+            "confirmation_required"
+          ]
+        },
+        "value": {}
+      },
+      "oneOf": [
+        { "required": ["value_at"] },
+        { "required": ["status_at"] },
+        { "required": ["meta_at"] }
+      ]
+    }
+  }
+}

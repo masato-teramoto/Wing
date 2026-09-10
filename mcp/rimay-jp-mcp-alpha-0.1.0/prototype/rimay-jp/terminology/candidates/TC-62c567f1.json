@@ -1,0 +1,23 @@
+{
+ "candidate_id": "TC-62c567f1",
+ "surface_form": "入力された会社情報",
+ "status": "approved",
+ "revision": 10,
+ "occurrence_refs": [
+  "TO-42daeaef"
+ ],
+ "proposed_term": {
+  "id": "EnteredCompanyRecord",
+  "preferred_japanese": "入力された会社情報",
+  "type": "property",
+  "definition": "管理者が保守画面で入力した会社の内容",
+  "status": "deprecated",
+  "scope": "project:REQ-DEMO"
+ },
+ "receipt_id": "APR-TERM-62c567f1",
+ "review": {
+  "reviewer": "usa",
+  "decided_at": "2026-08-19T00:00:00+09:00",
+  "decision_reason": "案件由来の業務語彙であり組織共通語彙ではない。案件間の同表層衝突をscopeで共存させるため project scope を付与（terminology-lifecycle promotion規約。org:commonへの昇格は2案件以上での使用が条件）"
+ }
+}

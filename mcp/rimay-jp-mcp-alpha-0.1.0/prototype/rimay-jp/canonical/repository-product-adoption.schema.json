@@ -1,0 +1,338 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rimay-jp/repository-product-adoption.schema.json",
+  "title": "Repository Product Adoption Plan",
+  "description": "B5-P: 原典準拠claimとは独立に、要求表現の製品品質でCapability採否を裁定する契約。",
+  "type": "object",
+  "required": [
+    "contract_version",
+    "plan_id",
+    "recorded_at",
+    "capability_matrix_binding",
+    "claim_boundary",
+    "decisions",
+    "product_signature"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": { "enum": ["0.2.0", "0.3.0"] },
+    "plan_id": {
+      "type": "string",
+      "pattern": "^RPADP-[A-Za-z0-9][A-Za-z0-9-]*$"
+    },
+    "recorded_at": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "capability_matrix_binding": { "$ref": "#/$defs/capabilityMatrixBinding" },
+    "claim_boundary": { "$ref": "#/$defs/claimBoundary" },
+    "decisions": {
+      "type": "array",
+      "minItems": 1
+    },
+    "product_signature": { "$ref": "#/$defs/sha256" }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "contract_version": { "const": "0.2.0" } },
+        "required": ["contract_version"]
+      },
+      "then": {
+        "properties": {
+          "decisions": { "items": { "$ref": "#/$defs/productDecisionV020" } }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "contract_version": { "const": "0.3.0" } },
+        "required": ["contract_version"]
+      },
+      "then": {
+        "properties": {
+          "decisions": { "items": { "$ref": "#/$defs/productDecisionV030" } }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "artifactRef": {
+      "type": "object",
+      "required": ["path", "sha256"],
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!/)(?!.*(^|/)\\.\\.(/|$))[A-Za-z0-9._/-]+$"
+        },
+        "selector": { "type": "string", "minLength": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "artifactRefs": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/artifactRef" }
+    },
+    "canonicalPathPattern": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^/[^ ]+$"
+    },
+    "consumerRegistryBinding": {
+      "type": "object",
+      "required": ["path", "sha256"],
+      "additionalProperties": false,
+      "properties": {
+        "path": { "const": "profile/production-consumers.yaml" },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "capabilityMatrixBinding": {
+      "type": "object",
+      "required": ["path", "capability_signature"],
+      "additionalProperties": false,
+      "properties": {
+        "path": { "const": "reports/compatibility/rimay-capability-matrix.yaml" },
+        "capability_signature": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "claimBoundary": {
+      "type": "object",
+      "required": [
+        "decides_paper_conformance",
+        "requires_paper_evidence_resolution",
+        "withholds_paper_claim_when_evidence_unresolved"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "decides_paper_conformance": { "const": false },
+        "requires_paper_evidence_resolution": { "const": false },
+        "withholds_paper_claim_when_evidence_unresolved": { "const": true }
+      }
+    },
+    "qualityContract": {
+      "type": "object",
+      "required": [
+        "objective",
+        "user_value",
+        "information_preservation",
+        "ambiguity_control",
+        "structured_diagnostic",
+        "semantic_roundtrip",
+        "migration_safety",
+        "japanese_parity_impact"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "objective": { "type": "string", "minLength": 1 },
+        "user_value": { "$ref": "#/$defs/qualityAxis" },
+        "information_preservation": { "$ref": "#/$defs/qualityAxis" },
+        "ambiguity_control": { "$ref": "#/$defs/qualityAxis" },
+        "structured_diagnostic": { "$ref": "#/$defs/qualityAxis" },
+        "semantic_roundtrip": { "$ref": "#/$defs/qualityAxis" },
+        "migration_safety": { "$ref": "#/$defs/qualityAxis" },
+        "japanese_parity_impact": { "$ref": "#/$defs/qualityAxis" }
+      }
+    },
+    "qualityAxis": {
+      "type": "object",
+      "required": ["status", "refs"],
+      "additionalProperties": false,
+      "properties": {
+        "status": { "enum": ["satisfied", "pending", "failed"] },
+        "refs": { "$ref": "#/$defs/artifactRefs" }
+      }
+    },
+    "consumerImpact": {
+      "type": "object",
+      "required": [
+        "capability_id",
+        "registry_binding",
+        "canonical_shapes",
+        "compositions",
+        "consumers",
+        "satisfied"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "capability_id": {
+          "type": "string",
+          "pattern": "^CAP-[A-Za-z0-9][A-Za-z0-9_-]*$"
+        },
+        "registry_binding": { "$ref": "#/$defs/consumerRegistryBinding" },
+        "canonical_shapes": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/consumerImpactShape" }
+        },
+        "compositions": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/consumerImpactComposition" }
+        },
+        "consumers": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/consumerImpactEntry" }
+        },
+        "satisfied": { "type": "boolean" }
+      }
+    },
+    "consumerImpactShape": {
+      "type": "object",
+      "required": ["shape_id", "canonical_path_pattern", "description"],
+      "additionalProperties": false,
+      "properties": {
+        "shape_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]*$"
+        },
+        "canonical_path_pattern": { "$ref": "#/$defs/canonicalPathPattern" },
+        "description": { "type": "string", "minLength": 1 }
+      }
+    },
+    "consumerImpactComposition": {
+      "type": "object",
+      "required": ["composition_id", "shape_ids", "description"],
+      "additionalProperties": false,
+      "properties": {
+        "composition_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]*$"
+        },
+        "shape_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^[a-z][a-z0-9_-]*$" }
+        },
+        "description": { "type": "string", "minLength": 1 }
+      }
+    },
+    "consumerImpactEntry": {
+      "type": "object",
+      "required": [
+        "consumer_id",
+        "path",
+        "criticality",
+        "adoption_treatment",
+        "rationale",
+        "refs"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "consumer_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]*$"
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!/)(?!.*(^|/)\\.\\.(/|$))[A-Za-z0-9._/-]+$"
+        },
+        "criticality": {
+          "enum": [
+            "required_workflow",
+            "optional_consumer",
+            "non_producer_or_governance"
+          ]
+        },
+        "adoption_treatment": {
+          "enum": [
+            "implemented_verified",
+            "planned_implementation",
+            "fail_closed_deferred",
+            "not_applicable"
+          ]
+        },
+        "rationale": { "type": "string", "minLength": 1 },
+        "refs": { "$ref": "#/$defs/artifactRefs" }
+      }
+    },
+    "productDecisionV020": {
+      "type": "object",
+      "required": [
+        "decision_id",
+        "capability_id",
+        "decision_status",
+        "implementation_disposition",
+        "decision_ruling_ref",
+        "decision_ruling_sha256",
+        "quality_contract"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "decision_id": {
+          "type": "string",
+          "pattern": "^B5P-[A-Za-z0-9][A-Za-z0-9-]*$"
+        },
+        "capability_id": {
+          "type": "string",
+          "pattern": "^CAP-[A-Za-z0-9][A-Za-z0-9_-]*$"
+        },
+        "decision_status": { "enum": ["proposed", "accepted", "rejected"] },
+        "implementation_disposition": {
+          "enum": [
+            "implement_product",
+            "rimay_jp_extension",
+            "protocol_absorbed",
+            "product_excluded"
+          ]
+        },
+        "decision_ruling_ref": {
+          "type": "string",
+          "pattern": "^RC-[0-9]{3}$"
+        },
+        "decision_ruling_sha256": { "$ref": "#/$defs/sha256" },
+        "quality_contract": { "$ref": "#/$defs/qualityContract" }
+      }
+    },
+    "productDecisionV030": {
+      "type": "object",
+      "required": [
+        "decision_id",
+        "capability_id",
+        "decision_status",
+        "implementation_disposition",
+        "decision_ruling_ref",
+        "decision_ruling_sha256",
+        "quality_contract",
+        "consumer_impact"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "decision_id": {
+          "type": "string",
+          "pattern": "^B5P-[A-Za-z0-9][A-Za-z0-9-]*$"
+        },
+        "capability_id": {
+          "type": "string",
+          "pattern": "^CAP-[A-Za-z0-9][A-Za-z0-9_-]*$"
+        },
+        "decision_status": { "enum": ["proposed", "accepted", "rejected"] },
+        "implementation_disposition": {
+          "enum": [
+            "implement_product",
+            "rimay_jp_extension",
+            "protocol_absorbed",
+            "product_excluded"
+          ]
+        },
+        "decision_ruling_ref": {
+          "type": "string",
+          "pattern": "^RC-[0-9]{3}$"
+        },
+        "decision_ruling_sha256": { "$ref": "#/$defs/sha256" },
+        "quality_contract": { "$ref": "#/$defs/qualityContract" },
+        "consumer_impact": { "$ref": "#/$defs/consumerImpact" }
+      }
+    }
+  }
+}

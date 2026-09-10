@@ -1,0 +1,22 @@
+# Layer 1 segment schema — acceptance criteria (EARS). No detection (FR-004).
+# Validated by schemas/layer1-structure.v2.schema.json.
+version: "1.0.0"
+artifact_type: acceptance_criteria
+source_id: acceptance/mavin-2009
+segments:
+  - {id: trigger, name: Trigger, required: false, description: "Optional. Event that initiates the behavior (When ...)."}
+  - {id: precondition, name: Precondition, required: false, description: "Optional. State/feature gate (While/Where/If ...)."}
+  - {id: system, name: System, required: true, description: "Mandatory. The system that responds."}
+  - {id: response, name: Response, required: true, description: "Mandatory. The required system response ('shall ...')."}
+ordering: [trigger, precondition, system, response]
+quality_attributes:
+  - {id: completeness, description: "System + response present; trigger/precondition stated when applicable."}
+  - {id: clarity, description: "Conforms to an EARS pattern; unambiguous keywords."}
+  - {id: correctness, description: "Pattern keywords in the standard EARS order."}
+enumerations:
+  ears_patterns:
+    - {id: ubiquitous, name: Ubiquitous, shape: "The <system> shall <response>."}
+    - {id: event_driven, name: Event-driven, shape: "When <trigger>, the <system> shall <response>."}
+    - {id: state_driven, name: State-driven, shape: "While <precondition>, the <system> shall <response>."}
+    - {id: unwanted_behavior, name: Unwanted behavior, shape: "If <trigger>, then the <system> shall <response>."}
+    - {id: optional_feature, name: Optional feature, shape: "Where <precondition>, the <system> shall <response>."}

@@ -1,0 +1,207 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/rimay-jp/repository-parser-response.schema.json",
+  "title": "Rimay-JP Repository parser dialogue response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "demo_contract_version",
+    "tool",
+    "request_id",
+    "input_signature",
+    "candidate",
+    "parser",
+    "linking",
+    "repository_projection",
+    "canonical_projection",
+    "diagnostics",
+    "provenance"
+  ],
+  "properties": {
+    "demo_contract_version": {"const": "0.1.0"},
+    "tool": {"const": "evaluate_rimay_candidate"},
+    "request_id": {"type": "string", "minLength": 1},
+    "input_signature": {"$ref": "#/$defs/signature"},
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "origin",
+        "source_text_ja_sha256",
+        "rimay_candidate_sha256",
+        "semantic_alignment_with_japanese"
+      ],
+      "properties": {
+        "origin": {
+          "enum": ["rimay_jp_repository_bridge", "llm", "rimay_jp_native"]
+        },
+        "source_text_ja_sha256": {
+          "oneOf": [{"$ref": "#/$defs/signature"}, {"type": "null"}]
+        },
+        "rimay_candidate_sha256": {"$ref": "#/$defs/signature"},
+        "semantic_alignment_with_japanese": {
+          "const": "not_checked_by_rimay_jp"
+        }
+      }
+    },
+    "parser": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "authority",
+        "start_rule",
+        "full_consumption",
+        "consumed_end",
+        "furthest_offset",
+        "ambiguity_checked",
+        "ambiguity_detected",
+        "semantic_linking_checked",
+        "xtext_validator_checked",
+        "selected_action_rule_ids",
+        "syntax_tree_signature"
+      ],
+      "properties": {
+        "status": {"enum": ["accepted", "rejected", "ambiguous"]},
+        "authority": {"const": "fixed_repository_grammar_recognizer"},
+        "start_rule": {"const": "CNLFunctionalRequirements"},
+        "full_consumption": {"type": "boolean"},
+        "consumed_end": {"type": ["integer", "null"], "minimum": 0},
+        "furthest_offset": {"type": "integer", "minimum": 0},
+        "ambiguity_checked": {"type": "boolean"},
+        "ambiguity_detected": {"type": ["boolean", "null"]},
+        "semantic_linking_checked": {"const": false},
+        "xtext_validator_checked": {"const": false},
+        "selected_action_rule_ids": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "syntax_tree_signature": {
+          "oneOf": [{"$ref": "#/$defs/signature"}, {"type": "null"}]
+        },
+        "syntax_tree": {"type": ["object", "null"]}
+      }
+    },
+    "linking": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "checked", "status", "unresolved", "ambiguous", "type_mismatch",
+        "symbol_count", "reference_count", "resolved_reference_count"
+      ],
+      "properties": {
+        "checked": {"type": "boolean"},
+        "status": {"enum": ["not_run", "succeeded", "failed"]},
+        "unresolved": {"$ref": "#/$defs/diagnostic_list"},
+        "ambiguous": {"$ref": "#/$defs/diagnostic_list"},
+        "type_mismatch": {"$ref": "#/$defs/diagnostic_list"},
+        "symbol_count": {"type": "integer", "minimum": 0},
+        "reference_count": {"type": "integer", "minimum": 0},
+        "resolved_reference_count": {"type": "integer", "minimum": 0},
+        "symbols": {"type": "array", "items": {"type": "object"}},
+        "references": {"type": "array", "items": {"type": "object"}},
+        "problems": {"$ref": "#/$defs/diagnostic_list"}
+      }
+    },
+    "repository_projection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status", "document_version", "requirement_count", "action_facts",
+        "structure_facts", "declaration_counts", "instance_counts"
+      ],
+      "properties": {
+        "status": {"enum": ["not_run", "succeeded", "failed"]},
+        "document_version": {"type": ["string", "null"]},
+        "requirement_count": {"type": ["integer", "null"], "minimum": 0},
+        "action_facts": {"type": "array", "items": {"type": "object"}},
+        "structure_facts": {"type": "array", "items": {"type": "object"}},
+        "declaration_counts": {
+          "type": "object",
+          "additionalProperties": {"type": "integer", "minimum": 0}
+        },
+        "instance_counts": {
+          "type": "object",
+          "additionalProperties": {"type": "integer", "minimum": 0}
+        },
+        "document": {"type": ["object", "null"]}
+      }
+    },
+    "canonical_projection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "active_mapping_ids",
+        "residual_mapping_ids",
+        "canonical_candidate",
+        "validation"
+      ],
+      "properties": {
+        "status": {"enum": ["not_run", "unavailable", "partial", "valid", "invalid"]},
+        "active_mapping_ids": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        },
+        "residual_mapping_ids": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        },
+        "canonical_candidate": {"type": ["object", "null"]},
+        "validation": {"enum": ["not_run", "passed", "failed"]}
+      }
+    },
+    "diagnostics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["blocking", "advisory"],
+      "properties": {
+        "blocking": {"$ref": "#/$defs/diagnostic_list"},
+        "advisory": {"$ref": "#/$defs/diagnostic_list"}
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rimay_jp_version",
+        "response_schema_version",
+        "normalizer_profile_signature",
+        "grammar_source_sha256",
+        "grammar_ir_signature",
+        "repository_document_schema_version",
+        "mapping_plan_signature",
+        "canonical_schema_signature",
+        "signature_inputs_complete"
+      ],
+      "properties": {
+        "rimay_jp_version": {"type": "string", "minLength": 1},
+        "response_schema_version": {"const": "0.1.0"},
+        "normalizer_profile_signature": {
+          "oneOf": [{"$ref": "#/$defs/signature"}, {"type": "null"}]
+        },
+        "grammar_source_sha256": {"$ref": "#/$defs/signature"},
+        "grammar_ir_signature": {"$ref": "#/$defs/signature"},
+        "repository_document_schema_version": {"type": "string", "minLength": 1},
+        "mapping_plan_signature": {"$ref": "#/$defs/signature"},
+        "canonical_schema_signature": {
+          "oneOf": [{"$ref": "#/$defs/signature"}, {"type": "null"}]
+        },
+        "signature_inputs_complete": {"type": "boolean"}
+      }
+    }
+  },
+  "$defs": {
+    "signature": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "diagnostic_list": {
+      "type": "array",
+      "items": {"type": "object"}
+    }
+  }
+}

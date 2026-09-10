@@ -1,0 +1,18 @@
+# Judgment-only smell: DEFINED for traceability but DEFERRED — never executed (FR-039).
+id: nfr_metric_adequacy
+name: Metric not adequate for the quality attribute
+artifact_type: non_functional
+language: en
+quality_attribute: appropriateness
+definition: >
+  Even when a metric is present, whether it is the right/adequate measure for the quality
+  attribute requires judgment; detection is deferred (no LLM — FR-039).
+definition_source_id: nfr/qas-0000
+implementable: judgment
+default_severity: low
+explanation_template: "Metric adequacy is not deterministically checkable; reviewed manually."
+examples:
+  positive:
+    - "The system shall be available 50% of the time."
+  negative:
+    - "99.95% availability shall be maintained per month."

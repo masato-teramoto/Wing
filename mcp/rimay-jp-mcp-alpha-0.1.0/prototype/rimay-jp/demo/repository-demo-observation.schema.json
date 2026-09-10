@@ -1,0 +1,176 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/rimay-jp/repository-demo-observation.schema.json",
+  "title": "Rimay-JP Repository dialogue observation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "observation_version", "session_id", "turn_id", "privacy",
+    "normalizer", "llm", "rimay_jp", "dialogue", "non_intervention"
+  ],
+  "properties": {
+    "observation_version": {"const": "0.1.0"},
+    "session_id": {"type": "string", "minLength": 1},
+    "turn_id": {"type": "string", "minLength": 1},
+    "source_text_ja": {"type": "string"},
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "raw_text_retained", "export_review", "repository_commit"],
+      "properties": {
+        "mode": {"enum": ["synthetic", "redacted", "restricted_raw"]},
+        "raw_text_retained": {"type": "boolean"},
+        "export_review": {
+          "enum": [
+            "required_before_repository_commit", "not_applicable_no_raw",
+            "required_controlled_storage"
+          ]
+        },
+        "repository_commit": {
+          "enum": ["reviewed_sanitized_fixture_only", "forbidden"]
+        },
+        "restricted_raw_controls": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "explicit_consent", "purpose", "authorized_principals",
+            "deletion_condition"
+          ],
+          "properties": {
+            "explicit_consent": {"const": true},
+            "purpose": {"type": "string", "minLength": 1},
+            "authorized_principals": {
+              "type": "array", "minItems": 1, "uniqueItems": true,
+              "items": {"type": "string", "minLength": 1}
+            },
+            "deletion_condition": {"type": "string", "minLength": 1}
+          }
+        }
+      }
+    },
+    "normalizer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "request_signature", "source_text_ja_sha256", "profile_version",
+        "status", "finding_codes"
+      ],
+      "properties": {
+        "request_signature": {"$ref": "#/$defs/signature"},
+        "source_text_ja_sha256": {
+          "oneOf": [{"$ref": "#/$defs/signature"}, {"type": "null"}]
+        },
+        "profile_version": {"type": "string", "minLength": 1},
+        "status": {"type": "string", "minLength": 1},
+        "finding_codes": {
+          "type": "array", "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "llm": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "model_id", "prompt_version", "candidate_origin",
+        "rimay_candidate_sha256"
+      ],
+      "properties": {
+        "model_id": {"type": ["string", "null"]},
+        "prompt_version": {"type": ["string", "null"]},
+        "candidate_origin": {"type": "string", "minLength": 1},
+        "rimay_candidate_sha256": {"$ref": "#/$defs/signature"},
+        "rimay_candidate": {"type": "string", "minLength": 1}
+      }
+    },
+    "rimay_jp": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version", "request_signature", "response_signature", "parser_status",
+        "action_rule_ids", "assignment_names", "linking_status",
+        "residual_mapping_ids"
+      ],
+      "properties": {
+        "version": {"type": "string", "minLength": 1},
+        "request_signature": {"$ref": "#/$defs/signature"},
+        "response_signature": {"$ref": "#/$defs/signature"},
+        "parser_status": {"enum": ["accepted", "rejected", "ambiguous"]},
+        "action_rule_ids": {
+          "type": "array", "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "assignment_names": {
+          "type": "array", "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "linking_status": {"enum": ["not_run", "succeeded", "failed"]},
+        "residual_mapping_ids": {
+          "type": "array", "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "dialogue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "retry_count", "next_question_present", "user_accepted_candidate"
+      ],
+      "properties": {
+        "retry_count": {"type": "integer", "minimum": 0},
+        "next_question_present": {"type": "boolean"},
+        "next_question_ja": {"type": ["string", "null"]},
+        "user_accepted_candidate": {"type": ["boolean", "null"]}
+      }
+    },
+    "non_intervention": {
+      "const": {
+        "persistent_write_performed": false,
+        "parser_response_dependency": false,
+        "automatic_product_update": false
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"privacy": {"properties": {"mode": {"const": "redacted"}}}}},
+      "then": {
+        "not": {"required": ["source_text_ja"]},
+        "properties": {
+          "llm": {"not": {"required": ["rimay_candidate"]}},
+          "dialogue": {"not": {"required": ["next_question_ja"]}},
+          "privacy": {"not": {"required": ["restricted_raw_controls"]}}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"privacy": {"properties": {"mode": {"const": "restricted_raw"}}}}},
+      "then": {
+        "required": ["source_text_ja"],
+        "properties": {
+          "llm": {"required": ["rimay_candidate"]},
+          "dialogue": {"required": ["next_question_ja"]},
+          "privacy": {"required": ["restricted_raw_controls"]}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"privacy": {"properties": {"mode": {"const": "synthetic"}}}}},
+      "then": {
+        "required": ["source_text_ja"],
+        "properties": {
+          "llm": {"required": ["rimay_candidate"]},
+          "dialogue": {"required": ["next_question_ja"]},
+          "privacy": {"not": {"required": ["restricted_raw_controls"]}}
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "signature": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  }
+}

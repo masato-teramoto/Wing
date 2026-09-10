@@ -1,0 +1,22 @@
+{
+ "candidate_id": "TC-c6be1213",
+ "surface_form": "管理者",
+ "status": "approved",
+ "revision": 7,
+ "occurrence_refs": [
+  "TO-a49e107c"
+ ],
+ "proposed_term": {
+  "id": "Administrator",
+  "preferred_japanese": "管理者",
+  "type": "actor",
+  "definition": "会社マスタを保守し未一致メールの通知を受ける運用担当者",
+  "scope": "project:REQ-DEMO"
+ },
+ "receipt_id": "APR-TERM-c6be1213",
+ "review": {
+  "reviewer": "usa",
+  "decided_at": "2026-08-19T00:00:00+09:00",
+  "decision_reason": "案件由来の業務語彙であり組織共通語彙ではない。案件間の同表層衝突をscopeで共存させるため project scope を付与（terminology-lifecycle promotion規約。org:commonへの昇格は2案件以上での使用が条件）"
+ }
+}

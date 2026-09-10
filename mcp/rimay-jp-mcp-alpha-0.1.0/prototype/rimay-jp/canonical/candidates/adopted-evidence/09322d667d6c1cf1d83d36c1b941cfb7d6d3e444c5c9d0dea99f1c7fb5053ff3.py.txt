@@ -1,0 +1,381 @@
+# -*- coding: utf-8 -*-
+"""Canonical 0.8.0 Itemized Response Block active runtime contract."""
+from __future__ import annotations
+
+import copy
+import json
+import sys
+from pathlib import Path
+
+import pytest
+
+
+RIMAY_JP = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(RIMAY_JP / "core"))
+sys.path.insert(0, str(RIMAY_JP))
+
+from adapters.mcp.rimay_jp_mcp import check_conformance  # noqa: E402
+from generators.acceptance_criteria import generate as generate_criteria  # noqa: E402
+from generators.test_candidates import generate as generate_tests  # noqa: E402
+from orchestrator.approval import required_pointers  # noqa: E402
+from orchestrator.dialogue_state import DialogueState  # noqa: E402
+from orchestrator.experience_projections import _features  # noqa: E402
+from orchestrator.experience_store import ExperienceStore  # noqa: E402
+from orchestrator.knowledge_router import route  # noqa: E402
+from orchestrator.validation_report import issue_code_for  # noqa: E402
+from orchestrator.validation_router import validate_all  # noqa: E402
+from rimay_jp_core import SCHEMA_VERSION  # noqa: E402
+from rimay_jp_core.equivalence import (  # noqa: E402
+    compare_conformance,
+    compare_semantic,
+    project,
+)
+from rimay_jp_core.jp_serializer import parse_rimay_jp, render_rimay_jp  # noqa: E402
+from rimay_jp_core.model import new_canonical  # noqa: E402
+from rimay_jp_core.parser import ParseError, parse  # noqa: E402
+from rimay_jp_core.pipeline import _in_mvp  # noqa: E402
+from rimay_jp_core.response_block import (  # noqa: E402
+    RESPONSE_BLOCK_VERSION,
+    ResponseBlockError,
+    migrate_requirement_to_response_block_candidate,
+    quarantine_response_block_for_rollback,
+    restore_quarantined_response_block,
+    rollback_requirement_from_response_block_candidate,
+)
+from rimay_jp_core.response_expression import (  # noqa: E402
+    iter_core_responses,
+    migrate_experience_store_records,
+    response_core_findings,
+)
+from rimay_jp_core.schema_check import validate_schema  # noqa: E402
+from rimay_jp_core.serializer import SerializationError, render_requirement_views  # noqa: E402
+from rimay_jp_core.validator import validate  # noqa: E402
+
+
+def _response(family: str) -> dict:
+    if family == "SEND":
+        return {
+            "actor": "NotificationSystem", "modality": "MUST",
+            "action": {"family": "SEND", "rimay_action_id": "SEND_11_1_1"},
+            "theme": "InvoicePDF", "destination": "CustomerEmailAddress",
+        }
+    if family == "DISPLAY":
+        return {
+            "actor": "OrderManagementSystem", "modality": "MUST",
+            "action": {
+                "family": "DISPLAY",
+                "rimay_action_id": "REFLEXIVE_APPEARANCE_48_1_2",
+            },
+            "theme": "OrderList", "display_location": "OrderListScreen",
+        }
+    return {
+        "actor": "OrderManagementSystem", "modality": "MUST_NOT",
+        "action": {"family": "DELETE", "rimay_action_id": "REMOVE_10_1"},
+        "theme": "InvoicePDF",
+    }
+
+
+def _block() -> dict:
+    return {
+        "kind": "itemized", "in_sequence": True,
+        "items": [
+            {
+                "position": 0,
+                "bullet": {"kind": "hyphen", "value": "-"},
+                "connector_before": None,
+                "response": _response("SEND"),
+            },
+            {
+                "position": 1,
+                "bullet": {"kind": "integer", "value": "2"},
+                "connector_before": "comma_and",
+                "response": _response("DISPLAY"),
+            },
+            {
+                "position": 2,
+                "bullet": {"kind": "hyphen", "value": "-"},
+                "connector_before": "or",
+                "response": _response("DELETE"),
+            },
+        ],
+    }
+
+
+def _condition_expression() -> dict:
+    return {
+        "kind": "and",
+        "left": {
+            "kind": "condition",
+            "condition": {
+                "type": "WHEN",
+                "event": {
+                    "actor": "User", "action": {"family": "PRESS"},
+                    "object": "ConfirmOrderButton",
+                },
+            },
+        },
+        "right": {
+            "kind": "condition",
+            "condition": {
+                "type": "IF",
+                "predicate": {
+                    "subject": "OrderStatus", "operator": "IS",
+                    "value": "Confirmed",
+                },
+            },
+        },
+    }
+
+
+def _canonical(*, conditions: bool = True) -> dict:
+    canonical = new_canonical("REQ-RESPONSE-BLOCK-ACTIVE")
+    canonical["source"]["text"] = "itemized response block"
+    canonical["rimay_core"].pop("response")
+    canonical["rimay_core"]["response_block"] = _block()
+    if conditions:
+        canonical["rimay_core"].pop("conditions")
+        canonical["rimay_core"]["condition_expression"] = _condition_expression()
+    return canonical
+
+
+def test_active_schema_accepts_all_three_response_sources_exclusively():
+    assert SCHEMA_VERSION == "1.1.0"
+    assert RESPONSE_BLOCK_VERSION == "0.8.0"
+    block = _canonical(conditions=False)
+    assert validate_schema(block) == []
+
+    single = new_canonical("REQ-RESPONSE-SINGLE-08")
+    single["rimay_core"]["response"] = _response("SEND")
+    assert validate_schema(single) == []
+
+    expression = new_canonical("REQ-RESPONSE-EXPRESSION-08")
+    expression["rimay_core"].pop("response")
+    expression["rimay_core"]["response_expression"] = {
+        "kind": "response", "response": _response("SEND")}
+    assert validate_schema(expression) == []
+
+    for source, value in (
+        ("response", _response("SEND")),
+        ("response_expression", {
+            "kind": "response", "response": _response("SEND")}),
+    ):
+        dual = copy.deepcopy(block)
+        dual["rimay_core"][source] = value
+        assert validate_schema(dual)
+        assert response_core_findings(dual["rimay_core"])[0]["code"] == \
+            "RESPONSE_BLOCK_DUAL_SOURCE"
+
+
+def test_english_and_japanese_roundtrip_condition_tree_and_block_together():
+    canonical = _canonical()
+    assert validate(canonical, phase2_slice=False) == []
+
+    views = render_requirement_views(canonical)
+    english = views["english_rimay"]
+    assert "do the following actions in sequence:" in english
+    assert "[item=-;connector=none]" in english
+    assert "[item=2;connector=comma_and]" in english
+    assert views["manifest"]["conformance"]["response_block"] is True
+    ast = parse(english)
+    assert ast["response_block"]["items"][1]["connector_before"] == "comma_and"
+    assert compare_semantic(canonical, ast) == []
+    assert compare_conformance(canonical, ast) == []
+
+    japanese = render_rimay_jp(canonical)
+    assert "次の動作を実行する（順番に）:" in japanese
+    assert "[項目=2;接続=読点かつ]" in japanese
+    parsed_core = parse_rimay_jp(japanese)
+    assert project({"rimay_core": parsed_core}) == project(canonical)
+
+    routed = validate_all(copy.deepcopy(canonical))
+    assert routed["blocked"] is False
+    assert routed["jp_roundtrip_ok"] is True
+    assert routed["artifacts"]["english_rimay"] == english
+
+
+def test_structure_tampering_and_time_constraint_scope_fail_closed():
+    changed = _canonical(conditions=False)
+    changed["rimay_core"]["response_block"]["items"][1]["position"] = 7
+    findings = validate(changed, phase2_slice=False)
+    assert any(
+        item["code"] == "JP-COORD" and item["blocking"] and
+        (item.get("evidence") or {}).get("response_block_code") ==
+        "RESPONSE_BLOCK_POSITION_MISMATCH"
+        for item in findings)
+
+    scoped = _canonical(conditions=False)
+    scoped["extensions"]["time_constraints"] = [{
+        "kind": "DEADLINE", "value": 30, "unit": "second",
+        "applies_to": "response",
+    }]
+    findings = validate(scoped, phase2_slice=False)
+    assert any(
+        (item.get("evidence") or {}).get("response_block_code") ==
+        "RESPONSE_BLOCK_EXTENSION_SCOPE"
+        for item in findings)
+    with pytest.raises(SerializationError) as english_error:
+        render_requirement_views(scoped)
+    assert english_error.value.code == "RESPONSE_BLOCK_EXTENSION_SCOPE"
+    with pytest.raises(ResponseBlockError) as japanese_error:
+        render_rimay_jp(scoped)
+    assert japanese_error.value.code == "RESPONSE_BLOCK_EXTENSION_SCOPE"
+
+    with pytest.raises(ParseError) as connector_error:
+        parse(
+            'do the following actions: [item=-;connector=and] '
+            'NotificationSystem must send the "Invoice PDF" to '
+            'the "Customer Email Address".'
+        )
+    assert connector_error.value.code == "UNEXPECTED_TOKEN"
+
+
+def test_all_item_readers_use_stable_paths_and_bindings():
+    canonical = _canonical(conditions=False)
+    entries = list(iter_core_responses(canonical["rimay_core"]))
+    assert [path for path, _response_value in entries] == [
+        f"/rimay_core/response_block/items/{index}/response"
+        for index in range(3)]
+    assert [response["action"]["family"] for _path, response in entries] == [
+        "SEND", "DISPLAY", "DELETE"]
+    pointers = required_pointers(canonical)
+    assert "/rimay_core/response_block/items/2/response/action/family" in pointers
+    assert {feature for feature in _features(canonical)
+            if feature.startswith("family:")} == {
+        "family:SEND", "family:DISPLAY", "family:DELETE"}
+    assert route(canonical)["findings"] == []
+    assert issue_code_for(
+        "JP-OMISSION",
+        "/rimay_core/response_block/items/1/response/actor",
+    ) == "MISSING_RESPONSE_ACTOR"
+
+    english = render_requirement_views(canonical)["english_rimay"]
+    conformance = check_conformance(canonical, english)
+    assert conformance["conformant"] is True
+    assert conformance["response_block"] is True
+    assert conformance["response_expression"] is False
+    assert [item["path"] for item in conformance["leaf_bindings"]] == [
+        f"/response_block/items/{index}/response" for index in range(3)]
+
+
+def test_dialogue_and_generators_remain_fail_closed_for_block_expansion():
+    canonical = _canonical(conditions=False)
+    canonical["status"] = "approved"
+    criteria = generate_criteria(copy.deepcopy(canonical))
+    assert criteria["ok"] is False
+    assert criteria["findings"][0]["path"] == "/rimay_core/response_block"
+
+    candidates = generate_tests(copy.deepcopy(canonical), {"trace": {
+        "slots": [], "provenance": []}})
+    assert candidates["ok"] is False
+    assert candidates["findings"][0]["path"] == "/rimay_core/response_block"
+
+    dialogue = DialogueState(copy.deepcopy(canonical))
+    assert dialogue.open_questions() == []
+    answer = dialogue.answer({"question_id": "Q1"}, "anything")
+    assert answer["ok"] is False
+    assert "leaf対応Rule" in answer["reason"]
+
+
+def test_store_reader_migrates_05_through_08_without_mutating_inputs(tmp_path):
+    documents = []
+    for version in ("0.5.0", "0.6.0", "0.7.0"):
+        document = new_canonical(f"REQ-STORE-{version.replace('.', '')}")
+        document["schema_version"] = version
+        document["rimay_core"]["response"] = _response("SEND")
+        document["validation_state"] = {
+            "report_id": "VR-OLD", "blocking_findings": 0,
+            "warning_findings": 0, "validated_canonical_hash": "sha256:old",
+            "validator_registry_version": "0.3.0",
+        }
+        documents.append(document)
+    documents.append(_canonical(conditions=False))
+    original = copy.deepcopy(documents)
+    records = [
+        {"record_id": f"EXP-{index:06d}", "kind": "canonical_revision",
+         "payload": {"canonical": document}}
+        for index, document in enumerate(documents, 1)
+    ]
+    first = migrate_experience_store_records(records)
+    second = migrate_experience_store_records(records)
+    assert first == second
+    migrated = [item["payload"]["canonical"] for item in first["records"]]
+    assert {item["schema_version"] for item in migrated} == {"1.1.0"}
+    assert all("validation_state" not in item for item in migrated[:3])
+    assert migrated[0]["rimay_core"]["response_expression"]["kind"] == "response"
+    assert migrated[3]["rimay_core"]["response_block"]["items"][2][
+        "response"]["action"]["family"] == "DELETE"
+    assert documents == original
+
+    path = tmp_path / "store.jsonl"
+    path.write_text("\n".join(json.dumps(item) for item in records) + "\n",
+                    encoding="utf-8")
+    store = ExperienceStore(path)
+    assert {item["payload"]["canonical"]["schema_version"]
+            for item in store.canonical_revisions()} == {"1.1.0"}
+    written = store.append_canonical_revision(_canonical(conditions=False))
+    assert written["payload"]["canonical"]["schema_version"] == "1.1.0"
+
+
+def test_repository_store_revisions_are_physically_migrated_to_active_11():
+    records = [
+        json.loads(line)
+        for line in (RIMAY_JP / "experience/store.jsonl").read_text(
+            encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+    canonicals = [
+        item["payload"]["canonical"] for item in records
+        if item.get("kind") == "canonical_revision"
+    ]
+    assert len(canonicals) == 3
+    assert {item["schema_version"] for item in canonicals} == {"1.1.0"}
+    assert all("validation_state" not in item for item in canonicals)
+    assert all(validate_schema(item) == [] for item in canonicals)
+
+
+def test_migration_rollback_quarantine_restore_and_cli_are_lossless(tmp_path, capsys):
+    from adapters.cli.rimay_jp_cli import main
+
+    legacy = new_canonical("REQ-RB-MIGRATION")
+    legacy["schema_version"] = "0.7.0"
+    legacy["rimay_core"]["response"] = _response("SEND")
+    migrated = migrate_requirement_to_response_block_candidate(legacy)
+    assert migrated["schema_version"] == "0.8.0"
+    assert rollback_requirement_from_response_block_candidate(migrated) == legacy
+
+    active = _canonical(conditions=False)
+    active["schema_version"] = "0.8.0"
+    with pytest.raises(ResponseBlockError) as caught:
+        rollback_requirement_from_response_block_candidate(active)
+    assert caught.value.code == "RESPONSE_BLOCK_ROLLBACK_LOSSY"
+    quarantined = quarantine_response_block_for_rollback(active)
+    assert quarantined["schema_version"] == "0.7.0"
+    assert restore_quarantined_response_block(quarantined) == active
+
+    source = tmp_path / "legacy.json"
+    source.write_text(json.dumps(legacy), encoding="utf-8")
+    assert main(["rimay_jp_cli.py", "migrate-response-block", str(source)]) == 0
+    cli_migrated = json.loads(capsys.readouterr().out)["canonical"]
+    assert cli_migrated["schema_version"] == "0.8.0"
+
+    block_path = tmp_path / "block.json"
+    block_path.write_text(json.dumps(active), encoding="utf-8")
+    assert main([
+        "rimay_jp_cli.py", "rollback-response-block", str(block_path),
+        "--quarantine",
+    ]) == 0
+    cli_quarantined = json.loads(capsys.readouterr().out)["canonical"]
+    quarantine_path = tmp_path / "quarantine.json"
+    quarantine_path.write_text(json.dumps(cli_quarantined), encoding="utf-8")
+    assert main([
+        "rimay_jp_cli.py", "restore-response-block", str(quarantine_path),
+    ]) == 0
+    assert json.loads(capsys.readouterr().out)["canonical"] == active
+
+
+def test_pipeline_accepts_block_items_only_when_every_action_is_in_profile():
+    assert _in_mvp(_canonical(conditions=False)) is True
+    changed = _canonical(conditions=False)
+    changed["rimay_core"]["response_block"]["items"][1]["response"]["action"][
+        "family"] = "UNKNOWN"
+    assert _in_mvp(changed) is False

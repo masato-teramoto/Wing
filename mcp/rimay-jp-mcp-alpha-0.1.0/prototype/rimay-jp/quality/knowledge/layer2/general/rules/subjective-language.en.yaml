@@ -1,0 +1,22 @@
+id: femmer_subjective_language
+name: Subjective language
+artifact_type: general
+language: en
+quality_attribute: clarity
+definition: >
+  Subjective or vague wording (e.g. "fast", "user-friendly", "easy") that cannot be objectively
+  verified. Artifact-agnostic; applies to every artifact type.
+definition_source_id: general/femmer-2017
+implementable: deterministic
+detector:
+  type: lexical
+  params:
+    segment: whole_artifact
+    lexicon: [fast, slow, easy, user-friendly, intuitive, efficient, quickly, seamless, robust, flexible, simple, modern]
+default_severity: medium
+explanation_template: "Subjective term '{match}' is not objectively verifiable; replace it with a measurable criterion."
+examples:
+  positive:
+    - "The user interface must be fast and user-friendly."
+  negative:
+    - "The user interface must render the dashboard within 2 seconds."

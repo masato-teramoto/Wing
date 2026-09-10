@@ -1,0 +1,97 @@
+contract_version: 0.2.0
+plan_id: RPADP-ATOMIC-RESPONSE-01
+recorded_at: '2026-08-17'
+capability_matrix_binding:
+  path: reports/compatibility/rimay-capability-matrix.yaml
+  capability_signature: sha256:5341b6f2d8beb1840f376e4b466b22943bebc6b2a5f5fc7dc7ea3769ab39bcc1
+claim_boundary:
+  decides_paper_conformance: false
+  requires_paper_evidence_resolution: false
+  withholds_paper_claim_when_evidence_unresolved: true
+decisions:
+- decision_id: B5P-ATOMIC-RESPONSE-01
+  capability_id: CAP-ATOMIC-RESPONSE
+  decision_status: accepted
+  implementation_disposition: implement_product
+  decision_ruling_ref: RC-044
+  decision_ruling_sha256: sha256:9a4fce5a58ee21d78b90c801f2fcc67888a73ac38bdc734e8333b038b03d2f31
+  quality_contract:
+    objective: >-
+      wrapper／local modality、組込not、leaf-local frequencyをAction意味と分離して正規化し、
+      複数Responseでもscopeを推測せず、Atomic rule/source/spanへ追跡可能にする。
+    user_value: &user_value_axis
+      status: satisfied
+      refs:
+      - &quality_packet
+        path: reports/compatibility/rimay-b5p-atomic-response-quality-20260817.md
+        selector: §2 user_value
+        sha256: sha256:e84cab29ed3fc62cf7eb1254299c1fba447744e9dfd894fb800878d329ef273c
+    information_preservation: &information_preservation_axis
+      status: satisfied
+      refs:
+      - <<: *quality_packet
+        selector: §3 information_preservation
+      - &repository_document
+        path: core/rimay_jp_core/repository_document.py
+        selector: _document Atomic Response / _frequency_record / validation
+        sha256: sha256:66499b72ab391b7ed65721a0faac790c1259bfe6c3fc59cff07141a2cb5e3e2b
+      - &repository_document_tests
+        path: tests/conformance/test_repository_document.py
+        selector: Atomic modal, negation, frequency and tamper fixtures
+        sha256: sha256:ae653f627a515feb2cf6018716555bc8b0e1c390fe8383f5a4ed31372a877ef1
+      - &candidate_schema
+        path: canonical/candidates/canonical-requirement-atomic-response-0.9.0.schema.json
+        selector: responseFrequency / repositoryAtomicResponseTrace / response additions
+        sha256: sha256:bffb0e4079a1e2a52012a99f0ecf843babbe0e7c87aa684307260491d1c5957f
+      - &candidate_implementation
+        path: core/rimay_jp_core/atomic_response_candidate.py
+        selector: projection / diagnostics / roundtrip / migration boundary
+        sha256: sha256:63932fb55bd410400752ca8bad6304b3661624ed2244a8136bc2eef2a7654b61
+      - &candidate_tests
+        path: tests/conformance/test_atomic_response_candidate.py
+        selector: candidate, ambiguity, container and fixed Grammar fixtures
+        sha256: sha256:8f0a75ce1ae7f9493b955700e7878366f0eb81123beb3ed8f42b68fb1f2b6ce8
+    ambiguity_control: &ambiguity_control_axis
+      status: satisfied
+      refs:
+      - <<: *quality_packet
+        selector: §4 ambiguity_control
+      - *repository_document
+      - *repository_document_tests
+      - *candidate_schema
+      - *candidate_implementation
+      - *candidate_tests
+    structured_diagnostic: &structured_diagnostic_axis
+      status: satisfied
+      refs:
+      - <<: *quality_packet
+        selector: §5 structured_diagnostic
+      - *candidate_implementation
+      - *candidate_tests
+    semantic_roundtrip: &semantic_roundtrip_axis
+      status: satisfied
+      refs:
+      - <<: *quality_packet
+        selector: §6 semantic_roundtrip
+      - *candidate_implementation
+      - *candidate_tests
+    migration_safety: &migration_safety_axis
+      status: satisfied
+      refs:
+      - <<: *quality_packet
+        selector: §7 migration_safety
+      - *candidate_schema
+      - *candidate_implementation
+      - &candidate_generator
+        path: scripts/build_atomic_response_candidate.py
+        selector: deterministic candidate Schema generator/checker
+        sha256: sha256:4248ebad2c2bf4622a51b62d6524c204a4ae36b6b7e0b8ea559aed568e120242
+      - *candidate_tests
+    japanese_parity_impact: &japanese_parity_axis
+      status: satisfied
+      refs:
+      - <<: *quality_packet
+        selector: §8 japanese_parity_impact
+      - *candidate_implementation
+      - *candidate_tests
+product_signature: sha256:907f4c0cf41268a747d5c8e7e8589f949993aa5f177e427b048a348bae0b2394
