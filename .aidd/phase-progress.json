@@ -1,11 +1,20 @@
 {
-  "updated_at": "2026-09-11T15:59:23+09:00",
+  "updated_at": "2026-09-11T19:13:51+09:00",
 
   "current": {
     "phase": 4,
     "phase_name": "requirements 作成",
-    "waiting_for": "human_go_ahead",
-    "next_action": "Phase 4（requirements 作成）の実行計画を確認し、開始の指示を出す。Phase 3 は 2026-09-11 に Junichi Noumi が承認済み（feature 7 件確定。指摘は未対応 0 件／対応せず進める 11 件／修正済 10 件）",
+    "waiting_for": "human_review",
+    "next_action": "【再開点】specs/organization-search-zoom/requirements.md（status: review）の ③ 人間レビューで『承認するかどうか』を人間に確認するところから再開する。ゲート記録 .aidd/gates/phase-4-requirements.md の指摘 24 件（第1回 #1〜#11 / 第2回 #12〜#24）は『判断』『理由』とも記入済み（修正済 4 件・対応せず進める 20 件）。承認が得られたら (a) ゲート記録の ## 承認 セクションに承認者名・承認日・残件を記入し、(b) 当該 requirements.md を approved にし、(c) 優先度 2 の property-basic-info の作成に進む。Phase 4 は残り 6 feature（property-basic-info → issue-request-tutorial → issue-request → contract-application-status → contract-info-import → contract-info-download の順）と、全 feature approved 後の横断スコープ 1 回。以降の feature では本 feature で人間が確定した共通の扱いを適用する（詳細は current.conventions）。未コミットの成果物あり: specs/ と .aidd/gates/phase-4-requirements.md",
+    "conventions": {
+      "note": "organization-search-zoom の作成中に人間が確定した、Phase 4 の全 feature に適用する扱い。再開時にこれを前提として作成を進めてよい（再度の確認は不要）",
+      "nfr_table": "非機能要件の表はセキュリティ区分のみ記入する。パフォーマンス / 可用性 / 運用・監視 / アクセシビリティ / i18n・l10n / プライバシー / 監査 の 7 区分は『non-functional.md に準拠し、feature 固有の値を設けない』を不要理由として付記し、プレースホルダーを削除せず保持する",
+      "traceability_notation": "各 Requirement ブロックの直下に `> 由来する要求ID: REQ-xxx` を置いて要件と要求IDを紐づける（テンプレートに無い記法だが全 feature で統一する）",
+      "docs_reference": "テンプレート由来の docs/ 配下への参照（docs/architecture/system-overview.md 等）はそのまま保持する。docs/ は Phase 7 の成果物であり本リリースでは作成しない",
+      "undecided_items": "具体値が要求一覧・steering から決まらない事項は受入基準で断定せず、Dependencies / Assumptions の未確定事項に集約して『基本設計で確定する（REQ-010）』とする",
+      "business_flow_section": "業務フローのセクションは、承認フローや紙業務の置き換えを伴う feature（property-basic-info / issue-request）でのみ記述する。それ以外の feature は『不要（記入者: 人間 / 日付）』の理由を添えてプレースホルダーを保持する",
+      "gate_findings": "ゲートの指摘は合否ではない。指摘ゼロまでループせず、『対応せず進める』に理由を書いて進めてよい。本文を修正した場合のみ review → draft に戻して再ゲートする"
+    },
     "open_blockers": 0
   },
 
@@ -13,7 +22,7 @@
     { "phase": 1, "name": "要求受入", "artifact": "要求一覧", "status": "approved", "updated_at": "2026-09-11T15:17:00+09:00", "gate_record": ".aidd/gates/phase-1-intake.md" },
     { "phase": 2, "name": "Steering 作成", "artifact": "steering/ 7ファイル", "status": "approved", "updated_at": "2026-09-11T12:02:27+09:00", "gate_record": ".aidd/gates/phase-2-steering.md" },
     { "phase": 3, "name": "Feature 分割", "artifact": "feature-list.md", "status": "approved", "updated_at": "2026-09-11T15:59:23+09:00", "gate_record": ".aidd/gates/phase-3-feature.md" },
-    { "phase": 4, "name": "requirements 作成", "artifact": "specs/*/requirements.md", "status": "not_started", "updated_at": "2026-09-11T15:59:23+09:00", "gate_record": ".aidd/gates/phase-4-requirements.md" },
+    { "phase": 4, "name": "requirements 作成", "artifact": "specs/*/requirements.md", "status": "not_started", "updated_at": "2026-09-11T19:13:51+09:00", "gate_record": ".aidd/gates/phase-4-requirements.md" },
     { "phase": 5, "name": "画面モック生成", "artifact": ".aidd/wireframe/*/pages/", "status": "not_started", "updated_at": "2026-09-10T12:04:04+09:00", "gate_record": ".aidd/gates/phase-5-wireframe.md" }
   ],
 
@@ -32,7 +41,7 @@
       "name": "organization-search-zoom",
       "priority": 1,
       "documents": {
-        "requirements": { "status": "not_started", "updated_at": "2026-09-11T15:59:23+09:00", "waiting_for": null, "open_placeholders": 0 },
+        "requirements": { "status": "review", "updated_at": "2026-09-11T19:13:51+09:00", "waiting_for": "human_review", "open_placeholders": 0 },
         "wireframe":    { "status": "not_started", "updated_at": "2026-09-11T15:59:23+09:00", "waiting_for": null, "open_placeholders": 0 }
       }
     },
