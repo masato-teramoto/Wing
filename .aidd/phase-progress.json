@@ -1,0 +1,33 @@
+{
+  "updated_at": "2026-09-11T12:02:27+09:00",
+
+  "current": {
+    "phase": 3,
+    "phase_name": "Feature 分割",
+    "waiting_for": "human_go_ahead",
+    "next_action": "Phase 3（Feature 分割）の実行計画を確認し、開始の指示を出す。Phase 2 は 2026-09-11 に Junichi Noumi が承認済み（① の指摘 10 件はすべて『対応せず進める』。② 意味チェックは未実行のまま承認）",
+    "open_blockers": 0
+  },
+
+  "phases": [
+    { "phase": 1, "name": "要求受入", "artifact": "要求一覧", "status": "approved", "updated_at": "2026-09-10T19:23:00+09:00", "gate_record": ".aidd/gates/phase-1-intake.md" },
+    { "phase": 2, "name": "Steering 作成", "artifact": "steering/ 7ファイル", "status": "approved", "updated_at": "2026-09-11T12:02:27+09:00", "gate_record": ".aidd/gates/phase-2-steering.md" },
+    { "phase": 3, "name": "Feature 分割", "artifact": "feature-list.md", "status": "not_started", "updated_at": "2026-09-10T12:04:04+09:00", "gate_record": ".aidd/gates/phase-3-feature.md" },
+    { "phase": 4, "name": "requirements 作成", "artifact": "specs/*/requirements.md", "status": "not_started", "updated_at": "2026-09-10T12:04:04+09:00", "gate_record": ".aidd/gates/phase-4-requirements.md" },
+    { "phase": 5, "name": "画面モック生成", "artifact": ".aidd/wireframe/*/pages/", "status": "not_started", "updated_at": "2026-09-10T12:04:04+09:00", "gate_record": ".aidd/gates/phase-5-wireframe.md" }
+  ],
+
+  "steering": {
+    "product":        { "status": "approved", "updated_at": "2026-09-11T12:02:27+09:00", "waiting_for": null, "open_placeholders": 0 },
+    "tech":           { "status": "approved", "updated_at": "2026-09-11T12:02:27+09:00", "waiting_for": null, "open_placeholders": 0 },
+    "architecture":   { "status": "approved", "updated_at": "2026-09-11T12:02:27+09:00", "waiting_for": null, "open_placeholders": 0 },
+    "security":       { "status": "approved", "updated_at": "2026-09-11T12:02:27+09:00", "waiting_for": null, "open_placeholders": 0 },
+    "non-functional": { "status": "approved", "updated_at": "2026-09-11T12:02:27+09:00", "waiting_for": null, "open_placeholders": 0 },
+    "database":       { "status": "approved", "updated_at": "2026-09-11T12:02:27+09:00", "waiting_for": null, "open_placeholders": 0 },
+    "api-standards":  { "status": "approved", "updated_at": "2026-09-11T12:02:27+09:00", "waiting_for": null, "open_placeholders": 0 }
+  },
+
+  "features": [],
+
+  "blockers": []
+}
