@@ -1,6 +1,6 @@
 ---
-status: review
-updated_at: 2026-09-11T13:22:04+09:00
+status: approved
+updated_at: 2026-09-11T15:59:23+09:00
 ---
 
 # フィーチャー一覧
@@ -17,13 +17,13 @@ updated_at: 2026-09-11T13:22:04+09:00
 
 | feature 名 | 種別 | 目的 | 依存 | 優先度 | 想定規模 | 対応要求ID |
 |---|---|---|---|---|---|---|
-| access-control | Platform | 新規機能に対するベンダー／施工会社の権限制御を、既存 WTB（計画・工程管理）と同様の方式で提供する | なし | 1 | 小 | REQ-046 |
-| organization-search-zoom | Platform | 作成組織を 3 項目のプルダウンで検索する ZOOM 画面を提供し、呼び出し元画面から利用できるようにする | なし | 2 | 小 | REQ-048, REQ-049, REQ-050 |
-| contract-application-status | User | 物件契約情報の申請状況を検索・一覧表示し、CSV として出力する | access-control | 3 | 中 | REQ-012, REQ-013, REQ-014 |
-| property-basic-info | User | 物件基本情報を登録・変更し、承認フローとステータス・履歴・契約稟議ファイルを管理したうえで、稟議資料となる帳票を出力する | access-control, organization-search-zoom | 4 | 大 | REQ-015, REQ-016, REQ-017, REQ-018, REQ-019, REQ-020, REQ-021, REQ-022, REQ-023, REQ-024, REQ-025 |
-| issue-request | User | 発行依頼書を登録・変更して契約書に対する発番を行い、チュートリアルによる入力補助とバーコード生成を提供する | access-control, organization-search-zoom | 5 | 大 | REQ-026, REQ-027, REQ-028, REQ-029, REQ-030, REQ-031, REQ-032, REQ-033, REQ-034, REQ-035, REQ-036, REQ-037, REQ-038, REQ-039 |
-| contract-info-import | User | 契約情報の取込バッチを画面から実行し、新規・変更・削除の取込と洗替更新を行う | access-control | 6 | 中 | REQ-040, REQ-041, REQ-042, REQ-043 |
-| contract-info-download | User | 既存の契約情報検索と同一の条件・表示項目で契約情報を検索し、取込で使える形式の CSV としてダウンロードする | access-control, contract-info-import | 7 | 中 | REQ-044, REQ-045, REQ-047 |
+| organization-search-zoom | Platform | 作成組織を 3 項目のプルダウンで検索する ZOOM 画面を提供し、呼び出し元画面から利用できるようにする | なし | 1 | 小 | REQ-048, REQ-049, REQ-050 |
+| property-basic-info | User | 物件基本情報を登録・変更し、承認フローとステータス・履歴・契約稟議ファイルを管理したうえで、稟議資料となる帳票を出力する | organization-search-zoom | 2 | 大 | REQ-015, REQ-016, REQ-017, REQ-018, REQ-019, REQ-020, REQ-021, REQ-022, REQ-023, REQ-024, REQ-025 |
+| issue-request-tutorial | User | 発行依頼書の入力を誘導するチュートリアルの設定画面を提供する（現行の設定用ウインドウ 26 フォーム相当を新規に実現する） | なし | 3 | 中 | REQ-035, REQ-036 |
+| issue-request | User | 発行依頼書を登録・変更して契約書に対する発番を行い、チュートリアルによる入力補助とバーコード生成を提供する | organization-search-zoom, issue-request-tutorial | 4 | 大 | REQ-026, REQ-027, REQ-028, REQ-029, REQ-030, REQ-031, REQ-032, REQ-033, REQ-034, REQ-037, REQ-038, REQ-039 |
+| contract-application-status | User | 物件契約情報の申請状況を検索・一覧表示し、CSV として出力する | property-basic-info, issue-request | 5 | 中 | REQ-012, REQ-013, REQ-014 |
+| contract-info-import | User | 契約情報の取込バッチを画面から実行し、新規・変更・削除の取込と洗替更新を行う | なし | 6 | 中 | REQ-040, REQ-041, REQ-042, REQ-043 |
+| contract-info-download | User | 既存の契約情報検索と同一の条件・表示項目で契約情報を検索し、取込で使える形式の CSV としてダウンロードする | contract-info-import | 7 | 中 | REQ-044, REQ-045, REQ-047 |
 
 ### 項目の定義
 
@@ -36,6 +36,16 @@ updated_at: 2026-09-11T13:22:04+09:00
 | 優先度 | 実装順の根拠となる値 |
 | 想定規模 | `大` / `中` / `小`（分割判断に使う） |
 | **対応要求ID** | 要求一覧の要求ID（複数可）。**トレーサビリティの突合キー** |
+
+### 権限制御の扱い（feature にしない範囲）
+
+> REQ-046（新規機能の権限制御を既存 WTB と同様のベンダー／施工会社の権限制御方式に合わせる）は、Phase 1 の再承認（2026-09-11）により分類が `制約` となったため **feature 割当の分母から外れる**。方式の正は `steering/security.md` の `## 認証・認可` であり、各 feature の requirements は steering 適合として検査される。
+> 画面単位の権限制御は `機能` の要求として残り、REQ-016 は `property-basic-info`、REQ-027 は `issue-request` が担う。
+
+### 共通基盤を feature にしない基準
+
+> 採番（`NumberingService`）・ファイルアップロード（`FileUploadService`）・コードマスタ取得（`CodeMstService`）・帳票エンジン・バッチ実行基盤は、`steering/architecture.md` の `### 共通基盤（shared）` および `### バッチ` に **既存 WiNG の構成要素として記載済み**であり、本プロジェクトで新たに作るものではない（REQ-053）。したがって feature として立てず、利用する側の feature の中で扱う。
+> `organization-search-zoom` を Platform feature として立てているのは、**新規に作成する画面**（REQ-048）であり、対応する `機能` 分類の要求を持つためである。
 
 ## 種別の判定
 
@@ -58,11 +68,11 @@ updated_at: 2026-09-11T13:22:04+09:00
 
 | feature 名 | 判定 | 根拠 |
 |---|---|---|
-| access-control | Platform | 権限制御だけが出来上がっても誰の用事も終わらない。各機能の中で働く共通の仕組みである（REQ-046 は「新規機能の権限制御」と全機能を対象にしている） |
 | organization-search-zoom | Platform | 作成組織検索は呼び出し元画面（物件基本情報登録変更画面・発行依頼書登録変更画面）の入力を助けるために使われる。それ単体では用事が終わらない（REQ-050） |
-| contract-application-status | User | 担当者が申請状況を検索・一覧・CSV 出力して確認を終えられる（REQ-012〜REQ-014） |
 | property-basic-info | User | 担当者が物件基本情報を登録・変更し、承認に回して帳票を出すところまで終えられる（REQ-015〜REQ-025） |
-| issue-request | User | 担当者が発行依頼書を登録・変更し、発番まで終えられる（REQ-026〜REQ-039） |
+| issue-request-tutorial | User | チュートリアルの設定を担当する利用者が、設定画面で設定を作り終えられる（REQ-035・REQ-036）。設定という用事がその画面で完結するため Platform としない |
+| issue-request | User | 担当者が発行依頼書を登録・変更し、発番まで終えられる（REQ-026〜REQ-034・REQ-037〜REQ-039） |
+| contract-application-status | User | 担当者が申請状況を検索・一覧・CSV 出力して確認を終えられる（REQ-012〜REQ-014） |
 | contract-info-import | User | 担当者が取込バッチを実行して契約情報の反映を終えられる（REQ-040〜REQ-043） |
 | contract-info-download | User | 担当者が契約情報を検索して CSV を取得し終えられる（REQ-044・REQ-045・REQ-047） |
 
@@ -77,45 +87,42 @@ updated_at: 2026-09-11T13:22:04+09:00
 
 ### 本プロジェクトでの算出根拠
 
+優先度 1〜5 は **依存による必須先行で決まる**。6・7 は依存の連鎖から独立しているため、`steering/product.md` の主要ユースケース 5（外部で作成された契約情報の反映と CSV ダウンロード）に対応することを根拠に末尾へ置く。
+
 | 優先度 | feature 名 | 根拠 |
 |---|---|---|
-| 1 | access-control | 依存を持たず、REQ-046 により新規機能すべてが前提とする |
-| 2 | organization-search-zoom | 依存を持たない。REQ-050 により property-basic-info・issue-request の呼び出し先となるため、両者より先行させる |
-| 3 | contract-application-status | 必須先行の制約なし。`steering/product.md` の主要ユースケース 1（申請状況の確認）に対応するため、ユースケースの並び順に従って先頭に置く |
-| 4 | property-basic-info | organization-search-zoom の後（REQ-050）。主要ユースケース 2（契約稟議の起票）およびユースケース 4（稟議資料の帳票出力）に対応する |
-| 5 | issue-request | organization-search-zoom の後（REQ-050）。主要ユースケース 3（契約書の発行依頼）に対応し、ユースケースの並びで property-basic-info の次に置く |
-| 6 | contract-info-import | 主要ユースケース 5（契約情報の取込・ダウンロード）に対応する。REQ-047 により contract-info-download が「取込で使える形式」を出力するため、取込の形式が確定する本 feature を先に置く |
-| 7 | contract-info-download | contract-info-import の後（REQ-047: 契約情報取込で使える形式の CSV を出力する） |
+| 1 | organization-search-zoom | 依存を持たない。REQ-050 により property-basic-info・issue-request の呼び出し先となるため、両者より先行させる |
+| 2 | property-basic-info | organization-search-zoom の後（REQ-050）。contract-application-status が表示する申請状況のデータを生成する側であるため、同 feature より先行させる |
+| 3 | issue-request-tutorial | 依存を持たない。issue-request のチュートリアル（REQ-035: 選択肢により順番に入力欄と例が表示される）が動作するには設定が先に存在する必要があるため、issue-request より先行させる |
+| 4 | issue-request | organization-search-zoom の後（REQ-050）、issue-request-tutorial の後（REQ-035）。contract-application-status が表示する申請状況のデータを生成する側であるため、同 feature より先行させる |
+| 5 | contract-application-status | property-basic-info・issue-request の後。物件契約情報の申請状況（REQ-012）は両 feature が登録・申請したデータを対象とするため、表示対象を生成する側が先行する必要がある |
+| 6 | contract-info-import | 依存を持たない。主要ユースケース 5 に対応し、同ユースケースが `product.md` で最後に置かれているため末尾側に置く。REQ-047 により contract-info-download が「取込で使える形式」を出力するため、取込の形式が確定する本 feature を先に置く |
+| 7 | contract-info-download | contract-info-import の後（REQ-047: 契約情報取込で使える形式の CSV をダウンロードする） |
 
-依存に循環はない（access-control と organization-search-zoom はいずれも依存を持たず、他の 5 feature は両者または contract-info-import のみを参照する）。
-
-## 分割案（採否は人間が決める）
-
-> 想定規模が「大」の feature について分割案を提示する。**本 Skill は提案までで、採否は人間が決める。** 採用する場合は上記の表を分割後の feature で書き直し、優先度と依存を付け直す。
-
-### property-basic-info（規模: 大 / 対応要求ID 11 件）
-
-| 分割案 | feature 名 | 対応要求ID | 分割の根拠 |
-|---|---|---|---|
-| A-1 | property-basic-info（登録・変更） | REQ-015〜REQ-022 | 登録・変更画面と承認フロー・履歴・ファイル登録 |
-| A-2 | property-basic-info-report（帳票） | REQ-023, REQ-024, REQ-025 | RFP §4-2 の想定される構成が「登録・変更画面」と「印刷・閲覧用帳票」を別に挙げており、出力先（画面 / 帳票・PDF）が異なる |
-
-### issue-request（規模: 大 / 対応要求ID 14 件）
-
-| 分割案 | feature 名 | 対応要求ID | 分割の根拠 |
-|---|---|---|---|
-| B-1 | issue-request（登録・変更） | REQ-026〜REQ-034 | 登録・変更画面、発番、単独局／複数局、金額計算、履歴 |
-| B-2 | issue-request-tutorial（チュートリアル設定） | REQ-035, REQ-036 | RFP §4-3 の想定される構成が「チュートリアル設定画面」を別画面として挙げており、現行の設定用ウインドウ 26 フォーム相当を新規に実現するため規模が独立して大きい |
-| B-3 | issue-request-barcode（バーコード生成） | REQ-037, REQ-038, REQ-039 | RFP §4-3 の想定される構成が「バーコード生成（ポップアップ）画面」を別画面として挙げている |
+依存に循環はない。`organization-search-zoom`・`issue-request-tutorial`・`contract-info-import` は依存を持たず、他の 4 feature の依存はすべてこの 3 つから一方向に伸びる。
 
 ## 依存関係図（任意）
 
 > 依存が複雑で表だけでは追えない場合のみ記述する。循環が無いことの確認にも使う。
 > **記法**: Mermaid `flowchart`。feature をノード、`依存` 列の関係を矢印で表す。
 
-<FEATURE_DEPENDENCY_DIAGRAM>
+```mermaid
+flowchart LR
+    ZOOM[organization-search-zoom]
+    PROP[property-basic-info]
+    TUTO[issue-request-tutorial]
+    ISSU[issue-request]
+    STAT[contract-application-status]
+    IMPO[contract-info-import]
+    DOWN[contract-info-download]
 
-<!-- 不要理由: feature が 7 件、依存関係は access-control（全 User feature の前提）・organization-search-zoom（property-basic-info / issue-request の前提）・contract-info-import（contract-info-download の前提）の 3 系統のみであり、上記の表で追える。循環も表から確認できるため図を作成しない。分割案が採用されて依存が増えた場合は本スロットに図を記述する。 -->
+    ZOOM --> PROP
+    ZOOM --> ISSU
+    TUTO --> ISSU
+    PROP --> STAT
+    ISSU --> STAT
+    IMPO --> DOWN
+```
 
 ---
 
