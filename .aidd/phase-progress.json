@@ -1,18 +1,18 @@
 {
-  "updated_at": "2026-09-11T12:02:27+09:00",
+  "updated_at": "2026-09-11T13:22:04+09:00",
 
   "current": {
     "phase": 3,
     "phase_name": "Feature 分割",
-    "waiting_for": "human_go_ahead",
-    "next_action": "Phase 3（Feature 分割）の実行計画を確認し、開始の指示を出す。Phase 2 は 2026-09-11 に Junichi Noumi が承認済み（① の指摘 10 件はすべて『対応せず進める』。② 意味チェックは未実行のまま承認）",
+    "waiting_for": "human_review",
+    "next_action": "`.aidd/gates/phase-3-feature.md` の第 1 回実行（① / ②・指摘 13 件）を読み、各指摘の『判断』『理由』を記入したうえで `.aidd/feature-list.md` の承認可否を決める。③ の観点は 分割の妥当性（粒度・種別の割当）／優先度の妥当性（異議がある場合のみ修正を指示）／`status` の承認。差戻し先候補は Phase 3 内で修正（指摘 1-6・8-10・12）／Phase 1（指摘 13: REQ-046 の分類）／Phase 2（指摘 7・11: architecture.md・product.md）",
     "open_blockers": 0
   },
 
   "phases": [
     { "phase": 1, "name": "要求受入", "artifact": "要求一覧", "status": "approved", "updated_at": "2026-09-10T19:23:00+09:00", "gate_record": ".aidd/gates/phase-1-intake.md" },
     { "phase": 2, "name": "Steering 作成", "artifact": "steering/ 7ファイル", "status": "approved", "updated_at": "2026-09-11T12:02:27+09:00", "gate_record": ".aidd/gates/phase-2-steering.md" },
-    { "phase": 3, "name": "Feature 分割", "artifact": "feature-list.md", "status": "not_started", "updated_at": "2026-09-10T12:04:04+09:00", "gate_record": ".aidd/gates/phase-3-feature.md" },
+    { "phase": 3, "name": "Feature 分割", "artifact": "feature-list.md", "status": "review", "updated_at": "2026-09-11T13:22:04+09:00", "gate_record": ".aidd/gates/phase-3-feature.md" },
     { "phase": 4, "name": "requirements 作成", "artifact": "specs/*/requirements.md", "status": "not_started", "updated_at": "2026-09-10T12:04:04+09:00", "gate_record": ".aidd/gates/phase-4-requirements.md" },
     { "phase": 5, "name": "画面モック生成", "artifact": ".aidd/wireframe/*/pages/", "status": "not_started", "updated_at": "2026-09-10T12:04:04+09:00", "gate_record": ".aidd/gates/phase-5-wireframe.md" }
   ],
