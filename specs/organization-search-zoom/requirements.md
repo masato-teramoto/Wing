@@ -1,7 +1,7 @@
 ---
 feature: organization-search-zoom
-status: review
-updated_at: 2026-09-11T19:13:51+09:00
+status: approved
+updated_at: 2026-09-14T13:57:45+09:00
 ---
 
 # 要件定義書
