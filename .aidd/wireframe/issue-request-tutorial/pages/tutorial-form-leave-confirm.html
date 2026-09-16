@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>チュートリアル設定 変更 — 離脱の確認</title>
+<link rel="stylesheet" href="tokens/tokens.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main class="wf-main">
+  <div class="wf-page-header">
+    <h1 class="wf-page-title">チュートリアル設定 変更</h1>
+    <p class="wf-page-lead">26 フォーム相当の設定を 1 画面に集約するか複数画面に分けるかは基本設計で確定します。この画面は 1 フォーム分の設定の型を示しています。</p>
+  </div>
+
+  <form>
+  <section class="wf-section">
+    <h2 class="wf-section-title">チュートリアルの設定</h2>
+    <p class="wf-section-note">選択肢と、その選択肢のときに提示する入力欄・例を定義します。選択肢の種類・入力欄と例の対応・表示順序の決まり方・設定内容の適用範囲は基本設計で確定します。</p>
+    <fieldset class="ds-repeatingfieldgroup">
+      <legend>選択肢と入力欄・例</legend>
+      <div class="ds-repeatingfieldgroup-scroll" role="region" aria-label="選択肢と入力欄・例の設定" tabindex="0">
+        <table class="ds-repeatingfieldgroup-table">
+          <thead aria-hidden="true">
+            <tr>
+              <th scope="col">選択肢</th>
+              <th scope="col">入力欄</th>
+              <th scope="col">例</th>
+              <th scope="col">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>
+              <label class="wf-visually-hidden" for="row1-choice">1 行目の選択肢</label>
+              <input class="ds-inputtext" id="row1-choice" type="text" value="新規契約">
+            </td>
+            <td>
+              <label class="wf-visually-hidden" for="row1-field">1 行目の入力欄</label>
+              <input class="ds-inputtext" id="row1-field" type="text" value="契約開始日">
+            </td>
+            <td>
+              <label class="wf-visually-hidden" for="row1-example">1 行目の例</label>
+              <input class="ds-inputtext" id="row1-example" type="text" value="2026年04月01日 のように入力します">
+            </td>
+            <td>
+              <button class="ds-button ds-button--secondary ds-button--sm" type="button">1 行目を削除</button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label class="wf-visually-hidden" for="row2-choice">2 行目の選択肢</label>
+              <input class="ds-inputtext" id="row2-choice" type="text" value="新規契約">
+            </td>
+            <td>
+              <label class="wf-visually-hidden" for="row2-field">2 行目の入力欄</label>
+              <input class="ds-inputtext" id="row2-field" type="text" value="契約期間">
+            </td>
+            <td>
+              <label class="wf-visually-hidden" for="row2-example">2 行目の例</label>
+              <input class="ds-inputtext" id="row2-example" type="text" value="36 か月 のように入力します">
+            </td>
+            <td>
+              <button class="ds-button ds-button--secondary ds-button--sm" type="button">2 行目を削除</button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label class="wf-visually-hidden" for="row3-choice">3 行目の選択肢</label>
+              <input class="ds-inputtext" id="row3-choice" type="text" value="更新契約">
+            </td>
+            <td>
+              <label class="wf-visually-hidden" for="row3-field">3 行目の入力欄</label>
+              <input class="ds-inputtext" id="row3-field" type="text" value="前回契約番号">
+            </td>
+            <td>
+              <label class="wf-visually-hidden" for="row3-example">3 行目の例</label>
+              <input class="ds-inputtext" id="row3-example" type="text" value="前回の契約書に記載された番号を入力します">
+            </td>
+            <td>
+              <button class="ds-button ds-button--secondary ds-button--sm" type="button">3 行目を削除</button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="ds-repeatingfieldgroup-add">
+        <button class="ds-button ds-button--secondary" type="button">行を追加</button>
+      </div>
+    </fieldset>
+  </section>
+  </form>
+
+  <div class="wf-modal-backdrop">
+    <div class="ds-modaldialog" role="dialog" aria-modal="true" aria-labelledby="leave-title">
+      <p class="ds-modaldialog-title" id="leave-title">保存していない変更があります</p>
+      <p class="ds-modaldialog-body">このページを離れると、入力した内容は保存されません。よろしいですか。</p>
+      <div class="ds-modaldialog-actions">
+        <button class="ds-button ds-button--secondary" type="button">入力を続ける</button>
+        <button class="ds-button ds-button--primary" type="button">保存せずに離れる</button>
+      </div>
+    </div>
+  </div>
+</main>
+</body>
+</html>

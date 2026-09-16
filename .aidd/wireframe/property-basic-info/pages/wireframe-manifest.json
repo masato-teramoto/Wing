@@ -1,0 +1,151 @@
+{
+  "$comment": "wireframe-manifest.json 記入用フォーマット。MK1（requirements 承認後・design 着手前）の生成時に wireframe-authoring がコピーして全スロットを埋め、pages/ にワイヤーフレーム HTML と同時に置く。記入規約の正は .claude/skills/wireframe-authoring/SKILL.md（要件 ID の粒度 = 手順 4 / 被覆・未画面化 = 手順 4b・4c / 監査記録 = 手順 5）。記法は specs/_template と同じ: {{大文字}} = 機械記入スロット / [角括弧] = 記述スロット。screens[]・missing[]・unrealized[] は 1 要素の見本 — コピーして必要数に増やし、該当が無ければ空配列にする。functions[] は機能一覧（F-xxx）が案件に存在する場合のみ記入（無ければ空配列のまま）。acknowledged と confirmed_at は人間が記入する（エージェントは acknowledged の by / at / decision を未記入〔null〕・confirmed_at を null のまま出力し、承認・確認を代行しない。acknowledged オブジェクト自体を null に潰さない）。結合段が入口を新設した場合の _app-shell/ の manifest も本フォーマットを使うが、requirements 由来でない共通物のため screens[].requirements は空配列・unrealized は空配列・acknowledged は未記入のままにする",
+  "status": "review",
+  "updated_at": "2026-09-16T19:15:57+09:00",
+  "$comment_status": "本ファイルは Phase 5（画面モック生成）の承認対象成果物であり、上の status / updated_at が **フロントマターと同等の status 担体**である（Markdown ではないためフロントマターを持てない。規約の正は .claude/skills/aidd-flow/references/status-protocol.md §1・§4）。エージェントは draft のまま出力する — draft → review はゲートのサブエージェント（wireframe-check-subagent）、review → approved は人間のみが行う。_app-shell/ の manifest は要件を持たない擬似 feature のため承認対象ではなく、横断スコープのゲートが status を \"n/a\" に落とす",
+  "ds_version": "v0.0.11",
+  "token_profile": "wireframe",
+  "wireframe_notice": "これは要件定義段階のワイヤーフレームです。画面の型・構成・情報量のイメージを掴むためのものであり、この機能・この UI で実装することを確約するものではありません。",
+  "$comment_wireframe_notice": "wireframe プロファイルでは上の圧縮済み定型文をそのまま使う（言い換えない — 原文は wireframe-authoring SKILL.md「注記の定型文」）。wireframe 以外のプロファイルでは null にする",
+  "audit": {
+    "$comment": "生成のたびにエージェントが機械記録する（手で書かない）。result = pass（exit 0）が生成の完了条件 — fail のまま先へ進まない",
+    "ran_at": "2026-09-16",
+    "scripts": [
+      "audit-tokens",
+      "audit-components"
+    ],
+    "result": "pass"
+  },
+  "confirmed_at": null,
+  "screens": [
+    {
+      "screen": "物件基本情報 登録・変更",
+      "pattern": "form-page",
+      "components": [
+        "InputText",
+        "Button",
+        "FileUpload",
+        "ModalDialog",
+        "Skeleton",
+        "Link",
+        "Badge"
+      ],
+      "states": [
+        "default（新規登録）",
+        "default（変更）",
+        "input-error",
+        "submitting",
+        "loading",
+        "leave-confirm"
+      ],
+      "functions": [],
+      "requirements": [
+        "1",
+        "3",
+        "5",
+        "6",
+        "7",
+        "9",
+        "10"
+      ],
+      "notes": "入力項目の名称・桁・必須は requirements・steering のいずれにも根拠が無く、未確定事項 ② で基本設計に送られている。項目名を創作すると顧客が合意事項として読み取るため、匿名のプレースホルダー（項目 1〜10）で項目数と配置のイメージのみを示した（人間の判断 / 2026-09-16）。同じ理由で各項目の要否表示（※必須 / ※任意）も置いていない。 steering を根拠に画面へ載せた情報は無い。 form-page の layout からの逸脱が 3 点ある。いずれもデザインシステム側に構えが無いためで、DS 側の課題として missing[] に記録した。(1) ページヘッダにステータスの Badge を置いた（Requirement 5 の「ステータスを画面に表示する」を満たすため。form-page の components に Badge は無い）。(2) アクション行に送信・キャンセル以外の Button（引用・申請）を置いた。(3) 出力の操作（進捗管理DBインポート用出力・帳票出力・PDF 表示）を独立したセクションに置いた。 ステータスの表示値は「編集中」のみとした。ステータスの値の一覧と遷移は未確定事項 ⑥ のため、requirements の本文に現れる語（Requirement 8 の「編集中」）に限っている。 Requirement 7・9・10 は画面に置いたのが出力操作の起点のみで、出力物そのもの（CSV・帳票 3 種・PDF）は画面化していない。Requirement 9・10 は unrealized[] にも記録している（起点は画面にあり、出力物が未画面化という部分的な状態のため両方に現れる）。出力の起動契機は未確定事項 ⑧ のため、この配置は確定ではない。 Requirement 3 の引用について、引用元の指定方法は requirements に規定が無いため画面で確定させていない（操作の起点のみを置いた）。 被覆の分母から外した受入基準と類型: Requirement 1 の受入基準 1（画面ID・PGID の採番）・3（排他制御）・5（未ログイン時の遷移）・6（SQL の WHERE 条件）、Requirement 2 の受入基準 3・5（サーバ側判定・ログ記録）、Requirement 3 の受入基準 3・4（引用元を変更しない = 否定形）、Requirement 5 の受入基準 3・4・5（トランザクション・テーブル種別・物理削除しない）、Requirement 6 の受入基準 2・3（DB 格納方式・直接 URL 参照の禁止）、Requirement 7 の受入基準 2・3（SQL の作り方・文字コード）。いずれもバックエンド専用処理または否定形。"
+    },
+    {
+      "screen": "物件基本情報の承認",
+      "pattern": "approval",
+      "components": [
+        "Badge",
+        "Button",
+        "Link",
+        "Table",
+        "ModalDialog",
+        "Textarea",
+        "Skeleton"
+      ],
+      "states": [
+        "pending",
+        "pending（承認の確定ダイアログ）",
+        "pending（差戻しの確定ダイアログ）",
+        "action-error",
+        "not-actionable",
+        "history-empty",
+        "loading"
+      ],
+      "functions": [],
+      "requirements": [
+        "4",
+        "5"
+      ],
+      "notes": "承認フローの段階数（5 段階または 3 段階）・各段階の承認者・スキップの条件は未確定事項 ⑤ のため画面で確定させていない。段階の表示（何段目か）も置いていない。ステータスの表示値は approval パターンが構えとして定める語（承認待ち / 承認済み）に限った。承認履歴の列は approval パターンの layout が定める構え（日時・操作者・操作・コメント）であり、履歴に残す項目の範囲は未確定事項 ⑥ に従って基本設計で確定する。"
+    },
+    {
+      "screen": "エラー画面（権限なし）",
+      "pattern": "error-page",
+      "components": [
+        "Link"
+      ],
+      "states": [
+        "default"
+      ],
+      "functions": [],
+      "requirements": [
+        "2"
+      ],
+      "notes": "Requirement 2 の受入基準 1（権限を持たない場合にエラー画面へメッセージIDに対応する文言を表示する）に対応する。variant は 403。受入基準 2 の「権限に応じた画面要素の活性・非活性・非表示」は、制御の対象となる画面要素が未確定事項 ③ のため画面化していない。"
+    }
+  ],
+  "missing": [
+    {
+      "name": "NotificationBanner の status-* アイコン（SVG の実体）",
+      "reason": "DS v0.0.11 の icons/ には ICON-MAP.md のみで SVG の実体が無い。情報アイコンはラベルで代替できないため、form-page の save-success / save-error と approval の action-done のページを生成していない。"
+    },
+    {
+      "name": "装飾アイコンの SVG の実体",
+      "reason": "同上。装飾アイコンはラベルが意味を担うため、アイコンを付けず可視ラベルのみで組んで続行した。"
+    },
+    {
+      "name": "罫線の太さ（border-width）のトークン",
+      "reason": "部品 spec は罫線の色を定めるが太さのトークンが tokens に無く、px の直書きは監査で禁止されるため CSS キーワード thin で組んだ。"
+    },
+    {
+      "name": "form-page におけるレコード操作の構え",
+      "reason": "業務の登録・変更画面が送信・キャンセル以外のレコード操作（申請・引用・帳票/CSV 出力）を伴う場合の置き場所を form-page の layout が定めていない。アクション行と独立セクションに置いて続行した。"
+    },
+    {
+      "name": "form-page における既存レコードのステータス表示の構え",
+      "reason": "編集対象のレコードが状態（ステータス）を持つ場合の表示位置を form-page が定めておらず、components に Badge も含まれない。ページヘッダに Badge を置いて続行した。"
+    }
+  ],
+  "unrealized": [
+    {
+      "requirements": [
+        "8"
+      ],
+      "screen": null,
+      "reason": "編集中データの処理を促す手段（画面上の表示か別の手段か）が未確定事項 ⑨ のため、画面として置けない。",
+      "category": "requirements 起因"
+    },
+    {
+      "requirements": [
+        "9"
+      ],
+      "screen": "稟議資料の帳票（表紙情報・発行依頼書・契約局情報）",
+      "reason": "帳票 3 種の出力項目とレイアウトが未確定事項 ⑩ のため描けない。既存の帳票基盤（JasperReports）に載せる出力物であり、画面化の対象から外すことを人間が確定した（2026-09-16）。帳票出力の起点操作は画面に置いている。",
+      "category": "requirements 起因"
+    },
+    {
+      "requirements": [
+        "10"
+      ],
+      "screen": "出力情報の PDF 表示（別ウインドウ）",
+      "reason": "表示内容は Requirement 9 の帳票 3 種と同じで未確定であり、表示そのものはブラウザの PDF ビューアが担うためデザインシステムの部品では描けない。別ウインドウを開く起点と動線は画面に置いている。",
+      "category": "UI 対象外"
+    }
+  ],
+  "acknowledged": {
+    "$comment": "開発者が記入する（未画面化要件の承認）。承認なしに結合段・MK2 へ進まない。判定基準は「主要画面が生成できていれば進んでよい」。unrealized が空配列 [] の feature では承認不要 — by / at / decision を未記入のまま先へ進んでよい。記入の場は Phase 5 の ③ 人間レビュー（承認の判断と同じ停止点で行い、停止点を増やさない）",
+    "by": null,
+    "at": null,
+    "decision": null
+  }
+}

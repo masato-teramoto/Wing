@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>バーコードの生成 — 削除の確認</title>
+<link rel="stylesheet" href="tokens/tokens.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main class="wf-main">
+  <div class="wf-page-header wf-page-header--with-actions">
+    <div class="wf-page-title-group">
+      <h1 class="wf-page-title">バーコードの生成</h1>
+    </div>
+    <div class="wf-actions">
+      <button class="ds-button ds-button--primary" type="button">バーコードを生成</button>
+    </div>
+  </div>
+  <p class="wf-page-lead">バーコードの対象となる文書の単位・規格・桁、削除したバーコードの見え方と編集を制御する範囲は基本設計で確定します。</p>
+
+  <div class="wf-selection-bar">
+    <span class="wf-selection-count">1 件を選択中</span>
+    <button class="ds-button ds-button--danger ds-button--sm" type="button">削除</button>
+    <button class="ds-button ds-button--secondary ds-button--sm" type="button">選択を解除</button>
+  </div>
+
+  <div class="ds-table-scroll" role="region" aria-label="生成したバーコードの一覧" tabindex="0">
+    <table class="ds-table">
+      <caption>この発行依頼書に対して生成したバーコードです。削除したバーコードも表示したままにします。</caption>
+      <thead>
+        <tr>
+          <th scope="col"><span class="wf-visually-hidden">行の選択</span></th>
+          <th scope="col">バーコード</th>
+          <th scope="col">生成日時</th>
+          <th scope="col">状態</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <label class="wf-visually-hidden" for="sel-1">0000000000001 を選択</label>
+            <input class="ds-checkbox" id="sel-1" type="checkbox" checked>
+          </td>
+          <td>0000000000001</td>
+          <td>2026/09/10 10:15</td>
+          <td><span class="ds-badge">有効</span></td>
+        </tr>
+        <tr>
+          <td>
+            <label class="wf-visually-hidden" for="sel-2">0000000000002 を選択</label>
+            <input class="ds-checkbox" id="sel-2" type="checkbox">
+          </td>
+          <td>0000000000002</td>
+          <td>2026/09/11 09:40</td>
+          <td><span class="ds-badge">有効</span></td>
+        </tr>
+        <tr>
+          <td>
+            <label class="wf-visually-hidden" for="sel-3">0000000000003 を選択</label>
+            <input class="ds-checkbox" id="sel-3" type="checkbox" disabled>
+          </td>
+          <td>0000000000003</td>
+          <td>2026/09/12 14:05</td>
+          <td><span class="ds-badge ds-badge--neutral">削除済み</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="wf-modal-backdrop">
+    <div class="ds-modaldialog" role="dialog" aria-modal="true" aria-labelledby="del-title">
+      <p class="ds-modaldialog-title" id="del-title">1 件のバーコードを削除しますか？</p>
+      <p class="ds-modaldialog-body">削除したバーコードは一覧に残りますが、以降は編集できなくなります。</p>
+      <div class="ds-modaldialog-actions">
+        <button class="ds-button ds-button--secondary" type="button">キャンセル</button>
+        <button class="ds-button ds-button--danger" type="button">削除する</button>
+      </div>
+    </div>
+  </div>
+</main>
+</body>
+</html>

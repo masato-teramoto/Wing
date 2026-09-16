@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>物件基本情報 登録</title>
+<link rel="stylesheet" href="tokens/tokens.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main class="wf-main">
+  <div class="wf-page-header wf-page-header--with-actions">
+    <div class="wf-page-title-group">
+      <h1 class="wf-page-title">物件基本情報 登録</h1>
+    </div>
+  </div>
+
+  <form>
+  <section class="wf-section">
+    <h2 class="wf-section-title">物件基本情報の入力項目</h2>
+    <p class="wf-section-note">項目の一覧・桁・必須は基本設計で確定します。ここでは項目数と配置のイメージのみを示しています。</p>
+    <div class="wf-grid">
+      <div class="wf-field">
+        <label class="wf-field-label" for="item1">項目 1</label>
+        <input class="ds-inputtext" id="item1" type="text" value="">
+      </div>
+      <div class="wf-field">
+        <label class="wf-field-label" for="item2">項目 2</label>
+        <input class="ds-inputtext" id="item2" type="text" value="">
+      </div>
+      <div class="wf-field">
+        <label class="wf-field-label" for="item3">項目 3</label>
+        <input class="ds-inputtext" id="item3" type="text" value="">
+      </div>
+      <div class="wf-field">
+        <label class="wf-field-label" for="item4">項目 4</label>
+        <input class="ds-inputtext" id="item4" type="text" value="">
+      </div>
+      <div class="wf-field">
+        <label class="wf-field-label" for="item5">項目 5</label>
+        <input class="ds-inputtext" id="item5" type="text" value="">
+      </div>
+      <div class="wf-field">
+        <label class="wf-field-label" for="item6">項目 6</label>
+        <input class="ds-inputtext" id="item6" type="text" value="">
+      </div>
+      <div class="wf-field">
+        <label class="wf-field-label" for="item7">項目 7</label>
+        <input class="ds-inputtext" id="item7" type="text" value="">
+      </div>
+      <div class="wf-field">
+        <label class="wf-field-label" for="item8">項目 8</label>
+        <input class="ds-inputtext" id="item8" type="text" value="">
+      </div>
+      <div class="wf-field wf-field--2">
+        <label class="wf-field-label" for="item9">項目 9</label>
+        <input class="ds-inputtext" id="item9" type="text" value="">
+      </div>
+      <div class="wf-field">
+        <label class="wf-field-label" for="item10">項目 10</label>
+        <input class="ds-inputtext" id="item10" type="text" value="">
+      </div>
+    </div>
+  </section>
+  <section class="wf-section">
+    <h2 class="wf-section-title">作成組織</h2>
+    <div class="wf-grid">
+      <div class="wf-field wf-field--2">
+        <label class="wf-field-label" for="org">作成組織</label>
+        <input class="ds-inputtext" id="org" type="text" value="" readonly>
+        <p class="wf-field-support">作成組織検索から選ぶと、この欄に設定されます。</p>
+      </div>
+      <div class="wf-field">
+        <label class="wf-field-label" for="org-search">&nbsp;</label>
+        <button class="ds-button ds-button--secondary" id="org-search" type="button">作成組織を検索</button>
+      </div>
+    </div>
+  </section>
+  <section class="wf-section">
+    <h2 class="wf-section-title">契約稟議に関するファイル</h2>
+    <div class="wf-grid">
+      <div class="wf-field wf-field--4">
+        <label class="wf-field-label" for="files">ファイル</label>
+        <span class="ds-fileupload">
+          <input class="ds-fileupload-input" id="files" type="file" multiple>
+          <span class="wf-field-support">登録できるファイルの種類・件数・形式・サイズの上限は基本設計で確定します。</span>
+        </span>
+      </div>
+    </div>
+  </section>
+    <div class="wf-actions">
+      <button class="ds-button ds-button--primary" type="submit">保存</button>
+      <button class="ds-button ds-button--secondary" type="button">既存の物件基本情報から引用</button>
+      <a class="ds-link" href="property-form-new.html">キャンセル</a>
+    </div>
+  </form>
+</main>
+</body>
+</html>

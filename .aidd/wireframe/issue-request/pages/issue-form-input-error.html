@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>発行依頼書 変更 — 入力エラー</title>
+<link rel="stylesheet" href="tokens/tokens.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main class="wf-main">
+  <div class="wf-page-header wf-page-header--with-actions">
+    <div class="wf-page-title-group">
+      <h1 class="wf-page-title">発行依頼書 変更</h1>
+      <span class="ds-badge">申請前</span>
+      <span class="ds-badge ds-badge--neutral">契約書番号 2026-000123</span>
+    </div>
+  </div>
+
+  <div class="wf-error-summary">
+    <p class="wf-error-summary-title">入力内容を確認してください</p>
+    <ul>
+      <li><a class="ds-link" href="issue-form-input-error.html#item3">項目 3: 入力してください。</a></li>
+      <li><a class="ds-link" href="issue-form-input-error.html#station-2-1">複数局欄 2 行目の局名: 入力してください。</a></li>
+    </ul>
+  </div>
+
+  <form>
+  <section class="wf-section">
+    <h2 class="wf-section-title">依頼の対象</h2>
+    <div class="ds-radiobutton-group">
+      <span class="ds-radiobutton">
+        <input type="radio" id="mode-single" name="mode">
+        <label for="mode-single">単独局</label>
+      </span>
+      <span class="ds-radiobutton">
+        <input type="radio" id="mode-multi" name="mode" checked>
+        <label for="mode-multi">複数局</label>
+      </span>
+      <span class="wf-mode-current">現在のモード: 複数局</span>
+    </div>
+    <p class="wf-section-note">モードを切り替えられる契機、切替で対象外になった入力内容の扱い、複数局モードで制御する項目とその制御内容は基本設計で確定します。</p>
+  </section>
+  <section class="wf-section">
+    <h2 class="wf-section-title">発行依頼書の入力項目</h2>
+    <p class="wf-section-note">項目の一覧・桁・必須は基本設計で確定します。ここでは項目数と配置のイメージのみを示しています。</p>
+    <div class="wf-grid">
+      <div class="wf-field">
+        <label class="wf-field-label" for="item1">項目 1</label>
+        <input class="ds-inputtext" id="item1" type="text" value="">
+      </div>
+      <div class="wf-field">
+        <label class="wf-field-label" for="item2">項目 2</label>
+        <input class="ds-inputtext" id="item2" type="text" value="">
+      </div>
+      <div class="wf-field">
+        <label class="wf-field-label" for="item3">項目 3</label>
+        <input class="ds-inputtext ds-inputtext--error" id="item3" type="text" value="" aria-describedby="item3-error">
+        <p class="wf-field-error" id="item3-error">＊ 入力してください。</p>
+      </div>
+      <div class="wf-field">
+        <label class="wf-field-label" for="item4">項目 4</label>
+        <input class="ds-inputtext" id="item4" type="text" value="">
+      </div>
+      <div class="wf-field">
+        <label class="wf-field-label" for="item5">項目 5</label>
+        <input class="ds-inputtext" id="item5" type="text" value="">
+      </div>
+      <div class="wf-field">
+        <label class="wf-field-label" for="item6">項目 6</label>
+        <input class="ds-inputtext" id="item6" type="text" value="">
+      </div>
+      <div class="wf-field wf-field--2">
+        <label class="wf-field-label" for="item7">項目 7</label>
+        <input class="ds-inputtext" id="item7" type="text" value="">
+      </div>
+      <div class="wf-field">
+        <label class="wf-field-label" for="item8">項目 8</label>
+        <input class="ds-inputtext" id="item8" type="text" value="">
+      </div>
+      <div class="wf-field">
+        <label class="wf-field-label" for="amount">金額</label>
+        <span class="wf-readonly-value" id="amount">1,234,000 円</span>
+        <p class="wf-field-support">入力内容から自動で計算します。算式・対象項目・桁と丸めは基本設計で確定します。</p>
+      </div>
+    </div>
+  </section>
+  <section class="wf-section">
+    <h2 class="wf-section-title">複数局欄</h2>
+    <p class="wf-section-note">明細行のエラーは、どの行のどの項目かが分かる形で表示します。</p>
+    <fieldset class="ds-repeatingfieldgroup">
+      <legend>複数局欄</legend>
+      <div class="ds-repeatingfieldgroup-scroll" role="region" aria-label="複数局欄" tabindex="0">
+        <table class="ds-repeatingfieldgroup-table">
+          <thead aria-hidden="true">
+            <tr>
+              <th scope="col">局名</th>
+              <th scope="col">所在地</th>
+              <th scope="col">契約区分</th>
+              <th scope="col">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <label class="wf-visually-hidden" for="station-1-1">1 行目の局名</label>
+                <input class="ds-inputtext" id="station-1-1" type="text" value="サンプル局 A">
+              </td>
+              <td>
+                <label class="wf-visually-hidden" for="station-1-2">1 行目の所在地</label>
+                <input class="ds-inputtext" id="station-1-2" type="text" value="サンプル市 1-1">
+              </td>
+              <td>
+                <label class="wf-visually-hidden" for="station-1-3">1 行目の契約区分</label>
+                <input class="ds-inputtext" id="station-1-3" type="text" value="新規">
+              </td>
+              <td><button class="ds-button ds-button--secondary ds-button--sm" type="button">1 行目を削除</button></td>
+            </tr>
+            <tr>
+              <td>
+                <label class="wf-visually-hidden" for="station-2-1">2 行目の局名</label>
+                <input class="ds-inputtext" id="station-2-1" type="text" value="">
+              </td>
+              <td>
+                <label class="wf-visually-hidden" for="station-2-2">2 行目の所在地</label>
+                <input class="ds-inputtext" id="station-2-2" type="text" value="サンプル市 2-2">
+              </td>
+              <td>
+                <label class="wf-visually-hidden" for="station-2-3">2 行目の契約区分</label>
+                <input class="ds-inputtext" id="station-2-3" type="text" value="更新">
+              </td>
+              <td><button class="ds-button ds-button--secondary ds-button--sm" type="button">2 行目を削除</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="ds-repeatingfieldgroup-add">
+        <button class="ds-button ds-button--secondary" type="button">行を追加</button>
+      </div>
+    </fieldset>
+  </section>
+    <div class="wf-actions">
+      <button class="ds-button ds-button--primary" type="submit">保存</button>
+      <button class="ds-button ds-button--secondary" type="button">申請する</button>
+      <a class="ds-link" href="issue-form-edit-multi.html">キャンセル</a>
+    </div>
+  </form>
+</main>
+</body>
+</html>

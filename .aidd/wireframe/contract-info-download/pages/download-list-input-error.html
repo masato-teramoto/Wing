@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>契約情報ダウンロード — 条件の入力エラー</title>
+<link rel="stylesheet" href="tokens/tokens.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main class="wf-main">
+  <div class="wf-page-header wf-page-header--with-actions">
+    <div class="wf-page-title-group">
+      <h1 class="wf-page-title">契約情報ダウンロード</h1>
+    </div>
+    <div class="wf-actions">
+      <button class="ds-button ds-button--primary" type="button">CSV ダウンロード</button>
+    </div>
+  </div>
+  <p class="wf-page-lead">既存の契約情報検索／一覧とは別の画面として新規に作成します。出力する CSV は契約情報取込で使える形式にします。</p>
+
+  <div class="wf-error-summary">
+    <p class="wf-error-summary-title">検索条件を確認してください</p>
+    <ul>
+      <li><a class="ds-link" href="download-list-input-error.html#cond2">検索条件 2: 入力の形式を確認してください。</a></li>
+    </ul>
+  </div>
+
+  <div class="ds-disclosure">
+    <p class="ds-disclosure-title">詳細検索</p>
+    <div class="ds-disclosure-content">
+      <p class="wf-section-note">検索条件は既存の [GWTG004] 契約情報検索／一覧と同一にします。条件の項目そのもの・件数・桁・書式・必須、および「同一」の範囲は基本設計で確定します。ここに並べた 8 項目は件数を示すものではありません。</p>
+      <div class="wf-grid">
+        <div class="wf-field">
+          <label class="wf-field-label" for="cond1">検索条件 1<span class="wf-field-optional">※要否は基本設計で確定</span></label>
+          <input class="ds-inputtext" id="cond1" type="text" value="サンプル条件">
+        </div>
+        <div class="wf-field">
+          <label class="wf-field-label" for="cond2">検索条件 2<span class="wf-field-optional">※要否は基本設計で確定</span></label>
+          <input class="ds-inputtext ds-inputtext--error" id="cond2" type="text" value="" aria-describedby="cond2-error">
+          <p class="wf-field-error" id="cond2-error">＊ 入力の形式を確認してください。</p>
+        </div>
+        <div class="wf-field">
+          <label class="wf-field-label" for="cond3">検索条件 3<span class="wf-field-optional">※要否は基本設計で確定</span></label>
+          <input class="ds-inputtext" id="cond3" type="text" value="">
+        </div>
+        <div class="wf-field">
+          <label class="wf-field-label" for="cond4">検索条件 4<span class="wf-field-optional">※要否は基本設計で確定</span></label>
+          <input class="ds-inputtext" id="cond4" type="text" value="">
+        </div>
+        <div class="wf-field">
+          <label class="wf-field-label" for="cond5">検索条件 5<span class="wf-field-optional">※要否は基本設計で確定</span></label>
+          <input class="ds-inputtext" id="cond5" type="text" value="">
+        </div>
+        <div class="wf-field">
+          <label class="wf-field-label" for="cond6">検索条件 6<span class="wf-field-optional">※要否は基本設計で確定</span></label>
+          <input class="ds-inputtext" id="cond6" type="text" value="">
+        </div>
+        <div class="wf-field">
+          <label class="wf-field-label" for="cond7">検索条件 7<span class="wf-field-optional">※要否は基本設計で確定</span></label>
+          <input class="ds-inputtext" id="cond7" type="text" value="">
+        </div>
+        <div class="wf-field">
+          <label class="wf-field-label" for="cond8">検索条件 8<span class="wf-field-optional">※要否は基本設計で確定</span></label>
+          <input class="ds-inputtext" id="cond8" type="text" value="">
+        </div>
+      </div>
+      <div class="wf-actions">
+        <button class="ds-button ds-button--secondary" type="submit">検索</button>
+        <button class="ds-button ds-button--secondary" type="reset">条件をクリア</button>
+      </div>
+    </div>
+  </div>
+</main>
+</body>
+</html>

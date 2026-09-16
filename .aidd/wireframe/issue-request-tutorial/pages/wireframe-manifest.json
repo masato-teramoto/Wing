@@ -1,0 +1,96 @@
+{
+  "$comment": "wireframe-manifest.json 記入用フォーマット。MK1（requirements 承認後・design 着手前）の生成時に wireframe-authoring がコピーして全スロットを埋め、pages/ にワイヤーフレーム HTML と同時に置く。記入規約の正は .claude/skills/wireframe-authoring/SKILL.md（要件 ID の粒度 = 手順 4 / 被覆・未画面化 = 手順 4b・4c / 監査記録 = 手順 5）。記法は specs/_template と同じ: {{大文字}} = 機械記入スロット / [角括弧] = 記述スロット。screens[]・missing[]・unrealized[] は 1 要素の見本 — コピーして必要数に増やし、該当が無ければ空配列にする。functions[] は機能一覧（F-xxx）が案件に存在する場合のみ記入（無ければ空配列のまま）。acknowledged と confirmed_at は人間が記入する（エージェントは acknowledged の by / at / decision を未記入〔null〕・confirmed_at を null のまま出力し、承認・確認を代行しない。acknowledged オブジェクト自体を null に潰さない）。結合段が入口を新設した場合の _app-shell/ の manifest も本フォーマットを使うが、requirements 由来でない共通物のため screens[].requirements は空配列・unrealized は空配列・acknowledged は未記入のままにする",
+  "status": "review",
+  "updated_at": "2026-09-16T19:25:11+09:00",
+  "$comment_status": "本ファイルは Phase 5（画面モック生成）の承認対象成果物であり、上の status / updated_at が **フロントマターと同等の status 担体**である（Markdown ではないためフロントマターを持てない。規約の正は .claude/skills/aidd-flow/references/status-protocol.md §1・§4）。エージェントは draft のまま出力する — draft → review はゲートのサブエージェント（wireframe-check-subagent）、review → approved は人間のみが行う。_app-shell/ の manifest は要件を持たない擬似 feature のため承認対象ではなく、横断スコープのゲートが status を \"n/a\" に落とす",
+  "ds_version": "v0.0.11",
+  "token_profile": "wireframe",
+  "wireframe_notice": "これは要件定義段階のワイヤーフレームです。画面の型・構成・情報量のイメージを掴むためのものであり、この機能・この UI で実装することを確約するものではありません。",
+  "$comment_wireframe_notice": "wireframe プロファイルでは上の圧縮済み定型文をそのまま使う（言い換えない — 原文は wireframe-authoring SKILL.md「注記の定型文」）。wireframe 以外のプロファイルでは null にする",
+  "audit": {
+    "$comment": "生成のたびにエージェントが機械記録する（手で書かない）。result = pass（exit 0）が生成の完了条件 — fail のまま先へ進まない",
+    "ran_at": "2026-09-16",
+    "scripts": [
+      "audit-tokens",
+      "audit-components"
+    ],
+    "result": "pass"
+  },
+  "confirmed_at": null,
+  "screens": [
+    {
+      "screen": "チュートリアル設定",
+      "pattern": "form-page",
+      "components": [
+        "RepeatingFieldGroup",
+        "InputText",
+        "Button",
+        "ModalDialog",
+        "Skeleton",
+        "Link"
+      ],
+      "states": [
+        "default（新規登録）",
+        "default（変更）",
+        "default（設定削除の確認ダイアログ）",
+        "min-reached",
+        "input-error",
+        "submitting",
+        "loading",
+        "leave-confirm"
+      ],
+      "functions": [],
+      "requirements": [
+        "1",
+        "2",
+        "3"
+      ],
+      "notes": "steering を根拠に画面へ載せた情報は無い。 選択肢・入力欄・例は件数が可変のため RepeatingFieldGroup で組んだ（Requirement 3 の受入基準 1）。表示順序を保持する列は置いていない — 順序の持ち方（設定として保持するか項目の定義順に従うか）が未確定事項 ⑤ のため画面で確定させない。 26 フォーム相当の設定項目（未確定事項 ②）と全体の構成（未確定事項 ③）が確定していないため、画面は 1 フォーム分の設定の型のみを示し、フォームを選ぶ操作や 26 フォームを束ねる構成は置いていない。Requirement 2 は unrealized[] にも記録している（登録・変更・削除の操作は画面にあり、設定項目そのものが未画面化という部分的な状態のため両方に現れる）。 行の削除は確認ダイアログを挟んでいない（RepeatingFieldGroup spec の never_use_when）。設定そのものの削除（Requirement 2 の受入基準 7）は破壊的操作のため ModalDialog で確認し、Button variant は danger とした。 選択肢・入力欄・例のダミー値は書式の指定が要件に無いため、汎用的な語のみを用いた。 被覆の分母から外した受入基準と類型: Requirement 1 の受入基準 1（画面ID・PGID の採番）・2（未ログイン時の遷移）・4（SQL の WHERE 条件）、Requirement 2 の受入基準 5・6（排他制御・テーブルの命名規則）、Requirement 3 の受入基準 5（設定の保存形式と issue-request 側の実装）・6（適用範囲）。いずれもバックエンド専用処理または他 feature の責務。"
+    },
+    {
+      "screen": "エラー画面（権限なし）",
+      "pattern": "error-page",
+      "components": [
+        "Link"
+      ],
+      "states": [
+        "default"
+      ],
+      "functions": [],
+      "requirements": [
+        "1"
+      ],
+      "notes": "Requirement 1 の受入基準 3（権限を持たない場合にエラー画面へメッセージIDに対応する文言を表示する）に対応する。variant は 403。"
+    }
+  ],
+  "missing": [
+    {
+      "name": "NotificationBanner の status-* アイコン（SVG の実体）",
+      "reason": "DS v0.0.11 の icons/ には ICON-MAP.md のみで SVG の実体が無い。情報アイコンはラベルで代替できないため、NotificationBanner を要する状態のページを生成していない。"
+    },
+    {
+      "name": "装飾アイコンの SVG の実体",
+      "reason": "同上。装飾アイコンはラベルが意味を担うため、アイコンを付けず可視ラベルのみで組んで続行した。"
+    },
+    {
+      "name": "罫線の太さ（border-width）のトークン",
+      "reason": "部品 spec は罫線の色を定めるが太さのトークンが tokens に無く、px の直書きは監査で禁止されるため CSS キーワード thin で組んだ。"
+    }
+  ],
+  "unrealized": [
+    {
+      "requirements": [
+        "2"
+      ],
+      "screen": "26 フォーム相当の設定項目",
+      "reason": "現行の設定用ウインドウ 26 フォームそれぞれの設定項目が未確定事項 ② で基本設計に送られており、26 フォーム相当を 1 画面に集約するか複数画面に分けるかも未確定事項 ③ のため、設定項目そのものと全体の構成を画面にできない。登録・変更・削除の操作の型は画面に置いている。",
+      "category": "requirements 起因"
+    }
+  ],
+  "acknowledged": {
+    "$comment": "開発者が記入する（未画面化要件の承認）。承認なしに結合段・MK2 へ進まない。判定基準は「主要画面が生成できていれば進んでよい」。unrealized が空配列 [] の feature では承認不要 — by / at / decision を未記入のまま先へ進んでよい。記入の場は Phase 5 の ③ 人間レビュー（承認の判断と同じ停止点で行い、停止点を増やさない）",
+    "by": null,
+    "at": null,
+    "decision": null
+  }
+}

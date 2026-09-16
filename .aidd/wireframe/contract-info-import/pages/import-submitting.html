@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>契約情報インポート — 実行中</title>
+<link rel="stylesheet" href="tokens/tokens.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main class="wf-main">
+  <div class="wf-page-header">
+    <h1 class="wf-page-title">契約情報インポート</h1>
+    <p class="wf-page-lead">取込の処理はバッチが行います。この画面では実行の指示と受付の確認のみを行います。</p>
+  </div>
+
+  <nav class="wf-steps" aria-label="取込の実行手順">
+    <span class="wf-step">1. 入力</span>
+    <span class="wf-step wf-step--current" aria-current="step">2. 確認</span>
+    <span class="wf-step">3. 完了</span>
+  </nav>
+
+  <section class="wf-section">
+    <h2 class="wf-section-title">この内容で取込を実行します</h2>
+    <dl class="wf-dl">
+      <dt>取込の対象</dt><dd>サンプル指定</dd>
+      <dt>実行する処理</dt><dd>新規・変更・削除の取込</dd>
+    </dl>
+  </section>
+
+  <div class="wf-actions">
+    <button class="ds-button ds-button--secondary" type="button">戻る</button>
+    <button class="ds-button ds-button--primary" type="button" aria-busy="true">受け付けています</button>
+  </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,130 @@
+{
+  "$comment": "wireframe-manifest.json 記入用フォーマット。MK1（requirements 承認後・design 着手前）の生成時に wireframe-authoring がコピーして全スロットを埋め、pages/ にワイヤーフレーム HTML と同時に置く。記入規約の正は .claude/skills/wireframe-authoring/SKILL.md（要件 ID の粒度 = 手順 4 / 被覆・未画面化 = 手順 4b・4c / 監査記録 = 手順 5）。記法は specs/_template と同じ: {{大文字}} = 機械記入スロット / [角括弧] = 記述スロット。screens[]・missing[]・unrealized[] は 1 要素の見本 — コピーして必要数に増やし、該当が無ければ空配列にする。functions[] は機能一覧（F-xxx）が案件に存在する場合のみ記入（無ければ空配列のまま）。acknowledged と confirmed_at は人間が記入する（エージェントは acknowledged の by / at / decision を未記入〔null〕・confirmed_at を null のまま出力し、承認・確認を代行しない。acknowledged オブジェクト自体を null に潰さない）。結合段が入口を新設した場合の _app-shell/ の manifest も本フォーマットを使うが、requirements 由来でない共通物のため screens[].requirements は空配列・unrealized は空配列・acknowledged は未記入のままにする",
+  "status": "review",
+  "updated_at": "2026-09-16T19:35:34+09:00",
+  "$comment_status": "本ファイルは Phase 5（画面モック生成）の承認対象成果物であり、上の status / updated_at が **フロントマターと同等の status 担体**である（Markdown ではないためフロントマターを持てない。規約の正は .claude/skills/aidd-flow/references/status-protocol.md §1・§4）。エージェントは draft のまま出力する — draft → review はゲートのサブエージェント（wireframe-check-subagent）、review → approved は人間のみが行う。_app-shell/ の manifest は要件を持たない擬似 feature のため承認対象ではなく、横断スコープのゲートが status を \"n/a\" に落とす",
+  "ds_version": "v0.0.11",
+  "token_profile": "wireframe",
+  "wireframe_notice": "これは要件定義段階のワイヤーフレームです。画面の型・構成・情報量のイメージを掴むためのものであり、この機能・この UI で実装することを確約するものではありません。",
+  "$comment_wireframe_notice": "wireframe プロファイルでは上の圧縮済み定型文をそのまま使う（言い換えない — 原文は wireframe-authoring SKILL.md「注記の定型文」）。wireframe 以外のプロファイルでは null にする",
+  "audit": {
+    "$comment": "生成のたびにエージェントが機械記録する（手で書かない）。result = pass（exit 0）が生成の完了条件 — fail のまま先へ進まない",
+    "ran_at": "2026-09-16",
+    "scripts": [
+      "audit-tokens",
+      "audit-components"
+    ],
+    "result": "pass"
+  },
+  "confirmed_at": null,
+  "screens": [
+    {
+      "screen": "発行依頼書 登録・変更",
+      "pattern": "form-page",
+      "components": [
+        "InputText",
+        "Select",
+        "RadioButton",
+        "Button",
+        "RepeatingFieldGroup",
+        "ModalDialog",
+        "Skeleton",
+        "Link",
+        "Badge"
+      ],
+      "states": [
+        "default（新規登録・単独局モード）",
+        "default（変更・複数局モード）",
+        "default（承認者として開いた状態）",
+        "default（チュートリアルの設定なし）",
+        "input-error / row-error",
+        "submitting",
+        "loading",
+        "leave-confirm"
+      ],
+      "functions": [],
+      "requirements": [
+        "1",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "12"
+      ],
+      "notes": "入力項目の名称・桁・必須は requirements・steering のいずれにも根拠が無く未確定事項 ② で基本設計に送られているため、匿名のプレースホルダー（項目 1〜8）で項目数と配置のイメージのみを示した（人間の判断 / 2026-09-16）。同じ理由で各項目の要否表示も置いていない。 steering を根拠に画面へ載せた情報は無い。 単独局／複数局の切替は選択肢が 2 つのため RadioButton で組んだ（Select spec の never_use_when「選択肢が 5 個以下」）。複数局モードで非活性にする項目は未確定事項 ⑧ のため、制御があること自体のイメージとして一部の項目を非活性にしたにとどまる。 サンプル入力のボタンは「複数設ける」ことが Requirement 4 の受入基準 1 で確定しているため 3 個置いたが、個数と対象範囲は未確定事項 ⑤ のため確定ではない。 金額は自動計算の結果を読み取り専用の表示として置いた（Requirement 6）。算式・対象項目・桁と丸めは未確定事項 ⑦ のため確定させていない。 チュートリアルの選択肢・入力欄・例は issue-request-tutorial が定義する内容であり、本画面では組み込み側の型のみを示している（Requirement 12 の受入基準 3）。ダミーの選択肢・例は issue-request-tutorial のワイヤーフレームと同じ語を用いて feature 間で割れないようにした。 form-page の layout からの逸脱が 2 点ある（DS 側の課題として missing[] に記録）。(1) ページヘッダにステータスと契約書番号の Badge を置いた（Requirement 9 の受入基準 3・Requirement 3 の受入基準 3）。(2) アクション行に送信・キャンセル以外の Button（申請・承認）を置き、発番とバーコード生成の操作を独立セクションに置いた。 ステータスの表示値は未確定事項 ⑩ のため、requirements の本文に現れる語の範囲（申請前・承認待ち）に限った。承認フローの段階数・各段階の承認者・スキップの扱いも画面に置いていない。 被覆の分母から外した受入基準と類型: Requirement 1 の受入基準 1・3・4・6・8（採番・排他制御・未ログイン時の遷移・SQL の WHERE 条件・テーブルの命名規則）、Requirement 2 の受入基準 3・4・5・7（サーバ側判定・データ範囲の制御方式・ログ記録・CSRF 検証）、Requirement 3 の受入基準 1・2（採番マスタと直列化）、Requirement 6 の受入基準 2・3（サーバ側再計算・型）、Requirement 7 の受入基準 2・3（Service でのチェック・サーバ側判定）、Requirement 8 の受入基準 2・4（保存・バインド上限）、Requirement 9 の受入基準 4〜8（履歴の登録・トランザクション・テーブル種別・物理削除しない）、Requirement 12 の受入基準 4・6（検証の正としない = 否定形・読み取り経路）。いずれもバックエンド専用処理または否定形。"
+    },
+    {
+      "screen": "バーコードの生成（ポップアップ）",
+      "pattern": "list-page",
+      "components": [
+        "Button",
+        "Table",
+        "Checkbox",
+        "Badge",
+        "EmptyState",
+        "ModalDialog",
+        "Skeleton"
+      ],
+      "states": [
+        "default",
+        "rows-selected",
+        "rows-selected（削除の確認ダイアログ）",
+        "empty",
+        "loading"
+      ],
+      "functions": [],
+      "requirements": [
+        "10",
+        "11"
+      ],
+      "notes": "Requirement 10 の受入基準 2 が求めるポップアップ画面として、発行依頼書登録・変更画面から新しいタブで開く独立した画面にした。バーコードの削除は論理削除であり一覧に残す（Requirement 11 の受入基準 1・2）ため、削除済みの行を状態つきで表示したままにし、その行の選択を不可にして編集を行わせない（受入基準 3）。行ごとの操作ボタン列は list-page の never_do で禁止されているため、削除は行選択と選択アクションバーの一括操作として組み、破壊的操作のため ModalDialog で件数を明記して確認する。バーコードの値は規格・桁が未確定事項 ⑪ のため、汎用的な数値のみのダミーとした。"
+    },
+    {
+      "screen": "エラー画面（権限なし）",
+      "pattern": "error-page",
+      "components": [
+        "Link"
+      ],
+      "states": [
+        "default"
+      ],
+      "functions": [],
+      "requirements": [
+        "2"
+      ],
+      "notes": "Requirement 2 の受入基準 1（権限を持たない場合にエラー画面へメッセージIDに対応する文言を表示する）に対応する。variant は 403。受入基準 2 の「権限に応じた画面要素の活性・非活性・非表示」は、制御の対象となる画面要素が未確定事項 ③ のため画面化していない。受入基準 6 のバーコード生成ポップアップも同じ権限判定の対象であり、同一のエラー画面で表す。"
+    }
+  ],
+  "missing": [
+    {
+      "name": "NotificationBanner の status-* アイコン（SVG の実体）",
+      "reason": "DS v0.0.11 の icons/ には ICON-MAP.md のみで SVG の実体が無い。情報アイコンはラベルで代替できないため、NotificationBanner を要する状態のページを生成していない。"
+    },
+    {
+      "name": "装飾アイコンの SVG の実体",
+      "reason": "同上。装飾アイコンはラベルが意味を担うため、アイコンを付けず可視ラベルのみで組んで続行した。"
+    },
+    {
+      "name": "罫線の太さ（border-width）のトークン",
+      "reason": "部品 spec は罫線の色を定めるが太さのトークンが tokens に無く、px の直書きは監査で禁止されるため CSS キーワード thin で組んだ。"
+    },
+    {
+      "name": "form-page におけるレコード操作の構え",
+      "reason": "業務の登録・変更画面が送信・キャンセル以外のレコード操作（申請・承認・発番・別画面の起動）を伴う場合の置き場所を form-page の layout が定めていない。アクション行と独立セクションに置いて続行した。"
+    },
+    {
+      "name": "form-page における既存レコードのステータス表示の構え",
+      "reason": "編集対象のレコードが状態（ステータス）や採番結果を持つ場合の表示位置を form-page が定めておらず、components に Badge も含まれない。ページヘッダに Badge を置いて続行した。"
+    }
+  ],
+  "unrealized": [],
+  "acknowledged": {
+    "$comment": "開発者が記入する（未画面化要件の承認）。承認なしに結合段・MK2 へ進まない。判定基準は「主要画面が生成できていれば進んでよい」。unrealized が空配列 [] の feature では承認不要 — by / at / decision を未記入のまま先へ進んでよい。記入の場は Phase 5 の ③ 人間レビュー（承認の判断と同じ停止点で行い、停止点を増やさない）",
+    "by": null,
+    "at": null,
+    "decision": null
+  }
+}

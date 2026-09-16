@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>発行依頼書 ワイヤーフレーム</title>
+<link rel="stylesheet" href="pages/tokens/tokens.css">
+<style>
+  body {
+    margin: 0;
+    background: var(--color-semantic-canvas);
+    color: var(--color-semantic-text);
+    font-family: system-ui, sans-serif;
+    font-size: var(--font-size-body);
+    line-height: 1.6;
+  }
+  .viewer-notice {
+    padding: var(--space-md);
+    background: var(--color-semantic-surface);
+    border-bottom: thin solid var(--color-semantic-border);
+  }
+  .viewer-notice h1 {
+    margin: 0;
+    font-size: var(--font-size-body);
+  }
+  .viewer-notice p {
+    margin-top: var(--space-xs);
+    margin-bottom: 0;
+    color: var(--color-semantic-text-subtle);
+    font-size: var(--font-size-caption);
+  }
+  .viewer-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+    padding: var(--space-sm) var(--space-md);
+    border-bottom: thin solid var(--color-semantic-border);
+    font-size: var(--font-size-caption);
+  }
+  .viewer-nav a {
+    color: var(--color-semantic-primary);
+  }
+  .viewer-frame {
+    display: block;
+    width: 100%;
+    height: 80vh;
+    border: 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="viewer-notice">
+  <h1>これは要件定義段階のワイヤーフレームです</h1>
+  <p>画面の型・構成・情報量のイメージを掴むためのものです。この機能・この UI で実装することを確約するものではありません。</p>
+  <p>色・書体・細部の見た目は未確定です。ブランドの色は基本設計の工程で決めます。</p>
+</div>
+
+<nav class="viewer-nav">
+  <a href="pages/issue-form-new-single.html" target="wf">発行依頼書 登録・変更 / default（新規登録・単独局モード）</a>
+  <a href="pages/issue-form-edit-multi.html" target="wf">発行依頼書 登録・変更 / default（変更・複数局モード）</a>
+  <a href="pages/issue-form-approve.html" target="wf">発行依頼書 登録・変更 / default（承認者として開いた状態）</a>
+  <a href="pages/issue-form-tutorial-empty.html" target="wf">発行依頼書 登録・変更 / default（チュートリアルの設定なし）</a>
+  <a href="pages/issue-form-input-error.html" target="wf">発行依頼書 登録・変更 / input-error / row-error</a>
+  <a href="pages/issue-form-submitting.html" target="wf">発行依頼書 登録・変更 / submitting</a>
+  <a href="pages/issue-form-loading.html" target="wf">発行依頼書 登録・変更 / loading</a>
+  <a href="pages/issue-form-leave-confirm.html" target="wf">発行依頼書 登録・変更 / leave-confirm</a>
+  <a href="pages/barcode-popup-default.html" target="wf">バーコードの生成（ポップアップ） / default</a>
+  <a href="pages/barcode-popup-rows-selected.html" target="wf">バーコードの生成（ポップアップ） / rows-selected</a>
+  <a href="pages/barcode-popup-delete-confirm.html" target="wf">バーコードの生成（ポップアップ） / rows-selected（削除の確認ダイアログ）</a>
+  <a href="pages/barcode-popup-empty.html" target="wf">バーコードの生成（ポップアップ） / empty</a>
+  <a href="pages/barcode-popup-loading.html" target="wf">バーコードの生成（ポップアップ） / loading</a>
+  <a href="pages/error-403.html" target="wf">エラー画面（権限なし） / default</a>
+</nav>
+
+<iframe class="viewer-frame" name="wf" src="pages/issue-form-edit-multi.html" title="発行依頼書のワイヤーフレーム"></iframe>
+
+</body>
+</html>

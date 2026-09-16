@@ -1,0 +1,89 @@
+{
+  "$comment": "wireframe-manifest.json 記入用フォーマット。MK1（requirements 承認後・design 着手前）の生成時に wireframe-authoring がコピーして全スロットを埋め、pages/ にワイヤーフレーム HTML と同時に置く。記入規約の正は .claude/skills/wireframe-authoring/SKILL.md（要件 ID の粒度 = 手順 4 / 被覆・未画面化 = 手順 4b・4c / 監査記録 = 手順 5）。記法は specs/_template と同じ: {{大文字}} = 機械記入スロット / [角括弧] = 記述スロット。screens[]・missing[]・unrealized[] は 1 要素の見本 — コピーして必要数に増やし、該当が無ければ空配列にする。functions[] は機能一覧（F-xxx）が案件に存在する場合のみ記入（無ければ空配列のまま）。acknowledged と confirmed_at は人間が記入する（エージェントは acknowledged の by / at / decision を未記入〔null〕・confirmed_at を null のまま出力し、承認・確認を代行しない。acknowledged オブジェクト自体を null に潰さない）。結合段が入口を新設した場合の _app-shell/ の manifest も本フォーマットを使うが、requirements 由来でない共通物のため screens[].requirements は空配列・unrealized は空配列・acknowledged は未記入のままにする",
+  "status": "review",
+  "updated_at": "2026-09-16T18:40:35+09:00",
+  "$comment_status": "本ファイルは Phase 5（画面モック生成）の承認対象成果物であり、上の status / updated_at が **フロントマターと同等の status 担体**である（Markdown ではないためフロントマターを持てない。規約の正は .claude/skills/aidd-flow/references/status-protocol.md §1・§4）。エージェントは draft のまま出力する — draft → review はゲートのサブエージェント（wireframe-check-subagent）、review → approved は人間のみが行う。_app-shell/ の manifest は要件を持たない擬似 feature のため承認対象ではなく、横断スコープのゲートが status を \"n/a\" に落とす",
+  "ds_version": "v0.0.11",
+  "token_profile": "wireframe",
+  "wireframe_notice": "これは要件定義段階のワイヤーフレームです。画面の型・構成・情報量のイメージを掴むためのものであり、この機能・この UI で実装することを確約するものではありません。",
+  "$comment_wireframe_notice": "wireframe プロファイルでは上の圧縮済み定型文をそのまま使う（言い換えない — 原文は wireframe-authoring SKILL.md「注記の定型文」）。wireframe 以外のプロファイルでは null にする",
+  "audit": {
+    "$comment": "生成のたびにエージェントが機械記録する（手で書かない）。result = pass（exit 0）が生成の完了条件 — fail のまま先へ進まない",
+    "ran_at": "2026-09-16",
+    "scripts": [
+      "audit-tokens",
+      "audit-components"
+    ],
+    "result": "pass"
+  },
+  "confirmed_at": null,
+  "screens": [
+    {
+      "screen": "作成組織検索",
+      "pattern": "list-page",
+      "components": [
+        "Select",
+        "Button",
+        "Table",
+        "Link",
+        "EmptyState",
+        "Skeleton",
+        "Pagination"
+      ],
+      "states": [
+        "default",
+        "filters-applied",
+        "first-page",
+        "last-page",
+        "page-changed",
+        "empty",
+        "filter-empty",
+        "loading",
+        "error"
+      ],
+      "functions": [],
+      "requirements": [
+        "1",
+        "2",
+        "3"
+      ],
+      "notes": "steering を根拠に画面へ載せた情報は無い（画面内容はすべて当該 feature の requirements に根拠を持つ）。 生成しなかった list-page の状態と理由: notice = NotificationBanner の情報アイコンの SVG 実体が DS v0.0.11 に無いため当該状態のページを作らず missing[] に記録した / rows-selected・bulk-action-done = 本 feature は一覧からの単一選択のみで一括操作を持たない（requirements Requirement 3）。 検索条件は 3 項目とも Select で組んだ。Select spec の never_use_when は名称・コードで探すマスタ参照に Combobox を指すが、Requirement 2 の受入基準 2 が「自由入力の欄を設けない」と定めるため Select を採った。選択肢の件数が 30 を超える場合は DS の Select の適用外になるため、件数の確定（未確定事項 ②・③）とあわせて基本設計で扱う。 検索条件の要否は requirements に規定が無い。Select spec が要否表示を求めるため「※任意」を置いたが、要否そのものは確定していない。 一覧の列は人間が確定した 3 項目（会社名・部署名・所属名）に限った。表示項目・並び順・表示件数の上限は未確定事項 ⑤ に従い基本設計で確定する。ページングの 1 ページ 5 件・総 10 件はダミー値であり件数の確定ではない。 行の主キー列（所属名）の Link が「選択して呼び出し元へ返す」操作に当たる（Requirement 3）。呼び出し元画面への復帰は feature 間の動線のため結合段で接続する。 被覆の分母から外した受入基準と類型: Requirement 1 の受入基準 3（未ログイン時のログイン画面への遷移 = 他画面への遷移）・受入基準 5（画面ID・PGID の採番 = UI に現れない）、Requirement 2 の受入基準 7（並び順を SQL 側で確定 = バックエンド専用処理）、Requirement 3 の受入基準 3（選択せず閉じたとき入力値を変更しない = 否定形）・受入基準 4（2 つの呼び出し元へ同一形式で返す = バックエンド／インタフェース）。いずれも Requirement 単位では画面に現れており未画面化ではない。"
+    },
+    {
+      "screen": "エラー画面（権限なし）",
+      "pattern": "error-page",
+      "components": [
+        "Link"
+      ],
+      "states": [
+        "default"
+      ],
+      "functions": [],
+      "requirements": [
+        "1"
+      ],
+      "notes": "Requirement 1 の受入基準 4（権限を持たない場合にエラー画面へメッセージIDに対応する文言を表示する）に対応する。variant は 403。表示する文言はメッセージIDで管理する前提のため、画面には文言の管理方法が分かる補助情報のみを置き、メッセージIDの具体値は確定させていない。"
+    }
+  ],
+  "missing": [
+    {
+      "name": "NotificationBanner の status-* アイコン（SVG の実体）",
+      "reason": "DS v0.0.11 の icons/ には ICON-MAP.md のみで SVG の実体が無い。種別が情報のアイコンはラベルで代替できないため、NotificationBanner を要する list-page の notice 状態のページを生成していない。"
+    },
+    {
+      "name": "装飾アイコンの SVG の実体（search / prev / next）",
+      "reason": "同上。装飾アイコンはラベルが意味を担うため、アイコンを付けず可視ラベルのみで組んで続行した（絞り込みの search、Pagination の前へ / 次へ）。"
+    },
+    {
+      "name": "罫線の太さ（border-width）のトークン",
+      "reason": "部品 spec は罫線の色（color.semantic.border）を定めるが太さのトークンが tokens に無く、px の直書きは監査で禁止されるため CSS キーワード thin で組んだ。"
+    }
+  ],
+  "unrealized": [],
+  "acknowledged": {
+    "$comment": "開発者が記入する（未画面化要件の承認）。承認なしに結合段・MK2 へ進まない。判定基準は「主要画面が生成できていれば進んでよい」。unrealized が空配列 [] の feature では承認不要 — by / at / decision を未記入のまま先へ進んでよい。記入の場は Phase 5 の ③ 人間レビュー（承認の判断と同じ停止点で行い、停止点を増やさない）",
+    "by": null,
+    "at": null,
+    "decision": null
+  }
+}
