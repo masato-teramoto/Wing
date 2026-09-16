@@ -1,33 +1,10 @@
 {
-  "updated_at": "2026-09-14T19:58:00+09:00",
-
+  "updated_at": "2026-09-16T16:21:06+09:00",
   "current": {
-    "phase": 4,
-    "phase_name": "requirements 作成",
-    "waiting_for": "human_review",
-    "next_action": "【再開点 / 2026-09-14 中断】specs/issue-request-tutorial/requirements.md（status: review）の ③ 人間レビューから再開する。第 1 回ゲートの指摘 13 件（#54〜#66）は .aidd/gates/phase-4-requirements.md の ### issue-request-tutorial に記録済みで、判断 / 理由 の列はいずれも未記入である。エージェントから人間へ次の推奨を提示済み・人間の回答待ち: 『修正 5 件（#55・#56・#57・#63・#65）→ 第 2 回ゲート → 承認。往復は 2 回まで』『対応せず進める 8 件（#54・#58・#59・#60・#61・#62・#64・#66）』。各件の修正内容の案は下記 pending_review に持つ。承認まで進んだら (a) ゲート記録の ## 承認 に承認者名・承認日・残件を記入し、(b) requirements.md を approved にし、(c) 優先度 4 の issue-request の作成に進む。Phase 4 は残り 4 feature（issue-request → contract-application-status → contract-info-import → contract-info-download の順）と、全 feature approved 後の横断スコープ 1 回。approved 済み: organization-search-zoom / property-basic-info（いずれも 2026-09-14 に Junichi Noumi が承認）。未コミットの成果物あり: specs/property-basic-info/・specs/issue-request-tutorial/（untracked）、specs/organization-search-zoom/requirements.md・.aidd/gates/phase-4-requirements.md・.aidd/phase-progress.json（変更）。",
-    "pending_review": {
-      "target": "specs/issue-request-tutorial/requirements.md",
-      "gate_round": 1,
-      "note": "エージェントが提示した推奨。人間はまだ回答していないため、再開時はこの推奨の可否を確認するところから始める（推奨を既決として進めないこと）",
-      "recommended_fix": {
-        "#55": "REQ-035 の『表示される』振る舞いを Out of Scope で issue-request に委譲したが、feature-list.md の issue-request の 対応要求ID に REQ-035 が無く受け手が不在になっている。表示の振る舞いの定義を本 feature の In Scope に戻し、Out of Scope は『発行依頼書登録変更画面への組み込み（画面側の実装）』に限定する。Phase 3 へは差し戻さない",
-        "#56": "前提の『付録A から 26 フォームの設定項目が確認できる』は REQ-073（付録A = 現行システム機能一覧）の範囲を超えている。前提を『現行の設定用ウインドウの仕様が確認できること』に緩め、設定項目の入手元は未確定事項 ② に送る",
-        "#57": "Requirement 3 受入基準 2（順序を設定として保持すると断定）と 受入基準 4・未確定事項 ⑤（順序の決まり方は未確定）が矛盾している。3-2 の断定を外し、順序の持ち方を ⑤ に一本化する",
-        "#63": "設定の削除の扱いが本書のどこにも無い（database.md は物理削除を既定としないと定めている）。削除の受入基準を追加し、論理削除か物理削除かを未確定事項に追加する",
-        "#65": "未確定事項 ⑥ が適用範囲に『全社共通』を残す一方、Requirement 1 受入基準 4 は会社コードで必ず絞り込むとしており両立の仕方が読めない。⑥ から全社共通を外すか、会社コード絞り込みとの関係を明記する"
-      },
-      "recommended_accept_as_is": {
-        "#54": "docs/architecture/system-overview.md の参照先不在。#2・#12・#25 と同一条件で判断済み",
-        "#58": "『基本設計で確定した内容に従う』のみの受入基準 6 件。未確定事項への集約という共通の扱いの帰結",
-        "#59": "観測対象が特定できない受入基準 6 件。同上",
-        "#60": "確認の主体が実装・設計レビューに限られる受入基準 2 件。共通基盤への準拠を求める基準は性質上そうなる",
-        "#61": "issue-request が設定を読む経路（新規テーブル直参照か common の共通サービスか）。基本設計で確定",
-        "#62": "『選択肢』が区分値か利用者定義の設定データか。基本設計で確定",
-        "#64": "non-functional.md に該当節が無い。#11・#33 と同一条件で判断済み（Phase 2 へ差し戻さない）",
-        "#66": "複数画面構成時の画面間パラメータ有効時間 10 秒。organization-search-zoom #21・property-basic-info #47 と同じ判断にそろえる"
-      }
-    },
+    "phase": 5,
+    "phase_name": "画面モック生成",
+    "waiting_for": "human_go_ahead",
+    "next_action": "【2026-09-16】**Phase 4 完了。** 全 7 feature の requirements.md が approved になり、横断スコープのゲート（指摘 #166〜#177）の ③ も済んだ（12 件すべて「対応せず進める」。判断と基本設計への申し送りは .aidd/gates/phase-4-requirements.md の ### 【横断】Phase 4 の完了判断）。次は Phase 5（画面モック生成）の Step 0 = 実行計画の提示から。**Step 0 の前に人間の入力が 2 つ必要: (a) 使用するデザインシステムの版（タグ）の指定（エージェントが選んではならない）、(b) UI を持たないとして対象から外す feature の確定。** 実行環境の要件は Node.js と ds/ の取得（版を固定）。DS が未取得・版が未指定のまま生成に入ってはならない。",
     "conventions": {
       "note": "organization-search-zoom の作成中に人間が確定した、Phase 4 の全 feature に適用する扱い。再開時にこれを前提として作成を進めてよい（再度の確認は不要）",
       "nfr_table": "非機能要件の表はセキュリティ区分のみ記入する。パフォーマンス / 可用性 / 運用・監視 / アクセシビリティ / i18n・l10n / プライバシー / 監査 の 7 区分は『non-functional.md に準拠し、feature 固有の値を設けない』を不要理由として付記し、プレースホルダーを削除せず保持する",
@@ -37,85 +14,230 @@
       "business_flow_section": "業務フローのセクションは、承認フローや紙業務の置き換えを伴う feature（property-basic-info / issue-request）でのみ記述する。それ以外の feature は『不要（記入者: 人間 / 日付）』の理由を添えてプレースホルダーを保持する",
       "gate_findings": "ゲートの指摘は合否ではない。指摘ゼロまでループせず、『対応せず進める』に理由を書いて進めてよい。本文を修正した場合のみ review → draft に戻して再ゲートする"
     },
-    "open_blockers": 0
+    "open_blockers": 0,
+    "phase4_closed": {
+      "closed_at": "2026-09-16T16:21:06+09:00",
+      "decided_by": "Junichi Noumi",
+      "findings_total": 177,
+      "fixed": 84,
+      "accept_as_is": 93,
+      "gate_record": ".aidd/gates/phase-4-requirements.md",
+      "note": "feature スコープ 165 件 + 横断 12 件。未対応（判断未記入）0 件。横断の 12 件は基本設計への申し送りとしてゲート記録の ### 【横断】Phase 4 の完了判断 に集約した"
+    }
   },
-
   "phases": [
-    { "phase": 1, "name": "要求受入", "artifact": "要求一覧", "status": "approved", "updated_at": "2026-09-11T15:17:00+09:00", "gate_record": ".aidd/gates/phase-1-intake.md" },
-    { "phase": 2, "name": "Steering 作成", "artifact": "steering/ 7ファイル", "status": "approved", "updated_at": "2026-09-11T12:02:27+09:00", "gate_record": ".aidd/gates/phase-2-steering.md" },
-    { "phase": 3, "name": "Feature 分割", "artifact": "feature-list.md", "status": "approved", "updated_at": "2026-09-11T15:59:23+09:00", "gate_record": ".aidd/gates/phase-3-feature.md" },
-    { "phase": 4, "name": "requirements 作成", "artifact": "specs/*/requirements.md", "status": "not_started", "updated_at": "2026-09-14T19:58:00+09:00", "gate_record": ".aidd/gates/phase-4-requirements.md" },
-    { "phase": 5, "name": "画面モック生成", "artifact": ".aidd/wireframe/*/pages/", "status": "not_started", "updated_at": "2026-09-10T12:04:04+09:00", "gate_record": ".aidd/gates/phase-5-wireframe.md" }
+    {
+      "phase": 1,
+      "name": "要求受入",
+      "artifact": "要求一覧",
+      "status": "approved",
+      "updated_at": "2026-09-11T15:17:00+09:00",
+      "gate_record": ".aidd/gates/phase-1-intake.md"
+    },
+    {
+      "phase": 2,
+      "name": "Steering 作成",
+      "artifact": "steering/ 7ファイル",
+      "status": "approved",
+      "updated_at": "2026-09-11T12:02:27+09:00",
+      "gate_record": ".aidd/gates/phase-2-steering.md"
+    },
+    {
+      "phase": 3,
+      "name": "Feature 分割",
+      "artifact": "feature-list.md",
+      "status": "approved",
+      "updated_at": "2026-09-11T15:59:23+09:00",
+      "gate_record": ".aidd/gates/phase-3-feature.md"
+    },
+    {
+      "phase": 4,
+      "name": "requirements 作成",
+      "artifact": "specs/*/requirements.md",
+      "status": "approved",
+      "updated_at": "2026-09-16T13:08:57+09:00",
+      "gate_record": ".aidd/gates/phase-4-requirements.md"
+    },
+    {
+      "phase": 5,
+      "name": "画面モック生成",
+      "artifact": ".aidd/wireframe/*/pages/",
+      "status": "not_started",
+      "updated_at": "2026-09-10T12:04:04+09:00",
+      "gate_record": ".aidd/gates/phase-5-wireframe.md"
+    }
   ],
-
   "steering": {
-    "product":        { "status": "approved", "updated_at": "2026-09-11T12:02:27+09:00", "waiting_for": null, "open_placeholders": 0 },
-    "tech":           { "status": "approved", "updated_at": "2026-09-11T12:02:27+09:00", "waiting_for": null, "open_placeholders": 0 },
-    "architecture":   { "status": "approved", "updated_at": "2026-09-11T12:02:27+09:00", "waiting_for": null, "open_placeholders": 0 },
-    "security":       { "status": "approved", "updated_at": "2026-09-11T12:02:27+09:00", "waiting_for": null, "open_placeholders": 0 },
-    "non-functional": { "status": "approved", "updated_at": "2026-09-11T12:02:27+09:00", "waiting_for": null, "open_placeholders": 0 },
-    "database":       { "status": "approved", "updated_at": "2026-09-11T12:02:27+09:00", "waiting_for": null, "open_placeholders": 0 },
-    "api-standards":  { "status": "approved", "updated_at": "2026-09-11T12:02:27+09:00", "waiting_for": null, "open_placeholders": 0 }
+    "product": {
+      "status": "approved",
+      "updated_at": "2026-09-11T12:02:27+09:00",
+      "waiting_for": null,
+      "open_placeholders": 0
+    },
+    "tech": {
+      "status": "approved",
+      "updated_at": "2026-09-11T12:02:27+09:00",
+      "waiting_for": null,
+      "open_placeholders": 0
+    },
+    "architecture": {
+      "status": "approved",
+      "updated_at": "2026-09-11T12:02:27+09:00",
+      "waiting_for": null,
+      "open_placeholders": 0
+    },
+    "security": {
+      "status": "approved",
+      "updated_at": "2026-09-11T12:02:27+09:00",
+      "waiting_for": null,
+      "open_placeholders": 0
+    },
+    "non-functional": {
+      "status": "approved",
+      "updated_at": "2026-09-11T12:02:27+09:00",
+      "waiting_for": null,
+      "open_placeholders": 0
+    },
+    "database": {
+      "status": "approved",
+      "updated_at": "2026-09-11T12:02:27+09:00",
+      "waiting_for": null,
+      "open_placeholders": 0
+    },
+    "api-standards": {
+      "status": "approved",
+      "updated_at": "2026-09-11T12:02:27+09:00",
+      "waiting_for": null,
+      "open_placeholders": 0
+    }
   },
-
   "features": [
     {
       "name": "organization-search-zoom",
       "priority": 1,
       "documents": {
-        "requirements": { "status": "approved", "updated_at": "2026-09-14T13:57:45+09:00", "waiting_for": null, "open_placeholders": 0 },
-        "wireframe":    { "status": "not_started", "updated_at": "2026-09-11T15:59:23+09:00", "waiting_for": null, "open_placeholders": 0 }
+        "requirements": {
+          "status": "approved",
+          "updated_at": "2026-09-14T13:57:45+09:00",
+          "waiting_for": null,
+          "open_placeholders": 0
+        },
+        "wireframe": {
+          "status": "not_started",
+          "updated_at": "2026-09-11T15:59:23+09:00",
+          "waiting_for": null,
+          "open_placeholders": 0
+        }
       }
     },
     {
       "name": "property-basic-info",
       "priority": 2,
       "documents": {
-        "requirements": { "status": "approved", "updated_at": "2026-09-14T19:42:51+09:00", "waiting_for": null, "open_placeholders": 0 },
-        "wireframe":    { "status": "not_started", "updated_at": "2026-09-11T15:59:23+09:00", "waiting_for": null, "open_placeholders": 0 }
+        "requirements": {
+          "status": "approved",
+          "updated_at": "2026-09-14T19:42:51+09:00",
+          "waiting_for": null,
+          "open_placeholders": 0
+        },
+        "wireframe": {
+          "status": "not_started",
+          "updated_at": "2026-09-11T15:59:23+09:00",
+          "waiting_for": null,
+          "open_placeholders": 0
+        }
       }
     },
     {
       "name": "issue-request-tutorial",
       "priority": 3,
       "documents": {
-        "requirements": { "status": "review", "updated_at": "2026-09-14T19:58:00+09:00", "waiting_for": "human_review", "open_placeholders": 0 },
-        "wireframe":    { "status": "not_started", "updated_at": "2026-09-11T15:59:23+09:00", "waiting_for": null, "open_placeholders": 0 }
+        "requirements": {
+          "status": "approved",
+          "updated_at": "2026-09-16T08:24:32+09:00",
+          "waiting_for": null,
+          "open_placeholders": 0
+        },
+        "wireframe": {
+          "status": "not_started",
+          "updated_at": "2026-09-11T15:59:23+09:00",
+          "waiting_for": null,
+          "open_placeholders": 0
+        }
       }
     },
     {
       "name": "issue-request",
       "priority": 4,
       "documents": {
-        "requirements": { "status": "not_started", "updated_at": "2026-09-11T15:59:23+09:00", "waiting_for": null, "open_placeholders": 0 },
-        "wireframe":    { "status": "not_started", "updated_at": "2026-09-11T15:59:23+09:00", "waiting_for": null, "open_placeholders": 0 }
+        "requirements": {
+          "status": "approved",
+          "updated_at": "2026-09-16T09:54:56+09:00",
+          "waiting_for": null,
+          "open_placeholders": 0
+        },
+        "wireframe": {
+          "status": "not_started",
+          "updated_at": "2026-09-11T15:59:23+09:00",
+          "waiting_for": null,
+          "open_placeholders": 0
+        }
       }
     },
     {
       "name": "contract-application-status",
       "priority": 5,
       "documents": {
-        "requirements": { "status": "not_started", "updated_at": "2026-09-11T15:59:23+09:00", "waiting_for": null, "open_placeholders": 0 },
-        "wireframe":    { "status": "not_started", "updated_at": "2026-09-11T15:59:23+09:00", "waiting_for": null, "open_placeholders": 0 }
+        "requirements": {
+          "status": "approved",
+          "updated_at": "2026-09-16T13:08:57+09:00",
+          "waiting_for": null,
+          "open_placeholders": 0
+        },
+        "wireframe": {
+          "status": "not_started",
+          "updated_at": "2026-09-11T15:59:23+09:00",
+          "waiting_for": null,
+          "open_placeholders": 0
+        }
       }
     },
     {
       "name": "contract-info-import",
       "priority": 6,
       "documents": {
-        "requirements": { "status": "not_started", "updated_at": "2026-09-11T15:59:23+09:00", "waiting_for": null, "open_placeholders": 0 },
-        "wireframe":    { "status": "not_started", "updated_at": "2026-09-11T15:59:23+09:00", "waiting_for": null, "open_placeholders": 0 }
+        "requirements": {
+          "status": "approved",
+          "updated_at": "2026-09-16T13:08:57+09:00",
+          "waiting_for": null,
+          "open_placeholders": 0
+        },
+        "wireframe": {
+          "status": "not_started",
+          "updated_at": "2026-09-11T15:59:23+09:00",
+          "waiting_for": null,
+          "open_placeholders": 0
+        }
       }
     },
     {
       "name": "contract-info-download",
       "priority": 7,
       "documents": {
-        "requirements": { "status": "not_started", "updated_at": "2026-09-11T15:59:23+09:00", "waiting_for": null, "open_placeholders": 0 },
-        "wireframe":    { "status": "not_started", "updated_at": "2026-09-11T15:59:23+09:00", "waiting_for": null, "open_placeholders": 0 }
+        "requirements": {
+          "status": "approved",
+          "updated_at": "2026-09-16T13:08:57+09:00",
+          "waiting_for": null,
+          "open_placeholders": 0
+        },
+        "wireframe": {
+          "status": "not_started",
+          "updated_at": "2026-09-11T15:59:23+09:00",
+          "waiting_for": null,
+          "open_placeholders": 0
+        }
       }
     }
   ],
-
   "blockers": []
 }
