@@ -1,6 +1,6 @@
 ---
-status: approved
-updated_at: 2026-09-11T12:02:27+09:00
+status: review
+updated_at: 2026-09-18T16:30:06+09:00
 ---
 
 # API 設計標準
@@ -41,6 +41,9 @@ updated_at: 2026-09-11T12:02:27+09:00
 - `POST /wtg004/clear` — クリア
 - `POST /wtg004/return` — 戻る
 - `POST /wtl010/fileUpload` — ファイルアップロード
+- `GET /zoom/wait` — ZOOM 待機画面の表示（`ZoomWaitController`。**`@FuncID` を持たない**）
+- `POST /zoom/zwtz002` — ZOOM 画面の初期表示・検索
+- `POST /zoom/zwtz002/page` — ZOOM 画面のページング
 
 | ルール | 内容 |
 |---|---|
@@ -55,11 +58,27 @@ updated_at: 2026-09-11T12:02:27+09:00
 
 | メソッド | 用途 | 冪等性 | 安全性 |
 |---|---|---|---|
-| GET | 画面の初期表示、ZOOM 画面の表示 | 冪等 | 安全（状態を変えない） |
-| POST | 検索・登録・更新・削除・承認・実行・アップロード・ダウンロード（すべての更新系と、Form の値を送る参照系） | 非冪等（登録・更新は二重送信を防ぐ） | 安全でない |
+| GET | 画面の初期表示（**ZOOM 画面を除く**）、ZOOM 待機画面の表示 | 冪等 | 安全（状態を変えない） |
+| POST | 検索・登録・更新・削除・承認・実行・アップロード・ダウンロード（すべての更新系と、Form の値を送る参照系）、**ZOOM 画面の初期表示・ページング** | 非冪等（登録・更新は二重送信を防ぐ） | 安全でない |
 
 - PUT / DELETE / PATCH は使用しない（既存の画面遷移方式に合わせる）
 - 二重送信の防止は CSRF トークン（`CSRFTokenCheckInterceptor`）と画面側のボタン制御で行う
+
+### ZOOM 画面のメソッド（例外規定）
+
+**ZOOM 画面（`/zoom/**`）の初期表示・ページングは POST とする。** 一般の画面の初期表示が GET であるのと異なる。
+
+理由は ZOOM の開き方にある。呼び出し元は共通フラグメント `pages/common/zoomForm.html` を使い、**① `window.open` で `/zoom/wait` を開き、② hidden フォーム（`#zoomForm`）を `target` にそのウインドウを指定して `/zoom/<ZOOM ID 小文字>` へ submit する**。呼び出し元から渡すパラメータをフォームの値として送るため、受け口は POST になる。GET で受ける ZOOM 画面を作ると、この共通フラグメントに分岐を足すことになり既存 ZOOM に影響する（REQ-052）。
+
+**待機画面だけは例外で GET である。**
+
+| 対象 | メソッド | 実装 | `@FuncID` |
+|---|---|---|---|
+| ZOOM 待機画面 `/zoom/wait` | **GET** | `jp.co.kccs.wt.common.controller.ZoomWaitController` | **持たない**（権限判定の対象にしない） |
+| ZOOM 画面の初期表示 `/zoom/<ZOOM ID 小文字>` | **POST** | `@RequestMapping(value = "", method = RequestMethod.POST)` | ZOOM ID（`@FuncID("ZWTZ<3 桁>")`） |
+| ZOOM 画面のページング `/zoom/<ZOOM ID 小文字>/page` | **POST** | `@RequestMapping(value = "page", method = RequestMethod.POST)` | 同上（Controller 単位で付与） |
+
+> 記入根拠は既存実装である（REQ-053）。`wing` の ZOOM 画面 17 本はいずれも初期表示・ページングとも `RequestMethod.POST` で実装されており、`ZoomWaitController` のみ `RequestMethod.GET` で `@FuncID` を持たない。**ZOOM は ZOOM ID 自体が機能IDであり、`PWTGOxxx` を別に採番しない**（命名規則は `tech.md` の `## 命名規則` を正とする）。
 
 ## リクエスト/レスポンス形式
 

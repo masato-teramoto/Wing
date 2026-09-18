@@ -1,6 +1,6 @@
 ---
 phase: Phase 2: Steering 作成
-updated_at: 2026-09-11T11:24:02+09:00
+updated_at: 2026-09-18T16:30:06+09:00
 ---
 
 # ゲート記録 — Phase 2: Steering 作成
@@ -20,6 +20,7 @@ updated_at: 2026-09-11T11:24:02+09:00
 | スコープ | 回数 | 実行日時 | 対象成果物 | 実行した層 | 指摘件数 | 遷移後の `status` |
 |---|---|---|---|---|---|---|
 | 成果物単位（steering） | 1 | 2026-09-11T11:24:02+09:00 | `steering/product.md` / `steering/tech.md` / `steering/architecture.md` / `steering/security.md` / `steering/non-functional.md` / `steering/database.md` / `steering/api-standards.md` | ① | 10 | `review` |
+| 成果物単位（steering） | 2 | 2026-09-18T16:30:06+09:00 | `steering/product.md` / `steering/tech.md` / `steering/architecture.md` / `steering/security.md` / `steering/non-functional.md` / `steering/database.md` / `steering/api-standards.md` | ① | 6 | `steering/api-standards.md` のみ `review`（他 6 ファイルは `approved` のため動かさない — 指摘 #16） |
 
 - `draft` → `review` は、① / ② の実行が終わり、**指摘を本記録へ出力し終えた時点**でゲートのサブエージェントが自動で行う。**指摘の件数は遷移条件にしない**（ゲートは合否を出さないため）。`review` は「レビュー材料が揃った」ことのみを意味する。
 - **① で形式の不備が検出された場合は ② に進まない**。その場合は `実行した層` に ① のみを記載する。
@@ -47,6 +48,12 @@ updated_at: 2026-09-11T11:24:02+09:00
 | 8 | 1 | ① | `steering/non-functional.md` 冒頭ブロック／`steering/security.md` 冒頭ブロック・`## 脆弱性対応` 冒頭の注記 | 「セキュリティインシデントの脆弱性対応 SLA は `security.md` の 脆弱性対応 を参照する」「セキュリティインシデント時は本ファイル（本節）の 修正 SLA も併用する」と 3 箇所から参照しているが、`steering/security.md` の `## 脆弱性対応` に記入されているのは「報告窓口」の 1 行のみで、SLA（修正 SLA）に相当する記述が存在しない（参照先に該当記述が無い）。 | 対応せず進める | 人間判断（2026-09-11）: 脆弱性対応の SLA は「既存 WiNG の運用に従い、本プロジェクトで新たに定めない」という人間の判断により不要理由を付して未記入としたものであり、参照先に記述が無いことはその判断の帰結である。 |
 | 9 | 1 | ① | `steering/api-standards.md` 冒頭ブロック・`## 一覧取得（ページネーション / フィルタ / ソート）` 冒頭の注記／`steering/database.md` 冒頭ブロック・`## クエリパターン` 冒頭の `_分担_` 注記 | `api-standards.md` は「ページネーションの DB 層方針は `database.md` を正とする」とし、`database.md` は「ページネーションの HTTP 契約は `api-standards.md`」としており、双方が相手を正としている。`database.md` の `## クエリパターン` にページネーション（カーソル / オフセット）の方針は無く、`api-standards.md` の `## 一覧取得` も不要理由付きで未記入のため、ページネーション方針の正本がどちらにも存在しない。 | 対応せず進める | 人間判断（2026-09-11）: 既存 WiNG の画面遷移方式（検索条件・並び順を Form の値として POST で送る）に従い、ページネーションの共通形式を本プロジェクトで定義しないと判断したためであり、正本が無いことはその判断の帰結である。 |
 | 10 | 1 | ① | `steering/non-functional.md` / `### リトライ` 冒頭の `_分担_` 注記 | 「リトライ・外部依存遮断の実装選定は `tech.md`」と参照しているが、`steering/tech.md` にリトライ・外部依存の遮断（サーキットブレーカ等）に関する記述が無い（参照先に該当記述が無い）。 | 対応せず進める | 人間判断（2026-09-11）: リトライ・外部依存の遮断は「既存 WiNG の運用・実装に従い、本プロジェクトで新たに定めない」という人間の判断により不要理由を付して未記入としたものであり、参照先に記述が無いことはその判断の帰結である。 |
+| 11 | 2 | ① | `steering/non-functional.md` / `## 可用性・性能`（`### サービスレベル（SLO / SLA）` と `### 優先度定義` の間） | テンプレート `Templates/steering/non-functional.md` が持つ `### サービス提供時間` 節が成果物に存在しない（必須セクションの欠落）。テンプレート側に「任意」「必要時」「省略可」「不要なら削除してよい」の明記は無い。あわせて当該節のプレースホルダー 4 件（`<SERVICE_HOURS_SCHEDULE>` / `<SERVICE_HOURS_TIMEZONE>` / `<SERVICE_HOURS_HOLIDAY_CALENDAR>` / `<SERVICE_HOURS_MAINTENANCE_POLICY>`）が、不要理由の併記が無いまま削除されている（プレースホルダーは削除せず不要理由を添えて残すのが規約）。 |  |  |
+| 12 | 2 | ① | `steering/security.md` 冒頭ブロック（13 行目）・`## 脆弱性対応` 冒頭の注記（136 行目）／`steering/non-functional.md` `### 障害対応フロー（プロセス骨格）` 冒頭の注記（260 行目）・同節の `_分担_` 注記（261 行目） | 「**具体手順**は `non-functional.md` の **運用手順書の正本** から運用手順書を参照する」と 4 箇所から参照しているが、`steering/non-functional.md` の `### 運用手順書の正本（任意）` は不要理由付きで全項目（`<RUNBOOK_REPOSITORY_LOCATION>` / `<RUNBOOK_INDEX_GOVERNANCE>` / 索引表の 5 列）が未記入であり、正とすべき記述が存在しない（参照先が空）。 |  |  |
+| 13 | 2 | ① | `steering/database.md` / `## マイグレーション` 冒頭の `_分担_` 注記（62 行目） | 「マイグレーションツール選定は `tech.md`」と参照しているが、`steering/tech.md` にマイグレーション（ツール選定・スキーマ変更の適用手段）に関する記述が存在しない（参照先に該当記述が無い）。 |  |  |
+| 14 | 2 | ① | `steering/product.md` / `## プロダクトレベルでやらないこと（任意）`・`## ビジネスルール / ポリシー（任意）`、`steering/non-functional.md` / `### 運用手順書の正本（任意）` | テンプレート側の対応見出し（`## プロダクトレベルでやらないこと` / `## ビジネスルール / ポリシー` / `### 運用手順書の正本`）には「任意」の明記が無いが、成果物側では見出しに `（任意）` を付加している（テンプレートが定めていない任意扱いを成果物側で宣言している）。 |  |  |
+| 15 | 2 | ① | `steering/tech.md` `### Git戦略` ／ `steering/architecture.md` `## import / path alias`・`### 記入時の連携（必須）` ／ `steering/security.md` `#### 認証フロー（高レベル）`・`### API 間認証（service-to-service）` ／ `steering/non-functional.md` `#### トレース ID / requestId の伝播`・`#### 2. 初動（…）` ／ `steering/api-standards.md` `## リクエスト/レスポンス形式` | 見出し文言がテンプレートと一致しない（それぞれテンプレートは `### Git 戦略` / `## インポート / パスエイリアス（import / path alias）` / `### 記入時の連携` / `#### 認証フロー` / `### API 間認証` / `#### トレース ID / リクエスト ID の伝播` / `#### 2. 初動` / `## リクエスト / レスポンス形式`）。節そのものは存在する。`#### 2. 初動` は見出し内にプレースホルダー `<INCIDENT_INITIAL_RESPONSE_SLA>` と不要理由を含む形に変更されている。 |  |  |
+| 16 | 2 | ① | `steering/` 7 ファイルのフロントマター `status` | 一括スコープの 7 ファイル間で `status` が揃っていない（`steering/api-standards.md` のみ `draft`、他 6 ファイル（product / tech / architecture / security / non-functional / database）は `approved`）。本ゲートが行える遷移は `draft` → `review` のみのため、本実行では `steering/api-standards.md` のみを `review` へ遷移させ、`approved` の 6 ファイルは動かしていない（`approved` の引き下げを決めるのは ③ である）。 |  |  |
 
 ### 【横断】feature をまたぐ検査
 
