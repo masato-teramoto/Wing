@@ -6,8 +6,6 @@ disable-model-invocation: true
 
 # steering-authoring（Phase 2: Steering 作成）
 
-> 出典: フロー設計 `02_Steering作成フェーズ設計書.md`。
-
 プロジェクト全体で固定する前提（方針・制約）を `steering/` 7ファイルに確定する。以降の全フェーズは steering を上位の制約として参照するため、**steering に違反する成果物は作られない**前提が成立する。
 
 - 成果物: `steering/` 7ファイル
@@ -28,7 +26,7 @@ disable-model-invocation: true
 
 ## 本フェーズは docs を作らない
 
-**暫定版も作らない。** `docs/` の所有者は Phase 7 のみである。代わりに **業務コードと DB エンティティの「設計ルール」を steering に確定させる**（下記 §設計ルールの粒度）。
+**暫定版も作らない。** `docs/` の所有者は Phase 6 のみである。代わりに **業務コードと DB エンティティの「設計ルール」を steering に確定させる**（下記 §設計ルールの粒度）。
 
 ---
 
@@ -70,8 +68,8 @@ disable-model-invocation: true
 | DB エンティティ | 命名規則、型の指針、整合性・マイグレーション方針 | 個々のテーブル・カラム・ER |
 
 - **判定基準**: 「**全 feature に等しく適用されるか**」。等しく適用されるならルール（steering）、feature ごとに異なるなら実体（各 `design.md`）。
-- ルールは **各 design が参照するだけで設計できる粒度**まで書く。粒度が足りないと feature ごとに独自解釈が発生し、Phase 7 の集約時に衝突する。
-- 実体は **必要になった feature の `design.md`** で設計され、**Phase 7 で集約**される。
+- ルールは **各 design が参照するだけで設計できる粒度**まで書く。粒度が足りないと feature ごとに独自解釈が発生し、Phase 6 の集約時に衝突する。
+- 実体は **必要になった feature の `design.md`** で設計され、**Phase 6 で集約**される。
 
 ---
 

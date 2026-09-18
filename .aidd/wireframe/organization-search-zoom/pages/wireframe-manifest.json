@@ -1,7 +1,7 @@
 {
   "$comment": "wireframe-manifest.json 記入用フォーマット。MK1（requirements 承認後・design 着手前）の生成時に wireframe-authoring がコピーして全スロットを埋め、pages/ にワイヤーフレーム HTML と同時に置く。記入規約の正は .claude/skills/wireframe-authoring/SKILL.md（要件 ID の粒度 = 手順 4 / 被覆・未画面化 = 手順 4b・4c / 監査記録 = 手順 5）。記法は specs/_template と同じ: {{大文字}} = 機械記入スロット / [角括弧] = 記述スロット。screens[]・missing[]・unrealized[] は 1 要素の見本 — コピーして必要数に増やし、該当が無ければ空配列にする。functions[] は機能一覧（F-xxx）が案件に存在する場合のみ記入（無ければ空配列のまま）。acknowledged と confirmed_at は人間が記入する（エージェントは acknowledged の by / at / decision を未記入〔null〕・confirmed_at を null のまま出力し、承認・確認を代行しない。acknowledged オブジェクト自体を null に潰さない）。結合段が入口を新設した場合の _app-shell/ の manifest も本フォーマットを使うが、requirements 由来でない共通物のため screens[].requirements は空配列・unrealized は空配列・acknowledged は未記入のままにする",
-  "status": "review",
-  "updated_at": "2026-09-16T18:40:35+09:00",
+  "status": "approved",
+  "updated_at": "2026-09-17T23:59:00+09:00",
   "$comment_status": "本ファイルは Phase 5（画面モック生成）の承認対象成果物であり、上の status / updated_at が **フロントマターと同等の status 担体**である（Markdown ではないためフロントマターを持てない。規約の正は .claude/skills/aidd-flow/references/status-protocol.md §1・§4）。エージェントは draft のまま出力する — draft → review はゲートのサブエージェント（wireframe-check-subagent）、review → approved は人間のみが行う。_app-shell/ の manifest は要件を持たない擬似 feature のため承認対象ではなく、横断スコープのゲートが status を \"n/a\" に落とす",
   "ds_version": "v0.0.11",
   "token_profile": "wireframe",
@@ -9,7 +9,7 @@
   "$comment_wireframe_notice": "wireframe プロファイルでは上の圧縮済み定型文をそのまま使う（言い換えない — 原文は wireframe-authoring SKILL.md「注記の定型文」）。wireframe 以外のプロファイルでは null にする",
   "audit": {
     "$comment": "生成のたびにエージェントが機械記録する（手で書かない）。result = pass（exit 0）が生成の完了条件 — fail のまま先へ進まない",
-    "ran_at": "2026-09-16",
+    "ran_at": "2026-09-17",
     "scripts": [
       "audit-tokens",
       "audit-components"
@@ -33,8 +33,6 @@
       "states": [
         "default",
         "filters-applied",
-        "first-page",
-        "last-page",
         "page-changed",
         "empty",
         "filter-empty",
@@ -47,7 +45,7 @@
         "2",
         "3"
       ],
-      "notes": "steering を根拠に画面へ載せた情報は無い（画面内容はすべて当該 feature の requirements に根拠を持つ）。 生成しなかった list-page の状態と理由: notice = NotificationBanner の情報アイコンの SVG 実体が DS v0.0.11 に無いため当該状態のページを作らず missing[] に記録した / rows-selected・bulk-action-done = 本 feature は一覧からの単一選択のみで一括操作を持たない（requirements Requirement 3）。 検索条件は 3 項目とも Select で組んだ。Select spec の never_use_when は名称・コードで探すマスタ参照に Combobox を指すが、Requirement 2 の受入基準 2 が「自由入力の欄を設けない」と定めるため Select を採った。選択肢の件数が 30 を超える場合は DS の Select の適用外になるため、件数の確定（未確定事項 ②・③）とあわせて基本設計で扱う。 検索条件の要否は requirements に規定が無い。Select spec が要否表示を求めるため「※任意」を置いたが、要否そのものは確定していない。 一覧の列は人間が確定した 3 項目（会社名・部署名・所属名）に限った。表示項目・並び順・表示件数の上限は未確定事項 ⑤ に従い基本設計で確定する。ページングの 1 ページ 5 件・総 10 件はダミー値であり件数の確定ではない。 行の主キー列（所属名）の Link が「選択して呼び出し元へ返す」操作に当たる（Requirement 3）。呼び出し元画面への復帰は feature 間の動線のため結合段で接続する。 被覆の分母から外した受入基準と類型: Requirement 1 の受入基準 3（未ログイン時のログイン画面への遷移 = 他画面への遷移）・受入基準 5（画面ID・PGID の採番 = UI に現れない）、Requirement 2 の受入基準 7（並び順を SQL 側で確定 = バックエンド専用処理）、Requirement 3 の受入基準 3（選択せず閉じたとき入力値を変更しない = 否定形）・受入基準 4（2 つの呼び出し元へ同一形式で返す = バックエンド／インタフェース）。いずれも Requirement 単位では画面に現れており未画面化ではない。"
+      "notes": "steering を根拠に画面へ載せた情報は無い（画面内容はすべて当該 feature の requirements に根拠を持つ）。 状態とページの対応: default = zoom-search-default.html（条件未適用の初期表示）/ filters-applied = zoom-search-filters-applied.html / page-changed = zoom-search-page-changed.html（2 ページ目 = 最終ページ。端で移動できない要素は never_do に従い非出力）/ empty = zoom-search-empty.html（条件未適用で該当 0 件）/ filter-empty = zoom-search-filter-empty.html（詳細条件で 0 件）/ loading = zoom-search-loading.html / error = zoom-search-error.html。状態ごとに独立した 1 ページとし、1 ページに複数状態を同居させていない。 生成しなかった list-page の状態と理由: notice = NotificationBanner の情報アイコン（種別が情報）の SVG 実体が DS v0.0.11 に無いため当該状態のページを作らず missing[] に記録した。requirements に操作結果の通知を求める受入基準が無いため未画面化要件には当たらず unrealized[] には記録していない / rows-selected・bulk-action-done = 本 feature は一覧からの単一選択のみで一括操作を持たない（Requirement 3）。 DS の構えを外した箇所（外したまま・記録して報告する扱い）: list-page の layout が定めるフィルタ行のうち、常時表示の検索 InputText と「絞り込み」Button を置いていない。Requirement 2 の受入基準 2 が「自由入力の欄を設けない」と定めるため、検索条件は 3 項目とも Select で組み、条件の適用は「検索」Button で行う。DS 側の課題として missing[] に記録した。詳細検索の Disclosure も、条件が 3 項目のみで隠す対象が無いため置いていない。 検索条件は 3 項目とも Select で組んだ。Select spec の never_use_when は名称・コードで探すマスタ参照に Combobox を指すが、上記のとおり Requirement 2 の受入基準 2 が自由入力を禁じるため Select を採った。選択肢の件数が 30 を超える場合は DS の Select の適用外になるため、件数の確定（未確定事項 ②・③）とあわせて基本設計で扱う。 検索条件の要否は requirements に規定が無い。ds/components/Select/Select.component-spec.json の a11y が「要否はラベルの右横に『※必須』『※任意』のテキストラベルで示す。色のみに依存せずテキスト自体は必ず表示する」と定めるため、3 項目とも「※任意」を置いた。どの項目が必須かは確定値ではなく基本設計で確定する。2026-09-17 の再生成で一度この表示を撤去したが、list-page の pattern.json だけを見て「構えに含まれない」と誤って判断したものであり、部品 spec の要求であることを確認して元に戻した。 一覧の列は人間が確定した 3 項目（会社名・部署名・所属名）に限った。表示項目・並び順・表示件数の上限は未確定事項 ⑤ に従い基本設計で確定する。ページングの 1 ページ 5 件・総 10 件はダミー値であり件数の確定ではない。 行の主キー列（所属名）の Link が「選択して呼び出し元へ返す」操作に当たる（Requirement 3）。呼び出し元画面への復帰は feature 間の動線のため結合段で接続する。 操作の組み方: wireframe-authoring 手順 3 の「画面間の遷移は素の <a href>」に従い、画面間の遷移（ページ送り・一覧からの選択）のみ <a href> とした。その場で完結する操作（検索・条件をクリア・再試行・再読み込み）は Button で組み、遷移しない（Link の never_use_when）。したがって顧客がページをクリックして filters-applied / empty / filter-empty / loading / error を辿ることはできず、状態バリエーション間の移動はビューアの一覧から行う。これは MK2 の進め方の制約として ③ に提示する。 被覆の分母から外した受入基準と類型（列挙は UI に現れない受入基準の全件。網羅範囲 = Requirement 1〜3 の全受入基準を確認済み）: Requirement 1 の受入基準 3（未ログイン時のログイン画面への遷移。遷移先のログイン画面は既存 WiNG の共通基盤であり本 feature が作成を担う画面ではない）・受入基準 5（画面ID・PGID の採番 = UI に現れない）、Requirement 2 の受入基準 7（並び順を SQL 側で確定 = バックエンド専用処理）、Requirement 3 の受入基準 3（選択せず閉じたとき入力値を変更しない = 否定形）・受入基準 4（2 つの呼び出し元へ同一形式で返す = バックエンド／インタフェース）。これら以外の受入基準はすべて生成した画面に対応が付く。いずれも Requirement 単位では画面に現れており未画面化ではない。 一覧の主キー列（所属名）の Link は、遷移先の呼び出し元画面が MK1 の時点では存在しないため、暫定で一覧自身（zoom-search-default.html）を指している。呼び出し元への復帰は feature 間の動線であり結合段で接続する。"
     },
     {
       "screen": "エラー画面（権限なし）",
@@ -62,7 +60,7 @@
       "requirements": [
         "1"
       ],
-      "notes": "Requirement 1 の受入基準 4（権限を持たない場合にエラー画面へメッセージIDに対応する文言を表示する）に対応する。variant は 403。表示する文言はメッセージIDで管理する前提のため、画面には文言の管理方法が分かる補助情報のみを置き、メッセージIDの具体値は確定させていない。"
+      "notes": "Requirement 1 の受入基準 4（権限を持たない場合にエラー画面へメッセージIDに対応する文言を表示する）に対応する。variant は 403。メッセージID の具体値は requirements にも steering にも割当の根拠が無いため、画面には表示していない（steering/tech.md の命名規則に合う値も、steering/api-standards.md が想定外例外の既定値と定める GEF-000000 も、本画面への割当としては確定していない）。復帰アクションは error-page の layout に従い 1 つ（「トップへ戻る」）にしたが、システム全体の入口は MK1 の時点では存在せず（入口の新設は結合段の担当）、暫定のリンク先として当該 feature の入口ページを指している。結合段で入口へ差し替える。missing[] に記録した。 生成しなかった error-page の状態: with-reference = 500 で参照番号を補助情報に含める状態であり、本画面の variant は 403 のため該当しない。 error-page の layout が定める補助情報（エラーコード・発生時刻・問い合わせ先）の枠は置いていない。メッセージID の割当が確定しておらず、発生時刻・問い合わせ先も requirements / steering に根拠が無いため、枠だけを置くと空欄の意味が読めなくなる。DS 側の課題ではなく根拠不在による非配置として本 notes に記録する。"
     }
   ],
   "missing": [
@@ -77,6 +75,18 @@
     {
       "name": "罫線の太さ（border-width）のトークン",
       "reason": "部品 spec は罫線の色（color.semantic.border）を定めるが太さのトークンが tokens に無く、px の直書きは監査で禁止されるため CSS キーワード thin で組んだ。"
+    },
+    {
+      "name": "list-page のフィルタ行の構え（常時表示の検索 InputText +「絞り込み」Button）",
+      "reason": "pattern.json の layout が定める構造要素だが、Requirement 2 の受入基準 2 が自由入力の欄を設けないと定めるため置いていない。構えを外したままにする判断は 2026-09-17 に人間が確定（記録して外したまま）。DS 側に「自由入力を持たない一覧の絞り込み」の構えが無いことが背景である。"
+    },
+    {
+      "name": "システム全体の入口（error-page の復帰アクションの遷移先）",
+      "reason": "error-page の layout は 403 の復帰アクションを「一覧へ戻る」または「トップへ戻る」と定めるが、入口の新設は結合段（wireframe-integration）の担当であり MK1 の時点では存在しない。暫定で当該 feature の入口ページを指しており、結合段で差し替える。"
+    },
+    {
+      "name": "list-page の error 状態が求めるインライン再試行に対応する DS 部品",
+      "reason": "list-page の states は error を「インライン再試行。モーダルにしない」と定めるが、これに対応する部品が ds/index.json に無い。EmptyState は spec の never_use_when でエラー状態の代用を禁じられ、NotificationBanner はページ全体のエラーに使わない（error-page の never_do）。やむを得ず素の HTML（wf-inline-error）で組んでいる。"
     }
   ],
   "unrealized": [],

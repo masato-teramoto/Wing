@@ -1,0 +1,275 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rimay-jp/candidates/repository-projection-mapping-contract-0.5.0-candidate.schema.json",
+  "title": "Repository Projection Mapping Contract 0.5 Candidate",
+  "description": "現行0.4 planを変更せず、selector owner、意味facet提供者、supersession、全record residual、adapter dispatchを監査する隔離候補。",
+  "type": "object",
+  "required": [
+    "contract_version",
+    "candidate_id",
+    "recorded_at",
+    "candidate_status",
+    "based_on",
+    "mapping_candidates",
+    "dispatch_contracts",
+    "application_status"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": { "const": "0.5.0" },
+    "candidate_id": {
+      "type": "string",
+      "pattern": "^RPMC-[A-Za-z0-9][A-Za-z0-9-]*$"
+    },
+    "recorded_at": {
+      "type": "string",
+      "format": "date"
+    },
+    "candidate_status": { "const": "proposed_not_active" },
+    "based_on": { "$ref": "#/$defs/basedOn" },
+    "mapping_candidates": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/mappingCandidate" }
+    },
+    "dispatch_contracts": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/dispatchContract" }
+    },
+    "application_status": { "const": "not_applied" }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "mappingId": {
+      "type": "string",
+      "pattern": "^RPMAP-[A-Za-z0-9][A-Za-z0-9-]*$"
+    },
+    "artifactRef": {
+      "type": "object",
+      "required": ["path", "selector"],
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!/)(?!.*(^|/)\\.\\.(/|$))[A-Za-z0-9._/-]+$"
+        },
+        "selector": { "type": "string", "minLength": 1 }
+      }
+    },
+    "basedOn": {
+      "type": "object",
+      "required": [
+        "active_contract_version",
+        "active_plan_id",
+        "active_plan_ref",
+        "active_plan_sha256",
+        "active_schema_ref",
+        "active_schema_sha256"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "active_contract_version": { "const": "0.4.0" },
+        "active_plan_id": {
+          "type": "string",
+          "pattern": "^RPM-[A-Za-z0-9][A-Za-z0-9-]*$"
+        },
+        "active_plan_ref": {
+          "const": "canonical/repository-projection-mapping-plan.yaml"
+        },
+        "active_plan_sha256": { "$ref": "#/$defs/sha256" },
+        "active_schema_ref": {
+          "const": "canonical/repository-projection-mapping.schema.json"
+        },
+        "active_schema_sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "mappingCandidate": {
+      "type": "object",
+      "required": [
+        "mapping_id",
+        "record_kind",
+        "leaf_rule_ids",
+        "treatment_after_approval",
+        "product_binding_plan_id",
+        "application_status"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "mapping_id": { "$ref": "#/$defs/mappingId" },
+        "record_kind": { "const": "condition_structure" },
+        "leaf_rule_ids": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "treatment_after_approval": { "const": "existing_canonical" },
+        "product_binding_plan_id": {
+          "type": "string",
+          "pattern": "^RPADP-[A-Za-z0-9][A-Za-z0-9-]*$"
+        },
+        "application_status": { "const": "not_applied" }
+      }
+    },
+    "leafAlternativeCardinality": {
+      "type": "object",
+      "required": ["scope", "mode", "rule_ids"],
+      "additionalProperties": false,
+      "properties": {
+        "scope": { "const": "every_leaf" },
+        "mode": { "const": "exactly_one" },
+        "rule_ids": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "facet": {
+      "enum": ["identity", "operator", "value"]
+    },
+    "facetProvider": {
+      "type": "object",
+      "required": ["mapping_id", "facets"],
+      "additionalProperties": false,
+      "properties": {
+        "mapping_id": { "$ref": "#/$defs/mappingId" },
+        "facets": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/facet" }
+        }
+      }
+    },
+    "semanticBranch": {
+      "type": "object",
+      "required": [
+        "branch_id",
+        "value_shape",
+        "required_facets",
+        "facet_providers"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "branch_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "value_shape": { "enum": ["scalar", "tree"] },
+        "required_facets": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/facet" }
+        },
+        "facet_providers": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/facetProvider" }
+        }
+      }
+    },
+    "supersession": {
+      "type": "object",
+      "required": [
+        "mapping_id",
+        "when",
+        "suppressed_authorities",
+        "remaining_role"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "mapping_id": { "$ref": "#/$defs/mappingId" },
+        "when": { "const": "owner_selector_matches" },
+        "suppressed_authorities": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": ["selection", "identity", "operator", "value"]
+          }
+        },
+        "remaining_role": { "const": "semantic_provider_only" }
+      }
+    },
+    "residualOnMismatch": {
+      "type": "object",
+      "required": ["scope", "behavior", "mapping_id"],
+      "additionalProperties": false,
+      "properties": {
+        "scope": { "const": "complete_record" },
+        "behavior": { "const": "preserve_entire_record" },
+        "mapping_id": { "$ref": "#/$defs/mappingId" }
+      }
+    },
+    "adapterDispatch": {
+      "type": "object",
+      "required": [
+        "executable_dispatch_ref",
+        "selection_order",
+        "owner_match_behavior",
+        "provider_execution_behavior",
+        "dual_projection_behavior"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "executable_dispatch_ref": { "$ref": "#/$defs/artifactRef" },
+        "selection_order": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/mappingId" }
+        },
+        "owner_match_behavior": { "const": "select_once_and_compose" },
+        "provider_execution_behavior": { "const": "facets_only_no_independent_projection" },
+        "dual_projection_behavior": { "const": "reject" }
+      }
+    },
+    "dispatchContract": {
+      "type": "object",
+      "required": [
+        "dispatch_id",
+        "record_kind",
+        "owner_mapping_id",
+        "executable_owner_selector_ref",
+        "leaf_alternative_cardinality",
+        "semantic_branches",
+        "supersessions",
+        "residual_on_mismatch",
+        "adapter_dispatch"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "dispatch_id": {
+          "type": "string",
+          "pattern": "^RPDISPATCH-[A-Za-z0-9][A-Za-z0-9-]*$"
+        },
+        "record_kind": { "const": "condition_structure" },
+        "owner_mapping_id": { "$ref": "#/$defs/mappingId" },
+        "executable_owner_selector_ref": { "$ref": "#/$defs/artifactRef" },
+        "leaf_alternative_cardinality": {
+          "$ref": "#/$defs/leafAlternativeCardinality"
+        },
+        "semantic_branches": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/semanticBranch" }
+        },
+        "supersessions": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/supersession" }
+        },
+        "residual_on_mismatch": { "$ref": "#/$defs/residualOnMismatch" },
+        "adapter_dispatch": { "$ref": "#/$defs/adapterDispatch" }
+      }
+    }
+  }
+}

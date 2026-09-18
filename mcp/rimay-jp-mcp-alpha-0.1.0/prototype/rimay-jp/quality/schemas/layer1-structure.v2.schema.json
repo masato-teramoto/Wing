@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://knowledge-assets/contracts/layer1-structure.schema.json",
+  "title": "Layer 1 Artifact Structure (per artifact type)",
+  "description": "The well-formed structure an agent retrieves to generate a conforming artifact of a given type. Contains NO detection logic (FR-004). One file per artifact type at knowledge/layer1/<type>/structure.yaml. A type whose source is not retained is served as the pending-source variant (FR-005).",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "artifact_type", "source_id", "segments", "quality_attributes"],
+      "properties": {
+        "version": { "type": "string", "minLength": 1 },
+        "artifact_type": {
+          "type": "string",
+          "enum": ["functional", "acceptance_criteria", "non_functional", "user_story", "constraint", "glossary_term"]
+        },
+        "source_id": {
+          "type": "string",
+          "pattern": "^[a-z_]+/[a-z0-9-]+-[0-9]{4}$",
+          "description": "Resolvable definition source for this structure (FR-005)."
+        },
+        "segments": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "name", "required", "description"],
+            "properties": {
+              "id": { "type": "string", "minLength": 1, "description": "Type-specific segment id (e.g. system_response, role, given, modality, target, term)." },
+              "name": { "type": "string", "minLength": 1 },
+              "required": { "type": "boolean" },
+              "description": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "ordering": {
+          "type": "array",
+          "description": "Segment ids in required order, where ordering is meaningful for this type.",
+          "items": { "type": "string" }
+        },
+        "quality_attributes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "description"],
+            "properties": {
+              "id": { "type": "string", "minLength": 1 },
+              "description": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "enumerations": {
+          "type": "object",
+          "description": "Type-specific enumerations (FR-002), e.g. functional: condition_types + patterns; acceptance_criteria: ears_patterns; user_story: invest_attributes; non_functional (QAS): quality_characteristics + response_measure requirement; constraint: deontic_modalities; glossary_term: definition well-formedness rules.",
+          "additionalProperties": true
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifact_type", "status", "source_id"],
+      "properties": {
+        "artifact_type": { "type": "string" },
+        "status": { "type": "string", "const": "pending_source" },
+        "source_id": { "type": "string" }
+      }
+    }
+  ]
+}

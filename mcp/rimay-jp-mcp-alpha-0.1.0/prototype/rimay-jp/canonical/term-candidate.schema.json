@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "term-candidate.schema.json",
+  "title": "Term Candidate v1.0.0",
+  "description": "語彙候補（ADR-0014 D1: open → under_review → approved | rejected）。候補語はNormalizer/Resolverの正規化解決に使用できない（published Snapshotのみ供給、Gate 2）。Action表現（動詞の解釈規則）は本Candidateに入れない（D6: ACTION_EXPRESSION_UNRESOLVEDで別扱い）。承認は人間のみ・Receipt必須。",
+  "type": "object",
+  "required": ["candidate_id", "surface_form", "status", "revision", "occurrence_refs"],
+  "additionalProperties": false,
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+      "description": "案件別ストアでの所有案件。0.1.x記録には存在しないread互換フィールド"
+    },
+    "candidate_id": {
+      "type": "string",
+      "pattern": "^TC-[A-Za-z0-9][A-Za-z0-9-]*$"
+    },
+    "surface_form": { "type": "string", "minLength": 1 },
+    "status": { "enum": ["open", "under_review", "approved", "rejected"] },
+    "revision": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "楽観ロック。書き込み系ツールはbase_revision一致を要求する"
+    },
+    "occurrence_refs": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "pattern": "^TO-" },
+      "description": "根拠となる出現記録（少なくとも1件。出現なき候補を作らない）"
+    },
+    "proposed_term": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "preferred_japanese", "type"],
+      "properties": {
+        "id": { "type": "string" },
+        "preferred_japanese": { "type": "string" },
+        "type": { "enum": ["actor", "class", "property", "value", "function", "rule"] },
+        "definition": { "type": "string" },
+        "synonyms": { "type": "array", "items": { "type": "string" } },
+        "scope": {
+          "type": "string",
+          "pattern": "^(project:[A-Za-z0-9][A-Za-z0-9._-]*|org:common)$"
+        },
+        "status": {
+          "enum": ["active", "deprecated", "superseded"],
+          "description": "変更公開用（既存IDの廃止・統合を候補経路で提案する場合）"
+        },
+        "superseded_by": { "type": "string" },
+        "homonym": { "type": "boolean" },
+        "state_model_refs": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "参照のみ（D7: 状態遷移・必須Role・業務条件の正本を埋め込まない）"
+        }
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type", "reference"],
+        "additionalProperties": false,
+        "properties": {
+          "type": { "enum": ["occurrence", "user_answer", "document"] },
+          "reference": { "type": "string" }
+        }
+      }
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "reviewer": { "type": "string" },
+        "decided_at": { "type": "string" },
+        "decision_reason": { "type": "string" }
+      }
+    },
+    "receipt_id": {
+      "type": "string",
+      "pattern": "^APR-TERM-",
+      "description": "approved時必須（terminology-lifecycle.yaml参照。ReceiptなしにSnapshot公開不可=Gate 5）"
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "const": "approved" } } },
+      "then": { "required": ["proposed_term", "receipt_id", "review"] }
+    }
+  ]
+}

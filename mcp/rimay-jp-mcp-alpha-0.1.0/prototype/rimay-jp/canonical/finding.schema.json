@@ -1,0 +1,283 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rimay-jp/finding.schema.json",
+  "title": "Common Finding and Validation Report",
+  "description": "全Validator（rimay-jp-core／Requirement Quality Core=旧reqsmell）共通のfinding契約とValidation Report契約（ADR-0012 D6、統合レビューv0.2 §6-§7）。根因の共通キーはnormalized_issue_code（issue-code-catalog.yamlに登録されたもののみ）。スメル名はquality_labels（ビュー）であり原因識別子にしない。findingの実行結果本体はrevision紐付きのValidation Reportへ保持し、Canonical本体にはvalidation_state要約のみ置く。",
+  "$defs": {
+    "canonicalPointer": {
+      "type": "string",
+      "pattern": "^(/([^/~*]|~[01])*)+$"
+    },
+    "sourceSpan": {
+      "type": "object",
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "start": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "end": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    },
+    "finding": {
+      "type": "object",
+      "required": [
+        "finding_id",
+        "source_rule_id",
+        "normalized_issue_code",
+        "severity",
+        "repair_disposition",
+        "status"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "finding_id": {
+          "type": "string",
+          "pattern": "^FND-[A-Za-z0-9-]+$"
+        },
+        "validator_id": {
+          "type": "string",
+          "description": "validator-registry.yamlに登録されたID"
+        },
+        "source_rule_id": {
+          "type": "string",
+          "description": "検出元Rule（例: SEND.required_destination / incomplete_condition.ja）"
+        },
+        "normalized_issue_code": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9_]+$",
+          "description": "根因の共通キー。issue-code-catalog.yaml登録済みのみ"
+        },
+        "legacy_code": {
+          "type": "string",
+          "description": "移行期の互換: finding-code-catalog.yamlのコード（JP-OMISSION等）"
+        },
+        "quality_labels": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "スメル名・品質特性のビュー（例: incomplete_system_response, completeness）"
+        },
+        "severity": {
+          "enum": [
+            "high",
+            "medium",
+            "low"
+          ]
+        },
+        "blocking": {
+          "type": "boolean"
+        },
+        "target_paths": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/canonicalPointer"
+          },
+          "description": "根因に対応するCanonical候補Pointer（単一ノード。span直結ではなく候補として分離）"
+        },
+        "source_span": {
+          "$ref": "#/$defs/sourceSpan"
+        },
+        "message": {
+          "type": "string"
+        },
+        "citation": {
+          "type": "object",
+          "description": "出典（reqsmellのsource-groundedness維持）",
+          "properties": {
+            "source": {
+              "type": "string"
+            },
+            "locator": {
+              "type": "string"
+            }
+          }
+        },
+        "repair_disposition": {
+          "enum": [
+            "ASK_USER",
+            "PROPOSE_SPLIT",
+            "ROUTE_KNOWLEDGE",
+            "AUTO_SURFACE_REWRITE",
+            "RECLASSIFY",
+            "HUMAN_REVIEW"
+          ]
+        },
+        "evidence": {
+          "type": "object",
+          "description": "検出根拠（格フレームID・期待値・corroborated_by等。Multi-value診断はmulti_value_codeとleaf_pointersを保持する）"
+        },
+        "clarification": {
+          "type": "string",
+          "description": "確認事項テンプレート（修正候補が根拠付けできない場合。Step 4追加)"
+        },
+        "fix_candidates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "value",
+              "source",
+              "status"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "value": {},
+              "source": {
+                "type": "string"
+              },
+              "status": {
+                "const": "proposed"
+              }
+            }
+          }
+        },
+        "status": {
+          "enum": [
+            "open",
+            "answered",
+            "resolved",
+            "dismissed"
+          ]
+        }
+      }
+    },
+    "validationReport": {
+      "type": "object",
+      "required": [
+        "report_id",
+        "requirement_id",
+        "canonical_revision",
+        "canonical_hash",
+        "profile_version",
+        "validator_registry_version",
+        "executions",
+        "findings"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "report_id": {
+          "type": "string",
+          "pattern": "^VR-[A-Za-z0-9-]+$"
+        },
+        "requirement_id": {
+          "type": "string"
+        },
+        "canonical_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "canonical_hash": {
+          "type": "string"
+        },
+        "profile_version": {
+          "type": "string"
+        },
+        "validator_registry_version": {
+          "type": "string"
+        },
+        "executions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "validator_id",
+              "engine_version",
+              "knowledge_version"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "validator_id": {
+                "type": "string"
+              },
+              "engine_version": {
+                "type": "string"
+              },
+              "knowledge_version": {
+                "type": "string"
+              },
+              "input_hash": {
+                "type": "string"
+              },
+              "result_hash": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "findings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/finding"
+          }
+        },
+        "profile_content_hash": {
+          "type": "string",
+          "description": "Profile SSOT内容hash（ADR-0013 D3。宣言ドリフト検出）"
+        },
+        "vocabulary_context": {
+          "type": "object",
+          "description": "ADR-0016 v1.0: 案件・組織双方の固定Snapshot。詳細契約はvocabulary-context.schema.json",
+          "required": ["context_version", "project_id", "project", "organization"]
+        }
+      }
+    },
+    "validationState": {
+      "type": "object",
+      "description": "Canonical本体が保持する現revisionの検査状態要約",
+      "required": [
+        "report_id",
+        "blocking_findings",
+        "warning_findings",
+        "validated_canonical_hash",
+        "validator_registry_version"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "report_id": {
+          "type": "string"
+        },
+        "blocking_findings": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "warning_findings": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "validated_canonical_hash": {
+          "type": "string"
+        },
+        "validator_registry_version": {
+          "type": "string"
+        },
+        "validated_vocabulary_snapshot": {
+          "type": "string"
+        },
+        "validated_vocabulary_hash": {
+          "type": "string",
+          "pattern": "^sha256:"
+        },
+        "validated_vocabulary_context": {
+          "type": "object",
+          "description": "ADR-0016 v1.0: 案件・組織双方のpin。詳細契約はvocabulary-context.schema.json",
+          "required": ["context_version", "project_id", "project", "organization"]
+        },
+        "validated_term_fingerprint": {
+          "type": "string",
+          "pattern": "^sha256:"
+        }
+      }
+    }
+  }
+}

@@ -1,7 +1,7 @@
 {
   "$comment": "wireframe-manifest.json 記入用フォーマット。MK1（requirements 承認後・design 着手前）の生成時に wireframe-authoring がコピーして全スロットを埋め、pages/ にワイヤーフレーム HTML と同時に置く。記入規約の正は .claude/skills/wireframe-authoring/SKILL.md（要件 ID の粒度 = 手順 4 / 被覆・未画面化 = 手順 4b・4c / 監査記録 = 手順 5）。記法は specs/_template と同じ: {{大文字}} = 機械記入スロット / [角括弧] = 記述スロット。screens[]・missing[]・unrealized[] は 1 要素の見本 — コピーして必要数に増やし、該当が無ければ空配列にする。functions[] は機能一覧（F-xxx）が案件に存在する場合のみ記入（無ければ空配列のまま）。acknowledged と confirmed_at は人間が記入する（エージェントは acknowledged の by / at / decision を未記入〔null〕・confirmed_at を null のまま出力し、承認・確認を代行しない。acknowledged オブジェクト自体を null に潰さない）。結合段が入口を新設した場合の _app-shell/ の manifest も本フォーマットを使うが、requirements 由来でない共通物のため screens[].requirements は空配列・unrealized は空配列・acknowledged は未記入のままにする",
-  "status": "review",
-  "updated_at": "2026-09-16T19:47:41+09:00",
+  "status": "approved",
+  "updated_at": "2026-09-17T23:59:00+09:00",
   "$comment_status": "本ファイルは Phase 5（画面モック生成）の承認対象成果物であり、上の status / updated_at が **フロントマターと同等の status 担体**である（Markdown ではないためフロントマターを持てない。規約の正は .claude/skills/aidd-flow/references/status-protocol.md §1・§4）。エージェントは draft のまま出力する — draft → review はゲートのサブエージェント（wireframe-check-subagent）、review → approved は人間のみが行う。_app-shell/ の manifest は要件を持たない擬似 feature のため承認対象ではなく、横断スコープのゲートが status を \"n/a\" に落とす",
   "ds_version": "v0.0.11",
   "token_profile": "wireframe",
@@ -9,7 +9,7 @@
   "$comment_wireframe_notice": "wireframe プロファイルでは上の圧縮済み定型文をそのまま使う（言い換えない — 原文は wireframe-authoring SKILL.md「注記の定型文」）。wireframe 以外のプロファイルでは null にする",
   "audit": {
     "$comment": "生成のたびにエージェントが機械記録する（手で書かない）。result = pass（exit 0）が生成の完了条件 — fail のまま先へ進まない",
-    "ran_at": "2026-09-16",
+    "ran_at": "2026-09-17",
     "scripts": [
       "audit-tokens",
       "audit-components"
@@ -47,7 +47,7 @@
         "2",
         "3"
       ],
-      "notes": "steering を根拠に画面へ載せた情報は無い。 検索条件の項目・一覧の表示項目・1 行が表す単位はいずれも未確定事項 ② で基本設計に送られているため、匿名のプレースホルダーで項目数と配置のイメージのみを示した（人間の判断 / 2026-09-16）。要否表示は form-page / list-page の詳細検索パネルが構えとして求めるスロットのため残し、値は「要否は基本設計で確定」とした。 検索条件が 20 項目程度あるため list-page の詳細検索パネル（Disclosure）に置いた。必須の条件項目をパネル内に置かないという never_do に抵触しないかは、条件の必須が未確定事項 ② で確定した時点で見直しが要る。 一覧の主キー列を Link にしていない。list-page の layout は主キー列を Link にして detail-page へ遷移すると定めるが、本 feature は参照のみで詳細画面を持たない（Requirement 1 の受入基準 9）。DS 側の課題として missing[] に記録した。 表示件数の上限を超えたことの知らせ（Requirement 1 の受入基準 11）は、本来 list-page の notice 状態（NotificationBanner）で出すところを、件数表示の近くのテキストで代替した。unrealized[] に DS 不足として記録している。 ページングは置いていない。上限超過時にページ送りを設けるかどうかが未確定事項 ③ のため、画面で確定させない（list-page は総ページ数 1 のとき Pagination を出力しないと定めており、その形に相当する）。 被覆の分母から外した受入基準と類型: Requirement 1 の受入基準 1（採番）・5（未ログイン時の遷移）・7（SQL の WHERE 条件）・8（データ範囲の制御方式）・9（更新しない = 否定形）・10（SQL 側での上限と並び順）、Requirement 2 の受入基準 2（未入力条件を絞り込みに使わない = 否定形）・3（POST で受け取る）・5（コードマスタからの取得）、Requirement 3 の受入基準 1・3・5・6・7・9・10（SQL の共有・上限・文字コード・権限判定・ダウンロード経路・ストリーム・アクション名）。いずれもバックエンド専用処理または否定形。"
+      "notes": "steering を根拠に画面へ載せた情報は無い（画面内容はすべて当該 feature の requirements に根拠を持つ）。本 manifest 内の他の screens も同様で、前回あった screens[1] との食い違い（メッセージIDの形を steering を根拠に置いたという記述）は、メッセージIDの表示自体をやめたことで解消した。 状態とページの対応: default（条件未適用・検索前）= status-list-initial.html / filters-applied（検索結果あり）= status-list-result.html / filters-applied（表示件数の上限を超過）= status-list-limit-exceeded.html / empty = status-list-empty.html / filter-empty = status-list-filter-empty.html / input-error = status-list-input-error.html / loading = status-list-loading.html / error = status-list-error.html。 list-page の layout が定めるフィルタ行（常時表示の検索 InputText +「絞り込み」Button + 詳細検索の Disclosure トグル）を置いた。前回はページヘッダの直後に Disclosure を単独で置いており、常時表示の条件が無いまま詳細検索パネルだけが存在する組み方になっていた。Disclosure は details / summary で組み、トグルとして開閉できる（JS は使っていない）。 検索条件は匿名のプレースホルダー（検索条件 1〜20）で件数と配置のイメージだけを示している。条件の項目そのもの・桁・書式・必須、および区分値としてコードマスタから取得する条件は未確定事項であり画面で確定させない。要否表示は form-page の項目作法が定める構造要素のため「※任意」を置いたが、確定値ではない。前回は要否表示の位置に「※要否は基本設計で確定」という規定外の文字列を置いていたため、規定の 2 語に改めたうえで、未確定である旨はビューアの注記帯・pages/README.md・本 notes に移した。 一覧の「申請状況」列の値を匿名（サンプル値）にした。前回は 申請中 / 承認待ち / 承認済み の 3 値を置いていたが、requirements の Boundary Context の Out of Scope は「申請状況の値を本フィーチャーが決めること」を対象外と明記しており、steering にもこの語彙は無い。Badge はテキストを伴い色だけで区別していない（never_do）。 CSV 出力は検索の実行後にのみ行える（Requirement 3 の受入基準 2）。検索前の状態（default・input-error）では主アクションを非活性にし、検索が必要であることをヘッダ直下のテキストで知らせている。前回は全 8 ページで同一の有効な見えだった。 DS の構えを外した箇所（外したまま・記録して報告する扱い）: テーブルの主キー列（キー）を Link にしていない。本画面は参照専用で detail-page を持たないため遷移先が無い（missing[] に記録済み）。Pagination は固定値ダミーが 3 件で総ページ数 1 のため never_do に従い非出力としている。 被覆の分母から外した受入基準と類型（列挙は UI に現れない受入基準の全件。網羅範囲 = Requirement 1〜3 の全受入基準を確認済み）: Requirement 1 の受入基準 5（未ログイン時のログイン画面への遷移。遷移先のログイン画面は既存 WiNG の共通基盤であり本 feature が作成を担う画面ではない）・受入基準 6（画面ID・PGID の採番 = UI に現れない）、Requirement 2 の受入基準 4（並び順を SQL 側で確定 = バックエンド専用処理）、Requirement 3 の受入基準 4（Content-Disposition とファイル名の規約 = バックエンド専用処理）・受入基準 8（CSV 出力項目と一覧表示項目の対応 = 出力ファイルの内容であり画面に現れない）・受入基準 9・10（文字コードと改行コード = バックエンド専用処理）。前回は Requirement 1 の受入基準 1 を「採番」として全体除外していたが、同基準の前半（検索・一覧する画面を新規に作成する）は UI に関わるため分母に戻した。 分母に残し画面化した受入基準: Requirement 1 の受入基準 1・2・3・4・7・11、Requirement 2 の受入基準 1・2・3、Requirement 3 の受入基準 1・2・3。いずれも生成した画面に対応が付く。 2026-09-17 の再修正: 検索条件の要否表示（※任意）は ds/components/InputText/InputText.component-spec.json の a11y が「要否はラベルの右横に『※必須』『※任意』のテキストラベルで示す。色のみに依存せずテキスト自体は必ず表示する」と定めるため、全項目に置いている。どの項目が必須かは未確定事項であり確定値ではない。途中で一度この表示を撤去したが、list-page の pattern.json だけを見て「構えに含まれない」と誤って判断したものであり、部品 spec の要求であることを確認して元に戻した。 検索前の状態は EmptyState を使わず通常のテキストで示す（EmptyState spec の use_when は 0 件時の 2 ケースのみ）。 empty と filter-empty の文言を書き分けた。 CSV の主アクションは検索を実行していない全状態（初期表示・入力エラー・該当なし・条件に一致なし・読み込み中・読み込み失敗）で非活性に統一した。 操作の組み方は wireframe-authoring 手順 3 に従い、画面間の遷移のみ <a href>、その場で完結する操作（絞り込み・検索・条件をクリア・再試行）は Button とした。したがって顧客がページをクリックして状態を辿ることはできず、状態間の移動はビューアの一覧から行う（MK2 の進め方の制約として ③ に提示する）。 2026-09-17 の最終修正: CSV の主アクションが非活性になる理由を状態ごとに書き分けた（検索未実行 = 検索の実行が必要 / 0 件 = 出力できる結果がありません / 読み込み中・失敗 = それぞれの理由）。前回は全状態で「検索の実行が必要です」と表示しており、検索実行後として描かれている状態と食い違っていた。 項目エラーの文言から開発者向けの補足「指定できる形式は基本設計で確定します」を外した（位置づけ注記・開発者向けの補足はページ本文に書かない）。指定できる形式が未確定であることはビューアの注記帯と pages/README.md に置いている。 empty の EmptyState の行動を「再読み込み」にした（条件が 1 つも入力されていない状態に「条件をクリア」は噛み合わないため）。"
     },
     {
       "screen": "エラー画面（権限なし）",
@@ -62,7 +62,7 @@
       "requirements": [
         "1"
       ],
-      "notes": "Requirement 1 の受入基準 6（権限を持たない場合にエラー画面へメッセージIDに対応する文言を表示する）に対応する。variant は 403。メッセージID は steering/tech.md の命名規則に従う既定値の形（GEF-000000）で示し、具体値は基本設計で確定する。"
+      "notes": "Requirement 1 の受入基準 7（権限を持たない場合にエラー画面へメッセージIDに対応する文言を表示する）に対応する。variant は 403。メッセージID の具体値は requirements にも steering にも割当の根拠が無いため画面には表示していない（前回は MSG-0000 を表示しており、steering/tech.md の命名規則〔3 文字の区分 + 6 桁の連番〕に適合しない書式だった）。復帰アクションは error-page の layout に従い 1 つ（「トップへ戻る」）にしたが、システム全体の入口は MK1 の時点では存在しないため（入口の新設は結合段の担当）、暫定で当該 feature の入口ページを指している。結合段で差し替える。missing[] に記録した。"
     }
   ],
   "missing": [
@@ -85,6 +85,10 @@
     {
       "name": "一覧の上限超過を伝える手段（NotificationBanner 以外）",
       "reason": "list-page の notice 状態は NotificationBanner を前提とするが情報アイコンの SVG 実体が無い。件数表示の近くのテキストで代替した。"
+    },
+    {
+      "name": "システム全体の入口（error-page の復帰アクションの遷移先）",
+      "reason": "error-page の layout は 403 の復帰アクションを「一覧へ戻る」または「トップへ戻る」と定めるが、入口の新設は結合段（wireframe-integration）の担当であり MK1 の時点では存在しない。暫定で当該 feature の入口ページを指しており、結合段で差し替える。"
     }
   ],
   "unrealized": [
@@ -93,14 +97,14 @@
         "1"
       ],
       "screen": "物件契約情報申請状況 検索／一覧（notice 状態）",
-      "reason": "デザインシステム v0.0.11 の icons/ に SVG の実体が無く、情報アイコンを要する NotificationBanner が使えないため、当該の状態のページを生成していない。 受入基準 4・11 が求めるメッセージの表示は、件数表示の近くのテキストで代替している。",
+      "reason": "表示件数の上限を超えたことを知らせる表示（Requirement 1 の受入基準 11）は list-page の notice 状態の NotificationBanner で伝える構えだが、NotificationBanner の status-* アイコンは種別が情報でラベルによる代替ができず、SVG の実体が DS v0.0.11 に無いため当該状態のページを生成していない。代替として件数表示の近くのテキスト（wf-limit-notice）で示している。なお該当が 0 件であることを知らせる表示（受入基準 4）は EmptyState 部品で画面化済みであり、本申告の対象ではない（前回の reason は受入基準 4 と 11 の両方を代替扱いにしており、成果物の実体と一致していなかった）。",
       "category": "DS 不足"
     }
   ],
   "acknowledged": {
     "$comment": "開発者が記入する（未画面化要件の承認）。承認なしに結合段・MK2 へ進まない。判定基準は「主要画面が生成できていれば進んでよい」。unrealized が空配列 [] の feature では承認不要 — by / at / decision を未記入のまま先へ進んでよい。記入の場は Phase 5 の ③ 人間レビュー（承認の判断と同じ停止点で行い、停止点を増やさない）",
-    "by": null,
-    "at": null,
-    "decision": null
+    "by": "Junichi Noumi",
+    "at": "2026-09-17",
+    "decision": "未画面化の内容を確認し、いずれも主要画面に当たらないことを確認した。DS 不足によるものは DS 側の課題として引き継ぎ、requirements 起因のものは基本設計で確定する。この状態で結合段・MK2 へ進むことを承認する。"
   }
 }

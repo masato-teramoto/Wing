@@ -5,7 +5,7 @@ updated_at: {{ISO_8601_TIMESTAMP}}
 
 # フィーチャー一覧
 
-> このファイルは **実装順序の根拠（優先度・依存）の正**です。Phase 4 / 5 は優先度順に feature を選び、Phase 6 は依存先を推論せず本ファイルの `依存` 列から引きます。
+> このファイルは **実装順序の根拠（優先度・依存）の正**です。Phase 4 は優先度順に feature を選び、Phase 5 は依存先を推論せず本ファイルの `依存` 列から引きます。
 > **スコープ・完了条件はここに書きません。** それらは `specs/<feature>/requirements.md`（`Boundary Context` / `Acceptance Criteria`）が正です。本ファイルは「どの順で、何を根拠に作るか」だけを持ちます。
 > `status: approved` になってから Phase 4 以降の入力にしてください。
 >

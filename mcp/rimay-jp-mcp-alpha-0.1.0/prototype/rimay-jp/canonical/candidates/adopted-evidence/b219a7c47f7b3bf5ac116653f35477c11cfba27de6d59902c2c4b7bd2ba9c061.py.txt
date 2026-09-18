@@ -1,0 +1,317 @@
+# -*- coding: utf-8 -*-
+"""B5-P CAP-MULTI-VALUE isolated acceptance candidate."""
+from __future__ import annotations
+
+import copy
+import json
+import os
+import sys
+from pathlib import Path
+
+import pytest
+import yaml
+from jsonschema import Draft202012Validator
+
+
+RIMAY_JP = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(RIMAY_JP / "core"))
+
+from rimay_jp_core.comparison_operator_candidate import (  # noqa: E402
+    COMPARISON_OPERATORS,
+)
+from rimay_jp_core.model import new_canonical  # noqa: E402
+from rimay_jp_core.multi_value_candidate import (  # noqa: E402
+    ACTIVE_CANONICAL_VERSION,
+    MULTI_VALUE_CANDIDATE_VERSION,
+    MULTI_VALUE_TARGET_CANONICAL_VERSION,
+    MultiValueCandidateError,
+    migrate_scalar_condition,
+    parse_multi_value_condition,
+    parse_multi_value_expression,
+    project_repository_multi_value_expression,
+    quarantine_multi_value_condition,
+    render_multi_value_condition,
+    render_multi_value_expression,
+    restore_multi_value_quarantine,
+    rollback_scalar_condition,
+    validate_multi_value_expression,
+)
+from rimay_jp_core.repository_document import (  # noqa: E402
+    project_repository_document,
+    repository_document_problems,
+)
+from rimay_jp_core.repository_grammar import compile_fixed_grammar  # noqa: E402
+from rimay_jp_core.repository_linker import link_repository_syntax  # noqa: E402
+from rimay_jp_core.repository_product_adoption import (  # noqa: E402
+    assess_repository_product_adoption,
+)
+from rimay_jp_core.schema_check import validate_schema  # noqa: E402
+
+
+SCHEMA = RIMAY_JP / "canonical/multi-value-predicate-candidate.schema.json"
+PLAN = RIMAY_JP / "canonical/repository-product-adoption-multi-value-proposal.yaml"
+PACKET = (
+    RIMAY_JP / "reports/compatibility/"
+    "rimay-multi-value-product-candidate-readiness-20260817.yaml"
+)
+
+
+def _leaf(value: str, unit: str | None = None) -> dict:
+    result = {"kind": "value", "value": value}
+    if unit is not None:
+        result["unit"] = unit
+    return result
+
+
+def _expression() -> dict:
+    return {
+        "kind": "or",
+        "left": _leaf("Pending"),
+        "right": {
+            "kind": "group",
+            "expression": {
+                "kind": "and",
+                "left": _leaf("1000", "JPY"),
+                "right": _leaf("Approved"),
+            },
+        },
+    }
+
+
+def _condition(operator: str = "IS", condition_type: str = "IF") -> dict:
+    return {
+        "type": condition_type,
+        "predicate": {
+            "subject": "OrderStatus",
+            "operator": operator,
+            "value_expression": _expression(),
+        },
+    }
+
+
+def _matrix() -> dict:
+    return yaml.safe_load((
+        RIMAY_JP / "reports/compatibility/rimay-capability-matrix.yaml"
+    ).read_text(encoding="utf-8"))
+
+
+def test_candidate_schema_and_runtime_shape_agree():
+    schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
+    envelope = {
+        "candidate_version": MULTI_VALUE_CANDIDATE_VERSION,
+        "target_canonical_version": MULTI_VALUE_TARGET_CANONICAL_VERSION,
+        "condition": _condition(),
+    }
+    Draft202012Validator.check_schema(schema)
+    assert list(Draft202012Validator(schema).iter_errors(envelope)) == []
+    assert ACTIVE_CANONICAL_VERSION == "0.9.0"
+    assert schema["properties"]["target_canonical_version"]["const"] == \
+        "1.0.0-candidate"
+
+
+def test_value_tree_roundtrips_exactly_in_english_and_japanese():
+    expression = _expression()
+    for language in ("en", "ja"):
+        rendered = render_multi_value_expression(expression, language=language)
+        assert parse_multi_value_expression(rendered, language=language) == expression
+    assert render_multi_value_expression(expression, language="en") == \
+        '("Pending" OR (("1000 JPY" AND "Approved")))'
+    assert "「1,000円」" in render_multi_value_expression(expression, language="ja")
+
+
+@pytest.mark.parametrize("operator", COMPARISON_OPERATORS)
+def test_candidate_reuses_all_adopted_operators_without_owning_their_semantics(operator):
+    condition = _condition(operator, condition_type="WHILE")
+    for language in ("en", "ja"):
+        surface = render_multi_value_condition(condition, language=language)
+        assert parse_multi_value_condition(surface, language=language) == condition
+
+
+@pytest.mark.parametrize(("surface", "language", "code"), [
+    ('"A" OR "B"', "en", "MULTI_VALUE_CANDIDATE_PARSE_TRAILING"),
+    ('("A" or "B")', "en", "MULTI_VALUE_CANDIDATE_UNKNOWN_CONNECTOR"),
+    ('（「A」 または 「B」）', "ja", "MULTI_VALUE_CANDIDATE_UNPARENTHESIZED"),
+    (' ("A" OR "B")', "en", "MULTI_VALUE_CANDIDATE_AMBIGUOUS_SURFACE"),
+])
+def test_ambiguous_or_alias_surfaces_fail_closed(surface, language, code):
+    with pytest.raises(MultiValueCandidateError) as caught:
+        parse_multi_value_expression(surface, language=language)
+    assert caught.value.code == code
+    assert caught.value.diagnostic()["domain"] == "multi_value_candidate"
+
+
+@pytest.mark.parametrize(("mutation", "code"), [
+    (lambda value: value.update(kind="array"), "MULTI_VALUE_CANDIDATE_INVALID_NODE"),
+    (lambda value: value["right"].update(extra=True),
+     "MULTI_VALUE_CANDIDATE_INVALID_GROUP"),
+    (lambda value: value["left"].update(unit="USD"),
+     "MULTI_VALUE_CANDIDATE_UNSUPPORTED_UNIT"),
+])
+def test_candidate_shape_errors_are_structured(mutation, code):
+    expression = _expression()
+    mutation(expression)
+    with pytest.raises(MultiValueCandidateError) as caught:
+        validate_multi_value_expression(expression)
+    assert caught.value.code == code
+    assert caught.value.path.startswith("/value_expression")
+
+
+def test_scalar_migration_is_lossless_and_multi_value_rollback_requires_quarantine():
+    scalar = {
+        "type": "IF",
+        "predicate": {
+            "subject": "Amount", "operator": "GREATER_OR_EQUAL",
+            "value": "1000", "unit": "JPY",
+        },
+    }
+    migrated = migrate_scalar_condition(scalar)
+    assert rollback_scalar_condition(migrated) == scalar
+
+    condition = _condition()
+    with pytest.raises(MultiValueCandidateError) as caught:
+        rollback_scalar_condition(condition)
+    assert caught.value.code == \
+        "MULTI_VALUE_CANDIDATE_ROLLBACK_REQUIRES_QUARANTINE"
+    quarantine = quarantine_multi_value_condition(condition)
+    assert restore_multi_value_quarantine(quarantine) == condition
+    tampered = copy.deepcopy(quarantine)
+    tampered["payload"]["predicate"]["subject"] = "Other"
+    with pytest.raises(MultiValueCandidateError) as tamper_error:
+        restore_multi_value_quarantine(tampered)
+    assert tamper_error.value.code == "MULTI_VALUE_CANDIDATE_QUARANTINE_TAMPERED"
+
+
+def test_active_canonical_remains_closed_to_candidate_value_expression():
+    document = new_canonical("REQ-MULTI-VALUE-CANDIDATE")
+    document["rimay_core"]["conditions"] = [_condition()]
+    document["rimay_core"]["response"] = {
+        "actor": "SystemA",
+        "modality": "MUST",
+        "action": {"family": "CALCULATE", "rimay_action_id": "CREATE_26_4"},
+        "result": "R",
+    }
+    assert validate_schema(document)
+
+
+def test_readiness_packet_records_adoption_and_keeps_activation_pending():
+    packet = yaml.safe_load(PACKET.read_text(encoding="utf-8"))
+    assert packet["selection"]["selected_capability"] == "CAP-MULTI-VALUE"
+    assert packet["selection"]["deferred_capabilities"] == [
+        "CAP-VALUE", "CAP-MODIFIER", "CAP-OPERATOR-VALUE-EXPR"]
+    assert packet["candidate_contract"]["expression_kinds"] == [
+        "value", "group", "and", "or"]
+    assert packet["candidate_contract"]["atomic_value_semantics"] == \
+        "delegated_not_adopted"
+    assert packet["mapping_boundary"] == {
+        "mapping_total": 13,
+        "existing_canonical": 5,
+        "canonical_extension_candidate": 0,
+        "repository_preserved_only": 8,
+        "explicitly_excluded": 0,
+        "product_binding_added": False,
+        "mapping_treatment_changed": False,
+    }
+    assert packet["readiness_outcome"] == {
+        "quality_axes": "satisfied",
+        "product_decision": "accepted",
+        "product_state": "adopted",
+        "candidate_status": "product_adopted_runtime_pending",
+        "explicit_product_decision_required": False,
+        "runtime_activation_audit_required": True,
+    }
+
+
+def test_product_plan_is_adopted_at_the_candidate_boundary():
+    plan = yaml.safe_load(PLAN.read_text(encoding="utf-8"))
+    result = assess_repository_product_adoption(plan, _matrix(), project_root=RIMAY_JP)
+    assert result.accepted, result.problems
+    assert len(result.decisions) == 1
+    decision = result.decisions[0]
+    assert decision.capability_id == "CAP-MULTI-VALUE"
+    assert decision.decision_status == "accepted"
+    assert decision.product_state == "adopted"
+    assert set(result.accepted_decisions()) == {"CAP-MULTI-VALUE"}
+    assert all(axis["status"] == "satisfied"
+               for key, axis in plan["decisions"][0]["quality_contract"].items()
+               if key != "objective")
+
+
+def _fixed_rule(grammar, text: str) -> dict:
+    parsed = grammar.recognizer().parse_syntax(
+        text, start_rule="CNLFunctionalRequirements")
+    assert parsed.accepted and parsed.ambiguity_detected is False
+    linking = link_repository_syntax(grammar, parsed, text)
+    assert linking.succeeded
+    projection = project_repository_document(parsed, text, linking, grammar)
+    assert projection.status == "projected_document", projection.reason
+    assert repository_document_problems(projection.document, text) == []
+    return projection.document["requirements"][0]["condition_structure"] \
+        ["conditions"][0]["condition"]["payload"]["expression"]["rule"]
+
+
+@pytest.mark.grammar
+def test_fixed_repository_precedence_and_explicit_group_project_losslessly():
+    path = os.environ.get("RIMAY_FIXED_GRAMMAR")
+    if not path:
+        pytest.skip("RIMAY_FIXED_GRAMMAR 未指定")
+    grammar = compile_fixed_grammar(path)
+    cases = (
+        (
+            '"1" OR "2" AND "3"',
+            {
+                "kind": "or", "left": _leaf("1"),
+                "right": {"kind": "and", "left": _leaf("2"), "right": _leaf("3")},
+            },
+        ),
+        (
+            '("1" OR "2") AND "3"',
+            {
+                "kind": "and",
+                "left": {
+                    "kind": "group",
+                    "expression": {
+                        "kind": "or", "left": _leaf("1"), "right": _leaf("2")},
+                },
+                "right": _leaf("3"),
+            },
+        ),
+    )
+    for value_surface, expected in cases:
+        text = (
+            'Actors: actor SystemA '
+            f'If "A" is {value_surface}, '
+            'SystemA must calculate "R".'
+        )
+        assert project_repository_multi_value_expression(
+            _fixed_rule(grammar, text), text) == expected
+
+
+@pytest.mark.grammar
+def test_fixed_repository_projection_rejects_source_and_atomic_fact_tampering():
+    path = os.environ.get("RIMAY_FIXED_GRAMMAR")
+    if not path:
+        pytest.skip("RIMAY_FIXED_GRAMMAR 未指定")
+    grammar = compile_fixed_grammar(path)
+    text = (
+        'Actors: actor SystemA If "A" is "1" OR "2", '
+        'SystemA must calculate "R".'
+    )
+    rule = _fixed_rule(grammar, text)
+    source_tampered = copy.deepcopy(rule)
+    selected = next(item for item in source_tampered["assignments"]
+                    if item["owner_rule"] == "OperatorValuesExpr"
+                    and item["feature"] == "valuesExpression")
+    selected["source"] = '"1" OR "X"'
+    with pytest.raises(MultiValueCandidateError) as source_error:
+        project_repository_multi_value_expression(source_tampered, text)
+    assert source_error.value.code == \
+        "MULTI_VALUE_CANDIDATE_REPOSITORY_SOURCE_TAMPERED"
+
+    fact_tampered = copy.deepcopy(rule)
+    atomic = next(item for item in fact_tampered["assignments"]
+                  if item["owner_rule"] == "AtomicValue")
+    atomic["values"][0]["value"] = "X"
+    with pytest.raises(MultiValueCandidateError) as fact_error:
+        project_repository_multi_value_expression(fact_tampered, text)
+    assert fact_error.value.code == \
+        "MULTI_VALUE_CANDIDATE_REPOSITORY_FACT_MISMATCH"

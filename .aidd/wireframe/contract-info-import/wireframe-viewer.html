@@ -54,16 +54,18 @@
   <h1>これは要件定義段階のワイヤーフレームです</h1>
   <p>画面の型・構成・情報量のイメージを掴むためのものです。この機能・この UI で実装することを確約するものではありません。</p>
   <p>色・書体・細部の見た目は未確定です。ブランドの色は基本設計の工程で決めます。</p>
+  <p>画面で指定する項目・要否は未確定です。取込の対象をこの画面からのアップロードで受け取るか所定の配置場所から読むかも確定していないため、ファイルを選ぶ欄は置いていません。取込の処理そのものはバッチが行い、この画面は実行の指示と受付の確認のみを扱います。</p>
 </div>
 
 <nav class="viewer-nav">
-  <a href="pages/import-input.html" target="wf">契約情報インポート実行 / ① 入力</a>
-  <a href="pages/import-input-error.html" target="wf">契約情報インポート実行 / input-error</a>
-  <a href="pages/import-confirm.html" target="wf">契約情報インポート実行 / ② 確認</a>
-  <a href="pages/import-submitting.html" target="wf">契約情報インポート実行 / submitting</a>
-  <a href="pages/import-submit-error.html" target="wf">契約情報インポート実行 / submit-error</a>
-  <a href="pages/import-done.html" target="wf">契約情報インポート実行 / ③ 完了（受付とタスク識別情報）</a>
-  <a href="pages/error-403.html" target="wf">エラー画面（権限なし） / default</a>
+  <a href="pages/import-input.html" target="wf">① 入力</a>
+  <a href="pages/import-input-error.html" target="wf">① 入力: 入力エラー</a>
+  <a href="pages/import-cancel-confirm.html" target="wf">① 入力: 中断の確認</a>
+  <a href="pages/import-confirm.html" target="wf">② 確認</a>
+  <a href="pages/import-submitting.html" target="wf">② 確認: 実行中</a>
+  <a href="pages/import-submit-error.html" target="wf">② 確認: 実行エラー</a>
+  <a href="pages/import-done.html" target="wf">③ 完了</a>
+  <a href="pages/error-403.html" target="wf">エラー画面: 権限なし</a>
 </nav>
 
 <iframe class="viewer-frame" name="wf" src="pages/import-input.html" title="契約情報インポートのワイヤーフレーム"></iframe>

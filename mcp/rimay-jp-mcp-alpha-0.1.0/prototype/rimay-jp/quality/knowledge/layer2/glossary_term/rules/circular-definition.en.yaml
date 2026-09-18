@@ -1,0 +1,22 @@
+id: glossary_circular_definition
+name: Circular definition
+artifact_type: glossary_term
+language: en
+quality_attribute: non_circular
+definition: >
+  A glossary definition must not be circular — it must not restate the term being defined.
+  Given a "term: definition" entry, a definition that contains the term is circular.
+definition_source_id: glossary/iso-704-0000   # ISO 704 (analyst-asserted; admitted for L2 per amended FR-046)
+method_source_id: glossary/arora-2017         # paper-tier method evidence (FR-040)
+implementable: deterministic
+detector:
+  type: term_definition
+  params:
+    separator: ":"
+default_severity: medium
+explanation_template: "The definition restates the term '{match}'; define it without using the term itself."
+examples:
+  positive:
+    - "Session: a session is a period of user activity."
+  negative:
+    - "Session: a period of continuous user activity ending at logout."

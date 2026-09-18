@@ -1,10 +1,10 @@
 {
-  "updated_at": "2026-09-16T20:18:57+09:00",
+  "updated_at": "2026-09-17T23:59:00+09:00",
   "current": {
     "phase": 5,
     "phase_name": "画面モック生成",
-    "waiting_for": "human_review",
-    "next_action": "【2026-09-16 中断】Phase 5 の feature スコープのゲートが 7 feature すべて完了し、3 人間レビュー待ちで中断した。全 manifest が status: review、指摘は累計 70 件すべて未対応で保持（判断・理由の記入なし）。7 本とも差戻し先候補は「なし」で、上流の不備を示す指摘は 0 件。機械検査（audit-tokens / audit-components / check-tokens）は全 feature exit 0。 再開時の最初の行動は、提示済みの Q1〜Q4 への回答を人間から受け取ること。Q1 補足文の扱い（推奨 B: ページから消してビューアの注記帯に足す）/ Q2 ステータス語彙（推奨 C: DS の approval パターンの語に統一し値は未確定と明記。ただし contract-application-status は Out of Scope が値を決めないと明記しているため匿名化する案もある）/ Q3 DS の構えを外した箇所（推奨: 記録して外したまま）/ Q4 往復上限（推奨 1 往復）。 70 件は 10 の型に圧縮できる。A1 styles.css の feature 間コピー / A2 補足文をページ本文に記載 / A3 要否表示の不統一 / A4 メッセージID（1〜5 は MSG-0000 で書式違反、6・7 は GEF-000000 で意味違い。表示自体をやめるのが正しい対処）/ A5 403 の復帰先 / A6 DS 不足で落とした状態を unrealized に未記録 / A7 notes の分母の食い違い / A8 状態間をクリックで辿れない（button のままで a href でない）/ A9 DS の構えを記録なく外した / A10 ModalDialog に可視の閉じるボタンなし。ほかに feature 固有が約 15 件。 修正に入る場合は 7 feature すべての再生成になる（型の修正が全 feature に効くため）。再ゲートは 1 本あたり 10 分前後。生成スクリプトはセッションのスクラップパッドにあるため、セッションをまたぐ場合は作り直しが要る。 unrealized を持つ 5 feature（property-basic-info 3 / issue-request-tutorial 1 / contract-application-status 1 / contract-info-import 2 / contract-info-download 1）は、承認時に acknowledged の by / at / decision を人間から受け取って転記する必要がある。organization-search-zoom と issue-request は unrealized が空配列のため記入不要。 承認の前に、人がブラウザで .aidd/wireframe/<feature>/wireframe-viewer.html を開いて表示を確認する必要がある（全ゲートが指摘。トークン CSS の読み込み切れ・色定義漏れは機械では検出できない）。ただし再生成するなら確認は再生成後が無駄がない。 横断スコープのゲートと結合段（wireframe-integration）はまだ実行していない。順序は 3 人間レビュー → 修正の要否判断 →（複数 feature のため）結合段 → 横断スコープのゲート → 3 → 終端処理。Phase 6 以降は本リリースの対象外。",
+    "waiting_for": "agent_work",
+    "next_action": "【2026-09-17】Phase 5 の feature スコープが全 7 feature で approved。ゲートは 4〜5 巡実行し、指摘が収束しないことを確認したうえで ③ が打ち切りを決定した（累計 416 件すべて「対応せず進める」。理由はゲート記録に転記済み）。承認者 Junichi Noumi / 承認日 2026-09-17。unrealized[] を持つ 5 feature には acknowledged を記入済み。confirmed_at は MK2 実施後に人間が記入する。差戻しは 0 件。計 73 ページ。次は wireframe-integration（結合段）を実行する — 共通シェル・システム全体の入口・feature 間リンクを後付けし、入口を新設する場合は .aidd/wireframe/_app-shell/ に擬似 feature として置く。その後 横断スコープのゲートを 1 回、③ 人間レビュー、そして aidd-flow §7 の終端処理へ進む。Phase 6 以降は本リリースの対象外。",
     "conventions": {
       "note": "organization-search-zoom の作成中に人間が確定した、Phase 4 の全 feature に適用する扱い。再開時にこれを前提として作成を進めてよい（再度の確認は不要）",
       "nfr_table": "非機能要件の表はセキュリティ区分のみ記入する。パフォーマンス / 可用性 / 運用・監視 / アクセシビリティ / i18n・l10n / プライバシー / 監査 の 7 区分は『non-functional.md に準拠し、feature 固有の値を設けない』を不要理由として付記し、プレースホルダーを削除せず保持する",
@@ -30,8 +30,8 @@
       "ds_repo": "https://github.com/kccs-ai-spec-platform/aidd-ds-poc-digital-go-jp-based",
       "token_profile": "wireframe",
       "excluded_features": "なし（除外 0 件。7 feature すべてが対象）",
-      "total_pages": 67,
-      "gate_findings_total": 70,
+      "total_pages": 73,
+      "gate_findings_total": 416,
       "gate_record": ".aidd/gates/phase-5-wireframe.md",
       "human_decisions": [
         "入力項目が未確定のフォームは匿名プレースホルダー（項目 1〜N）で情報量だけ示す（property-basic-info / issue-request / contract-application-status / contract-info-download に適用）",
@@ -39,8 +39,10 @@
         "contract-info-download の検索画面は既存 GWTG004 に寄せず DS で描く",
         "property-basic-info の帳票 3 種は unrealized 申告。帳票出力の起点操作と PDF 別ウインドウの動線は画面に描く",
         "feature ごとに approved まで通さず、7 feature すべてを生成してから指摘へまとめて対応する（フロー規定からの意図的な逸脱）"
-      ]
-    }
+      ],
+      "regenerated_at": "2026-09-17T09:45:00+09:00"
+    },
+    "updated_at": "2026-09-17T23:59:00+09:00"
   },
   "phases": [
     {
@@ -79,8 +81,8 @@
       "phase": 5,
       "name": "画面モック生成",
       "artifact": ".aidd/wireframe/*/pages/",
-      "status": "review",
-      "updated_at": "2026-09-16T20:12:40+09:00",
+      "status": "approved",
+      "updated_at": "2026-09-17T23:59:00+09:00",
       "gate_record": ".aidd/gates/phase-5-wireframe.md"
     }
   ],
@@ -140,9 +142,9 @@
           "open_placeholders": 0
         },
         "wireframe": {
-          "status": "review",
-          "updated_at": "2026-09-16T18:40:35+09:00",
-          "waiting_for": "human_review",
+          "status": "approved",
+          "updated_at": "2026-09-17T23:59:00+09:00",
+          "waiting_for": null,
           "open_placeholders": 0
         }
       }
@@ -158,9 +160,9 @@
           "open_placeholders": 0
         },
         "wireframe": {
-          "status": "review",
-          "updated_at": "2026-09-16T19:15:57+09:00",
-          "waiting_for": "human_review",
+          "status": "approved",
+          "updated_at": "2026-09-17T23:59:00+09:00",
+          "waiting_for": null,
           "open_placeholders": 0
         }
       }
@@ -176,9 +178,9 @@
           "open_placeholders": 0
         },
         "wireframe": {
-          "status": "review",
-          "updated_at": "2026-09-16T19:25:11+09:00",
-          "waiting_for": "human_review",
+          "status": "approved",
+          "updated_at": "2026-09-17T23:59:00+09:00",
+          "waiting_for": null,
           "open_placeholders": 0
         }
       }
@@ -194,9 +196,9 @@
           "open_placeholders": 0
         },
         "wireframe": {
-          "status": "review",
-          "updated_at": "2026-09-16T19:35:34+09:00",
-          "waiting_for": "human_review",
+          "status": "approved",
+          "updated_at": "2026-09-17T23:59:00+09:00",
+          "waiting_for": null,
           "open_placeholders": 0
         }
       }
@@ -212,9 +214,9 @@
           "open_placeholders": 0
         },
         "wireframe": {
-          "status": "review",
-          "updated_at": "2026-09-16T19:47:41+09:00",
-          "waiting_for": "human_review",
+          "status": "approved",
+          "updated_at": "2026-09-17T23:59:00+09:00",
+          "waiting_for": null,
           "open_placeholders": 0
         }
       }
@@ -230,9 +232,9 @@
           "open_placeholders": 0
         },
         "wireframe": {
-          "status": "review",
-          "updated_at": "2026-09-16T19:58:32+09:00",
-          "waiting_for": "human_review",
+          "status": "approved",
+          "updated_at": "2026-09-17T23:59:00+09:00",
+          "waiting_for": null,
           "open_placeholders": 0
         }
       }
@@ -248,9 +250,9 @@
           "open_placeholders": 0
         },
         "wireframe": {
-          "status": "review",
-          "updated_at": "2026-09-16T20:12:40+09:00",
-          "waiting_for": "human_review",
+          "status": "approved",
+          "updated_at": "2026-09-17T23:59:00+09:00",
+          "waiting_for": null,
           "open_placeholders": 0
         }
       }

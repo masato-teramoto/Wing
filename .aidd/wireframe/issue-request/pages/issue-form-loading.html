@@ -5,25 +5,137 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>発行依頼書 変更 — 読み込み中</title>
 <link rel="stylesheet" href="tokens/tokens.css">
-<link rel="stylesheet" href="styles.css">
+<style>
+body{margin:0;background:var(--color-semantic-canvas);color:var(--color-semantic-text);font-family:system-ui,sans-serif;font-size:var(--font-size-body);line-height:1.6}
+.wf-main{padding-left:var(--space-md);padding-right:var(--space-md);padding-top:var(--space-sm);padding-bottom:var(--space-lg)}
+:focus-visible{outline-style:solid;outline-width:medium;outline-color:var(--color-semantic-focus);outline-offset:var(--space-xxs)}
+.wf-page-header{margin-bottom:var(--space-sm)}
+.wf-page-title{margin:0;font-size:var(--font-size-heading);line-height:1.4}
+.wf-visually-hidden{position:absolute;width:0.0625rem;height:0.0625rem;margin:-0.0625rem;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+
+.wf-field{display:flex;flex-direction:column;gap:var(--space-xs);min-width:0}
+.wf-field-label{font-size:var(--font-size-caption);font-weight:700}
+.wf-field-required{margin-left:var(--space-xs);color:var(--color-semantic-required);font-weight:400}
+.wf-field-optional{margin-left:var(--space-xs);color:var(--color-semantic-text-subtle);font-weight:400}
+.wf-field-support{color:var(--color-semantic-text-subtle);font-size:var(--font-size-caption)}
+
+.ds-inputtext{min-height:2.75rem;padding-left:var(--space-sm);padding-right:var(--space-sm);background:var(--color-semantic-background);color:var(--color-semantic-text);border:thin solid var(--color-semantic-border);border-radius:var(--radius-sm);font-size:var(--font-size-body);font-family:inherit}
+.ds-inputtext:disabled{background:var(--color-semantic-disabled-surface);color:var(--color-semantic-disabled-text)}
+.ds-inputtext--error{border-color:var(--color-semantic-danger)}
+
+.ds-select{min-width:14rem;min-height:2.75rem;padding-left:var(--space-sm);padding-right:var(--space-sm);background:var(--color-semantic-background);color:var(--color-semantic-text);border:thin solid var(--color-semantic-border);border-radius:var(--radius-sm);font-size:var(--font-size-body);font-family:inherit}
+.ds-select:disabled{background:var(--color-semantic-disabled-surface);color:var(--color-semantic-disabled-text)}
+
+.ds-button{display:inline-flex;align-items:center;justify-content:center;min-height:2.75rem;padding-left:var(--space-md);padding-right:var(--space-md);border-radius:var(--radius-sm);font-size:var(--font-size-body);font-family:inherit;line-height:1.4;cursor:pointer}
+.ds-button--secondary{background:var(--color-semantic-background);color:var(--color-semantic-primary);border:thin solid var(--color-semantic-primary)}
+.ds-button--secondary:hover{background:var(--color-semantic-surface-hover);color:var(--color-semantic-primary-hover);border-color:var(--color-semantic-primary-hover)}
+.ds-button--primary{background:var(--color-semantic-primary);color:var(--color-semantic-on-primary);border:none}
+.ds-button--primary:hover{background:var(--color-semantic-primary-hover)}
+.ds-button--danger{background:var(--color-semantic-danger);color:var(--color-semantic-on-primary);border:none}
+.ds-button--danger:hover{background:var(--color-semantic-danger-hover)}
+.ds-button:disabled{background:var(--color-semantic-disabled-surface);color:var(--color-semantic-disabled-text);border-color:var(--color-semantic-disabled-surface);cursor:default}
+.ds-button--sm{min-height:2.25rem;padding-left:var(--space-sm);padding-right:var(--space-sm);font-size:var(--font-size-caption)}
+
+.ds-link{color:var(--color-semantic-primary);text-decoration:underline}
+.ds-link:hover{color:var(--color-semantic-primary-hover)}
+.ds-link--button{display:inline-flex;align-items:center;justify-content:center;min-height:2.75rem;padding-left:var(--space-md);padding-right:var(--space-md);background:var(--color-semantic-background);color:var(--color-semantic-primary);border:thin solid var(--color-semantic-primary);border-radius:var(--radius-sm);text-decoration:none}
+.ds-link--button:hover{background:var(--color-semantic-surface-hover);color:var(--color-semantic-primary-hover);border-color:var(--color-semantic-primary-hover)}
+
+.ds-badge{display:inline-flex;align-items:center;padding-left:var(--space-sm);padding-right:var(--space-sm);border-radius:var(--radius-full);font-size:var(--font-size-caption)}
+.ds-badge--neutral{background:var(--color-semantic-surface-hover);color:var(--color-semantic-text-subtle)}
+
+.ds-table-scroll{overflow-x:auto;background:var(--color-semantic-background);border:thin solid var(--color-semantic-border);border-radius:var(--radius-md)}
+.ds-table{width:100%;min-width:44rem;border-collapse:collapse}
+.ds-table caption{padding:var(--space-sm);color:var(--color-semantic-text-subtle);font-size:var(--font-size-caption);text-align:left}
+.ds-table th,.ds-table td{padding-top:var(--space-sm);padding-bottom:var(--space-sm);padding-left:var(--space-ms);padding-right:var(--space-ms);border-bottom:thin solid var(--color-semantic-border);text-align:left;vertical-align:top;white-space:nowrap}
+.ds-table th{background:var(--color-semantic-table-header);color:var(--color-semantic-text-subtle);font-weight:700}
+.ds-table tbody tr:hover{background:var(--color-semantic-surface-hover)}
+
+.ds-emptystate{padding:var(--space-xl);background:var(--color-semantic-background);border:thin solid var(--color-semantic-border);border-radius:var(--radius-md);text-align:center}
+.ds-emptystate-title{margin:0;font-size:var(--font-size-body);font-weight:700}
+.ds-emptystate-body{margin-top:var(--space-sm);margin-bottom:var(--space-md);color:var(--color-semantic-text-subtle)}
+
+.wf-inline-error{padding:var(--space-lg);background:var(--color-semantic-background);border:thin solid var(--color-semantic-border);border-radius:var(--radius-md)}
+.wf-inline-error-title{margin:0;font-size:var(--font-size-body);font-weight:700}
+.wf-inline-error-body{margin-top:var(--space-sm);margin-bottom:var(--space-md);color:var(--color-semantic-text-subtle)}
+
+.ds-skeleton{background:var(--color-semantic-skeleton);border-radius:var(--radius-sm)}
+.ds-skeleton--text{height:1rem}
+.ds-skeleton--row{height:1.25rem}
+.ds-skeleton-rows{padding:var(--space-ms)}
+.ds-skeleton-rows > * + *{margin-top:var(--space-ms)}
+
+.wf-errorpage{max-width:40rem;margin-left:auto;margin-right:auto;padding-top:var(--space-xl);text-align:center}
+.wf-errorpage-title{margin:0;font-size:var(--font-size-heading)}
+.wf-errorpage-body{margin-top:var(--space-md);margin-bottom:var(--space-lg)}
+
+.wf-modal-backdrop{position:fixed;inset:0;background:var(--color-semantic-overlay);display:flex;align-items:center;justify-content:center;padding:var(--space-md)}
+.ds-modaldialog{width:100%;max-width:32rem;background:var(--color-semantic-background);border:thin solid var(--color-semantic-border);border-radius:var(--radius-md);padding:var(--space-lg)}
+.ds-modaldialog-header{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--space-md)}
+.ds-modaldialog-title{margin:0;font-size:var(--font-size-body);font-weight:700}
+.ds-modaldialog-body{margin-top:var(--space-sm);margin-bottom:var(--space-lg);color:var(--color-semantic-text-subtle)}
+.ds-modaldialog-actions{display:flex;flex-wrap:wrap;gap:var(--space-sm);justify-content:flex-end}
+
+.wf-grid{display:grid;grid-template-columns:1fr;gap:var(--space-md)}
+@media (min-width:64rem){.wf-grid{grid-template-columns:repeat(4,1fr)}.wf-field--2{grid-column:span 2}.wf-field--4{grid-column:span 4}}
+
+.wf-section{margin-bottom:var(--space-md);padding:var(--space-md);background:var(--color-semantic-background);border:thin solid var(--color-semantic-border);border-radius:var(--radius-md)}
+.wf-section-title{margin:0;margin-bottom:var(--space-sm);font-size:var(--font-size-body);font-weight:700}
+.wf-actions{display:flex;flex-wrap:wrap;gap:var(--space-sm);margin-top:var(--space-md)}
+
+.wf-dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:var(--space-sm) var(--space-md)}
+.wf-dl dt{color:var(--color-semantic-text-subtle);font-size:var(--font-size-caption)}
+.wf-dl dd{margin:0}
+
+.wf-page-header--with-actions{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:var(--space-md)}
+.wf-page-title-group{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-sm)}
+.ds-repeatingfieldgroup{margin:0;padding:0;border:0}
+.ds-repeatingfieldgroup legend{padding:0;margin-bottom:var(--space-sm);font-weight:700}
+.ds-repeatingfieldgroup-scroll{overflow-x:auto;background:var(--color-semantic-background);border:thin solid var(--color-semantic-border);border-radius:var(--radius-md)}
+.ds-repeatingfieldgroup-table{width:100%;min-width:44rem;border-collapse:collapse}
+.ds-repeatingfieldgroup-table th,.ds-repeatingfieldgroup-table td{padding-top:var(--space-sm);padding-bottom:var(--space-sm);padding-left:var(--space-ms);padding-right:var(--space-ms);border-bottom:thin solid var(--color-semantic-border);text-align:left;vertical-align:top}
+.ds-repeatingfieldgroup-table th{background:var(--color-semantic-table-header);color:var(--color-semantic-text-subtle);font-weight:700;font-size:var(--font-size-caption)}
+.ds-repeatingfieldgroup-add{margin-top:var(--space-sm)}
+.ds-button--sm{min-height:2.25rem;padding-left:var(--space-sm);padding-right:var(--space-sm);font-size:var(--font-size-caption)}
+.ds-radiobutton-group{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-md)}
+.ds-radiobutton{display:inline-flex;align-items:center;gap:var(--space-xs)}
+.ds-checkbox{width:1.25rem;height:1.25rem}
+.wf-mode-current{color:var(--color-semantic-text-subtle);font-size:var(--font-size-caption)}
+.wf-sample-buttons{display:flex;flex-wrap:wrap;gap:var(--space-sm)}
+.wf-tutorial-step{margin-top:var(--space-md);padding-left:var(--space-md);border-left:thin solid var(--color-semantic-border)}
+.wf-tutorial-step-no{margin:0;margin-bottom:var(--space-xs);color:var(--color-semantic-text-subtle);font-size:var(--font-size-caption)}
+.wf-readonly-value{display:inline-flex;align-items:center;min-height:2.75rem}
+.wf-selection-bar{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-sm);padding:var(--space-sm) var(--space-md);margin-bottom:var(--space-md);background:var(--color-semantic-surface);border:thin solid var(--color-semantic-border);border-radius:var(--radius-md)}
+.wf-selection-count{font-weight:700}
+.wf-header-meta{color:var(--color-semantic-text-subtle);font-size:var(--font-size-caption)}
+.ds-link--danger{color:var(--color-semantic-danger);border-color:var(--color-semantic-danger)}
+.wf-field-error{color:var(--color-semantic-danger);font-size:var(--font-size-caption)}
+.wf-error-summary{padding:var(--space-md);margin-bottom:var(--space-md);background:var(--color-semantic-danger-subtle);border:thin solid var(--color-semantic-danger);border-radius:var(--radius-md)}
+.wf-error-summary-title{margin:0;margin-bottom:var(--space-xs);color:var(--color-semantic-on-danger-subtle);font-weight:700}
+.wf-error-summary ul{margin:0;padding-left:var(--space-lg)}
+.wf-row-note{margin-top:var(--space-sm);margin-bottom:0;color:var(--color-semantic-text-subtle);font-size:var(--font-size-caption)}
+.wf-history-empty{color:var(--color-semantic-text-subtle)}
+.ds-textarea{width:100%;padding:var(--space-sm);background:var(--color-semantic-background);color:var(--color-semantic-text);border:thin solid var(--color-semantic-border);border-radius:var(--radius-sm);font-size:var(--font-size-body);font-family:inherit;box-sizing:border-box}
+</style>
 </head>
 <body>
 <main class="wf-main">
   <div class="wf-page-header wf-page-header--with-actions">
     <div class="wf-page-title-group">
       <h1 class="wf-page-title">発行依頼書 変更</h1>
+
     </div>
   </div>
 
-  <p class="wf-visually-hidden" role="status">読み込み中です</p>
-
   <section class="wf-section" aria-busy="true">
-    <h2 class="wf-section-title">発行依頼書の入力項目</h2>
+    <p class="wf-visually-hidden">発行依頼書を読み込んでいます。</p>
     <div class="ds-skeleton-rows">
-      <span class="ds-skeleton ds-skeleton--text" aria-hidden="true"></span>
-      <span class="ds-skeleton ds-skeleton--block" aria-hidden="true"></span>
-      <span class="ds-skeleton ds-skeleton--block" aria-hidden="true"></span>
-      <span class="ds-skeleton ds-skeleton--block" aria-hidden="true"></span>
+      <div class="ds-skeleton ds-skeleton--row"></div>
+      <div class="ds-skeleton ds-skeleton--row"></div>
+      <div class="ds-skeleton ds-skeleton--row"></div>
+      <div class="ds-skeleton ds-skeleton--row"></div>
+      <div class="ds-skeleton ds-skeleton--row"></div>
+      <div class="ds-skeleton ds-skeleton--row"></div>
     </div>
   </section>
 </main>

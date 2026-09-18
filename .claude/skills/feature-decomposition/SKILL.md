@@ -6,8 +6,6 @@ disable-model-invocation: true
 
 # feature-decomposition（Phase 3: Feature 分割）
 
-> 出典: フロー設計 `03_Feature分割フェーズ設計書.md`。
-
 要求一覧を満たすために必要な feature を洗い出し、**実装順序の根拠（優先度・依存）を確定**する。
 
 - 成果物: `.aidd/feature-list.md`

@@ -1,0 +1,25 @@
+id: ac_not_ears_conformant
+name: 受け入れ基準が EARS 準拠でない
+artifact_type: acceptance_criteria
+language: ja
+quality_attribute: clarity
+definition: >
+  受け入れ基準はシステム応答を義務表現（「〜しなければならない」「〜するものとする」）で記述しなければならない。
+  応答演算子のない基準は EARS パターンに準拠しない。
+definition_source_id: acceptance/mavin-2009
+method_source_id: general/arora-2015
+detection_basis:
+  description: "日本語の義務表現（「しなければならない」「するものとする」）の有無で判定する。"
+  source_id: japanese/seki-2019
+implementable: deterministic
+detector:
+  type: ears_pattern
+  params:
+    response_markers: [しなければならない, するものとする, なければならない, ものとする]
+default_severity: medium
+explanation_template: "EARS の応答演算子（「〜しなければならない」等）がありません。EARS パターンに従って記述してください。"
+examples:
+  positive:
+    - "利用者が保存を押すと、ファイルが保存される。"
+  negative:
+    - "利用者が保存を押したとき、システムはファイルを保存しなければならない。"

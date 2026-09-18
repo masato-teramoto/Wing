@@ -1,0 +1,1580 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rimay-jp/canonical-requirement.schema.json",
+  "title": "Canonical Requirement",
+  "description": "Rimay-JP Canonical Requirement v1.1.0。unknownは値として格納せず、値なし(null/欠落)＋resolution.slotsの状態で表す。状態・根拠は意味を持つリーフスロットへ付与し、複合オブジェクトの状態は子から導出する。response、response_expression、response_blockと、conditions、condition_expressionはそれぞれ相互排他の互換形・拡張形であり、二重正本を禁止する。IF/WHILE predicateはlegacy subjectまたは閉じたtyped operandの一方をidentity正本とし、既存scalar value/unitまたは閉じたvalue_expression treeの一方をvalue正本とする。typed operandはvalue_expressionだけと組み合わせ、自動typing・自動tree化を禁止する。response_blockはitem順、順次実行、bullet、connector、Atomic Responseを保持する。leaf-local frequencyはresponseが正本であり、repository_traceは意味比較から除外するRepository provenanceである。",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "profile_version",
+    "requirement_id",
+    "revision",
+    "status",
+    "rimay_core",
+    "extensions",
+    "resolution",
+    "provenance"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.1.0"
+    },
+    "profile_version": {
+      "type": "string",
+      "pattern": "^rimay-jp-mvp-\\d+\\.\\d+\\.\\d+$"
+    },
+    "requirement_id": {
+      "type": "string",
+      "pattern": "^REQ-[A-Za-z0-9][A-Za-z0-9-]*$"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Patch適用成功ごとに+1（楽観ロックの基準）"
+    },
+    "status": {
+      "enum": [
+        "candidate",
+        "under_clarification",
+        "structurally_valid",
+        "review_ready",
+        "approved",
+        "superseded",
+        "rejected"
+      ]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "source_segments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/sourceSegment"
+          }
+        }
+      }
+    },
+    "rimay_core": {
+      "$ref": "#/$defs/rimayCore"
+    },
+    "extensions": {
+      "$ref": "#/$defs/extensions"
+    },
+    "resolution": {
+      "type": "object",
+      "required": [
+        "slots"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "slots": {
+          "type": "object",
+          "description": "キーは単一ノードのCanonicalPointer（RFC 6901厳密準拠、'*'不可）",
+          "propertyNames": {
+            "$ref": "#/$defs/canonicalPointer"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/slotState"
+          }
+        }
+      }
+    },
+    "provenance": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/provenanceEntry"
+      }
+    },
+    "findings": {
+      "type": "array",
+      "description": "移行Phase B（2026-08-04移行）: read-fallback専用（新規書き込み停止。canonical_hashの対象外）。正本はValidation Report（finding.schema.json）。Phase C（major版）で廃止",
+      "items": {
+        "type": "object"
+      }
+    },
+    "surface_analysis": {
+      "type": "object",
+      "description": "Normalizerによる表層シグナル解析の記録（Schema 0.3.0で追加=minor。ADR-0013: 日本語解析はNormalizerに集約し、Canonical段のValidatorはsource textを再解析せず本記録を参照する。canonical_hashの対象外）",
+      "required": [
+        "language",
+        "mode"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "language": {
+          "type": "string"
+        },
+        "mode": {
+          "enum": [
+            "controlled",
+            "heuristic",
+            "llm"
+          ]
+        },
+        "deictic": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/surfaceSignal"
+          }
+        },
+        "vague": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/surfaceSignal"
+          }
+        }
+      }
+    },
+    "normalization": {
+      "type": "object",
+      "description": "正規化の保証記録（Schema 0.3.0で追加=minor。ADR-0013 Phase 3: strict/heuristic/llm/canonical_apiの保証経路とsourceカバレッジを永続化する。canonical_hashの対象外）",
+      "required": [
+        "mode"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "enum": [
+            "strict",
+            "heuristic",
+            "llm",
+            "canonical_api"
+          ]
+        },
+        "normalizer_version": {
+          "type": "string"
+        },
+        "profile_version": {
+          "type": "string"
+        },
+        "profile_content_hash": {
+          "type": "string"
+        },
+        "source_hash": {
+          "type": "string"
+        },
+        "conformance": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "controlled_language": {
+              "type": "boolean"
+            },
+            "lossless_mapping": {
+              "type": "boolean"
+            }
+          }
+        },
+        "coverage": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "consumed_spans": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/span"
+              }
+            },
+            "ignored_spans": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/span"
+              }
+            },
+            "unconsumed_spans": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/span"
+              }
+            }
+          }
+        },
+        "lexical_analysis": {
+          "type": "object",
+          "description": "heuristic経路で形態解析を使った場合のみ記録する解析Provenance（Schema 0.5.0で追加=minor。改善計画v0.3 §7.2／decision-log D-007。normalizationはcanonical_hashの対象外だが、optional propertyの追加は受理インスタンス集合の変更でありminor bumpとする）",
+          "required": [
+            "provider",
+            "provider_version",
+            "dictionary_content_hash",
+            "config_content_hash"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "provider": {
+              "type": "string"
+            },
+            "provider_version": {
+              "type": "string"
+            },
+            "dictionary_package": {
+              "type": "string"
+            },
+            "dictionary_edition": {
+              "type": "string"
+            },
+            "dictionary_version": {
+              "type": "string"
+            },
+            "dictionary_content_hash": {
+              "type": "string",
+              "pattern": "^sha256:"
+            },
+            "config_content_hash": {
+              "type": "string",
+              "pattern": "^sha256:"
+            },
+            "split_mode": {
+              "type": "string"
+            },
+            "phrase_split_mode": {
+              "type": "string"
+            },
+            "boundary_validation_split_mode": {
+              "type": "string"
+            },
+            "scope": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "validation_state": {
+      "type": "object",
+      "description": "現revisionの検査状態要約（Schema 0.2.0で追加=minor。実行結果本体はValidation Reportへ分離。canonical_hashの対象外）",
+      "required": [
+        "report_id",
+        "blocking_findings",
+        "warning_findings",
+        "validated_canonical_hash",
+        "validator_registry_version"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "report_id": {
+          "type": "string"
+        },
+        "blocking_findings": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "warning_findings": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "validated_canonical_hash": {
+          "type": "string"
+        },
+        "validator_registry_version": {
+          "type": "string"
+        },
+        "validated_vocabulary_snapshot": {
+          "type": "string"
+        },
+        "validated_vocabulary_hash": {
+          "type": "string",
+          "pattern": "^sha256:"
+        },
+        "validated_term_fingerprint": {
+          "type": "string",
+          "pattern": "^sha256:"
+        }
+      }
+    },
+    "traceability": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "kind",
+          "reference"
+        ],
+        "properties": {
+          "kind": {
+            "enum": [
+              "source_segment",
+              "acceptance_criteria",
+              "test",
+              "design",
+              "code",
+              "requirement"
+            ]
+          },
+          "reference": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "versions_used": {
+      "type": "object",
+      "description": "review_ready昇格時に固定・記録する使用版数（§5遷移条件）",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "type": "string"
+        },
+        "profile_version": {
+          "type": "string"
+        },
+        "lexicon_version": {
+          "type": "string"
+        },
+        "frame_set_version": {
+          "type": "string"
+        },
+        "knowledge_version": {
+          "type": "string"
+        },
+        "rule_set_version": {
+          "type": "string"
+        }
+      }
+    },
+    "approval": {
+      "type": "object",
+      "description": "承認記録（§5: 承認対象スロットの集合・承認者・承認日時）",
+      "required": [
+        "approved_by",
+        "approved_at",
+        "approved_slots"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "approved_by": {
+          "type": "string"
+        },
+        "approved_at": {
+          "type": "string"
+        },
+        "approved_slots": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/canonicalPointer"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "span": {
+      "type": "object",
+      "required": [
+        "start",
+        "end"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "start": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "end": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "surfaceSignal": {
+      "type": "object",
+      "required": [
+        "word",
+        "start",
+        "end"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "word": {
+          "type": "string"
+        },
+        "start": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "end": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "canonicalPointer": {
+      "type": "string",
+      "description": "RFC 6901 JSON Pointer。単一ノードを指す。'*'を含んではならない",
+      "pattern": "^(/([^/~*]|~[01])*)+$"
+    },
+    "sourceSegment": {
+      "type": "object",
+      "required": [
+        "document_id",
+        "text"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "document_id": {
+          "type": "string"
+        },
+        "section_id": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "location": {
+          "type": "object",
+          "properties": {
+            "page": {
+              "type": "integer"
+            },
+            "paragraph": {
+              "type": "integer"
+            }
+          }
+        }
+      }
+    },
+    "nullableString": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "action": {
+      "type": "object",
+      "description": "family=概念ID（Rule・質問・ルーティング用）、rimay_action_id=既存Rimay規則名（Serializer専用）。それぞれ独立のリーフスロットとして状態管理する",
+      "required": [
+        "family"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "family": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "rimay_action_id": {
+          "$ref": "#/$defs/nullableString"
+        }
+      }
+    },
+    "rimayCore": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "scope": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "function": {
+              "$ref": "#/$defs/nullableString"
+            }
+          }
+        },
+        "conditions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/condition"
+          }
+        },
+        "response": {
+          "$ref": "#/$defs/response"
+        },
+        "response_expression": {
+          "$ref": "#/$defs/responseExpression"
+        },
+        "condition_expression": {
+          "$ref": "#/$defs/conditionExpression"
+        },
+        "response_block": {
+          "$ref": "#/$defs/responseBlock"
+        }
+      },
+      "allOf": [
+        {
+          "not": {
+            "required": [
+              "response",
+              "response_expression"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "conditions",
+              "condition_expression"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "response",
+              "response_block"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "response_expression",
+              "response_block"
+            ]
+          }
+        }
+      ]
+    },
+    "condition": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": [
+            "WHEN",
+            "IF",
+            "WHILE",
+            "BEFORE",
+            "AFTER"
+          ],
+          "description": "Supported Profile v0.1の5種。WHERE/EVERYはPROFILE-OUT"
+        },
+        "event": {
+          "type": "object",
+          "description": "WHEN/BEFORE/AFTERのトリガー事象",
+          "additionalProperties": false,
+          "properties": {
+            "actor": {
+              "$ref": "#/$defs/nullableString"
+            },
+            "action": {
+              "$ref": "#/$defs/action"
+            },
+            "object": {
+              "$ref": "#/$defs/nullableString"
+            },
+            "value": {
+              "$ref": "#/$defs/nullableString"
+            }
+          }
+        },
+        "predicate": {
+          "type": "object",
+          "description": "IF/WHILEの状態・真偽条件。legacy subjectとtyped operandはidentity authorityとして相互排他。scalar value/unitとvalue_expressionも相互排他で、typed operandはtreeだけを受理し、自動typing・自動tree化を行わない。",
+          "required": [
+            "operator"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "subject": {
+              "$ref": "#/$defs/nullableString"
+            },
+            "operand": {
+              "$ref": "#/$defs/operatorOperand"
+            },
+            "operator": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "enum": [
+                "EQUALS",
+                "NOT_EQUALS",
+                "GREATER_THAN",
+                "LESS_THAN",
+                "GREATER_OR_EQUAL",
+                "LESS_OR_EQUAL",
+                "CONTAINS",
+                "IS",
+                null
+              ]
+            },
+            "value": {
+              "$ref": "#/$defs/nullableString"
+            },
+            "unit": {
+              "$ref": "#/$defs/nullableString"
+            },
+            "value_expression": {
+              "$ref": "#/$defs/valueExpression"
+            }
+          },
+          "oneOf": [
+            {
+              "required": ["subject", "value"],
+              "not": {"anyOf": [
+                {"required": ["operand"]},
+                {"required": ["value_expression"]}
+              ]}
+            },
+            {
+              "required": ["subject", "value_expression"],
+              "not": {"anyOf": [
+                {"required": ["operand"]},
+                {"required": ["value"]},
+                {"required": ["unit"]}
+              ]}
+            },
+            {
+              "required": ["operand", "value_expression"],
+              "not": {"anyOf": [
+                {"required": ["subject"]},
+                {"required": ["value"]},
+                {"required": ["unit"]}
+              ]}
+            }
+          ]
+        }
+      }
+    },
+    "operatorOperand": {
+      "oneOf": [
+        {"$ref": "#/$defs/operatorDeclaredReference"},
+        {"$ref": "#/$defs/operatorInstanceOrProperty"},
+        {"$ref": "#/$defs/operatorUiComponentInstance"}
+      ]
+    },
+    "operatorDeclaredReference": {
+      "type": "object",
+      "required": ["wrapper", "kind", "name"],
+      "additionalProperties": false,
+      "properties": {
+        "wrapper": {"const": "declared_reference"},
+        "kind": {"enum": ["actor", "class", "property"]},
+        "name": {"type": "string", "minLength": 1}
+      }
+    },
+    "operatorTypeReference": {
+      "type": "object",
+      "required": ["kind", "name"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {"enum": ["class", "label"]},
+        "name": {"type": "string", "minLength": 1}
+      }
+    },
+    "operatorInstanceOrProperty": {
+      "type": "object",
+      "required": ["wrapper", "kind", "name"],
+      "additionalProperties": false,
+      "properties": {
+        "wrapper": {"const": "instance_or_property"},
+        "kind": {"const": "instance_or_property"},
+        "name": {"type": "string", "minLength": 1},
+        "defined_in_type": {"$ref": "#/$defs/operatorTypeReference"},
+        "label": {"type": "string", "minLength": 1}
+      }
+    },
+    "operatorUiComponentInstance": {
+      "type": "object",
+      "required": ["wrapper", "kind", "name", "component_type"],
+      "additionalProperties": false,
+      "properties": {
+        "wrapper": {"const": "ui_component_instance"},
+        "kind": {"const": "ui_component_instance"},
+        "name": {"type": "string", "minLength": 1},
+        "component_type": {"type": "string", "minLength": 1}
+      }
+    },
+    "valueExpression": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/valueExpressionLeaf"
+        },
+        {
+          "$ref": "#/$defs/valueExpressionGroup"
+        },
+        {
+          "$ref": "#/$defs/valueExpressionAnd"
+        },
+        {
+          "$ref": "#/$defs/valueExpressionOr"
+        }
+      ]
+    },
+    "valueExpressionLeaf": {
+      "type": "object",
+      "required": [
+        "kind",
+        "value"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "value"
+        },
+        "value": {
+          "type": "string",
+          "minLength": 1
+        },
+        "unit": {
+          "const": "JPY"
+        }
+      }
+    },
+    "valueExpressionGroup": {
+      "type": "object",
+      "required": [
+        "kind",
+        "expression"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "group"
+        },
+        "expression": {
+          "$ref": "#/$defs/valueExpression"
+        }
+      }
+    },
+    "valueExpressionAnd": {
+      "type": "object",
+      "required": [
+        "kind",
+        "left",
+        "right"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "and"
+        },
+        "left": {
+          "$ref": "#/$defs/valueExpression"
+        },
+        "right": {
+          "$ref": "#/$defs/valueExpression"
+        }
+      }
+    },
+    "valueExpressionOr": {
+      "type": "object",
+      "required": [
+        "kind",
+        "left",
+        "right"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "or"
+        },
+        "left": {
+          "$ref": "#/$defs/valueExpression"
+        },
+        "right": {
+          "$ref": "#/$defs/valueExpression"
+        }
+      }
+    },
+    "response": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "actor": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "modality": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "MUST",
+            "MUST_NOT",
+            null
+          ]
+        },
+        "action": {
+          "$ref": "#/$defs/action"
+        },
+        "theme": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "source": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "destination": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "channel": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "location": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "display_location": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "property": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "result_value": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "input": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "result": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "content": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "rule": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "frequency": {
+          "$ref": "#/$defs/responseFrequency"
+        },
+        "repository_trace": {
+          "$ref": "#/$defs/repositoryAtomicResponseTrace"
+        }
+      }
+    },
+    "repositoryResponseTrace": {
+      "type": "object",
+      "required": [
+        "repository_rule_id",
+        "source_span",
+        "source"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "repository_rule_id": {
+          "enum": [
+            "AND_Response",
+            "AtomicSystemResponse",
+            "OR_Response",
+            "PrimaryExpression_Response"
+          ]
+        },
+        "source_span": {
+          "$ref": "#/$defs/span"
+        },
+        "source": {
+          "type": "string"
+        },
+        "atomic_response_index": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "responseExpression": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/responseExpressionLeaf"
+        },
+        {
+          "$ref": "#/$defs/responseExpressionGroup"
+        },
+        {
+          "$ref": "#/$defs/responseExpressionAnd"
+        },
+        {
+          "$ref": "#/$defs/responseExpressionOr"
+        }
+      ]
+    },
+    "responseExpressionLeaf": {
+      "type": "object",
+      "required": [
+        "kind",
+        "response"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "response"
+        },
+        "response": {
+          "$ref": "#/$defs/response"
+        },
+        "repository_trace": {
+          "$ref": "#/$defs/repositoryResponseTrace"
+        }
+      }
+    },
+    "responseExpressionGroup": {
+      "type": "object",
+      "required": [
+        "kind",
+        "expression"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "group"
+        },
+        "expression": {
+          "$ref": "#/$defs/responseExpression"
+        },
+        "repository_trace": {
+          "$ref": "#/$defs/repositoryResponseTrace"
+        }
+      }
+    },
+    "responseExpressionAnd": {
+      "type": "object",
+      "required": [
+        "kind",
+        "left",
+        "right"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "and"
+        },
+        "left": {
+          "$ref": "#/$defs/responseExpression"
+        },
+        "right": {
+          "$ref": "#/$defs/responseExpression"
+        },
+        "repository_trace": {
+          "$ref": "#/$defs/repositoryResponseTrace"
+        }
+      }
+    },
+    "responseExpressionOr": {
+      "type": "object",
+      "required": [
+        "kind",
+        "left",
+        "right"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "or"
+        },
+        "left": {
+          "$ref": "#/$defs/responseExpression"
+        },
+        "right": {
+          "$ref": "#/$defs/responseExpression"
+        },
+        "repository_trace": {
+          "$ref": "#/$defs/repositoryResponseTrace"
+        }
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "time_constraints": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "enum": [
+                  "DEADLINE",
+                  "RETENTION",
+                  "FREQUENCY",
+                  "TIMEOUT",
+                  null
+                ]
+              },
+              "value": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "unit": {
+                "$ref": "#/$defs/nullableString"
+              },
+              "applies_to": {
+                "$ref": "#/$defs/nullableString"
+              },
+              "source_expression": {
+                "$ref": "#/$defs/nullableString"
+              }
+            }
+          }
+        },
+        "accuracy_constraints": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "domain_constraints": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "additional_semantics": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "slotState": {
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": [
+            "unknown",
+            "proposed",
+            "confirmed",
+            "not_applicable"
+          ]
+        },
+        "confirmation_required": {
+          "type": "boolean"
+        },
+        "candidates": {
+          "type": "array",
+          "description": "複数候補は根拠付きで保持する",
+          "items": {
+            "type": "object",
+            "required": [
+              "value"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "value": {},
+              "provenance_refs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "provenance_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "dependency_refs": {
+          "type": "array",
+          "description": "外部依存の未解決参照（Schema 0.4.0で追加=minor。ADR-0014 D4: 語彙承認待ちはRequirement状態を増やさず、スロット依存＋blocking finding TERM_APPROVAL_PENDINGで表す。依存解消（承認・公開・伝播Patch）時に除去する。canonical_hashの対象外扱いはしない=意味依存）",
+          "items": {
+            "type": "object",
+            "required": [
+              "type",
+              "reference"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "enum": [
+                  "terminology_candidate"
+                ]
+              },
+              "reference": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "provenanceEntry": {
+      "type": "object",
+      "required": [
+        "id",
+        "path",
+        "source_type",
+        "resolution_method"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^PRV-[A-Za-z0-9-]+$"
+        },
+        "path": {
+          "$ref": "#/$defs/canonicalPointer"
+        },
+        "source_type": {
+          "enum": [
+            "requirement_text",
+            "user_answer",
+            "knowledge_asset",
+            "tool_result",
+            "rule"
+          ]
+        },
+        "source_span": {
+          "type": "string"
+        },
+        "reference": {
+          "type": "string"
+        },
+        "resolution_method": {
+          "enum": [
+            "exact_term_match",
+            "synonym_match",
+            "deterministic_parse",
+            "profile_mapping",
+            "llm_candidate",
+            "heuristic_candidate",
+            "user_confirmation",
+            "rule_application"
+          ]
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "repositoryConditionLeafTrace": {
+      "type": "object",
+      "required": [
+        "condition_index",
+        "repository_rule_id",
+        "selected_condition_rule_id",
+        "source",
+        "source_span"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "repository_rule_id": {
+          "const": "ConditionsPrimaryExpression"
+        },
+        "selected_condition_rule_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_span": {
+          "$ref": "#/$defs/span"
+        },
+        "source": {
+          "type": "string"
+        },
+        "condition_index": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "repositoryConditionOperatorTrace": {
+      "type": "object",
+      "required": [
+        "repository_rule_id",
+        "source",
+        "source_span"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "repository_rule_id": {
+          "enum": [
+            "ConditionsAndExpression",
+            "ConditionsOrExpression"
+          ]
+        },
+        "source_span": {
+          "$ref": "#/$defs/span"
+        },
+        "source": {
+          "type": "string"
+        }
+      }
+    },
+    "conditionExpression": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/conditionExpressionLeaf"
+        },
+        {
+          "$ref": "#/$defs/conditionExpressionAnd"
+        },
+        {
+          "$ref": "#/$defs/conditionExpressionOr"
+        }
+      ]
+    },
+    "conditionExpressionLeaf": {
+      "type": "object",
+      "required": [
+        "kind",
+        "condition"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "condition"
+        },
+        "condition": {
+          "$ref": "#/$defs/condition"
+        },
+        "repository_trace": {
+          "$ref": "#/$defs/repositoryConditionLeafTrace"
+        }
+      }
+    },
+    "conditionExpressionAnd": {
+      "type": "object",
+      "required": [
+        "kind",
+        "left",
+        "right"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "and"
+        },
+        "left": {
+          "$ref": "#/$defs/conditionExpression"
+        },
+        "right": {
+          "$ref": "#/$defs/conditionExpression"
+        },
+        "repository_trace": {
+          "$ref": "#/$defs/repositoryConditionOperatorTrace"
+        }
+      }
+    },
+    "conditionExpressionOr": {
+      "type": "object",
+      "required": [
+        "kind",
+        "left",
+        "right"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "or"
+        },
+        "left": {
+          "$ref": "#/$defs/conditionExpression"
+        },
+        "right": {
+          "$ref": "#/$defs/conditionExpression"
+        },
+        "repository_trace": {
+          "$ref": "#/$defs/repositoryConditionOperatorTrace"
+        }
+      }
+    },
+    "repositoryResponseBlockTrace": {
+      "type": "object",
+      "required": [
+        "repository_rule_id",
+        "source_span",
+        "source",
+        "in_sequence_span",
+        "in_sequence_source"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "repository_rule_id": {
+          "const": "ResponseBlockItemized"
+        },
+        "source_span": {
+          "$ref": "#/$defs/span"
+        },
+        "source": {
+          "type": "string"
+        },
+        "in_sequence_span": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/span"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "in_sequence_source": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "repositoryResponseBlockItemTrace": {
+      "type": "object",
+      "required": [
+        "repository_rule_id",
+        "source_span",
+        "source",
+        "bullet_span",
+        "bullet_source",
+        "connector_span",
+        "connector_source",
+        "atomic_response_index"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "repository_rule_id": {
+          "const": "BULLET"
+        },
+        "source_span": {
+          "$ref": "#/$defs/span"
+        },
+        "source": {
+          "type": "string"
+        },
+        "bullet_span": {
+          "$ref": "#/$defs/span"
+        },
+        "bullet_source": {
+          "type": "string"
+        },
+        "connector_span": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/span"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "connector_source": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "atomic_response_index": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "responseBlockBullet": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "kind",
+            "value"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "hyphen"
+            },
+            "value": {
+              "const": "-"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "kind",
+            "value"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "integer"
+            },
+            "value": {
+              "type": "string",
+              "pattern": "^[0-9]+$"
+            }
+          }
+        }
+      ]
+    },
+    "responseBlockItem": {
+      "type": "object",
+      "required": [
+        "position",
+        "bullet",
+        "connector_before",
+        "response"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "position": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "bullet": {
+          "$ref": "#/$defs/responseBlockBullet"
+        },
+        "connector_before": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            null,
+            "comma",
+            "and",
+            "or",
+            "comma_and",
+            "comma_or"
+          ]
+        },
+        "response": {
+          "$ref": "#/$defs/response"
+        },
+        "repository_trace": {
+          "$ref": "#/$defs/repositoryResponseBlockItemTrace"
+        }
+      }
+    },
+    "responseBlock": {
+      "type": "object",
+      "required": [
+        "kind",
+        "in_sequence",
+        "items"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "itemized"
+        },
+        "in_sequence": {
+          "type": "boolean"
+        },
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/responseBlockItem"
+          }
+        },
+        "repository_trace": {
+          "$ref": "#/$defs/repositoryResponseBlockTrace"
+        }
+      }
+    },
+    "responseFrequency": {
+      "type": "object",
+      "required": [
+        "value",
+        "unit",
+        "source_expression"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "unit": {
+          "enum": [
+            "second",
+            "minute",
+            "hour",
+            "day"
+          ]
+        },
+        "source_expression": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "repositoryAtomicResponseTrace": {
+      "type": "object",
+      "required": [
+        "repository_rule_id",
+        "atomic_response_index",
+        "source_span",
+        "source",
+        "modality_origin",
+        "modality_span",
+        "modality_source",
+        "negation_span",
+        "negation_source",
+        "frequency_span",
+        "frequency_source"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "repository_rule_id": {
+          "const": "AtomicSystemResponse"
+        },
+        "atomic_response_index": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source_span": {
+          "$ref": "#/$defs/span"
+        },
+        "source": {
+          "type": "string"
+        },
+        "modality_origin": {
+          "enum": [
+            "system_response",
+            "atomic_response"
+          ]
+        },
+        "modality_span": {
+          "$ref": "#/$defs/span"
+        },
+        "modality_source": {
+          "enum": [
+            "must",
+            "shall"
+          ]
+        },
+        "negation_span": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/span"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "negation_source": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "frequency_span": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/span"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "frequency_source": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

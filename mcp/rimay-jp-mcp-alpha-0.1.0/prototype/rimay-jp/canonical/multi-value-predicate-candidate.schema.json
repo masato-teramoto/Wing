@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rimay-jp/multi-value-predicate-candidate.schema.json",
+  "title": "Rimay-JP Multi-value Predicate Candidate 0.1.0",
+  "description": "CAP-MULTI-VALUEだけを隔離評価するCanonical 1.0 candidate。active 0.9 Schemaではない。",
+  "type": "object",
+  "required": ["candidate_version", "target_canonical_version", "condition"],
+  "additionalProperties": false,
+  "properties": {
+    "candidate_version": { "const": "0.1.0" },
+    "target_canonical_version": { "const": "1.0.0-candidate" },
+    "condition": { "$ref": "#/$defs/condition" }
+  },
+  "$defs": {
+    "condition": {
+      "type": "object",
+      "required": ["type", "predicate"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "enum": ["IF", "WHILE"] },
+        "predicate": { "$ref": "#/$defs/predicate" }
+      }
+    },
+    "predicate": {
+      "type": "object",
+      "required": ["subject", "operator", "value_expression"],
+      "additionalProperties": false,
+      "properties": {
+        "subject": { "type": "string", "minLength": 1 },
+        "operator": {
+          "enum": [
+            "IS", "EQUALS", "NOT_EQUALS", "GREATER_THAN", "LESS_THAN",
+            "GREATER_OR_EQUAL", "LESS_OR_EQUAL", "CONTAINS"
+          ]
+        },
+        "value_expression": { "$ref": "#/$defs/valueExpression" }
+      }
+    },
+    "valueExpression": {
+      "oneOf": [
+        { "$ref": "#/$defs/valueLeaf" },
+        { "$ref": "#/$defs/valueGroup" },
+        { "$ref": "#/$defs/valueAnd" },
+        { "$ref": "#/$defs/valueOr" }
+      ]
+    },
+    "valueLeaf": {
+      "type": "object",
+      "required": ["kind", "value"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": { "const": "value" },
+        "value": { "type": "string", "minLength": 1 },
+        "unit": { "const": "JPY" }
+      }
+    },
+    "valueGroup": {
+      "type": "object",
+      "required": ["kind", "expression"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": { "const": "group" },
+        "expression": { "$ref": "#/$defs/valueExpression" }
+      }
+    },
+    "valueAnd": {
+      "type": "object",
+      "required": ["kind", "left", "right"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": { "const": "and" },
+        "left": { "$ref": "#/$defs/valueExpression" },
+        "right": { "$ref": "#/$defs/valueExpression" }
+      }
+    },
+    "valueOr": {
+      "type": "object",
+      "required": ["kind", "left", "right"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": { "const": "or" },
+        "left": { "$ref": "#/$defs/valueExpression" },
+        "right": { "$ref": "#/$defs/valueExpression" }
+      }
+    }
+  }
+}

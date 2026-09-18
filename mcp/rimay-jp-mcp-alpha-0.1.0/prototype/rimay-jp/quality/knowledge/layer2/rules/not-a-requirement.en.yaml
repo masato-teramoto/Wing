@@ -1,0 +1,21 @@
+id: not_a_requirement
+name: Not a requirement
+language: en
+quality_attribute: correctness
+definition: See catalog/source for the definition of 'Not a requirement'.
+citation:
+  document: Automated Smell Detection and Recommendation in NL Requirements (Veizaga,
+    Shin & Briand, 2023; arXiv:2305.07097)
+  locator: §4.1 Table 3 (Not a requirement); §5.3 Rules
+detector:
+  type: segment_count
+  params:
+    check: not_a_requirement
+default_severity: high
+explanation_template: This statement contains no requirement segment (no scope, condition,
+  or system response).
+examples:
+  positive:
+  - The R6 instruction is the original instruction.
+  negative:
+  - System-A must store the instruction.

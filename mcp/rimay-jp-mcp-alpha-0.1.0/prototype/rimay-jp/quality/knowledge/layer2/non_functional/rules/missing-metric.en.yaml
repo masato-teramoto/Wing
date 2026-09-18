@@ -1,0 +1,23 @@
+id: nfr_missing_measurable_metric
+name: Quality target without a measurable metric
+artifact_type: non_functional
+language: en
+quality_attribute: measurability
+definition: >
+  A non-functional requirement must carry a measurable response_measure (a quantified target).
+  A quality target stated with no measurable metric is unverifiable (the core NFR smell).
+definition_source_id: nfr/qas-0000        # QAS structure (analyst-asserted; admitted for L2 per amended FR-046)
+method_source_id: nfr/eckhardt-2016       # paper-tier method evidence (FR-040)
+implementable: deterministic
+detector:
+  type: metric_presence
+  params: {}
+default_severity: high
+explanation_template: "No measurable target is present; add a quantified response measure (e.g. '... within 200 ms', '99.9% availability')."
+examples:
+  positive:
+    - "The system shall be fast."
+    - "The application must be highly available."
+  negative:
+    - "95% of searches shall return within 1 second."
+    - "Availability shall be at least 99.9% per calendar month."

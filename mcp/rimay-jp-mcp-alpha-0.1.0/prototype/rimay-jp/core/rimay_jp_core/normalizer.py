@@ -1,0 +1,655 @@
+"""日本語Normalizer: 制約付き日本語 → Canonical Requirement候補。
+
+構想書 §8/§9/§13.2 の標準形のみ解析する（自由日本語は対象外）。
+unknownは値として格納せず、resolution.slots の状態で表す。
+
+表層知識（条件終端・トリガー動詞・モダリティ・格助詞×Role・曖昧語・指示語・
+定量パターン）はコードへ埋め込まず、**Profile SSOTからコンパイル**して使う
+（ADR-0013 D3: lexicon.normalizer_profile()。本モジュールに残るのは
+最長一致・走査・正規表現実行・Canonical書き込みの汎用アルゴリズムのみ）。
+"""
+import re
+from functools import lru_cache
+
+from .lexicon import lookup_jp, match_jp_prefix, case_frames, normalizer_profile
+from .model import new_canonical, finding, set_slot, is_blocked
+
+
+def _prof() -> dict:
+    return normalizer_profile()
+
+
+# 後方互換の公開名（candidate_extractor等が参照。実体はProfileコンパイル結果）
+def __getattr__(name):
+    if name == "_VAGUE_WORDS":
+        return _prof()["vague_words"]
+    raise AttributeError(name)
+
+
+@lru_cache(maxsize=1)
+def _deadline_re():
+    return re.compile(_prof()["deadline_pattern"])
+
+
+@lru_cache(maxsize=1)
+def _retention_re():
+    return re.compile(_prof()["retention_pattern"])
+
+
+@lru_cache(maxsize=1)
+def _particle_re():
+    return re.compile(r"^(" + _prof()["particle_alternation"] + r")")
+
+
+def _num(s: str) -> int:
+    return int(s.replace(",", "").replace("，", ""))
+
+
+def _number(s: str) -> int | float:
+    value = float(s.replace(",", "").replace("，", ""))
+    return int(value) if value.is_integer() else value
+
+
+def surface_signals(src: str) -> dict:
+    """表層シグナル解析（唯一の日本語Analyzer=Normalizerの責務。ADR-0013）。
+
+    Canonical段のValidatorはsource textを再解析せず、本結果
+    （canonical["surface_analysis"]）を参照する。
+    """
+    p = _prof()
+    deictic = [{"word": w, "start": m.start(), "end": m.end()}
+               for w in p["deictic_words"] for m in re.finditer(re.escape(w), src)]
+    vague = [{"word": w, "start": m.start(), "end": m.end()}
+             for w in p["vague_words"] for m in re.finditer(re.escape(w), src)]
+    return {"language": "ja", "deictic": deictic, "vague": vague}
+
+
+def attach_surface_analysis(canonical: dict, src: str, mode: str) -> None:
+    canonical["surface_analysis"] = {"mode": mode, **surface_signals(src)}
+
+
+def _runs_to_spans(flags: list, kind: str) -> list[dict]:
+    spans, start = [], None
+    for i, f in enumerate(flags + [None]):
+        if f == kind and start is None:
+            start = i
+        elif f != kind and start is not None:
+            spans.append({"start": start, "end": i})
+            start = None
+    return spans
+
+
+def attach_normalization(canonical: dict, mode: str, src: str,
+                         flags: list | None = None,
+                         controlled: bool | None = None) -> None:
+    """正規化の保証記録（ADR-0013 D4）。
+
+    flags: srcと同長の配列（"c"=consumed／"i"=ignored／None=unconsumed）。
+    Noneのときは全消費（strict成功）または全未消費（strict失敗）をcontrolledで決める。
+    canonical_hashの対象外メタデータであり、承認条件（mode別）が参照する。
+    """
+    import hashlib
+    from .lexicon import versions
+    from . import PROFILE_VERSION, __version__
+    if flags is None:
+        flags = ["c"] * len(src) if controlled else [None] * len(src)
+    consumed = _runs_to_spans(flags, "c")
+    ignored = _runs_to_spans(flags, "i")
+    unconsumed = _runs_to_spans(flags, None)
+    canonical["normalization"] = {
+        "mode": mode,
+        "normalizer_version": __version__,
+        "profile_version": PROFILE_VERSION,
+        "profile_content_hash": versions()["profile_content_hash"],
+        "source_hash": "sha256:" + hashlib.sha256(src.encode("utf-8")).hexdigest(),
+        "conformance": {
+            "controlled_language": bool(controlled) if controlled is not None
+            else mode == "strict",
+            "lossless_mapping": not unconsumed,
+        },
+        "coverage": {"consumed_spans": consumed, "ignored_spans": ignored,
+                     "unconsumed_spans": unconsumed},
+    }
+
+
+def normalize(text: str, requirement_id: str = "REQ-ADHOC") -> tuple[dict, list[dict]]:
+    """戻り値: (canonical, findings)。findingsが空でも確定を意味しない。"""
+    c = new_canonical(requirement_id)
+    findings: list[dict] = []
+    raw = text.strip()
+
+    def top_level_segments(value: str) -> list[str]:
+        value = value.removesuffix("。")
+        depth = 0
+        quoted = False
+        start = 0
+        segments = []
+        for index, char in enumerate(value):
+            if char == "「":
+                quoted = True
+            elif char == "」":
+                quoted = False
+            elif not quoted and char == "(":
+                depth += 1
+            elif not quoted and char == ")":
+                depth -= 1
+            elif not quoted and depth == 0 and char == "、":
+                segments.append(value[start:index])
+                start = index + 1
+        segments.append(value[start:])
+        return segments
+
+    raw_segments = top_level_segments(raw)
+    operand_surfaces = _prof()["operator_operand_surfaces"]
+    typed_prefixes = tuple(operand_surfaces["declared_reference"].values()) + (
+        operand_surfaces["instance_or_property"],
+        operand_surfaces["ui_component_instance"],
+    )
+    raw_typed_condition = next(
+        (segment for segment in raw_segments[:-1]
+         if any(segment.startswith(prefix + "「") for prefix in typed_prefixes)),
+        None,
+    )
+    raw_multi_condition = next(
+        (segment for segment in raw_segments[:-1]
+         if not segment.endswith("において") and not segment.startswith("(")
+         and "が(" in segment),
+        None,
+    )
+    raw_condition = raw_typed_condition or raw_multi_condition
+    src = re.sub(r"\s+", "", text)
+    c["source"]["text"] = src
+    attach_surface_analysis(c, src, "controlled")
+
+    # 文末モダリティ（Profileのmodality_endings）
+    modality = mod_span = body = None
+    for surface, mod in _prof()["modality_endings"]:
+        if src.endswith(surface + "。"):
+            modality, mod_span = mod, surface
+            body = src[: -len(surface + "。")]
+            break
+    if modality is None:
+        findings.append(finding("JP-MODAL", "文末が標準モダリティ形ではありません。"))
+        attach_normalization(c, "strict", src, controlled=False)
+        return c, findings
+    c["_mod_span"] = mod_span  # _parse_responseで使用（出力前に除去）
+
+    # Scope（〜において、）
+    m = re.match(r"^(.+?)において、(.+)$", body)
+    if m:
+        hit = lookup_jp(m.group(1))
+        if hit and hit[1] == "function":
+            c["rimay_core"]["scope"] = {"function": hit[0]}
+            set_slot(c, "/rimay_core/scope/function", "confirmed", m.group(1))
+        else:
+            findings.append(finding("JP-LEXICAL", f"適用範囲が用語辞書にありません: {m.group(1)}",
+                                    "/rimay_core/scope/function",
+                                    surface_form=m.group(1), expected_types=["function"]))
+        body = m.group(2)
+
+    # 条件節（読点まで）。Multi-valueだけは空白を意味境界として扱うため、
+    # whitespace除去前の表層をcandidate primitiveでfull-consumptionする。
+    parts = body.split("、")
+    cond_text = None
+    if raw_condition is not None:
+        compact_condition = re.sub(r"\s+", "", raw_condition)
+        if body.startswith(compact_condition + "、"):
+            body = body[len(compact_condition) + 1:]
+            if raw_typed_condition is not None:
+                _parse_operator_value_predicate(c, findings, raw_condition)
+            else:
+                _parse_multi_value_predicate(c, findings, raw_condition)
+        else:
+            findings.append(finding(
+                "JP-COORD", "Multi-value条件境界を一意に分離できません。",
+                "/rimay_core/conditions/0/predicate/value_expression",
+                multi_value_code="MULTI_VALUE_AMBIGUOUS_SURFACE"))
+            raw_condition = None
+    if len(parts) >= 2:
+        cand = parts[0]
+        comparison_tails = sorted(
+            (
+                (surface + suffix, ctype, operator)
+                for operator, surface in _prof()["comparison_operator_surfaces"].items()
+                for suffix, ctype in (("場合", "IF"), ("間", "WHILE"))
+            ),
+            key=lambda item: (-len(item[0]), item[0]),
+        )
+        for tail, ctype, operator in comparison_tails:
+            if cand.endswith(tail):
+                cond_text = (cand[: -len(tail)], tail, ctype, operator)
+                body = "、".join(parts[1:])
+                break
+        if cond_text is None:
+            for tail, ctype in _prof()["condition_terminals"]:
+                if cand.endswith(tail):
+                    cond_text = (cand[: -len(tail)], tail, ctype, None)
+                    body = "、".join(parts[1:])
+                    break
+    if cond_text and not c["rimay_core"]["conditions"]:
+        _parse_condition(c, findings, *cond_text)
+
+    _parse_response(c, findings, body, modality)
+
+    # 正規化の保証記録（strict: blocking無し=全消費・制約付き日本語適合）
+    ok = not is_blocked(findings)
+    attach_normalization(c, "strict", src, controlled=ok)
+    return c, findings
+
+
+def _parse_multi_value_predicate(c: dict, findings: list[dict], surface: str) -> None:
+    """Normalize one exact Japanese Multi-value condition without scalar fallback."""
+    try:
+        # The adopted candidate parser is reused lazily so its historical
+        # comparison-candidate dependency cannot create an import cycle.
+        from .multi_value_candidate import (
+            MultiValueCandidateError,
+            parse_multi_value_condition,
+        )
+        condition = parse_multi_value_condition(surface, language="ja")
+    except MultiValueCandidateError as exc:
+        findings.append(finding(
+            "JP-COORD", exc.message,
+            "/rimay_core/conditions/0/predicate/value_expression",
+            multi_value_code=exc.code.replace(
+                "MULTI_VALUE_CANDIDATE_", "MULTI_VALUE_")))
+        return
+    predicate = condition["predicate"]
+    subject_surface = predicate["subject"]
+    subject = lookup_jp(subject_surface)
+    if subject is None:
+        findings.append(finding(
+            "JP-LEXICAL", f"条件主語が用語辞書にありません: {subject_surface}",
+            "/rimay_core/conditions/0/predicate/subject",
+            surface_form=subject_surface, expected_types=["property", "class"]))
+        return
+    predicate["subject"] = subject[0]
+    set_slot(c, "/rimay_core/conditions/0/predicate/subject", "confirmed",
+             subject_surface)
+    set_slot(c, "/rimay_core/conditions/0/predicate/operator", "confirmed",
+             predicate["operator"], method="profile_mapping")
+
+    def resolve(node: dict, path: str) -> bool:
+        kind = node["kind"]
+        if kind == "value":
+            if node.get("unit") == "JPY":
+                set_slot(c, path + "/value", "confirmed", node["value"],
+                         method="deterministic_parse")
+                set_slot(c, path + "/unit", "confirmed", "円",
+                         method="deterministic_parse")
+                return True
+            value_surface = node["value"]
+            hit = lookup_jp(value_surface)
+            if hit is None:
+                findings.append(finding(
+                    "JP-LEXICAL", f"条件値が用語辞書にありません: {value_surface}",
+                    path + "/value", surface_form=value_surface,
+                    expected_types=["value"]))
+                return False
+            node["value"] = hit[0]
+            set_slot(c, path + "/value", "confirmed", value_surface)
+            return True
+        if kind == "group":
+            return resolve(node["expression"], path + "/expression")
+        left = resolve(node["left"], path + "/left")
+        right = resolve(node["right"], path + "/right")
+        return left and right
+
+    if resolve(predicate["value_expression"],
+               "/rimay_core/conditions/0/predicate/value_expression"):
+        c["rimay_core"]["conditions"].append(condition)
+
+
+def _parse_operator_value_predicate(c: dict, findings: list[dict], surface: str) -> None:
+    """Normalize the exact typed Japanese surface without dictionary guessing."""
+    try:
+        from .operator_value_expression_candidate import (
+            OperatorValueExpressionCandidateError,
+            parse_operator_value_condition,
+        )
+        condition = parse_operator_value_condition(surface, language="ja")
+    except OperatorValueExpressionCandidateError as exc:
+        findings.append(finding(
+            "JP-COORD", exc.message,
+            exc.path.replace("/condition", "/rimay_core/conditions/0"),
+            operator_value_code=exc.code))
+        return
+    predicate = condition["predicate"]
+    operand = predicate["operand"]
+    operand_path = "/rimay_core/conditions/0/predicate/operand"
+    for field in ("wrapper", "kind", "name"):
+        set_slot(c, operand_path + "/" + field, "confirmed", operand[field],
+                 method="deterministic_parse")
+    defined = operand.get("defined_in_type")
+    if defined:
+        for field in ("kind", "name"):
+            set_slot(c, operand_path + "/defined_in_type/" + field,
+                     "confirmed", defined[field], method="deterministic_parse")
+    for field in ("label", "component_type"):
+        if field in operand:
+            set_slot(c, operand_path + "/" + field, "confirmed", operand[field],
+                     method="deterministic_parse")
+    set_slot(c, "/rimay_core/conditions/0/predicate/operator", "confirmed",
+             predicate["operator"], method="profile_mapping")
+
+    def record(node: dict, path: str) -> None:
+        if node["kind"] == "value":
+            set_slot(c, path + "/value", "confirmed", node["value"],
+                     method="deterministic_parse")
+            if "unit" in node:
+                set_slot(c, path + "/unit", "confirmed", node["unit"],
+                         method="deterministic_parse")
+        elif node["kind"] == "group":
+            record(node["expression"], path + "/expression")
+        else:
+            record(node["left"], path + "/left")
+            record(node["right"], path + "/right")
+
+    record(predicate["value_expression"],
+           "/rimay_core/conditions/0/predicate/value_expression")
+    c["rimay_core"]["conditions"].append(condition)
+
+
+def _parse_condition(c, findings, inner, tail, ctype, operator=None):
+    cond: dict = {"type": ctype}
+    if ctype in ("WHEN", "AFTER", "BEFORE"):
+        _parse_trigger(c, findings, cond, inner, ctype)
+    elif ctype in ("IF", "WHILE"):
+        _parse_predicate(c, findings, cond, inner, ctype, operator)
+    else:
+        # EVERY/WHERE はProfile外。型のみ記録し、可否はValidatorが判定する。
+        pass
+    c["rimay_core"]["conditions"].append(cond)
+
+
+def _parse_trigger(c, findings, cond, inner, ctype):
+    m = re.match(r"^(.+?)が(.+)$", inner)
+    if not m:
+        findings.append(finding("JP-OMISSION", "トリガー条件の主体がありません。",
+                                "/rimay_core/conditions/0/event/actor"))
+        return
+    actor_jp, rest = m.group(1), m.group(2)
+    hit = lookup_jp(actor_jp)
+    event: dict = {"actor": None, "action": {"family": None}}
+    if hit and hit[1] == "actor":
+        event["actor"] = hit[0]
+        set_slot(c, "/rimay_core/conditions/0/event/actor", "confirmed", actor_jp)
+    else:
+        findings.append(finding("JP-LEXICAL", f"トリガー主体が用語辞書にありません: {actor_jp}",
+                                "/rimay_core/conditions/0/event/actor",
+                                surface_form=actor_jp, expected_types=["actor"]))
+    # <object>を[「<value>」に][<中間role句>]<verb>
+    # 中間role句（〜に・〜から等）はeventでは保持しない（ast-canonical-mapping: eventは
+    # actor/action/object/valueのみ）。動詞は末尾の語幹で同定する。
+    m2 = re.match(r"^(.+?)を(?:「(.+?)」に)?(.+)$", rest)
+    if not m2:
+        findings.append(finding("JP-CASE", f"トリガー動作を解析できません: {rest}",
+                                "/rimay_core/conditions/0/event"))
+        return
+    obj_jp, val_jp, verb_jp = m2.group(1), m2.group(2), m2.group(3)
+    hit = lookup_jp(obj_jp)
+    if hit:
+        event["object"] = hit[0]
+        set_slot(c, "/rimay_core/conditions/0/event/object", "confirmed", obj_jp)
+    else:
+        findings.append(finding("JP-LEXICAL", f"トリガー対象が用語辞書にありません: {obj_jp}",
+                                "/rimay_core/conditions/0/event/object",
+                                surface_form=obj_jp, expected_types=["class", "property"]))
+    if val_jp:
+        vhit = lookup_jp(val_jp)
+        if vhit:
+            event["value"] = vhit[0]
+            set_slot(c, "/rimay_core/conditions/0/event/value", "confirmed", val_jp)
+        else:
+            findings.append(finding("JP-LEXICAL", f"状態値が用語辞書にありません: {val_jp}",
+                                    "/rimay_core/conditions/0/event/value",
+                                    surface_form=val_jp, expected_types=["value"]))
+    fam = next((f for stem, f in _prof()["trigger_verb_stems"].items()
+               if verb_jp.endswith(stem)), None)
+    if fam:
+        event["action"] = {"family": fam}
+        set_slot(c, "/rimay_core/conditions/0/event/action/family", "confirmed", verb_jp,
+                 method="deterministic_parse")
+    else:
+        findings.append(finding("JP-LEXICAL", f"トリガー動詞を解決できません: {verb_jp}",
+                                "/rimay_core/conditions/0/event/action/family",
+                                surface_form=verb_jp, kind="action_expression"))
+    cond["event"] = event
+
+
+def _parse_predicate(c, findings, cond, inner, ctype, operator=None):
+    if operator is not None:
+        m = re.fullmatch(r"^(.+?)が「([^」]+)」$", inner)
+        legacy_money = None
+        # 0.2互換: GREATER_OR_EQUALだけは非引用の「N円以上である場合」を受理していた。
+        if m is None and operator == "GREATER_OR_EQUAL":
+            legacy_money = re.fullmatch(r"^(.+?)が([\d,，]+)円$", inner)
+        # 0.2互換: ISは辞書で一意解決できる値に限り非引用表層を受理する。
+        if m is None and legacy_money is None and operator == "IS":
+            legacy_is = re.fullmatch(r"^(.+?)が([^「」]+)$", inner)
+            if legacy_is is not None and lookup_jp(legacy_is.group(2)) is not None:
+                m = legacy_is
+        if legacy_money is not None:
+            subj_jp = legacy_money.group(1)
+            pred = {
+                "operator": operator,
+                "value": legacy_money.group(2).replace(",", "").replace("，", ""),
+                "unit": "JPY",
+            }
+        else:
+            if m is None:
+                findings.append(finding(
+                    "JP-CASE", f"比較条件は単一の引用値を必要とします: {inner}",
+                    "/rimay_core/conditions/0/predicate",
+                    comparison_operator_code="COMPARISON_OPERATOR_AMBIGUOUS_SURFACE"))
+                return
+            subj_jp, val_jp = m.group(1), m.group(2)
+            money = re.fullmatch(r"([\d,，]+(?:\.[0-9]+)?)円", val_jp)
+            if money:
+                pred = {
+                    "operator": operator,
+                    "value": money.group(1).replace(",", "").replace("，", ""),
+                    "unit": "JPY",
+                }
+            else:
+                vhit = lookup_jp(val_jp)
+                if not vhit:
+                    findings.append(finding(
+                        "JP-LEXICAL", f"条件値が用語辞書にありません: {val_jp}",
+                        "/rimay_core/conditions/0/predicate/value",
+                        surface_form=val_jp, expected_types=["value"]))
+                    return
+                pred = {"operator": operator, "value": vhit[0]}
+    else:
+        m = re.match(r"^(.+?)が([\d,，]+)円以上$", inner)
+        if m:
+            subj_jp, num = m.group(1), m.group(2)
+            pred = {"operator": "GREATER_OR_EQUAL", "value": str(_num(num)), "unit": "JPY"}
+        else:
+            m = re.match(r"^(.+?)が「?(.+?)」?$", inner)
+            if not m:
+                findings.append(finding("JP-CASE", f"条件述語を解析できません: {inner}",
+                                        "/rimay_core/conditions/0/predicate"))
+                return
+            subj_jp, val_jp = m.group(1), m.group(2)
+            vhit = lookup_jp(val_jp)
+            if not vhit:
+                findings.append(finding("JP-LEXICAL", f"条件値が用語辞書にありません: {val_jp}",
+                                        "/rimay_core/conditions/0/predicate/value",
+                                        surface_form=val_jp, expected_types=["value"]))
+                return
+            pred = {"operator": "IS", "value": vhit[0]}
+    shit = lookup_jp(subj_jp)
+    if shit:
+        pred["subject"] = shit[0]
+        set_slot(c, "/rimay_core/conditions/0/predicate/subject", "confirmed", subj_jp)
+        set_slot(c, "/rimay_core/conditions/0/predicate/value", "confirmed", inner,
+                 method="deterministic_parse")
+        set_slot(c, "/rimay_core/conditions/0/predicate/operator", "confirmed",
+                 pred["operator"],
+                 method="profile_mapping")
+        if pred.get("unit") is not None:
+            set_slot(c, "/rimay_core/conditions/0/predicate/unit", "confirmed", inner,
+                     method="deterministic_parse")
+    else:
+        findings.append(finding("JP-LEXICAL", f"条件主語が用語辞書にありません: {subj_jp}",
+                                "/rimay_core/conditions/0/predicate/subject",
+                                surface_form=subj_jp,
+                                expected_types=["property", "class"]))
+    cond["predicate"] = pred
+
+
+def _parse_response(c, findings, body, modality):
+    resp: dict = {"modality": modality}
+    c["rimay_core"]["response"] = resp
+    set_slot(c, "/rimay_core/response/modality", "confirmed",
+             c.pop("_mod_span", None), method="deterministic_parse")
+
+    m = re.match(r"^(.+?)は(.+)$", body)
+    if not m:
+        findings.append(finding("JP-OMISSION", "主文の主体（〜は）がありません。",
+                                "/rimay_core/response/actor"))
+        return
+    actor_jp, rest = m.group(1), m.group(2)
+    hit = lookup_jp(actor_jp)
+    if hit and hit[1] == "actor":
+        resp["actor"] = hit[0]
+        set_slot(c, "/rimay_core/response/actor", "confirmed", actor_jp)
+    else:
+        findings.append(finding("JP-LEXICAL", f"主体が用語辞書にありません: {actor_jp}",
+                                "/rimay_core/response/actor",
+                                surface_form=actor_jp, expected_types=["actor"]))
+
+    # 応答動詞（末尾）
+    fam = next((f for stem, f in _prof()["response_verb_stems"].items()
+               if rest.endswith(stem)), None)
+    if not fam:
+        findings.append(finding("JP-LEXICAL", f"応答動詞を解決できません: {rest[-6:]}",
+                                "/rimay_core/response/action/family",
+                                surface_form=rest[-6:], kind="action_expression"))
+        return
+    verb_surface = next(s for s in _prof()["response_verb_stems"] if rest.endswith(s))
+    args = rest[: -len(verb_surface)]
+    frame = case_frames().get(fam)
+    resp["action"] = {"family": fam,
+                      "rimay_action_id": frame["rimay_action_id"] if frame else None}
+    set_slot(c, "/rimay_core/response/action/family", "confirmed", verb_surface,
+             method="deterministic_parse")
+    set_slot(c, "/rimay_core/response/action/rimay_action_id",
+             "confirmed" if frame else "unknown", method="profile_mapping")
+
+    _parse_role_phrases(c, findings, resp, args, fam)
+
+
+def _parse_role_phrases(c, findings, resp, args, fam):
+    roles = _prof()["role_by_particle"].get(fam, {"を": "theme"})
+    pos = 0
+    while pos < len(args):
+        seg = args[pos:]
+        # Atomic Response leaf-local frequency（global time_constraintsへ移さない）。
+        m = re.match(r"^([0-9]+(?:\.[0-9]+)?)(秒|分|時間|日)ごとに", seg)
+        if m:
+            units = {"秒": "second", "分": "minute", "時間": "hour", "日": "day"}
+            value = _number(m.group(1))
+            if value <= 0 or "frequency" in resp:
+                findings.append(finding(
+                    "JP-COORD", "応答頻度は正の値を一つだけ指定してください。",
+                    "/rimay_core/response/frequency"))
+                return
+            resp["frequency"] = {
+                "value": value,
+                "unit": units[m.group(2)],
+                "source_expression": m.group(0),
+            }
+            set_slot(c, "/rimay_core/response/frequency/value", "confirmed",
+                     m.group(1), method="deterministic_parse")
+            set_slot(c, "/rimay_core/response/frequency/unit", "confirmed",
+                     m.group(2), method="deterministic_parse")
+            pos += m.end()
+            continue
+        # 保存期間（N年間）
+        m = _retention_re().match(seg)
+        if m:
+            c["extensions"].setdefault("time_constraints", []).append(
+                {"kind": "RETENTION", "value": _num(m.group(1)), "unit": "year",
+                 "applies_to": "response"})
+            i = len(c["extensions"]["time_constraints"]) - 1
+            set_slot(c, f"/extensions/time_constraints/{i}/value", "confirmed",
+                     m.group(0), method="deterministic_parse")
+            pos += m.end()
+            continue
+        # 期限
+        m = _deadline_re().match(seg)
+        if m:
+            c["extensions"].setdefault("time_constraints", []).append(
+                {"kind": "DEADLINE", "value": _num(m.group(1)), "unit": "second",
+                 "applies_to": "response"})
+            i = len(c["extensions"]["time_constraints"]) - 1
+            set_slot(c, f"/extensions/time_constraints/{i}/value", "confirmed",
+                     m.group(0), method="deterministic_parse")
+            pos += m.end()
+            continue
+        # 曖昧語（値なし＋unknown＋確認要）
+        vw = next((w for w in _prof()["vague_words"] if seg.startswith(w)), None)
+        if vw:
+            c["extensions"].setdefault("time_constraints", []).append(
+                {"kind": "DEADLINE", "value": None, "unit": None,
+                 "applies_to": "response", "source_expression": vw})
+            i = len(c["extensions"]["time_constraints"]) - 1
+            set_slot(c, f"/extensions/time_constraints/{i}/value", "unknown",
+                     confirmation_required=True)
+            pos += len(vw)
+            continue
+        # 更新後値 「X」に
+        m = re.match(r"^「(.+?)」に", seg)
+        if m:
+            if "result_value" in resp:
+                findings.append(finding(
+                    "JP-COORD",
+                    "単値Role 'result_value' が重複しています。",
+                    "/rimay_core/response/result_value",
+                    role="result_value",
+                    surface_form=m.group(1),
+                ))
+                return
+            vhit = lookup_jp(m.group(1))
+            if vhit:
+                resp["result_value"] = vhit[0]
+                set_slot(c, "/rimay_core/response/result_value", "confirmed", m.group(1))
+            else:
+                findings.append(finding("JP-LEXICAL",
+                                        f"更新後値が用語辞書にありません: {m.group(1)}",
+                                        "/rimay_core/response/result_value",
+                                        surface_form=m.group(1),
+                                        expected_types=["value"]))
+            pos += m.end()
+            continue
+        # 用語＋格助詞
+        hit = match_jp_prefix(seg)
+        if hit:
+            surface, tid, _ = hit
+            after = seg[len(surface):]
+            pm = _particle_re().match(after)
+            if pm:
+                role = roles.get(pm.group(1))
+                if role:
+                    if role in resp:
+                        findings.append(finding(
+                            "JP-COORD",
+                            f"単値Role '{role}' が重複しています。",
+                            f"/rimay_core/response/{role}",
+                            role=role,
+                            surface_form=surface,
+                            particle=pm.group(1),
+                        ))
+                        return
+                    resp[role] = tid
+                    set_slot(c, f"/rimay_core/response/{role}", "confirmed", surface)
+                else:
+                    findings.append(finding("JP-CASE",
+                                            f"助詞「{pm.group(1)}」のRoleを決定できません: {surface}"))
+                pos += len(surface) + pm.end()
+                continue
+        findings.append(finding("JP-LEXICAL", f"解析できない語句があります: {seg[:12]}",
+                                surface_form=seg, kind="unparsed"))
+        return

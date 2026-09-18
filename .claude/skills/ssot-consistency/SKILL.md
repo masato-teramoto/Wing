@@ -1,12 +1,12 @@
 ---
 name: ssot-consistency
-description: AIDD 品質ゲートで二重定義と相互参照切れを検出する。steering 7ファイル間の SSoT 維持、feature 間の Dependencies / Adjacent の相互整合の検査に使う。各フェーズの <Phase>-Check-Subagent から呼び出す。
+description: AIDD 品質ゲートで二重定義と相互参照切れを検出する。steering 7ファイル間の SSoT 維持、feature 間の Dependencies / Adjacent の相互整合、design 間の契約・業務コード・エンティティの二重定義、steering と docs の重複記載の検査に使う。各フェーズの <Phase>-Check-Subagent から呼び出す。
 disable-model-invocation: true
 ---
 
 # ssot-consistency（① / ② 二重定義・参照切れ検出）
 
-> 出典: フロー設計 `00` §8.1。層 **① / ②**。呼び出し元は各フェーズの `<Phase>-Check-Subagent`。
+> 層 **① / ②**。呼び出し元は各フェーズの `<Phase>-Check-Subagent`。
 
 同じ事実が 2 か所に書かれていないか（**二重定義**）と、参照が受け手に届いているか（**参照切れ・受け手不在**）を見る。
 
@@ -24,13 +24,13 @@ disable-model-invocation: true
 
 ### 呼び出し例
 
-| 指定項目 | Phase 2 での値 | Phase 4 横断での値 | Phase 5 横断での値 | Phase 6 横断での値 |
-|---|---|---|---|---|
-| 対象成果物 | `steering/` 7ファイル | `specs/*/requirements.md` | `_app-shell` の manifest の `notes`、`steering/`、`feature-list.md` | `specs/*/design.md` |
-| 検査する事実の種類 | プロジェクト方針の各記述 | Dependencies / Adjacent の期待 | 入口・ナビの並び順とグルーピングの根拠 | API / Event / Data Contracts、業務コード・区分値・エンティティ |
-| SSoT の所在 | 7ファイルの記述分担 | `feature-list.md` の `依存` 列 | `steering/`（業務プロセスの前後関係・ロール）と `feature-list.md`（優先度・依存） | 契約を公開している側の feature の design |
-| 検査の型 | 二重定義 + 参照切れ | 受け手不在 | 参照切れ | 二重定義 |
-| 報告単位 | 重複している記述の対 | 受け手のいない期待 | 並び順の根拠 1 件 | 別形状に定義されている要素 |
+| 指定項目 | Phase 2 での値 | Phase 4 横断での値 | Phase 5 横断での値 |
+|---|---|---|---|
+| 対象成果物 | `steering/` 7ファイル | `specs/*/requirements.md` | `specs/*/design.md` |
+| 検査する事実の種類 | プロジェクト方針の各記述 | Dependencies / Adjacent の期待 | API / Event / Data Contracts、業務コード・区分値・エンティティ |
+| SSoT の所在 | 7ファイルの記述分担 | `feature-list.md` の `依存` 列 | 契約を公開している側の feature の design |
+| 検査の型 | 二重定義 + 参照切れ | 受け手不在 | 二重定義 |
+| 報告単位 | 重複している記述の対 | 受け手のいない期待 | 別形状に定義されている要素 |
 
 ---
 

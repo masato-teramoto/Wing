@@ -1,6 +1,6 @@
 /*
  * ワイヤーフレーム用トークン CSS（自動生成 — 手で編集しない）
- * 出所: デザインシステム ds / プロファイル wireframe
+ * 出所: デザインシステム ds / タグ v0.0.11 / 短縮 SHA 78822dc / プロファイル wireframe
  * source 順: primitive.json -> semantic.json -> semantic.wireframe.json
  * 解決方法: 後勝ちで重ね、プロファイルの解決結果に現れる全キーを出力する。
  *           semantic は primitive を var() で参照する形を保つ（値を展開しない）。

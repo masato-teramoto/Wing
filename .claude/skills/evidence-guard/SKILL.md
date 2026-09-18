@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # evidence-guard（② 推測補完の検出）
 
-> 出典: フロー設計 `00` §8.1。層 **②**。呼び出し元は各フェーズの `<Phase>-Check-Subagent`。
+> 層 **②**。呼び出し元は各フェーズの `<Phase>-Check-Subagent`。
 
 本フローは **根拠のある値のみを書く**ことを前提に成立している。上流に辿れない記述は、下流のどのゲートでも「もっともらしい」ために検出されにくい。本 Skill はその一点だけを見る。
 
@@ -27,9 +27,6 @@ disable-model-invocation: true
 |---|---|---|
 | Phase 1 | RFP、人間が壁打ちで確定した回答 | `RFP` 種別は RFP 内の実在位置、`壁打ち` 種別は人間の確定回答 |
 | Phase 2 | `.aidd/requirement-list.md`（特に `非機能` / `制約`）、人間の確定回答 | 要求ID の特定、または人間の回答の引用 |
-| Phase 5 | 当該 feature の `requirements.md`、`steering/` 一式、DS の `pattern.json` / `component-spec.json` / `brand-principles.md` | 要件ID の特定、`steering/` のファイル名とセクション名、または DS のパターン名・部品名 |
-
-**Phase 5 では、生成規約が明示的に許している次を指摘しない**（`wireframe-authoring` SKILL.md「画面に載せる情報の根拠」）。DS のパターンが構えとして定める構造要素 / requirements の `Adjacent` に列挙された隣接 feature のデータの読み取り専用の参照表示 / 固定値ダミーデータそのもの / requirements に文言が無い状態（空・エラー等）の文言。**指摘するのは、requirements にも steering にも根拠が無い「項目・制約・採番規則」を画面上で確定させている箇所である。**
 
 ---
 

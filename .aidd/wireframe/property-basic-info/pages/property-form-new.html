@@ -5,7 +5,89 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>物件基本情報 登録</title>
 <link rel="stylesheet" href="tokens/tokens.css">
-<link rel="stylesheet" href="styles.css">
+<style>
+body{margin:0;background:var(--color-semantic-canvas);color:var(--color-semantic-text);font-family:system-ui,sans-serif;font-size:var(--font-size-body);line-height:1.6}
+.wf-main{padding-left:var(--space-md);padding-right:var(--space-md);padding-top:var(--space-sm);padding-bottom:var(--space-lg)}
+:focus-visible{outline-style:solid;outline-width:medium;outline-color:var(--color-semantic-focus);outline-offset:var(--space-xxs)}
+.wf-page-header{margin-bottom:var(--space-sm)}
+.wf-page-title{margin:0;font-size:var(--font-size-heading);line-height:1.4}
+.wf-visually-hidden{position:absolute;width:0.0625rem;height:0.0625rem;margin:-0.0625rem;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+
+.wf-field{display:flex;flex-direction:column;gap:var(--space-xs);min-width:0}
+.wf-field-label{font-size:var(--font-size-caption);font-weight:700}
+.wf-field-required{margin-left:var(--space-xs);color:var(--color-semantic-required);font-weight:400}
+.wf-field-optional{margin-left:var(--space-xs);color:var(--color-semantic-text-subtle);font-weight:400}
+.wf-field-support{color:var(--color-semantic-text-subtle);font-size:var(--font-size-caption)}
+
+.ds-inputtext{min-height:2.75rem;padding-left:var(--space-sm);padding-right:var(--space-sm);background:var(--color-semantic-background);color:var(--color-semantic-text);border:thin solid var(--color-semantic-border);border-radius:var(--radius-sm);font-size:var(--font-size-body);font-family:inherit}
+.ds-inputtext:disabled{background:var(--color-semantic-disabled-surface);color:var(--color-semantic-disabled-text)}
+.ds-inputtext--error{border-color:var(--color-semantic-danger)}
+
+.ds-button{display:inline-flex;align-items:center;justify-content:center;min-height:2.75rem;padding-left:var(--space-md);padding-right:var(--space-md);border-radius:var(--radius-sm);font-size:var(--font-size-body);font-family:inherit;line-height:1.4;cursor:pointer}
+.ds-button--secondary{background:var(--color-semantic-background);color:var(--color-semantic-primary);border:thin solid var(--color-semantic-primary)}
+.ds-button--secondary:hover{background:var(--color-semantic-surface-hover);color:var(--color-semantic-primary-hover);border-color:var(--color-semantic-primary-hover)}
+.ds-button--primary{background:var(--color-semantic-primary);color:var(--color-semantic-on-primary);border:none}
+.ds-button--primary:hover{background:var(--color-semantic-primary-hover)}
+.ds-button--danger{background:var(--color-semantic-danger);color:var(--color-semantic-on-primary);border:none}
+.ds-button--danger:hover{background:var(--color-semantic-danger-hover)}
+.ds-button:disabled{background:var(--color-semantic-disabled-surface);color:var(--color-semantic-disabled-text);border-color:var(--color-semantic-disabled-surface);cursor:default}
+.ds-button--sm{min-height:2.25rem;padding-left:var(--space-sm);padding-right:var(--space-sm);font-size:var(--font-size-caption)}
+
+.ds-link{color:var(--color-semantic-primary);text-decoration:underline}
+.ds-link:hover{color:var(--color-semantic-primary-hover)}
+.ds-link--button{display:inline-flex;align-items:center;justify-content:center;min-height:2.75rem;padding-left:var(--space-md);padding-right:var(--space-md);background:var(--color-semantic-background);color:var(--color-semantic-primary);border:thin solid var(--color-semantic-primary);border-radius:var(--radius-sm);text-decoration:none}
+.ds-link--button:hover{background:var(--color-semantic-surface-hover);color:var(--color-semantic-primary-hover);border-color:var(--color-semantic-primary-hover)}
+
+.ds-badge{display:inline-flex;align-items:center;padding-left:var(--space-sm);padding-right:var(--space-sm);border-radius:var(--radius-full);font-size:var(--font-size-caption)}
+.ds-badge--neutral{background:var(--color-semantic-surface-hover);color:var(--color-semantic-text-subtle)}
+
+.ds-table-scroll{overflow-x:auto;background:var(--color-semantic-background);border:thin solid var(--color-semantic-border);border-radius:var(--radius-md)}
+.ds-table{width:100%;min-width:44rem;border-collapse:collapse}
+.ds-table caption{padding:var(--space-sm);color:var(--color-semantic-text-subtle);font-size:var(--font-size-caption);text-align:left}
+.ds-table th,.ds-table td{padding-top:var(--space-sm);padding-bottom:var(--space-sm);padding-left:var(--space-ms);padding-right:var(--space-ms);border-bottom:thin solid var(--color-semantic-border);text-align:left;vertical-align:top;white-space:nowrap}
+.ds-table th{background:var(--color-semantic-table-header);color:var(--color-semantic-text-subtle);font-weight:700}
+.ds-table tbody tr:hover{background:var(--color-semantic-surface-hover)}
+
+.ds-skeleton{background:var(--color-semantic-skeleton);border-radius:var(--radius-sm)}
+.ds-skeleton--text{height:1rem}
+.ds-skeleton--row{height:1.25rem}
+.ds-skeleton-rows{padding:var(--space-ms)}
+.ds-skeleton-rows > * + *{margin-top:var(--space-ms)}
+
+.wf-errorpage{max-width:40rem;margin-left:auto;margin-right:auto;padding-top:var(--space-xl);text-align:center}
+.wf-errorpage-title{margin:0;font-size:var(--font-size-heading)}
+.wf-errorpage-body{margin-top:var(--space-md);margin-bottom:var(--space-lg)}
+
+.wf-modal-backdrop{position:fixed;inset:0;background:var(--color-semantic-overlay);display:flex;align-items:center;justify-content:center;padding:var(--space-md)}
+.ds-modaldialog{width:100%;max-width:32rem;background:var(--color-semantic-background);border:thin solid var(--color-semantic-border);border-radius:var(--radius-md);padding:var(--space-lg)}
+.ds-modaldialog-header{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--space-md)}
+.ds-modaldialog-title{margin:0;font-size:var(--font-size-body);font-weight:700}
+.ds-modaldialog-body{margin-top:var(--space-sm);margin-bottom:var(--space-lg);color:var(--color-semantic-text-subtle)}
+.ds-modaldialog-actions{display:flex;flex-wrap:wrap;gap:var(--space-sm);justify-content:flex-end}
+
+.wf-grid{display:grid;grid-template-columns:1fr;gap:var(--space-md)}
+@media (min-width:64rem){.wf-grid{grid-template-columns:repeat(4,1fr)}.wf-field--2{grid-column:span 2}.wf-field--4{grid-column:span 4}}
+
+.wf-section{margin-bottom:var(--space-md);padding:var(--space-md);background:var(--color-semantic-background);border:thin solid var(--color-semantic-border);border-radius:var(--radius-md)}
+.wf-section-title{margin:0;margin-bottom:var(--space-sm);font-size:var(--font-size-body);font-weight:700}
+.wf-actions{display:flex;flex-wrap:wrap;gap:var(--space-sm);margin-top:var(--space-md)}
+
+.wf-dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:var(--space-sm) var(--space-md)}
+.wf-dl dt{color:var(--color-semantic-text-subtle);font-size:var(--font-size-caption)}
+.wf-dl dd{margin:0}
+
+.wf-page-header--with-actions{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:var(--space-md)}
+.wf-page-title-group{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-sm)}
+.ds-textarea{width:100%;padding:var(--space-sm);background:var(--color-semantic-background);color:var(--color-semantic-text);border:thin solid var(--color-semantic-border);border-radius:var(--radius-sm);font-size:var(--font-size-body);font-family:inherit;box-sizing:border-box}
+.ds-fileupload{display:flex;flex-direction:column;gap:var(--space-xs)}
+.wf-field-error{color:var(--color-semantic-danger);font-size:var(--font-size-caption)}
+.wf-error-summary{padding:var(--space-md);margin-bottom:var(--space-md);background:var(--color-semantic-danger-subtle);border:thin solid var(--color-semantic-danger);border-radius:var(--radius-md)}
+.wf-error-summary-title{margin:0;margin-bottom:var(--space-xs);color:var(--color-semantic-on-danger-subtle);font-weight:700}
+.wf-error-summary ul{margin:0;padding-left:var(--space-lg)}
+.wf-history-empty{color:var(--color-semantic-text-subtle)}
+.ds-link--primary{background:var(--color-semantic-primary);color:var(--color-semantic-on-primary);border-color:var(--color-semantic-primary)}
+.ds-link--primary:hover{background:var(--color-semantic-primary-hover);color:var(--color-semantic-on-primary);border-color:var(--color-semantic-primary-hover)}
+</style>
 </head>
 <body>
 <main class="wf-main">
@@ -16,83 +98,78 @@
   </div>
 
   <form>
+
   <section class="wf-section">
     <h2 class="wf-section-title">物件基本情報の入力項目</h2>
-    <p class="wf-section-note">項目の一覧・桁・必須は基本設計で確定します。ここでは項目数と配置のイメージのみを示しています。</p>
     <div class="wf-grid">
       <div class="wf-field">
-        <label class="wf-field-label" for="item1">項目 1</label>
-        <input class="ds-inputtext" id="item1" type="text" value="">
-      </div>
+        <label class="wf-field-label" for="item1">項目 1<span class="wf-field-required">※必須</span></label>
+        <input class="ds-inputtext" id="item1" type="text" value=""></div>
       <div class="wf-field">
-        <label class="wf-field-label" for="item2">項目 2</label>
-        <input class="ds-inputtext" id="item2" type="text" value="">
-      </div>
+        <label class="wf-field-label" for="item2">項目 2<span class="wf-field-required">※必須</span></label>
+        <input class="ds-inputtext" id="item2" type="text" value=""></div>
       <div class="wf-field">
-        <label class="wf-field-label" for="item3">項目 3</label>
-        <input class="ds-inputtext" id="item3" type="text" value="">
-      </div>
+        <label class="wf-field-label" for="item3">項目 3<span class="wf-field-required">※必須</span></label>
+        <input class="ds-inputtext" id="item3" type="text" value=""></div>
       <div class="wf-field">
-        <label class="wf-field-label" for="item4">項目 4</label>
-        <input class="ds-inputtext" id="item4" type="text" value="">
-      </div>
+        <label class="wf-field-label" for="item4">項目 4<span class="wf-field-optional">※任意</span></label>
+        <input class="ds-inputtext" id="item4" type="text" value=""></div>
       <div class="wf-field">
-        <label class="wf-field-label" for="item5">項目 5</label>
-        <input class="ds-inputtext" id="item5" type="text" value="">
-      </div>
+        <label class="wf-field-label" for="item5">項目 5<span class="wf-field-required">※必須</span></label>
+        <input class="ds-inputtext" id="item5" type="text" value=""></div>
       <div class="wf-field">
-        <label class="wf-field-label" for="item6">項目 6</label>
-        <input class="ds-inputtext" id="item6" type="text" value="">
-      </div>
+        <label class="wf-field-label" for="item6">項目 6<span class="wf-field-optional">※任意</span></label>
+        <input class="ds-inputtext" id="item6" type="text" value=""></div>
       <div class="wf-field">
-        <label class="wf-field-label" for="item7">項目 7</label>
-        <input class="ds-inputtext" id="item7" type="text" value="">
-      </div>
+        <label class="wf-field-label" for="item7">項目 7<span class="wf-field-optional">※任意</span></label>
+        <input class="ds-inputtext" id="item7" type="text" value=""></div>
       <div class="wf-field">
-        <label class="wf-field-label" for="item8">項目 8</label>
-        <input class="ds-inputtext" id="item8" type="text" value="">
-      </div>
+        <label class="wf-field-label" for="item8">項目 8<span class="wf-field-optional">※任意</span></label>
+        <input class="ds-inputtext" id="item8" type="text" value=""></div>
       <div class="wf-field wf-field--2">
-        <label class="wf-field-label" for="item9">項目 9</label>
-        <input class="ds-inputtext" id="item9" type="text" value="">
-      </div>
+        <label class="wf-field-label" for="item9">項目 9<span class="wf-field-required">※必須</span></label>
+        <input class="ds-inputtext" id="item9" type="text" value=""></div>
       <div class="wf-field">
-        <label class="wf-field-label" for="item10">項目 10</label>
-        <input class="ds-inputtext" id="item10" type="text" value="">
-      </div>
+        <label class="wf-field-label" for="item10">項目 10<span class="wf-field-optional">※任意</span></label>
+        <input class="ds-inputtext" id="item10" type="text" value=""></div>
     </div>
   </section>
+
   <section class="wf-section">
     <h2 class="wf-section-title">作成組織</h2>
     <div class="wf-grid">
       <div class="wf-field wf-field--2">
-        <label class="wf-field-label" for="org">作成組織</label>
+        <label class="wf-field-label" for="org">作成組織<span class="wf-field-required">※必須</span></label>
         <input class="ds-inputtext" id="org" type="text" value="" readonly>
         <p class="wf-field-support">作成組織検索から選ぶと、この欄に設定されます。</p>
       </div>
       <div class="wf-field">
-        <label class="wf-field-label" for="org-search">&nbsp;</label>
-        <button class="ds-button ds-button--secondary" id="org-search" type="button">作成組織を検索</button>
+        <span class="wf-field-label" aria-hidden="true">&nbsp;</span>
+        <button class="ds-button ds-button--secondary" type="button">作成組織を検索</button>
       </div>
     </div>
   </section>
+
   <section class="wf-section">
     <h2 class="wf-section-title">契約稟議に関するファイル</h2>
     <div class="wf-grid">
       <div class="wf-field wf-field--4">
-        <label class="wf-field-label" for="files">ファイル</label>
+        <label class="wf-field-label" for="files">ファイル<span class="wf-field-optional">※任意</span></label>
         <span class="ds-fileupload">
           <input class="ds-fileupload-input" id="files" type="file" multiple>
-          <span class="wf-field-support">登録できるファイルの種類・件数・形式・サイズの上限は基本設計で確定します。</span>
         </span>
       </div>
     </div>
   </section>
+
     <div class="wf-actions">
       <button class="ds-button ds-button--primary" type="submit">保存</button>
       <button class="ds-button ds-button--secondary" type="button">既存の物件基本情報から引用</button>
-      <a class="ds-link" href="property-form-new.html">キャンセル</a>
+      <button class="ds-button ds-button--secondary" type="button">帳票を出力</button>
+      <a class="ds-link" href="property-form-new.html" target="_blank" rel="noopener noreferrer">出力内容を PDF で開く<span class="wf-visually-hidden">（新しいウインドウで開きます）</span></a>
+      <a class="ds-link" href="property-form-leave-confirm.html">キャンセル</a>
     </div>
+
   </form>
 </main>
 </body>

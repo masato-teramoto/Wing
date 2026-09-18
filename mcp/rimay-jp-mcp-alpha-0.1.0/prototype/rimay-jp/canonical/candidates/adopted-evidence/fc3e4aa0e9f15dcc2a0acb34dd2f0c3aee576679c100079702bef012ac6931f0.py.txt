@@ -1,0 +1,445 @@
+# -*- coding: utf-8 -*-
+"""B5-P CAP-OPERATOR-VALUE-EXPR isolated product-quality candidate."""
+from __future__ import annotations
+
+import copy
+import json
+import os
+import sys
+from pathlib import Path
+from types import SimpleNamespace
+
+import pytest
+import yaml
+from jsonschema import Draft202012Validator
+
+
+RIMAY_JP = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(RIMAY_JP / "core"))
+
+from rimay_jp_core.comparison_operator_candidate import COMPARISON_OPERATORS  # noqa: E402
+from rimay_jp_core.model import new_canonical  # noqa: E402
+from rimay_jp_core.operator_value_expression_candidate import (  # noqa: E402
+    ACTIVE_CANONICAL_VERSION,
+    OPERATOR_VALUE_EXPRESSION_CANDIDATE_VERSION,
+    OPERATOR_VALUE_EXPRESSION_TARGET_CANONICAL_VERSION,
+    OperatorValueExpressionCandidateError,
+    migrate_active_condition,
+    operator_value_semantics,
+    parse_operator_value_condition,
+    project_repository_operator_value_condition,
+    quarantine_operator_value_condition,
+    render_operator_value_condition,
+    restore_operator_value_quarantine,
+    rollback_active_condition,
+    validate_operator_value_condition,
+)
+from rimay_jp_core.repository_document import (  # noqa: E402
+    project_repository_document,
+    repository_document_problems,
+)
+from rimay_jp_core.repository_grammar import compile_fixed_grammar  # noqa: E402
+from rimay_jp_core.repository_linker import link_repository_syntax  # noqa: E402
+from rimay_jp_core.repository_product_adoption import (  # noqa: E402
+    assess_repository_product_adoption,
+)
+from rimay_jp_core.schema_check import validate_schema  # noqa: E402
+
+
+SCHEMA = RIMAY_JP / "canonical/operator-value-expression-candidate.schema.json"
+PLAN = RIMAY_JP / "canonical/" \
+    "repository-product-adoption-operator-value-expression-proposal.yaml"
+PACKET = RIMAY_JP / "reports/compatibility/" \
+    "rimay-operator-value-expression-product-candidate-readiness-20260819.yaml"
+GRAMMAR_SHA256 = \
+    "sha256:0f7c4af22ab60329e85b972951be46bedecae2da2a5913b10d2f01d05bb1aa7e"
+
+
+def _leaf(value: str = "Open") -> dict:
+    return {"kind": "value", "value": value}
+
+
+def _tree() -> dict:
+    return {
+        "kind": "or",
+        "left": _leaf("Pending"),
+        "right": {"kind": "group", "expression": {
+            "kind": "and", "left": _leaf("1000"), "right": _leaf("Approved")}},
+    }
+
+
+OPERANDS = (
+    {"wrapper": "declared_reference", "kind": "class", "name": "Order"},
+    {"wrapper": "declared_reference", "kind": "property", "name": "Order.status"},
+    {"wrapper": "declared_reference", "kind": "actor", "name": "Operator"},
+    {"wrapper": "instance_or_property", "kind": "instance_or_property",
+     "name": "current order"},
+    {"wrapper": "instance_or_property", "kind": "instance_or_property",
+     "name": "current order", "defined_in_type": {"kind": "class", "name": "Order"},
+     "label": "CurrentOrder"},
+    {"wrapper": "ui_component_instance", "kind": "ui_component_instance",
+     "name": "confirm order", "component_type": "Button"},
+)
+
+
+def _condition(operand: dict = OPERANDS[0], operator: str = "IS",
+               value_expression: dict | None = None) -> dict:
+    return {"type": "IF", "predicate": {
+        "operand": copy.deepcopy(operand), "operator": operator,
+        "value_expression": copy.deepcopy(value_expression or _leaf()),
+    }}
+
+
+def _matrix() -> dict:
+    return yaml.safe_load((
+        RIMAY_JP / "reports/compatibility/rimay-capability-matrix.yaml"
+    ).read_text(encoding="utf-8"))
+
+
+def test_candidate_schema_and_runtime_shape_agree():
+    schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
+    envelope = {
+        "candidate_version": OPERATOR_VALUE_EXPRESSION_CANDIDATE_VERSION,
+        "target_canonical_version": OPERATOR_VALUE_EXPRESSION_TARGET_CANONICAL_VERSION,
+        "condition": _condition(),
+    }
+    Draft202012Validator.check_schema(schema)
+    assert list(Draft202012Validator(schema).iter_errors(envelope)) == []
+    assert ACTIVE_CANONICAL_VERSION == "1.0.0"
+
+
+@pytest.mark.parametrize("operand", OPERANDS)
+@pytest.mark.parametrize("operator", COMPARISON_OPERATORS)
+def test_all_typed_operands_and_adopted_operators_roundtrip_in_english_and_japanese(
+        operand, operator):
+    condition = _condition(operand, operator)
+    for language in ("en", "ja"):
+        surface = render_operator_value_condition(condition, language=language)
+        assert parse_operator_value_condition(surface, language=language) == condition
+
+
+def test_multi_value_tree_roundtrips_without_losing_group_or_precedence():
+    condition = _condition(OPERANDS[-1], "NOT_EQUALS", _tree())
+    for language in ("en", "ja"):
+        rendered = render_operator_value_condition(condition, language=language)
+        assert parse_operator_value_condition(rendered, language=language) == condition
+
+
+def test_operator_words_and_japanese_delimiter_inside_quotes_do_not_split_the_surface():
+    condition = _condition(
+        {"wrapper": "declared_reference", "kind": "class",
+         "name": "商品が状態 is stable"},
+        "IS", _leaf("A is B が C"))
+    for language in ("en", "ja"):
+        rendered = render_operator_value_condition(condition, language=language)
+        assert parse_operator_value_condition(rendered, language=language) == condition
+
+
+@pytest.mark.parametrize(("mutation", "code"), [
+    (lambda value: value["predicate"]["operand"].update(kind="instance"),
+     "OPERATOR_VALUE_CANDIDATE_INVALID_DECLARED_REFERENCE"),
+    (lambda value: value["predicate"].update(operator="AVAILABLE_FOR"),
+     "OPERATOR_VALUE_CANDIDATE_UNSUPPORTED_OPERATOR"),
+    (lambda value: value["predicate"]["value_expression"].update(kind="array"),
+     "OPERATOR_VALUE_CANDIDATE_VALUE_EXPRESSION"),
+])
+def test_candidate_shape_errors_are_structured(mutation, code):
+    condition = _condition()
+    mutation(condition)
+    with pytest.raises(OperatorValueExpressionCandidateError) as caught:
+        validate_operator_value_condition(condition)
+    assert caught.value.code == code
+    assert caught.value.diagnostic()["domain"] == \
+        "operator_value_expression_candidate"
+
+
+@pytest.mark.parametrize(("surface", "language"), [
+    ('If class "Order" is equal "Open"', "en"),
+    (' If class "Order" is "Open"', "en"),
+    ('クラス「Order」は「Open」である場合', "ja"),
+    ('クラス「Order」が「Open」と同じ場合', "ja"),
+])
+def test_alias_trim_and_ambiguous_surfaces_fail_closed(surface, language):
+    with pytest.raises(OperatorValueExpressionCandidateError):
+        parse_operator_value_condition(surface, language=language)
+
+
+def test_invalid_value_surface_keeps_a_value_expression_diagnostic():
+    with pytest.raises(OperatorValueExpressionCandidateError) as caught:
+        parse_operator_value_condition(
+            'If class "Order" is "Open" OR "Pending"', language="en")
+    assert caught.value.code == "OPERATOR_VALUE_CANDIDATE_VALUE_EXPRESSION"
+
+
+def _assignment(owner: str, path: list[str], feature: str, start: int, end: int,
+                source: str, values: list[dict]) -> dict:
+    return {
+        "owner_rule": owner, "rule_path": path, "feature": feature,
+        "operator": "=", "span": {"start": start, "end": end},
+        "source": source, "values": values,
+    }
+
+
+def _terminal(value: str, start: int, end: int, terminal: str = "STRING") -> dict:
+    return {"kind": "terminal", "terminal": terminal, "value": value,
+            "surface": f'"{value}"' if terminal == "STRING" else value,
+            "span": {"start": start, "end": end}}
+
+
+def _manual_repository(wrapper: str) -> tuple[dict, str, SimpleNamespace]:
+    if wrapper == "ActorOrTypeOrPropertyOperatorElement":
+        source = 'Order is "Open"'
+        operand_end = 5
+        assignments = [_assignment(
+            wrapper, [wrapper], "actor_or_type_or_property", 0, operand_end, "Order",
+            [{"kind": "cross_reference", "target": "ActorOrClassOrProperty",
+              "terminal": "IDPointID", "value": "Order", "surface": "Order",
+              "span": {"start": 0, "end": operand_end}, "linking_checked": True}])]
+        symbols = ({"declaration_rule": "Class", "name": "Order",
+                    "qualified_name": "Order", "span": {"start": 20, "end": 25},
+                    "tree_path": "/declaration", "symbol_id": "SYM-001"},)
+        references = ({"target": "ActorOrClassOrProperty", "terminal": "IDPointID",
+                       "surface": "Order", "span": {"start": 0, "end": operand_end},
+                       "status": "resolved", "compatible_declaration_rules":
+                           ["Actor", "Class", "PropertyId"],
+                       "candidate_symbol_ids": ["SYM-001"],
+                       "resolved_symbol_id": "SYM-001"},)
+        value_start = 9
+    elif wrapper == "InstanceOrPropertyOperatorValue":
+        source = '"order" is "Open"'
+        operand_end = 7
+        assignments = [_assignment(
+            wrapper, [wrapper], "non_ui_instance_or_property", 0, operand_end,
+            '"order"', [_terminal("order", 0, operand_end)])]
+        symbols = ()
+        references = ()
+        value_start = 11
+    else:
+        source = '"submit" Button is "Open"'
+        operand_end = 8
+        assignments = [
+            _assignment(wrapper, [wrapper], "ui_component_name", 0, operand_end,
+                        '"submit"', [_terminal("submit", 0, operand_end)]),
+            _assignment(wrapper, [wrapper], "ui_component_type", 9, 15, "Button",
+                        [{"kind": "cross_reference", "target": "UIComponent",
+                          "terminal": "ID", "value": "Button", "surface": "Button",
+                          "span": {"start": 9, "end": 15}, "linking_checked": True}]),
+        ]
+        symbols = ({"declaration_rule": "UIComponent", "name": "Button",
+                    "qualified_name": "Button", "span": {"start": 30, "end": 36},
+                    "tree_path": "/declaration", "symbol_id": "SYM-001"},)
+        references = ({"target": "UIComponent", "terminal": "ID",
+                       "surface": "Button", "span": {"start": 9, "end": 15},
+                       "status": "resolved", "compatible_declaration_rules": ["UIComponent"],
+                       "candidate_symbol_ids": ["SYM-001"],
+                       "resolved_symbol_id": "SYM-001"},)
+        value_start = 19
+    operator_start = value_start - 3
+    value_end = len(source)
+    assignments.extend([
+        _assignment("OperatorValuesExpr", [wrapper, "OperatorValuesExpr"],
+                    "operator", operator_start, operator_start + 2, "is",
+                    [{"kind": "literal", "value": "is", "surface": "is",
+                      "span": {"start": operator_start, "end": operator_start + 2}}]),
+        _assignment("Compare", [wrapper, "OperatorValuesExpr", "Compare"],
+                    "is_are", operator_start, operator_start + 2, "is",
+                    [{"kind": "literal", "value": "is", "surface": "is",
+                      "span": {"start": operator_start, "end": operator_start + 2}}]),
+        _assignment("OperatorValuesExpr", [wrapper, "OperatorValuesExpr"],
+                    "valuesExpression", value_start, value_end, '"Open"',
+                    [_terminal("Open", value_start, value_end)]),
+        _assignment("AtomicValue",
+                    [wrapper, "OperatorValuesExpr", "MultiValuesExpr", "ValueOrValue",
+                     "ValueAndValue", "ValuePrimaryExpression", "AtomicValue"],
+                    "value", value_start, value_end, '"Open"',
+                    [_terminal("Open", value_start, value_end)]),
+    ])
+    rule = {"rule_id": wrapper, "span": {"start": 0, "end": len(source)},
+            "source": source, "assignments": assignments}
+    linking = SimpleNamespace(
+        succeeded=True, grammar_source_sha256=GRAMMAR_SHA256,
+        symbols=symbols, references=references)
+    return rule, source, linking
+
+
+@pytest.mark.parametrize(("wrapper", "expected"), [
+    ("ActorOrTypeOrPropertyOperatorElement", "class"),
+    ("InstanceOrPropertyOperatorValue", "instance_or_property"),
+    ("UIComponentInstanceOperatorElement", "ui_component_instance"),
+])
+def test_repository_wrapper_projection_is_source_bound_and_typed(wrapper, expected):
+    rule, source, linking = _manual_repository(wrapper)
+    condition = project_repository_operator_value_condition(
+        rule, source, linking, condition_type="IF",
+        grammar_source_sha256=GRAMMAR_SHA256)
+    assert condition["predicate"]["operand"]["kind"] == expected
+    assert condition["predicate"]["operator"] == "IS"
+    assert condition["predicate"]["value_expression"] == _leaf()
+    assert condition["repository_trace"]["repository_rule_id"] == wrapper
+
+
+@pytest.mark.parametrize(("feature", "code"), [
+    ("modifier", "OPERATOR_VALUE_CANDIDATE_MODIFIER_DEFERRED"),
+    ("value_modifier", "OPERATOR_VALUE_CANDIDATE_MODIFIER_DEFERRED"),
+    ("additional_information", "OPERATOR_VALUE_CANDIDATE_FREE_EXPRESSION_DEFERRED"),
+])
+def test_repository_residual_slots_are_not_silently_dropped(feature, code):
+    rule, source, linking = _manual_repository(
+        "ActorOrTypeOrPropertyOperatorElement")
+    owner = rule["rule_id"] if feature == "modifier" else "OperatorValuesExpr"
+    rule["assignments"].append(_assignment(
+        owner, [rule["rule_id"], owner], feature, 0, 1, "O",
+        [{"kind": "literal", "value": "O", "surface": "O",
+          "span": {"start": 0, "end": 1}}]))
+    with pytest.raises(OperatorValueExpressionCandidateError) as caught:
+        project_repository_operator_value_condition(
+            rule, source, linking, condition_type="IF",
+            grammar_source_sha256=GRAMMAR_SHA256)
+    assert caught.value.code == code
+
+
+def test_active_migration_requires_explicit_matching_type_and_rollback_quarantines():
+    active = {"type": "IF", "predicate": {
+        "subject": "Order", "operator": "IS", "value": "Open"}}
+    operand = {"wrapper": "declared_reference", "kind": "class", "name": "Order"}
+    candidate = migrate_active_condition(active, operand)
+    assert candidate == _condition(operand)
+    with pytest.raises(OperatorValueExpressionCandidateError) as caught:
+        rollback_active_condition(candidate)
+    assert caught.value.code == \
+        "OPERATOR_VALUE_CANDIDATE_ROLLBACK_REQUIRES_QUARANTINE"
+    quarantine = quarantine_operator_value_condition(candidate)
+    assert restore_operator_value_quarantine(quarantine) == candidate
+    tampered = copy.deepcopy(quarantine)
+    tampered["payload"]["predicate"]["operand"]["kind"] = "property"
+    with pytest.raises(OperatorValueExpressionCandidateError) as tamper_error:
+        restore_operator_value_quarantine(tampered)
+    assert tamper_error.value.code == "OPERATOR_VALUE_CANDIDATE_QUARANTINE_TAMPERED"
+
+
+def test_active_canonical_remains_closed_to_typed_operand_candidate():
+    document = new_canonical("REQ-OPERATOR-VALUE-CANDIDATE")
+    document["rimay_core"]["conditions"] = [_condition()]
+    document["rimay_core"]["response"] = {
+        "actor": "SystemA", "modality": "MUST",
+        "action": {"family": "CALCULATE", "rimay_action_id": "CREATE_26_4"},
+        "result": "R",
+    }
+    assert validate_schema(document)
+
+
+def test_readiness_packet_records_adoption_and_keeps_o1_runtime_and_mapping_pending():
+    packet = yaml.safe_load(PACKET.read_text(encoding="utf-8"))
+    assert packet["selection"]["selected_capability"] == \
+        "CAP-OPERATOR-VALUE-EXPR"
+    assert packet["candidate_contract"]["owned_wrappers"] == list(_manual_wrappers())
+    assert packet["repository_realization"]["status"] == "partial"
+    assert packet["repository_realization"]["gap"] == \
+        "INSTANCE_OR_CLASS_HAS_PROPERTIES::CLASS"
+    assert packet["mapping_boundary"] == {
+        "contract_version": "0.4.0",
+        "mapping_total": 14,
+        "existing_canonical": 6,
+        "canonical_extension_candidate": 0,
+        "repository_preserved_only": 8,
+        "explicitly_excluded": 0,
+        "product_binding_count": 7,
+        "product_binding_added": True,
+        "mapping_treatment_changed": False,
+    }
+    assert packet["readiness_outcome"] == {
+        "quality_axes": "satisfied",
+        "product_decision": "accepted",
+        "product_state": "adopted",
+        "candidate_status": "product_adopted_runtime_pending",
+        "explicit_product_decision_required": False,
+        "runtime_activation_audit_required": True,
+    }
+    assert all(not value for value in packet["unchanged_boundary"].values())
+
+
+def _manual_wrappers() -> tuple[str, ...]:
+    return (
+        "ActorOrTypeOrPropertyOperatorElement",
+        "InstanceOrPropertyOperatorValue",
+        "UIComponentInstanceOperatorElement",
+    )
+
+
+def test_product_plan_is_adopted_at_the_typed_operand_boundary():
+    plan = yaml.safe_load(PLAN.read_text(encoding="utf-8"))
+    result = assess_repository_product_adoption(
+        plan, _matrix(), project_root=RIMAY_JP)
+    assert result.accepted, result.problems
+    assert len(result.decisions) == 1
+    decision = result.decisions[0]
+    assert decision.capability_id == "CAP-OPERATOR-VALUE-EXPR"
+    assert decision.decision_status == "accepted"
+    assert decision.product_state == "adopted"
+    assert set(result.accepted_decisions()) == {"CAP-OPERATOR-VALUE-EXPR"}
+
+
+def _fixed_projection(grammar, text: str):
+    parsed = grammar.recognizer().parse_syntax(
+        text, start_rule="CNLFunctionalRequirements")
+    assert parsed.accepted and parsed.ambiguity_detected is False
+    linking = link_repository_syntax(grammar, parsed, text)
+    assert linking.succeeded, linking.problems
+    projection = project_repository_document(parsed, text, linking, grammar)
+    assert projection.status == "projected_document", projection.reason
+    assert repository_document_problems(projection.document, text) == []
+    condition = projection.document["requirements"][0]["condition_structure"] \
+        ["conditions"][0]["condition"]
+    rule = condition["payload"]["expression"]["rule"]
+    return parsed, linking, rule
+
+
+@pytest.mark.grammar
+def test_fixed_repository_all_three_wrappers_project_with_linked_identity():
+    path = os.environ.get("RIMAY_FIXED_GRAMMAR")
+    if not path:
+        pytest.skip("RIMAY_FIXED_GRAMMAR 未指定")
+    grammar = compile_fixed_grammar(path)
+    declarations = (
+        "Actors: actor SystemA "
+        "Classes: class Order := status "
+        "UI_Component_Types: Button "
+    )
+    cases = (
+        ('If Order.status is "Open" OR "Pending"', "property"),
+        ('If "order" of type Order (referred to as CurrentOrder) is "Open"',
+         "instance_or_property"),
+        ('If "confirm" Button is "enabled"', "ui_component_instance"),
+    )
+    for surface, expected_kind in cases:
+        text = declarations + surface + ", SystemA must calculate."
+        parsed, linking, rule = _fixed_projection(grammar, text)
+        candidate = project_repository_operator_value_condition(
+            rule, text, linking, condition_type="IF",
+            grammar_source_sha256=parsed.grammar_source_sha256)
+        assert candidate["predicate"]["operand"]["kind"] == expected_kind
+        assert operator_value_semantics(parse_operator_value_condition(
+            render_operator_value_condition(candidate, language="ja"), language="ja"
+        )) == operator_value_semantics(candidate)
+
+
+@pytest.mark.grammar
+def test_fixed_repository_modifier_and_free_expression_residuals_fail_closed():
+    path = os.environ.get("RIMAY_FIXED_GRAMMAR")
+    if not path:
+        pytest.skip("RIMAY_FIXED_GRAMMAR 未指定")
+    grammar = compile_fixed_grammar(path)
+    cases = (
+        ('If the "order" is "Open"', "OPERATOR_VALUE_CANDIDATE_MODIFIER_DEFERRED"),
+        ('If "order" is a "Open"', "OPERATOR_VALUE_CANDIDATE_MODIFIER_DEFERRED"),
+        ('If "order" is "Open" "recently"',
+         "OPERATOR_VALUE_CANDIDATE_FREE_EXPRESSION_DEFERRED"),
+    )
+    for surface, code in cases:
+        text = "Actors: actor SystemA " + surface + ", SystemA must calculate."
+        parsed, linking, rule = _fixed_projection(grammar, text)
+        with pytest.raises(OperatorValueExpressionCandidateError) as caught:
+            project_repository_operator_value_condition(
+                rule, text, linking, condition_type="IF",
+                grammar_source_sha256=parsed.grammar_source_sha256)
+        assert caught.value.code == code

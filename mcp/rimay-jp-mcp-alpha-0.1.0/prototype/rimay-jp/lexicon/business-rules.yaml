@@ -1,0 +1,54 @@
+# 業務ルール・状態モデル辞書（v0.3 構想書 §14.5/§14.6 の知識ルーティング先）
+# MVP目標: 業務ルール10〜30件・状態モデル1〜3領域（profile/supported-profile.yaml）
+# knowledge-routerはID・版数・取得方法をProvenanceとして記録する（GATE-3B）。
+knowledge_version: 0.1.0
+
+business_rules:
+  - id: BR-001
+    name: 高額注文の承認要件
+    statement: 注文金額が100,000円以上の注文は承認処理を必要とする。
+    # 決定論的照合用の構造化述語（条件predicateとの一致でルーティングする）
+    predicate:
+      subject: OrderAmount
+      operator: GREATER_OR_EQUAL
+      value: "100000"
+      unit: JPY
+    domain: order-management
+    source: 構想書 §9.3 の例より採録（シード）
+    applies_to:
+      - rimay_core.conditions
+    status: seed
+
+state_models:
+  - id: SM-001
+    name: 注文状態
+    property: OrderStatus
+    domain: order-management
+    states: [Unconfirmed, Accepted, Confirmed, Billed, Failed]
+    transitions:
+      - {from: Unconfirmed, to: Accepted, trigger: 注文データの受信}
+      - {from: Accepted, to: Confirmed, trigger: 利用者が注文確定ボタンを押す}
+      - {from: Confirmed, to: Billed, trigger: 請求書PDFの保存完了}
+      - {from: Accepted, to: Failed, trigger: 入力検証の失敗}
+    source: 構想書 §19 Gherkin例＋GATE-1 Corpusより整備
+    status: seed
+
+  - id: SM-002
+    name: メンテナンスモード
+    property: MaintenanceMode
+    domain: operations
+    states: [Active, Inactive]
+    transitions:
+      - {from: Inactive, to: Active, trigger: 保守開始}
+      - {from: Active, to: Inactive, trigger: 保守終了}
+    status: seed
+
+  - id: SM-003
+    name: 検証結果
+    property: ValidationResult
+    domain: order-management
+    states: [Succeeded, Failed]
+    transitions:
+      - {from: Succeeded, to: Failed, trigger: 再検証の失敗}
+      - {from: Failed, to: Succeeded, trigger: 再検証の成功}
+    status: seed

@@ -1,0 +1,19 @@
+# Judgment-only smell: DEFINED for traceability but DEFERRED — never executed (FR-039).
+# Disclosed in coverage as unchecked / deferred_judgment (FR-044).
+id: constraint_not_enforceable
+name: Constraint not enforceable
+artifact_type: constraint
+language: en
+quality_attribute: verifiable
+definition: >
+  The rule statement should describe an enforceable, checkable obligation. Judging real-world
+  enforceability requires interpretation, so detection is deferred (no LLM — FR-039).
+definition_source_id: constraint/sbvr-2019
+implementable: judgment
+default_severity: low
+explanation_template: "Enforceability is not deterministically checkable; reviewed manually."
+examples:
+  positive:
+    - "The vendor must act reasonably at all times."
+  negative:
+    - "The vendor must not store card numbers after settlement."

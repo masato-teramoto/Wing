@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://knowledge-assets/contracts/validation-result.schema.json",
+  "title": "Validation Result (multi-artifact)",
+  "description": "Output of Layer 2 validation for a single artifact, plus the batch and set wrappers. Findings cite a resolvable source_id (FR-010/FR-024). Deferred (judgment) smells never appear (FR-039).",
+  "$defs": {
+    "location": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["segment", "start", "end", "text"],
+      "properties": {
+        "segment": { "type": "string", "minLength": 1, "description": "Type-specific segment label (per the type's L1 schema) or whole_artifact." },
+        "start": { "type": "integer", "minimum": 0 },
+        "end": { "type": "integer", "minimum": 0 },
+        "text": { "type": "string" }
+      }
+    },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["smell", "smell_name", "catalog", "quality_attribute", "location", "severity", "explanation", "source_id", "rule_id"],
+      "properties": {
+        "smell": { "type": "string", "minLength": 1 },
+        "smell_name": { "type": "string", "minLength": 1 },
+        "catalog": { "type": "string", "enum": ["type", "general"], "description": "'type' = artifact-type catalog; 'general' = cross-cutting Femmer catalog (FR-041)." },
+        "quality_attribute": { "type": "string", "minLength": 1 },
+        "location": { "$ref": "#/$defs/location" },
+        "severity": { "type": "string", "enum": ["high", "medium", "low"] },
+        "explanation": { "type": "string", "minLength": 1 },
+        "source_id": { "type": "string", "pattern": "^[a-z_]+/[a-z0-9-]+-[0-9]{4}$" },
+        "method_source_id": { "type": "string", "pattern": "^[a-z_]+/[a-z0-9-]+-[0-9]{4}$" },
+        "citation": {
+          "type": "object", "additionalProperties": false,
+          "description": "Legacy human-readable citation, retained during migration alongside source_id.",
+          "properties": { "document": { "type": "string" }, "locator": { "type": "string" } }
+        },
+        "rule_id": { "type": "string", "minLength": 1 }
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Deterministic disclosure of which source-defined smells were checked vs. not (FR-044). Derived from the loaded asset; byte-identical per knowledge version.",
+      "required": ["checked", "unchecked"],
+      "properties": {
+        "checked": { "type": "array", "items": { "type": "string", "minLength": 1 }, "description": "Smell ids actually evaluated (shippable type-catalog + general-catalog rules)." },
+        "unchecked": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["smell", "reason"],
+            "properties": {
+              "smell": { "type": "string", "minLength": 1 },
+              "reason": { "type": "string", "enum": ["deferred_judgment", "pending_source"] }
+            }
+          }
+        }
+      }
+    },
+    "validationResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifact_type", "type_resolution", "language", "verdict", "analyzable", "findings", "coverage"],
+      "properties": {
+        "artifact_type": { "type": "string" },
+        "type_resolution": { "type": "string", "enum": ["declared", "detected", "indeterminate"] },
+        "language": { "type": "string", "enum": ["en", "ja", "undetermined"] },
+        "verdict": { "type": "string", "enum": ["pass", "fail"], "description": "Coverage-scoped: pass = no findings among coverage.checked; does not assert freedom from coverage.unchecked (FR-011/FR-044)." },
+        "analyzable": { "type": "boolean" },
+        "findings": { "type": "array", "items": { "$ref": "#/$defs/finding" } },
+        "coverage": { "$ref": "#/$defs/coverage" },
+        "status_note": { "type": "string" }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["total", "passed", "failed", "by_smell", "by_type"],
+      "properties": {
+        "total": { "type": "integer", "minimum": 0 },
+        "passed": { "type": "integer", "minimum": 0 },
+        "failed": { "type": "integer", "minimum": 0 },
+        "by_smell": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 } },
+        "by_type": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 } }
+      }
+    }
+  },
+  "oneOf": [
+    { "$ref": "#/$defs/validationResult" },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["results", "summary"],
+      "properties": {
+        "results": { "type": "array", "items": { "$ref": "#/$defs/validationResult" } },
+        "summary": { "$ref": "#/$defs/summary" }
+      }
+    }
+  ]
+}

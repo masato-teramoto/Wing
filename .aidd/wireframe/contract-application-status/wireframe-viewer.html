@@ -54,21 +54,22 @@
   <h1>これは要件定義段階のワイヤーフレームです</h1>
   <p>画面の型・構成・情報量のイメージを掴むためのものです。この機能・この UI で実装することを確約するものではありません。</p>
   <p>色・書体・細部の見た目は未確定です。ブランドの色は基本設計の工程で決めます。</p>
+  <p>検索条件・表示項目・申請状況の値はいずれも未確定です。「検索条件 1〜20」「項目 1〜3」は件数と配置のイメージを示すもので、条件の項目そのもの・桁・書式・必須は基本設計で確定します。申請状況の値は本フィーチャーでは決めません。</p>
 </div>
 
 <nav class="viewer-nav">
-  <a href="pages/status-list-initial.html" target="wf">物件契約情報申請状況 検索／一覧 / default（条件未適用・検索前）</a>
-  <a href="pages/status-list-result.html" target="wf">物件契約情報申請状況 検索／一覧 / filters-applied（検索結果あり）</a>
-  <a href="pages/status-list-limit-exceeded.html" target="wf">物件契約情報申請状況 検索／一覧 / filters-applied（表示件数の上限を超過）</a>
-  <a href="pages/status-list-empty.html" target="wf">物件契約情報申請状況 検索／一覧 / empty（条件未適用で 0 件）</a>
-  <a href="pages/status-list-filter-empty.html" target="wf">物件契約情報申請状況 検索／一覧 / filter-empty（条件適用で 0 件）</a>
-  <a href="pages/status-list-input-error.html" target="wf">物件契約情報申請状況 検索／一覧 / input-error（検索条件の入力エラー）</a>
-  <a href="pages/status-list-loading.html" target="wf">物件契約情報申請状況 検索／一覧 / loading</a>
-  <a href="pages/status-list-error.html" target="wf">物件契約情報申請状況 検索／一覧 / error（インライン再試行）</a>
-  <a href="pages/error-403.html" target="wf">エラー画面（権限なし） / default</a>
+  <a href="pages/status-list-initial.html" target="wf">初期表示（検索前）</a>
+  <a href="pages/status-list-result.html" target="wf">検索結果あり</a>
+  <a href="pages/status-list-limit-exceeded.html" target="wf">表示件数の上限を超過</a>
+  <a href="pages/status-list-empty.html" target="wf">該当なし</a>
+  <a href="pages/status-list-filter-empty.html" target="wf">条件に一致なし</a>
+  <a href="pages/status-list-input-error.html" target="wf">入力エラー</a>
+  <a href="pages/status-list-loading.html" target="wf">読み込み中</a>
+  <a href="pages/status-list-error.html" target="wf">読み込み失敗</a>
+  <a href="pages/error-403.html" target="wf">エラー画面: 権限なし</a>
 </nav>
 
-<iframe class="viewer-frame" name="wf" src="pages/status-list-result.html" title="物件契約情報申請状況のワイヤーフレーム"></iframe>
+<iframe class="viewer-frame" name="wf" src="pages/status-list-initial.html" title="物件契約情報申請状況のワイヤーフレーム"></iframe>
 
 </body>
 </html>

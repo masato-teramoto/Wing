@@ -1,116 +1,127 @@
 ---
 feature: {{FEATURE_NAME}}
 status: draft
-updated_at: {{ISO_8601_TIMESTAMP}}
+updated_at: {{ISO_8601_TIMESTAMP_JST}}
 ---
 
 # 要件定義書
 
-> このファイルは **「何を作るか」「完了の判定基準は何か」** の正です。
-> 自律エージェントが解釈ぶれを起こさないよう、受け入れ基準は **EARS 形式** で記述してください。
-> このフィーチャーが承認 (`status: approved`) されてから `design.md` の作成に進みます。
+> このファイルは **「何を作るか」「完了をどう判定するか」** を確定させる文書である。\
+> _分担_: `status: approved` になるまで `design.md` に進まない。`approved` は人間が付ける（エージェントは付けない）。
+
+> _書き方_: 確定した要件だけを書き、作成の手順やレビューの記録は残さない。
+
+## 概要（Introduction）
+
+> このフィーチャーが何のために、誰のためにあるかを示す節。\
+> _分担_: プロダクト全体の目的は `steering/product.md` の `## 開発物の概要・背景`、価値は同ファイルの `## 提供価値`。
+
+> _書き方_: このフィーチャー固有の事情だけを書き、経緯や検討過程は書かない。
+
+- **背景**: <REQ_INTRO_BACKGROUND>
+- **対象ユーザー**: <REQ_INTRO_TARGET_USER>
+- **期待する変化**: <REQ_INTRO_EXPECTED_CHANGE>
+
+## 業務フロー
+
+> 人とシステムの担当を整理する節。人の判断が入る手順を明示したいときに書く。\
+> _分担_: システム全体の主要ビジネスフローは `docs/architecture/system-overview.md` の `## 主要ビジネスフロー`。
+
+> _書き方_: 承認フローや、紙・口頭で行っていた作業をシステムが担う場合が該当する。対象業務には業務名だけを書く。手順と介在ステップは 1 ステップ 1 行で列挙する。ステップが多い場合や担当が複数にまたがる場合は Mermaid の sequenceDiagram（担当ごとにレーンを分けるスイムレーン形式）を併用する。
+
+- **対象業務**: <REQ_BIZFLOW_TARGET>
+- **現状の業務手順（Before）**:
+  - <REQ_BIZFLOW_BEFORE_N>
+- **システム導入後（After）**:
+  - <REQ_BIZFLOW_AFTER_N>
+- **人が介在するステップ**:
+  - <REQ_BIZFLOW_HUMAN_STEP_N>
+
+## スコープの境界（Boundary Context）
+
+> このフィーチャーで**何を作り、何を作らないか**を確定させる節。スコープの誤読が起きやすい場合や、隣接するシステム・スペックに影響する場合は必ず書く。\
+> _分担_: 扱わない理由と引き継ぎ先は `## 対象外`。無いと成立しない依存は `## 前提と依存（Dependencies / Assumptions）`。実装として何を所有するかは `design.md` の `## 責務境界（Boundary Commitments）`。ここには利用者から見た機能の範囲だけを書き、理由や実装の話は書かない。
+
+> _書き方_: **確定した境界だけ**を書き、検討中のものは書かない。1 項目 1 行で列挙する。
+
+- **扱う範囲（In Scope）**:
+  - <REQ_SCOPE_IN_N>
+- **扱わない範囲（Out of Scope）**:
+  - <REQ_SCOPE_OUT_N>
+- **隣接する仕組みへの期待（Adjacent）**:
+  - <REQ_SCOPE_ADJACENT_N>
+
+## 対象外
+
+> このフィーチャーで扱わないことを、理由と引き継ぎ先つきで示す節。\
+> _分担_: 境界そのものの宣言は `## スコープの境界（Boundary Context）`。一言で境界が伝わるものはあちらに置き、理由や引き継ぎ先の説明が要るものだけをここに書く。**同じ内容を両方に書かない。**
+
+> _書き方_: 1 項目に「扱わないこと / 理由 / どこで扱う予定か」をまとめて書く。
+
+- <REQ_OUTSCOPE_ITEM_N>
+
+## 前提と依存（Dependencies / Assumptions）
+
+> このフィーチャーが成立するために、外部で満たされている必要があることを書く節。\
+> _分担_: 「相手の担当だと宣言したいもの」は `## スコープの境界（Boundary Context）` の 隣接する仕組みへの期待（Adjacent）。ここには「**無いとこのフィーチャーが動かないもの**」を書く。実装が使ってよい範囲と守る制約は `design.md` の `### 依存してよい対象（Allowed Dependencies）`。
+
+> _書き方_: 前提は、崩れると設計が成り立たなくなるものだけを書く（「たぶんそうだろう」は書かない）。依存は、フィーチャー名・システム名・API 名など後から特定できる固有名で書く。未確定事項は、誰が確認するかを添えて書き、`design.md` に進む前に解消する。
+
+- **前提**:
+  - <REQ_ASSUMPTION_N>
+- **依存**:
+  - <REQ_DEPENDENCY_N>
+- **未確定事項**:
+  - <REQ_OPEN_ISSUE_N>
+
+## 要件（Requirements）
+
+> このフィーチャーの要件を列挙する節。要件ごとに利用者ストーリーと受け入れ基準を対で書く。
+
+> _書き方_: 要件ごとに整数の番号を振り、受け入れ基準にはその番号に連番をつないだ ID（要件 1 なら `1.1`, `1.2`, `…`、要件 2 なら `2.1`, `2.2`）を付ける。この **受け入れ基準ID** は `design.md`・`tasks.md` と外部の対応表から参照されるので、一度付けたら変えない。要件は必要な数だけ `### 要件 2`, `### 要件 3` と同じ形で追加する。\
+> 利用者ストーリーは「〜として、〜をしたい。なぜなら〜だから。」の 1 文にまとめる（例: 「ログインユーザーとして、自分のプロフィールを編集したい。なぜなら表示名と通知設定を常に最新に保ちたいから。」）。監査やログなどの裏方の要件でも省略しない。\
+> 受け入れ基準は 1 行 1 基準で、必要な数だけ行を足す。行を続ける場合は行末に `\` を置く。義務は **「しなければならない」**、禁止は **「してはならない」** と書く。単に「する／しない」と書くと事実の説明に読めてしまい、義務として伝わらないため使わない。\
+> 番号付きの受け入れ基準には、外から見て YES / NO を判定できる応答・拒否・状態変化だけを書く。境界やスコープの説明文に番号を付けない。上位の決定（要件・steering）が「〜のみ可／〜以外は不可」と定めている場合は、拒否される場合だけでなく、許可される場合も対にして書く。
 >
-> **テンプレート**: 山括弧で囲んだ大文字の項目は、プロジェクト確定時に実値へ置換する。
+> **EARS 意味パターン早見表** — 中列の日本語の表記を使う。右列は原文との対照。
+>
+> | 意味 | 日本語の表記（ja） | 英語の表記（en） |
+> |---|---|---|
+> | イベント駆動（Event-driven） | `[イベント] のとき、システムは [応答] しなければならない` | `When [event], the system shall [response]` |
+> | 条件駆動（Conditional） | `[条件] の場合、システムは [応答] しなければならない` | `If [precondition], then the system shall [response]` |
+> | 望ましくない条件への応答（Unwanted behavior） | `[望ましくない条件] の場合、システムは [応答] しなければならない` | `If [unwanted condition], then the system shall [response]` |
+> | 持続状態（State-driven） | `[状態] のあいだ、システムは [応答] しなければならない` | `While [state], the system shall [response]` |
+> | 機能スコープ（Optional feature） | `[領域] において、システムは [応答] しなければならない` | `Where [feature included], the system shall [response]` |
+> | 普遍要件（Ubiquitous） | `システムは [応答] しなければならない` | `The system shall [response]` |
+> | 禁止（shall not） | `[条件] の場合、システムは [行為] してはならない` | `If [precondition], the system shall not [action]` |
 
-## Introduction（概要）
+### 要件 1: <REQ_AREA_NAME>
 
-> このフィーチャーが何のために、誰のためにあるかを 2〜3 段落で書く。`背景` はなぜ今このフィーチャーが必要か、`対象ユーザー` は想定する利用者像、`期待する変化` はこのフィーチャーがあると何が変わるか。
+**利用者ストーリー（User Story）**: <REQ_USERSTORY_ROLE> として、<REQ_USERSTORY_WANT> をしたい。なぜなら <REQ_USERSTORY_WHY> だから。
 
-<FEATURE_INTRODUCTION>
+#### 受け入れ基準（Acceptance Criteria）
 
-- **背景**: <FEATURE_BACKGROUND>
-- **対象ユーザー**: <FEATURE_TARGET_USER>
-- **期待する変化**: <FEATURE_EXPECTED_CHANGE>
+1.1. <REQ_AC_TRIGGER_N> のとき、システムは <REQ_AC_RESPONSE_N> しなければならない\
+1.2. <REQ_AC_CONDITION_N> の場合、システムは <REQ_AC_FORBIDDEN_ACTION_N> してはならない
 
-> プロダクトレベルの目的・価値は steering の `product.md` を参照。ここではこのフィーチャー固有の文脈を書く。
+## 非機能要件（Non-Functional Requirements）
 
-## 業務フロー（任意）
+> このフィーチャーで満たすべき非機能要件を確定させる節。**目標値**（例: このフィーチャーで追加する p95）はこの表を正式版とする。\
+> _分担_: 共通の SLO（サービスレベル目標）は `steering/non-functional.md` の `## 可用性・性能`、障害対応フローと運用当番は同ファイルの `## 運用・障害対応`、ログ・監視の実装標準は同ファイルの `## 信頼性・観測性`。実現手段は `design.md` の `### 性能とスケーラビリティ（Performance & Scalability）` に書く。
 
-> 業務システムなど人とシステムの責務境界を整理する必要がある場合のみ記述する。
-> 承認フロー・今まで紙で行っていた作業をシステムが担う場合など、人の判断が介在するステップを明示したいときに有効。
-> 不要なフィーチャーではこのセクションごと削除してよい。
-> `対象業務` はこのフィーチャーが自動化・支援する業務名、`Before` は現在の手順（紙・口頭・別システムでの対応方法を含む）、`After` はシステム稼働後の手順、`人が介在するステップ` は承認・確認・例外処理などシステム外の人的操作。
-
-- **対象業務**: <BUSINESS_FLOW_TARGET>
-- **Before（現状の業務手順）**: <BUSINESS_FLOW_BEFORE>
-- **After（システム導入後）**: <BUSINESS_FLOW_AFTER>
-- **人が介在するステップ**: <BUSINESS_FLOW_HUMAN_STEPS>
-
-> **記法**: Mermaid `sequenceDiagram`（スイムレーン形式）。人とシステムの責務境界が図で追える形にする。図が不要なら本スロットを残して直後に不要理由を書く。
-
-<BUSINESS_FLOW_DIAGRAM>
-
-> システム全体の主要ビジネスフローは `docs/architecture/system-overview.md §主要ビジネスフロー` を参照。
-
-## Boundary Context（境界文脈）
-
-> スコープの誤読が起こりやすい場合や、隣接するシステム / スペックに影響する場合は必ず記述する。
-> `_N` の行を項目の数だけ増やす。`Out of Scope` は扱わない振る舞いに加えて理由または委譲先を書く。`Adjacent` は前提として動いている他フィーチャー / API / バッチ、およびこのフィーチャーが依頼している外部側の責務を書く。
-
-- **In Scope（このフィーチャーで扱う）**:
-  - <IN_SCOPE_BEHAVIOR_N>
-- **Out of Scope（扱わない）**:
-  - <OUT_OF_SCOPE_BEHAVIOR_N>
-- **Adjacent（隣接システム / 隣接スペックへの期待）**:
-  - <ADJACENT_EXPECTATION_N>
-
-## Requirements（要件）
-
-> 要件 ID は **数値**（`1`, `1.1`, `2`, `2.1` ...）のみ。`A`, `B` などのアルファベット ID は使わない。
-> 各要件は **User Story** + **Acceptance Criteria（EARS 形式）** で構成する。
-> **`### Requirement` のブロックを要件の数だけ複製する。** 要件領域名は、その要件がどの範囲を扱うかが分かる名前にする。
-
-### Requirement <REQUIREMENT_NO>: <REQUIREMENT_AREA_NAME>
-
-**User Story**: <USER_STORY_ROLE> として、<USER_STORY_GOAL> をしたい。なぜなら <USER_STORY_REASON> だから。
-
-例: 「ログインユーザーとして、自分のプロフィールを編集したい。なぜなら表示名と通知設定を常に最新に保ちたいから。」
-
-#### Acceptance Criteria（EARS 形式）
-
-> 1 項目 = 1 基準。`_N` の行を基準の数だけ増やす。下の早見表のいずれかのパターンに当てはめて書く。
-
-1. <ACCEPTANCE_CRITERION_N>
-
-**EARS パターン早見表**:
-- `When [event], the system shall [response]`（イベント駆動）
-- `If [precondition], then the system shall [response]`（条件分岐）
-- `While [state], the system shall [response]`（持続状態）
-- `Where [feature included], the system shall [response]`（機能スコープ条件）
-- `The system shall [response]`（普遍要件）
-
-## Non-Functional Requirements（非機能要件）
-
-> 当該フィーチャーで成立させるべき非機能要件のみ記述（steering で固定済みのものは引用に留める）。
-> 共通 SLO・障害フロー・当番は `non-functional.md`、ログ・監視の実装標準は `non-functional.md`（観測部）を参照。
-> `要件` は steering の該当ファイルへの準拠を示したうえで、このフィーチャー固有の値を書く（例: パフォーマンスなら `non-functional.md` 準拠 + p95 200ms、アクセシビリティなら WCAG 2.1 AA、プライバシーなら扱う PII と保持期間）。`計測 / 検証方法` は負荷試験・SLO ダッシュボード・スキャン・監査ログなど、その要件を確認する手段を書く。区分の行は増減してよい。
+> _書き方_: steering で既に決まっているものは参照だけにして、ここで書き直さない。各行は「steering 準拠 + このフィーチャー固有の値」の形で書く（例: パフォーマンス「`steering/non-functional.md` 準拠 + p95（応答時間の 95 パーセンタイル）200ms」、アクセシビリティ「WCAG 2.1 AA」、プライバシー「扱う個人情報（PII）と保持期間」）。検証方法の列には、その要件を確かめる手段を書く（例: 負荷試験、本番メトリクス、SLO ダッシュボード、プライバシー影響評価（DPIA）、監査ログ）。
 
 | 区分 | 要件 | 計測 / 検証方法 |
 |---|---|---|
-| パフォーマンス | <NFR_PERFORMANCE_REQUIREMENT> | <NFR_PERFORMANCE_VERIFICATION> |
-| 可用性 | <NFR_AVAILABILITY_REQUIREMENT> | <NFR_AVAILABILITY_VERIFICATION> |
-| 運用・監視 | <NFR_OPERATIONS_REQUIREMENT> | <NFR_OPERATIONS_VERIFICATION> |
-| セキュリティ | <NFR_SECURITY_REQUIREMENT> | <NFR_SECURITY_VERIFICATION> |
-| アクセシビリティ | <NFR_ACCESSIBILITY_REQUIREMENT> | <NFR_ACCESSIBILITY_VERIFICATION> |
-| i18n / l10n | <NFR_I18N_REQUIREMENT> | <NFR_I18N_VERIFICATION> |
-| プライバシー | <NFR_PRIVACY_REQUIREMENT> | <NFR_PRIVACY_VERIFICATION> |
-| 監査 | <NFR_AUDIT_REQUIREMENT> | <NFR_AUDIT_VERIFICATION> |
-
-## Out of Scope（明示的に対象外）
-
-> Boundary Context だけで誤読を防ぎきれないとき、追加でここに書く。
-> 1 項目 = 1 件。`_N` の行を件数だけ増やす。対象外にするものと、なぜ対象外か、どこで扱う予定かを書く。
-
-- <EXPLICIT_OUT_OF_SCOPE_N>
-
-## Dependencies / Assumptions（前提と依存）
-
-> `前提` はこのフィーチャーが成立するために真でなければならない事項、`依存` は他フィーチャー / 既存システム / 外部 API / データ、`未確定事項` は調査・確認待ちのトピック（design に進む前に解消する）。
-
-- **前提**: <FEATURE_ASSUMPTIONS>
-- **依存**: <FEATURE_DEPENDENCIES>
-- **未確定事項**: <FEATURE_OPEN_QUESTIONS>
+| パフォーマンス | <REQ_NFR_PERFORMANCE> | <REQ_NFR_PERFORMANCE_VERIFY> |
+| 可用性 | <REQ_NFR_AVAILABILITY> | <REQ_NFR_AVAILABILITY_VERIFY> |
+| 運用・監視 | <REQ_NFR_OPERATION> | <REQ_NFR_OPERATION_VERIFY> |
+| セキュリティ | <REQ_NFR_SECURITY> | <REQ_NFR_SECURITY_VERIFY> |
+| アクセシビリティ | <REQ_NFR_ACCESSIBILITY> | <REQ_NFR_ACCESSIBILITY_VERIFY> |
+| 多言語・地域対応（i18n / l10n） | <REQ_NFR_I18N> | <REQ_NFR_I18N_VERIFY> |
+| プライバシー | <REQ_NFR_PRIVACY> | <REQ_NFR_PRIVACY_VERIFY> |
+| 監査 | <REQ_NFR_AUDIT> | <REQ_NFR_AUDIT_VERIFY> |
 
 ---
 
-_「何を作るか」を契約する正のドキュメントです。実装方法 / コンポーネント設計は `design.md`、タスクの分解は `tasks.md` に書いてください。_
+_「何を作るか」を確定させる文書。_

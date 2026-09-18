@@ -1,0 +1,24 @@
+id: femmer_subjective_language
+name: 主観的な表現
+artifact_type: general
+language: ja
+quality_attribute: clarity
+definition: >
+  「高速」「使いやすい」「簡単」などの主観的で検証できない表現。アーティファクト種別に依らず適用する。
+definition_source_id: general/femmer-2017
+detection_basis:
+  description: "日本語の主観的形容表現の語彙照合（部分一致）。受身・助詞解析は不要。"
+  source_id: japanese/seki-2019
+implementable: deterministic
+detector:
+  type: lexical
+  params:
+    segment: whole_artifact
+    lexicon: [高速, 速い, 遅い, 簡単, 使いやすい, 効率的, 直感的, 柔軟, シンプル, 最新, 快適]
+default_severity: medium
+explanation_template: "主観的な表現「{match}」は客観的に検証できません。測定可能な基準に置き換えてください。"
+examples:
+  positive:
+    - "UIは高速で使いやすくなければならない。"
+  negative:
+    - "UIはダッシュボードを2秒以内に表示しなければならない。"

@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>作成組織検索 — 条件に一致なし</title>
+<link rel="stylesheet" href="tokens/tokens.css">
+<style>
+body{margin:0;background:var(--color-semantic-canvas);color:var(--color-semantic-text);font-family:system-ui,sans-serif;font-size:var(--font-size-body);line-height:1.6}
+.wf-main{padding-left:var(--space-md);padding-right:var(--space-md);padding-top:var(--space-sm);padding-bottom:var(--space-lg)}
+:focus-visible{outline-style:solid;outline-width:medium;outline-color:var(--color-semantic-focus);outline-offset:var(--space-xxs)}
+.wf-page-header{margin-bottom:var(--space-sm)}
+.wf-page-title{margin:0;font-size:var(--font-size-heading);line-height:1.4}
+.wf-visually-hidden{position:absolute;width:0.0625rem;height:0.0625rem;margin:-0.0625rem;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+
+.wf-field{display:flex;flex-direction:column;gap:var(--space-xs);min-width:0}
+.wf-field-label{font-size:var(--font-size-caption);font-weight:700}
+.wf-field-required{margin-left:var(--space-xs);color:var(--color-semantic-required);font-weight:400}
+.wf-field-optional{margin-left:var(--space-xs);color:var(--color-semantic-text-subtle);font-weight:400}
+.wf-field-support{color:var(--color-semantic-text-subtle);font-size:var(--font-size-caption)}
+
+.ds-select{min-width:14rem;min-height:2.75rem;padding-left:var(--space-sm);padding-right:var(--space-sm);background:var(--color-semantic-background);color:var(--color-semantic-text);border:thin solid var(--color-semantic-border);border-radius:var(--radius-sm);font-size:var(--font-size-body);font-family:inherit}
+.ds-select:disabled{background:var(--color-semantic-disabled-surface);color:var(--color-semantic-disabled-text)}
+
+.ds-button{display:inline-flex;align-items:center;justify-content:center;min-height:2.75rem;padding-left:var(--space-md);padding-right:var(--space-md);border-radius:var(--radius-sm);font-size:var(--font-size-body);font-family:inherit;line-height:1.4;cursor:pointer}
+.ds-button--secondary{background:var(--color-semantic-background);color:var(--color-semantic-primary);border:thin solid var(--color-semantic-primary)}
+.ds-button--secondary:hover{background:var(--color-semantic-surface-hover);color:var(--color-semantic-primary-hover);border-color:var(--color-semantic-primary-hover)}
+.ds-button--primary{background:var(--color-semantic-primary);color:var(--color-semantic-on-primary);border:none}
+.ds-button--primary:hover{background:var(--color-semantic-primary-hover)}
+.ds-button--danger{background:var(--color-semantic-danger);color:var(--color-semantic-on-primary);border:none}
+.ds-button--danger:hover{background:var(--color-semantic-danger-hover)}
+.ds-button:disabled{background:var(--color-semantic-disabled-surface);color:var(--color-semantic-disabled-text);border-color:var(--color-semantic-disabled-surface);cursor:default}
+.ds-button--sm{min-height:2.25rem;padding-left:var(--space-sm);padding-right:var(--space-sm);font-size:var(--font-size-caption)}
+
+.ds-link{color:var(--color-semantic-primary);text-decoration:underline}
+.ds-link:hover{color:var(--color-semantic-primary-hover)}
+.ds-link--button{display:inline-flex;align-items:center;justify-content:center;min-height:2.75rem;padding-left:var(--space-md);padding-right:var(--space-md);background:var(--color-semantic-background);color:var(--color-semantic-primary);border:thin solid var(--color-semantic-primary);border-radius:var(--radius-sm);text-decoration:none}
+.ds-link--button:hover{background:var(--color-semantic-surface-hover);color:var(--color-semantic-primary-hover);border-color:var(--color-semantic-primary-hover)}
+
+.wf-filter{display:flex;flex-wrap:wrap;align-items:flex-end;gap:var(--space-md);padding:var(--space-md);margin-bottom:var(--space-md);background:var(--color-semantic-background);border:thin solid var(--color-semantic-border);border-radius:var(--radius-md)}
+.wf-filter-actions{display:flex;gap:var(--space-sm)}
+@media (max-width:63.999rem){.wf-filter{flex-direction:column;align-items:stretch}}
+
+.wf-result-summary{display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--space-sm);margin-bottom:var(--space-sm)}
+.wf-result-count{font-weight:700}
+.wf-applied-filters{color:var(--color-semantic-text-subtle);font-size:var(--font-size-caption)}
+
+.ds-table-scroll{overflow-x:auto;background:var(--color-semantic-background);border:thin solid var(--color-semantic-border);border-radius:var(--radius-md)}
+.ds-table{width:100%;min-width:44rem;border-collapse:collapse}
+.ds-table caption{padding:var(--space-sm);color:var(--color-semantic-text-subtle);font-size:var(--font-size-caption);text-align:left}
+.ds-table th,.ds-table td{padding-top:var(--space-sm);padding-bottom:var(--space-sm);padding-left:var(--space-ms);padding-right:var(--space-ms);border-bottom:thin solid var(--color-semantic-border);text-align:left;vertical-align:top;white-space:nowrap}
+.ds-table th{background:var(--color-semantic-table-header);color:var(--color-semantic-text-subtle);font-weight:700}
+.ds-table tbody tr:hover{background:var(--color-semantic-surface-hover)}
+
+.ds-pagination{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--space-md);margin-top:var(--space-md)}
+.ds-pagination-range{color:var(--color-semantic-text-subtle);font-size:var(--font-size-caption)}
+.ds-pagination-controls{display:flex;align-items:center;gap:var(--space-sm)}
+.ds-pagination-counter{font-size:var(--font-size-caption)}
+
+.ds-emptystate{padding:var(--space-xl);background:var(--color-semantic-background);border:thin solid var(--color-semantic-border);border-radius:var(--radius-md);text-align:center}
+.ds-emptystate-title{margin:0;font-size:var(--font-size-body);font-weight:700}
+.ds-emptystate-body{margin-top:var(--space-sm);margin-bottom:var(--space-md);color:var(--color-semantic-text-subtle)}
+
+.wf-inline-error{padding:var(--space-lg);background:var(--color-semantic-background);border:thin solid var(--color-semantic-border);border-radius:var(--radius-md)}
+.wf-inline-error-title{margin:0;font-size:var(--font-size-body);font-weight:700}
+.wf-inline-error-body{margin-top:var(--space-sm);margin-bottom:var(--space-md);color:var(--color-semantic-text-subtle)}
+
+.ds-skeleton{background:var(--color-semantic-skeleton);border-radius:var(--radius-sm)}
+.ds-skeleton--text{height:1rem}
+.ds-skeleton--row{height:1.25rem}
+.ds-skeleton-rows{padding:var(--space-ms)}
+.ds-skeleton-rows > * + *{margin-top:var(--space-ms)}
+
+.wf-errorpage{max-width:40rem;margin-left:auto;margin-right:auto;padding-top:var(--space-xl);text-align:center}
+.wf-errorpage-title{margin:0;font-size:var(--font-size-heading)}
+.wf-errorpage-body{margin-top:var(--space-md);margin-bottom:var(--space-lg)}
+</style>
+</head>
+<body>
+<main class="wf-main">
+  <div class="wf-page-header">
+    <h1 class="wf-page-title">作成組織検索</h1>
+  </div>
+
+  <form class="wf-filter">
+    <div class="wf-field">
+      <label class="wf-field-label" for="company">会社名<span class="wf-field-optional">※任意</span></label>
+      <select class="ds-select" id="company" name="company">
+        <option value="">選択してください</option>
+        <option value="a">株式会社サンプルA</option>
+        <option value="b">株式会社サンプルB</option>
+        <option value="c" selected>株式会社サンプルC</option>
+      </select>
+    </div>
+    <div class="wf-field">
+      <label class="wf-field-label" for="department">部署名<span class="wf-field-optional">※任意</span></label>
+      <select class="ds-select" id="department" name="department">
+        <option value="">選択してください</option>
+        <option value="nw">ネットワーク本部</option>
+        <option value="const" selected>建設統括部</option>
+        <option value="kansai">関西支店</option>
+      </select>
+    </div>
+    <div class="wf-field">
+      <label class="wf-field-label" for="section">所属名<span class="wf-field-optional">※任意</span></label>
+      <select class="ds-select" id="section" name="section">
+        <option value="">選択してください</option>
+        <option value="d1">設計第一グループ</option>
+        <option value="d2">設計第二グループ</option>
+        <option value="land" selected>用地調達グループ</option>
+      </select>
+    </div>
+    <div class="wf-filter-actions">
+      <button class="ds-button ds-button--secondary" type="submit">検索</button>
+      <button class="ds-button ds-button--secondary" type="reset">条件をクリア</button>
+    </div>
+  </form>
+
+  <div class="wf-result-summary">
+    <span class="wf-result-count">0 件</span>
+    <span class="wf-applied-filters">絞り込み中: 会社名 株式会社サンプルC、部署名 建設統括部、所属名 用地調達グループ</span>
+  </div>
+
+  <div class="ds-emptystate">
+    <p class="ds-emptystate-title">条件に一致する作成組織はありません</p>
+    <p class="ds-emptystate-body">条件を変えると、別の結果が表示されます。</p>
+    <button class="ds-button ds-button--secondary" type="button">条件をクリア</button>
+  </div>
+</main>
+</body>
+</html>

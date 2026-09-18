@@ -1,12 +1,12 @@
 ---
 name: steering-conformance
-description: AIDD 品質ゲートの ② 意味チェックとして、成果物が steering 7ファイルの方針に違反・矛盾していないかを検査する。feature-list.md / requirements.md の steering 適合性検査に使う。各フェーズの <Phase>-Check-Subagent から呼び出す。
+description: AIDD 品質ゲートの ② 意味チェックとして、成果物が steering 7ファイルの方針に違反・矛盾していないかを検査する。feature-list.md / requirements.md / design.md / tasks.md / docs の steering 適合性検査に使う。各フェーズの <Phase>-Check-Subagent から呼び出す。
 disable-model-invocation: true
 ---
 
 # steering-conformance（② steering 適合検査）
 
-> 出典: フロー設計 `00` §8.1・§9 #16。層 **②**。呼び出し元は各フェーズの `<Phase>-Check-Subagent`。
+> 層 **②**。呼び出し元は各フェーズの `<Phase>-Check-Subagent`。
 
 steering はプロジェクト全体で固定した前提である。**steering に違反する成果物を通してはならない。**
 
@@ -31,9 +31,8 @@ steering はプロジェクト全体で固定した前提である。**steering 
 |---|---|
 | Phase 3 | feature 分割が steering の方針（対象範囲・アーキテクチャ境界）と整合しているか |
 | Phase 4 | 当該 `requirements.md` が steering の内容に違反していないか |
-| Phase 5 | 画面に載っている用語・ロール・状態遷移・制約値が steering に反していないか |
-| Phase 6 | 設計が steering の技術選定・アーキテクチャ・DB / 業務コードの設計ルールに従っているか |
-| Phase 8 | `tech.md` の検証前提（コマンド・テスト方針）と矛盾していないか |
+| Phase 5 | 設計が steering の技術選定・アーキテクチャ・DB / 業務コードの設計ルールに従っているか |
+| Phase 7 | `tech.md` の検証前提（コマンド・テスト方針）と矛盾していないか |
 
 ---
 
@@ -60,7 +59,7 @@ steering は **業務コード・DB エンティティの「設計ルール」�
 
 | 検査 | 判定 |
 |---|---|
-| ルールの粒度 | **各 `design.md` がそのルールを参照するだけで設計できるか。** 粒度が足りないと feature ごとに独自解釈が発生し、Phase 7 の集約時に衝突する |
+| ルールの粒度 | **各 `design.md` がそのルールを参照するだけで設計できるか。** 粒度が足りないと feature ごとに独自解釈が発生し、Phase 6 の集約時に衝突する |
 | 実体の混入 | steering に **個々のコード値・区分値・採番対象・テーブル定義**が書かれていないか |
 | 判定基準 | 「**全 feature に等しく適用されるか**」。等しく適用されるならルール（steering）、feature ごとに異なるなら実体（`design.md`） |
 

@@ -1,0 +1,27 @@
+id: not_precise_verb
+name: Not a precise verb
+language: ja
+quality_attribute: clarity
+definition: See catalog/source for the definition of 'Not a precise verb'.
+citation:
+  document: Automated Smell Detection and Recommendation in NL Requirements (Veizaga,
+    Shin & Briand, 2023; arXiv:2305.07097)
+  locator: §4.1 Table 3 (Not precise verb); §5.3 Glossary search
+detector:
+  type: glossary
+  params:
+    glossary_ref: glossaries/vague-verbs.ja.yaml
+    segments:
+    - condition
+    - system_response
+default_severity: medium
+explanation_template: The verb '{match}' is not precise enough to be testable; use
+  a specific action (e.g., validate, send, store).
+examples:
+  positive:
+  - System-Aはメッセージの処理を行う。
+  negative:
+  - System-Aはメッセージを保存する。
+detection_basis:
+  description: 曖昧で検証困難な動詞（処理する・対応する・行う 等）の使用を、日本語語彙集との照合で判定する。
+  citation: Japanese detection basis for arXiv:2305.07097; organization review

@@ -6,8 +6,6 @@ disable-model-invocation: true
 
 # requirement-intake（Phase 1: 要求受入）
 
-> 出典: フロー設計 `01_要求受入フェーズ設計書.md`。
-
 **このフェーズの本質は「検査」ではなく「正規化」である。** RFP は作成主体が案件ごとに異なり型を強制できないため、入力の形式に関わらず必ず正規化を通し、**テンプレート化された出力**を作る。
 
 - 成果物: `.aidd/requirement-list.md`

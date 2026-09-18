@@ -5,82 +5,346 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>発行依頼書 変更 — 送信中</title>
 <link rel="stylesheet" href="tokens/tokens.css">
-<link rel="stylesheet" href="styles.css">
+<style>
+body{margin:0;background:var(--color-semantic-canvas);color:var(--color-semantic-text);font-family:system-ui,sans-serif;font-size:var(--font-size-body);line-height:1.6}
+.wf-main{padding-left:var(--space-md);padding-right:var(--space-md);padding-top:var(--space-sm);padding-bottom:var(--space-lg)}
+:focus-visible{outline-style:solid;outline-width:medium;outline-color:var(--color-semantic-focus);outline-offset:var(--space-xxs)}
+.wf-page-header{margin-bottom:var(--space-sm)}
+.wf-page-title{margin:0;font-size:var(--font-size-heading);line-height:1.4}
+.wf-visually-hidden{position:absolute;width:0.0625rem;height:0.0625rem;margin:-0.0625rem;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+
+.wf-field{display:flex;flex-direction:column;gap:var(--space-xs);min-width:0}
+.wf-field-label{font-size:var(--font-size-caption);font-weight:700}
+.wf-field-required{margin-left:var(--space-xs);color:var(--color-semantic-required);font-weight:400}
+.wf-field-optional{margin-left:var(--space-xs);color:var(--color-semantic-text-subtle);font-weight:400}
+.wf-field-support{color:var(--color-semantic-text-subtle);font-size:var(--font-size-caption)}
+
+.ds-inputtext{min-height:2.75rem;padding-left:var(--space-sm);padding-right:var(--space-sm);background:var(--color-semantic-background);color:var(--color-semantic-text);border:thin solid var(--color-semantic-border);border-radius:var(--radius-sm);font-size:var(--font-size-body);font-family:inherit}
+.ds-inputtext:disabled{background:var(--color-semantic-disabled-surface);color:var(--color-semantic-disabled-text)}
+.ds-inputtext--error{border-color:var(--color-semantic-danger)}
+
+.ds-select{min-width:14rem;min-height:2.75rem;padding-left:var(--space-sm);padding-right:var(--space-sm);background:var(--color-semantic-background);color:var(--color-semantic-text);border:thin solid var(--color-semantic-border);border-radius:var(--radius-sm);font-size:var(--font-size-body);font-family:inherit}
+.ds-select:disabled{background:var(--color-semantic-disabled-surface);color:var(--color-semantic-disabled-text)}
+
+.ds-button{display:inline-flex;align-items:center;justify-content:center;min-height:2.75rem;padding-left:var(--space-md);padding-right:var(--space-md);border-radius:var(--radius-sm);font-size:var(--font-size-body);font-family:inherit;line-height:1.4;cursor:pointer}
+.ds-button--secondary{background:var(--color-semantic-background);color:var(--color-semantic-primary);border:thin solid var(--color-semantic-primary)}
+.ds-button--secondary:hover{background:var(--color-semantic-surface-hover);color:var(--color-semantic-primary-hover);border-color:var(--color-semantic-primary-hover)}
+.ds-button--primary{background:var(--color-semantic-primary);color:var(--color-semantic-on-primary);border:none}
+.ds-button--primary:hover{background:var(--color-semantic-primary-hover)}
+.ds-button--danger{background:var(--color-semantic-danger);color:var(--color-semantic-on-primary);border:none}
+.ds-button--danger:hover{background:var(--color-semantic-danger-hover)}
+.ds-button:disabled{background:var(--color-semantic-disabled-surface);color:var(--color-semantic-disabled-text);border-color:var(--color-semantic-disabled-surface);cursor:default}
+.ds-button--sm{min-height:2.25rem;padding-left:var(--space-sm);padding-right:var(--space-sm);font-size:var(--font-size-caption)}
+
+.ds-link{color:var(--color-semantic-primary);text-decoration:underline}
+.ds-link:hover{color:var(--color-semantic-primary-hover)}
+.ds-link--button{display:inline-flex;align-items:center;justify-content:center;min-height:2.75rem;padding-left:var(--space-md);padding-right:var(--space-md);background:var(--color-semantic-background);color:var(--color-semantic-primary);border:thin solid var(--color-semantic-primary);border-radius:var(--radius-sm);text-decoration:none}
+.ds-link--button:hover{background:var(--color-semantic-surface-hover);color:var(--color-semantic-primary-hover);border-color:var(--color-semantic-primary-hover)}
+
+.ds-badge{display:inline-flex;align-items:center;padding-left:var(--space-sm);padding-right:var(--space-sm);border-radius:var(--radius-full);font-size:var(--font-size-caption)}
+.ds-badge--neutral{background:var(--color-semantic-surface-hover);color:var(--color-semantic-text-subtle)}
+
+.ds-table-scroll{overflow-x:auto;background:var(--color-semantic-background);border:thin solid var(--color-semantic-border);border-radius:var(--radius-md)}
+.ds-table{width:100%;min-width:44rem;border-collapse:collapse}
+.ds-table caption{padding:var(--space-sm);color:var(--color-semantic-text-subtle);font-size:var(--font-size-caption);text-align:left}
+.ds-table th,.ds-table td{padding-top:var(--space-sm);padding-bottom:var(--space-sm);padding-left:var(--space-ms);padding-right:var(--space-ms);border-bottom:thin solid var(--color-semantic-border);text-align:left;vertical-align:top;white-space:nowrap}
+.ds-table th{background:var(--color-semantic-table-header);color:var(--color-semantic-text-subtle);font-weight:700}
+.ds-table tbody tr:hover{background:var(--color-semantic-surface-hover)}
+
+.ds-emptystate{padding:var(--space-xl);background:var(--color-semantic-background);border:thin solid var(--color-semantic-border);border-radius:var(--radius-md);text-align:center}
+.ds-emptystate-title{margin:0;font-size:var(--font-size-body);font-weight:700}
+.ds-emptystate-body{margin-top:var(--space-sm);margin-bottom:var(--space-md);color:var(--color-semantic-text-subtle)}
+
+.wf-inline-error{padding:var(--space-lg);background:var(--color-semantic-background);border:thin solid var(--color-semantic-border);border-radius:var(--radius-md)}
+.wf-inline-error-title{margin:0;font-size:var(--font-size-body);font-weight:700}
+.wf-inline-error-body{margin-top:var(--space-sm);margin-bottom:var(--space-md);color:var(--color-semantic-text-subtle)}
+
+.ds-skeleton{background:var(--color-semantic-skeleton);border-radius:var(--radius-sm)}
+.ds-skeleton--text{height:1rem}
+.ds-skeleton--row{height:1.25rem}
+.ds-skeleton-rows{padding:var(--space-ms)}
+.ds-skeleton-rows > * + *{margin-top:var(--space-ms)}
+
+.wf-errorpage{max-width:40rem;margin-left:auto;margin-right:auto;padding-top:var(--space-xl);text-align:center}
+.wf-errorpage-title{margin:0;font-size:var(--font-size-heading)}
+.wf-errorpage-body{margin-top:var(--space-md);margin-bottom:var(--space-lg)}
+
+.wf-modal-backdrop{position:fixed;inset:0;background:var(--color-semantic-overlay);display:flex;align-items:center;justify-content:center;padding:var(--space-md)}
+.ds-modaldialog{width:100%;max-width:32rem;background:var(--color-semantic-background);border:thin solid var(--color-semantic-border);border-radius:var(--radius-md);padding:var(--space-lg)}
+.ds-modaldialog-header{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--space-md)}
+.ds-modaldialog-title{margin:0;font-size:var(--font-size-body);font-weight:700}
+.ds-modaldialog-body{margin-top:var(--space-sm);margin-bottom:var(--space-lg);color:var(--color-semantic-text-subtle)}
+.ds-modaldialog-actions{display:flex;flex-wrap:wrap;gap:var(--space-sm);justify-content:flex-end}
+
+.wf-grid{display:grid;grid-template-columns:1fr;gap:var(--space-md)}
+@media (min-width:64rem){.wf-grid{grid-template-columns:repeat(4,1fr)}.wf-field--2{grid-column:span 2}.wf-field--4{grid-column:span 4}}
+
+.wf-section{margin-bottom:var(--space-md);padding:var(--space-md);background:var(--color-semantic-background);border:thin solid var(--color-semantic-border);border-radius:var(--radius-md)}
+.wf-section-title{margin:0;margin-bottom:var(--space-sm);font-size:var(--font-size-body);font-weight:700}
+.wf-actions{display:flex;flex-wrap:wrap;gap:var(--space-sm);margin-top:var(--space-md)}
+
+.wf-dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:var(--space-sm) var(--space-md)}
+.wf-dl dt{color:var(--color-semantic-text-subtle);font-size:var(--font-size-caption)}
+.wf-dl dd{margin:0}
+
+.wf-page-header--with-actions{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:var(--space-md)}
+.wf-page-title-group{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-sm)}
+.ds-repeatingfieldgroup{margin:0;padding:0;border:0}
+.ds-repeatingfieldgroup legend{padding:0;margin-bottom:var(--space-sm);font-weight:700}
+.ds-repeatingfieldgroup-scroll{overflow-x:auto;background:var(--color-semantic-background);border:thin solid var(--color-semantic-border);border-radius:var(--radius-md)}
+.ds-repeatingfieldgroup-table{width:100%;min-width:44rem;border-collapse:collapse}
+.ds-repeatingfieldgroup-table th,.ds-repeatingfieldgroup-table td{padding-top:var(--space-sm);padding-bottom:var(--space-sm);padding-left:var(--space-ms);padding-right:var(--space-ms);border-bottom:thin solid var(--color-semantic-border);text-align:left;vertical-align:top}
+.ds-repeatingfieldgroup-table th{background:var(--color-semantic-table-header);color:var(--color-semantic-text-subtle);font-weight:700;font-size:var(--font-size-caption)}
+.ds-repeatingfieldgroup-add{margin-top:var(--space-sm)}
+.ds-button--sm{min-height:2.25rem;padding-left:var(--space-sm);padding-right:var(--space-sm);font-size:var(--font-size-caption)}
+.ds-radiobutton-group{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-md)}
+.ds-radiobutton{display:inline-flex;align-items:center;gap:var(--space-xs)}
+.ds-checkbox{width:1.25rem;height:1.25rem}
+.wf-mode-current{color:var(--color-semantic-text-subtle);font-size:var(--font-size-caption)}
+.wf-sample-buttons{display:flex;flex-wrap:wrap;gap:var(--space-sm)}
+.wf-tutorial-step{margin-top:var(--space-md);padding-left:var(--space-md);border-left:thin solid var(--color-semantic-border)}
+.wf-tutorial-step-no{margin:0;margin-bottom:var(--space-xs);color:var(--color-semantic-text-subtle);font-size:var(--font-size-caption)}
+.wf-readonly-value{display:inline-flex;align-items:center;min-height:2.75rem}
+.wf-selection-bar{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-sm);padding:var(--space-sm) var(--space-md);margin-bottom:var(--space-md);background:var(--color-semantic-surface);border:thin solid var(--color-semantic-border);border-radius:var(--radius-md)}
+.wf-selection-count{font-weight:700}
+.wf-header-meta{color:var(--color-semantic-text-subtle);font-size:var(--font-size-caption)}
+.ds-link--danger{color:var(--color-semantic-danger);border-color:var(--color-semantic-danger)}
+.wf-field-error{color:var(--color-semantic-danger);font-size:var(--font-size-caption)}
+.wf-error-summary{padding:var(--space-md);margin-bottom:var(--space-md);background:var(--color-semantic-danger-subtle);border:thin solid var(--color-semantic-danger);border-radius:var(--radius-md)}
+.wf-error-summary-title{margin:0;margin-bottom:var(--space-xs);color:var(--color-semantic-on-danger-subtle);font-weight:700}
+.wf-error-summary ul{margin:0;padding-left:var(--space-lg)}
+.wf-row-note{margin-top:var(--space-sm);margin-bottom:0;color:var(--color-semantic-text-subtle);font-size:var(--font-size-caption)}
+.wf-history-empty{color:var(--color-semantic-text-subtle)}
+.ds-textarea{width:100%;padding:var(--space-sm);background:var(--color-semantic-background);color:var(--color-semantic-text);border:thin solid var(--color-semantic-border);border-radius:var(--radius-sm);font-size:var(--font-size-body);font-family:inherit;box-sizing:border-box}
+</style>
 </head>
 <body>
 <main class="wf-main">
   <div class="wf-page-header wf-page-header--with-actions">
     <div class="wf-page-title-group">
       <h1 class="wf-page-title">発行依頼書 変更</h1>
-      <span class="ds-badge">申請前</span>
-      <span class="ds-badge ds-badge--neutral">契約書番号 2026-000123</span>
+      <span class="wf-header-meta">契約書番号 0000000123</span>
     </div>
   </div>
 
   <form>
+
   <section class="wf-section">
     <h2 class="wf-section-title">依頼の対象</h2>
     <div class="ds-radiobutton-group">
       <span class="ds-radiobutton">
-        <input type="radio" id="mode-single" name="mode">
+        <input type="radio" id="mode-single" name="mode" disabled>
         <label for="mode-single">単独局</label>
       </span>
       <span class="ds-radiobutton">
-        <input type="radio" id="mode-multi" name="mode" checked>
+        <input type="radio" id="mode-multi" name="mode" checked disabled>
         <label for="mode-multi">複数局</label>
       </span>
       <span class="wf-mode-current">現在のモード: 複数局</span>
     </div>
-    <p class="wf-section-note">モードを切り替えられる契機、切替で対象外になった入力内容の扱い、複数局モードで制御する項目とその制御内容は基本設計で確定します。</p>
   </section>
+
+  <section class="wf-section">
+    <h2 class="wf-section-title">サンプルからの入力</h2>
+    <div class="wf-sample-buttons">
+      <button class="ds-button ds-button--secondary" type="button" disabled>サンプル 1 を入力</button>
+      <button class="ds-button ds-button--secondary" type="button" disabled>サンプル 2 を入力</button>
+      <button class="ds-button ds-button--secondary" type="button" disabled>サンプル 3 を入力</button>
+    </div>
+  </section>
+
+  <section class="wf-section">
+    <h2 class="wf-section-title">入力のチュートリアル</h2>
+    <div class="wf-grid">
+      <div class="wf-field wf-field--2">
+        <label class="wf-field-label" for="tutorial-choice">選択肢<span class="wf-field-optional">※任意</span></label>
+        <select class="ds-select" id="tutorial-choice" disabled>
+          <option value="">選択してください</option>
+          <option value="a" selected>選択肢 1</option>
+          <option value="b">選択肢 2</option>
+        </select>
+      </div>
+    </div>
+    <div class="wf-tutorial-step">
+      <p class="wf-tutorial-step-no">1 つ目</p>
+      <label class="wf-field-label" for="tutorial-1">項目 A<span class="wf-field-optional">※任意</span></label>
+      <input class="ds-inputtext" id="tutorial-1" type="text" value="" disabled>
+      <p class="wf-field-support">例: サンプル値 1</p>
+    </div>
+    <div class="wf-tutorial-step">
+      <p class="wf-tutorial-step-no">2 つ目</p>
+      <label class="wf-field-label" for="tutorial-2">項目 B<span class="wf-field-optional">※任意</span></label>
+      <input class="ds-inputtext" id="tutorial-2" type="text" value="" disabled>
+      <p class="wf-field-support">例: サンプル値 2</p>
+    </div>
+  </section>
+
   <section class="wf-section">
     <h2 class="wf-section-title">発行依頼書の入力項目</h2>
-    <p class="wf-section-note">項目の一覧・桁・必須は基本設計で確定します。ここでは項目数と配置のイメージのみを示しています。</p>
     <div class="wf-grid">
       <div class="wf-field">
-        <label class="wf-field-label" for="item1">項目 1</label>
-        <input class="ds-inputtext" id="item1" type="text" value="">
+        <label class="wf-field-label" for="item1">項目 1<span class="wf-field-required">※必須</span></label>
+        <input class="ds-inputtext" id="item1" type="text" value="サンプル値" disabled>
       </div>
       <div class="wf-field">
-        <label class="wf-field-label" for="item2">項目 2</label>
-        <input class="ds-inputtext" id="item2" type="text" value="">
+        <label class="wf-field-label" for="item2">項目 2<span class="wf-field-required">※必須</span></label>
+        <input class="ds-inputtext" id="item2" type="text" value="サンプル値" disabled>
       </div>
       <div class="wf-field">
-        <label class="wf-field-label" for="item3">項目 3</label>
-        <input class="ds-inputtext" id="item3" type="text" value="">
+        <label class="wf-field-label" for="item3">項目 3<span class="wf-field-required">※必須</span></label>
+        <input class="ds-inputtext" id="item3" type="text" value="サンプル値" disabled>
       </div>
       <div class="wf-field">
-        <label class="wf-field-label" for="item4">項目 4</label>
-        <input class="ds-inputtext" id="item4" type="text" value="">
+        <label class="wf-field-label" for="item4">項目 4<span class="wf-field-optional">※任意</span></label>
+        <input class="ds-inputtext" id="item4" type="text" value="サンプル値" disabled>
       </div>
       <div class="wf-field">
-        <label class="wf-field-label" for="item5">項目 5</label>
-        <input class="ds-inputtext" id="item5" type="text" value="">
+        <label class="wf-field-label" for="item5">項目 5<span class="wf-field-required">※必須</span></label>
+        <input class="ds-inputtext" id="item5" type="text" value="サンプル値" disabled>
       </div>
       <div class="wf-field">
-        <label class="wf-field-label" for="item6">項目 6</label>
-        <input class="ds-inputtext" id="item6" type="text" value="">
+        <label class="wf-field-label" for="item6">項目 6<span class="wf-field-optional">※任意</span></label>
+        <input class="ds-inputtext" id="item6" type="text" value="サンプル値" disabled>
       </div>
       <div class="wf-field wf-field--2">
-        <label class="wf-field-label" for="item7">項目 7</label>
-        <input class="ds-inputtext" id="item7" type="text" value="">
+        <label class="wf-field-label" for="item7">項目 7<span class="wf-field-optional">※任意</span></label>
+        <input class="ds-inputtext" id="item7" type="text" value="サンプル値" disabled>
       </div>
       <div class="wf-field">
-        <label class="wf-field-label" for="item8">項目 8</label>
-        <input class="ds-inputtext" id="item8" type="text" value="">
+        <label class="wf-field-label" for="item8">項目 8<span class="wf-field-optional">※任意</span></label>
+        <input class="ds-inputtext" id="item8" type="text" value="サンプル値" disabled>
       </div>
       <div class="wf-field">
-        <label class="wf-field-label" for="amount">金額</label>
-        <span class="wf-readonly-value" id="amount">1,234,000 円</span>
-        <p class="wf-field-support">入力内容から自動で計算します。算式・対象項目・桁と丸めは基本設計で確定します。</p>
+        <span class="wf-field-label" id="amount-label">金額</span>
+        <span class="wf-readonly-value" aria-labelledby="amount-label">1,234,000 円</span>
+        <p class="wf-field-support">入力内容から自動で計算します。</p>
       </div>
     </div>
   </section>
-    <div class="wf-actions">
-      <button class="ds-button ds-button--primary" type="submit" aria-busy="true">保存しています</button>
-      <button class="ds-button ds-button--secondary" type="button">申請する</button>
-      <a class="ds-link" href="issue-form-edit-multi.html">キャンセル</a>
+
+  <section class="wf-section">
+    <h2 class="wf-section-title">複数局欄</h2>
+    <fieldset class="ds-repeatingfieldgroup">
+      <legend>複数局欄 ※任意</legend>
+      <div class="ds-repeatingfieldgroup-scroll" role="region" aria-label="複数局欄" tabindex="0">
+        <table class="ds-repeatingfieldgroup-table">
+          <thead>
+            <tr>
+              <th scope="col">項目 1 ※必須</th>
+              <th scope="col">項目 2 ※任意</th>
+              <th scope="col">項目 3 ※任意</th>
+              <th scope="col">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <label class="wf-visually-hidden" for="station-1-1">1 行目の項目 1 ※必須</label>
+                <input class="ds-inputtext" id="station-1-1" type="text" value="サンプル値" disabled>
+              </td>
+              <td>
+                <label class="wf-visually-hidden" for="station-1-2">1 行目の項目 2 ※任意</label>
+                <input class="ds-inputtext" id="station-1-2" type="text" value="サンプル値" disabled>
+              </td>
+              <td>
+                <label class="wf-visually-hidden" for="station-1-3">1 行目の項目 3 ※任意</label>
+                <input class="ds-inputtext" id="station-1-3" type="text" value="サンプル値" disabled>
+              </td>
+              <td><button class="ds-button ds-button--secondary ds-button--sm" type="button" disabled>1 行目を削除</button></td>
+            </tr>
+            <tr>
+              <td>
+                <label class="wf-visually-hidden" for="station-2-1">2 行目の項目 1 ※必須</label>
+                <input class="ds-inputtext" id="station-2-1" type="text" value="サンプル値" disabled>
+              </td>
+              <td>
+                <label class="wf-visually-hidden" for="station-2-2">2 行目の項目 2 ※任意</label>
+                <input class="ds-inputtext" id="station-2-2" type="text" value="サンプル値" disabled>
+              </td>
+              <td>
+                <label class="wf-visually-hidden" for="station-2-3">2 行目の項目 3 ※任意</label>
+                <input class="ds-inputtext" id="station-2-3" type="text" value="サンプル値" disabled>
+              </td>
+              <td><button class="ds-button ds-button--secondary ds-button--sm" type="button" disabled>2 行目を削除</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="ds-repeatingfieldgroup-add">
+        <button class="ds-button ds-button--secondary" type="button" disabled>行を追加</button>
+      </div>
+    </fieldset>
+  </section>
+
+  <section class="wf-section">
+    <h2 class="wf-section-title">関係者欄</h2>
+    <fieldset class="ds-repeatingfieldgroup">
+      <legend>関係者欄 ※任意</legend>
+      <div class="ds-repeatingfieldgroup-scroll" role="region" aria-label="関係者欄" tabindex="0">
+        <table class="ds-repeatingfieldgroup-table">
+          <thead>
+            <tr>
+              <th scope="col">項目 1 ※必須</th>
+              <th scope="col">項目 2 ※任意</th>
+              <th scope="col">項目 3 ※任意</th>
+              <th scope="col">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <label class="wf-visually-hidden" for="party-1-1">1 行目の項目 1 ※必須</label>
+                <input class="ds-inputtext" id="party-1-1" type="text" value="サンプル値" disabled>
+              </td>
+              <td>
+                <label class="wf-visually-hidden" for="party-1-2">1 行目の項目 2 ※任意</label>
+                <input class="ds-inputtext" id="party-1-2" type="text" value="サンプル値" disabled>
+              </td>
+              <td>
+                <label class="wf-visually-hidden" for="party-1-3">1 行目の項目 3 ※任意</label>
+                <input class="ds-inputtext" id="party-1-3" type="text" value="サンプル値" disabled>
+              </td>
+              <td><button class="ds-button ds-button--secondary ds-button--sm" type="button" disabled>1 行目を削除</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="ds-repeatingfieldgroup-add">
+        <button class="ds-button ds-button--secondary" type="button" disabled>行を追加</button>
+      </div>
+    </fieldset>
+  </section>
+
+  <section class="wf-section">
+    <h2 class="wf-section-title">作成組織</h2>
+    <div class="wf-grid">
+      <div class="wf-field wf-field--2">
+        <label class="wf-field-label" for="org">作成組織<span class="wf-field-required">※必須</span></label>
+        <input class="ds-inputtext" id="org" type="text" value="株式会社サンプルA ネットワーク本部 設計第一グループ" readonly>
+        <p class="wf-field-support">作成組織検索から選ぶと、この欄に設定されます。</p>
+      </div>
+      <div class="wf-field">
+        <span class="wf-field-label" aria-hidden="true">&nbsp;</span>
+        <button class="ds-button ds-button--secondary" type="button" disabled>作成組織を検索</button>
+      </div>
     </div>
+  </section>
+
+  <section class="wf-section">
+    <h2 class="wf-section-title">契約書の発番</h2>
+    <div class="wf-actions">
+      <span class="wf-readonly-value">契約書番号: 0000000123</span>
+      <button class="ds-button ds-button--secondary" type="button" disabled>発番する</button>
+      <a class="ds-link" href="barcode-popup-default.html" target="_blank" rel="noopener noreferrer">バーコードを生成する<span class="wf-visually-hidden">（新しいタブで開きます）</span></a>
+    </div>
+  </section>
+
+    <div class="wf-actions">
+      <button class="ds-button ds-button--primary" type="submit" disabled>保存しています…</button>
+      <button class="ds-button ds-button--secondary" type="button" disabled>申請する</button>
+      <a class="ds-link" href="issue-form-leave-confirm.html">キャンセル</a>
+    </div>
+
   </form>
 </main>
 </body>

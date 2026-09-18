@@ -1,0 +1,167 @@
+# English Rimay conformance profile（改善計画C3・§19.3）
+#
+# Parser/Serializer共通の実行契約SSOT。証拠の正本はevidence matrix
+# （reports/compatibility/emse-vor-supported-profile.yaml）、実行の正本は本ファイルであり、
+# 両者の束縛差分はcontract test（tests/conformance/test_profile_contract.py）で0件を維持する。
+# 束縛はGate B（二名独立読解）確定までの仮判定（matrix 0.2.0と同値）。
+# 変更規律: 束縛・語彙・Role写像の変更は版bump＋RC-採番decision log必須。
+conformance_profile_version: 0.3.0   # 0.3.0: Comparison operator 8値runtime activation（RC-069）
+recorded_at: 2026-08-17
+source_manifest_ref: reports/compatibility/rimay-source-manifest.yaml
+evidence_matrix_ref: reports/compatibility/emse-vor-supported-profile.yaml
+
+limits:
+  max_conditions: 1
+  max_primary_responses: 1
+
+# 条件比較演算子（§21.7）。表層は一演算子一件に閉じ、aliasを推測しない。
+# 全値は製品拡張であり、EMSE/VoR family-member claimへ昇格させない（RC-069）。
+operators:
+  in: [IS, EQUALS, NOT_EQUALS, GREATER_THAN, LESS_THAN, GREATER_OR_EQUAL, LESS_OR_EQUAL, CONTAINS]
+  surfaces:
+    IS: is
+    EQUALS: is equal to
+    NOT_EQUALS: is not
+    GREATER_THAN: is greater than
+    LESS_THAN: is less than
+    GREATER_OR_EQUAL: is greater or equal to
+    LESS_OR_EQUAL: is less than or equal to
+    CONTAINS: contains
+  known_out_surfaces: []
+  negation_normalization: NOT_EQUALS   # CG-01: "is not" はIS_NOTでなくNOT_EQUALSへ正規化
+  classification: rimay_jp_extension
+  extension_feature: COMPARISON_OPERATOR
+  paper_claim: withheld
+
+# 既知だがSupported Profile外の応答動詞（UNKNOWN_ACTIONでなくPROFILE_OUT、matrix out行）
+profile_out_verbs:
+  - {verb: detect, rimay_action_id: SEE_30_1_1, note: 調停C-3。DETECT family候補としてmatrix独立行}
+  - {verb: detects, rimay_action_id: SEE_30_1_1}
+  - {verb: ignore, rimay_action_id: NEGLECT_75, note: D7 R-8。X裁定対象}
+  - {verb: ignores, rimay_action_id: NEGLECT_75}
+
+# トリガー動詞（条件節）。press系は条件専用family
+trigger_extra_verbs:
+  - {verb: press, family: PRESS}
+  - {verb: presses, family: PRESS}
+
+# 10 family束縛（§19.3の初期裁定案。conformance_classは§19.3語彙）
+# object_role: 動詞直後の無前置詞名詞句が写像されるRole
+# roles: 前置詞→Role（cardinalityは全て1。重複はDUPLICATE_ROLE、写像外はUNMAPPED_ROLE）
+# required_roles: 応答で必須のRole（agentは常時必須のため省略）。欠落はMISSING_TOKEN
+bindings:
+  CREATE:
+    rimay_action_id: ENGENDER_27
+    emse_rule_id: ENGENDER-27
+    conformance_class: shared_subset
+    verbs: [generate, generates, create, creates]
+    object_role: theme
+    roles:
+      from: {role: source, extension_feature: CREATE_SOURCE_FROM}
+    required_roles: [theme]
+  STORE:
+    rimay_action_id: KEEP_15_2
+    emse_rule_id: KEEP-15.2
+    conformance_class: shared_subset   # リテラル・retention実装後のexact化はGate B確定後
+    verbs: [store, stores]
+    object_role: theme
+    object_literals: [value, values, property, properties]   # KEEP_15_2リテラル（D7 R-9）
+    retention_clause: true   # for a period of "P" starting from "D"（期間+開始点一体のみ。§21.6）
+    roles:
+      in: {role: location}
+    required_roles: [theme, location]
+  SEND:
+    rimay_action_id: SEND_11_1_1
+    emse_rule_id: SEND-11.1
+    conformance_class: exact
+    verbs: [send, sends, return, returns, forward, forwards, pass, passes,
+            export, exports, import, imports]
+    object_role: theme
+    roles:
+      to: {role: destination}
+      from: {role: source}
+      through: {role: channel}
+    required_roles: [theme, destination]
+    verb_role_waivers:   # R7: importはsource_conflict記録・受理維持。宛先句を持たない
+      import: [destination]
+      imports: [destination]
+    verb_classification_overrides:
+      import: official_repository
+      imports: official_repository
+  RECEIVE:
+    rimay_action_id: OBTAIN_13_5_2
+    emse_rule_id: OBTAIN-13.5.2
+    conformance_class: exact
+    verbs: [receive, receives]
+    object_role: theme
+    roles:
+      from: {role: source}
+      through: {role: channel}
+    required_roles: [theme, source]
+  DISPLAY:
+    rimay_action_id: REFLEXIVE_APPEARANCE_48_1_2   # D7 R-1・CG-09（C4是正済み）
+    emse_rule_id: REFLEXIVE_APPEARANCE-48.1.2
+    conformance_class: exact
+    verbs: [display, displays, show, shows]
+    object_role: theme
+    roles:
+      "on": {role: display_location}   # YAML 1.1のboolean解釈を回避する引用符
+      in: {role: display_location}     # 0.2.0: VoR/Grammarでin有効（二名目読解 Table 12 p43。RC-006）
+    required_roles: [theme, display_location]
+  UPDATE:
+    rimay_action_id: DS_UPDATE
+    emse_rule_id: UPDATE
+    conformance_class: shared_subset
+    verbs: [update, updates]
+    object_role: property
+    roles:
+      to: {role: result_value}
+    required_roles: [property, result_value]
+    mustnot_waived_roles: [result_value]   # 禁止要求は更新後値を要求しない（UPDATE-003裁定注記）
+  DELETE:
+    rimay_action_id: REMOVE_10_1
+    emse_rule_id: REMOVE-10.1
+    conformance_class: exact
+    verbs: [delete, deletes]
+    object_role: theme
+    roles: {}
+    required_roles: [theme]
+  VERIFY:
+    rimay_action_id: DS_VALIDATE
+    emse_rule_id: VALIDATE
+    conformance_class: shared_subset
+    verbs: [validate, validates]
+    object_role: theme
+    roles:
+      by checking that: {role: rule}   # 0.2.0: VoR Table 12 p46のVALIDATE構文（二名目読解確定。RC-006）。
+                                       # 旧in compliance withは原典外のため削除（UNMAPPED_ROLEで拒否）
+    required_roles: [theme]   # ruleの必須性はGate B裁定対象（BASE-004はPhase 0凍結のrule無しaccept）
+    serializer_form_frozen: true    # 0.2.0: Gate B二名確定によりby checking that形で固定（§21.4）
+  CALCULATE:
+    rimay_action_id: CREATE_26_4
+    emse_rule_id: CALCULATE
+    conformance_class: shared_subset
+    verbs: [calculate, calculates, compute, computes]
+    object_role: result
+    serializer_form: using
+    roles:
+      using: {role: input}
+    required_roles: [result, input]
+  NOTIFY:
+    rimay_action_id: SAY_37_7
+    emse_rule_id: null
+    conformance_class: repository_extension
+    verbs: [notify, notifies]
+    object_role: content   # SAY_37_7: topic to recipient [using channel]（§2.5・D7）
+    roles:
+      to: {role: destination}
+      using: {role: channel}
+    required_roles: [content, destination]
+    classification: official_repository   # §19.4: EMSE準拠と表示しない
+
+# 文単位分類の初期ルール（§19.4）
+classification_rules:
+  default: emse_vor
+  create_source_present: rimay_jp_extension
+  notify_family: official_repository
+  no_upgrade_without_oracle: true

@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://knowledge-assets/contracts/layer1-structure.schema.json",
+  "title": "Layer 1 Requirement Structure",
+  "description": "The well-formed requirement structure an agent retrieves to generate conforming requirements. Contains NO detection logic (FR-004).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "source", "segments", "ordering", "quality_attributes", "atomicity_rule", "condition_types", "patterns"],
+  "properties": {
+    "version": { "type": "string", "minLength": 1 },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["document", "locator"],
+      "properties": {
+        "document": { "type": "string", "minLength": 1 },
+        "locator": { "type": "string", "minLength": 1 }
+      }
+    },
+    "segments": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "required", "description"],
+        "properties": {
+          "id": { "type": "string", "enum": ["scope", "condition", "actor", "modal_verb", "system_response"] },
+          "name": { "type": "string", "minLength": 1 },
+          "required": { "type": "boolean" },
+          "description": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "ordering": {
+      "type": "array",
+      "description": "Segment ids in their required order (scope -> condition -> system response).",
+      "items": { "type": "string" }
+    },
+    "quality_attributes": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "description"],
+        "properties": {
+          "id": { "type": "string", "enum": ["completeness", "clarity", "atomicity", "correctness"] },
+          "description": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "atomicity_rule": { "type": "string", "minLength": 1 },
+    "condition_types": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "description"],
+        "properties": {
+          "id": { "type": "string", "enum": ["when", "if", "while", "where", "temporal"] },
+          "name": { "type": "string", "minLength": 1 },
+          "description": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "patterns": {
+      "type": "array",
+      "minItems": 10,
+      "description": "The ten well-formed requirement patterns.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "shape", "segments"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "name": { "type": "string", "minLength": 1 },
+          "shape": { "type": "string", "minLength": 1, "description": "Human-readable template, e.g. 'When <Actor> <Action>, then the <Actor> must <Action>.'" },
+          "segments": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    }
+  }
+}

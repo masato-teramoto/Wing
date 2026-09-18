@@ -1,0 +1,847 @@
+# B5-1: B1〜B4 Repository投影面の現時点の製品写像処遇。
+# 原典claimの解決状態は下記Matrix、証拠未解決行の製品採否はB5-P planを正本とし、本planへ複製しない。
+# CAP-RESPONSE-COMBINATIONはaccepted B5-P bindingとactive Canonical 0.6.0証拠を持ち、
+# existing_canonicalへ接続する。裁定済みCAP-CONDITION-COMBINATIONもactive runtimeへ接続する。
+# RC-071ではComparison predicateをcardinality-aware selectorで残余Conditionから分離する。
+# Itemized Response BlockはCanonical 0.8.0 runtime activation後の別承認でRepository意味写像も
+# existing_canonicalへ接続する。Atomic ResponseもCanonical 0.9.0 runtime activation後の別承認で
+# existing_canonicalへ接続する。Role clusterはRC-057〜RC-062で製品採用したが、fixed Grammar複数値と
+# Canonical単値のcardinality差によりRole面を分離してpreserve-onlyに置く。残る構造も欠落なく保持する。
+# RC-079ではMulti-value predicateをRC-078の相互排他selectorで残余Conditionから分離する。
+# RC-090ではOperator value expressionの製品採用planをbindingへ追加するが、condition残余の
+# preserve-only treatmentと14面構成は変更しない。
+contract_version: 0.4.0
+plan_id: RPM-B5-B1-B4-BASELINE-20260817
+repository_document_schema_version: 0.5.0
+capability_matrix_binding:
+  path: reports/compatibility/rimay-capability-matrix.yaml
+  matrix_version: 0.4.0-O0-3-grouping-rev1
+  capability_signature: sha256:5341b6f2d8beb1840f376e4b466b22943bebc6b2a5f5fc7dc7ea3769ab39bcc1
+  classification_signature: sha256:2db958e2689f8992612449043212a1e593decf18c52203b7b84314c3c2a0b036
+product_adoption_bindings:
+- contract_version: 0.2.0
+  plan_id: RPADP-RESPONSE-COMBINATION-01
+  capability_signature: sha256:5341b6f2d8beb1840f376e4b466b22943bebc6b2a5f5fc7dc7ea3769ab39bcc1
+  product_signature: sha256:de20d8a023f6d0cc8a97b907411860dd4529c3e08faa6629b01c908918c64c64
+- contract_version: 0.2.0
+  plan_id: RPADP-RESPONSE-BLOCK-01
+  capability_signature: sha256:5341b6f2d8beb1840f376e4b466b22943bebc6b2a5f5fc7dc7ea3769ab39bcc1
+  product_signature: sha256:7f0d00e87e212c70c74030d0bc598cd08e5d82cf243c5e54afaf00f1a2915b96
+- contract_version: 0.2.0
+  plan_id: RPADP-ATOMIC-RESPONSE-01
+  capability_signature: sha256:5341b6f2d8beb1840f376e4b466b22943bebc6b2a5f5fc7dc7ea3769ab39bcc1
+  product_signature: sha256:907f4c0cf41268a747d5c8e7e8589f949993aa5f177e427b048a348bae0b2394
+- contract_version: 0.2.0
+  plan_id: RPADP-ROLE-CLUSTER-01
+  capability_signature: sha256:5341b6f2d8beb1840f376e4b466b22943bebc6b2a5f5fc7dc7ea3769ab39bcc1
+  product_signature: sha256:f623e2d8fcd08b7410a4c9b53669a8588cb8c2e4abeb8f138dcc461ee5bef1f7
+- contract_version: 0.2.0
+  plan_id: RPADP-COMPARISON-OPERATOR-01
+  capability_signature: sha256:5341b6f2d8beb1840f376e4b466b22943bebc6b2a5f5fc7dc7ea3769ab39bcc1
+  product_signature: sha256:1205d99d1bfc1c3b495abcb6fd4fb799a1c3e7d8574f9b481f235d430cc65a1b
+- contract_version: 0.2.0
+  plan_id: RPADP-MULTI-VALUE-01
+  capability_signature: sha256:5341b6f2d8beb1840f376e4b466b22943bebc6b2a5f5fc7dc7ea3769ab39bcc1
+  product_signature: sha256:2ce650002b110c37be375e0b134377700ea73e3cf55776d0f1ec18c968e9e619
+- contract_version: 0.2.0
+  plan_id: RPADP-OPERATOR-VALUE-EXPRESSION-01
+  capability_signature: sha256:5341b6f2d8beb1840f376e4b466b22943bebc6b2a5f5fc7dc7ea3769ab39bcc1
+  product_signature: sha256:33150b29ecd6d9409581d6d9a310ca77a5fe488cb3bcc900e739b1738a27dff7
+mappings:
+- mapping_id: RPMAP-REQUIREMENT-SCOPE-PRESERVED
+  repository_selectors:
+  - record_kind: requirement
+    rule_ids:
+    - CNLFunctionalRequirements
+    - Requirement
+    - WithCondition
+    - WithoutCondition
+    - Scope
+    - ScopeText
+  capability_refs:
+    primary: CAP-REQUIREMENT
+    supporting:
+    - CAP-SCOPE
+  treatment: repository_preserved_only
+  canonical_targets: []
+  semantic_relation: unknown
+  validation_strength: linked
+  compatibility_modes:
+  - repository_compatible
+  rationale: >-
+    複数Requirement、複数Scope値、SystemResponseの主体・modalをRepository固有文書は保持するが、現行Canonicalは
+    1 Requirement単位かつ単一scopeであり、Requirement/SCOPEの製品裁定も未完了である。
+  evidence: &repository_document_evidence
+    implementation_refs:
+    - path: core/rimay_jp_core/repository_document.py
+      selector: build_repository_document
+    validator_refs:
+    - path: core/rimay_jp_core/repository_document.py
+      selector: repository_document_problems
+    fixture_refs:
+      positive:
+      - path: tests/conformance/test_repository_document.py
+      negative:
+      - path: tests/conformance/test_repository_document.py
+      boundary: []
+      ambiguity: []
+  diagnostic:
+    code: REPOSITORY_MAPPING_CAPABILITY_RULING_REQUIRED
+    severity: blocking
+    message: RequirementとScopeの製品裁定が完了するまでCanonicalへ縮退させない。
+
+- mapping_id: RPMAP-RESPONSE-BLOCK-PRESERVED
+  repository_selectors:
+  - record_kind: response_structure
+    rule_ids:
+    - ResponseBlock
+    - ResponseBlockItemized
+    - BULLET
+    - HYPHEN
+  capability_refs:
+    primary: CAP-RESPONSE-BLOCK
+    supporting:
+    - CAP-LEXICAL-STRUCTURE
+  treatment: existing_canonical
+  canonical_targets:
+  - /rimay_core/response_block
+  semantic_relation: normalized
+  validation_strength: semantic
+  compatibility_modes:
+  - repository_compatible
+  - rimay_jp_enhanced
+  rationale: >-
+    RC-042の別承認により、固定RepositoryのItemized Response Blockとbullet字句をactive Canonical 0.8.0へ
+    正規化写像する。item順、in sequence、bullet、connector、Atomic Response index、rule ID、source/spanを
+    欠落なく保持し、英日表層は曖昧性を排除する明示形式へ正規化する。runtime activationだけから自動昇格
+    したものではない。non-itemized式、Atomic Response／Action意味、Condition itemized構造は別batchであり、
+    本mappingへ含めない。
+  evidence:
+    implementation_refs:
+    - path: core/rimay_jp_core/response_block.py
+      selector: active Canonical 0.8 response block entry point and stable item traversal
+    - path: core/rimay_jp_core/response_block_candidate.py
+      selector: project_repository_response_block / repository trace projection
+    validator_refs:
+    - path: core/rimay_jp_core/response_block.py
+      selector: active response_block_findings / response_block_core_findings
+    - path: core/rimay_jp_core/validator.py
+      selector: active all-item response validation and response_block diagnostics
+    - path: core/rimay_jp_core/response_block_candidate.py
+      selector: repository trace, bullet, connector and source/span tamper validation
+    fixture_refs:
+      positive:
+      - path: tests/conformance/test_response_block_candidate.py
+        selector: fixed Repository itemized projection and English/Japanese roundtrip
+      - path: tests/conformance/test_response_block_activation.py
+        selector: active Canonical 0.8 English/Japanese roundtrip and all-item consumers
+      negative:
+      - path: tests/conformance/test_response_block_candidate.py
+        selector: source, position, connector, trace and dual-source tampering
+      - path: tests/conformance/test_response_block_activation.py
+        selector: active dual-source, structure, scope and connector rejection
+      boundary:
+      - path: tests/conformance/test_response_block_activation.py
+        selector: active 0.5 through 0.8 Store, migration, rollback, quarantine, restore and CLI
+      ambiguity:
+      - path: tests/conformance/test_response_block_candidate.py
+        selector: non-itemized branch, empty renderer and invalid surface rejection
+      - path: tests/conformance/test_response_block_activation.py
+        selector: active time constraint scope and first-connector fail-closed boundary
+
+- mapping_id: RPMAP-RESPONSE-COMBINATION-PRESERVED
+  repository_selectors:
+  - record_kind: response_structure
+    rule_ids:
+    - OR_Response
+    - AND_Response
+    - PrimaryExpression_Response
+  capability_refs:
+    primary: CAP-RESPONSE-COMBINATION
+    supporting: []
+  treatment: existing_canonical
+  canonical_targets:
+  - /rimay_core/response_expression
+  semantic_relation: normalized
+  validation_strength: semantic
+  compatibility_modes:
+  - repository_compatible
+  - rimay_jp_enhanced
+  rationale: >-
+    AND/OR優先順位、明示group、leaf順序、Repository rule ID・source/spanを保持した式木を、
+    D-018／RC-029でactive Canonical 0.6.0へ接続し、RC-030でmappingをactiveへ昇格した。
+    Repositoryのatomic nodeはCanonicalの
+    response leafへ正規化するが、式木の意味と全leafを欠落なく保持する。Response Blockや
+    Atomic Responseの追加意味を採用したことは含意しない。
+  evidence:
+    implementation_refs:
+    - path: core/rimay_jp_core/response_expression.py
+      selector: project_repository_response_expression / iter_core_responses
+    validator_refs:
+    - path: core/rimay_jp_core/response_expression.py
+      selector: response_core_findings / response_expression_findings
+    - path: core/rimay_jp_core/validator.py
+      selector: validate all response leaves and repository trace
+    fixture_refs:
+      positive:
+      - path: tests/conformance/test_response_expression_activation.py
+        selector: active Schema and English/Japanese semantic roundtrip
+      - path: tests/conformance/test_response_expression_candidate.py
+        selector: Repository projection consumes all nodes and leaves
+      negative:
+      - path: tests/conformance/test_response_expression_activation.py
+        selector: unparenthesized connector, trace tampering, dual source
+      boundary:
+      - path: tests/conformance/test_response_expression_activation.py
+        selector: Store compatibility reader, migration, rollback and CLI
+      ambiguity:
+      - path: tests/conformance/test_response_expression_activation.py
+        selector: explicit groups, mixed operators and time-scope fail-closed
+
+- mapping_id: RPMAP-ATOMIC-RESPONSE-PRESERVED
+  repository_selectors:
+  - record_kind: atomic_response
+    rule_ids:
+    - AtomicSystemResponse
+  capability_refs:
+    primary: CAP-ATOMIC-RESPONSE
+    supporting: []
+  treatment: existing_canonical
+  canonical_targets:
+  - /rimay_core/response/modality
+  - /rimay_core/response/frequency
+  - /rimay_core/response/repository_trace
+  semantic_relation: normalized
+  validation_strength: semantic
+  compatibility_modes:
+  - repository_compatible
+  - rimay_jp_enhanced
+  rationale: >-
+    RC-047の別承認により、固定RepositoryのAtomicSystemResponseをactive Canonical 0.9.0へ正規化写像する。
+    wrapper／local modal、組込literal `not`、leaf-local `every frequency`を正規化し、表層由来、Atomic index、
+    rule ID、source/spanをtraceへ欠落なく保持する。runtime activationだけから自動昇格したものではない。
+    別規則`Negation`、条件側`Frequently`、Action／Role意味は本mappingへ含めない。
+  evidence:
+    implementation_refs:
+    - path: core/rimay_jp_core/atomic_response.py
+      selector: active Canonical 0.9 Atomic Response entry point and semantic boundary
+    - path: core/rimay_jp_core/atomic_response_candidate.py
+      selector: project_repository_atomic_response / repository trace projection
+    validator_refs:
+    - path: core/rimay_jp_core/validator.py
+      selector: active all-leaf Atomic validation and frequency authority diagnostics
+    - path: core/rimay_jp_core/atomic_response_candidate.py
+      selector: atomic_response_findings / source and trace validation
+    fixture_refs:
+      positive:
+      - path: tests/conformance/test_atomic_response_candidate.py
+        selector: fixed Repository projection and English/Japanese roundtrip
+      - path: tests/conformance/test_atomic_response_activation.py
+        selector: active Canonical 0.9 all-container English/Japanese roundtrip
+      negative:
+      - path: tests/conformance/test_atomic_response_candidate.py
+        selector: source, modal, frequency, authority and trace tampering
+      - path: tests/conformance/test_atomic_response_activation.py
+        selector: active source, frequency and dual-authority rejection
+      boundary:
+      - path: tests/conformance/test_atomic_response_activation.py
+        selector: active 0.5 through 0.9 Store, migration, rollback, quarantine, restore and CLI
+      ambiguity:
+      - path: tests/conformance/test_atomic_response_candidate.py
+        selector: unmeasurable frequency and uncontrolled surface rejection
+      - path: tests/conformance/test_atomic_response_activation.py
+        selector: leaf-local scope and legacy global FREQUENCY fail-closed boundary
+
+- mapping_id: RPMAP-ACTION-ROLE-PRESERVED
+  repository_selectors:
+  - record_kind: action
+    rule_ids:
+    - ENGENDER_27
+    - KEEP_15_2
+    - SEND_11_1_1
+    - OBTAIN_13_5_2
+    - REFLEXIVE_APPEARANCE_48_1_2
+    - DS_UPDATE
+    - REMOVE_10_1
+    - DS_VALIDATE
+    - CREATE_26_4
+    - SAY_37_7
+  capability_refs:
+    primary: CAP-ROLE-THEME
+    supporting:
+    - CAP-ROLE-SOURCE
+    - CAP-ROLE-DESTINATION
+    - CAP-ROLE-LOCATION
+    - CAP-ROLE-CHANNEL
+    - CAP-ROLE-OTHER
+  treatment: repository_preserved_only
+  canonical_targets: []
+  semantic_relation: unknown
+  validation_strength: linked
+  compatibility_modes:
+  - repository_compatible
+  rationale: >-
+    RC-057〜RC-062で現行10 Action Frameの名前付き単値Roleを製品採用した。一方、fixed Grammarは同じ
+    Action規則で複数theme／destination／channel等を許し、現行Canonicalは単値fieldである。rule IDだけの
+    selectorでは単値入力だけを完全に選別できないため、全assignmentと値をRepository文書へ保持し、
+    複数値pathをunresolvedにしたまま、lossless表現またはcardinality-aware selectorの別判断を待つ。
+  evidence:
+    implementation_refs:
+    - path: core/rimay_jp_core/repository_canonical.py
+      selector: ACTION_ROLE_PATHS / exact single-value projection / unresolved boundary
+    - path: core/rimay_jp_core/lexicon.py
+      selector: ROLE_FIELD / active case_frames
+    validator_refs:
+    - path: core/rimay_jp_core/validator.py
+      selector: active frame required Role validation
+    - path: core/rimay_jp_core/repository_canonical.py
+      selector: multiple assignment fail-closed projection
+    fixture_refs:
+      positive:
+      - path: tests/conformance/test_role_cluster_candidate.py
+        selector: active 10 Action English/Japanese roundtrip
+      - path: tests/conformance/test_repository_canonical.py
+        selector: fixed Repository active Action Role projection
+      negative:
+      - path: tests/conformance/test_role_cluster_candidate.py
+        selector: duplicate, unmapped and missing Role diagnostics
+      boundary:
+      - path: tests/conformance/test_role_cluster_candidate.py
+        selector: fixed Repository multi-destination preservation
+      ambiguity:
+      - path: tests/conformance/test_role_cluster_candidate.py
+        selector: multiple Role value unresolved boundary
+  diagnostic:
+    code: REPOSITORY_MAPPING_ROLE_CARDINALITY_UNREPRESENTABLE
+    severity: blocking
+    message: Repository複数Role値を単値Canonicalへ縮退せず、lossless表現またはcardinality検査の採用を待つ。
+
+- mapping_id: RPMAP-ACTION-DISPATCH-PRESERVED
+  repository_selectors:
+  - record_kind: action
+    rule_ids:
+    - ActionPhrase
+    - AtomicActionInTrigger
+    - UIAction
+    - ADMIT_65
+    - ADVISE_37_9_1
+    - ALLOW_64_1
+    - ApplyFor
+    - BEGIN_55_1
+    - BEG_58_2
+    - CONCEALMENT_16
+    - CONTRIBUTE_13_2
+    - CREATE_26_4
+    - DS_CALCULATE
+    - DS_CANCEL
+    - DS_ENABLE_DISABLE
+    - DS_GetFrom
+    - DS_Interrupt
+    - DS_Migrate
+    - DS_SUBSCRIBE
+    - DS_SelectUnselect
+    - DS_Synchronize
+    - DS_UPDATE
+    - DS_UPLOAD
+    - DS_VALIDATE
+    - ENFORCE_63
+    - ENGENDER_27
+    - ESTABLISH_55_5_1
+    - EXCHANGE_13_6
+    - FORBID_67
+    - Find
+    - HERD_47_5_2
+    - INVOLVE_107
+    - KEEP_15_2
+    - LIMIT_76
+    - MIX_22_1_2
+    - MIX_22_1_2_1
+    - NEGLECT_75
+    - OBTAIN_13_5_2
+    - OTHER_COS_45_4
+    - PUT_9_1
+    - REFLEXIVE_APPEARANCE_48_1_2
+    - REMOVE_10_1
+    - SAY_37_7
+    - SEARCH_35_2
+    - SEE_30_1_1
+    - SEND_11_1_1
+    - SHAKE_22_3_2_1
+    - STOP_55_4
+    - Split
+    - THROW_17_1
+    - TRANSCRIBE_25_4
+    - TURN_26_6_1
+    - USE_105
+  capability_refs:
+    primary: CAP-ACTIONPHRASE-DISPATCH
+    supporting:
+    - CAP-ACT-ADMIT_65
+    - CAP-ACT-ADVISE_37_9_1
+    - CAP-ACT-ALLOW_64_1
+    - CAP-ACT-ApplyFor
+    - CAP-ACT-BEGIN_55_1
+    - CAP-ACT-BEG_58_2
+    - CAP-ACT-CONCEALMENT_16
+    - CAP-ACT-CONTRIBUTE_13_2
+    - CAP-ACT-CREATE_26_4
+    - CAP-ACT-DS_CALCULATE
+    - CAP-ACT-DS_CANCEL
+    - CAP-ACT-DS_ENABLE_DISABLE
+    - CAP-ACT-DS_GetFrom
+    - CAP-ACT-DS_Interrupt
+    - CAP-ACT-DS_Migrate
+    - CAP-ACT-DS_SUBSCRIBE
+    - CAP-ACT-DS_SelectUnselect
+    - CAP-ACT-DS_Synchronize
+    - CAP-ACT-DS_UPDATE
+    - CAP-ACT-DS_UPLOAD
+    - CAP-ACT-DS_VALIDATE
+    - CAP-ACT-ENFORCE_63
+    - CAP-ACT-ENGENDER_27
+    - CAP-ACT-ESTABLISH_55_5_1
+    - CAP-ACT-EXCHANGE_13_6
+    - CAP-ACT-FORBID_67
+    - CAP-ACT-Find
+    - CAP-ACT-HERD_47_5_2
+    - CAP-ACT-INVOLVE_107
+    - CAP-ACT-KEEP_15_2
+    - CAP-ACT-LIMIT_76
+    - CAP-ACT-MIX_22_1_2
+    - CAP-ACT-MIX_22_1_2_1
+    - CAP-ACT-NEGLECT_75
+    - CAP-ACT-OBTAIN_13_5_2
+    - CAP-ACT-OTHER_COS_45_4
+    - CAP-ACT-PUT_9_1
+    - CAP-ACT-REFLEXIVE_APPEARANCE_48_1_2
+    - CAP-ACT-REMOVE_10_1
+    - CAP-ACT-SAY_37_7
+    - CAP-ACT-SEARCH_35_2
+    - CAP-ACT-SEE_30_1_1
+    - CAP-ACT-SEND_11_1_1
+    - CAP-ACT-SHAKE_22_3_2_1
+    - CAP-ACT-STOP_55_4
+    - CAP-ACT-Split
+    - CAP-ACT-THROW_17_1
+    - CAP-ACT-TRANSCRIBE_25_4
+    - CAP-ACT-TURN_26_6_1
+    - CAP-ACT-USE_105
+    - CAP-MODIFIER
+  treatment: repository_preserved_only
+  canonical_targets: []
+  semantic_relation: unknown
+  validation_strength: linked
+  compatibility_modes:
+  - repository_compatible
+  rationale: >-
+    全50 Action規則のrule ID、assignment、値、spanは保持済みだが、dispatch、Modifierと39 Action
+    Capabilityが未裁定である。RC-057〜RC-062のRole採用を全Action意味やdispatchの採用とみなさない。
+  evidence: *repository_document_evidence
+  diagnostic:
+    code: REPOSITORY_MAPPING_ACTION_DISPATCH_RULING_REQUIRED
+    severity: blocking
+    message: Action dispatch、未採用Action、Modifierの裁定が完了するまで全Action構造をCanonicalへ推測写像しない。
+
+- mapping_id: RPMAP-CONDITION-COMBINATION-CANDIDATE
+  repository_selectors:
+  - record_kind: condition_structure
+    rule_ids:
+    - ConditionsOrExpression
+    - ConditionsAndExpression
+    - ConditionsPrimaryExpression
+  capability_refs:
+    primary: CAP-CONDITION-COMBINATION
+    supporting: []
+  treatment: existing_canonical
+  canonical_targets:
+  - /rimay_core/condition_expression
+  semantic_relation: normalized
+  validation_strength: semantic
+  compatibility_modes:
+  - repository_compatible
+  - rimay_jp_enhanced
+  rationale: >-
+    裁定済みCondition Combinationのうち固定Repositoryが実装するcondition leaf／AND／OR優先順位木を、
+    active Canonical 0.7.0へ全leaf・演算子・rule ID・source/span付きで投影する。完全括弧表層は
+    曖昧性を排除する製品正規化であり、Repositoryに存在しない一般論理groupを原典由来とは扱わない。
+    itemized group、condition leafの追加意味、未裁定のCondition Structure残余は本mappingの範囲外である。
+  evidence:
+    implementation_refs:
+    - path: core/rimay_jp_core/condition_expression.py
+      selector: active Canonical 0.7 projection and stable leaf traversal
+    - path: core/rimay_jp_core/condition_expression_candidate.py
+      selector: project_repository_condition_expression / render_condition_expression
+    validator_refs:
+    - path: core/rimay_jp_core/condition_expression.py
+      selector: active condition_core_findings / condition_expression_findings
+    - path: core/rimay_jp_core/condition_expression_candidate.py
+      selector: repository trace and semantic shape validation
+    fixture_refs:
+      positive:
+      - path: tests/conformance/test_condition_expression_candidate.py
+        selector: fixed Repository projection with exact leaf, operator and trace preservation
+      - path: tests/conformance/test_condition_expression_activation.py
+        selector: active English/Japanese condition and response expression roundtrip
+      negative:
+      - path: tests/conformance/test_condition_expression_candidate.py
+        selector: source, operator, trace and dual-source tampering
+      - path: tests/conformance/test_condition_expression_activation.py
+        selector: active dual-source and trace tampering rejection
+      boundary:
+      - path: tests/conformance/test_condition_expression_activation.py
+        selector: active 0.5 / 0.6 / 0.7 Store replay and all-leaf consumers
+      ambiguity:
+      - path: tests/conformance/test_condition_expression_candidate.py
+        selector: unparenthesized input and Repository itemized group rejection
+
+- mapping_id: RPMAP-COMPARISON-PREDICATE
+  repository_selectors:
+  - record_kind: condition_structure
+    rule_ids:
+    - IfStructure
+    - WhileStructure
+    - PreconditionStructure
+    - NonItemizedConditions
+    - ConditionsOrExpression
+    - ConditionsAndExpression
+    - ConditionsPrimaryExpression
+    - Condition
+    - InstanceOrPropertyOperatorValue
+    - OperatorValuesExpr
+    - Compare
+    - EqualsTo
+    - GreaterThan
+    - LessThan
+    - GreaterOrEqualTo
+    - LessOrEqualTo
+    - Contains
+    - MultiValuesExpr
+    - AtomicValue
+    structural_predicate:
+      executable_selector_ref:
+        path: core/rimay_jp_core/repository_comparison_mapping.py
+        selector: repository_comparison_mapping_selector_problems
+      exact_rule_cardinality:
+        Condition: 1
+        InstanceOrPropertyOperatorValue: 1
+        OperatorValuesExpr: 1
+        MultiValuesExpr: 1
+        AtomicValue: 1
+      all_leaves_must_match: true
+      residual_on_mismatch:
+        behavior: preserve_entire_record
+        mapping_id: RPMAP-CONDITION-STRUCTURE-PRESERVED
+  capability_refs:
+    primary: CAP-COMPARISON-OPERATOR
+    supporting:
+    - CAP-CONDITION-IF
+    - CAP-CONDITION-WHILE
+  treatment: existing_canonical
+  canonical_targets:
+  - /rimay_core/conditions
+  - /rimay_core/condition_expression
+  semantic_relation: normalized
+  validation_strength: semantic
+  compatibility_modes:
+  - repository_compatible
+  - rimay_jp_enhanced
+  rationale: >-
+    RC-071の明示承認により、固定RepositoryのIF／WHILE condition式の全leafが、Modifier、追加情報、
+    型／Label metadata、複数値、括弧groupを含まない単一subject／operator／AtomicValueである場合だけ、
+    採用済み8比較演算子へ正規化投影する。1 leafでもselector不一致なら式全体を
+    RPMAP-CONDITION-STRUCTURE-PRESERVEDへ送り、部分投影や情報欠落を禁止する。
+  evidence:
+    implementation_refs:
+    - path: core/rimay_jp_core/repository_comparison_mapping.py
+      selector: project_repository_comparison_condition / project_repository_comparison_leaf
+    - path: core/rimay_jp_core/condition_expression_candidate.py
+      selector: project_repository_condition_expression all-leaf traversal and trace
+    - path: core/rimay_jp_core/repository_comparison_mapping_candidate.py
+      selector: syntax-tree scalar selector and residual reason codes
+    validator_refs:
+    - path: core/rimay_jp_core/repository_comparison_mapping.py
+      selector: repository_comparison_mapping_selector_problems
+    - path: core/rimay_jp_core/repository_projection_mapping.py
+      selector: mapping contract 0.4 structural predicate and residual checks
+    fixture_refs:
+      positive:
+      - path: tests/conformance/test_comparison_predicate_repository_mapping_activation.py
+        selector: fixed Repository eight operators and all-leaf expression projection
+      negative:
+      - path: tests/conformance/test_comparison_predicate_repository_mapping_activation.py
+        selector: mixed residual leaf, modifier, group, non-JPY, source tampering
+      boundary:
+      - path: tests/conformance/test_comparison_predicate_repository_mapping_activation.py
+        selector: mapping contract 0.4 residual binding and exact cardinality
+      ambiguity:
+      - path: tests/conformance/test_comparison_predicate_repository_mapping_activation.py
+        selector: whole-expression fail-closed selection
+
+- mapping_id: RPMAP-MULTI-VALUE-PREDICATE
+  repository_selectors:
+  - record_kind: condition_structure
+    rule_ids:
+    - IfStructure
+    - WhileStructure
+    - PreconditionStructure
+    - NonItemizedConditions
+    - ConditionsOrExpression
+    - ConditionsAndExpression
+    - ConditionsPrimaryExpression
+    - Condition
+    - InstanceOrPropertyOperatorValue
+    - OperatorValuesExpr
+    - Compare
+    - EqualsTo
+    - GreaterThan
+    - LessThan
+    - GreaterOrEqualTo
+    - LessOrEqualTo
+    - Contains
+    - MultiValuesExpr
+    - ValueOrValue
+    - ValueAndValue
+    - ValuePrimaryExpression
+    - AtomicValue
+    structural_predicate:
+      executable_selector_ref:
+        path: core/rimay_jp_core/repository_multi_value_mapping.py
+        selector: repository_multi_value_mapping_selector_problems
+      exact_rule_cardinality:
+        Condition: 1
+        InstanceOrPropertyOperatorValue: 1
+        OperatorValuesExpr: 1
+      all_leaves_must_match: true
+      residual_on_mismatch:
+        behavior: preserve_entire_record
+        mapping_id: RPMAP-CONDITION-STRUCTURE-PRESERVED
+  capability_refs:
+    primary: CAP-MULTI-VALUE
+    supporting:
+    - CAP-COMPARISON-OPERATOR
+    - CAP-CONDITION-IF
+    - CAP-CONDITION-WHILE
+  treatment: existing_canonical
+  canonical_targets:
+  - /rimay_core/conditions
+  - /rimay_core/condition_expression
+  semantic_relation: normalized
+  validation_strength: semantic
+  compatibility_modes:
+  - repository_compatible
+  - rimay_jp_enhanced
+  rationale: >-
+    RC-079の明示承認により、全condition leafが採用済みscalarまたはMulti-value境界を満たし、
+    少なくとも1 leafが明示group／AND／OR value treeである場合だけ式全体を正規化投影する。
+    scalar-onlyはRPMAP-COMPARISON-PREDICATEへ委譲し、1 leafでも残余なら全recordを保持する。
+  evidence:
+    implementation_refs:
+    - path: core/rimay_jp_core/repository_multi_value_mapping.py
+      selector: project_repository_multi_value_condition
+    validator_refs:
+    - path: core/rimay_jp_core/repository_multi_value_mapping.py
+      selector: repository_multi_value_mapping_selector_problems
+    - path: core/rimay_jp_core/repository_projection_mapping.py
+      selector: mapping contract 0.4 structural predicate and residual checks
+    fixture_refs:
+      positive:
+      - path: tests/conformance/test_multi_value_repository_mapping_activation.py
+        selector: fixed Repository precedence, group, mixed expression and active adapter
+      negative:
+      - path: tests/conformance/test_multi_value_repository_mapping_activation.py
+        selector: residual whole-record preservation and selector disjointness
+      boundary:
+      - path: tests/conformance/test_multi_value_repository_mapping_activation.py
+        selector: mapping counts, accepted binding and residual capability split
+      ambiguity: []
+
+- mapping_id: RPMAP-CONDITION-STRUCTURE-PRESERVED
+  repository_selectors:
+  - record_kind: condition_structure
+    rule_ids:
+    - ConditionStructure
+    - IfStructure
+    - WhileStructure
+    - WhenStructure
+    - WhereStructure
+    - TemporalStructure
+    - RepeatOnce
+    - Frequently
+    - PreconditionStructure
+    - Condition
+    - ItemizedConditions
+    - NonItemizedConditions
+    - FreeExpression
+    - Time
+    - InstanceOrPropertyOperatorValue
+    - OperatorValuesExpr
+    - MultiValuesExpr
+    - AtomicValue
+  capability_refs:
+    primary: CAP-CONDITION-CORE
+    supporting:
+    - CAP-CONDITION-FREQUENCY
+    - CAP-CONDITION-IF
+    - CAP-CONDITION-ITEMIZED
+    - CAP-CONDITION-TEMPORAL-ORDER
+    - CAP-CONDITION-TEMPORAL-ROUTER
+    - CAP-CONDITION-WHEN
+    - CAP-CONDITION-WHERE
+    - CAP-CONDITION-WHILE
+    - CAP-FREE-EXPRESSION
+    - CAP-OPERATOR-VALUE-EXPR
+    - CAP-VALUE
+    - CAP-VALUE-TIME
+  treatment: repository_preserved_only
+  canonical_targets: []
+  semantic_relation: incompatible
+  validation_strength: linked
+  compatibility_modes:
+  - repository_compatible
+  rationale: >-
+    itemized、Where、Frequently、FreeExpressionとcondition leafの追加意味は、Condition Combination 0.7.0、
+    RC-071のComparison predicate、RC-079のMulti-value predicate selectorから分離してRepository固有文書だけに保持する。
+    値、Modifier等の未裁定部分を、採用済み比較演算子／複数値から推測採用しない。
+  evidence: *repository_document_evidence
+  diagnostic:
+    code: REPOSITORY_MAPPING_CONDITION_STRUCTURE_UNREPRESENTABLE
+    severity: blocking
+    message: Condition Combination候補の範囲外にある条件構造は製品裁定と版付き拡張bundleを要求する。
+
+- mapping_id: RPMAP-TRIGGER-PRESERVED
+  repository_selectors:
+  - record_kind: trigger
+    rule_ids:
+    - Trigger
+    - AtomicActionInTrigger
+    - Negation
+  capability_refs:
+    primary: CAP-TRIGGER
+    supporting:
+    - CAP-ACTIONPHRASE-DISPATCH
+    - CAP-RESPONSE-NEGATION
+  treatment: repository_preserved_only
+  canonical_targets: []
+  semantic_relation: unknown
+  validation_strength: linked
+  compatibility_modes:
+  - repository_compatible
+  rationale: >-
+    Trigger内Actionの論理木、`AtomicActionInTrigger`が参照する`Negation`、最終SystemResponseへの
+    接続は保持済みだが、Trigger、Action dispatch、別規則としての応答否定の製品裁定が未完了である。
+  evidence: *repository_document_evidence
+  diagnostic:
+    code: REPOSITORY_MAPPING_CAPABILITY_RULING_REQUIRED
+    severity: blocking
+    message: Triggerの製品裁定が完了するまでCanonical eventへ自動確定しない。
+
+- mapping_id: RPMAP-DECLARATIONS-PRESERVED
+  repository_selectors:
+  - record_kind: declaration
+    rule_ids:
+    - Actor
+    - Class
+    - PropertyId
+    - UIComponent
+    - Quantifier
+    - Unit
+    - Data_Mapping_Table
+    - Label
+  capability_refs:
+    primary: CAP-DECLARATION
+    supporting:
+    - CAP-ENTITY-ACTOR
+    - CAP-ENTITY-CLASS
+    - CAP-ENTITY-LABEL
+    - CAP-ENTITY-PROPERTY
+    - CAP-ENTITY-UI
+  treatment: repository_preserved_only
+  canonical_targets: []
+  semantic_relation: unknown
+  validation_strength: linked
+  compatibility_modes:
+  - repository_compatible
+  rationale: >-
+    8種の具象宣言とqualified nameは保持済みだが、Canonical Requirement内へ埋め込むか用語SSOTへ
+    接続するかの製品境界、および全Entity Capabilityの裁定が未完了である。
+  evidence: *repository_document_evidence
+  diagnostic:
+    code: REPOSITORY_MAPPING_DECLARATION_BOUNDARY_RULING_REQUIRED
+    severity: blocking
+    message: 宣言と製品用語SSOTの境界裁定が完了するまでCanonicalへ埋め込まない。
+
+- mapping_id: RPMAP-INSTANCES-PRESERVED
+  repository_selectors:
+  - record_kind: instance
+    rule_ids:
+    - Instance
+    - NonUIComponentInstance
+    - UIComponentInstance
+  capability_refs:
+    primary: CAP-ENTITY-INSTANCE
+    supporting:
+    - CAP-ENTITY-CLASS
+    - CAP-ENTITY-LABEL
+    - CAP-ENTITY-PROPERTY
+    - CAP-ENTITY-UI
+  treatment: repository_preserved_only
+  canonical_targets: []
+  semantic_relation: unknown
+  validation_strength: linked
+  compatibility_modes:
+  - repository_compatible
+  rationale: >-
+    UI/非UI Instanceの分岐と参照は保持済みだが、InstanceをCanonical値または外部Entity SSOTへ
+    接続する製品契約が未裁定である。
+  evidence: *repository_document_evidence
+  diagnostic:
+    code: REPOSITORY_MAPPING_ENTITY_BOUNDARY_RULING_REQUIRED
+    severity: blocking
+    message: Instanceと製品Entity SSOTの境界裁定が完了するまでCanonicalへ投影しない。
+
+- mapping_id: RPMAP-LINKING-REFERENCES-PRESERVED
+  repository_selectors:
+  - record_kind: linking_reference
+    rule_ids:
+    - CNLFunctionalRequirements
+  capability_refs:
+    primary: CAP-ENTITY-REFERENCE
+    supporting:
+    - CAP-DECLARATION
+    - CAP-ENTITY-ACTOR
+    - CAP-ENTITY-CLASS
+    - CAP-ENTITY-INSTANCE
+    - CAP-ENTITY-LABEL
+    - CAP-ENTITY-PROPERTY
+    - CAP-ENTITY-UI
+  treatment: repository_preserved_only
+  canonical_targets: []
+  semantic_relation: unknown
+  validation_strength: linked
+  compatibility_modes:
+  - repository_compatible
+  rationale: >-
+    74 cross-referenceのtarget、terminal、候補、解決先を同一文書scopeで監査可能にしたが、
+    cross-resource scopeと製品Entity参照への接続契約は固定Repository根拠・製品裁定とも未確定である。
+  evidence:
+    implementation_refs:
+    - path: core/rimay_jp_core/repository_linker.py
+      selector: link_repository_syntax
+    - path: core/rimay_jp_core/repository_document.py
+      selector: build_repository_document
+    validator_refs:
+    - path: core/rimay_jp_core/repository_document.py
+      selector: repository_document_problems
+    fixture_refs:
+      positive:
+      - path: tests/conformance/test_repository_document.py
+      - path: tests/conformance/test_repository_linker.py
+      negative:
+      - path: tests/conformance/test_repository_document.py
+      - path: tests/conformance/test_repository_linker.py
+      boundary: []
+      ambiguity: []
+  diagnostic:
+    code: REPOSITORY_MAPPING_EXTERNAL_LINKING_UNSUPPORTED
+    severity: blocking
+    message: 同一文書外の参照を推測補完せず、製品参照契約の裁定を要求する。

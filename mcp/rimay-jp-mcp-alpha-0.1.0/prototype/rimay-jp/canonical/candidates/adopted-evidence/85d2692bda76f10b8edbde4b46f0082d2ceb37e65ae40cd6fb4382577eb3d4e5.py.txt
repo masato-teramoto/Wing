@@ -1,0 +1,106 @@
+#!/usr/bin/env python3
+"""B5-P Response Combinationの隔離Canonical Schema候補を決定的に検査する。
+
+Active Schema昇格後もaccepted candidateの生成証跡を再現できるよう、0.6.0 active
+Schemaから昇格差分だけを除いて歴史的0.5.0 baseを決定的に再構築する。
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "core"))
+
+from rimay_jp_core.response_expression_candidate import (  # noqa: E402
+    build_response_expression_candidate_schema,
+)
+
+
+BASE = ROOT / "canonical" / "canonical-requirement.schema.json"
+OUTPUT = (
+    ROOT / "canonical" / "candidates" /
+    "canonical-requirement-response-expression-0.6.0.schema.json"
+)
+
+_LEGACY_DESCRIPTION = (
+    "Rimay-JP Canonical Requirement v0.1.0（構想書v0.5 §5の表現規則に準拠）。"
+    "unknownは値として格納せず、値なし(null/欠落)＋resolution.slotsの状態で表す。"
+    "状態・根拠は意味を持つリーフスロットへ付与し、複合オブジェクトの状態は子から導出する。"
+    "resolution.slotsに存在しないスロットは未評価であり、暗黙のconfirmedとみなさない。"
+)
+_EXPRESSION_DEFS = (
+    "repositoryResponseTrace", "responseExpression", "responseExpressionLeaf",
+    "responseExpressionGroup", "responseExpressionAnd", "responseExpressionOr",
+)
+_POST_RESPONSE_EXPRESSION_DEFS = (
+    "repositoryConditionLeafTrace", "repositoryConditionOperatorTrace",
+    "conditionExpression", "conditionExpressionLeaf",
+    "conditionExpressionAnd", "conditionExpressionOr",
+)
+_POST_CONDITION_EXPRESSION_DEFS = (
+    "repositoryResponseBlockTrace", "repositoryResponseBlockItemTrace",
+    "responseBlockBullet", "responseBlockItem", "responseBlock",
+)
+_POST_RESPONSE_BLOCK_DEFS = ("responseFrequency", "repositoryAtomicResponseTrace")
+_POST_CANDIDATE_VALIDATION_STATE_FIELDS = (
+    "validated_vocabulary_snapshot",
+    "validated_vocabulary_hash",
+    "validated_term_fingerprint",
+)
+
+
+def historical_base_schema(active: dict) -> dict:
+    """Active 0.6.0からaccepted candidate生成時の0.5.0 baseを再構築する。"""
+    import copy
+    base = copy.deepcopy(active)
+    base["description"] = _LEGACY_DESCRIPTION
+    base["properties"]["schema_version"]["const"] = "0.5.0"
+    core = base["$defs"]["rimayCore"]
+    core["properties"].pop("response_expression", None)
+    core["properties"].pop("condition_expression", None)
+    core["properties"].pop("response_block", None)
+    core.pop("allOf", None)
+    response = base["$defs"]["response"]
+    response["properties"].pop("frequency", None)
+    response["properties"].pop("repository_trace", None)
+    for name in (
+            _EXPRESSION_DEFS + _POST_RESPONSE_EXPRESSION_DEFS +
+            _POST_CONDITION_EXPRESSION_DEFS + _POST_RESPONSE_BLOCK_DEFS):
+        base["$defs"].pop(name, None)
+    # RC-031でactive 0.6.0へ同期した既存runtime fieldは、RC-026時点の
+    # accepted candidate生成入力には存在しなかったため歴史baseから除く。
+    state_properties = base["properties"]["validation_state"]["properties"]
+    for name in _POST_CANDIDATE_VALIDATION_STATE_FIELDS:
+        state_properties.pop(name, None)
+    return base
+
+
+def rendered_candidate() -> str:
+    with BASE.open(encoding="utf-8") as stream:
+        active = json.load(stream)
+    base = historical_base_schema(active)
+    candidate = build_response_expression_candidate_schema(base)
+    return json.dumps(candidate, ensure_ascii=False, indent=2) + "\n"
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--check", action="store_true")
+    args = parser.parse_args()
+    rendered = rendered_candidate()
+    if args.check:
+        if not OUTPUT.is_file() or OUTPUT.read_text(encoding="utf-8") != rendered:
+            raise SystemExit("response expression candidate Schema is stale")
+        print("response expression candidate Schema: PASS")
+        return
+    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
+    OUTPUT.write_text(rendered, encoding="utf-8")
+    print(OUTPUT.relative_to(ROOT))
+
+
+if __name__ == "__main__":
+    main()

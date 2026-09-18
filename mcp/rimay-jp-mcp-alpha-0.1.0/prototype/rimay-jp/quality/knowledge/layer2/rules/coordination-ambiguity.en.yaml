@@ -1,0 +1,22 @@
+id: coordination_ambiguity
+name: Coordination ambiguity
+language: en
+quality_attribute: clarity
+definition: See catalog/source for the definition of 'Coordination ambiguity'.
+citation:
+  document: Automated Smell Detection and Recommendation in NL Requirements (Veizaga,
+    Shin & Briand, 2023; arXiv:2305.07097)
+  locator: §4.1 Table 3 (Coordination ambiguity); §5.3 Rules
+detector:
+  type: segment_count
+  params:
+    check: coordination_ambiguity
+default_severity: medium
+explanation_template: Two or more conditions are joined by 'or'; make the logic explicit
+  or split the conditions.
+examples:
+  positive:
+  - When System-A performs a check or if the holding type is simple, System-B must
+    raise an alert.
+  negative:
+  - When System-A performs a check, System-B must raise an alert.

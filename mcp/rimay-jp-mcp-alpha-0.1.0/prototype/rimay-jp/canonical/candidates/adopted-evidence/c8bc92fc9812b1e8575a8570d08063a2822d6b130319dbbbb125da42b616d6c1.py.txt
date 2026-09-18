@@ -1,0 +1,253 @@
+# -*- coding: utf-8 -*-
+"""RC-094 Canonical 1.1 Operator value expression active runtime contract."""
+from __future__ import annotations
+
+import copy
+import hashlib
+import json
+import sys
+from pathlib import Path
+
+import pytest
+import yaml
+from jsonschema import Draft202012Validator
+
+
+RIMAY_JP = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(RIMAY_JP))
+sys.path.insert(0, str(RIMAY_JP / "core"))
+
+from adapters.mcp.rimay_jp_mcp import get_supported_profile  # noqa: E402
+from generators.acceptance_criteria import generate as generate_criteria  # noqa: E402
+from generators.test_candidates import generate as generate_tests  # noqa: E402
+from orchestrator.answer_updater import apply_answer  # noqa: E402
+from orchestrator.approval import required_pointers  # noqa: E402
+from orchestrator.experience_projections import _features  # noqa: E402
+from orchestrator.knowledge_router import route  # noqa: E402
+from rimay_jp_core import PROFILE_VERSION, SCHEMA_VERSION, __version__  # noqa: E402
+from rimay_jp_core.condition_expression import (  # noqa: E402
+    OPERATOR_VALUE_RUNTIME_VERSION,
+    MultiValueRuntimeError,
+    migrate_experience_store_records,
+    migrate_requirement_to_operator_value_runtime,
+    quarantine_operator_value_for_rollback,
+    restore_quarantined_operator_value,
+)
+from rimay_jp_core.equivalence import compare_semantic, project  # noqa: E402
+from rimay_jp_core.jp_serializer import parse_rimay_jp, render_rimay_jp  # noqa: E402
+from rimay_jp_core.model import new_canonical  # noqa: E402
+from rimay_jp_core.parser import PARSER_VERSION, parse  # noqa: E402
+from rimay_jp_core.schema_check import validate_schema  # noqa: E402
+from rimay_jp_core.serializer import SERIALIZER_VERSION, render_requirement_views  # noqa: E402
+from rimay_jp_core.validator import validate  # noqa: E402
+
+
+OPERANDS = [
+    {"wrapper": "declared_reference", "kind": "actor", "name": "BillingSystem"},
+    {"wrapper": "declared_reference", "kind": "class", "name": "Order"},
+    {"wrapper": "declared_reference", "kind": "property", "name": "OrderStatus"},
+    {"wrapper": "instance_or_property", "kind": "instance_or_property",
+     "name": "order", "defined_in_type": {"kind": "class", "name": "Order"},
+     "label": "current"},
+    {"wrapper": "ui_component_instance", "kind": "ui_component_instance",
+     "name": "submit", "component_type": "Button"},
+]
+
+ACTIVATION_PACKET = RIMAY_JP / "reports/compatibility/" \
+    "rimay-operator-value-expression-runtime-activation-20260819.yaml"
+
+
+def _tree() -> dict:
+    return {"kind": "or", "left": {"kind": "value", "value": "Open"},
+            "right": {"kind": "group", "expression": {
+                "kind": "value", "value": "1000", "unit": "JPY"}}}
+
+
+def _document(operand: dict | None = None) -> dict:
+    document = new_canonical("REQ-OPERATOR-VALUE-ACTIVE")
+    predicate = ({"operand": copy.deepcopy(operand or OPERANDS[1]), "operator": "IS",
+                  "value_expression": _tree()})
+    document["rimay_core"]["conditions"] = [{"type": "IF", "predicate": predicate}]
+    document["rimay_core"]["response"] = {
+        "actor": "BillingSystem", "modality": "MUST",
+        "action": {"family": "CALCULATE", "rimay_action_id": "CREATE_26_4"},
+        "result": "ApprovalAmount", "input": "OrderAmount",
+    }
+    return document
+
+
+def test_versions_schema_and_profile_activate_as_one_contract():
+    assert (SCHEMA_VERSION, OPERATOR_VALUE_RUNTIME_VERSION) == ("1.1.0", "1.1.0")
+    assert (__version__, PROFILE_VERSION) == ("0.13.0", "rimay-jp-mvp-0.5.0")
+    assert (PARSER_VERSION, SERIALIZER_VERSION) == ("0.11.0", "0.9.0")
+    profile = get_supported_profile()["operator_value_expression"]
+    assert profile["typed_operand_wrappers"] == [
+        "declared_reference", "instance_or_property", "ui_component_instance"]
+    assert profile["automatic_subject_typing"] == "forbidden"
+    assert profile["class_gap_synthesis"] == "forbidden"
+    document = _document()
+    assert validate_schema(document) == []
+    assert validate(document, phase2_slice=False) == []
+    manifest = render_requirement_views(document)["manifest"]["conformance"]
+    assert manifest["operator_value_expression"] is True
+    assert manifest["operator_value_condition_count"] == 1
+    assert "OPERATOR_VALUE_EXPRESSION" in manifest["extension_features"]
+    assert manifest["paper_claim"] == "withheld"
+
+
+def test_activation_packet_binds_runtime_and_preserves_mapping_boundary():
+    packet = yaml.safe_load(ACTIVATION_PACKET.read_text(encoding="utf-8"))
+    assert packet["activation_ruling_ref"] == "RC-094"
+    assert packet["readiness_ruling_ref"] == "RC-092"
+    assert packet["authorization"] == {
+        "approved_by_user": True,
+        "requested_action": "Canonical 1.1 runtime activation",
+        "implementation_status": "runtime_active",
+    }
+    assert packet["active_runtime"] == {
+        "canonical_schema": "1.1.0", "engine": "0.13.0",
+        "profile": "rimay-jp-mvp-0.5.0", "english_profile": "0.5.0",
+        "parser": "0.11.0", "serializer": "0.9.0",
+    }
+    assert packet["repository_mapping_boundary"] == {
+        "mapping_contract": "0.4.0", "mapping_total": 14,
+        "existing_canonical": 6, "canonical_extension_candidate": 0,
+        "repository_preserved_only": 8, "explicitly_excluded": 0,
+        "operator_value_treatment": "repository_preserved_only",
+        "mapping_activation_pending": True,
+    }
+    for key, relative in {
+        "canonical_schema": "canonical/canonical-requirement.schema.json",
+        "pre_activation_schema": "canonical/candidates/canonical-requirement-pre-operator-value-expression-1.0.0.schema.json",
+        "canonical_patch_schema": "canonical/canonical-patch.schema.json",
+        "supported_profile": "profile/supported-profile.yaml",
+        "english_profile": "profile/english-rimay-conformance.yaml",
+        "runtime_module": "core/rimay_jp_core/condition_expression.py",
+        "activation_fixture": "tests/conformance/test_operator_value_expression_activation.py",
+        "physical_store": "experience/store.jsonl",
+    }.items():
+        digest = "sha256:" + hashlib.sha256((RIMAY_JP / relative).read_bytes()).hexdigest()
+        assert packet["artifact_hashes"][key] == digest
+
+
+def test_schema_keeps_identity_and_value_authorities_closed_and_exclusive():
+    legacy_scalar = _document()
+    legacy_scalar["rimay_core"]["conditions"][0]["predicate"] = {
+        "subject": "OrderStatus", "operator": "IS", "value": "Open"}
+    legacy_tree = copy.deepcopy(legacy_scalar)
+    legacy_tree["rimay_core"]["conditions"][0]["predicate"] = {
+        "subject": "OrderStatus", "operator": "IS", "value_expression": _tree()}
+    assert validate_schema(legacy_scalar) == []
+    assert validate_schema(legacy_tree) == []
+
+    dual_identity = _document()
+    dual_identity["rimay_core"]["conditions"][0]["predicate"]["subject"] = "Order"
+    typed_scalar = _document()
+    typed_scalar["rimay_core"]["conditions"][0]["predicate"].pop("value_expression")
+    typed_scalar["rimay_core"]["conditions"][0]["predicate"]["value"] = "Open"
+    assert validate_schema(dual_identity)
+    assert validate_schema(typed_scalar)
+
+
+@pytest.mark.parametrize("operand", OPERANDS)
+def test_english_and_japanese_roundtrip_preserve_every_typed_wrapper(operand):
+    document = _document(operand)
+    english = render_requirement_views(document)["english_rimay"]
+    japanese = render_rimay_jp(document)
+    assert compare_semantic(document, parse(english)) == []
+    assert project({"rimay_core": parse_rimay_jp(japanese)}) == project(document)
+
+
+def test_store_replay_never_auto_types_or_lifts_scalar_but_explicit_migration_does():
+    legacy = _document()
+    legacy["schema_version"] = "1.0.0"
+    legacy["profile_version"] = "rimay-jp-mvp-0.4.0"
+    legacy["rimay_core"]["conditions"][0]["predicate"] = {
+        "subject": "Order", "operator": "IS", "value": "Open"}
+    pointer = "/rimay_core/conditions/0/predicate"
+    legacy["resolution"]["slots"] = {
+        pointer + "/subject": {"status": "confirmed"},
+        pointer + "/value": {"status": "confirmed"},
+    }
+    record = {"record_id": "EXP-OV-1", "kind": "canonical_revision",
+              "payload": {"canonical": copy.deepcopy(legacy)}}
+    replayed = migrate_experience_store_records([record])["records"][0]["payload"][
+        "canonical"]
+    assert replayed["schema_version"] == "1.1.0"
+    assert replayed["rimay_core"]["conditions"][0]["predicate"] == \
+        legacy["rimay_core"]["conditions"][0]["predicate"]
+
+    migrated = migrate_requirement_to_operator_value_runtime(
+        legacy, {pointer: OPERANDS[1]})
+    predicate = migrated["rimay_core"]["conditions"][0]["predicate"]
+    assert predicate == {"operand": OPERANDS[1], "operator": "IS",
+                         "value_expression": {"kind": "value", "value": "Open"}}
+    assert set(migrated["resolution"]["slots"]) == {
+        pointer + "/operand/name", pointer + "/value_expression/value"}
+
+    mismatch = copy.deepcopy(OPERANDS[1])
+    mismatch["name"] = "Different"
+    with pytest.raises(MultiValueRuntimeError):
+        migrate_requirement_to_operator_value_runtime(legacy, {pointer: mismatch})
+
+
+def test_rollback_requires_hash_bound_quarantine_and_restores_pointer_metadata():
+    document = _document(OPERANDS[-1])
+    base = "/rimay_core/conditions/0/predicate"
+    document["resolution"]["slots"] = {
+        base + "/operand/name": {"status": "confirmed"},
+        base + "/value_expression/left/value": {"status": "confirmed"},
+    }
+    document["provenance"] = [{"id": "PRV-OV-1", "path": base + "/operand/name"}]
+    document["approval"] = {
+        "approved_by": "reviewer", "approved_at": "2026-08-19T00:00:00+09:00",
+        "approved_slots": [base + "/operand/name"],
+    }
+    quarantined = quarantine_operator_value_for_rollback(document)
+    assert quarantined["schema_version"] == "1.0.0"
+    assert quarantined["rimay_core"]["conditions"][0]["predicate"] == {
+        "subject": "submit", "operator": "IS", "value": None}
+    assert restore_quarantined_operator_value(quarantined) == document
+    tampered = copy.deepcopy(quarantined)
+    tampered["extensions"]["additional_semantics"][0]["payload"][
+        "condition_quarantine"]["payload"]["predicate"]["operand"]["name"] = "changed"
+    with pytest.raises(MultiValueRuntimeError):
+        restore_quarantined_operator_value(tampered)
+
+
+def test_consumers_preserve_identity_and_unadopted_writers_fail_closed():
+    document = _document(OPERANDS[2])
+    base = "/rimay_core/conditions/0/predicate"
+    pointers = set(required_pointers(document))
+    assert {base + "/operand/wrapper", base + "/operand/kind",
+            base + "/operand/name", base + "/operator"} <= pointers
+    assert base + "/subject" not in pointers
+    features = _features(document)
+    assert "operand-wrapper:declared_reference" in features
+    assert "operand-kind:property" in features
+    routed = route(copy.deepcopy(document))
+    state_routes = [item for item in routed["routes"] if item["source"] == "state_model"]
+    assert all("OrderStatus=" in item["query"] for item in state_routes)
+
+    approved = copy.deepcopy(document)
+    approved["status"] = "approved"
+    ac = generate_criteria(approved)
+    assert ac["findings"][0]["path"] == base + "/operand"
+    tc = generate_tests(approved, {"trace": {"slots": [], "provenance": []}})
+    assert tc["findings"][0]["path"] == base + "/operand"
+    assert apply_answer(document, {
+        "question_id": "Q-OV", "target_path": base + "/operand/name"}, "Order") == []
+
+    patch_schema = json.loads((RIMAY_JP / "canonical/canonical-patch.schema.json").read_text())
+    patch = {"operation": "replace_slot", "requirement_id": document["requirement_id"],
+             "base_revision": 1, "path": base + "/operand/name", "new_value": "Other",
+             "new_status": "confirmed",
+             "evidence": {"type": "user_answer", "reference": "answer:Q-OV"}}
+    assert list(Draft202012Validator(patch_schema).iter_errors(patch))
+
+
+def test_accepted_product_keeps_exact_pre_activation_schema_evidence():
+    active_before = RIMAY_JP / "canonical/candidates/" \
+        "canonical-requirement-pre-operator-value-expression-1.0.0.schema.json"
+    assert hashlib.sha256(active_before.read_bytes()).hexdigest() == \
+        "f4f784eaf6cba1a2c97dd7f21849fbb0fb9c91b630f3be9fd3f54f2e7a9caff8"

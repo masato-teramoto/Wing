@@ -54,20 +54,21 @@
   <h1>これは要件定義段階のワイヤーフレームです</h1>
   <p>画面の型・構成・情報量のイメージを掴むためのものです。この機能・この UI で実装することを確約するものではありません。</p>
   <p>色・書体・細部の見た目は未確定です。ブランドの色は基本設計の工程で決めます。</p>
+  <p>検索条件・表示項目は未確定です。「検索条件 1〜8」「キー / 項目 1〜4」は件数と配置のイメージを示すもので、既存の [GWTG004] 契約情報検索／一覧と同一にする範囲・条件の項目そのもの・桁・書式・必須は基本設計で確定します。</p>
 </div>
 
 <nav class="viewer-nav">
-  <a href="pages/download-list-initial.html" target="wf">契約情報ダウンロード / default（条件未適用・検索前）</a>
-  <a href="pages/download-list-result.html" target="wf">契約情報ダウンロード / filters-applied（検索結果あり）</a>
-  <a href="pages/download-list-empty.html" target="wf">契約情報ダウンロード / empty（条件未適用で 0 件）</a>
-  <a href="pages/download-list-filter-empty.html" target="wf">契約情報ダウンロード / filter-empty（条件適用で 0 件）</a>
-  <a href="pages/download-list-input-error.html" target="wf">契約情報ダウンロード / input-error（検索条件の入力エラー）</a>
-  <a href="pages/download-list-loading.html" target="wf">契約情報ダウンロード / loading</a>
-  <a href="pages/download-list-error.html" target="wf">契約情報ダウンロード / error（インライン再試行）</a>
-  <a href="pages/error-403.html" target="wf">エラー画面（権限なし） / default</a>
+  <a href="pages/download-list-initial.html" target="wf">初期表示（検索前）</a>
+  <a href="pages/download-list-result.html" target="wf">検索結果あり</a>
+  <a href="pages/download-list-empty.html" target="wf">該当なし</a>
+  <a href="pages/download-list-filter-empty.html" target="wf">条件に一致なし</a>
+  <a href="pages/download-list-input-error.html" target="wf">入力エラー</a>
+  <a href="pages/download-list-loading.html" target="wf">読み込み中</a>
+  <a href="pages/download-list-error.html" target="wf">読み込み失敗</a>
+  <a href="pages/error-403.html" target="wf">エラー画面: 権限なし</a>
 </nav>
 
-<iframe class="viewer-frame" name="wf" src="pages/download-list-result.html" title="契約情報ダウンロードのワイヤーフレーム"></iframe>
+<iframe class="viewer-frame" name="wf" src="pages/download-list-initial.html" title="契約情報ダウンロードのワイヤーフレーム"></iframe>
 
 </body>
 </html>

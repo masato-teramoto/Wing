@@ -1,9 +1,6 @@
 # status 遷移とフェーズ進捗の更新手順
 
 > 本ファイルは AIDD フローにおける **承認ゲートの運用規約の正**である。全 Skill・全サブエージェントは status を動かす前にここを参照する。
-> 出典: フロー設計 `00_全体フロー設計書.md` §6.3・§6.4・§6.6・§7。
-> **本ファイルはリリース α2（Phase 1〜5）版である。** §3 の差戻し先は Phase 1〜5 で検出しうるものに限る。
-> **α2 で design 以降のフェーズ番号が 1 つ繰り下がっている**（Phase 5 = 画面モック生成 / 6 = design / 7 = docs / 8 = tasks。対応表は `SKILL.md` §0）。
 
 ---
 
@@ -17,19 +14,6 @@
 | `approved` | 人間承認済み。次フェーズの入力として使用可 |
 
 **正は各ドキュメントのフロントマター `status`** である。`phase-progress.json` は再生成可能な派生物であり、齟齬があればドキュメント側が正。
-
-### JSON 成果物の場合（Phase 5）
-
-Phase 5 の承認対象は `.aidd/wireframe/<feature>/pages/wireframe-manifest.json` であり、Markdown ではないためフロントマターを持たない。**この場合はトップレベルの `status` / `updated_at` キーをフロントマターと同等に扱う。**
-
-| 項目 | 扱い |
-|---|---|
-| `status` の値 | Markdown と同じ 4 値。加えて **`n/a`** を持つ（`_app-shell/` の manifest のみ。要件を持たない擬似 feature であり承認対象ではない） |
-| `updated_at` | Markdown と同じ ISO 8601（オフセット付き） |
-| 遷移権限 | §2 の表と同じ。**`draft` → `review` はゲートのサブエージェント、`review` → `approved` は人間のみ** |
-| 触ってよいキー | status 遷移で触れるのは `status` と `updated_at` の 2 つだけ。**`audit` / `screens` / `missing` / `unrealized` / `acknowledged` / `confirmed_at` を status 遷移のついでに書き換えてはならない** |
-
-**`acknowledged`（未画面化要件の承認）と `confirmed_at`（MK2 実施の記録）は `status` とは別の人間の記入欄である。** `status` を動かす主体（ゲートのサブエージェント）がこの 2 つを記入してはならない。`acknowledged` は ③ 人間レビューの場で人間から受け取った内容をオーケストレータが転記し、`confirmed_at` は MK2 実施後に人間が記入する。
 
 ---
 
@@ -56,14 +40,13 @@ Phase 5 の承認対象は `.aidd/wireframe/<feature>/pages/wireframe-manifest.j
 
 | 書き込み先 | 書き込んでよい範囲 |
 |---|---|
-| ゲート記録（`.aidd/gates/phase-<N>-<名>.md`） | **追記のみ。** `判断` 列 / `理由` 列 / `## 承認` セクションには書かない（§6） |
-| **検査した成果物**のフロントマター（JSON 成果物ではトップレベル） | **`status` と `updated_at` の 2 キーのみ**（§4）。Phase 5 の横断スコープのみ例外として `_app-shell` の `status` を `n/a` に落とすことを含む |
+| ゲート記録（`.aidd/gates/phase-<N>-<名>.md`） | **追記のみ。** `判断` 列 / `理由` 列 / `## 承認` セクションには書かない（③ の判断を聞き取ってこれらを埋めるのは **オーケストレータ**である。§6） |
+| **検査した成果物**のフロントマター | **`status` と `updated_at` の 2 キーのみ**（§4） |
 | `.aidd/phase-progress.json` | §5 の範囲 |
 
 - **これ以外への書き込みを禁止する。** とくに **検査した成果物の本文（見出し・表・箇条書き・プレースホルダー・図）を書き換えてはならない。** 指摘は成果物ではなくゲート記録に書く。
-- **上流成果物**（要求一覧・`feature-list.md`・`steering/`）は **フロントマターを含めて書き換えない。** ③ が差戻しを決めたあとの status の引き下げのみ代行してよい（§2 の遷移権限）。
+- **上流成果物**（要求一覧・`feature-list.md`・`steering/`・依存先の成果物）は **フロントマターを含めて書き換えない。** ③ が差戻しを決めたあとの status の引き下げのみ代行してよい（§2 の遷移権限）。
 - **この禁止をツール権限で縛る手段は無い**（status を遷移させるため、検査対象そのものへの書き込み権限が必要になる）。したがって **対象プロジェクトを git 管理し、ゲート実行後に差分を確認する。** 成果物のうち `status` / `updated_at` 以外が変わっていたら、それは起きてはならない自動修正である。
-- Phase 5 では **`ds/`（デザインシステム）も書き込み禁止の対象**である。取得物であり成果物ではないため、監査スクリプト・トークン JSON を含めて読み取りとして扱う。
 
 ---
 
@@ -84,24 +67,24 @@ Phase 5 の承認対象は `.aidd/wireframe/<feature>/pages/wireframe-manifest.j
 | Phase 2 以降 | 要求一覧（採番漏れ・分類誤り・抽出漏れ） | Phase 1（人間承認を経て更新） |
 | Phase 4 | `feature-list.md` | Phase 3。影響 feature の requirements は `draft` へ |
 | Phase 4（横断） | 既に `approved` の requirements | 該当 requirements を `review` へ引き下げ。修正後は feature スコープのゲートから通し直す |
-| Phase 5 | **画面化に必要な項目・制約が requirements に無い / 受入基準が UI に落とせない** | Phase 4。該当 `requirements.md` を `review` へ引き下げ。**修正後は Phase 4 の feature スコープのゲートから通し直し、当該 feature のワイヤーフレームを再生成する** |
-| Phase 5 | **DS に部品・パターンが無い** | **差戻しではない。** DS 側の課題として `missing[]` に記録するに留める（本フローでは解消しない）。この状態のワイヤーフレームを承認するかは ③ が判断する |
-| Phase 5 | 対象 feature の取り違え・宣言なき除外 | Phase 5 の Step 0（対象宣言のやり直し）。`feature-list.md` 自体の不備であれば Phase 3 |
-| Phase 5（横断） | 既に `approved` の `wireframe-manifest.json` | 該当 manifest を `review` へ引き下げ。修正後は feature スコープのゲートから通し直す |
+| Phase 5 | `requirements.md` | 該当 requirements を `review` へ。design は `draft` 維持 |
+| Phase 5 | 依存先 `design.md` の契約不足 | 該当依存先 design を `review` へ。自 feature は `draft` 維持 |
+| Phase 5 | feature 分割自体 | Phase 3。影響範囲の requirements / design を `draft` へ |
+| Phase 6 | design の欠落・design 間の競合 | 該当 design を `review` へ。docs 統合は保留 |
+| Phase 7 | `design.md`（**tasks にしか存在しない設計判断**を含む） | 該当 design を `review` へ。tasks は `draft` 維持。**`docs/` も `review` へ引き下げる** |
+| Phase 7 | requirements の受入基準が検証不能 | 該当 requirements を `review` へ |
 | 全フェーズ | steering | Phase 2（人間承認必須）。影響 spec を洗い出して再検査 |
 | 全フェーズ | **壁打ちで判明した新規要求**（RFP に出典が無い） | Phase 1。**Phase 1 の壁打ちとして確定させ**、出典種別 `壁打ち` で追記して再承認。検出フェーズが要求一覧を書き換えてはならない |
-
-**上流を引き下げたら、その下流の Phase 5 成果物も未確定になる。** `requirements.md` が `review` / `draft` へ落ちた feature のワイヤーフレームは、**修正後に再生成する**（承認済みでない requirements から生成されたワイヤーフレームを残さない）。`blockers` にその旨を残す。
 
 ---
 
 ## 4. フロントマターの操作手順
 
-status を動かすときは、対象ドキュメントのフロントマター（**JSON 成果物ではトップレベル** — §1）を次のとおり更新する。
+status を動かすときは、対象ドキュメントのフロントマターを次のとおり更新する。
 
 1. `status` を新しい値に置き換える。
 2. `updated_at` を ISO 8601（オフセット付き。例 `2026-01-01T09:00:00+09:00`）で更新する。
-3. 本文には触れない（status 遷移は本文の修正を伴わない）。**JSON 成果物では `status` / `updated_at` 以外のキーが本文に当たる。**
+3. 本文には触れない（status 遷移は本文の修正を伴わない）。
 4. `.aidd/phase-progress.json` を §5 の手順で更新する。
 
 **承認者をフロントマターに書かない。** 承認者・承認日・承認時の残件は **ゲート記録の `## 承認` セクション**に記入する（§6）。フロントマターは status の現在値だけを持ち、誰がいつ何を承認したかはゲート記録が正である。
@@ -122,11 +105,7 @@ status を動かすときは、対象ドキュメントのフロントマター�
 | 差戻しが決まったとき | `blockers` に 1 件追加（`target` / `status_from` / `status_to` / `return_to_phase` / `detected_by` / `reason` / `gate_record`） |
 | 差戻しが解消したとき | 該当 `blockers` エントリを削除 |
 
-ドキュメント単位の枠は `steering`（7 エントリ）と `features[].documents`（feature ごとに `requirements` と `wireframe`）の 2 種である。
-
-- **`features[].documents.wireframe`** は Phase 5 の枠であり、正は `.aidd/wireframe/<feature>/pages/wireframe-manifest.json` のトップレベル `status` である（§1）。
-- **UI を持たないとして Phase 5 の対象から外した feature** では、`wireframe` エントリの `status` を `n/a` にし、`waiting_for` に対象外の理由を残す。**エントリ自体を消さない**（消すと宣言なき除外と区別できない）。
-- `_app-shell`（擬似 feature）は `features[]` に載せない。`.aidd/feature-list.md` に対応する行を持たないため、集約の分母に入れない。
+ドキュメント単位の枠は `steering`（7 エントリ）/ `docs`（3 エントリ）/ `features[].documents`（feature ごとに requirements / design / tasks）の 3 種である。
 
 ### フェーズ単位の `status` の決め方
 
@@ -138,8 +117,8 @@ status を動かすときは、対象ドキュメントのフロントマター�
 |---|---|
 | Phase 1 / 3 | 単一ドキュメントのためそのままの値 |
 | Phase 2 | `steering` の全 7 エントリ |
-| Phase 4 | 全 feature 分の `features[].documents.requirements` |
-| Phase 5 | **対象 feature 分の** `features[].documents.wireframe`（`status` が `n/a` のエントリ = 対象外の feature は**分母から外す**） |
+| Phase 4 / 5 / 7 | 全 feature 分の `features[].documents` の該当ドキュメント |
+| Phase 6 | `docs` の全 3 エントリ |
 
 `status` から導けないため固有に持つ 2 項目。
 
@@ -158,13 +137,27 @@ status を動かすときは、対象ドキュメントのフロントマター�
 
 `Templates/Flow/gate-record.md` を構造の正とする。詳細な出力手順は `gate-report` Skill が持つ。ここでは status 運用に直結する点だけを示す。
 
-- **1 フェーズにつき 1 ファイル**（`.aidd/gates/phase-<N>-<名>.md`）。本リリースでは **5 ファイル**である（`paths.md` §2）。
+- **1 フェーズにつき 1 ファイル**（`.aidd/gates/phase-<N>-<名>.md`）。
 - **追記のみ。前回の記録を上書きしない。**
 - `status` を持たない（検査の記録であり承認対象の仕様ではない）。
-- `判断` 列と `理由` 列は **③ の人間が記入する**。エージェントが埋めてはならない。
 - **① で形式の不備を検出した場合は ② に進まない。** その場合は `実行した層` に ① のみを記載する。
-- 横断スコープは承認対象の文書を持たないため **status を遷移させない**（Phase 5 の `_app-shell` を `n/a` に落とす操作のみ例外 — §2）。
-- **成果物単位のスコープを持つフェーズ**（Phase 4 / 5）では feature 別セクションに分け、横断検査の結果は独立したセクションに置く。
+- 横断スコープは承認対象の文書を持たないため **status を遷移させない**。
+
+### `判断` 列と `理由` 列（③ の判断の記録）
+
+**判断するのは人間、記入するのはオーケストレータである。** ゲートのサブエージェントは空欄のまま出力し、オーケストレータが ③ で **選択式に聞き取った回答をそのまま転記する**（`aidd-flow/SKILL.md` Step 4・Step 5）。**人間にこのファイルを直接編集させない。**
+
+| `判断` | 意味 | status への影響 | `理由` |
+|---|---|---|---|
+| `修正` | 同一フェーズ内で直す | 対象成果物を `review` → `draft`（§3） | `—` でよい |
+| `差戻し` | 上流フェーズ / フロー外の不備 | §3 の差戻し先の表に従って上流を引き下げる。「差戻し」セクションにも記録する | `—` でよい（理由は「差戻し」セクションに書く） |
+| `対応せず進める` | 直さずに進める | 動かさない | **必須** |
+| `未対応` | 判断を保留し、残件として持ち越す | 動かさない | **必須** |
+
+- **順序は「判断の転記 → 修正の実行」である。** 修正を済ませてから判断を書く順序にはしない。`修正` の行は、**修正して再ゲートを通した時点で `修正済` に更新する**。
+- 更新してよいのは `判断` 列・`理由` 列・`## 差戻し`・`## 承認` だけである。**`指摘内容` / `層` / `対象箇所` と `## 実行履歴` は上書きしない。**
+- **選択肢に無い判断を作らない。推奨・既定値も示さない**（ゲートは合否を出さないため）。
+- **全件の判断が揃うまで、また `修正` / `差戻し` の行が残っている間は、承認の可否を問わない。** `## 承認` の承認者名・承認日・承認時の残件も人間から聞き取って転記する。
 
 ---
 

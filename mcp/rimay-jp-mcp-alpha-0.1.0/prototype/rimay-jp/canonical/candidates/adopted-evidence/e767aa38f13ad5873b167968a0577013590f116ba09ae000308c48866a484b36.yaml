@@ -1,0 +1,563 @@
+# OP-MAP-01 — 演算子まわりの対応証拠 companion — **正本**。裁定・台帳・分類を一切変更しない。
+# 再生成: scripts/build_operator_mapping_report.py
+mapping_id: OP-MAP-01
+report_version: 0.1.0
+recorded_at: '2026-08-17'
+decides_nothing: true
+scope_note: 演算子まわりの対応証拠。対象は CAP-OPERATOR-VALUE-EXPR と CAP-COMPARISON-OPERATOR の**2件のみ**（CAP-VALUE / CAP-MULTI-VALUE
+  は別サイクル）。裁定・台帳・分類を一切変更しない。母数は matrix の primary ownership ではなく **`OperatorValuesExpr` の直接参照集合**（6件）であり、他Capability所有を理由に除外しない。family
+  内部は §4.2.2 が `etc.` を伴う開集合のため判定不可locatorとして扱い、unresolved のまま残す（対応が不完全なら ruling_required を維持する）。
+version_history:
+- version: 0.1.0
+  report_signature: null
+  snapshot_ref: reports/compatibility/operator-mapping-OP-MAP-01@0.1.0.yaml
+  body_retained: true
+  note: 初版。`OperatorValuesExpr` の4位置を承認済み COV-LST4-01 v0.2.0 の `S1-LISTING-4-OPERATOR-VALUES-EXPR-BODY`
+    へ完全分割し、位置0の3択を共通述語 `alternative_partitions` で family 3規則へ割り付ける。family 内部は §4.2.2 が 開集合（`etc.`）のため判定不可locatorとして
+    unresolved に残す。
+grammar_source:
+  commit: 7308c20125f6678333282e31cda75a82e68b4970
+  sha256: 0f7c4af22ab60329e85b972951be46bedecae2da2a5913b10d2f01d05bb1aa7e
+  path_in_source: org.xtext.dsl_rimay/src/org/xtext/Dsl_rimay.xtext
+  tier: S-2
+  access: d10_temporary_clone_destroyed_after_extraction
+  extraction_method: reference_graph_from_rule_blocks
+  transcription_policy: rule_names_relations_and_predicate_keywords_only
+  note: 'D5/Gate L: 通常CIは外部cloneに依存しない。実体照合は --verify-grammar（D10 C6a-I）に限定する。'
+coverage_basis:
+- coverage_id: COV-LST4-01
+  version: 0.2.0
+  snapshot_ref: reports/compatibility/condition-coverage-COV-LST4-01@0.2.0.yaml
+  approval_key: COV-LST4-01@0.2.0
+  report_signature: sha256:fb1e12e155edd97f62cebbb7b36c5dc48baeb243efbcd25d20d38d327fbe272b
+  note: 承認済み不変資産。§4.2.2 operator family と Listing 4 `OPERATOR_VALUES_EXPR` の production 位置を固定する唯一の base。
+readers:
+  first_reader: claude-session-first-reader-20260817
+  second_reader: codex-second-reader-proxy-for-kentaro-20260817
+  note: 本レポートは**新しい読解を行わない**。承認済み COV-LST4-01 v0.2.0 のスナップショットと固定Grammarの機械抽出のみを入力とする。
+grammar_facts:
+  OperatorValuesExpr:
+    kind: parser_rule
+    references:
+    - Compare
+    - Contains
+    - OtherOperators
+    - Modifier
+    - MultiValuesExpr
+    - FreeExpression
+    self_recursive: false
+    keyword_literal_count: 0
+    referenced_by:
+    - ActorOrTypeOrPropertyOperatorElement
+    - InstanceOrPropertyOperatorValue
+    - UIComponentInstanceOperatorElement
+    predicate_bearing: true
+    assignments:
+    - - value_modifier
+      - +=
+      - Modifier
+    - - valuesExpression
+      - '='
+      - MultiValuesExpr
+    - - additional_information
+      - '='
+      - FreeExpression
+  Compare:
+    kind: parser_rule
+    references:
+    - EqualsTo
+    - GreaterThan
+    - LessThan
+    - GreaterOrEqualTo
+    - LessOrEqualTo
+    self_recursive: false
+    keyword_literal_count: 3
+    referenced_by:
+    - OperatorValuesExpr
+    predicate_bearing: true
+    keyword_literals:
+    - are
+    - is
+    - not
+    assignments: []
+  Contains:
+    kind: parser_rule
+    references:
+    - Negation
+    self_recursive: false
+    keyword_literal_count: 4
+    referenced_by:
+    - InstanceHasProperties
+    - OperatorValuesExpr
+    predicate_bearing: true
+    keyword_literals:
+    - contain
+    - contains
+    - has
+    - have
+    assignments:
+    - - negation
+      - '='
+      - Negation
+  OtherOperators:
+    kind: parser_rule
+    references:
+    - AllowProperty
+    - AvailableFor
+    self_recursive: false
+    keyword_literal_count: 0
+    referenced_by:
+    - OperatorValuesExpr
+    predicate_bearing: true
+    assignments: []
+grammar_projection_signature: sha256:d502af086e0f0644f403ee36292253ec08bedd19335bf24ae5c2d4126ee9e82f
+grammar_shapes:
+  OperatorValuesExpr:
+  - index: 0
+    cardinality: required
+    assignment: operator
+    assign_op: '='
+    alternatives:
+    - Compare
+    - Contains
+    - OtherOperators
+    keywords: []
+    raw_kind: alternation
+  - index: 1
+    cardinality: optional
+    assignment: value_modifier
+    assign_op: +=
+    alternatives:
+    - Modifier
+    keywords: []
+    raw_kind: reference
+  - index: 2
+    cardinality: required
+    assignment: valuesExpression
+    assign_op: '='
+    alternatives:
+    - MultiValuesExpr
+    keywords: []
+    raw_kind: reference
+  - index: 3
+    cardinality: optional
+    assignment: additional_information
+    assign_op: '='
+    alternatives:
+    - FreeExpression
+    keywords: []
+    raw_kind: reference
+verdict_rules:
+  exact: 両側とも未対応ゼロ・全pairが exact/name_normalized_exact・locator が exhaustive
+  matched_with_rename: 両側とも未対応ゼロ・1件以上が renamed_alternative
+  matched_not_exhaustive: 両側とも未対応ゼロ・改称なし・locator が exhaustive でない
+  partial: 実装側または出版版側に未対応が残る
+  unmappable_locator_unusable: '対応先候補が usable_for_determination: false の locator のみ'
+  indeterminate: 上記いずれにも構造上到達しない（pairが空・pair kind が値域外 等）
+resolutions:
+  resolved: 原典側・実装側の全分岐が、対応／処遇明示／対象production外 のいずれかで説明済み
+  unresolved: 説明できていない分岐が残る（pending_investigation を含む）
+structural_relations:
+  equivalent: 原典分岐と実装分岐が過不足なく対応する
+  semantic_subset: 実装が原典分岐の一部を**欠く**（原典側に未対応が残る）
+  semantic_superset: 実装が原典分岐に加えて**独自分岐を持つ**（実装側に未対応が残る）
+  semantic_divergent: 欠落と追加の**双方**がある
+  not_compared: 内部分岐を比較していない（対応の主張を分岐粒度へ及ぼさない）
+unmatched_dispositions:
+  extension_reference: 原典に無い実装分岐。**別Capability**が採否を裁定する（本Capabilityへ混ぜない）
+  pending_investigation: 処遇未定。これがあると対応証拠は resolved にならない
+pair_kinds:
+  exact: 実装規則名と出版版member名が完全一致
+  name_normalized_exact: 宣言済み normalization を適用すると一致（改称ではない）
+  renamed_alternative: 位置・役割は一致するが名称が異なる（改称）
+normalizations:
+  strip_suffix_Structure: 実装規則名の末尾 `Structure` を除去して比較する
+  identity_upper_snake: 実装のUpperCamelを UPPER_SNAKE へ変換して比較する
+  upper_snake_acronym_aware: UpperCamelを UPPER_SNAKE へ変換する。連続する大文字は頭字語として1語に保つ（UIComponent… → UI_COMPONENT_…）
+  not_applicable: 対応pairが無いため正規化しない
+out_of_scope_reasons:
+  different_production: 同一Listing内の別ruleであり、対象productionの選択肢ではない
+evidence_exclusions:
+- '`S1-4.2.2-OPERATOR-EXAMPLES` は `usable_for_determination: false`。`published_locator` に置けない構造制約で、例示から閉じた結論を出す経路を塞ぐ。'
+- '`S1-4.2.2-NEGATIVE-FORMS` は本レポートの根拠に**使わない**。否定形は families と併記される以上のことを主張せず、`Compare.not` / `Contains.Negation`
+  との対応も所属も本レポートからは導かない。'
+- matrix の primary ownership は「誰が裁定するか」であって「参照集合の母数」ではない。他Capability所有を理由に `OperatorValuesExpr` の参照から規則を落とさない。
+- 負例fixtureは本レポートの根拠に一切使わない。
+mappings:
+- rule: OperatorValuesExpr
+  capability_id: CAP-OPERATOR-VALUE-EXPR
+  coverage_id: COV-LST4-01
+  published_locator: S1-LISTING-4-OPERATOR-VALUES-EXPR-BODY
+  published_production: (COMPARE|CONTAINS|OTHER_OPERATORS) MODIFIER? MULTI_VALUES_EXPR TEXT?
+  internal_comparison_required: false
+  internal_comparison_reason: 本 mapping が確定するのは production の**位置対応**（順序・選択・必須/任意）。family 内部の分岐比較は同一レポートの
+    Compare / Contains / OtherOperators の mapping が扱い、そちらは判定不可locatorのため unresolved のまま残る。ここで内部分岐を比較したことにすると、開集合から閉じた結論を出すことになる。
+  locator_snapshot:
+    enumerates: production_position
+    exhaustive: true
+    identifier_fidelity: verbatim
+    usable_for_determination: true
+    members:
+    - OPERATOR_FAMILY_CHOICE
+    - MODIFIER
+    - MULTI_VALUES_EXPR
+    - TEXT
+    member_kinds:
+      OPERATOR_FAMILY_CHOICE: alternation
+      MODIFIER: referenced_rule
+      MULTI_VALUES_EXPR: referenced_rule
+      TEXT: referenced_rule
+  alternative_partitions:
+  - published:
+      locator_id: S1-LISTING-4-OPERATOR-VALUES-EXPR-BODY
+      coverage_id: COV-LST4-01
+      position_index: 0
+      member: OPERATOR_FAMILY_CHOICE
+      cardinality: required
+      alternatives:
+      - COMPARE
+      - CONTAINS
+      - OTHER_OPERATORS
+    implementation:
+      rule: OperatorValuesExpr
+      position_index: 0
+      cardinality: required
+      alternatives:
+      - Compare
+      - Contains
+      - OtherOperators
+    pairs:
+    - published: COMPARE
+      implementation: Compare
+      kind: name_normalized_exact
+    - published: CONTAINS
+      implementation: Contains
+      kind: name_normalized_exact
+    - published: OTHER_OPERATORS
+      implementation: OtherOperators
+      kind: name_normalized_exact
+    published_unmatched: []
+    implementation_unmatched: []
+  - published:
+      locator_id: S1-LISTING-4-OPERATOR-VALUES-EXPR-BODY
+      coverage_id: COV-LST4-01
+      position_index: 1
+      member: MODIFIER
+      cardinality: optional
+      alternatives:
+      - MODIFIER
+    implementation:
+      rule: OperatorValuesExpr
+      position_index: 1
+      cardinality: optional
+      alternatives:
+      - Modifier
+    pairs:
+    - published: MODIFIER
+      implementation: Modifier
+      kind: name_normalized_exact
+    published_unmatched: []
+    implementation_unmatched: []
+  - published:
+      locator_id: S1-LISTING-4-OPERATOR-VALUES-EXPR-BODY
+      coverage_id: COV-LST4-01
+      position_index: 2
+      member: MULTI_VALUES_EXPR
+      cardinality: required
+      alternatives:
+      - MULTI_VALUES_EXPR
+    implementation:
+      rule: OperatorValuesExpr
+      position_index: 2
+      cardinality: required
+      alternatives:
+      - MultiValuesExpr
+    pairs:
+    - published: MULTI_VALUES_EXPR
+      implementation: MultiValuesExpr
+      kind: name_normalized_exact
+    published_unmatched: []
+    implementation_unmatched: []
+  - published:
+      locator_id: S1-LISTING-4-OPERATOR-VALUES-EXPR-BODY
+      coverage_id: COV-LST4-01
+      position_index: 3
+      member: TEXT
+      cardinality: optional
+      alternatives:
+      - TEXT
+    implementation:
+      rule: OperatorValuesExpr
+      position_index: 3
+      cardinality: optional
+      alternatives:
+      - FreeExpression
+    pairs:
+    - published: TEXT
+      implementation: FreeExpression
+      kind: renamed_alternative
+    published_unmatched: []
+    implementation_unmatched: []
+  correspondence:
+    normalization: identity_upper_snake
+    pairs: []
+    grammar_unmatched: []
+    published_unmatched: []
+  grammar_unmatched_disposition: {}
+  published_out_of_scope: []
+  downstream_refs:
+  - pair: FreeExpression↔TEXT
+    primary_owner: CAP-FREE-EXPRESSION
+    downstream_ref: FREE-USE-OPERATOR-VALUES
+    classification_effect: none
+    note: 位置3の構造対応は本レポートで resolved。FREE-MAP-01 v0.2.0 への伝播と `leaf_text_realization` の再集約、CAP-FREE-EXPRESSION
+      の再分類は次バッチ。
+  - pair: Modifier↔MODIFIER
+    primary_owner: CAP-MODIFIER
+    downstream_ref: null
+    classification_effect: none
+    note: 位置1の構造対応のみ。CAP-MODIFIER の採否は本レポートで扱わない。
+  - pair: MultiValuesExpr↔MULTI_VALUES_EXPR
+    primary_owner: CAP-MULTI-VALUE
+    downstream_ref: null
+    classification_effect: none
+    note: 位置2の構造対応のみ。MULTI-VALUE-MAP-01（別サイクル）が内部を扱う。
+  findings:
+  - 原典 `OPERATOR_VALUES_EXPR` の4位置すべてに実装側の対応がある（未対応ゼロ）。位置0は3択で、実装の `Compare|Contains|OtherOperators` と過不足なく一致する。
+  - 位置1（`MODIFIER?`）と位置3（`TEXT?`）が optional、位置2（`MULTI_VALUES_EXPR`）がrequired である点も実装 shape と一致する（各 partition
+    の両側 cardinality を checker が照合）。
+  - '`OperatorValuesExpr` の直接参照は6件で、その全件が4位置のいずれかへ割り付く。他Capabilityが primary owner である規則（Modifier / MultiValuesExpr
+    / FreeExpression）も母数から除外していない。'
+  - '`FreeExpression↔TEXT` は改称（`renamed_alternative`）。位置と役割は一致するが名称は異なるため、名称正規化では一致しない。'
+  ruling_input: CAP-OPERATOR-VALUE-EXPR の器（`OperatorValuesExpr` の production 構造）は、原典 Listing 4 の `OPERATOR_VALUES_EXPR`
+    と位置・順序・選択・多重度で一致する。ただし各位置の**中身**（family 内部・値式・自由記述の葉）は本レポートの範囲外。
+  verdict: matched_with_rename
+  correspondence_resolution: resolved
+  advances_ruling: true
+  published_side_exhaustive: true
+  residual_absence_claims_unavailable: false
+- rule: Compare
+  open_family_basis:
+    source_rule: OperatorValuesExpr
+    position_index: 0
+    published_alternative: COMPARE
+  capability_id: CAP-COMPARISON-OPERATOR
+  coverage_id: COV-LST4-01
+  blocked_by_locator: S1-4.2.2-OPERATOR-EXAMPLES
+  published_production: §4.2.2 の例示（`etc.` を伴う開集合。production ではない）
+  internal_comparison_required: false
+  internal_comparison_reason: '§4.2.2 は各 family 内部の具体演算子を `etc.` 付きで例示するのみで、member 粒度の網羅列挙が原典に存在しない（locator
+    は `usable_for_determination: false`）。したがって family 内部の分岐については出版版側に何も主張できない。Greater系を『原典に明示列挙された』とは扱わず、開いた
+    family 内に位置づけ可能（within_open_family）という以上の結論は出さない。'
+  locator_snapshot:
+    enumerates: illustrative_examples
+    exhaustive: false
+    identifier_fidelity: verbatim
+    usable_for_determination: false
+    members: &id001
+    - equals to
+    - less or equal to
+    - has
+    - contains
+    - is available
+    member_kinds: &id002
+      equals to: illustrative_example
+      less or equal to: illustrative_example
+      has: illustrative_example
+      contains: illustrative_example
+      is available: illustrative_example
+  correspondence:
+    normalization: not_applicable
+    pairs: []
+    grammar_unmatched:
+    - EqualsTo
+    - GreaterOrEqualTo
+    - GreaterThan
+    - LessOrEqualTo
+    - LessThan
+    published_unmatched: []
+  grammar_unmatched_disposition:
+    EqualsTo:
+      disposition: pending_investigation
+      within_open_family: COMPARE
+      note: matrix 上 CAP-COMPARISON-OPERATOR 自身が primary owner。送り先が自Capabilityになるため extension_reference
+        にはできない。原典側に member 粒度の網羅列挙が現れるまで処遇未定として残す（Greater系の『原典に明示列挙』は主張しない）。
+    GreaterThan:
+      disposition: pending_investigation
+      within_open_family: COMPARE
+      note: matrix 上 CAP-COMPARISON-OPERATOR 自身が primary owner。送り先が自Capabilityになるため extension_reference
+        にはできない。原典側に member 粒度の網羅列挙が現れるまで処遇未定として残す（Greater系の『原典に明示列挙』は主張しない）。
+    LessThan:
+      disposition: pending_investigation
+      within_open_family: COMPARE
+      note: matrix 上 CAP-COMPARISON-OPERATOR 自身が primary owner。送り先が自Capabilityになるため extension_reference
+        にはできない。原典側に member 粒度の網羅列挙が現れるまで処遇未定として残す（Greater系の『原典に明示列挙』は主張しない）。
+    GreaterOrEqualTo:
+      disposition: pending_investigation
+      within_open_family: COMPARE
+      note: matrix 上 CAP-COMPARISON-OPERATOR 自身が primary owner。送り先が自Capabilityになるため extension_reference
+        にはできない。原典側に member 粒度の網羅列挙が現れるまで処遇未定として残す（Greater系の『原典に明示列挙』は主張しない）。
+    LessOrEqualTo:
+      disposition: pending_investigation
+      within_open_family: COMPARE
+      note: matrix 上 CAP-COMPARISON-OPERATOR 自身が primary owner。送り先が自Capabilityになるため extension_reference
+        にはできない。原典側に member 粒度の網羅列挙が現れるまで処遇未定として残す（Greater系の『原典に明示列挙』は主張しない）。
+  published_out_of_scope: []
+  findings:
+  - 原典 §4.2.2 は `Compare` に相当する family を**名前としては**列挙し切っているが（`S1-4.2.2-OPERATOR-FAMILIES` が exhaustive）、family
+    **内部**の具体演算子は `etc.` 付きの例示に留まる。よって内部分岐の対応は確定できない。
+  - 実装側の内部分岐は 5 件。これらは `within_open_family` として開いた family 内に位置づけ可能というだけで、『原典に明示列挙された』とは扱わない。
+  ruling_input: CAP-COMPARISON-OPERATOR は `Compare` の内部分岐について対応を確定できないため、本レポートでは裁定を前進させない（`ruling_required`
+    を維持する）。
+  verdict: unmappable_locator_unusable
+  correspondence_resolution: unresolved
+  advances_ruling: false
+  published_side_exhaustive: false
+  residual_absence_claims_unavailable: true
+- rule: Contains
+  open_family_basis:
+    source_rule: OperatorValuesExpr
+    position_index: 0
+    published_alternative: CONTAINS
+  capability_id: CAP-COMPARISON-OPERATOR
+  coverage_id: COV-LST4-01
+  blocked_by_locator: S1-4.2.2-OPERATOR-EXAMPLES
+  published_production: §4.2.2 の例示（`etc.` を伴う開集合。production ではない）
+  internal_comparison_required: false
+  internal_comparison_reason: '§4.2.2 は各 family 内部の具体演算子を `etc.` 付きで例示するのみで、member 粒度の網羅列挙が原典に存在しない（locator
+    は `usable_for_determination: false`）。したがって family 内部の分岐については出版版側に何も主張できない。Greater系を『原典に明示列挙された』とは扱わず、開いた
+    family 内に位置づけ可能（within_open_family）という以上の結論は出さない。'
+  locator_snapshot:
+    enumerates: illustrative_examples
+    exhaustive: false
+    identifier_fidelity: verbatim
+    usable_for_determination: false
+    members: *id001
+    member_kinds: *id002
+  correspondence:
+    normalization: not_applicable
+    pairs: []
+    grammar_unmatched:
+    - Negation
+    published_unmatched: []
+  grammar_unmatched_disposition:
+    Negation:
+      disposition: extension_reference
+      owned_by_capability: CAP-RESPONSE-NEGATION
+      within_open_family: CONTAINS
+      note: matrix の primary owner へ送る。本Capabilityへ混ぜない。
+  published_out_of_scope: []
+  findings:
+  - 原典 §4.2.2 は `Contains` に相当する family を**名前としては**列挙し切っているが（`S1-4.2.2-OPERATOR-FAMILIES` が exhaustive）、family
+    **内部**の具体演算子は `etc.` 付きの例示に留まる。よって内部分岐の対応は確定できない。
+  - 実装側の内部分岐は 1 件。これらは `within_open_family` として開いた family 内に位置づけ可能というだけで、『原典に明示列挙された』とは扱わない。
+  ruling_input: CAP-COMPARISON-OPERATOR は `Contains` の内部分岐について対応を確定できないため、本レポートでは裁定を前進させない（`ruling_required`
+    を維持する）。
+  verdict: unmappable_locator_unusable
+  correspondence_resolution: unresolved
+  advances_ruling: false
+  published_side_exhaustive: false
+  residual_absence_claims_unavailable: true
+- rule: OtherOperators
+  open_family_basis:
+    source_rule: OperatorValuesExpr
+    position_index: 0
+    published_alternative: OTHER_OPERATORS
+  capability_id: CAP-COMPARISON-OPERATOR
+  coverage_id: COV-LST4-01
+  blocked_by_locator: S1-4.2.2-OPERATOR-EXAMPLES
+  published_production: §4.2.2 の例示（`etc.` を伴う開集合。production ではない）
+  internal_comparison_required: false
+  internal_comparison_reason: '§4.2.2 は各 family 内部の具体演算子を `etc.` 付きで例示するのみで、member 粒度の網羅列挙が原典に存在しない（locator
+    は `usable_for_determination: false`）。したがって family 内部の分岐については出版版側に何も主張できない。Greater系を『原典に明示列挙された』とは扱わず、開いた
+    family 内に位置づけ可能（within_open_family）という以上の結論は出さない。'
+  locator_snapshot:
+    enumerates: illustrative_examples
+    exhaustive: false
+    identifier_fidelity: verbatim
+    usable_for_determination: false
+    members: *id001
+    member_kinds: *id002
+  correspondence:
+    normalization: not_applicable
+    pairs: []
+    grammar_unmatched:
+    - AllowProperty
+    - AvailableFor
+    published_unmatched: []
+  grammar_unmatched_disposition:
+    AllowProperty:
+      disposition: extension_reference
+      owned_by_capability: CAP-ENTITY-PROPERTY
+      within_open_family: OTHER_OPERATORS
+      note: matrix の primary owner へ送る。本Capabilityへ混ぜない。
+    AvailableFor:
+      disposition: extension_reference
+      owned_by_capability: CAP-ROLE-OTHER
+      within_open_family: OTHER_OPERATORS
+      note: matrix の primary owner へ送る。本Capabilityへ混ぜない。
+  published_out_of_scope: []
+  findings:
+  - 原典 §4.2.2 は `OtherOperators` に相当する family を**名前としては**列挙し切っているが（`S1-4.2.2-OPERATOR-FAMILIES` が exhaustive）、family
+    **内部**の具体演算子は `etc.` 付きの例示に留まる。よって内部分岐の対応は確定できない。
+  - 実装側の内部分岐は 2 件。これらは `within_open_family` として開いた family 内に位置づけ可能というだけで、『原典に明示列挙された』とは扱わない。
+  ruling_input: CAP-COMPARISON-OPERATOR は `OtherOperators` の内部分岐について対応を確定できないため、本レポートでは裁定を前進させない（`ruling_required`
+    を維持する）。
+  verdict: unmappable_locator_unusable
+  correspondence_resolution: unresolved
+  advances_ruling: false
+  published_side_exhaustive: false
+  residual_absence_claims_unavailable: true
+capability_consequences:
+- capability_id: CAP-OPERATOR-VALUE-EXPR
+  rule: OperatorValuesExpr
+  advances_ruling: true
+  next_step: ruling_batch_candidate
+  action: production 位置対応で present 主張可（中身は別）
+  reason: 4位置すべて対応・両側未対応ゼロ・locator は exhaustive。
+- capability_id: CAP-COMPARISON-OPERATOR
+  rule: Compare
+  advances_ruling: false
+  next_step: hold_ruling_required
+  action: 裁定を前進させない
+  reason: family 内部は原典が開集合のため判定不可locatorしか無い。
+- capability_id: CAP-COMPARISON-OPERATOR
+  rule: Contains
+  advances_ruling: false
+  next_step: hold_ruling_required
+  action: 裁定を前進させない
+  reason: family 内部は原典が開集合のため判定不可locatorしか無い。
+- capability_id: CAP-COMPARISON-OPERATOR
+  rule: OtherOperators
+  advances_ruling: false
+  next_step: hold_ruling_required
+  action: 裁定を前進させない
+  reason: family 内部は原典が開集合のため判定不可locatorしか無い。
+required_to_resolve:
+- CAP-COMPARISON-OPERATOR を resolved にするには、family 内部の具体演算子について原典側に member 粒度の**網羅列挙**が要る。§4.2.2 の `etc.`
+  がある限り本証拠だけでは解けない。実装側の8規則（matrix primary）と Grammar 参照閉包の8規則は**別集合**であることに注意する（件数が偶然一致する）。
+- '`Negation` / `AllowProperty` / `AvailableFor` は matrix 上それぞれ CAP-RESPONSE-NEGATION / CAP-ENTITY-PROPERTY
+  / CAP-ROLE-OTHER の所有。各所有Capabilityの裁定で扱う。'
+next_steps:
+- 本レポートの第二読者承認後、CAP-OPERATOR-VALUE-EXPR を1 proposal で裁定する（対応証拠 resolved）。CAP-COMPARISON-OPERATOR は `ruling_required`
+  のまま。
+- FREE-MAP-01 v0.2.0 へ `FreeExpression↔TEXT` の位置対応を伝播し、`FREE-USE-OPERATOR-VALUES` と `leaf_text_realization`
+  を再集約する（次バッチ）。
+- VALUE-MAP-01 / MULTI-VALUE-MAP-01 は別サイクル。位置2の中身はそちらで扱う。
+report_signature: sha256:17ac5de0ab75490bafa5497c89317a475974c869aeda632e9bdfa2af4020ae88
+status: mapping_evidence_approved
+second_reader_status: approved
+approval_record:
+  verdict: approved
+  reviewer: codex-second-reader-proxy-for-kentaro-20260817
+  reviewed_at: '2026-08-17'
+  grammar_sha256: 0f7c4af22ab60329e85b972951be46bedecae2da2a5913b10d2f01d05bb1aa7e
+counts:
+  rules: 4
+  advancing: 1
+  blocked: 3
+  by_verdict:
+    matched_with_rename: 1
+    unmappable_locator_unusable: 3
+  alternative_partitions: 4
+  direct_references_of_target: 6

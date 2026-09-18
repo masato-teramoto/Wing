@@ -5,7 +5,94 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>契約情報ダウンロード — 検索結果</title>
 <link rel="stylesheet" href="tokens/tokens.css">
-<link rel="stylesheet" href="styles.css">
+<style>
+body{margin:0;background:var(--color-semantic-canvas);color:var(--color-semantic-text);font-family:system-ui,sans-serif;font-size:var(--font-size-body);line-height:1.6}
+.wf-main{padding-left:var(--space-md);padding-right:var(--space-md);padding-top:var(--space-sm);padding-bottom:var(--space-lg)}
+:focus-visible{outline-style:solid;outline-width:medium;outline-color:var(--color-semantic-focus);outline-offset:var(--space-xxs)}
+.wf-page-header{margin-bottom:var(--space-sm)}
+.wf-page-title{margin:0;font-size:var(--font-size-heading);line-height:1.4}
+.wf-visually-hidden{position:absolute;width:0.0625rem;height:0.0625rem;margin:-0.0625rem;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+
+.wf-field{display:flex;flex-direction:column;gap:var(--space-xs);min-width:0}
+.wf-field-label{font-size:var(--font-size-caption);font-weight:700}
+.wf-field-required{margin-left:var(--space-xs);color:var(--color-semantic-required);font-weight:400}
+.wf-field-optional{margin-left:var(--space-xs);color:var(--color-semantic-text-subtle);font-weight:400}
+.wf-field-support{color:var(--color-semantic-text-subtle);font-size:var(--font-size-caption)}
+
+.ds-inputtext{min-height:2.75rem;padding-left:var(--space-sm);padding-right:var(--space-sm);background:var(--color-semantic-background);color:var(--color-semantic-text);border:thin solid var(--color-semantic-border);border-radius:var(--radius-sm);font-size:var(--font-size-body);font-family:inherit}
+.ds-inputtext:disabled{background:var(--color-semantic-disabled-surface);color:var(--color-semantic-disabled-text)}
+.ds-inputtext--error{border-color:var(--color-semantic-danger)}
+
+.ds-button{display:inline-flex;align-items:center;justify-content:center;min-height:2.75rem;padding-left:var(--space-md);padding-right:var(--space-md);border-radius:var(--radius-sm);font-size:var(--font-size-body);font-family:inherit;line-height:1.4;cursor:pointer}
+.ds-button--secondary{background:var(--color-semantic-background);color:var(--color-semantic-primary);border:thin solid var(--color-semantic-primary)}
+.ds-button--secondary:hover{background:var(--color-semantic-surface-hover);color:var(--color-semantic-primary-hover);border-color:var(--color-semantic-primary-hover)}
+.ds-button--primary{background:var(--color-semantic-primary);color:var(--color-semantic-on-primary);border:none}
+.ds-button--primary:hover{background:var(--color-semantic-primary-hover)}
+.ds-button--danger{background:var(--color-semantic-danger);color:var(--color-semantic-on-primary);border:none}
+.ds-button--danger:hover{background:var(--color-semantic-danger-hover)}
+.ds-button:disabled{background:var(--color-semantic-disabled-surface);color:var(--color-semantic-disabled-text);border-color:var(--color-semantic-disabled-surface);cursor:default}
+.ds-button--sm{min-height:2.25rem;padding-left:var(--space-sm);padding-right:var(--space-sm);font-size:var(--font-size-caption)}
+
+.ds-link{color:var(--color-semantic-primary);text-decoration:underline}
+.ds-link:hover{color:var(--color-semantic-primary-hover)}
+.ds-link--button{display:inline-flex;align-items:center;justify-content:center;min-height:2.75rem;padding-left:var(--space-md);padding-right:var(--space-md);background:var(--color-semantic-background);color:var(--color-semantic-primary);border:thin solid var(--color-semantic-primary);border-radius:var(--radius-sm);text-decoration:none}
+.ds-link--button:hover{background:var(--color-semantic-surface-hover);color:var(--color-semantic-primary-hover);border-color:var(--color-semantic-primary-hover)}
+
+.ds-badge{display:inline-flex;align-items:center;padding-left:var(--space-sm);padding-right:var(--space-sm);border-radius:var(--radius-full);font-size:var(--font-size-caption)}
+.ds-badge--neutral{background:var(--color-semantic-surface-hover);color:var(--color-semantic-text-subtle)}
+
+.wf-filter{display:flex;flex-wrap:wrap;align-items:flex-end;gap:var(--space-md);padding:var(--space-md);margin-bottom:var(--space-md);background:var(--color-semantic-background);border:thin solid var(--color-semantic-border);border-radius:var(--radius-md)}
+.wf-filter-actions{display:flex;gap:var(--space-sm)}
+@media (max-width:63.999rem){.wf-filter{flex-direction:column;align-items:stretch}}
+
+.wf-result-summary{display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--space-sm);margin-bottom:var(--space-sm)}
+.wf-result-count{font-weight:700}
+.wf-applied-filters{color:var(--color-semantic-text-subtle);font-size:var(--font-size-caption)}
+
+.ds-table-scroll{overflow-x:auto;background:var(--color-semantic-background);border:thin solid var(--color-semantic-border);border-radius:var(--radius-md)}
+.ds-table{width:100%;min-width:44rem;border-collapse:collapse}
+.ds-table caption{padding:var(--space-sm);color:var(--color-semantic-text-subtle);font-size:var(--font-size-caption);text-align:left}
+.ds-table th,.ds-table td{padding-top:var(--space-sm);padding-bottom:var(--space-sm);padding-left:var(--space-ms);padding-right:var(--space-ms);border-bottom:thin solid var(--color-semantic-border);text-align:left;vertical-align:top;white-space:nowrap}
+.ds-table th{background:var(--color-semantic-table-header);color:var(--color-semantic-text-subtle);font-weight:700}
+.ds-table tbody tr:hover{background:var(--color-semantic-surface-hover)}
+
+.ds-emptystate{padding:var(--space-xl);background:var(--color-semantic-background);border:thin solid var(--color-semantic-border);border-radius:var(--radius-md);text-align:center}
+.ds-emptystate-title{margin:0;font-size:var(--font-size-body);font-weight:700}
+.ds-emptystate-body{margin-top:var(--space-sm);margin-bottom:var(--space-md);color:var(--color-semantic-text-subtle)}
+
+.wf-inline-error{padding:var(--space-lg);background:var(--color-semantic-background);border:thin solid var(--color-semantic-border);border-radius:var(--radius-md)}
+.wf-inline-error-title{margin:0;font-size:var(--font-size-body);font-weight:700}
+.wf-inline-error-body{margin-top:var(--space-sm);margin-bottom:var(--space-md);color:var(--color-semantic-text-subtle)}
+
+.ds-skeleton{background:var(--color-semantic-skeleton);border-radius:var(--radius-sm)}
+.ds-skeleton--text{height:1rem}
+.ds-skeleton--row{height:1.25rem}
+.ds-skeleton-rows{padding:var(--space-ms)}
+.ds-skeleton-rows > * + *{margin-top:var(--space-ms)}
+
+.wf-errorpage{max-width:40rem;margin-left:auto;margin-right:auto;padding-top:var(--space-xl);text-align:center}
+.wf-errorpage-title{margin:0;font-size:var(--font-size-heading)}
+.wf-errorpage-body{margin-top:var(--space-md);margin-bottom:var(--space-lg)}
+
+.wf-grid{display:grid;grid-template-columns:1fr;gap:var(--space-md)}
+@media (min-width:64rem){.wf-grid{grid-template-columns:repeat(4,1fr)}.wf-field--2{grid-column:span 2}.wf-field--4{grid-column:span 4}}
+
+.wf-section{margin-bottom:var(--space-md);padding:var(--space-md);background:var(--color-semantic-background);border:thin solid var(--color-semantic-border);border-radius:var(--radius-md)}
+.wf-section-title{margin:0;margin-bottom:var(--space-sm);font-size:var(--font-size-body);font-weight:700}
+.wf-actions{display:flex;flex-wrap:wrap;gap:var(--space-sm);margin-top:var(--space-md)}
+
+.wf-page-header--with-actions{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:var(--space-md)}
+.wf-page-title-group{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-sm)}
+.ds-disclosure{background:var(--color-semantic-background);border:thin solid var(--color-semantic-border);border-radius:var(--radius-md);margin-bottom:var(--space-md)}
+.ds-disclosure-summary{padding:var(--space-md);font-weight:700;cursor:pointer}
+.ds-disclosure-content{padding-left:var(--space-md);padding-right:var(--space-md);padding-bottom:var(--space-md)}
+.wf-limit-notice{color:var(--color-semantic-text-subtle);font-size:var(--font-size-caption)}
+.wf-search-prompt{padding:var(--space-lg);background:var(--color-semantic-background);border:thin solid var(--color-semantic-border);border-radius:var(--radius-md);color:var(--color-semantic-text-subtle)}
+.wf-field-error{color:var(--color-semantic-danger);font-size:var(--font-size-caption)}
+.wf-error-summary{padding:var(--space-md);margin-bottom:var(--space-md);background:var(--color-semantic-danger-subtle);border:thin solid var(--color-semantic-danger);border-radius:var(--radius-md)}
+.wf-error-summary-title{margin:0;margin-bottom:var(--space-xs);color:var(--color-semantic-on-danger-subtle);font-weight:700}
+.wf-error-summary ul{margin:0;padding-left:var(--space-lg)}
+</style>
 </head>
 <body>
 <main class="wf-main">
@@ -17,61 +104,71 @@
       <button class="ds-button ds-button--primary" type="button">CSV ダウンロード</button>
     </div>
   </div>
-  <p class="wf-page-lead">既存の契約情報検索／一覧とは別の画面として新規に作成します。出力する CSV は契約情報取込で使える形式にします。</p>
 
-  <div class="ds-disclosure">
-    <p class="ds-disclosure-title">詳細検索</p>
-    <div class="ds-disclosure-content">
-      <p class="wf-section-note">検索条件は既存の [GWTG004] 契約情報検索／一覧と同一にします。条件の項目そのもの・件数・桁・書式・必須、および「同一」の範囲は基本設計で確定します。ここに並べた 8 項目は件数を示すものではありません。</p>
-      <div class="wf-grid">
+  <form>
+    <div class="wf-filter">
+      <div class="wf-field">
+        <label class="wf-field-label" for="keyword">検索<span class="wf-field-optional">※任意</span></label>
+        <input class="ds-inputtext" id="keyword" type="search" value="サンプル">
+      </div>
+      <div class="wf-filter-actions">
+        <button class="ds-button ds-button--secondary" type="submit">絞り込み</button>
+      </div>
+    </div>
+
+    <details class="ds-disclosure" open>
+      <summary class="ds-disclosure-summary">詳細検索</summary>
+      <div class="ds-disclosure-content">
+        <div class="wf-grid">
         <div class="wf-field">
-          <label class="wf-field-label" for="cond1">検索条件 1<span class="wf-field-optional">※要否は基本設計で確定</span></label>
+          <label class="wf-field-label" for="cond1">検索条件 1<span class="wf-field-optional">※任意</span></label>
           <input class="ds-inputtext" id="cond1" type="text" value="サンプル条件">
         </div>
         <div class="wf-field">
-          <label class="wf-field-label" for="cond2">検索条件 2<span class="wf-field-optional">※要否は基本設計で確定</span></label>
+          <label class="wf-field-label" for="cond2">検索条件 2<span class="wf-field-optional">※任意</span></label>
           <input class="ds-inputtext" id="cond2" type="text" value="">
         </div>
         <div class="wf-field">
-          <label class="wf-field-label" for="cond3">検索条件 3<span class="wf-field-optional">※要否は基本設計で確定</span></label>
-          <input class="ds-inputtext" id="cond3" type="text" value="サンプル条件">
+          <label class="wf-field-label" for="cond3">検索条件 3<span class="wf-field-optional">※任意</span></label>
+          <input class="ds-inputtext" id="cond3" type="text" value="">
         </div>
         <div class="wf-field">
-          <label class="wf-field-label" for="cond4">検索条件 4<span class="wf-field-optional">※要否は基本設計で確定</span></label>
-          <input class="ds-inputtext" id="cond4" type="text" value="">
+          <label class="wf-field-label" for="cond4">検索条件 4<span class="wf-field-optional">※任意</span></label>
+          <input class="ds-inputtext" id="cond4" type="text" value="サンプル条件">
         </div>
         <div class="wf-field">
-          <label class="wf-field-label" for="cond5">検索条件 5<span class="wf-field-optional">※要否は基本設計で確定</span></label>
+          <label class="wf-field-label" for="cond5">検索条件 5<span class="wf-field-optional">※任意</span></label>
           <input class="ds-inputtext" id="cond5" type="text" value="">
         </div>
         <div class="wf-field">
-          <label class="wf-field-label" for="cond6">検索条件 6<span class="wf-field-optional">※要否は基本設計で確定</span></label>
+          <label class="wf-field-label" for="cond6">検索条件 6<span class="wf-field-optional">※任意</span></label>
           <input class="ds-inputtext" id="cond6" type="text" value="">
         </div>
         <div class="wf-field">
-          <label class="wf-field-label" for="cond7">検索条件 7<span class="wf-field-optional">※要否は基本設計で確定</span></label>
+          <label class="wf-field-label" for="cond7">検索条件 7<span class="wf-field-optional">※任意</span></label>
           <input class="ds-inputtext" id="cond7" type="text" value="">
         </div>
         <div class="wf-field">
-          <label class="wf-field-label" for="cond8">検索条件 8<span class="wf-field-optional">※要否は基本設計で確定</span></label>
+          <label class="wf-field-label" for="cond8">検索条件 8<span class="wf-field-optional">※任意</span></label>
           <input class="ds-inputtext" id="cond8" type="text" value="">
         </div>
+        </div>
+        <div class="wf-actions">
+          <button class="ds-button ds-button--secondary" type="submit">検索</button>
+          <button class="ds-button ds-button--secondary" type="reset">条件をクリア</button>
+        </div>
       </div>
-      <div class="wf-actions">
-        <button class="ds-button ds-button--secondary" type="submit">検索</button>
-        <button class="ds-button ds-button--secondary" type="reset">条件をクリア</button>
-      </div>
-    </div>
-  </div>
+    </details>
+  </form>
 
   <div class="wf-result-summary">
     <span class="wf-result-count">3 件</span>
-    <span class="wf-applied-filters">絞り込み中: 検索条件 1、検索条件 3</span>
+    <span class="wf-applied-filters">絞り込み中: 検索条件 1、検索条件 4</span>
   </div>
 
   <div class="ds-table-scroll" role="region" aria-label="契約情報の一覧" tabindex="0">
     <table class="ds-table">
-      <caption>検索条件に合致する契約情報です。この画面からは内容を更新しません。表示項目は既存の契約情報検索／一覧と同一にします。</caption>
+      <caption>検索条件に合致する契約情報です。この画面からは内容を更新しません。</caption>
       <thead>
         <tr>
           <th scope="col">キー</th>
@@ -87,14 +184,14 @@
           <td>サンプル値</td>
           <td>サンプル値</td>
           <td>2026/09/10</td>
-          <td>1,000,000</td>
+          <td>1,234,000</td>
         </tr>
         <tr>
           <td>0000000002</td>
           <td>サンプル値</td>
           <td>サンプル値</td>
           <td>2026/09/11</td>
-          <td>2,500,000</td>
+          <td>980,500</td>
         </tr>
         <tr>
           <td>0000000003</td>

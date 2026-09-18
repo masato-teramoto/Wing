@@ -1,0 +1,19 @@
+# Judgment-only smell: DEFINED for traceability but DEFERRED — never executed (FR-039).
+# Appears in the coverage disclosure under "unchecked" with reason deferred_judgment (FR-044).
+id: us_conceptually_sound
+name: User story not conceptually sound
+artifact_type: user_story
+language: en
+quality_attribute: semantic
+definition: >
+  The story should express a single, conceptually whole feature that is meaningful to the role.
+  Judging conceptual soundness requires interpretation, so detection is deferred (no LLM — FR-039).
+definition_source_id: user_story/lucassen-2016
+implementable: judgment
+default_severity: low
+explanation_template: "Conceptual soundness is not deterministically checkable; reviewed manually."
+examples:
+  positive:
+    - "As a user, I want stuff to be better."
+  negative:
+    - "As a user, I want to reset my password so that I can regain access."

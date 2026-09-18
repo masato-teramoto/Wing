@@ -1,0 +1,97 @@
+contract_version: 0.2.0
+plan_id: RPADP-RESPONSE-COMBINATION-01
+recorded_at: '2026-08-17'
+capability_matrix_binding:
+  path: reports/compatibility/rimay-capability-matrix.yaml
+  capability_signature: sha256:5341b6f2d8beb1840f376e4b466b22943bebc6b2a5f5fc7dc7ea3769ab39bcc1
+claim_boundary:
+  decides_paper_conformance: false
+  requires_paper_evidence_resolution: false
+  withholds_paper_claim_when_evidence_unresolved: true
+decisions:
+- decision_id: B5P-RESPONSE-COMBINATION-01
+  capability_id: CAP-RESPONSE-COMBINATION
+  decision_status: accepted
+  implementation_disposition: implement_product
+  decision_ruling_ref: RC-027
+  decision_ruling_sha256: sha256:3e478df7006aea30f121dfbf1998fe136a4400c0d33f713beeaa0f3c21fff060
+  quality_contract:
+    objective: >-
+      複数Atomic ResponseのAND/OR・明示括弧・順序を式木として保持し、散文化、先頭値縮退、
+      暗黙の優先順位再推測を防ぐ製品Capabilityを設計する。
+    user_value:
+      status: satisfied
+      refs:
+      - &quality_packet
+        path: reports/compatibility/rimay-b5p-response-combination-quality-20260817.md
+        selector: §2 user_value
+        sha256: sha256:47d138cac850accc6758d27b2c003b978655a370db00be67137b5e482dcf9b5f
+    information_preservation:
+      status: satisfied
+      refs:
+      - <<: *quality_packet
+        selector: §3 information_preservation
+      - &repository_document
+        path: core/rimay_jp_core/repository_document.py
+        selector: _response_expression / _response_expression_problems
+        sha256: sha256:66499b72ab391b7ed65721a0faac790c1259bfe6c3fc59cff07141a2cb5e3e2b
+      - &repository_document_tests
+        path: tests/conformance/test_repository_document.py
+        selector: response precedence/grouping and tamper fixtures
+        sha256: sha256:ae653f627a515feb2cf6018716555bc8b0e1c390fe8383f5a4ed31372a877ef1
+      - &candidate_schema
+        path: canonical/candidates/canonical-requirement-response-expression-0.6.0.schema.json
+        selector: responseExpression / rimayCore.response_expression
+        sha256: sha256:ae9f8cfc2c0719a6be39590abc1748752d0550931726863dc88ed839e25aad7c
+      - &candidate_implementation
+        path: core/rimay_jp_core/response_expression_candidate.py
+        selector: project_repository_response_expression / response_expression_findings
+        sha256: sha256:774ad0c29012ea5e26f11e7889f560b8f09b00a5511678d295ea37141db4ab1c
+      - &candidate_tests
+        path: tests/conformance/test_response_expression_candidate.py
+        selector: candidate conformance fixtures
+        sha256: sha256:ddac4f3dfb24bc355e838551b5131389e10d36b1b34b55d0c23bbd97eab9e1ca
+    ambiguity_control:
+      status: satisfied
+      refs:
+      - <<: *quality_packet
+        selector: §4 ambiguity_control
+      - *repository_document
+      - *repository_document_tests
+      - *candidate_schema
+      - *candidate_implementation
+      - *candidate_tests
+    structured_diagnostic:
+      status: satisfied
+      refs:
+      - <<: *quality_packet
+        selector: §5 structured_diagnostic
+      - *candidate_implementation
+      - *candidate_tests
+    semantic_roundtrip:
+      status: satisfied
+      refs:
+      - <<: *quality_packet
+        selector: §6 semantic_roundtrip
+      - *candidate_implementation
+      - *candidate_tests
+    migration_safety:
+      status: satisfied
+      refs:
+      - <<: *quality_packet
+        selector: §7 migration_safety
+      - *candidate_schema
+      - *candidate_implementation
+      - &candidate_generator
+        path: scripts/build_response_expression_candidate.py
+        selector: deterministic candidate Schema generator/checker
+        sha256: sha256:85d2692bda76f10b8edbde4b46f0082d2ceb37e65ae40cd6fb4382577eb3d4e5
+      - *candidate_tests
+    japanese_parity_impact:
+      status: satisfied
+      refs:
+      - <<: *quality_packet
+        selector: §8 japanese_parity_impact
+      - *candidate_implementation
+      - *candidate_tests
+product_signature: sha256:de20d8a023f6d0cc8a97b907411860dd4529c3e08faa6629b01c908918c64c64

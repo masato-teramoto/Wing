@@ -1,0 +1,40 @@
+# Layer 2 — Smell catalog index. Exactly the nine source smells (FR-008).
+# Source: Automated Smell Detection (arXiv:2305.07097), §4.1 / Table 3.
+version: "1.0.0"
+smells:
+  - id: non_atomic_requirement
+    name: Non-atomic requirement
+    quality_attribute: atomicity
+    rule_files: [non-atomic.en.yaml, non-atomic.ja.yaml]
+  - id: incomplete_requirement
+    name: Incomplete requirement
+    quality_attribute: completeness
+    rule_files: [incomplete-requirement.en.yaml, incomplete-requirement.ja.yaml]
+  - id: incorrect_order_requirement
+    name: Incorrect order requirement
+    quality_attribute: correctness
+    rule_files: [incorrect-order.en.yaml, incorrect-order.ja.yaml]
+  - id: coordination_ambiguity
+    name: Coordination ambiguity
+    quality_attribute: clarity
+    rule_files: [coordination-ambiguity.en.yaml, coordination-ambiguity.ja.yaml]
+  - id: not_a_requirement
+    name: Not a requirement
+    quality_attribute: correctness
+    rule_files: [not-a-requirement.en.yaml, not-a-requirement.ja.yaml]
+  - id: incomplete_condition
+    name: Incomplete condition
+    quality_attribute: completeness
+    rule_files: [incomplete-condition.en.yaml, incomplete-condition.ja.yaml]
+  - id: incomplete_system_response
+    name: Incomplete system response
+    quality_attribute: completeness
+    rule_files: [incomplete-system-response.en.yaml, incomplete-system-response.ja.yaml]
+  - id: passive_voice
+    name: Passive voice
+    quality_attribute: completeness
+    rule_files: [passive-voice.en.yaml, passive-voice.ja.yaml]
+  - id: not_precise_verb
+    name: Not a precise verb
+    quality_attribute: clarity
+    rule_files: [not-precise-verb.en.yaml, not-precise-verb.ja.yaml]

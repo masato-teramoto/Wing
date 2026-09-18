@@ -1,7 +1,7 @@
 {
   "$comment": "wireframe-manifest.json 記入用フォーマット。MK1（requirements 承認後・design 着手前）の生成時に wireframe-authoring がコピーして全スロットを埋め、pages/ にワイヤーフレーム HTML と同時に置く。記入規約の正は .claude/skills/wireframe-authoring/SKILL.md（要件 ID の粒度 = 手順 4 / 被覆・未画面化 = 手順 4b・4c / 監査記録 = 手順 5）。記法は specs/_template と同じ: {{大文字}} = 機械記入スロット / [角括弧] = 記述スロット。screens[]・missing[]・unrealized[] は 1 要素の見本 — コピーして必要数に増やし、該当が無ければ空配列にする。functions[] は機能一覧（F-xxx）が案件に存在する場合のみ記入（無ければ空配列のまま）。acknowledged と confirmed_at は人間が記入する（エージェントは acknowledged の by / at / decision を未記入〔null〕・confirmed_at を null のまま出力し、承認・確認を代行しない。acknowledged オブジェクト自体を null に潰さない）。結合段が入口を新設した場合の _app-shell/ の manifest も本フォーマットを使うが、requirements 由来でない共通物のため screens[].requirements は空配列・unrealized は空配列・acknowledged は未記入のままにする",
-  "status": "review",
-  "updated_at": "2026-09-16T19:15:57+09:00",
+  "status": "approved",
+  "updated_at": "2026-09-17T23:59:00+09:00",
   "$comment_status": "本ファイルは Phase 5（画面モック生成）の承認対象成果物であり、上の status / updated_at が **フロントマターと同等の status 担体**である（Markdown ではないためフロントマターを持てない。規約の正は .claude/skills/aidd-flow/references/status-protocol.md §1・§4）。エージェントは draft のまま出力する — draft → review はゲートのサブエージェント（wireframe-check-subagent）、review → approved は人間のみが行う。_app-shell/ の manifest は要件を持たない擬似 feature のため承認対象ではなく、横断スコープのゲートが status を \"n/a\" に落とす",
   "ds_version": "v0.0.11",
   "token_profile": "wireframe",
@@ -9,7 +9,7 @@
   "$comment_wireframe_notice": "wireframe プロファイルでは上の圧縮済み定型文をそのまま使う（言い換えない — 原文は wireframe-authoring SKILL.md「注記の定型文」）。wireframe 以外のプロファイルでは null にする",
   "audit": {
     "$comment": "生成のたびにエージェントが機械記録する（手で書かない）。result = pass（exit 0）が生成の完了条件 — fail のまま先へ進まない",
-    "ran_at": "2026-09-16",
+    "ran_at": "2026-09-17",
     "scripts": [
       "audit-tokens",
       "audit-components"
@@ -44,11 +44,9 @@
         "3",
         "5",
         "6",
-        "7",
-        "9",
-        "10"
+        "7"
       ],
-      "notes": "入力項目の名称・桁・必須は requirements・steering のいずれにも根拠が無く、未確定事項 ② で基本設計に送られている。項目名を創作すると顧客が合意事項として読み取るため、匿名のプレースホルダー（項目 1〜10）で項目数と配置のイメージのみを示した（人間の判断 / 2026-09-16）。同じ理由で各項目の要否表示（※必須 / ※任意）も置いていない。 steering を根拠に画面へ載せた情報は無い。 form-page の layout からの逸脱が 3 点ある。いずれもデザインシステム側に構えが無いためで、DS 側の課題として missing[] に記録した。(1) ページヘッダにステータスの Badge を置いた（Requirement 5 の「ステータスを画面に表示する」を満たすため。form-page の components に Badge は無い）。(2) アクション行に送信・キャンセル以外の Button（引用・申請）を置いた。(3) 出力の操作（進捗管理DBインポート用出力・帳票出力・PDF 表示）を独立したセクションに置いた。 ステータスの表示値は「編集中」のみとした。ステータスの値の一覧と遷移は未確定事項 ⑥ のため、requirements の本文に現れる語（Requirement 8 の「編集中」）に限っている。 Requirement 7・9・10 は画面に置いたのが出力操作の起点のみで、出力物そのもの（CSV・帳票 3 種・PDF）は画面化していない。Requirement 9・10 は unrealized[] にも記録している（起点は画面にあり、出力物が未画面化という部分的な状態のため両方に現れる）。出力の起動契機は未確定事項 ⑧ のため、この配置は確定ではない。 Requirement 3 の引用について、引用元の指定方法は requirements に規定が無いため画面で確定させていない（操作の起点のみを置いた）。 被覆の分母から外した受入基準と類型: Requirement 1 の受入基準 1（画面ID・PGID の採番）・3（排他制御）・5（未ログイン時の遷移）・6（SQL の WHERE 条件）、Requirement 2 の受入基準 3・5（サーバ側判定・ログ記録）、Requirement 3 の受入基準 3・4（引用元を変更しない = 否定形）、Requirement 5 の受入基準 3・4・5（トランザクション・テーブル種別・物理削除しない）、Requirement 6 の受入基準 2・3（DB 格納方式・直接 URL 参照の禁止）、Requirement 7 の受入基準 2・3（SQL の作り方・文字コード）。いずれもバックエンド専用処理または否定形。"
+      "notes": "steering を根拠に画面へ載せた情報は無い（画面内容はすべて当該 feature の requirements に根拠を持つ）。 状態とページの対応: default（新規登録）= property-form-new.html / default（変更）= property-form-edit.html / input-error = property-form-input-error.html / submitting = property-form-submitting.html / loading = property-form-loading.html / leave-confirm = property-form-leave-confirm.html。状態ごとに独立した 1 ページとしている。 入力項目は匿名のプレースホルダー（項目 1〜10）で情報量だけを示している。項目名・桁・必須は未確定事項であり画面で確定させない（2026-09-16 に人間が確定した扱い）。要否表示（※必須 / ※任意）は form-page の layout が定める構造要素のため置いたが、どの項目が必須かは確定値ではない（基本設計で確定する）。この断りはワイヤーフレームページ本体には書かず、ビューアの注記帯・pages/README.md・本 notes に置いている。 生成しなかった form-page の状態と理由: save-success / save-error = NotificationBanner の情報アイコン（種別が情報）の SVG 実体が DS v0.0.11 に無いため当該状態のページを作らなかった。Requirement 1 の受入基準 2（保存の成否を利用者に知らせる）に対応するため unrealized[] に DS 不足として記録した。 帳票出力の起点操作（アクション行の「帳票を出力」Button）は画面に置いたが、出力される帳票 3 種（Requirement 9）と PDF の別ウインドウ表示（Requirement 10）は画面化していない。要件の主体が出力物であるため、screens[].requirements には 9・10 を含めず unrealized[] にのみ記録している（同じ要件 ID が画面化済みと未画面化の両方に数えられる状態を作らないため）。 被覆の分母から外した受入基準と類型（列挙は UI に現れない受入基準の全件。網羅範囲 = Requirement 1〜10 の全受入基準を確認済み）: Requirement 1 の受入基準 5（画面ID・PGID の採番 = UI に現れない）、Requirement 2 の受入基準 4（権限判定をサーバ側で行う = バックエンド専用処理）、Requirement 3 の受入基準 5（引用元の抽出条件 = バックエンド専用処理）、Requirement 4 の受入基準 6（承認結果の記録 = バックエンド専用処理）、Requirement 6 の受入基準 4・5（保存先と命名規則 = バックエンド専用処理）、Requirement 7 の受入基準 4・5（削除の物理／論理の別と関連レコードの扱い = バックエンド専用処理）。 分母に残し画面化した受入基準: Requirement 1 の受入基準 3（排他制御）は steering/api-standards.md が排他エラーを業務エラーに分類し error ビューへメッセージIDの文言を表示すると定めるため、利用者に見える結果を伴う。ただし当該表示は NotificationBanner を要する save-error 状態であり、DS 不足により未生成のため unrealized[] に含めた（前回ゲートの指摘 #7(a) への対応）。 2026-09-17 の再修正: 入力エラーの文言を DS 規定の形（冒頭の全角アスタリスク + 具体的な内容と訂正方法）に改めた。ModalDialog の閉じる / キャンセルは button 要素に戻した（DS spec）。操作の組み方は wireframe-authoring 手順 3 に従い、画面間の遷移のみ <a href>、その場で完結する操作は Button とした。したがって顧客がページをクリックして状態を辿ることはできず、状態間の移動はビューアの一覧から行う（MK2 の進め方の制約として ③ に提示する）。 帳票出力の起点に加え、出力内容を PDF として別ウインドウで開く動線も画面に置いた（Requirement 10。2026-09-16 に人間が「起点操作と PDF 別ウインドウの動線は画面に描く」と確定した事項。前回は notes / README が「置いている」と記しながら実体が無かった）。出力される PDF そのものは未画面化のため unrealized[] に残す。"
     },
     {
       "screen": "物件基本情報の承認",
@@ -76,7 +74,7 @@
         "4",
         "5"
       ],
-      "notes": "承認フローの段階数（5 段階または 3 段階）・各段階の承認者・スキップの条件は未確定事項 ⑤ のため画面で確定させていない。段階の表示（何段目か）も置いていない。ステータスの表示値は approval パターンが構えとして定める語（承認待ち / 承認済み）に限った。承認履歴の列は approval パターンの layout が定める構え（日時・操作者・操作・コメント）であり、履歴に残す項目の範囲は未確定事項 ⑥ に従って基本設計で確定する。"
+      "notes": "状態とページの対応: pending = property-approval-pending.html / pending（承認の確定ダイアログ）= property-approval-approve-dialog.html / pending（差戻しの確定ダイアログ）= property-approval-reject-dialog.html / action-error = property-approval-action-error.html / not-actionable = property-approval-not-actionable.html / history-empty = property-approval-history-empty.html / loading = property-approval-loading.html。 ステータスの表示値は approval パターンが layout に例示する語（承認待ち / 承認済 / 差戻し）に揃えた。値の一覧と遷移は確定していない（基本設計で確定する）。Badge は色だけで区別せず必ずテキストを伴う（never_do）。 ModalDialog にはヘッダ右上に可視テキストの「閉じる」を置いた。close アイコンの SVG 実体が DS v0.0.11 に無いため、アイコンは付けずラベルのみで組んでいる（装飾アイコンの扱い）。 生成しなかった approval の状態と理由: approving = ModalDialog の確定 Button の loading 表現であり、部品の挙動であって画面の型ではないため状態別ページを設けていない / action-done = 完了は NotificationBanner type=\"success\" で伝える構えだが、情報アイコンの SVG 実体が DS v0.0.11 に無いため生成していない。Requirement 4 の受入基準（承認 / 差戻しの完了を利用者に知らせる）に対応するため unrealized[] に DS 不足として記録した。 承認画面に編集可能フィールドを混在させていない（never_do）。承認 = primary / 差戻し = secondary の区別を保っている。 2026-09-17 の再修正: 承認 = primary / 差戻し = secondary の見えの区別を実際に付けた（前回は双方が同じ見えで approval の never_do に抵触し、notes の申告とも一致していなかった）。ModalDialog の閉じる / キャンセルは button 要素に戻した。"
     },
     {
       "screen": "エラー画面（権限なし）",
@@ -91,7 +89,7 @@
       "requirements": [
         "2"
       ],
-      "notes": "Requirement 2 の受入基準 1（権限を持たない場合にエラー画面へメッセージIDに対応する文言を表示する）に対応する。variant は 403。受入基準 2 の「権限に応じた画面要素の活性・非活性・非表示」は、制御の対象となる画面要素が未確定事項 ③ のため画面化していない。"
+      "notes": "Requirement 2 の受入基準 1（権限を持たない場合にエラー画面へメッセージIDに対応する文言を表示する）に対応する。variant は 403。メッセージID の具体値は requirements にも steering にも割当の根拠が無いため画面には表示していない（steering/tech.md の命名規則に合う値も、steering/api-standards.md が想定外例外の既定値と定める GEF-000000 も、本画面への割当としては確定していない）。復帰アクションは error-page の layout に従い 1 つ（「トップへ戻る」）にしたが、システム全体の入口は MK1 の時点では存在しないため（入口の新設は結合段の担当）、暫定で当該 feature の入口ページを指している。結合段で差し替える。missing[] に記録した。"
     }
   ],
   "missing": [
@@ -114,6 +112,10 @@
     {
       "name": "form-page における既存レコードのステータス表示の構え",
       "reason": "編集対象のレコードが状態（ステータス）を持つ場合の表示位置を form-page が定めておらず、components に Badge も含まれない。ページヘッダに Badge を置いて続行した。"
+    },
+    {
+      "name": "システム全体の入口（error-page の復帰アクションの遷移先）",
+      "reason": "error-page の layout は 403 の復帰アクションを「一覧へ戻る」または「トップへ戻る」と定めるが、入口の新設は結合段（wireframe-integration）の担当であり MK1 の時点では存在しない。暫定で当該 feature の入口ページを指しており、結合段で差し替える。"
     }
   ],
   "unrealized": [
@@ -139,13 +141,37 @@
       ],
       "screen": "出力情報の PDF 表示（別ウインドウ）",
       "reason": "表示内容は Requirement 9 の帳票 3 種と同じで未確定であり、表示そのものはブラウザの PDF ビューアが担うためデザインシステムの部品では描けない。別ウインドウを開く起点と動線は画面に置いている。",
-      "category": "UI 対象外"
+      "category": "DS 不足"
+    },
+    {
+      "requirements": [
+        "1"
+      ],
+      "screen": "物件基本情報 登録・変更（save-success / save-error 状態）",
+      "reason": "保存の成否を利用者に知らせる表示は form-page の save-success / save-error 状態であり、いずれも NotificationBanner を要する。NotificationBanner の status-* アイコンは種別が情報でラベルによる代替ができず、SVG の実体が DS v0.0.11 に無いため当該状態のページを生成していない。排他エラー（受入基準 3）の業務エラー表示も同じ状態に含まれる。",
+      "category": "DS 不足"
+    },
+    {
+      "requirements": [
+        "4"
+      ],
+      "screen": "物件基本情報の承認（action-done 状態）",
+      "reason": "承認 / 差戻しの完了を利用者に知らせる表示は NotificationBanner type=\"success\" を要する。同上の理由で当該状態のページを生成していない。",
+      "category": "DS 不足"
+    },
+    {
+      "requirements": [
+        "2"
+      ],
+      "screen": null,
+      "reason": "権限に応じた画面要素の活性・非活性・非表示（受入基準 2）は、どの要素をどの権限で制御するかが未確定事項であり requirements から決まらないため画面化していない。権限が無い場合のエラー画面（受入基準 1）は error-403.html として画面化済みであり、未画面化はこの受入基準に限られる。",
+      "category": "requirements 起因"
     }
   ],
   "acknowledged": {
     "$comment": "開発者が記入する（未画面化要件の承認）。承認なしに結合段・MK2 へ進まない。判定基準は「主要画面が生成できていれば進んでよい」。unrealized が空配列 [] の feature では承認不要 — by / at / decision を未記入のまま先へ進んでよい。記入の場は Phase 5 の ③ 人間レビュー（承認の判断と同じ停止点で行い、停止点を増やさない）",
-    "by": null,
-    "at": null,
-    "decision": null
+    "by": "Junichi Noumi",
+    "at": "2026-09-17",
+    "decision": "未画面化の内容を確認し、いずれも主要画面に当たらないことを確認した。DS 不足によるものは DS 側の課題として引き継ぎ、requirements 起因のものは基本設計で確定する。この状態で結合段・MK2 へ進むことを承認する。"
   }
 }
