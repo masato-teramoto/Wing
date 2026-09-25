@@ -1,0 +1,37 @@
+{
+  "name": "Pagination",
+  "status": "draft",
+  "purpose": "一覧（Table）を複数ページに分けて表示するときのページ移動と位置表示を行う部品。件数表示 + 前へ / 次へ + カウンターの simple と、ページ番号で任意のページへ移動できる numbered の 2 variant。ページの取得・URL 同期・1 ページあたりの件数の決定はアプリ側責務",
+  "use_when": [
+    "list-page / inbox の Table が 1 ページに収まらない場合（総ページ数 2 以上）",
+    "variant=simple: 総ページ数が少ない（目安 5 ページ以下）、または総件数が不明・非常に大きく番号で辿る意味が薄い一覧",
+    "variant=numbered: 総ページ数が 6 以上で、任意のページへのジャンプや末尾への移動が必要な一覧"
+  ],
+  "never_use_when": [
+    "総ページ数が 1 のときに表示する（部品自体を出力しない — デジ庁準拠）",
+    "先頭 / 末尾のページで移動できない方向のボタンを disabled で残す（非出力にする — デジ庁準拠）",
+    "無限スクロール・「さらに読み込む」の代用（業務の一覧はページ単位で位置を把握できる本部品を使う）",
+    "1 ページあたりの表示件数の切替 UI を本部品に含める（第一弾では提供しない。デジ庁はテーブルコントロール〔準備中〕の担当としている — 必要になれば件数表示の横に Select を置く形で起票）",
+    "Table 以外（カード羅列・ウィザードのステップ）のページ送りに使う（ステップ表示は confirm-flow の簡易表現）"
+  ],
+  "confusable_with": {
+    "PageNavigation": "その名前の部品は存在しない（デジ庁名「ページナビゲーション」の英訳。本 DS では Pagination に統一）",
+    "Link / Button": "個々のページ移動要素は URL が変わるなら Link、変わらないなら Button（Button / Link spec の原則）。Pagination はそれらを並べる複合部品",
+    "confirm-flow のステップ表示": "手続きの進行段階は confirm-flow のテキスト簡易表現。データの分割表示は Pagination"
+  },
+  "variants": {
+    "variant": "simple（既定）: 件数表示 + 前へ / 次へ + カウンター。numbered: 件数表示 + 先頭 / 前へ / ページ番号〔現在ページ ±2 の最大 5 個〕/ 省略記号「…」/ 次へ / 末尾 + カウンター",
+    "element": "URL が変わるページ移動なら各要素を Link appearance=\"button\"、変わらない（同一 URL 内の再取得）なら Button variant=\"secondary\" size=\"sm\"。1 つの Pagination 内で混在させない"
+  },
+  "states_to_cover": ["default", "first-page", "last-page", "single-page", "loading"],
+  "behavior": "件数表示は「1–20 件 / 全 134 件」の形式（表示中の範囲と総件数。総件数が不明な場合は範囲のみ）。カウンターは「現在ページ / 総ページ数」（例:「3 / 7」、桁区切りあり）。総ページ数 1 のときは部品全体を出力しない。先頭ページでは「先頭」「前へ」を、末尾ページでは「次へ」「末尾」を非出力にする（disabled にしない）。numbered のページ番号は現在ページを中心に前後 2 ページ（最大 5 個）を表示し、先頭 / 末尾との間が離れている場合に省略記号「…」を置く（省略記号は操作できない）。ページ移動後は Table の先頭が見える位置へスクロールし、フォーカスを Table の caption（または一覧の見出し）へ移して位置の変化を伝える。ページ移動中（loading）は Table 側の loading 状態（Skeleton）に準拠し、Pagination の要素は再度押せないようにする（Button の loading または aria-disabled）。ページ移動で行選択は解除される（list-page の rows-selected 参照）",
+  "layout_guidance": "Table の直下に置く。左に件数表示、右にページ移動要素 + カウンターを横並びにする（余白 space.md）。要素間の余白は space.sm。「前へ」「次へ」はテキストラベル必須（アイコンのみにしない — IconButton 不採用）。矢印アイコンを添える場合は icons/ICON-MAP.md の prev（「前へ」の左・リード配置）/ next（「次へ」の右・テール配置）を icon.size.md・currentColor・aria-hidden で使い、記号文字「<」「>」「←」「→」で描かない。「先頭」「末尾」にはアイコンを付けない（語彙未登録 — 必要になれば起票）。現在ページの番号は太字 + 下線で示し、色のみに依存しない。ボタンのタップ領域は 44 CSS px 以上（size=\"sm\" でも余白で確保する）",
+  "a11y": "全体を nav 要素で囲み aria-label に文脈名を付ける（例:「検索結果のページ」「承認待ち一覧のページ」。「ページネーション」の繰り返しにしない — デジ庁準拠）。現在ページの番号には aria-current=\"page\" を付け、操作要素ではなくテキストまたは押せない要素にする。省略記号は aria-hidden=\"true\"。「先頭」「前へ」「次へ」「末尾」は可視テキストラベルを持つ（デジ庁 v1 実装の「最初のページに移動する」等の aria-label は可視テキストで代替）。ページ移動後の状態変化は aria-live で通知せず、フォーカス移動（Table の caption / 見出し）で伝える。件数表示・カウンターは通常のテキストとして読み上げられる位置に置く",
+  "anti_pattern_example": "総ページ数 1 の一覧に「1 / 1」と前へ / 次への disabled ボタンを表示する → 部品を出力しない。/ 「<」「>」のアイコンだけのボタンにする → 「前へ」「次へ」のテキストラベルを付ける。/ 100 ページの一覧を前へ / 次へだけで辿らせる → variant=numbered で番号・末尾へ移動できるようにする。/ ページ番号を 1〜100 まで全部並べる → 現在 ±2 と省略記号にする",
+  "responsive": "breakpoint.sm 未満では numbered でもページ番号と省略記号を隠し、先頭 / 前へ / カウンター / 次へ / 末尾 のみ表示する（デジ庁 v1 実装のモバイル簡略化と同じ）。件数表示は折り返して 2 行になってよい",
+  "source": {
+    "digital_go_jp": "ページナビゲーション (Page Navigation)",
+    "url": "https://design.digital.go.jp/dads/components/page-navigation/",
+    "note": "デジ庁はガイドライン準備中（2026-08-25 時点、v2.17.1）。現行 v2 HTML 実装は「前へ / 次へ + カウンター」のみで、その作法（総ページ数 1 なら非出力、端では disabled ではなく非出力、nav の aria-label は文脈名、URL が変わるなら a・変わらないなら button）を variant=simple として採取。variant=numbered は旧 v1 React 実装（先頭 / 前へ / 現在 ±3 / 次へ / 末尾、aria-current=page、モバイルは番号非表示）を参考にした自社翻案（番号は現在 ±2 に調整、ラベルは可視テキスト）。使い分けの目安（総ページ数 6 以上で numbered）・ページ移動後のフォーカス移動・表示件数切替の非提供は自社判断。デジ庁公開後に突合して更新する。参照日 2026-08-25。業務システム対応ギャップ棚卸し GAP-06（tickets/2026-08-24-business-system-gaps.md、提案 tickets/2026-08-25-business-system-gaps-proposal.md）— 当初の「部品化見送り」案をユーザー指示で取り下げ、自社定義案を 2026-08-25 承認・新設。同日 アイコン定義 ICN-01〜06（tickets/2026-08-25-icon-definition.md）承認で prev / next アイコンを icons/ICON-MAP.md に紐付け"
+  }
+}

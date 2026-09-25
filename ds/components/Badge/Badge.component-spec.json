@@ -1,0 +1,32 @@
+{
+  "name": "Badge",
+  "status": "draft",
+  "purpose": "レコードの状態（ステータス）を短い語で表示する読み取り専用のラベル",
+  "use_when": [
+    "一覧の行・詳細画面でのステータス表示（例: 承認待ち / 有効 / 停止）"
+  ],
+  "never_use_when": [
+    "クリックできる操作にする（→ Button / Link。Badge は表示専用）",
+    "色だけで意味を伝える（必ず状態名のテキストを伴う）",
+    "danger 系の色を目立たせ目的で使う（破壊的・エラー系の状態のみ — トークン danger の $description と同じ規律。color=danger も同じ）",
+    "多色の乱用（区分は variants.color の 5 種の範囲に限る。1 画面で同じ意味の状態に別の color を使わない・同じ color に別の意味を持たせない）",
+    "枠線（ボーダー）付きの見た目にする（Button の縁取りスタイルと酷似し、押せる要素と誤認される。Badge は常に単色塗り・枠線なしとする）",
+    "角丸を Button と同じ radius.sm にする（形での区別が失われ押せる要素と誤認される。Badge は radius.full の全周丸 — 2026-08-25 REQ-19）",
+    "variants.color に無い色（info / brand / 独自の淡色）を作る（案内はレコードの状態ではない → NotificationBanner。必要になれば起票）",
+    "primary / danger などの濃い塗りに白文字（on-primary）を載せた「塗りチップ」にする（Badge の背景は常に *-subtle の淡色面。濃い塗りは Button と紛らわしい）"
+  ],
+  "confusable_with": {
+    "Button": "押せるなら Button。状態の表示だけなら Badge。視覚面でも区別する — (1) 形: Badge は全周丸（radius.full）/ Button は radius.sm（brand-principles.md「形でも操作可能性を区別する」— 2026-08-25 REQ-19）、(2) 縁取り: Badge は枠線を持たず単色塗りとし、Button と同じ縁取りスタイルを使わない。角丸・padding・文字サイズ・面の色がすべて Button と揃うと押せる要素と誤認される",
+    "NotificationBanner": "レコードの状態表示は Badge。利用者への通知・案内は NotificationBanner（Badge に info 系の color は無い）"
+  },
+  "variants": {
+    "color": "neutral（既定。背景 color.semantic.neutral-subtle / 文字 color.semantic.text）/ primary（背景 primary-subtle / 文字 on-primary-subtle — primary そのものは淡色面上で AA 未満のため使わない）/ danger（背景 danger-subtle / 文字 on-danger-subtle — 同上）/ success（背景 success-subtle / 文字 success）/ warning（背景 warning-subtle / 文字 text — warning 色は文字のコントラストが不足するため文字色に使わない）。いずれも枠線なし・単色塗り。角丸 radius.full（全周丸・ピル形。Button〔radius.sm〕と形で区別する — 2026-08-25 REQ-19。従来の radius.sm は Button と同値で押せる要素と誤認されたため撤回）、上下 padding space.xs、左右 padding space.ms（ピル形は両端が丸く左右の余白が視覚的に詰まって見えるため、space.sm から 1 段広げる — 同 REQ-19）、文字は font.size.caption",
+    "how_to_choose": "状態の意味 → color の対応: 進行中・処理待ちなど「利用者が次に手を打つ対象」の状態（承認待ち・要対応・自分の担当）→ primary / 正常に完了・有効・承認済み → success / 失敗・エラー・却下・期限切れ → danger / 失敗ではないが注意を要する（期限間近・一部未入力・一時停止）→ warning / それ以外の中立的な区分（下書き・完了済みのアーカイブ・無効・種別ラベル）→ neutral。迷ったら neutral。danger は「失敗・破壊的」の意味の状態にだけ使い、目立たせ目的で選ばない。1 つの業務で状態 → color の対応を決めたら全画面で同じ対応にする（一覧と詳細で色が変わらない）"
+  },
+  "states_to_cover": ["default"],
+  "a11y": "色のみに依存せず状態名をテキストで示す。装飾目的の付加情報をスクリーンリーダーに冗長に読ませない。文字と背景のコントラスト比（暫定値での計算）: neutral 約 14:1 / primary（on-primary-subtle）約 5.8:1 / danger（on-danger-subtle）約 5.9:1 / success 約 4.8:1 / warning（text）約 17:1 — 全 variant が AA 4.5:1 を満たす（primary / danger の文字に 600 段の primary / danger をそのまま使うと約 4.2 / 4.4:1 で AA 未満になるため、文字専用の 700 段トークンを使う — 2026-08-25 前倒し解消）。第二段でデジ庁プリミティブへ移植する際も各組み合わせで 4.5:1 以上を再確認する",
+  "source": {
+    "digital_go_jp": "該当部品なし（自社定義）",
+    "note": "近縁のチップラベル (Chip Label) はガイドライン準備中（2026-08-18 参照）— 公開後に名寄せを再検討。2026-08-25 追記（REQ-03）: チップラベルが引き続き準備中（Figma + 実装のみ）のため、色 variant（variants.color = neutral / primary / danger / success / warning。背景 = 各 *-subtle トークン、文字 = neutral / warning は text、success は success、primary / danger は淡色面用の on-primary-subtle / on-danger-subtle。枠線なし）は自社定義で先行させ、デジ庁チップラベル公開後に名寄せ・突合する。tickets/2026-08-25-density-and-layout-requests.md REQ-03 で承認。同日、primary / danger 文字の AA 未満（既知課題）をユーザー承認で前倒し解消（on-*-subtle トークン 2 件追加）。2026-08-25 段組みルール要望 REQ-19 対応（tickets/2026-08-25-column-rules-and-visual-requests.md）: REQ-03 で書いた「角丸 radius.sm」が Button と同値で押せる要素と誤認されたため、radius.full（新設トークン・全周丸）へ改定し左右 padding を space.sm → space.ms に広げた。デジ庁チップラベルは引き続き準備中で角丸の規定は採取できないため自社定義。将来 Chip / Tag（操作可能チップ）を追加する場合は「操作可能チップは全周丸 + アイコン、Badge は全周丸のみ」の区別が必要になる（申し送り — 起票時に判断）"
+  }
+}

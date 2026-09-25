@@ -1,72 +1,10 @@
 {
-  "updated_at": "{{ISO_8601_TIMESTAMP}}",
-
-  "current": {
-    "phase": 5,
-    "phase_name": "design 作成",
-    "waiting_for": "human_answer",
-    "next_action": "feature-name-b の design.md の未回答質問に回答する",
-    "open_blockers": 1
-  },
-
-  "phases": [
-    { "phase": 1, "name": "要求受入", "artifact": "要求一覧", "status": "approved", "updated_at": "2026-01-01T00:00:00+09:00", "gate_record": "[ゲート記録のパス]" },
-    { "phase": 2, "name": "Steering 作成", "artifact": "steering/ 7ファイル", "status": "approved", "updated_at": "2026-01-01T00:00:00+09:00", "gate_record": "[パス]" },
-    { "phase": 3, "name": "Feature 分割", "artifact": "feature-list.md", "status": "approved", "updated_at": "2026-01-01T00:00:00+09:00", "gate_record": "[パス]" },
-    { "phase": 4, "name": "requirements 作成", "artifact": "specs/*/requirements.md", "status": "approved", "updated_at": "2026-01-01T00:00:00+09:00", "gate_record": "[パス]" },
-    { "phase": 5, "name": "design 作成", "artifact": "specs/*/design.md", "status": "draft", "updated_at": "2026-01-01T00:00:00+09:00", "gate_record": null },
-    { "phase": 6, "name": "docs 作成", "artifact": "docs/ 一式", "status": "not_started", "updated_at": null, "gate_record": null },
-    { "phase": 7, "name": "tasks 作成", "artifact": "specs/*/tasks.md", "status": "not_started", "updated_at": null, "gate_record": null }
-  ],
-
-  "steering": {
-    "product":        { "status": "approved", "updated_at": "2026-01-01T00:00:00+09:00", "waiting_for": null, "open_placeholders": 0 },
-    "tech":           { "status": "approved", "updated_at": "2026-01-01T00:00:00+09:00", "waiting_for": null, "open_placeholders": 0 },
-    "architecture":   { "status": "approved", "updated_at": "2026-01-01T00:00:00+09:00", "waiting_for": null, "open_placeholders": 0 },
-    "security":       { "status": "approved", "updated_at": "2026-01-01T00:00:00+09:00", "waiting_for": null, "open_placeholders": 0 },
-    "non-functional": { "status": "approved", "updated_at": "2026-01-01T00:00:00+09:00", "waiting_for": null, "open_placeholders": 0 },
-    "database":       { "status": "approved", "updated_at": "2026-01-01T00:00:00+09:00", "waiting_for": null, "open_placeholders": 0 },
-    "api-standards":  { "status": "approved", "updated_at": "2026-01-01T00:00:00+09:00", "waiting_for": null, "open_placeholders": 0 }
-  },
-
-  "docs": {
-    "code-design":     { "status": "not_started", "updated_at": null, "waiting_for": null, "open_placeholders": null },
-    "data-model":      { "status": "not_started", "updated_at": null, "waiting_for": null, "open_placeholders": null },
-    "system-overview": { "status": "not_started", "updated_at": null, "waiting_for": null, "open_placeholders": null }
-  },
-
-  "features": [
-    {
-      "priority": 1,
-      "name": "[feature-name-a]",
-      "type": "Platform",
-      "documents": {
-        "requirements": { "status": "approved", "updated_at": "2026-01-01T00:00:00+09:00", "waiting_for": null, "open_placeholders": 0 },
-        "design": { "status": "approved", "updated_at": "2026-01-01T00:00:00+09:00", "waiting_for": null, "open_placeholders": 0 },
-        "tasks": { "status": "not_started", "updated_at": null, "waiting_for": null, "open_placeholders": null }
-      }
-    },
-    {
-      "priority": 2,
-      "name": "[feature-name-b]",
-      "type": "User",
-      "documents": {
-        "requirements": { "status": "approved", "updated_at": "2026-01-01T00:00:00+09:00", "waiting_for": null, "open_placeholders": 0 },
-        "design": { "status": "draft", "updated_at": "2026-01-01T00:00:00+09:00", "waiting_for": "human_answer", "open_placeholders": 3 },
-        "tasks": { "status": "not_started", "updated_at": null, "waiting_for": null, "open_placeholders": null }
-      }
-    }
-  ],
-
-  "blockers": [
-    {
-      "target": "specs/[feature-name-a]/design.md",
-      "status_from": "approved",
-      "status_to": "review",
-      "return_to_phase": 5,
-      "detected_by": "phase-7-gate",
-      "reason": "tasks にしか存在しない設計判断があった",
-      "gate_record": "[パス]"
-    }
-  ]
+  "release": "alpha3",
+  "engine_schema": 2,
+  "current": {},
+  "events": [],
+  "features": [],
+  "blockers": [],
+  "workflow": {},
+  "progress": {}
 }

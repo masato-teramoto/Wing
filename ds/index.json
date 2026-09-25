@@ -1,0 +1,222 @@
+{
+  "$comment": "自動生成。手で編集しない。ここに無い部品・パターンは存在しない（自作もしない）",
+  "generated_by": "scripts/generate-index.mjs",
+  "components": [
+    {
+      "name": "Badge",
+      "status": "draft",
+      "purpose": "レコードの状態（ステータス）を短い語で表示する読み取り専用のラベル",
+      "spec": "components/Badge/Badge.component-spec.json"
+    },
+    {
+      "name": "Button",
+      "status": "stable",
+      "purpose": "ユーザーの操作（送信・保存・削除など、その場でアクションを実行する）に使う",
+      "spec": "components/Button/Button.component-spec.json"
+    },
+    {
+      "name": "Checkbox",
+      "status": "draft",
+      "purpose": "複数の選択肢から複数選ぶ、または単一項目のオン/オフを切り替えるフォーム部品",
+      "spec": "components/Checkbox/Checkbox.component-spec.json"
+    },
+    {
+      "name": "Combobox",
+      "status": "draft",
+      "purpose": "多数の選択肢（目安 30 件超）や名称・コードで探す必要があるマスタ参照（取引先・社員・勘定科目・品目等）から、文字入力で候補を絞り込んで 1 つを選ぶフォーム部品。入力欄 + 候補リストで構成される。候補の取得（API 連携・絞り込みロジック）はアプリ側責務 — 本部品が規定するのは UI の挙動・状態表現・a11y 属性のみ",
+      "spec": "components/Combobox/Combobox.component-spec.json"
+    },
+    {
+      "name": "DatePicker",
+      "status": "draft",
+      "purpose": "年 / 月 / 日を分けたテキスト入力による日付入力部品。前後の日付を見ながら選ぶ日付にのみカレンダーボタンを付ける（variant calendar=true）。生年月日・有効期限・伝票の日付などの「特定可能な既知の日付」はカレンダー無し（calendar=false）で使う",
+      "spec": "components/DatePicker/DatePicker.component-spec.json"
+    },
+    {
+      "name": "Disclosure",
+      "status": "draft",
+      "purpose": "メインの情報に対する追加情報（補足説明・詳細オプション・詳細検索条件など）を折りたたんで提示し、利用者が必要なときだけ開いて読める開閉部品。タイトル行 + 開閉アイコン + コンテンツで構成される",
+      "spec": "components/Disclosure/Disclosure.component-spec.json"
+    },
+    {
+      "name": "EmptyState",
+      "status": "draft",
+      "purpose": "一覧・検索結果が 0 件のときに、状況の説明と次にできる行動を 1 つ提示する",
+      "spec": "components/EmptyState/EmptyState.component-spec.json"
+    },
+    {
+      "name": "FileUpload",
+      "status": "draft",
+      "purpose": "フォームで単体または複数のファイルを選択して添付する入力部品（HTML の input type=\"file\" に対応）。部品の責務はファイルの選択・選択結果の表示・クライアント側の事前検証（形式・サイズ・件数）まで — 送信・アップロード進行・保存はアプリ側責務",
+      "spec": "components/FileUpload/FileUpload.component-spec.json"
+    },
+    {
+      "name": "InputText",
+      "status": "draft",
+      "purpose": "1 行以内のテキスト入力（氏名・電話番号・メールアドレス・金額・数量など）に使う",
+      "spec": "components/InputText/InputText.component-spec.json"
+    },
+    {
+      "name": "Link",
+      "status": "stable",
+      "purpose": "ページ遷移・外部リンク。URL が変わる操作はすべてこれ",
+      "spec": "components/Link/Link.component-spec.json"
+    },
+    {
+      "name": "ModalDialog",
+      "status": "draft",
+      "purpose": "現在の操作を中断して、完了必須の短い確認・入力をその場で行う",
+      "spec": "components/ModalDialog/ModalDialog.component-spec.json"
+    },
+    {
+      "name": "NotificationBanner",
+      "status": "draft",
+      "purpose": "サービス側から利用者へ、操作の結果（完了・失敗）や重要度の高い告知をページ内の静的なバナーで提示する。利用者の決定は求めない（決定が必要なら ModalDialog）",
+      "spec": "components/NotificationBanner/NotificationBanner.component-spec.json"
+    },
+    {
+      "name": "Pagination",
+      "status": "draft",
+      "purpose": "一覧（Table）を複数ページに分けて表示するときのページ移動と位置表示を行う部品。件数表示 + 前へ / 次へ + カウンターの simple と、ページ番号で任意のページへ移動できる numbered の 2 variant。ページの取得・URL 同期・1 ページあたりの件数の決定はアプリ側責務",
+      "spec": "components/Pagination/Pagination.component-spec.json"
+    },
+    {
+      "name": "RadioButton",
+      "status": "draft",
+      "purpose": "複数の選択肢から 1 つだけを選ぶフォーム部品",
+      "spec": "components/RadioButton/RadioButton.component-spec.json"
+    },
+    {
+      "name": "RepeatingFieldGroup",
+      "status": "draft",
+      "purpose": "明細行のように、フォーム内で同じ項目群を複数行ぶん追加・削除しながら入力するための複合部品。各行の中身（InputText / Select 等）は呼び出し側が選ぶ — 本部品が規定するのは行の追加・削除・エラー表示の挙動のみ",
+      "spec": "components/RepeatingFieldGroup/RepeatingFieldGroup.component-spec.json"
+    },
+    {
+      "name": "Select",
+      "status": "draft",
+      "purpose": "既定の選択肢（目安 6〜30 個）から 1 つを選ぶフォーム部品",
+      "spec": "components/Select/Select.component-spec.json"
+    },
+    {
+      "name": "Skeleton",
+      "status": "draft",
+      "purpose": "データ取得中に、最終的に表示される内容の形（見出し・テキスト行・テーブル行・入力欄）を模したグレーの矩形プレースホルダで領域を確保し、読み込み後のレイアウトのガタつきを防ぐ読み込み中表示部品。各パターンの loading 状態が参照する「スケルトン」の実現手段",
+      "spec": "components/Skeleton/Skeleton.component-spec.json"
+    },
+    {
+      "name": "Table",
+      "status": "draft",
+      "purpose": "構造化データを行と列で提示・比較する。一覧画面の主表示に使う",
+      "spec": "components/Table/Table.component-spec.json"
+    },
+    {
+      "name": "Tabs",
+      "status": "draft",
+      "purpose": "同じ画面領域で複数の内容を排他的に切り替えて表示する部品（タブリスト + タブパネル）。URL を変えない表示切替専用。detail-page の関連情報セクションで複数種類の関連一覧を切り替える用途が主",
+      "spec": "components/Tabs/Tabs.component-spec.json"
+    },
+    {
+      "name": "Textarea",
+      "status": "draft",
+      "purpose": "複数行になりうる自由記述テキストの入力に使う",
+      "spec": "components/Textarea/Textarea.component-spec.json"
+    }
+  ],
+  "patterns": [
+    {
+      "name": "app-shell",
+      "status": "draft",
+      "use_when": "全画面に共通するヘッダー/グローバルナビゲーション枠。list-page / form-page / detail-page / confirm-flow / error-page（403 / 404 / 500）の外側にかぶせる共通レイアウト。login と error-page の maintenance variant は未認証・利用不能の画面のためシェル無しで表示する",
+      "pattern": "patterns/app-shell/pattern.json"
+    },
+    {
+      "name": "approval",
+      "status": "draft",
+      "use_when": "申請されたレコード（申請書・精算・稟議など）を承認者が閲覧し、承認または差戻しを行う単票の画面。detail-page 準拠の閲覧画面に承認操作と承認履歴を加えた variant として組む。承認待ちの一覧は inbox パターン。権限モデル（誰が承認できるか・承認段数）と状態遷移はアプリ側責務 — 本パターンが規定するのは画面の型のみ",
+      "pattern": "patterns/approval/pattern.json"
+    },
+    {
+      "name": "confirm-flow",
+      "status": "draft",
+      "use_when": "入力内容を確定する前に確認を挟む 3 画面フロー（入力 → 確認 → 完了）。申請・登録などの確定操作",
+      "pattern": "patterns/confirm-flow/pattern.json"
+    },
+    {
+      "name": "detail-page",
+      "status": "draft",
+      "use_when": "1 レコードの閲覧専用の詳細表示",
+      "pattern": "patterns/detail-page/pattern.json"
+    },
+    {
+      "name": "error-page",
+      "status": "draft",
+      "use_when": "画面そのものを表示できない状況（権限なし 403 / 見つからない 404 / システムエラー 500 / メンテナンス中）を利用者に伝え、復帰手段を 1 つ提示するページ。variant = 403 / 404 / 500 / maintenance。セッションタイムアウトは本パターンを使わず、login パターンへ遷移して NotificationBanner type=\"info\"（「一定時間操作がなかったためログアウトしました。再度ログインしてください」）で伝える",
+      "pattern": "patterns/error-page/pattern.json"
+    },
+    {
+      "name": "form-page",
+      "status": "draft",
+      "use_when": "レコードの登録・編集フォーム（登録 / 編集は同一パターンの variant — 画面構成は同じ）",
+      "pattern": "patterns/form-page/pattern.json"
+    },
+    {
+      "name": "inbox",
+      "status": "draft",
+      "use_when": "自分が処理すべき承認待ちの申請を一覧し、承認画面（approval）へ進む、または複数件を一括承認する画面。list-page 準拠の variant として組む。担当判定（誰の inbox に載るか）はアプリ側責務",
+      "pattern": "patterns/inbox/pattern.json"
+    },
+    {
+      "name": "list-page",
+      "status": "draft",
+      "use_when": "複数レコードの検索・閲覧・選択（期間・区分・ステータス等の複合条件による詳細検索を含む — 詳細検索は独立パターンではなく本パターンの詳細検索パネルで組む）",
+      "pattern": "patterns/list-page/pattern.json"
+    },
+    {
+      "name": "login",
+      "status": "draft",
+      "use_when": "ID / パスワードで認証する業務システムの入口画面。app-shell の外側に置く（シェル無し）。認証処理・SSO 連携・アカウントロック判定・ログイン後の遷移先の決定はアプリ側責務で、本パターンが規定するのは画面の型のみ",
+      "pattern": "patterns/login/pattern.json"
+    },
+    {
+      "name": "report",
+      "status": "draft",
+      "use_when": "帳票（申請書・精算書・一覧表など）を印刷または PDF 出力するための印刷向けページ型。画面で閲覧する detail-page / list-page とは別に、印刷用の構成で組む。variant = portrait（A4 縦）/ landscape（A4 横。列数の多い一覧表）。画面内の印刷プレビュー UI は作らず、ブラウザの印刷プレビューに委ねる（print-preview パターンは第一弾では提供しない）",
+      "pattern": "patterns/report/pattern.json"
+    }
+  ],
+  "does_not_exist_yet": {
+    "components": [
+      "Accordion",
+      "Breadcrumb",
+      "ButtonGroup",
+      "Card",
+      "DateFieldSet",
+      "DescriptionList",
+      "Drawer",
+      "IconButton",
+      "InputNumber",
+      "PageNavigation",
+      "StepNavigation",
+      "Toast",
+      "Tooltip"
+    ],
+    "patterns": [
+      "wizard",
+      "master-maintenance",
+      "import",
+      "dashboard",
+      "settings",
+      "list-detail-split",
+      "tree-detail",
+      "calendar",
+      "job-monitor",
+      "audit-log",
+      "diff-compare",
+      "role-matrix",
+      "print-preview",
+      "board"
+    ]
+  },
+  "note_for_agents": "does_not_exist_yet の部品・パターンが必要になったら、実装せず人間に起票すること"
+}

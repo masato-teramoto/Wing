@@ -1,0 +1,31 @@
+{
+  "name": "Combobox",
+  "status": "draft",
+  "purpose": "多数の選択肢（目安 30 件超）や名称・コードで探す必要があるマスタ参照（取引先・社員・勘定科目・品目等）から、文字入力で候補を絞り込んで 1 つを選ぶフォーム部品。入力欄 + 候補リストで構成される。候補の取得（API 連携・絞り込みロジック）はアプリ側責務 — 本部品が規定するのは UI の挙動・状態表現・a11y 属性のみ",
+  "use_when": [
+    "選択肢が多く（目安 30 件超）、全件を眺めて選ぶより名称・コードで探す方が速い場合",
+    "マスタ参照入力（取引先・社員・勘定科目・品目など）。候補の取得元が API でもよい（取得はアプリ側責務）"
+  ],
+  "never_use_when": [
+    "選択肢が 30 件以下で既知・固定の場合（→ Select。5 件以下は RadioButton）",
+    "候補に無い値の自由入力を許す用途（→ InputText。Combobox は候補から選ぶ部品。自由入力も許す型は第一弾未提供 — 必要になれば起票）",
+    "複数選択（→ Checkbox 群。複数選択できる Combobox は第一弾未提供 — 必要になれば起票）",
+    "一覧のキーワード検索欄の代用（一覧の検索は list-page のフィルタ行の InputText + Button）",
+    "候補リストを OS 標準の Select の見た目に偽装する（Select とは別部品であることが利用者に分かる見た目にする）"
+  ],
+  "confusable_with": {
+    "Select": "既定選択肢を全件眺めて選べる（目安 6〜30 件）なら Select。それを超える、または名称・コードで探すマスタ参照なら Combobox",
+    "InputText": "候補に無い値を入力させるなら InputText。候補から選ばせるなら Combobox。一覧のキーワード検索欄も InputText",
+    "SearchBox": "その名前の部品は存在しない。一覧の検索は list-page のフィルタ行（InputText + Button）で組む"
+  },
+  "states_to_cover": ["default", "focus", "open", "loading", "no-results", "selected", "error"],
+  "behavior": "入力欄に文字を入力すると候補リストが開き、入力に応じて絞り込まれた候補を表示する（前方一致・部分一致・コード検索などの絞り込み方はアプリ側の候補取得ロジック。部品は受け取った候補をそのまま表示する）。↓ キーで候補リストへ移動し ↑↓ で候補間を移動、Enter で選択して閉じる、Esc で閉じる（入力文字は保持）。候補をクリック / タップしても選択できる。候補を選ぶと入力欄に選択した候補の表示名が入り selected 状態になる。selected 後に入力欄を編集すると選択は解除される。候補に一致しない文字列が残ったまま送信された場合は送信時のエラー（「＊候補から選択してください」）で伝え、入力途中やフォーカスアウト時にリアルタイムでエラーを出さない（InputText と同じ原則）。候補の取得中（loading）は候補リスト内に「検索中です」のテキストを表示する（スピナー単体は使わない）。候補 0 件（no-results）は候補リスト内に「該当する候補はありません」を表示し、EmptyState 部品は使わない。候補リストの表示件数は目安 20 件までとし、それを超える場合は末尾に「さらに文字を入力して絞り込んでください」を表示する（全件をスクロールさせない）",
+  "a11y": "ラベル必須（for/id で関連付け）。要否表示・エラー表示・サポートテキストの作法は InputText と同じ（要否は「※必須」「※任意」のテキストラベル、エラーは静的テキスト + aria-describedby、aria-live / role=\"alert\" は使わない）。入力欄は input type=\"text\" + role=\"combobox\" + aria-autocomplete=\"list\" + aria-expanded（候補リストの開閉）+ aria-controls（候補リストの id）+ aria-activedescendant（キーボードで選択中の候補の id。DOM フォーカスは入力欄に留めたまま候補を辿る）。候補リストは ul role=\"listbox\"、各候補は li role=\"option\" + aria-selected。候補件数の変化は視覚的に隠した role=\"status\"（polite）の要素で「n 件の候補があります」「該当する候補はありません」と伝える（role=\"alert\" は使わない — デジ庁プログレスインジケーター実装の読み上げ作法を踏襲）。キーボードで選択中の候補は色のみでなく枠線または太字も併用して示す。候補 1 件あたりの高さはタップ領域 44 CSS px 以上。autocomplete=\"off\" を入力欄に付与し、ブラウザの入力履歴が候補リストと重ならないようにする。候補リストの開閉を示す矢印は icons/ICON-MAP.md の expand を入力欄の右端（テール配置）に icon.size.md・currentColor・aria-hidden=\"true\" で置く（開閉状態は aria-expanded が担う。記号文字 ▼ で描かない）。選択解除の専用ボタンは第一弾では設けない（入力欄の編集で解除 — behavior 参照）",
+  "anti_pattern_example": "取引先 300 件を Select の選択肢に並べる → Combobox で名称・コードから絞り込む。/ 候補に無い文字列をそのまま送信できてしまう → 送信時に「＊候補から選択してください」のエラーで伝える。/ 候補 0 件で EmptyState 部品を表示する → 候補リスト内に短いテキストで示す。/ 文字を入力するたびにエラー「＊該当なし」を出す → エラーは送信時にまとめて",
+  "implementation_notes": "CSS Grid / Flexbox コンテナ内に置く場合は入力欄に min-width: 0 を指定する（InputText と同じ既知問題）。候補リストは入力欄の直下に重ねて表示し、祖先要素の overflow: hidden で切れないようにする（ModalDialog 内で使う場合は特に注意）。非同期の候補取得（API 呼び出し・入力ごとの間引き〔debounce〕・キャッシュ）はアプリ側責務で、部品は候補の配列・loading 状態・選択値を受け取って表示する",
+  "source": {
+    "digital_go_jp": "コンボボックス (Combobox)",
+    "url": "https://design.digital.go.jp/dads/components/combobox/",
+    "note": "デジ庁はガイドライン準備中（Figma v2 のみ・2026-04-15 v2.13.0 初版。HTML / React 実装は「提供予定」で未公開、用途・a11y は非公開）のため、本 spec は WAI-ARIA APG の Combobox パターン（Editable Combobox With List Autocomplete）に基づく自社翻案。ModalDialog と同じ扱いで、デジ庁公開後に突合して更新する。参照日 2026-08-25。業務システム対応ギャップ棚卸し GAP-02（tickets/2026-08-24-business-system-gaps.md、提案 tickets/2026-08-25-business-system-gaps-proposal.md）で 2026-08-25 承認・昇格"
+  }
+}

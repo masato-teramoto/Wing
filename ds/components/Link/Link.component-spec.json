@@ -1,0 +1,20 @@
+{
+  "name": "Link",
+  "status": "stable",
+  "purpose": "ページ遷移・外部リンク。URL が変わる操作はすべてこれ",
+  "use_when": ["画面遷移、外部サイトへの導線、『詳細を見る』系の導線"],
+  "never_use_when": [
+    "その場で完結する操作（→ Button）",
+    "href に '#' を入れて onClick で処理する擬似ボタン"
+  ],
+  "confusable_with": {
+    "Button": "見た目がボタンでも遷移なら Link（appearance=\"button\" を使う）"
+  },
+  "states_to_cover": ["default", "hover", "focus-visible"],
+  "external_guidance": "external=true は target=\"_blank\" + rel=\"noopener noreferrer\" を付与し、新しいタブで開くことを次の 2 つで伝える: (1) リンクテキストの末尾に視覚的に隠したテキスト「（新しいタブで開きます）」を含める（既定。密度を優先する業務画面では隠す。可視テキストにしてもよい）。隠し方は icons/ICON-MAP.md §5 の手法（position:absolute + 1px + clip-path。display:none / aria-hidden は読み上げからも消えるため不可）。(2) icons/ICON-MAP.md の external アイコン（Material Symbols open_in_new）を a 要素の内側・リンクテキストの直後（テール配置・間隔 space.xs）に icon.size.md（本文中のインラインでは隣接文字サイズ 1em 相当でよい）・currentColor・aria-hidden=\"true\" focusable=\"false\" で置く。アイコンは装飾扱い — 「新しいタブで開く」という挙動の予告は文字（隠しテキスト）が担う（デジ庁アイコン a11y「ラベル併用時は代替テキスト不要」に準拠し、WCAG 達成方法 G201 の文字による予告に合わせる。デジ庁サイト自身も外部リンクに「新規タブで開きます」のテキストを付けている）。アイコンに aria-label「外部リンク」を付けない（open_in_new の意味は「新しいウィンドウで開く」であり「外部」ではない）。アイコンを a 要素の外に出さない（デジ庁 a11y ④: ラベルがリンクならアイコンもリンク範囲に含める）",
+  "a11y": "external 時は rel/target を自動付与し、external_guidance のとおり隠しテキスト「（新しいタブで開きます）」+ external アイコン（aria-hidden）で新しいタブで開くことを伝える。リンクテキストは『こちら』を禁止し遷移先が分かる文言にする",
+  "source": {
+    "digital_go_jp": "該当部品なし（リンクテキストの個別ガイドラインは未公開。ユーティリティリンクは用途が異なる）",
+    "note": "2026-08-25 アイコン定義 ICN-03 (b)（tickets/2026-08-25-icon-definition.md）承認: external の告知を「隠しテキスト + 装飾アイコン（B 案）」に確定。デジ庁 基本デザイン「アイコン」a11y（2025-07-30）のラベル併用時 alt=\"\" 原則と、デジ庁サイトの外部リンク表記「新規タブで開きます」を根拠にした。隠しテキスト・アイコン描画の実装反映は第二段（2026-08-26 に v0.0.x の .tsx を取り下げたため、現時点で実装は存在せず本 spec が最終 — DECISIONS.md 同日の記録）"
+  }
+}

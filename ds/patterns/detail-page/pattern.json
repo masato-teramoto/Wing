@@ -1,0 +1,27 @@
+{
+  "name": "detail-page",
+  "status": "draft",
+  "use_when": "1 レコードの閲覧専用の詳細表示",
+  "layout": "ページヘッダ（タイトル + ステータス Badge + 操作: 編集へ Link appearance=\"button\" / 削除 Button variant=\"danger\"） → 基本情報セクション（見出し + dl〔説明リスト〕で名前-値ペア。PC〔breakpoint.md 以上〕では dl を 2 列（名前-値 × 2） に組んでよい〔左列から上→下、次に右列の順。関連する項目は同じ行に隣接させる。長い値〔備考・住所など〕は 1 行を 2 列ぶん使う〕。dt〔名前〕・dd〔値〕はともに常に左揃え。数値・日付・金額も右揃えにしない〔dl は 1 レコードのみで桁を比較する列が縦に並ばないため。右揃えにすると dt と値が dd の幅ぶん離れて対応が読み取れなくなる — brand-principles.md 揃えの原則。2026-08-25 REQ-12 で従来の「dd は数値・日付・金額のみ右揃え」を撤回〕。数値の読み取りやすさは 3 桁区切りのカンマ + 単位で担保する〔InputText numeric_input_guidance の表示側規定〕。値の表記は brand-principles.md「表記の原則（数値・日付）」に従う〔日付は yyyy年MM月dd日、数値は 3 桁区切り + 単位。2026-08-25 REQ-20〕。Table をレイアウト目的で使わない） →関連情報セクション（関連一覧が 1 種類なら見出し区切りのセクション、複数種類〔例: 明細 / 添付ファイル / 履歴〕なら Tabs で切り替える。各パネルの中身は Table。タブ群の親見出し〔「関連情報」等〕を必ず置く — Tabs spec 参照）",
+  "components": ["Badge", "Button", "Link", "Table", "EmptyState", "ModalDialog", "NotificationBanner", "Tabs", "Skeleton"],
+  "states": {
+    "loading": "Skeleton 部品（dl の名前・値位置に text、関連情報の Table は列構成を保った行。スピナー単体は禁止 — Skeleton spec 参照）",
+    "error": "インライン再試行。モーダルにしない（レコード取得の失敗はバナーにしない）",
+    "notice": "操作結果（form-page からの保存成功、削除・承認等の完了 / 失敗）や告知は、ページヘッダ直下・本体先頭の NotificationBanner で表示する（type は success / error / warning / info。同時に表示するのは原則 1 つ。自動消滅させない）",
+    "related-empty": "関連情報 0 件は EmptyState（Tabs を使う場合は該当パネル内に表示し、タブ自体は残す）",
+    "delete-confirm": "削除は ModalDialog で実行確認（取り消せない旨を明記）"
+  },
+  "density": "PC は 1 画面収容を目標にする（brand-principles.md レイアウト原則。収まらない場合は関連情報を Tabs に分けてよい）。セクション間 space-md / dl の行間 space-xs〔窮屈なら space-sm〕/ dl 2 列時の列間 space-md",
+  "responsive": "breakpoint.md 未満では dl を 1 列（名前-値 × 1）に戻す。breakpoint.sm 未満では dl の名前-値を縦積み（名前の下に値）に切り替えてよい。関連情報の Table は list-page と同様テーブル領域内の横スクロールで対応する（ブレークポイントは tokens.json の breakpoint トークンを使う）",
+  "never_do": [
+    "閲覧画面への編集可能フィールドの混在（編集は form-page へ遷移）",
+    "ヘッダ操作の増殖（編集・削除まで。主アクションの複数配置をしない）",
+    "名前-値ペアの Table 表示（dl を使う — デジ庁 Table ガイドライン準拠）",
+    "dl の値（dd）を右揃えにする（数値・日付・金額であっても左揃え。右揃えは Table / RepeatingFieldGroup のように値が縦に並ぶ列に限る — brand-principles.md 揃えの原則）",
+    "ヒーローセクション"
+  ],
+  "source": {
+    "digital_go_jp": "テーブル（使い方）の「名前-値ペアは説明リスト」を反映。https://design.digital.go.jp/dads/components/table/usage/（参照日 2026-08-18）",
+    "note": "2026-08-25 業務システムギャップ GAP-01 対応で NotificationBanner を components に追加し notice 状態を新設。同日 GAP-08 対応で関連情報セクションの「タブ」を Tabs 部品に紐付け components に追加（Accordion は見送り）（tickets/2026-08-25-business-system-gaps-proposal.md）。2026-08-25 密度・レイアウト要望 REQ-01 / 04 / 05 対応（tickets/2026-08-25-density-and-layout-requests.md）: dl の 2 列化（md 以上）、density 1 段詰め（セクション間 lg → md、dl 行間 sm → xs）、dt 左揃え固定を追加。いずれもデジ庁に規定無し（自社定義）。2026-08-25 段組みルール要望 REQ-12 対応（tickets/2026-08-25-column-rules-and-visual-requests.md）: dd の「数値・日付・金額のみ右揃え」を撤回し dt・dd とも左揃えに統一（デジ庁の右揃え規定はテーブルの列についてのもので、dl の揃えは規定が無い — 自社定義）。同日 REQ-20 対応（tickets/2026-08-25-date-display-format-and-choices-in-table-rows.md）: 値の表記を brand-principles.md「表記の原則（数値・日付）」への参照に統一（日付は yyyy年MM月dd日 — 従来は表示側の日付形式が DS のどこにも規定されておらず、入力「2026 年 08 月 20 日」/ 表示「2026-08-18」で食い違っていた）"
+  }
+}

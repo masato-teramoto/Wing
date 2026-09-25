@@ -1,0 +1,22 @@
+{
+  "name": "@kccs-ai-spec-platform/aidd-ds-poc-digital-go-jp-based",
+  "version": "0.0.11",
+  "description": "AI 駆動開発検証用デザインシステム（デジタル庁デザインシステム翻案・社内限定）。v0.0.x は仕様データのみ",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build:tokens": "style-dictionary build --config tokens/config.mjs",
+    "build:tokens:wireframe": "style-dictionary build --config tokens/config.wireframe.mjs",
+    "build:tokens:example:travel-expense-demo": "style-dictionary build --config examples/travel-expense-demo/config.travel-expense-demo.mjs",
+    "generate:index": "node scripts/generate-index.mjs",
+    "audit": "node scripts/audit-tokens.mjs && node scripts/audit-components.mjs",
+    "ci": "npm run generate:index -- --check && npm run audit"
+  },
+  "devDependencies": {
+    "style-dictionary": "4.0.0"
+  }
+}

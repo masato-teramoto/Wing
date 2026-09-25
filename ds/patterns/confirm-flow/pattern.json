@@ -1,0 +1,24 @@
+{
+  "name": "confirm-flow",
+  "status": "draft",
+  "use_when": "入力内容を確定する前に確認を挟む 3 画面フロー（入力 → 確認 → 完了）。申請・登録などの確定操作",
+  "layout": "① 入力: form-page パターン準拠 + 現在ステップの表示（StepNavigation 部品は第一弾未提供 — 「1. 入力 › 2. 確認 › 3. 完了」のテキスト簡易表現。専用部品が必要なら起票） → ② 確認: 入力値を dl〔説明リスト〕で読み取り専用表示（dt・dd とも左揃え。数値・日付・金額も右揃えにしない — detail-page パターン / brand-principles.md 揃えの原則。2026-08-25 REQ-12。値の表記は同ファイル「表記の原則（数値・日付）」に従う: 日付は yyyy年MM月dd日、数値は 3 桁区切り + 単位 — REQ-20。入力欄の値をそのまま出さず、全角・カンマ・ゼロ埋めの正規化結果を提示する — InputText numeric_input_guidance） + 戻る Button variant=\"secondary\" + 確定 Button variant=\"primary\" → ③ 完了: 完了メッセージ + 受付番号等の要点 + 次にできる行動 1 つ（Link）",
+  "components": ["InputText", "Select", "Button", "Link"],
+  "states": {
+    "input-error": "① は form-page の input-error に準拠",
+    "submitting": "② の確定 Button を loading に（二度押し防止）",
+    "submit-error": "② での確定失敗はインライン表示（① に戻さない・モーダルにしない）"
+  },
+  "density": "form-page に準拠（項目行の間 space-sm / セクション間 space-md。① 入力は form-page の 4 列グリッド、② 確認の dl は detail-page の 2 列を PC で適用してよい — brand-principles.md レイアウト原則）",
+  "responsive": "① 入力は form-page のレスポンシブ方針に準拠。② 確認の dl は detail-page と同様、breakpoint.sm 未満で名前-値の縦積みに切り替えてよい（ブレークポイントは tokens.json の breakpoint トークンを使う）",
+  "never_do": [
+    "確認ステップをモーダルで代用する",
+    "確認画面に編集可能フィールドを置く（修正は「戻る」で ① へ）",
+    "確認画面の dl の値（dd）を右揃えにする（detail-page と同じ — 値が縦に並ぶ列がないため左揃え）",
+    "完了画面に次の行動を複数並べる",
+    "確認を挟まずに取り消し不能な確定をさせる"
+  ],
+  "source": {
+    "digital_go_jp": "対応するテンプレート・パターン文書はデジ庁 DADS に存在しない（2026-08-18 確認）— 日本の業務システム定番の型として自社定義。ステップ表示の関連部品: https://design.digital.go.jp/dads/components/step-navigation/。2026-08-25 REQ-12 / REQ-20 対応: 確認 dl の揃えを dt・dd とも左揃えに明記（tickets/2026-08-25-column-rules-and-visual-requests.md）、値の表記を brand-principles.md「表記の原則（数値・日付）」への参照に統一（tickets/2026-08-25-date-display-format-and-choices-in-table-rows.md）"
+  }
+}

@@ -1,6 +1,6 @@
 ---
 feature: property-basic-info
-status: approved
+status: draft
 updated_at: 2026-09-25T11:31:00+09:00
 ---
 

@@ -1,0 +1,5 @@
+node_modules/
+
+# トークンのビルド成果物（正は tokens/primitive.json + tokens/semantic.json）。
+# AGENTS.md ハード制約: dist/ は生成物のため直接編集しない・コミットしない
+tokens/dist/

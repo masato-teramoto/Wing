@@ -1,0 +1,26 @@
+{
+  "name": "Textarea",
+  "status": "draft",
+  "purpose": "複数行になりうる自由記述テキストの入力に使う",
+  "use_when": [
+    "複数行になりうる自由記述の入力（意見・備考・詳細説明など）",
+    "文字数上限を明示し、超過をエラーで伝えたい場合（文字数カウンター）"
+  ],
+  "never_use_when": [
+    "1 行で収まる入力（→ InputText）",
+    "自由記述は利用者の負荷が高いため、既定の選択肢で表現できる質問には使わない（→ Select / RadioButton / Checkbox。デジ庁の設計方針）",
+    "上限に達した入力を通知なく打ち切る（超過時は文字数カウンター + エラー表示で現在の文字数を示す。InputText の『maxlength 等の制限を禁止』とは異なり、Textarea では上限提示自体が想定された設計）"
+  ],
+  "confusable_with": {
+    "InputText": "1 行で収まるなら InputText。複数行になりうるなら Textarea"
+  },
+  "states_to_cover": ["default", "focus", "error"],
+  "resize_guidance": "縦方向のリサイズは既定で許可する（複数行になりうる自由記述のため）。横方向のリサイズは、所属する列（form-page では常に全幅 = 4 列ぶん）の幅を超えて画面レイアウトを崩さない範囲でのみ許可してよい。1 画面収容のために Textarea を 1 行の高さにしない（brand-principles.md レイアウト原則）",
+  "a11y": "ラベル必須（for/id で関連付け）。要否はラベルの右横に「※必須」「※任意」のテキストラベルで示す（InputText と同じ作法。「※必須」は color.semantic.required で強調し、「※任意」は color.semantic.text-subtle で表示してよいが、色のみに依存せずテキスト自体は必ず表示する。required / aria-required 属性は使わない）。文字数上限がある場合は現在の文字数を視覚的テキストで示し、入力欄に aria-describedby で関連付ける。エラー文言は冒頭に全角アスタリスク「＊」+ 具体的な内容と訂正方法（InputText の作法を踏襲）",
+  "anti_pattern_example": "自由記述を無制限に許容し、上限も検証もフィードバックも無いまま送信させる → 上限がある場合は文字数カウンター + エラー表示で伝える",
+  "source": {
+    "digital_go_jp": "テキストエリア (Textarea)",
+    "url": "https://design.digital.go.jp/dads/components/textarea/",
+    "note": "公開済みガイドライン（概要）から移植。a11y 個別ページは本調査で未取得のため InputText の作法を踏襲し自社翻案。参照日 2026-08-18"
+  }
+}

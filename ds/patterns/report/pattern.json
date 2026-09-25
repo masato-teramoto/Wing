@@ -1,0 +1,29 @@
+{
+  "name": "report",
+  "status": "draft",
+  "use_when": "帳票（申請書・精算書・一覧表など）を印刷または PDF 出力するための印刷向けページ型。画面で閲覧する detail-page / list-page とは別に、印刷用の構成で組む。variant = portrait（A4 縦）/ landscape（A4 横。列数の多い一覧表）。画面内の印刷プレビュー UI は作らず、ブラウザの印刷プレビューに委ねる（print-preview パターンは第一弾では提供しない）",
+  "layout": "シェル無し（app-shell を含めない）。用紙 1 枚を単位に構成する。画面表示時のみ本体の上に操作行（「印刷」Button variant=\"primary\"〔ブラウザの印刷ダイアログを開く〕+ 「戻る」Link）を置き、印刷時は非表示にする → 帳票ヘッダ（帳票名〔見出し〕+ 出力日時 + 出力者 + ページ番号「n / N」。複数ページでは各ページの先頭に繰り返す） → 本体（基本情報は dl〔名前-値ペア〕、明細・一覧は Table。Table は印刷向けにセルの折り返しを許可し〔Table spec の text_overflow_guidance の省略記号を解除して全文表示〕、ヘッダ行を各ページで繰り返す〔thead〕。数値・金額は右揃え、合計は Table の末尾行。日付・数値の表記は brand-principles.md「表記の原則（数値・日付）」に従う〔日付は yyyy年MM月dd日。Table の列幅が足りない場合に限り同一帳票内で統一して yyyy/MM/dd。数値は 3 桁区切り + 単位。2026-08-25 REQ-20〕。ステータスは Badge を使わずテキスト〔例:「承認済」〕で表示する） → 帳票フッタ（注記・承認欄・押印欄などの固定文言）",
+  "components": ["Table", "Button", "Link", "Skeleton"],
+  "states": {
+    "screen": "画面で表示中（印刷前の確認）。操作行を表示し、用紙の枠を color.semantic.border で可視化してよい。見え方は印刷結果と同じにする",
+    "print": "@media print 適用時。操作行・その他の操作要素をすべて非表示。背景色・装飾を除き、文字は color.semantic.text、罫線は color.semantic.border のみ（白黒印刷でも判読できるようにする）。用紙余白は print.margin",
+    "loading": "帳票データの取得中は Skeleton（スピナー単体は禁止）。取得完了まで印刷 Button は loading",
+    "error": "取得失敗はインライン再試行（モーダルにしない）。取得できていない帳票を印刷させない",
+    "multi-page": "用紙をまたぐ場合は各ページに帳票ヘッダ（帳票名・ページ番号）を繰り返し、Table のヘッダ行も繰り返す。Table の 1 行・dl の 1 組の途中で改ページしない"
+  },
+  "density": "用紙余白 print.margin / セクション間 space-lg / dl の行間 space-sm / Table の行高 sm",
+  "responsive": "画面表示時は用紙幅を基準に固定し、画面が狭ければ横スクロールで対応する（印刷結果と同じ見え方を保つ）。ブレークポイントによるレイアウト変更はしない",
+  "never_do": [
+    "app-shell（ヘッダー・ナビ）を印刷対象に含める",
+    "色だけで意味を伝える要素（Badge の塗り・ステータス色）を帳票に使う（テキスト表現にする）",
+    "detail-page / list-page の画面をそのまま印刷させる（帳票要件がある出力は本パターンで組む）",
+    "画面内に独自の印刷プレビュー UI（拡大縮小・ページ送り）を作る（ブラウザの印刷プレビューに委ねる）",
+    "Table のセルを省略記号で切り詰めたまま印刷する（帳票では全文を表示する）",
+    "Table の 1 行や dl の名前-値の途中で改ページする",
+    "画面表示と印刷結果でレイアウトを変える（確認した通りに印刷されることを保証する）"
+  ],
+  "source": {
+    "digital_go_jp": "印刷・帳票のガイドライン・テンプレート・印刷用トークンはデジ庁 DADS に存在しない（2026-08-25 確認。design-tokens は Color / Typography / Size のみ）。自社定義。Table の作法（名前-値ペアは dl、数値は右揃え、レイアウト目的で使わない）はデジ庁テーブルガイドラインに準拠。2026-08-25 REQ-20 対応（tickets/2026-08-25-date-display-format-and-choices-in-table-rows.md）: 日付・数値の表記を brand-principles.md「表記の原則（数値・日付）」への参照に統一（帳票内は同一形式で統一）",
+    "note": "業務システム対応ギャップ棚卸し GAP-10（tickets/2026-08-24-business-system-gaps.md、提案 tickets/2026-08-25-business-system-gaps-proposal.md）で 2026-08-25 承認・新設（ユーザー回答: 印刷要件あり）。print-preview パターンは見送り（ブラウザの印刷プレビューに委ねる — does_not_exist_yet に残す）。用紙余白はトークン print.margin（暫定 15mm）"
+  }
+}

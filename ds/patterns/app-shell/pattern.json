@@ -1,0 +1,23 @@
+{
+  "name": "app-shell",
+  "status": "draft",
+  "use_when": "全画面に共通するヘッダー/グローバルナビゲーション枠。list-page / form-page / detail-page / confirm-flow / error-page（403 / 404 / 500）の外側にかぶせる共通レイアウト。login と error-page の maintenance variant は未認証・利用不能の画面のためシェル無しで表示する",
+  "layout": "ヘッダー（画面上部に固定表示 sticky）: システム名（テキスト） + グローバルナビゲーション（Link を横並びに配置。押せない装飾文字列にしない） + ログインユーザー名（テキスト） + ログアウト（Button variant=\"secondary\"） → パンくず（「一覧 > 詳細」等のテキストの簡易表現。Breadcrumb 部品は第一弾未提供のため部品化しない — 専用部品が必要になれば別途起票） → 各パターン（list-page 等）の本体をその下に配置（ページの地は color.semantic.canvas〔ブランド寄りの淡色。2026-08-25 REQ-17〕を body に敷き、入力欄・Table・ヘッダ・ModalDialog 本体は白〔background〕のままにして面の階層を作る。地と面の境界は色差だけに依存させず罫線〔border〕を併せ持つ — tokens/ROLE-MAP.md §1。本体は画面幅いっぱいに使う: 左右 padding space-md のみで、最大幅の上限を置かず中央寄せの余白を作らない — 業務システム前提。breakpoint.lg 以上でも同じ。幅を埋めるのは各パターンの段組み〔form-page の 4 列グリッド・detail-page の dl 2 列・Table の 100% 幅〕であり、単独の入力欄を伸ばして埋めない）",
+  "components": ["Link", "Button"],
+  "states": {
+    "nav-current": "現在地のナビ項目は色トークンで強調しつつ、状態を示すテキスト（例: aria-current）も併用する。色のみに依存しない",
+    "loading": "app-shell 自体は Skeleton を持たない（ヘッダー・ナビは常に実表示）。各パターン側の loading 状態に準拠"
+  },
+  "density": "ヘッダーと本体の間 space-sm / 本体の左右 padding space-md / パンくずとページヘッダの間 space-sm（ヘッダーは sticky で実効高を消費するため、ヘッダー自体の上下 padding は space-sm に留める — brand-principles.md レイアウト原則の 1 画面収容）",
+  "responsive": "breakpoint.md 未満ではグローバルナビの Link を折り返して複数行で表示する（ハンバーガーメニュー等の折りたたみ UI は Drawer 相当の未提供部品が必要になるため使わない — 必要になれば別途起票。ブレークポイントは tokens.json の breakpoint トークンを使う）",
+  "never_do": [
+    "ヘッダー内に業務操作（登録・保存など各画面固有の主アクション）を置く（主アクションは各パターンのアクション行）",
+    "パンくずをクリック不能な装飾文字列にする（遷移可能な項目は Link にする）",
+    "グローバルナビの項目を増やしすぎる（画面群の性質が大きく変わる場合は別パターンとして再検討する）",
+    "サイドバー型ナビゲーションとの併用（本パターンは上部ヘッダー型固定。サイドバー型が必要になれば別パターンとして起票する）"
+  ],
+  "source": {
+    "digital_go_jp": "共通ヘッダー/グローバルナビゲーションに直接対応するテンプレートはデジ庁 DADS のコンポーネント一覧に無い（2026-08-18 確認）。業務システムの定番構成として自社定義",
+    "note": "DECISIONS.md で保留としていた app-shell を、2026-08-18 の MK2 レビュー指摘を受けて新規追加。パンくずは Breadcrumb 部品が未提供のためテキストの簡易表現とし、専用部品が必要になれば別途起票する。2026-08-25 密度・レイアウト要望 REQ-04 / 05 対応（tickets/2026-08-25-density-and-layout-requests.md）: 本体を幅いっぱい（最大幅の上限なし）と規定し、ヘッダーと本体の間を md → sm に詰めた。デジ庁レイアウト基本にコンテンツ最大幅の規定は無い（自社定義）。2026-08-25 段組みルール要望 REQ-17 対応（tickets/2026-08-25-column-rules-and-visual-requests.md）: ページの地に canvas を敷く規定を追加（従来は body も白で画面のほぼ全面が同一の白だった）。デジ庁の色 semantic トークンに面・地の役割は無く自社設計"
+  }
+}

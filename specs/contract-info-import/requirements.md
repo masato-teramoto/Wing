@@ -1,6 +1,6 @@
 ---
 feature: contract-info-import
-status: approved
+status: draft
 updated_at: 2026-09-16T13:08:57+09:00
 ---
 

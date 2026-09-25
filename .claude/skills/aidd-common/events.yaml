@@ -1,0 +1,114 @@
+
+
+- event:
+    name: requirement-intake-generate          # .aidd/requirement-list.md
+    run: { type: skill, target: requirement-intake }
+
+
+- event:
+    name: steering-authoring-generate          # steering/ 7 ファイル
+    run: { type: skill, target: steering-authoring }
+
+
+- event:
+    name: feature-decomposition-generate       # .aidd/feature-list.md
+    run: { type: skill, target: feature-decomposition }
+
+
+- event:
+    name: requirements-plan
+    run: { type: script, target: scripts/plan.py, requiresHuman: true }
+
+- event:
+    name: requirements-authoring-generate      # specs/<feature>/requirements.md。feature ごとに `call`
+    run: { type: skill, target: requirements-authoring }
+
+- event:
+    name: requirements-cross-gate     # 全 feature が揃ってからの横断検査（契約整合）。1 回だけ `call`
+    run:
+      type: skill
+      isAgent: true
+      target: requirements-cross-check
+      calls: [traceability, ssot-consistency, gate-report]
+
+
+- event:
+    name: design-plan
+    run: { type: script, target: scripts/plan.py, requiresHuman: true }
+
+- event:
+    name: design-authoring-generate            # specs/<feature>/design.md。feature ごとに `call`
+    run: { type: skill, target: design-authoring }
+
+- event:
+    name: design-cross-gate           # 全 feature が揃ってからの横断検査（契約整合）。1 回だけ `call`
+    run:
+      type: skill
+      isAgent: true
+      target: design-cross-check
+      # 同名の3回は契約衝突／エラー形状／業務コード重複。引数は合成 Skill の各手順で指定する。
+      calls: [ssot-consistency, dependency-cycle-detection, ssot-consistency, ssot-consistency, steering-conformance, gate-report]
+
+
+- event:
+    name: docs-integration-generate            # docs/ 3 ファイル
+    run: { type: skill, target: docs-integration }
+
+
+- event:
+    name: tasks-plan
+    run: { type: script, target: scripts/plan.py, requiresHuman: true }
+
+- event:
+    name: tasks-authoring-generate             # specs/<feature>/tasks.md。feature ごとに `call`。
+    run: { type: skill, target: tasks-authoring }
+
+- event:
+    name: tasks-gate-run              # 全 feature ぶんの指摘を一括で人間に提示する。1 回だけ `call`
+    run: { type: skill, isAgent: true, target: tasks-cross-check, calls: [dependency-cycle-detection, traceability, gate-report] }
+
+- event:
+    name: requirement-intake-revise
+    run: { type: skill, target: intake-revision }
+
+- event:
+    name: steering-authoring-revise
+    run: { type: skill, target: steering-revision }
+
+- event:
+    name: feature-decomposition-revise
+    run: { type: skill, target: feature-revision }
+
+- event:
+    name: requirements-authoring-revise
+    run: { type: skill, target: requirements-revision }
+
+- event:
+    name: design-authoring-revise
+    run: { type: skill, target: design-revision }
+
+- event:
+    name: docs-integration-revise
+    run: { type: skill, target: docs-revision }
+
+- event:
+    name: tasks-authoring-revise
+    run: { type: skill, target: tasks-revision }
+
+# Phase 8 uses declared flows. item is a stable task item for task work,
+# and a feature name only for its final independent inspection/review.
+- event:
+    name: implement-authoring-generate
+    run: { type: skill, target: implement-authoring }
+
+- event:
+    name: implement-authoring-revise
+    run: { type: skill, target: implement-revision }
+
+- event:
+    name: implement-gate-run
+    run:
+      type: skill
+      isAgent: true
+      target: implement-check
+      calls: [implementation-traceability, implementation-boundary, implementation-tests, gate-report]

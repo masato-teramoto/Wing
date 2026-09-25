@@ -1,0 +1,38 @@
+{
+  "name": "list-page",
+  "status": "draft",
+  "use_when": "複数レコードの検索・閲覧・選択（期間・区分・ステータス等の複合条件による詳細検索を含む — 詳細検索は独立パターンではなく本パターンの詳細検索パネルで組む）",
+  "layout": "ページヘッダ（タイトル + 主アクション1つまで） → フィルタ行（検索 InputText + 絞り込み Button variant=\"secondary\"〔icons/ICON-MAP.md の search アイコンをリード配置で添えてよい。可視ラベル「絞り込み」は省略しない〕 + 詳細検索の Disclosure トグル〔複合条件を持つ一覧のみ。タイトルは「詳細検索」〕） → 詳細検索パネル（Disclosure のコンテンツ。展開時のみフィルタ行の直下に表示する。条件項目は form-page の項目作法〔ラベル + 入力欄。PC では form-page と同じ 4 列グリッド〕で InputText / Select / Combobox / DatePicker / RadioButton / Checkbox を並べ、パネル下部に「検索」Button variant=\"secondary\" + 「条件をクリア」Button variant=\"secondary\" を置く。primary は使わない — 主アクションはページヘッダの 1 つのみ） → 適用中条件の要約（詳細条件が 1 つ以上適用されているとき、件数表示の横に「絞り込み中: 期間 2026/04/01〜2026/06/30、ステータス 承認待ち」のようにテキストで示す。チップ部品は第一弾未提供のため使わない） → 選択アクションバー（行選択を使う一覧のみ。1 行以上選択されたときだけフィルタ行と Table の間に出現する: 「n 件を選択中」テキスト + 一括操作 Button variant=\"secondary\"〔最大 3 つ〕+ 「選択を解除」Button variant=\"secondary\"。一括削除などの破壊的操作は Button variant=\"danger\" とし、ModalDialog で対象件数を明記して実行確認する。一括操作に primary は使わない — 主アクションはページヘッダの 1 つのみ） → テーブル（Table。各行の主キー列〔番号・名称〕は Link にして detail-page へ遷移する。行ごとの操作ボタン列〔編集 / 削除〕は置かず、編集・削除は detail-page のヘッダで、複数行への操作は選択アクションバーで行う。行選択は先頭列の Checkbox — Table spec の row_selection_guidance 参照。ステータス列は Badge） → ページング（Pagination 部品を Table の直下に置く。総ページ数が目安 5 以下なら variant=\"simple\"〔件数表示 + 前へ / 次へ + カウンター〕、6 以上なら variant=\"numbered\"〔先頭 / 前へ / 番号 / 次へ / 末尾〕。総ページ数 1 なら出力しない。ページ移動で URL が変わるなら Link、変わらないなら Button で構成する — Pagination spec 参照）",
+  "components": ["Table", "Button", "Link", "InputText", "EmptyState", "Badge", "NotificationBanner", "Checkbox", "ModalDialog", "Disclosure", "Select", "Combobox", "DatePicker", "RadioButton", "Skeleton", "Pagination"],
+  "states": {
+    "empty": "EmptyState 部品。文言トーンは brand-principles.md 参照",
+    "loading": "Skeleton 部品で Table の列構成を保った行を並べる（スピナー単体は禁止 — Skeleton spec 参照）",
+    "error": "インライン再試行。モーダルにしない（一覧取得の失敗はバナーにしない）",
+    "notice": "操作結果（削除・一括操作等の完了 / 失敗、他画面から戻った際の保存成功）や告知は、ページヘッダ直下・フィルタ行の上の NotificationBanner で表示する（type は success / error / warning / info。同時に表示するのは原則 1 つ。自動消滅させない）",
+    "rows-selected": "1 行以上選択されると選択アクションバーを表示し、選択件数を「n 件を選択中」で示す。選択は表示中ページ内に限る（他ページを含む全件選択は非対応 — Table spec）。ページ移動・再検索・並び替えで選択は解除する。選択 0 件になったらバーを非表示にする",
+    "page-changed": "Pagination でページを移動したら Table の先頭が見える位置へスクロールし、フォーカスを Table の caption（または一覧の見出し）へ移す。移動中は loading 状態（Skeleton）に準拠し、Pagination の要素は再度押せないようにする。詳細条件・並び順は維持する",
+    "bulk-action-done": "一括操作の完了は notice 状態の NotificationBanner type=\"success\" で件数を含めて伝える（例:「3 件を削除しました」）。一部失敗は type=\"error\" で失敗件数と対象を伝え、成功分と失敗分を区別できるようにする。完了後は選択を解除する",
+    "filters-applied": "詳細条件が適用されている間は、Disclosure を閉じていても適用中条件の要約を件数表示の横に表示する。条件適用中の状態で画面を開いた（再表示・戻る）場合は Disclosure を開いた状態で表示してよい。「条件をクリア」で全条件を初期値に戻し、要約を消す",
+    "filter-empty": "詳細条件で 0 件になった場合は EmptyState で「条件に一致する〜はありません」+ 次の行動として「条件をクリア」を提示する（empty 状態の派生。文言トーンは brand-principles.md）"
+  },
+  "density": "PC は 1 画面収容を目標にする（brand-principles.md レイアウト原則。一覧は Pagination の 1 ページ件数で調整し、行高・文字サイズは下げない）。行高 sm / セクション間 space-md / 詳細検索パネル内は form-page の density に準拠",
+  "responsive": "Table が画面幅に収まらない場合はテーブル領域内の横スクロールで対応する（Table spec 準拠。breakpoint.sm 未満でもカード羅列へは変換しない — never_do 維持）。フィルタ行は折り返しを許容する。詳細検索パネル内の 4 列グリッドは form-page と同様 breakpoint.md 以上でのみ適用し、未満では 1 カラムに積む（ブレークポイントは tokens.json の breakpoint トークンを使う）",
+  "never_do": [
+    "一覧のカード羅列（業務の一覧は Table — レイアウト目的の Table 使用も禁止）",
+    "ヒーローセクション",
+    "主アクションの複数配置",
+    "一括操作 Button に primary を使う（主アクションの複数配置になる。一括操作は secondary / danger のみ）",
+    "選択アクションバーの常時表示（選択 0 件では表示しない）",
+    "破壊的な一括操作を確認なしで実行する（ModalDialog で件数を明記して確認）",
+    "詳細検索を独立ページ・ModalDialog・別パターンとして作る（本パターンの詳細検索パネルで組む）",
+    "詳細検索の「検索」Button に primary を使う（主アクションの複数配置になる）",
+    "詳細検索パネル内に必須の条件項目を置く（閉じた状態で必須項目が隠れる。必ず入れる条件はフィルタ行に常時表示する）",
+    "行ごとの操作ボタン列（編集 / 削除・アイコンのみのボタン）を Table に置く（行の主キー列 Link → detail-page で操作する。複数行は一括操作 — GAP-14）",
+    "無限スクロール・「さらに読み込む」によるページ送り（業務の一覧は Pagination で位置を把握できるようにする）",
+    "総ページ数 1 の一覧に Pagination を表示する / 端のページで移動できないボタンを disabled で残す（非出力にする）"
+  ],
+  "source": {
+    "digital_go_jp": "テーブル（使い方）ガイドラインを反映。https://design.digital.go.jp/dads/components/table/usage/（参照日 2026-08-18）",
+    "note": "2026-08-18 MK2レビュー指摘（スクロールが多い・情報密度を上げたい）を受け、行高を md から sm に変更（DECISIONS.md モック検証ログ参照）。2026-08-25 業務システムギャップ GAP-01 対応で NotificationBanner を components に追加し notice 状態を新設。同日 GAP-05 対応で選択アクションバー（一括操作の配置）を layout に追加し rows-selected / bulk-action-done 状態を新設 — デジ庁のテーブルコントロールは準備中のため一括操作の作法は自社翻案。同日 GAP-07 対応で詳細検索パネル（Disclosure）と filters-applied / filter-empty 状態を追加 — デジ庁に詳細検索のパターンは無く、検索ボックス実装の詳細検索パネル（details / summary 折りたたみ + 下部に検索 / 条件をクリア）を参考にした自社翻案。advanced-search は独立パターンにせず本パターンで提供。同日 GAP-14 対応で「行操作列を置かず主キー列 Link → detail-page」を layout / never_do に明記。同日 GAP-06 承認でページングを簡易構成から Pagination 部品（simple / numbered）に差し替え、page-changed 状態を新設（tickets/2026-08-25-business-system-gaps-proposal.md）。2026-08-25 密度・レイアウト要望 REQ-04 / 08 対応（tickets/2026-08-25-density-and-layout-requests.md）: セクション間 lg → md、詳細検索パネルを form-page の 4 列グリッドに追従。同日 アイコン定義 ICN-01〜06（tickets/2026-08-25-icon-definition.md）承認で絞り込み / 検索 Button の search アイコンを icons/ICON-MAP.md に紐付け"
+  }
+}

@@ -1,194 +1,153 @@
-# release — ユーザープロジェクト雛形（alpha1.1）
+# AIDD main_flow — Claude Code 実行環境
 
-| 項目 | 内容 |
-| --- | --- |
-| 対象リリース | `alpha1.1` |
-| 位置づけ | L1 / L2 のアセットを**実配置済み**の、そのまま使えるプロジェクト雛形 |
-| 収録内容 | Skill 23本（L1 13 + L2 9 + MCP サンプル 1）／ サブエージェント 5本 ／ テンプレート 13点 ／ Rimay-JP MCP alpha `0.1.0` |
-| 実行環境 | Cursor / Claude Code |
+このフォルダをそのまま Claude Code で開き、RFP から要求整理・タスク文書作成・実装
+（Phase 1–8）を実行できます。配布元のソースリポジトリや引継ぎ ZIP は不要です。
 
-このフォルダは、[`l1_spec/`](../l1_spec/README.md) と [`l2_intelligence_assets/`](../l2_intelligence_assets/README.md)
-の配置手順を**あらかじめ適用した状態**の雛形です。各レイヤーの README を読んで手作業でコピーする代わりに、
-**このフォルダごと自分の作業場所へコピーして**利用します。
+## ZIPを展開して開始する
 
-> **⚠️ Rimay-JP MCP は private 環境での内部検証に限定します。**
-> 同梱の固定 Grammar にライセンス許諾の明示がないため、公開・第三者配布・一般配布を行わないでください
-> （[alpha-distribution.yaml](mcp/rimay-jp-mcp-alpha-0.1.0/prototype/rimay-jp/adapters/mcp/alpha-distribution.yaml)）。
-> MCP を使わない場合は `mcp/` と `.mcp.json`、`.claude/skills/rimay-spec-alpha-check/` を削除してください
-> （L2 アセットごと外す手順は [2.6](#26-l2-アセットを使わない場合l1-のみで構成する) を参照）。
+Python **3.10以上**、Git、利用可能なClaude Codeを用意し、ZIP全体を新しい作業フォルダへ展開します。
+`.claude`、`.aidd`などの隠しフォルダも必要です。展開後は **Windowsなら `START.cmd` をダブルクリック**してください。
+起動スクリプトが環境を確認し、Claude Code CLIがあればこのフォルダで開きます。
+CLIがない場合は、表示されたフォルダをVS CodeのClaude Code拡張で開きます。
+初回は案件専用のローカルGitを初期化します。コミット、リモートの登録、プッシュは行いません。
 
-## 1. フォルダ構成
+| ZIP内の構成 | 起動時の動作 | Claude Codeでの初回入力 |
+|---|---|---|
+| `.aidd/rfp/meeting-room-reservation.md` がある通常版 | 題材のRFPと実行資材を確認 | `/aidd-requirements-init` |
+| `phase8-sample/` がある実装開始版 | 展開先でPhase 1〜7の題材を自動準備（初回は数分） | 合成入力で試行する旨を伝えてから `/aidd-implement reservation-window 1` |
 
-```text
-release/
-├── README.md                       … 本ファイル
-├── .gitignore                      … ds/ と Python 生成物を除外
-├── .mcp.json                       … Rimay-JP MCP の stdio 設定（プロジェクトルート起点にパス調整済み）
-├── .claude/
-│   ├── skills/                     … Skill 23本
-│   │   ├── aidd-flow/              … L1: オーケストレータ（フローの入口）
-│   │   ├── requirement-intake/ … wireframe-integration/   … L1: 作成 Skill 6本
-│   │   ├── format-conformance/ … gate-report/             … L1: 品質ゲート共通 Skill 6本
-│   │   ├── requirement-clarification/ … prohibition-authoring/  … L2: 要求・要件定義 Skill 9本
-│   │   └── rimay-spec-alpha-check/ … MCP を使う alpha 検査スキル（サンプル）
-│   └── agents/                     … 品質ゲートのサブエージェント5本
-├── Templates/                      … 成果物のひな形13点（Flow 4 / steering 7 / specs 1 / wireframe 1）
-├── .aidd/
-│   └── rfp/                        … ここに RFP を置く（自由形式・テンプレートは無い）
-└── mcp/
-    └── rimay-jp-mcp-alpha-0.1.0/   … Rimay-JP MCP 内部検証 bundle（配布時のまま・hash 検証可）
-```
+実装開始版の詳細は、同梱されている場合の **`phase8-sample/README.md`** を参照してください。
+上流の検査・承認はテスト専用の合成データです。Phase 8は準備1件＋業務4件の計5タスクが未実施で、
+実装コードはありません。最初の準備タスクが専用`.venv`へ固定版の検証ツールを導入するため、初回はネットワーク接続が必要です。
 
-実行時に増えるもの（いずれも Skill が生成します。あらかじめ用意する必要はありません）:
-`.aidd/requirement-list.md` ／ `.aidd/feature-list.md` ／ `.aidd/gates/` ／ `.aidd/phase-progress.json` ／
-`.aidd/wireframe/<feature-name>/` ／ `steering/` 7ファイル ／ `specs/<feature-name>/requirements.md` ／
-`ds/`（Phase 5 で取得。コミットしない）
-
-## 2. 使い方
-
-### 2.1 コピーして開く
-
-```bash
-cp -r alpha1.1/release <自分の作業場所>/<プロジェクト名>
-cd <自分の作業場所>/<プロジェクト名>
-git init && git add -A && git commit -m "init from alpha1.1 release"
-```
-
-**対象プロジェクトは必ず git 管理してください。** ゲートは検査した成果物のフロントマター
-（`status` / `updated_at`）まで書き換えるため、**それ以外が変わっていないか**を差分で確認できる必要があります
-（本文の書き換えは規約で禁止していますが、ツール権限では縛れません）。
-
-**Claude Code のエージェントチームは有効にしないでください。** サブエージェントが teammate として並列起動されると、
-フロントマターや `phase-progress.json` を競合して書きます。
-
-### 2.2 RFP を置く
-
-`.aidd/rfp/` に RFP を配置します。書式は自由で、テンプレートはありません。
-
-### 2.3 フローを実行する
-
-プロジェクトを Cursor または Claude Code で開き、`/aidd-flow` を起動します。
-オーケストレータが実ファイルの `status` から再開点を判定し、
-**フェーズ開始（Step 0）と ③ 人間レビュー（Step 4）で停止します。**
-
-| Phase | フェーズ | 生成される成果物 |
-| --- | --- | --- |
-| 1 | 要求受入 | `.aidd/requirement-list.md` |
-| 2 | Steering 作成 | `steering/` 7ファイル |
-| 3 | Feature 分割 | `.aidd/feature-list.md` |
-| 4 | requirements 作成 | `specs/<feature-name>/requirements.md` |
-| 5 | 画面モック生成 | `.aidd/wireframe/<feature-name>/` |
-
-各フェーズの詳細・人間が判断すべきこと（修正 / 差戻し / 対応せず進める / 承認）は
-[`l1_spec/README.md`](../l1_spec/README.md#53-人間が判断すること) を参照してください。
-
-### 2.4 Phase 5 の追加準備（Phase 1〜4 では不要）
-
-| 準備 | 内容 |
-| --- | --- |
-| **Node.js** | 監査（`audit-tokens` / `audit-components`）・トークン一致検査・動線チェックの実行に必要 |
-| **デザインシステム（DS）** | **版（タグ）を人間が指定**し、タグ固定の `git clone` で `ds/` へ配置する。`ds/` は `.gitignore` 済み |
-
-`ds/` は読み取り専用です。監査スクリプト・トークン JSON を含めて変更しません。
-
-### 2.5 Rimay-JP MCP を使う場合（任意）
-
-日本語要件の品質検査・壁打ちに使います。**AIDD Spec 生成フロー（Phase 1〜5）の実行には必須ではありません。**
-
-```bash
-python -m pip install -r mcp/rimay-jp-mcp-alpha-0.1.0/requirements.txt
-python mcp/rimay-jp-mcp-alpha-0.1.0/prototype/rimay-jp/adapters/mcp/smoke_test.py
-```
-
-- Python 3.12 以上が必要です。
-- このプロジェクトルートの [`.mcp.json`](.mcp.json) により `rimay-jp` サーバーが自動起動します
-  （bundle 同梱の `.mcp.json` は bundle 単体で開く場合用にそのまま残してあります）。
-- 検査・壁打ちは `/rimay-spec-alpha-check` を手動実行します。
-- 詳細は [BUNDLE-README.md](mcp/rimay-jp-mcp-alpha-0.1.0/BUNDLE-README.md) を参照してください。
-
-### 2.6 L2 アセットを使わない場合（L1 のみで構成する）
-
-AIDD Spec 生成フロー（Phase 1〜5）だけを使い、L2 知識レイヤーを配布・利用しない場合は、
-コピー後に L2 由来のアセットを削除できます。**L1 の Skill・サブエージェント・テンプレートは
-L2 に依存しないため、削除してもフローはそのまま動作します。**
-Rimay-JP MCP を private 環境の外へ持ち出さないために、この構成を選ぶこともできます。
-
-削除対象は次の4区分です。
-
-| 区分 | パス | 本数 |
-| --- | --- | --- |
-| L2 Skill | `.claude/skills/` 配下の9本（下記コマンド参照） | 9 |
-| MCP サンプルスキル | `.claude/skills/rimay-spec-alpha-check/` | 1 |
-| MCP bundle | `mcp/rimay-jp-mcp-alpha-0.1.0/` | 1 |
-| MCP 設定 | `.mcp.json`（プロジェクトルート） | 1 |
-
-```bash
-cd <プロジェクトルート>
-
-# L2 Skill 9本
-rm -rf .claude/skills/canonical-terminology-authoring \
-       .claude/skills/edge-case-enumeration \
-       .claude/skills/implementation-planning \
-       .claude/skills/prohibition-authoring \
-       .claude/skills/requirement-authoring-core \
-       .claude/skills/requirement-clarification \
-       .claude/skills/spec-change-proposal \
-       .claude/skills/terminology-consistency-audit \
-       .claude/skills/traceability-audit
-
-# MCP サンプルスキル・bundle・設定
-rm -rf .claude/skills/rimay-spec-alpha-check mcp/ .mcp.json
-```
-
-PowerShell の場合:
+macOS/Linuxでは `python3 -X utf8 -B -S start.py` を実行します。
+起動準備だけを行う場合やClaude Code拡張を使う場合は、次を実行してから同じフォルダを開きます。
 
 ```powershell
-cd <プロジェクトルート>
-
-'canonical-terminology-authoring','edge-case-enumeration','implementation-planning',
-'prohibition-authoring','requirement-authoring-core','requirement-clarification',
-'spec-change-proposal','terminology-consistency-audit','traceability-audit',
-'rimay-spec-alpha-check' |
-  ForEach-Object { Remove-Item -Recurse -Force ".claude/skills/$_" -ErrorAction SilentlyContinue }
-
-Remove-Item -Recurse -Force mcp, .mcp.json -ErrorAction SilentlyContinue
+python -X utf8 -B -S start.py --prepare-only
 ```
 
-> **⚠️ 名前の似た L1 Skill を消さないでください。**
-> `traceability-audit`（L2）と `traceability`（L1）、`requirement-authoring-core`（L2）と
-> `requirements-authoring` / `requirement-intake`（L1）は別物です。
-> ワイルドカード（`rm -rf .claude/skills/requirement*` など）ではなく、上記のとおり**名前を明示して**削除してください。
+準備後のフォルダは移動せず、そのまま利用します。再実行しても実装中の状態を初期化しません。
+最初からやり直す場合は、元ZIPを別の新しい場所へ展開してください。
 
-削除後に残る構成は以下のとおりです。
+## 最初の実行
 
-| 項目 | 削除前 | 削除後 |
-| --- | --- | --- |
-| Skill | 23本（L1 13 + L2 9 + MCP サンプル 1） | **13本（L1 のみ）** |
-| サブエージェント | 5本 | 5本（変更なし） |
-| テンプレート | 13点 | 13点（変更なし） |
+1. **この README と CLAUDE.md があるフォルダ**を Claude Code の作業フォルダにします。
+   ZIP を展開した場合も `.claude` と `.aidd` を含めたフォルダ全体を使ってください。
+2. ターミナルで環境を確認します（macOS / Linux）。
 
-削除の確認:
+   ```sh
+   python3 -X utf8 -B aidd-run.py doctor
+   claude
+   ```
 
-```bash
-ls .claude/skills | wc -l   # → 13
+   Windows は `python --version` で Python 3.9 以上が表示されることを確認し、
+   `python3` を `python` に置き換えます。`python` が使えない場合は
+   `py -3 --version` を確認し、動作した場合だけ `py -3` を使ってください。
+   `py -3` が「No installed Python found!」になる環境でも、`python` で起動できる場合があります。
+   VS Code の Claude Code 拡張からこのフォルダを開く場合、CLI が未導入なら
+   `python3 -X utf8 -B aidd-run.py doctor --runtime-only` で実行資材だけを確認できます。
+3. Claude Code が求めるログインと、このフォルダの信頼確認を済ませます。
+4. 通常版はClaude Codeの入力欄に **`/aidd-requirements-init`** を入力します。
+   実装開始版は上の手順を使い、Phase 1からやり直さず実装工程へ進みます。
+5. 質問・検査結果・承認依頼に回答します。Phase 1–3 の完了後、以下の順に進みます。
+
+| 入力するコマンド | 作成・確認する内容 |
+|---|---|
+| `/aidd-requirements-init` | 要求一覧、steering、feature 一覧（Phase 1–3） |
+| `/aidd-requirements` | feature 別 requirements と横断確認（Phase 4） |
+| `/aidd-design` | feature 別 design、横断確認、統合 docs（Phase 5–6） |
+| `/aidd-tasks` | feature 別 tasks と全体確認・承認（Phase 7） |
+| `/aidd-implement <feature> [1,2,...]` | タスク1件ずつ実装し、全体検査とfeature単位の人間承認（Phase 8） |
+
+Phase 8の開始前に、実在するテスト・検査コマンドとBoundaryに基づく編集範囲を
+`.aidd/implementation/config/<feature>.json` に設定します。
+形式と再開・修正手順は [.claude/skills/aidd-common/references/implementation/contract.md](.claude/skills/aidd-common/references/implementation/contract.md)。
+必要な開発ツール・言語ランタイムは案件に合わせて準備してください。未設定の検査は承認できません。
+
+最終検査の可読レポートは、別の`.aidd/implementation/reporting/<feature>.json`で設定します。
+[レポート契約](.claude/skills/aidd-common/references/implementation/reporting.md)に従い、
+OSSのテスト結果・coverageと仕様説明を用意してください。タスクの分割やcheck_idsは変更せず、
+スイート／モジュール単位で出力を追加します。選択した静的解析の結果も別ファイルで含められます。
+
+実行を中断した後は同じフォルダで同じ入口コマンドを使います。
+途中の状態を初期化したり、完了済みの文書を手動で削除したりする必要はありません。
+生成後の質問・指摘・承認には実際の回答が必要です。テスト題材でも自動承認は行いません。
+通常の Claude Code のファイル／コマンド実行権限確認と、AIDD の業務承認は別です。
+
+必要な検査がすべて完了するまで成果物を承認できません。形式不備で意味検査を省略した場合、
+指摘を「対応せず進める」としても承認は止まります。修正して再検査を行い、必要な検査を揃えて
+から承認します。過去版の検査・承認履歴がある案件は、同梱の移行手順に従って診断してください。
+
+## 要求の入力
+
+入力先は **`.aidd/rfp/`** です。テスト題材付きの配布には
+`meeting-room-reservation.md` を1件配置しています。架空の30人規模のオフィスを題材に、
+空き検索、予約、競合防止、取消、管理、履歴と受入観点を記載した要求書です。
+成果物・進捗・検査・承認は未作成なので、そのまま最初から試行できます。
+
+本番案件を始める場合は新しい配布コピーを用意し、**開始前にテスト RFP を取り除いて**
+実際の RFP に差し替えてください。混在させると両方が要求入力になります。
+試行済み環境を使い回す場合は入力変更検出と再承認の対象になり、初回実行には戻りません。
+新しい試行は ZIP を別フォルダへ展開することで始められます。
+
+## 必要な環境
+
+- Claude Code の利用可能なアカウントと通信環境。認証情報はこの配布物に含みません。
+- Python **3.9 以上**。Python パッケージの追加インストール、Node.js、MCP サーバーは
+  AIDD ランナーの実行に不要です。PyYAML がなければ同梱パーサを使用します。
+- このフォルダへの読取り・書込み権限。
+- Git。要求IDの改版比較に必要。`start.py`が初回に案件専用のローカルGitを用意します。
+- 実行環境は Claude Code。Cursor は `.claude/` の Skill・agent を読むが、検査役（check-runner）を別コンテキストで
+  起動することと Python の実行が必要で、この配布では動作を確認していない。
+
+ランナーと配布資材は macOS / Python 3.9.6 と Windows / Python 3.12.10 で確認しています。
+Claude Code CLI の確認記録は macOS / 2.1.211 です。Windows の確認では CLI を使わず、
+Python の実行資材・配布・初回の実行依頼までを検証しています。
+doctor は資材・Python 構文・L0 設定・RFP・CLI の有無を確認します。
+ログイン、Skill の実セッションでの読込み、LLM の生成・意味検査の品質は doctor の確認範囲外です。
+`--runtime-only` は CLI の確認も省略します。Windows / Linux の実ホスト受入は別途必要です。
+
+Claude Code が未導入の場合は [公式セットアップ](https://code.claude.com/docs/en/setup) を参照してください。
+プロジェクトの [CLAUDE.md](CLAUDE.md)、[Skills](https://code.claude.com/docs/en/skills)、
+[カスタム agent](https://code.claude.com/docs/en/sub-agents) の標準的な配置を使います。
+専用プラグインや権限確認を無効にする設定は必要ありません。
+
+## 配置されるファイル
+
+```text
+CLAUDE.md                 Claude Code への開始手順とホストの責務
+README.md                 この開始ガイド
+aidd-run.py               環境確認とプロジェクト固定の CLI 入口
+START.cmd / start.py       ZIP展開先での準備とClaude Code起動
+.claude/skills/           5つの入口、生成・修正・検査、L0/L3 の実行資材
+.claude/agents/           check-runner（検査用の別コンテキスト）
+Templates/                成果物・状態・記録のひな型
+.aidd/logging.yaml        ログの出力設定
+.aidd/rfp/                要求書の入力先
+.main-flow-assets.json    配布資材と管理原本の対応表
+.gitignore                ローカル設定・キャッシュ等の除外
 ```
 
-あわせて任意で実施できること:
+開発用のテスト・モック・報告書・作業ログ・Git 履歴・依存ライブラリのキャッシュは含みません。
+実行すると `.aidd/` に要求一覧・feature 一覧・進捗・検査記録・ログ、`steering/` に方針、
+`specs/` に feature 別文書、`docs/` に統合文書が生成されます。
+記録は監査と再開に必要なので、実行開始後は保存してください。
 
-- `.gitignore` の `# Python（Rimay-JP MCP の実行時に生成される）` 以下の4行は不要になります（残しても害はありません）。
-- 本 README の [2.5](#25-rimay-jp-mcp-を使う場合任意) と冒頭の Rimay-JP MCP 注意書きは、自分のプロジェクトでは削除して構いません。
+## 問題が起きたとき
 
-**後から L2 を戻す場合**は、リリースパッケージの
-[`l2_intelligence_assets/skills/`](../l2_intelligence_assets/README.md) の9本を `.claude/skills/` へ、
-[`l2_intelligence_assets/mcp/rimay-jp-mcp-alpha-0.1.0/`](../l2_intelligence_assets/README.md) を `mcp/` へコピーし、
-`.mcp.json` を復元します（`alpha1.1/release/` から再コピーするのが確実です）。
+- コマンドが見えない: `.claude/skills/` があるフォルダで Claude Code を再起動し、
+  `/aidd-requirements-init` を確認してください。`--safe-mode` ではプロジェクト資材が読み込まれません。
+  個人設定・組織設定に同名 Skill がある場合は、実際に読み込まれたファイルを確認してください。
+- check-runner が使えない: `.claude/agents/check-runner.md` を確認してセッションを再起動します。
+- doctor が失敗: JSON の `ok: false` と `detail` を確認します。RFP なしなら配置して再実行します。
+- workflow の終了コードは0/1で、次の状態は `result.status` にあります。
+  L0 直接 CLI の `20` はホストへの実行依頼、`10` は人間待ちです。
+- 検査途中の承認は拒否されます。ホストは `advance / submit / respond` を使い、
+  実際の review 待ちで回答します。応答が不明なら保存済みの同一操作ID・payloadを再送します。
+- 続きの工程へ進めない: [ホスト手順](.claude/skills/aidd-common/references/host-protocol.md) に従い、
+  最新の質問・指摘・承認状況を確認します。進捗 JSON に成功印を手入力しないでください。
 
-## 3. 注意事項
-
-- **`wireframe-authoring` / `wireframe-integration` の `SKILL.md` を書き換えないでください。**
-  外部パッケージ由来の配布物であり、パッケージ更新時に追記が失われます。
-- **成果物に残る未記入プレースホルダー**（`<PRODUCT_NAME>` のような山括弧の大文字項目）は、
-  埋める必要がないものを**不要理由を添えたまま保持する**規約であり、消し忘れではありません。
-- 本リリースのスコープは **Phase 5 まで**です。`design.md`（Phase 6）／ `docs/`（Phase 7）／
-  `tasks.md`（Phase 8）は含まれません。
-- 顧客固有情報・機密情報を追加する場合は、配布範囲と保存先の規程を別途確認してください。
+既存案件のデータを持ち込む場合は [移行手順](.claude/skills/aidd-common/references/migration.md) を
+先に確認してください。この配布は main_flow 用であり、新規／変更の複数ワークフロー選択機能は含みません。
+Phase 8でアプリの実装・検査を行います。実サービスへのデプロイは別途指示してください。

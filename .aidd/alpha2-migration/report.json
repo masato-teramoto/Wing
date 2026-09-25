@@ -1,0 +1,270 @@
+{
+  "schema": 1,
+  "status": "ready-for-copy",
+  "source": {
+    "kind": "zip",
+    "sha256": "733005be5c65673c36a15e8b4ce5cc63d51e1df234ec6a12791fbb2d2a446f0c",
+    "project_prefix": ""
+  },
+  "files": 597,
+  "copied_files": 484,
+  "archived_only_files": 113,
+  "legacy_approved_units": [
+    "design[property-basic-info]",
+    "intake[]",
+    "requirements[contract-application-status]",
+    "requirements[contract-info-download]",
+    "requirements[contract-info-import]",
+    "requirements[issue-request-tutorial]"
+  ],
+  "native_approved_units": [],
+  "unfinished_artifacts": [
+    "steering/product.md",
+    "steering/tech.md",
+    "steering/architecture.md",
+    "steering/security.md",
+    "steering/non-functional.md",
+    "steering/database.md",
+    "steering/api-standards.md",
+    ".aidd/feature-list.md",
+    "specs/property-basic-info/requirements.md",
+    "specs/issue-request/requirements.md"
+  ],
+  "current": {
+    "phase": 5,
+    "phase_name": "design 作成",
+    "waiting_for": "human_review",
+    "next_action": "【2026-09-25T12:54:34+09:00】#28: steering 7 回目（最後の回）のゲートを実行した（① / ②。③ の指定により ① の指摘 2 件（#74 / #75）があっても ② まで実行）。指摘 16 件（① 2 件 #74〜#75 / ② 14 件 #76〜#89）をゲート記録へ追記し、steering 7 ファイルを draft → review に遷移させた。③ で #74〜#89 の判断を聞き取って転記する。そのあと feature-list（4 回目）→ requirements property-basic-info（9 回目）→ issue-request（7 回目）。",
+    "open_blockers": 0,
+    "input_extension": {
+      "decided_by": "Junichi Noumi",
+      "decided_at": "2026-09-18",
+      "note": "design-authoring の 入力 に無い既存実装（wing / WTX / WTX_Batch / WTX_Common）を、設計の整合を合わせるための参照として追加することを人間が確定した。根拠は REQ-053（既存のアーキテクチャ・フレームワーク・コーディング規約に従う）で、Phase 2 の steering 記入時と同じ扱い。正の順序は requirements + steering が先で、既存実装は『既存に合わせる』箇所（フレームワーク・レイヤ構成・命名・既存テーブル/カラム・共通部品・画面ID/PGID の採番体系）の根拠に限る。新しい要件の出どころにはしない。食い違いが出た場合は実装側に寄せず停止して人間に確認する。ゲートにはこの許可を渡せない（規約で渡せる入力が 3 つに限られる）ため、実装由来の記述は『根拠のない設計記述』として指摘されうる — 規約違反ではなく ③ への判断材料である。"
+    }
+  },
+  "features": [
+    "property-basic-info",
+    "issue-request-tutorial",
+    "issue-request",
+    "contract-application-status",
+    "contract-info-import",
+    "contract-info-download"
+  ],
+  "resume": {
+    "phase": 5,
+    "process": "design",
+    "event": "design-authoring-generate",
+    "call": "design-authoring-generate",
+    "item": "issue-request-tutorial",
+    "targets": [
+      "specs/issue-request-tutorial/design.md"
+    ],
+    "purpose": "resume"
+  },
+  "plan": {
+    "schema": 1,
+    "reinspection": [
+      {
+        "phase": 1,
+        "process": "intake",
+        "event": "requirement-intake-revise",
+        "call": "requirement-intake-revise",
+        "item": "",
+        "targets": [
+          ".aidd/requirement-list.md"
+        ],
+        "purpose": "reinspect"
+      },
+      {
+        "phase": 2,
+        "process": "steering",
+        "event": "steering-authoring-revise",
+        "call": "steering-authoring-revise",
+        "item": "",
+        "targets": [
+          "steering/product.md",
+          "steering/tech.md",
+          "steering/architecture.md",
+          "steering/security.md",
+          "steering/non-functional.md",
+          "steering/database.md",
+          "steering/api-standards.md"
+        ],
+        "purpose": "recover"
+      },
+      {
+        "phase": 3,
+        "process": "feature",
+        "event": "feature-decomposition-revise",
+        "call": "feature-decomposition-revise",
+        "item": "",
+        "targets": [
+          ".aidd/feature-list.md"
+        ],
+        "purpose": "recover"
+      },
+      {
+        "phase": 4,
+        "process": "requirements",
+        "event": "requirements-authoring-revise",
+        "call": "requirements-authoring-revise",
+        "item": "property-basic-info",
+        "targets": [
+          "specs/property-basic-info/requirements.md"
+        ],
+        "purpose": "recover"
+      },
+      {
+        "phase": 4,
+        "process": "requirements",
+        "event": "requirements-authoring-revise",
+        "call": "requirements-authoring-revise",
+        "item": "issue-request-tutorial",
+        "targets": [
+          "specs/issue-request-tutorial/requirements.md"
+        ],
+        "purpose": "reinspect"
+      },
+      {
+        "phase": 4,
+        "process": "requirements",
+        "event": "requirements-authoring-revise",
+        "call": "requirements-authoring-revise",
+        "item": "issue-request",
+        "targets": [
+          "specs/issue-request/requirements.md"
+        ],
+        "purpose": "recover"
+      },
+      {
+        "phase": 4,
+        "process": "requirements",
+        "event": "requirements-authoring-revise",
+        "call": "requirements-authoring-revise",
+        "item": "contract-application-status",
+        "targets": [
+          "specs/contract-application-status/requirements.md"
+        ],
+        "purpose": "reinspect"
+      },
+      {
+        "phase": 4,
+        "process": "requirements",
+        "event": "requirements-authoring-revise",
+        "call": "requirements-authoring-revise",
+        "item": "contract-info-import",
+        "targets": [
+          "specs/contract-info-import/requirements.md"
+        ],
+        "purpose": "reinspect"
+      },
+      {
+        "phase": 4,
+        "process": "requirements",
+        "event": "requirements-authoring-revise",
+        "call": "requirements-authoring-revise",
+        "item": "contract-info-download",
+        "targets": [
+          "specs/contract-info-download/requirements.md"
+        ],
+        "purpose": "reinspect"
+      },
+      {
+        "phase": 4,
+        "process": "requirements",
+        "event": "requirements-cross-gate",
+        "call": "requirements-cross-gate",
+        "item": "",
+        "targets": [
+          "specs/property-basic-info/requirements.md",
+          "specs/issue-request-tutorial/requirements.md",
+          "specs/issue-request/requirements.md",
+          "specs/contract-application-status/requirements.md",
+          "specs/contract-info-import/requirements.md",
+          "specs/contract-info-download/requirements.md"
+        ],
+        "purpose": "cross-check"
+      },
+      {
+        "phase": 5,
+        "process": "design",
+        "event": "design-authoring-revise",
+        "call": "design-authoring-revise",
+        "item": "property-basic-info",
+        "targets": [
+          "specs/property-basic-info/design.md"
+        ],
+        "purpose": "reinspect"
+      },
+      {
+        "phase": 5,
+        "process": "design",
+        "event": "design-plan",
+        "call": "design-plan",
+        "item": "",
+        "targets": [],
+        "purpose": "plan"
+      }
+    ],
+    "resume": {
+      "phase": 5,
+      "process": "design",
+      "event": "design-authoring-generate",
+      "call": "design-authoring-generate",
+      "item": "issue-request-tutorial",
+      "targets": [
+        "specs/issue-request-tutorial/design.md"
+      ],
+      "purpose": "resume"
+    },
+    "handoff": {
+      "phase": 2,
+      "process": "steering",
+      "event": "steering-authoring-revise",
+      "call": "steering-authoring-revise",
+      "item": "",
+      "targets": [
+        "steering/product.md",
+        "steering/tech.md",
+        "steering/architecture.md",
+        "steering/security.md",
+        "steering/non-functional.md",
+        "steering/database.md",
+        "steering/api-standards.md"
+      ],
+      "purpose": "recover"
+    },
+    "reopened_phases": [
+      2,
+      3,
+      4
+    ],
+    "original_current": {
+      "phase": 5,
+      "phase_name": "design 作成",
+      "waiting_for": "human_review",
+      "next_action": "【2026-09-25T12:54:34+09:00】#28: steering 7 回目（最後の回）のゲートを実行した（① / ②。③ の指定により ① の指摘 2 件（#74 / #75）があっても ② まで実行）。指摘 16 件（① 2 件 #74〜#75 / ② 14 件 #76〜#89）をゲート記録へ追記し、steering 7 ファイルを draft → review に遷移させた。③ で #74〜#89 の判断を聞き取って転記する。そのあと feature-list（4 回目）→ requirements property-basic-info（9 回目）→ issue-request（7 回目）。",
+      "open_blockers": 0,
+      "input_extension": {
+        "decided_by": "Junichi Noumi",
+        "decided_at": "2026-09-18",
+        "note": "design-authoring の 入力 に無い既存実装（wing / WTX / WTX_Batch / WTX_Common）を、設計の整合を合わせるための参照として追加することを人間が確定した。根拠は REQ-053（既存のアーキテクチャ・フレームワーク・コーディング規約に従う）で、Phase 2 の steering 記入時と同じ扱い。正の順序は requirements + steering が先で、既存実装は『既存に合わせる』箇所（フレームワーク・レイヤ構成・命名・既存テーブル/カラム・共通部品・画面ID/PGID の採番体系）の根拠に限る。新しい要件の出どころにはしない。食い違いが出た場合は実装側に寄せず停止して人間に確認する。ゲートにはこの許可を渡せない（規約で渡せる入力が 3 つに限られる）ため、実装由来の記述は『根拠のない設計記述』として指摘されうる — 規約違反ではなく ③ への判断材料である。"
+      }
+    },
+    "features": [
+      "property-basic-info",
+      "issue-request-tutorial",
+      "issue-request",
+      "contract-application-status",
+      "contract-info-import",
+      "contract-info-download"
+    ],
+    "continuation": "After the resume unit, continue remaining units in the native phase order. For Phase 1-3 use individual events through Phase 3, then /aidd-requirements. Do not restart requirements-init over completed revision-only units."
+  },
+  "feature_snapshot": "legacy-only",
+  "limitations": [
+    "Legacy approvals require native reinspection; no Alpha 3 proof is synthesized.",
+    "External repositories and tools referenced in documents are not included.",
+    "Pending legacy findings require reconciliation before native reapproval."
+  ]
+}

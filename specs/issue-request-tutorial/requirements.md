@@ -1,6 +1,6 @@
 ---
 feature: issue-request-tutorial
-status: approved
+status: draft
 updated_at: 2026-09-16T08:24:32+09:00
 ---
 

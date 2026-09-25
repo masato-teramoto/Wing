@@ -1,119 +1,21 @@
 ---
 name: steering-authoring
-description: AIDD Phase 2（Steering 作成）の作成 Skill。steering/ 7ファイル（product / tech / architecture / security / non-functional / database / api-standards）を依存順に記入し、7ファイル間の記述分担を制御する。業務コード・DB エンティティの設計ルールの粒度確認と、未記入プレースホルダーの質問化を行う。
+description: main_flow Phase 2 のsteering成果物を生成する。指定された自分の成果物だけを編集し、完了・待機・失敗をホストへ返す。
 disable-model-invocation: true
 ---
 
-# steering-authoring（Phase 2: Steering 作成）
+# steering-authoring
 
-プロジェクト全体で固定する前提（方針・制約）を `steering/` 7ファイルに確定する。以降の全フェーズは steering を上位の制約として参照するため、**steering に違反する成果物は作られない**前提が成立する。
-
-- 成果物: `steering/` 7ファイル
-- テンプレート: `Templates/steering/<同名ファイル>`
-
----
-
-## 入力
-
-| 項目 | 内容 |
-|---|---|
-| 要求一覧 | `.aidd/requirement-list.md`（**`approved` であること**） |
-| steering テンプレート | `Templates/steering/` 7ファイル |
-
-`非機能` / `制約` に分類された要求を、記入根拠として優先的に参照する。
-
----
-
-## 本フェーズは docs を作らない
-
-**暫定版も作らない。** `docs/` の所有者は Phase 6 のみである。代わりに **業務コードと DB エンティティの「設計ルール」を steering に確定させる**（下記 §設計ルールの粒度）。
-
----
+対象: `steering/product.md` / `steering/tech.md` / `steering/architecture.md` / `steering/security.md` / `steering/non-functional.md` / `steering/database.md` / `steering/api-standards.md`。feature単位の対象はホストから受け取る。
+テンプレート: `Templates/steering/product.md` / `Templates/steering/tech.md` / `Templates/steering/architecture.md` / `Templates/steering/security.md` / `Templates/steering/non-functional.md` / `Templates/steering/database.md` / `Templates/steering/api-standards.md`。
+起動 event: `steering-authoring-generate`（直後に `steering-authoring-revise` が毎回実行される）。
 
 ## 手順
 
-### 1. 依存順に記入する
-
-一括生成でも**内部の確定順は固定する**。上位の方針が決まらないまま下位を埋めると矛盾が発生する。
-
-| 順 | ファイル | 理由 |
-|---|---|---|
-| 1 | `product.md` | なぜ作るか・やらないことが全体の前提 |
-| 2 | `tech.md` / `architecture.md` | 技術・論理構成が以降の制約になる |
-| 3 | `security.md` / `non-functional.md` / `database.md` / `api-standards.md` | 上位方針を前提に確定する |
-
-### 2. 未記入プレースホルダーを抽出・提示する
-
-埋まっていない箇所を抽出して人間に提示し、壁打ちベースで埋めていくよう AI から指示出しする。
-
-### 3. 壁打ちで記入する（根拠のない埋め禁止）
-
-要求一覧・既存成果物に **根拠がある値のみ**記入する。根拠が無い、または判断に迷う場合は **推測で補完せず、質問して停止**する。
-
-### 4. 設計ルールの粒度を確認・補完する
-
-各 feature の design が独力で設計を進められる粒度まで書けているかを確認する。不足していれば壁打ちで埋める。
-
-### 5. 品質ゲートを通す
-
-`steering-check-subagent` を **別コンテキストで**起動する（起動時の制約は `.claude/skills/aidd-flow/SKILL.md` §5 Step 3）。**指摘の要約は呼び出し元へ返す。③ の提示と人間の判断の反映は呼び出し元が行うため、本 Skill が人間へ承認を求めない。**
-
----
-
-## 設計ルールの粒度（ルールのみを確定し、実体は書かない）
-
-| 区分 | 本フェーズで確定する（**ルール**） | 本フェーズでは書かない（**実体**） |
-|---|---|---|
-| 業務コード・区分値・採番 | コード体系の作り方、桁数・データ型の方針、区分値の設計方針、採番方式の選び方 | 個々のコード値・区分値・採番対象 |
-| DB エンティティ | 命名規則、型の指針、整合性・マイグレーション方針 | 個々のテーブル・カラム・ER |
-
-- **判定基準**: 「**全 feature に等しく適用されるか**」。等しく適用されるならルール（steering）、feature ごとに異なるなら実体（各 `design.md`）。
-- ルールは **各 design が参照するだけで設計できる粒度**まで書く。粒度が足りないと feature ごとに独自解釈が発生し、Phase 6 の集約時に衝突する。
-- 実体は **必要になった feature の `design.md`** で設計され、**Phase 6 で集約**される。
-
----
-
-## 7ファイル間の記述分担（SSoT の維持）
-
-**同じ事実を 2 か所に書かない。** 記述先に迷った場合は次で判定する。
-
-| 問い | 置き場所 |
-|---|---|
-| なぜ作るか・誰のためか・やらないことか | `product.md` |
-| 技術選定・言語・フレームワーク・コード規約・テスト方針・検証コマンドか | `tech.md` |
-| 論理構成・レイヤ・ディレクトリ構成・境界か | `architecture.md` |
-| 認証・認可・機密データ・脆弱性対策か | `security.md` |
-| SLO・可用性・性能・ログ・監視・障害対応か | `non-functional.md` |
-| DB の命名規則・型・整合性・マイグレーション方針か | `database.md` |
-| API の形状・エラー契約・バージョニング・共通バリデーション形式か | `api-standards.md` |
-
-下位ファイルが上位方針を **引用（「○○に準拠」）** するのは二重定義ではない。ただし **参照先が存在し、かつ空でないこと**を確認する。
-
----
-
-## 未記入箇所の質問化
-
-1. 全 7 ファイルから **`<UPPER_SNAKE>` 系統**のプレースホルダー（記法と扱いは `.claude/skills/aidd-flow/references/status-protocol.md` §7 を正とする）を抽出し、**ファイル × セクション単位**で人間に提示する。`{{...}}` 系統は機械的に埋めるため質問化しない。
-2. 依存順（§手順 1）に沿って提示する。上位ファイルの未記入を残したまま下位の質問をしない。
-3. 提示は「この項目の根拠が要求一覧に無い」という形にする。**推測した候補を選択肢として並べない。**
-4. 回答を得た箇所を記入する。
-5. **埋める必要がないプレースホルダーは、人間が明記した不要理由をプレースホルダーに記載して保持する。プレースホルダー自体を削除しない。**
-6. 未回答が残る場合は `phase-progress.json` の `waiting_for` を `human_answer`、`open_placeholders` を**不要理由が明記されていない未記入数**に更新して停止する。
-
----
-
-## 禁止
-
-- **`docs/` を作ること**（暫定版を含む）。
-- steering に **実体**（個々のコード値・区分値・採番対象・テーブル定義）を書くこと。
-- 根拠のない値を書くこと。判断に迷ったまま埋めること。
-- プレースホルダーを削除すること。
-- 同じ事実を複数ファイルに定義すること。
-- `approved` でない要求一覧を入力にすること。
-- 自ら `status: approved` にすること。
-
----
-
-## 下流への影響（人間に伝えること）
-
-steering を変更した場合、**下流の spec は自動的に有効ではなくなる。** 影響範囲の洗い出しが必要である旨を人間に伝える。steering への差戻しは **人間承認必須**である。
+1. `.claude/skills/aidd-common/references/authoring/contract.md` を読み、受け取った対象・承認済み入力・質問回答を確認する。
+2. `.claude/skills/aidd-common/references/authoring/steering.md` と上記の実行時テンプレートを読む。
+3. 指定対象の未作成または再入中のdraftを確認する。既存のreview/approvedを変更しない。
+4. 承認済み入力と実際の回答から対象を生成する。根拠のない値を推測で書かず、プレースホルダーを削除せず、`TBD` / `未定` を記入欄へ新たに書かない。
+5. product から上位順に記入し、上位の未確定事項を残して下位を推測しない。
+6. テンプレートと実成果物の前提矛盾・上流の不足・新規要求は編集で吸収せず、共通契約の「停止して返す場面」に従い質問・差戻し候補として返す。上流を疑う前に当該工程内で解消できないかを確認する。新規要求は要求一覧を編集せず Phase 1 への差戻し候補とする。
+7. 共通契約のJSON結果を返して終了する。進行状態・ゲート記録・上流・承認を変更せず、他Skillやagentを起動しない。

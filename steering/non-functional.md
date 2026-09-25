@@ -1,5 +1,5 @@
 ---
-status: review
+status: draft
 updated_at: 2026-09-25T12:54:34+09:00
 ---
 

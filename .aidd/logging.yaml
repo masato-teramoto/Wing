@@ -1,0 +1,19 @@
+# ログ設定。**出力ルートの `.aidd/logging.yaml` に置く。**
+#
+# 拡張子は `.log` だが、**中身は JSONL（1 行 1 JSON）である。**
+# ファイル名から中身が読めないため、この点は engine.md にも書いてある。
+
+output:
+  # 案件ルートからの相対パス。**絶対パスは使わない**（案件を移すと壊れる）。
+  # 無ければ作る。作れなければ実行を止める。
+  dir: .aidd/logs
+
+  # 使える変数は {trace_id} / {date} / {command} の 3 つだけ。
+  # {trace_id} は 1 実行 1 ファイルになり、探すのに grep が要らない。
+  # {date} は並行実行で行が混ざる。
+  filename: "{trace_id}.log"
+
+  # **閾値であり配列ではない。**
+  # 配列にすると warn だけ出して error を落とす設定が書けてしまう。
+  # info / warn / error / debug。debug は既定では出さない。
+  level: info

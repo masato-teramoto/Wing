@@ -1,0 +1,32 @@
+{
+  "name": "Table",
+  "status": "draft",
+  "purpose": "構造化データを行と列で提示・比較する。一覧画面の主表示に使う",
+  "use_when": [
+    "複数レコードの一覧・比較",
+    "並び替え・行選択などの操作を伴う大量データの提示"
+  ],
+  "never_use_when": [
+    "レイアウト目的での使用（画面の配置調整に表を使わない）",
+    "1 レコードの名前-値ペアの表示（→ dl〔説明リスト〕によるマークアップ — detail-page パターン参照。DescriptionList 部品は第一弾未提供）",
+    "セル結合の多用（データテーブルでは原則行わない）",
+    "空白・改行文字でセル内の配置を調整する",
+    "行全体をクリック可能にする（行の中の遷移先が 1 つならそのセル全体を Link の領域にしてよいが、行そのものを押せる要素にしない — デジ庁準拠。行選択は先頭列の Checkbox で行う）",
+    "行ごとに編集・削除などの操作ボタン列を置く（第一弾は行操作列を設けない。各行の主キー列〔番号・名称〕を Link にして detail-page へ遷移し、編集・削除は detail-page のヘッダで行う。複数行への操作は list-page の一括操作。アイコンのみのボタン〔IconButton〕も提供しない — GAP-14）"
+  ],
+  "confusable_with": {
+    "dl（説明リスト）": "1 レコードの名前-値ペアなら dl。複数レコードの比較・一覧なら Table",
+    "RepeatingFieldGroup": "既存レコードの閲覧・比較なら Table。入力中の可変件数フォーム項目なら RepeatingFieldGroup"
+  },
+  "states_to_cover": ["default", "row-hover", "sorted", "row-selected", "all-selected", "header-indeterminate"],
+  "row_selection_guidance": "行選択が必要な一覧では先頭列に Checkbox 列を置く（列幅は Checkbox が収まる最小幅、Checkbox は size sm 相当）。ヘッダ先頭の Checkbox で表示中ページの全行を選択・解除できる。選択済みの行と未選択の行が混在する場合はヘッダの Checkbox を indeterminate 表示（マイナス記号）にし、その状態で操作すると全行が選択される。選択は表示中ページ内に限る（他ページを含む「全件選択」は第一弾では提供しない — 必要になれば起票）。選択行（row-selected）は背景色 color.semantic.primary-subtle でハイライトする（2026-08-25 REQ-03 で専用トークンを新設。それ以前の暫定 surface は使わない）。行 hover（row-hover）は color.semantic.surface-hover とし、選択行と色相を分けて区別できるようにする（surface の流用は選択行と見分けがつかないため不可）。部品→色役割の対応は tokens/ROLE-MAP.md。選択した行に対する一括操作の配置は list-page パターン側で規定する",
+  "alignment_guidance": "セル内は上揃え。データセルは数値・日付・金額の列のみ右揃え（桁を揃えて比較しやすくする — デジ庁準拠）、テキスト列は左揃え。見出しセル（th）は列の揃え方に関係なく常に左揃え（brand-principles.md レイアウト原則「ラベル = 左揃え / 数値 = 右揃え」。デジ庁テーブルガイドラインは見出しセルの揃えを規定しておらず〔太字のみ〕、従来の「データセルと同じ揃え」は自社判断だったため 2026-08-25 REQ-01 で撤回）。右揃えの値と見出しが離れて見える場合は列幅を内容相応に絞って緩和する（text_overflow_guidance と併用）。見出しは太字・データセルとの間は罫線 color.semantic.border で区切る。セル内の値の表記は brand-principles.md「表記の原則（数値・日付）」に従う（日付は既定 yyyy年MM月dd日。列幅が足りない場合は yyyy/MM/dd を許容するが同一画面内はどちらか一方に統一する。数値は 3 桁区切り + 単位 — 2026-08-25 REQ-20）",
+  "text_overflow_guidance": "表には内容相応の列幅の合計（最小幅）を持たせ、領域幅がそれを下回る場合は列を縮めずスクロールさせる（実装例: 表に min-width を与えたうえでラッパを overflow-x: auto。width: 100% だけを指定してもラッパ幅を超えないためスクロールは一度も発生せず、列が均等に潰れて省略表示になる — brand-principles.md「収容のために取ってはいけない手段: Table の省略表示による情報欠落」に抵触するため不可。2026-08-25 REQ-16a）。セル内テキストは既定で折り返さず 1 行に収める（white-space: nowrap 相当）。省略記号（text-overflow: ellipsis）で切り詰めてよいのは、最小幅を確保しても収まらない長文列に限る（全文は title 属性等で確認できるようにする）。折り返しが業務上必須な列（備考等の長文列）に限り個別に折り返しを許容してよいが、一覧全体の既定は折り返さない",
+  "a11y": "見出しセルは th + scope 属性で行/列を明示。表の要旨は caption で示す。ソート状態は aria-sort で示す（ソート操作はヘッダセル内の button で行い、テキストとアイコンの両方を操作領域にする。ソートアイコンは icons/ICON-MAP.md の sort-none / sort-asc / sort-desc〔Material Symbols swap_vert / arrow_upward / arrow_downward〕を見出しテキストの右〔テール配置・間隔 space.xs〕に icon.size.sm・currentColor で置き、aria-hidden=\"true\" にする — 状態は aria-sort が担う。記号文字 ▲ ▼ で描かない）。行選択の Checkbox: ヘッダの全選択 Checkbox は aria-label=\"行を選択\" + aria-description=\"すべての行を選択する\"、各行の Checkbox は aria-labelledby でその行を特定できるセル（名称・番号などの主キー列）を参照し、読み上げでどの行を選択するか分かるようにする。選択状態は Checkbox の checked で伝え、背景色のみに依存しない。領域幅が表の最小幅を下回る場合（モバイル・狭い表示領域）はテーブル領域内の横スクロールで対応する（表の構造を崩さない — デジ庁はスクロール可否のシャドー表示を採用。列の縮小・省略で収めない — text_overflow_guidance）。スクロール領域はキーボードからも到達できるようにする（スクロールするラッパに role=\"region\" + aria-label〔表の要旨と同じ内容〕 + tabindex=\"0\" 相当を付け、フォーカス時に矢印キーでスクロールできる状態にする）。この作法は入力側の RepeatingFieldGroup でも共通に使う（RepeatingFieldGroup spec responsive — 2026-08-25 REQ-16b）",
+  "anti_pattern_example": "一覧をカードのグリッドで並べる → 業務の一覧は Table（list-page パターン参照）",
+  "source": {
+    "digital_go_jp": "テーブル／データテーブル (Table)",
+    "url": "https://design.digital.go.jp/dads/components/table/",
+    "note": "公開済みガイドライン（概要 / 使い方）から移植・翻案。デジ庁の a11y ページは「提供予定」のため a11y 欄は自社翻案。参照日 2026-08-18。2026-08-25 追記（GAP-05 / GAP-14 調査）: 行選択・全選択・indeterminate（使い方 Rev002 2025-06-25）、行全体クリック禁止、数値・日付の右揃えをデジ庁ガイドラインから採取。Checkbox の aria 属性はデジ庁 HTML / React 実装（selectable-table）に準拠。同日 GAP-14 承認で「行操作列を設けない」を never_use_when に追加（デジ庁に行操作列の作法・IconButton は無く、アイコンは必ずラベルと組み合わせる方針のため）。参照日 2026-08-25。同日 密度・レイアウト要望 REQ-01 で alignment_guidance の見出しセルを「常に左揃え」に改定、REQ-03 で選択行・行 hover の色トークンを確定（tickets/2026-08-25-density-and-layout-requests.md。デジ庁は見出しセルの揃えを規定せず — 自社定義）。同日 アイコン定義 ICN-01〜06（tickets/2026-08-25-icon-definition.md）承認でソートアイコンを icons/ICON-MAP.md の sort-* と icon.size.sm に紐付け。同日 段組みルール要望 REQ-16a（tickets/2026-08-25-column-rules-and-visual-requests.md）で text_overflow_guidance に「内容相応の最小幅を持たせ、狭い領域では縮小・省略ではなく横スクロール」を具体化（デジ庁の明文『モバイルでは領域内の横スクロールで構造を崩さない』の実装条件を補ったもので、規定の変更ではない）。同日 REQ-20 対応（tickets/2026-08-25-date-display-format-and-choices-in-table-rows.md）: セル内の値の表記を brand-principles.md「表記の原則（数値・日付）」への参照に統一（Table では列幅が足りない場合に yyyy/MM/dd を許容。デジ庁に日付・時刻の表記規定は無く自社定義 — スタイルガイドのページで 2026-08-25 に確認）"
+  }
+}

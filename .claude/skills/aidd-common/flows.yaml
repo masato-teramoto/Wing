@@ -1,0 +1,39 @@
+# L3 の固定イベント順。Phase 1–7 は生成（-generate）→ 修正（-revise）の順に並べる。
+# 修正イベントは毎回走る（修正対象 0 件でも流れる。イベント単位の SKIP は今後導入）。
+# 修正対象が 0 件のときは、-revise の検査・人間レビュー等のゲートを when 条件で省く（L0 gates.yaml）。
+# forEach と完了判定は references/host-protocol.md。実行仲介は L0。
+# Phase 8 も同じタスクitemで生成→修正。feature 最終検査・承認は別 flow。
+
+- flow:
+    name: requirements-init           # /aidd-requirements-init（Phase 1〜3）。forEach を持たないため 1 本で足りる。
+    event_order:
+      - requirement-intake-generate
+      - requirement-intake-revise       # 修正イベント。毎回走る（修正対象 0 件でも流れる。SKIP は今後導入）
+      - steering-authoring-generate     # plan は gates.yaml の start ゲート
+      - steering-authoring-revise
+      - feature-decomposition-generate  # plan は gates.yaml の start ゲート
+      - feature-decomposition-revise
+
+- flow:
+    name: requirements                # /aidd-requirements（Phase 4）。feature ごとに `--item` を付けて呼ぶ。
+    event_order: [requirements-authoring-generate, requirements-authoring-revise]
+
+- flow:
+    name: design                      # /aidd-design 前半（Phase 5）。feature ごとに `--item` を付けて呼ぶ。
+    event_order: [design-authoring-generate, design-authoring-revise]
+
+- flow:
+    name: docs                        # /aidd-design 後半（Phase 6）。forEach を持たない。
+    event_order: [docs-integration-generate, docs-integration-revise]   # plan は gates.yaml の start ゲート（docs-plan）
+
+- flow:
+    name: tasks                       # /aidd-tasks（Phase 7）。feature ごとに `--item` を付けて呼ぶ。
+    event_order: [tasks-authoring-generate, tasks-authoring-revise]
+
+- flow:
+    name: implement-task
+    event_order: [implement-authoring-generate, implement-authoring-revise]
+
+- flow:
+    name: implement-review
+    event_order: [implement-gate-run]

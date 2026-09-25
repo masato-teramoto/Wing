@@ -1,0 +1,38 @@
+{
+  "name": "InputText",
+  "status": "draft",
+  "purpose": "1 行以内のテキスト入力（氏名・電話番号・メールアドレス・金額・数量など）に使う",
+  "use_when": [
+    "1 行で収まる自由入力（氏名・番号・検索語など）",
+    "金額・数量・件数などの数値入力（numeric_input_guidance 参照。専用の数値部品は提供しない）",
+    "ラベル + 入力欄の組で構成するフォーム項目"
+  ],
+  "never_use_when": [
+    "複数行の入力（→ Textarea）",
+    "既定の選択肢から選ばせる（→ Select）",
+    "日付の入力（→ DatePicker。生年月日・伝票日付などの既知の日付は calendar=false〔年 / 月 / 日の 3 分割テキスト入力〕、前後を見ながら選ぶ日付は calendar=true。InputText 1 つに日付を打たせない）",
+    "文章内の穴埋め形式でラベル無しに置く（ラベル + 入力欄の組を崩さない）",
+    "プレースホルダーをラベルやサポートテキストの代わりに使う（コントラストが低く視認性が悪い）",
+    "maxlength・入力文字種の制限・コピー&ペーストの禁止・メールアドレスのフィールド分割（必要な変換は送信時に自動で行う）",
+    "数値入力に input type=\"number\" を使う（スピンボタンの誤操作・スクロールによる値の変化・先頭ゼロや桁区切りの扱いの問題があるため。→ type=\"text\" + inputmode — numeric_input_guidance 参照）",
+    "入力中・フォーカスアウト時に入力値を書き換える（カンマ付与・全角→半角変換など。入力内容と異なる値が表示され混乱を招く — 変換は送信時または確認画面表示時に行う。デジ庁準拠）"
+  ],
+  "confusable_with": {
+    "TextField": "その名前の部品は存在しない。1 行テキスト入力はこの InputText（デジ庁名: インプットテキスト）",
+    "InputNumber": "その名前の部品は存在しない（GAP-12 で不採用）。金額・数量は InputText を numeric_input_guidance に従って使う",
+    "Select": "既定の選択肢から選ぶなら Select。自由入力なら InputText",
+    "Combobox": "多数の候補（目安 30 件超）やマスタから絞り込んで選ばせるなら Combobox。候補に無い値を自由に入力させるなら InputText",
+    "Textarea": "複数行なら Textarea",
+    "DatePicker": "日付は常に DatePicker（既知の日付は calendar=false、前後を見ながら選ぶ日付は calendar=true）。InputText で日付を受けない"
+  },
+  "states_to_cover": ["default", "focus", "error"],
+  "numeric_input_guidance": "金額・数量・件数などの数値は input type=\"text\" + inputmode=\"numeric\"（小数を含む場合は inputmode=\"decimal\"）で受け付ける（type=\"number\" は使わない。inputmode はソフトウェアキーボードの種類を示すだけで入力文字を制限しないため、デジ庁の「入力文字種を限定しない」方針と矛盾しない — デジ庁日付ピッカー実装と同じ流儀）。全角数字・カンマ・空白の混入は UI で弾かず、送信時または確認画面表示時に半角化・カンマ除去を自動で行い、変換結果を確認画面で提示する（入力中・フォーカスアウト時の書き換えはしない）。入力欄の幅は想定桁数に合わせて短くする（金額 12 桁程度・数量 6 桁程度。1 カラム幅いっぱいに伸ばさない）。金額・数量の入力値は右寄せにしてよい（Table の数値列の右揃えと揃える）。単位（円・個・％ 等）は入力欄の右外にテキストで添えるか、ラベルに含める（「金額（円）」）。入力欄の中に単位を置かない。サポートテキストに「半角数字。カンマは不要です」のように形式と例を書く。表示側（detail-page の dl・Table・confirm-flow の確認画面・report）では 3 桁区切りのカンマ + 単位で表示する（表示側の表記規定は brand-principles.md「表記の原則（数値・日付）」に集約した — 2026-08-25 REQ-20。日付の表示形式もそこに従う）。負の値・上限値の制約はサポートテキストで事前に示し、超過は送信時のエラーで伝える（maxlength は使わない）",
+  "a11y": "ラベル必須（for/id で関連付け）。要否はラベルの右横に「※必須」「※任意」のテキストラベルで示す（「※必須」は color.semantic.required で強調し、「※任意」は color.semantic.text-subtle で表示してよいが、色のみに依存せずテキスト自体は必ず表示する。required / aria-required 属性は使わず、未入力は送信時に aria-invalid + エラーテキストで伝える — デジ庁準拠）。エラーは aria-live / role=\"alert\" を使わず静的テキストで表示し、aria-describedby で入力欄に関連付ける。エラー文言は冒頭に全角アスタリスク「＊」+ 具体的な内容と訂正方法。disabled / readonly は原則使わない。入力値の変更で予測不可能な画面変化（新規ウィンドウ等）を起こさない（そうした機能は Button で制御する）",
+  "anti_pattern_example": "フォーカスアウトのたびにリアルタイムでエラーを出す → エラー表示は送信ボタン押下時にまとめて行う。/ 金額欄を input type=\"number\" にし、入力するたびにカンマを挿入する → type=\"text\" + inputmode=\"numeric\" にして、カンマ整形は確認画面・表示側で行う",
+  "implementation_notes": "CSS Grid / Flexbox コンテナ内に置く場合は入力欄に min-width: 0 を指定する（CSS 標準の初期値 min-width: auto により、グリッドトラック幅や gap を無視してはみ出すため。form-page の横並びや RepeatingFieldGroup のテーブル状レイアウトで発生しやすい）",
+  "source": {
+    "digital_go_jp": "インプットテキスト (Input Text)",
+    "url": "https://design.digital.go.jp/dads/components/input-text/",
+    "note": "公開済みガイドライン（概要 / 使い方 / アクセシビリティ）から移植・翻案。参照日 2026-08-18。2026-08-25 追記（GAP-12）: 数値・金額入力の作法（numeric_input_guidance）を新設。デジ庁に数値入力の規定は無いため、インプットテキストの「文字種を限定しない・変換は送信時または確認時・maxlength 不可・幅は内容相応・単位の添え方」と日付ピッカー実装の inputmode=numeric を組み合わせた自社翻案。同日 GAP-02 対応で Combobox との境界、GAP-15 対応で要否表示の補記、GAP-13 対応で日付入力の参照先を DatePicker（calendar=false / true）に変更"
+  }
+}

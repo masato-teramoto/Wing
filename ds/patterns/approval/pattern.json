@@ -1,0 +1,33 @@
+{
+  "name": "approval",
+  "status": "draft",
+  "use_when": "申請されたレコード（申請書・精算・稟議など）を承認者が閲覧し、承認または差戻しを行う単票の画面。detail-page 準拠の閲覧画面に承認操作と承認履歴を加えた variant として組む。承認待ちの一覧は inbox パターン。権限モデル（誰が承認できるか・承認段数）と状態遷移はアプリ側責務 — 本パターンが規定するのは画面の型のみ",
+  "layout": "detail-page の layout に準拠し、以下を差し替え・追加する。ページヘッダ（タイトル + ステータス Badge〔承認待ち / 承認済 / 差戻し 等〕+ 操作: 「承認」Button variant=\"primary\" + 「差戻し」Button variant=\"secondary\"。編集・削除は置かない — 申請内容の修正は差戻し後に申請者が form-page で行う） → 申請内容セクション（detail-page と同じ dl。明細は Table、添付ファイルはファイル名の Link 一覧。関連情報が複数種類なら Tabs） → 承認履歴セクション（見出し「承認履歴」+ Table: 日時・操作者・操作〔申請 / 承認 / 差戻し〕・コメント。当該レコードの履歴に限る — システム横断の監査ログ〔audit-log パターン・第一弾未提供〕とは別） → 操作の確定は ModalDialog: 承認は「承認しますか？ この操作は取り消せません」+ コメント Textarea（※任意）+ 「承認する」Button variant=\"primary\" / 「キャンセル」Button variant=\"secondary\"。差戻しは「差戻し理由」Textarea（※必須）+ 「差戻す」Button variant=\"primary\"〔データを失う操作ではないため danger にしない〕/ 「キャンセル」",
+  "components": ["Badge", "Button", "Link", "Table", "ModalDialog", "Textarea", "NotificationBanner", "Tabs", "Skeleton"],
+  "states": {
+    "pending": "自分が承認者で、当該レコードが承認待ちの状態。ヘッダに承認 / 差戻し Button を表示する",
+    "not-actionable": "承認待ちでない（承認済・差戻し済・他者の承認待ち・閲覧のみの権限）状態。承認 / 差戻し Button は表示せず（disabled で残さない — Button spec 準拠）、ステータス Badge と承認履歴で状況を示す",
+    "approving": "ModalDialog の確定 Button を loading に（二度押し防止）。ダイアログは閉じない",
+    "action-error": "承認 / 差戻し処理の失敗（通信エラー等）は ModalDialog を閉じず、ダイアログ内にインラインで表示して再試行できるようにする。差戻し理由の未入力は Textarea 直下の静的テキスト（form-page の input-error と同じ作法）",
+    "action-done": "完了後は inbox（承認待ち一覧）へ戻り、list-page の notice 状態の NotificationBanner type=\"success\"（「承認しました」「差戻しました」）で伝える。本画面に留まる設計の場合は detail-page の notice 状態に準拠し、ヘッダの操作は not-actionable に切り替える",
+    "loading": "detail-page と同じ（Skeleton）",
+    "history-empty": "承認履歴が 0 件（申請直後）は「まだ履歴はありません」の 1 行テキストで示す（セクションが小さいため EmptyState 部品は使わない）"
+  },
+  "density": "detail-page に準拠（セクション間 space-md / dl の行間 space-xs。PC では dl 2 列を適用してよい）。ModalDialog 内の Textarea とボタン行の間 space-md",
+  "responsive": "detail-page に準拠。ヘッダの承認 / 差戻し Button は breakpoint.sm 未満で縦積みにしてよい（ブレークポイントは tokens.json の breakpoint トークンを使う）",
+  "never_do": [
+    "承認と差戻しを同じ見た目（同じ variant）にする（承認 = primary、差戻し = secondary）",
+    "差戻しに理由を必須としない（申請者が修正できるよう差戻し理由 Textarea は ※必須）",
+    "承認画面に編集可能フィールドを混在させる（修正は差戻し → 申請者が form-page で行う）",
+    "承認 / 差戻しを確認なしで即時実行する（ModalDialog で確定。承認は取り消せない旨を明記）",
+    "差戻しに Button variant=\"danger\" を使う（データを失う操作ではない。danger は削除等の破壊的操作専用）",
+    "承認できない状態で Button を disabled のまま残す（表示しない）",
+    "ヘッダ操作の増殖（承認・差戻しの 2 つまで。取り下げ・再申請などは申請者側の画面）",
+    "ステータスを色だけで区別する（Badge は必ずテキストを伴う）",
+    "承認履歴とシステム横断の監査ログを混在させる（履歴は当該レコード分のみ）"
+  ],
+  "source": {
+    "digital_go_jp": "申請・承認業務の画面パターンはデジ庁 DADS に存在しない（テンプレート / パターンの章そのものが無い。2026-08-25 確認。チップラベルも引き続きガイドライン準備中）。自社定義。閲覧部分は detail-page（デジ庁テーブルガイドラインの dl 作法）に準拠",
+    "note": "業務システム対応ギャップ棚卸し GAP-16（tickets/2026-08-24-business-system-gaps.md、提案 tickets/2026-08-25-business-system-gaps-proposal.md）で 2026-08-25 承認・新設（ユーザー回答: detail-page variant としての承認画面 + inbox まで対象）。MK2 レビュー（2026-08-18）の「承認機能は当面実装しない」は travel-expense モック限定の判断であり、本パターンは別お題向けの型として追加するもの。独立 pattern.json として登録する理由は index.json での発見性（does_not_exist_yet からの昇格）。一括承認は inbox パターン + list-page の一括操作で扱う"
+  }
+}

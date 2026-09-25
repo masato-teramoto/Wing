@@ -1,0 +1,52 @@
+{
+  "name": "Button",
+  "status": "stable",
+  "purpose": "ユーザーの操作（送信・保存・削除など、その場でアクションを実行する）に使う",
+  "use_when": [
+    "フォーム送信、モーダルの確定/キャンセル、その場で完結する操作"
+  ],
+  "never_use_when": [
+    "ページ遷移・外部リンク（→ Link を使う。見た目がボタンでも遷移なら Link）",
+    "danger variant を単なる強調目的で使う（破壊的操作の確認時のみ）",
+    "disabled で長期間押せなくする（原則ボタンは有効のまま、押せない理由はエラーメッセージで案内する。無効化する場合は理由と有効化条件をボタンの直近に表示）",
+    "重要度の違いを色だけで表現する（variant = 塗り / アウトライン等の形状差を伴う）",
+    "disabled の見た目を opacity で作る（→ color_map の disabled: 文字 disabled-text / 面 disabled-surface。opacity は下地によってコントラストが変わり管理できない）",
+    "color_map に無い色を variant / state に当てる（例: secondary の背景に surface、hover に primary の流用、focus に独自色。必要な役割が無ければ tokens/ROLE-MAP.md を確認し、無ければ起票）"
+  ],
+  "confusable_with": {
+    "Link": "URL が変わるなら Link。onClick でその場の処理が走るなら Button",
+    "Badge": "押せるなら Button、レコードの状態表示なら Badge。形でも区別する — Button は radius.sm、Badge は全周丸（radius.full）。Button を全周丸にすると Badge と紛れる（Badge spec confusable_with と対 — 2026-08-25 REQ-19）",
+    "IconButton": "その名前の部品は存在しない（GAP-14 で不採用）。アイコンのみのボタンは作らず、テキストラベルを持つ Button にする（デジ庁「アイコンは必ずラベルと組み合わせる」。表示領域の都合でアイコンを添える場合もラベルは省略しない）"
+  },
+  "shape_guidance": "角丸は radius.sm（全 variant 共通。size 違いでも変えない）。全周丸（radius.full）にしない — 全周丸は「押せない表示要素」である Badge（状態チップ）の形として予約されており、形でも操作可能性を区別する（brand-principles.md レイアウト原則。2026-08-25 REQ-19。従来 Button spec は角丸を規定しておらず、実装が Badge と同じ radius.sm を選んだ結果チップがボタンに見えた）。高さは 44 CSS px 以上のターゲット領域を確保する（a11y）。Link appearance=\"button\" も同じ形にする",
+  "icon_guidance": "ラベルにアイコンを添える場合は icons/ICON-MAP.md の語彙（例: add / remove / search / calendar / close）のみを使い、リード配置（ラベルの左・間隔 space.xs）、寸法 icon.size.md、色は currentColor（variant × state の文字色にそのまま追従 — disabled なら disabled-text）、SVG は aria-hidden=\"true\" focusable=\"false\"（ラベルが意味を担う）。記号文字（+ × ✓）・絵文字・語彙外のアイコンで代用しない。アイコンの有無は同じ用途のボタン間で揃える（同じ画面の「行を追加」に付けるなら全部に付ける）",
+  "states_to_cover": ["default", "hover", "disabled", "loading"],
+  "color_map": {
+    "_note": "variant × state の色はすべて color.semantic.* トークンで指定する（部品→色役割の唯一の対応表は tokens/ROLE-MAP.md）。hover は「濃くなる」方向で統一し、下線は付けない（デジ庁のテキストボタンの下線は第一弾に無い variant のため対象外）。active（押下中）は hover と同じ色。loading は default と同じ色で aria-busy のみ",
+    "primary": {
+      "default": "背景 color.semantic.primary / 文字 color.semantic.on-primary / 枠線なし",
+      "hover": "背景 color.semantic.primary-hover / 文字 color.semantic.on-primary",
+      "disabled": "背景 color.semantic.disabled-surface / 文字 color.semantic.disabled-text / 枠線なし（opacity による代用禁止）",
+      "focus": "default の色のまま、外側に color.semantic.focus のリング（outline 幅 2px 相当。塗り面とリングの間に color.semantic.background 色の隙間を置き、リングと隣接色のコントラスト 3:1 以上を確保）"
+    },
+    "secondary": {
+      "default": "背景 color.semantic.background / 枠線 color.semantic.primary / 文字 color.semantic.primary（アウトライン型。背景に surface を使わない）",
+      "hover": "背景 color.semantic.surface-hover / 枠線・文字 color.semantic.primary-hover",
+      "disabled": "背景 color.semantic.disabled-surface / 枠線・文字 color.semantic.disabled-text（opacity による代用禁止）",
+      "focus": "default の色のまま、外側に color.semantic.focus のリング（primary と同じ作法）"
+    },
+    "danger": {
+      "default": "背景 color.semantic.danger / 文字 color.semantic.on-primary / 枠線なし",
+      "hover": "背景 color.semantic.danger-hover / 文字 color.semantic.on-primary",
+      "disabled": "背景 color.semantic.disabled-surface / 文字 color.semantic.disabled-text / 枠線なし（opacity による代用禁止）",
+      "focus": "default の色のまま、外側に color.semantic.focus のリング（primary と同じ作法）"
+    }
+  },
+  "a11y": "loading 中は aria-busy が付与される。アイコンのみのボタンは作らない（GAP-14。可視ラベル必須 — アイコンを添える場合の作法は icon_guidance / icons/ICON-MAP.md）。タップ・クリックのターゲット領域は 44×44 CSS px 以上。ラベルのコントラストは 4.5:1 以上（非テキストは 3:1 以上。color_map の暫定値で primary 約 4.7:1 / danger 約 4.8:1 / secondary 約 4.7:1、hover はいずれも濃くなるため上回る）。disabled はタブ到達不可になるため原則回避（使う場合は aria-disabled を検討。disabled の色はコントラスト要件の対象外だが、無効の理由を近傍のテキストで示す）。フォーカスリングは color.semantic.focus で全 variant 共通（outline を消さない）",
+  "anti_pattern_example": "「詳細を見る」ボタンに onClick で navigate() を書く → Link を使う",
+  "source": {
+    "digital_go_jp": "ボタン (Button)",
+    "url": "https://design.digital.go.jp/dads/components/button/",
+    "note": "公開済みガイドライン（概要 / アクセシビリティ）を既存 spec に増補。参照日 2026-08-18。2026-08-25 追記（GAP-14）: IconButton 不採用の判断を confusable_with に追加（デジ庁 基本デザイン「アイコン」a11y ページ Rev001 2025-07-30 の「アイコンは必ずラベルと組み合わせる」に準拠）。2026-08-25 追記（REQ-03）: color_map を新設。根拠はデジ庁ボタンのスタイル規定「塗り = キーカラー背景 + 白文字 / アウトライン = 白背景 + キーカラーの枠線・文字 / テキスト = 透明背景 + 下線付きキーカラー文字」と「hover・active では背景・文字が濃くなる + 下線」（ボタン 2024-09-10 更新、参照日 2026-08-25）。primary = 塗り、secondary = アウトラインに対応させ、danger は塗りの色相を danger 系に置き換えた自社翻案。テキスト型 variant は第一弾では提供しない。役割トークン（on-primary / background / surface-hover / danger-hover / disabled-* / focus）はデジ庁 design-tokens に無いため自社設計（暫定値 — 第二段でデジ庁プリミティブへ移植）。tickets/2026-08-25-density-and-layout-requests.md REQ-03 で承認。2026-08-25 追記（ICN-01〜06）: icon_guidance を新設し、アイコンは icons/ICON-MAP.md の語彙・icon.size.md・currentColor・aria-hidden に統一。従来 a11y 欄にあった「アイコンのみのボタンは隠しラベルを含める」は GAP-14（アイコンのみのボタンを作らない）と矛盾していたため削除（tickets/2026-08-25-icon-definition.md）。2026-08-25 追記（REQ-19。tickets/2026-08-25-column-rules-and-visual-requests.md）: shape_guidance を新設して角丸 radius.sm を明記し、Badge（radius.full）との形の違いを confusable_with に追加。デジ庁ボタンのガイドラインに角丸の数値規定は無いため自社定義（暫定値 — 第二段でデジ庁 Figma / 実装の角丸と突合）"
+  }
+}
