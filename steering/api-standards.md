@@ -1,6 +1,6 @@
 ---
-status: review
-updated_at: 2026-09-18T16:30:06+09:00
+status: approved
+updated_at: 2026-09-24T17:30:00+09:00
 ---
 
 # API 設計標準
@@ -50,7 +50,7 @@ updated_at: 2026-09-18T16:30:06+09:00
 | 名詞・複数形 | 採用しない。第 1 セグメントは **画面ID（小文字）** とする（`@RequestMapping("/<画面ID小文字>")`）。画面IDの採番は既存体系に従う（REQ-051） |
 | 階層 | `/<画面ID小文字>/<アクション>` の 2 階層を基本とし、それ以上深くしない。ZOOM 画面は `/zoom/**` の配下に置く |
 | ID | リソースIDを URL のパスに含めない。対象の特定は Form のパラメータで行う（既存の画面遷移方式に合わせる） |
-| アクション系 | 動詞を第 2 セグメントに置く。共通処理が効く既定の名前を優先して使う: `regist` / `update` / `delete` / `approved` / `reset` / `execute` / `upload`（CSRF 検証の対象）、`download` / `downLoad` / `executeDownLoad`（CSRF トークン生成の除外対象）。**新しいアクション名を作る場合は、`servlet-context.xml` の interceptor マッピングとの整合を必ず確認する**（更新系が CSRF 検証から漏れないようにする） |
+| アクション系 | 動詞を第 2 セグメントに置く。共通処理が効く既定の名前を優先して使う: `regist` / `update` / `delete` / `approved` / `reset` / `execute` / `upload`（CSRF 検証の対象。**本行を対象アクション名の正本とする** — `security.md` の `## 攻撃対策（主要パターン）` CSRF 行から参照される）、`download` / `downLoad` / `executeDownLoad`（CSRF トークン生成の除外対象）。**新しいアクション名を作る場合は、`servlet-context.xml` の interceptor マッピングとの整合を必ず確認する**（更新系が CSRF 検証から漏れないようにする） |
 
 ## HTTP メソッド
 
@@ -61,10 +61,13 @@ updated_at: 2026-09-18T16:30:06+09:00
 | GET | 画面の初期表示（**ZOOM 画面を除く**）、ZOOM 待機画面の表示 | 冪等 | 安全（状態を変えない） |
 | POST | 検索・登録・更新・削除・承認・実行・アップロード・ダウンロード（すべての更新系と、Form の値を送る参照系）、**ZOOM 画面の初期表示・ページング** | 非冪等（登録・更新は二重送信を防ぐ） | 安全でない |
 
+- 画面（ZOOM 画面を除く）の初期表示は、メニューから新規に開く場合を GET、遷移元から業務キー（申請No 等）を受け取って開く場合を POST とし、同じ空パスに 2 本のメソッドを置く（既存 `Pwtgo008Controller`（`/wtg004`、GET）/ `Pwtgo006Controller`（`/wtg003/ref`、POST）。人間が確定 / 2026-09-24）
 - PUT / DELETE / PATCH は使用しない（既存の画面遷移方式に合わせる）
 - 二重送信の防止は CSRF トークン（`CSRFTokenCheckInterceptor`）と画面側のボタン制御で行う
 
 ### ZOOM 画面のメソッド（例外規定）
+
+> **本節はテンプレートに枠が無いが、Phase 5 からの差戻し（2026-09-18）を受けて ZOOM 画面のメソッドを実態に合わせて固定する必要があるため追加した節である（配置は人間が承認 / 2026-09-24）。** 記入根拠は既存実装（既存 ZOOM Controller 17 本と共通フラグメント `pages/common/zoomForm.html`）と REQ-053 / REQ-052。
 
 **ZOOM 画面（`/zoom/**`）の初期表示・ページングは POST とする。** 一般の画面の初期表示が GET であるのと異なる。
 
@@ -80,13 +83,13 @@ updated_at: 2026-09-18T16:30:06+09:00
 
 > 記入根拠は既存実装である（REQ-053）。`wing` の ZOOM 画面 17 本はいずれも初期表示・ページングとも `RequestMethod.POST` で実装されており、`ZoomWaitController` のみ `RequestMethod.GET` で `@FuncID` を持たない。**ZOOM は ZOOM ID 自体が機能IDであり、`PWTGOxxx` を別に採番しない**（命名規則は `tech.md` の `## 命名規則` を正とする）。
 
-## リクエスト/レスポンス形式
+## リクエスト / レスポンス形式
 
 > JSON の外側のラッパー構造を統一する。成功とエラーでトップキーを分け、成功レスポンスに `error` を含めない。
 
-> リクエスト形式: `application/x-www-form-urlencoded`（Form クラスへバインド）。ファイルを伴う場合は `multipart/form-data`（`CommonsMultipartResolver`。上限 1,048,576,000 バイト）
+> リクエスト形式: `application/x-www-form-urlencoded`（Form クラスへバインド）。ファイルを伴う場合は `multipart/form-data`（`CommonsMultipartResolver`。上限値は `tech.md` の `## 主要ライブラリ`「ファイルアップロード」を正とする）
 > レスポンス形式（成功）: Thymeleaf による HTML（`ModelAndView`。ビュー名は `<サブシステム小文字>/<画面ID小文字>/<PGID小文字>`、モデル属性名は `<PGID小文字>Form`）。画面内の非同期通信のみ JSON（Jackson / Gson）。ファイル出力は `Content-Disposition` 付きのバイナリ（CSV / PDF）
-> レスポンス形式（エラー）: `error` ビュー（`errorKind` / `errorCode` / `errorMessage` をモデルに持つ）。入力チェックのエラーは元の画面を再表示し、`BindingResult` の内容を画面に表示する
+> レスポンス形式（エラー）: `error` ビュー（モデル属性は本ファイルの `### 共通エラー形式` を正とする）。入力チェックのエラーは元の画面を再表示し、`BindingResult` の内容を画面に表示する
 
 エラーボディのフィールド定義・分類は本ファイルの `## エラーハンドリング（API 契約）` に従う（上記の `error` はそのサブセット）。
 
@@ -94,20 +97,20 @@ updated_at: 2026-09-18T16:30:06+09:00
 
 | ルール | 内容 |
 |---|---|
-| Content-Type | リクエストは `application/x-www-form-urlencoded`（ファイルを伴う場合は `multipart/form-data`）。文字エンコーディングは UTF-8（`CharacterEncodingFilter` で強制） |
-| パラメータ配置 | 画面の入力値は Form クラスのフィールドにバインドする。Controller のメソッド引数で個別に受け取る形を新規に増やさない。配列・明細行のバインド上限は 1024（`ControllerBase.configureWebDataBinder`） |
-| 大量データ | 一覧の CSV 出力・帳票出力はレスポンスをストリームで返す。取込のような時間のかかる処理は同期で返さず、バッチタスクとして登録し実行状況を別画面で確認させる（REQ-041） |
+| Content-Type | リクエストは `application/x-www-form-urlencoded`（ファイルを伴う場合は `multipart/form-data`）。文字エンコーディングは `security.md` の `## ヘッダ / トランスポート` を正とする |
+| パラメータ配置 | 画面の入力値は Form クラスのフィールドにバインドする。Controller のメソッド引数で個別に受け取る形を新規に増やさない。配列・明細行のバインド上限は `security.md` の `### 入り口 — 入力検証` を正とする（`ControllerBase.configureWebDataBinder`） |
+| 大量データ | 一覧の CSV 出力・帳票出力は、生成したファイルを既存のファイルダウンロードの仕組みに載せる（`DownLoadFileInfo` でファイルパスとファイル名を受け取り、`FileInfo` を `executeDownLoad` へ forward して `Content-Disposition` 付きで返す。既存実装 `Pwtgo006Controller#doDownLoad` — REQ-053）。取込のような時間のかかる処理は同期で返さず、バッチタスクとして登録し実行状況を別画面で確認させる（REQ-041） |
 
 ## ステータスコード方針
 
-> 「**結果を最も適切に表すコードを選ぶ**」を原則とし、200 で `error` を返す実装は禁止。
+> 「**結果を最も適切に表すコードを選ぶ**」を原則とする。ただし画面遷移型の既存実装に合わせ、アプリケーションが検出したエラーは下表のとおり `error` ビューを 200 で返す（人間が確定 / 2026-09-24）。
 
 | 区分 | コード | 用途 |
 |---|---|---|
 | 成功（画面表示） | 200 | 画面の表示、入力チェックエラーを含む画面の再表示（画面遷移型のため、入力チェックエラーも画面として 200 で返す） |
 | 成功（ファイル出力） | 200 | CSV / PDF のダウンロード（`Content-Disposition` を付与） |
 | リダイレクト | 302 | ログイン画面への遷移、`RedirectController` による遷移 |
-| エラー（アプリケーション） | 200（`error` ビュー） | 業務エラー・権限エラー・CSRF エラー。`ExceptionResolver` が `error` ビューへ遷移させ、`errorKind` / `errorCode` / `errorMessage` を渡す |
+| エラー（アプリケーション） | 200（`error` ビュー） | 業務エラー・権限エラー・CSRF エラー。`ExceptionResolver` が `error` ビューへ遷移させる（渡すモデル属性は本ファイルの `### 共通エラー形式` を正とする） |
 | エラー（サーバ） | 500 | コンテナまで到達した想定外の例外 |
 | <STATUS_CATEGORY_N> | <STATUS_CODE_N> | <STATUS_USAGE_N>（不要 / 人間 2026-09-11: 既存 WiNG の実装に従う） |
 
@@ -119,17 +122,13 @@ updated_at: 2026-09-18T16:30:06+09:00
 
 - 認証情報の標準位置: `JSESSIONID` クッキー（サーバサイドセッション）。Authorization ヘッダは使用しない（詳細は `security.md` の `## 認証・認可`）
 - 未認証時の扱い: `SessionCheckInterceptor` がリクエストを止め、ログイン画面へ遷移させる（除外パス: `/`・`/login`・`/logout`・`/static/**`・`/error`・`/error/**`）
-- 認可（権限チェック）の方針: Controller に `@FuncID`（PGID）を付与し、`AccessControlInterceptor` がセッションのメニューIDとの組で毎リクエスト判定する。画面側の表示制御はこれと二重に効かせる（詳細は `security.md`）
+- 認可（権限チェック）の方針: `security.md` の `## 認証・認可` > `### 認可` を正とする（本ファイルに再掲しない）。画面側の表示制御はこれと二重に効かせる
 
 ## 一覧取得（ページネーション / フィルタ / ソート）
 
 > DB 層の方針（カーソル優先等）は `database.md`。ここでは **HTTP クエリと `meta` の契約** のみを固定する。
 
 > **不要（記入者: 人間 / 2026-09-11）**: 既存 WiNG の画面遷移方式に従う。検索条件・並び順・ページングはクエリ文字列ではなく Form の値として POST で送るため、HTTP クエリと `meta` の共通形式を本プロジェクトで定義しない。以下のプレースホルダーはこの理由で未記入のまま残す。
-
-```
-<LIST_QUERY_EXAMPLE>
-```
 
 | 機能 | クエリ（既定） | `meta` に含める |
 |---|---|---|
@@ -151,7 +150,7 @@ updated_at: 2026-09-18T16:30:06+09:00
 - バージョニング方式: 採用しない。外部公開 API を持たず、画面とサーバが同一の WAR として同時にリリースされるため（REQ-008 / REQ-053）
 - 破壊的変更 → 既存のエンドポイント（URL・パラメータ・戻り値）を変更しない。変更が必要な場合は新規エンドポイントを追加する（REQ-052）
 - 非破壊的変更 → 既存の画面・機能に影響しない範囲であれば、同一エンドポイントへの項目追加を許容する
-- 旧バージョンの deprecation: 最低 <DEPRECATION_PERIOD> の猶予期間を設け、レスポンスヘッダ <DEPRECATION_HEADERS> を付与 — **不要（記入者: 人間 / 2026-09-11）**: 外部公開 API を持たずバージョニングを行わないため（REQ-008 / REQ-053）
+- 旧バージョンの非推奨化: <API_VERSIONING_DEPRECATION_POLICY> — **不要（記入者: 人間 / 2026-09-11）**: 外部公開 API を持たずバージョニングを行わないため（REQ-008 / REQ-053）
 
 ## エラーハンドリング（API 契約）
 
@@ -181,7 +180,7 @@ updated_at: 2026-09-18T16:30:06+09:00
 | 業務エラー（Business） | 排他エラー、採番失敗、状態が変更されている、取込対象が存在しない | `ApplicationException` 系を投げ、`error` ビューにメッセージIDの文言を表示する |
 | 権限エラー（Authorization） | 権限の無い機能へのアクセス | `InvalidAccessErrorException` → `error` ビュー。ユーザーID・メニューID・機能IDをログに残す |
 | セキュリティエラー（Security） | CSRF トークン不一致、セッション切れ | `CSRFTokenErrorException` → `error` ビュー／セッション切れはログイン画面へ遷移 |
-| サーバエラー（Server） | 想定外の例外 | 既定のエラーコード `GEF-000000` の文言を表示し、スタックトレースをログに出力する |
+| サーバエラー（Server） | 想定外の例外 | 既定のエラーコード（本ファイルの `### 共通エラー形式` を正とする）の文言を表示し、スタックトレースをログに出力する |
 | 外部エラー（External） | 取込ファイルの不正、外部から受領したデータの不整合 | 業務エラーとして扱い、対象と理由が分かるメッセージを返す（REQ-042 / REQ-043） |
 
 ### 共通エラー形式
@@ -192,7 +191,7 @@ updated_at: 2026-09-18T16:30:06+09:00
 
 | 項目 | 必須 | ルール |
 | --- | --- | --- |
-| `errorKind` | 必須 | エラーの種別を表す文字列（既定値 `warning`） |
+| `errorKind` | 必須 | エラーの種別を表す文字列（既定値 `warning`）。**本節をモデル属性・既定値の正本とする**（`tech.md` の `### グローバルハンドラ` および本ファイルの他節から参照される） |
 | `errorCode` | 必須 | メッセージID（`<3 文字の区分>-<6 桁の連番>`）。不明な例外の既定値は `GEF-000000` |
 | `errorMessage` | 必須 | `messages.properties` から取得した利用者向けの文言。内部情報を含めない |
 

@@ -1,6 +1,6 @@
 ---
 status: approved
-updated_at: 2026-09-11T12:02:27+09:00
+updated_at: 2026-09-24T17:30:00+09:00
 ---
 
 # システムアーキテクチャ
@@ -10,6 +10,8 @@ updated_at: 2026-09-11T12:02:27+09:00
 > 機能ごとの責務分担とつなぎ方（画面・サービス・モジュールの担当範囲）は `design.md` の Components and Interfaces に書いてください。
 >
 > **テンプレート**: 山括弧で囲んだ大文字の項目は、プロジェクト確定時に実値へ置換する。
+
+> **本ファイルの記入根拠**: 本改修は既存 WiNG への機能追加であり、既存のアーキテクチャ・フレームワーク・コーディング規約に従う（REQ-053）。既存の WTG 機能にデグレードを発生させない（REQ-052）。したがってレイヤー構成・依存ルール・ディレクトリ構成・パッケージ配置は、既存実装（`wing` の `jp.co.kccs.wt.function.<サブシステム>.<画面ID>` 配下の `controller` / `form` / `service` / `mapper`、`jp.co.kccs.wt.common` の共通部品、`servlet-context.xml` の interceptor マッピング）の実体を根拠として記入している。
 
 ## アーキテクチャ概要
 
@@ -35,7 +37,7 @@ updated_at: 2026-09-11T12:02:27+09:00
 > 許可・禁止・外部システムの 3 点を明文化する。具体的な依存方向は矢印（`→`）で示す。
 
 - **許可する依存方向**: `controller` → `service` → `mapper` → DB。`controller` / `service` → `form` / `domain` / `bean`（データ構造）。各層 → `jp.co.kccs.wt.common`（共通ユーティリティ・共通サービス）。横断関心事（ログ・セッション確認・パスワード有効期限確認・権限制御・CSRF）は `interceptor` が `controller` の手前で処理する
-- **禁止**: 逆方向の依存（`service` → `controller`、`mapper` → `service`）。`controller` から `mapper` を直接呼ぶこと。`controller` / `mapper` に業務ロジックを置くこと。機能パッケージ間の直接依存（`function.wtg.wtgXXX` → `function.wtg.wtgYYY`。共有が必要な処理は `common` に置く）。`jp.co.kccs.wt.common` から機能パッケージへの依存
+- **禁止**（いずれも既存実装がこの形を取っておらず、既存の構成に従うことを根拠とする — REQ-053。機能パッケージ間の直接依存の禁止は、新規機能が既存機能に影響しないための境界でもある — REQ-052）: 逆方向の依存（`service` → `controller`、`mapper` → `service`）。`controller` から `mapper` を直接呼ぶこと。`controller` / `mapper` に業務ロジックを置くこと。機能パッケージ間の直接依存（`function.wtg.wtgXXX` → `function.wtg.wtgYYY`。共有が必要な処理は `common` に置く）。`jp.co.kccs.wt.common` から機能パッケージへの依存
 - **外部システム**: UQ 様社内システムは本プロジェクトの改修対象外であり（REQ-008）、連携が必要な場合も相手側の仕様に合わせる。連携は DB 上の受け渡し（インポート／エクスポート）とファイル（CSV）の受け渡しを基本とし（REQ-014 / REQ-021 / REQ-042 / REQ-047）、既存の連携方式を変更しない
 
 ## 各システムコンポーネントの役割
@@ -139,7 +141,7 @@ updated_at: 2026-09-11T12:02:27+09:00
 > `src/` 以下はパターン例。実プロジェクトに合わせて書き換えてください（`.aidd/` / `steering/` / `specs/` / `docs/` の 4 つは書き換えない）。**繰り返し構造はパターンだけ書く** ことで、新規ディレクトリ追加時のメンテを減らします。
 > レイヤーと配置の対応（controller / service / repository など）は本ファイルの `## 配置原則` に従ってください。
 
-## import / path alias
+## インポート / パスエイリアス（import / path alias）
 
 > **不要（記入者: 人間 / 2026-09-11）**: 既存構成に従い、Java のパッケージ解決をそのまま用いる（エイリアス機構を導入しない）。下表の枠は未記入のまま残す。
 
@@ -157,7 +159,7 @@ updated_at: 2026-09-11T12:02:27+09:00
 > 図は **Mermaid のみ**（画像を貼らない）。フィーチャー個別のフローは `specs/<feature>/design.md` の System Flows に書く。
 > _分担_: コンポーネント横断の代表フローのみ全体図に載せる。サービス内部の詳細シーケンス / ステート図は `specs/<feature>/design.md` に書く。
 
-### 記入時の連携（必須）
+### 記入時の連携
 
 > 全体図（`docs/architecture/system-overview.md`）は単独では書けない。他 Steering を **正本として参照** し、値を二重定義しない。
 

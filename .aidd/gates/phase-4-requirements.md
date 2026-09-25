@@ -1,6 +1,6 @@
 ---
 phase: Phase 4: requirements 作成
-updated_at: 2026-09-16T14:05:00+09:00
+updated_at: 2026-09-24T23:55:00+09:00
 ---
 
 # ゲート記録 — Phase 4: requirements 作成
@@ -36,6 +36,18 @@ updated_at: 2026-09-16T14:05:00+09:00
 | 成果物単位（contract-info-import） | 2 | 2026-09-16T12:05:00+09:00 | `specs/contract-info-import/requirements.md` | ① / ② | 10 | `review` |
 | 成果物単位（contract-info-download） | 2 | 2026-09-16T12:20:00+09:00 | `specs/contract-info-download/requirements.md` | ① / ② | 9 | `review` |
 | 横断 | 1 | 2026-09-16T14:05:00+09:00 | `specs/*/requirements.md` 7 本 | ② | 12 | 遷移させない（横断スコープは承認対象の文書を持たない） |
+| 成果物単位（property-basic-info） | 5 | 2026-09-24T19:20:00+09:00 | `specs/property-basic-info/requirements.md` | ① / ② | 8 | `review`（本実行の開始時点で既に `review` であり、ゲートは遷移させていない） |
+| 成果物単位（issue-request） | 3 | 2026-09-24T19:20:00+09:00 | `specs/issue-request/requirements.md` | ① / ② | 9 | `review`（本実行の開始時点で既に `review` であり、ゲートは遷移させていない） |
+| 横断 | 2 | 2026-09-24T19:20:00+09:00 | `specs/*/requirements.md` 6 本 | ② | 3 | 遷移させない（横断スコープは承認対象の文書を持たない） |
+| 成果物単位（property-basic-info） | 6 | 2026-09-24T22:10:00+09:00 | `specs/property-basic-info/requirements.md` | ① / ② | 3 | `review` |
+| 成果物単位（issue-request） | 4 | 2026-09-24T22:10:00+09:00 | `specs/issue-request/requirements.md` | ① / ② | 5 | `review` |
+| 横断 | 3 | 2026-09-24T22:10:00+09:00 | `specs/*/requirements.md` 6 本 | ② | 1 | 遷移させない（横断スコープは承認対象の文書を持たない） |
+| 成果物単位（property-basic-info） | 7 | 2026-09-24T23:55:00+09:00 | `specs/property-basic-info/requirements.md` | ① / ② | 3 | `review` |
+| 成果物単位（issue-request） | 5 | 2026-09-24T23:55:00+09:00 | `specs/issue-request/requirements.md` | ① / ② | 2 | `review` |
+| 横断 | 4 | 2026-09-24T23:55:00+09:00 | `specs/*/requirements.md` 6 本 | ② | 1 | 遷移させない（横断スコープは承認対象の文書を持たない） |
+| 成果物単位（property-basic-info） | 8 | 2026-09-24T10:30:00+09:00 | `specs/property-basic-info/requirements.md` | ① / ② | 5 | `review` |
+| 成果物単位（issue-request） | 6 | 2026-09-24T10:30:00+09:00 | `specs/issue-request/requirements.md` | ① / ② | 3 | `review` |
+| 横断 | 5 | 2026-09-24T10:30:00+09:00 | `specs/*/requirements.md` 6 本 | ② | 1 | 遷移させない（横断スコープは承認対象の文書を持たない） |
 
 - `draft` → `review` は、① / ② の実行が終わり、**指摘を本記録へ出力し終えた時点**でゲートのサブエージェントが自動で行う。**指摘の件数は遷移条件にしない**（ゲートは合否を出さないため）。`review` は「レビュー材料が揃った」ことのみを意味する。
 - **① で形式の不備が検出された場合は ② に進まない**。その場合は `実行した層` に ① のみを記載する。
@@ -546,6 +558,307 @@ updated_at: 2026-09-16T14:05:00+09:00
 
 > **横断スコープで検出できないこと**: 本実行は 7 本の `requirements.md` と上流の `approved` 成果物（`.aidd/requirement-list.md` / `.aidd/feature-list.md` / `steering/` 7 ファイル）のみを材料としている。要求一覧に載っていない要求（RFP からの抽出漏れ）は Phase 1 の検査範囲であり、本実行では検出できない。
 
+### property-basic-info / 第 5 回実行で ① が確認した範囲
+
+> ZOOM 廃止に伴う差戻し（2026-09-24）後の再検査。② へ進んだ根拠として、① で確認した項目を記録する。**これは合否の記載ではなく、検査した範囲の記録である。**
+> **① で形式の不備（指摘 #178 / #179）を検出している。** `format-conformance` 手順 5 は形式の不備を 1 件でも検出した場合 ② に進まないと定めるが、本件は **2026-09-18 の α2 資産移行によってテンプレート基線そのものが差し替わったこと**によるものであり、本書固有の不備でも本回の差戻しで生じたものでもない（全 6 feature の `requirements.md` に等しく該当する）。この事実を明示したうえで ② を実行した。**② を実行したことは、形式の不備が軽微であることを意味しない。** ② に進む判断の当否は ③ の観点である。
+
+| 検査 | 確認した内容 |
+|---|---|
+| 必須セクションの欠落 | 現行テンプレート（`Templates/specs/_template/requirements.md`。2026-09-18 の α2 移行で差し替え済み）の見出し `## 概要（Introduction）` / `## 業務フロー` / `## スコープの境界（Boundary Context）` / `## 対象外` / `## 前提と依存（Dependencies / Assumptions）` / `## 要件（Requirements）` / `### 要件 N: …` / `#### 受け入れ基準（Acceptance Criteria）` / `## 非機能要件（Non-Functional Requirements）` は **いずれも本書に存在しない**。本書は旧テンプレート（`## Introduction（概要）` ほか）の見出しを保持している（指摘 #178） |
+| フロントマター | キーは `feature` / `status` / `updated_at` の 3 つで現行テンプレートのキー集合と一致。`feature: property-basic-info` は `.aidd/feature-list.md` の feature 名およびディレクトリ名と完全一致。`status: review`、`updated_at: 2026-09-24T18:40:00+09:00`（ISO 8601・オフセット付き） |
+| プレースホルダー残存 | `<UPPER_SNAKE>` 系統は非機能要件表の 16 件のみ。いずれも同一行に不要理由（`不要 / 人間 2026-09-11: …`）が併記されているため ① の指摘対象外。**理由が明記されていない未記入プレースホルダーは 0 件**（`open_placeholders` = 0）。`{{...}}` 系統の未置換なし。ただしプレースホルダーの**名前**が旧体系である（指摘 #178） |
+| ID 書式 | 要件ID は `1`〜`11` で、いずれも数値のみ（アルファベット ID なし）。当該ファイル内での重複なし。Requirement 11 が本回の新規追加分 |
+| 参照リンク切れ | 本文が参照する相対パスのうち `steering/` 7 ファイル・`.aidd/feature-list.md`・`.aidd/requirement-list.md`・`specs/issue-request/requirements.md` は実在。`docs/architecture/system-overview.md` のみ不在だが、**第 1 回 #25 と同一条件**で ③ が既に「対応せず進める」と判断済みのため新規の指摘にしていない |
+| 追加の存在検査（User Story / 受入基準） | Requirement 1〜11 のすべてに **User Story** と `#### Acceptance Criteria（EARS 形式）` が存在。新規の Requirement 11 は受入基準 11 件 |
+| 追加の存在検査（要求ID の紐づけ） | Requirement 1=REQ-015 / 2=REQ-016 / 3=REQ-017 / 4=REQ-018 / 5=REQ-019 / 6=REQ-020 / 7=REQ-021 / 8=REQ-022 / 9=REQ-023・REQ-024 / 10=REQ-025 / 11=REQ-048・REQ-049・REQ-050。すべての Requirement に `> 由来する要求ID:` が付いている |
+| 追加の存在検査（繰り上げ番号の付け替え） | Requirement 1 の旧受入基準 4（ZOOM 起動）を削除し、旧 5〜8 を 4〜7 に付け替えている。**本書内から旧番号を参照している箇所は無い**（未確定事項 ⑭ が参照する `受入基準 11-6` は Requirement 11 の 6 番を正しく指す）。付け替えそのものについては指摘 #179 |
+
+### property-basic-info / 第 5 回実行で ② が突合した範囲
+
+| 検査 | 突合した内容 |
+|---|---|
+| 要求ID の突合（feature 単位・双方向） | 上流 → 下流: `.aidd/feature-list.md` の本 feature の `対応要求ID` 14 件（REQ-015〜REQ-025 / REQ-048 / REQ-049 / REQ-050）はすべて Requirement の `> 由来する要求ID:` に現れる。**取りこぼし 0 件。** 下流 → 上流: 本書が `> 由来する要求ID:` に挙げる要求IDはすべて `.aidd/requirement-list.md` に実在する。**要求一覧に存在しない要求IDの紐づけ 0 件。** ただし上流 2 ファイルはいずれも `status: review` である（横断 #197） |
+| 2 feature 間の記述一致（本件の前提条件） | Requirement 11（本書）と `specs/issue-request/requirements.md` の Requirement 13 の User Story・受入基準 1〜11 を文字列で突合した。**差分は 3 点のみで、いずれも各 feature 側の採番・相互参照に起因する必然の差である**（Requirement 番号 11 / 13、相手 feature へのポインタの向き、受入基準 6 が参照する未確定事項の記号 ⑭ / ⑰）。**本文の食い違いは検出していない。** ただし両要件が依存する未確定事項の立て方には非対称がある（横断 #196）、また同一の文言が feature ごとに異なる意味を持つ箇所がある（指摘 #180 / #189） |
+| ZOOM 参照の残存 | 本書に残る ZOOM への言及は `## Out of Scope` の「作成組織を検索する独立した画面（ZOOM）の作成…作成しない」と Requirement 11 受入基準 1 の「ZOOM は起動しない」の 2 か所のみで、いずれも**廃止したことを述べる記述**である。`organization-search-zoom` への参照は `## Dependencies` の付け替えの経緯 1 か所のみ。**呼び出し・依存としての参照は 0 件。** Mermaid 図から ZOOM の participant と 2 本の矢印が除かれ、担当者が直接入力する 1 行に置き換わっていることを確認した |
+| Dependencies / Adjacent の宣言整合 | `.aidd/feature-list.md` の本 feature の `依存` 列は `なし`。本書の `## Dependencies` の `依存` も `なし` と宣言しており一致する。`Adjacent` の `issue-request` は「feature 間の依存関係ではない」と明記され `### 要求IDの多重割当` と整合する。`contract-application-status` を「本フィーチャーに依存する側」とする記述も `依存` 列と整合する。**食い違い 0 件。** ただし Requirement 11 受入基準 4 が宣言する `TWTGM100` への保存は `依存` にも `Adjacent` にも現れない（指摘 #180 / 横断 #195） |
+| steering 適合 | `steering/` 7 ファイルを全文読み突合した。**違反は検出していない。** 矛盾 1 件（`steering/product.md` の `## 開発物の概要・背景` — 指摘 #184）、逸脱 1 件（`security.md` の所有権境界をコードマスタの選択肢母集合へ適用したこと — 指摘 #181）。`architecture.md` の `### プレゼンテーション層` の「ZOOM 画面（別ウインドウ）の呼び出し」と `api-standards.md` の `### ZOOM 画面のメソッド（例外規定）` は**既存 WiNG の ZOOM 17 本に対する規約の記述**であり、本書が新規 ZOOM を作らないことと両立するため矛盾として扱っていない |
+| 根拠のない記述の検出 | Requirement 11 が用いる固有名・値（`TWTZM040` / `WTG` / `PARAM` / `P26` / `P71` / `Key3` / `MEISHO` / `CD1` / `CD2` / `1` = 社外 / 100 桁 / `TWTGM100` の 2 列）はいずれも `.aidd/requirement-list.md` の REQ-049 / REQ-050 の要求文または `## 要求の変更履歴` に対応する記述がある。**根拠なし 0 件。** 受入基準 3 の「コードマスタの選択肢にログインユーザーの会社コードによる絞り込みを適用する」のみ、要求一覧にも steering にも対応する記述が無い（指摘 #181 で逸脱として報告） |
+| 意味的重複・冗長要件 | Requirement 11 と Requirement 1〜10 のあいだに、同一の振る舞いを定義する対、および他要件の受入基準の部分集合となる要件は検出していない。REQ-048〜050 の 2 feature への多重割当は `.aidd/feature-list.md` の `### 要求IDの多重割当` で ③ が確定済みのため指摘していない |
+| 非機能要件の誤配置 | Requirement 11 を含め、`steering/non-functional.md` / `steering/security.md` に存在しない全 feature 共通の非機能方針が本書に個別記載されている箇所は検出していない。非機能要件表のセキュリティ行が Requirement 11 に追随していない点は誤配置ではなく反映漏れとして指摘 #185 |
+
+### issue-request / 第 3 回実行で ① が確認した範囲
+
+> ZOOM 廃止に伴う差戻し（2026-09-24）後の再検査。**① で形式の不備（指摘 #186 / #187）を検出している。** ② へ進んだ判断とその根拠は property-basic-info 第 5 回と同じである（テンプレート基線の差し替えによるものであり本書固有の不備ではない）。
+
+| 検査 | 確認した内容 |
+|---|---|
+| 必須セクションの欠落 | 現行テンプレートの見出し 9 件が **いずれも本書に存在しない**（property-basic-info 第 5 回と同一条件。指摘 #186） |
+| フロントマター | キーは `feature` / `status` / `updated_at` の 3 つ。`feature: issue-request` は `.aidd/feature-list.md` の feature 名およびディレクトリ名と完全一致。`status: review`、`updated_at: 2026-09-24T18:50:00+09:00`（ISO 8601・オフセット付き） |
+| プレースホルダー残存 | `<UPPER_SNAKE>` 系統は非機能要件表の 14 件のみ。いずれも同一行に不要理由が併記されているため ① の指摘対象外。**理由が明記されていない未記入プレースホルダーは 0 件**（`open_placeholders` = 0）。`{{...}}` 系統の未置換なし |
+| ID 書式 | 要件ID は `1`〜`13` で、いずれも数値のみ。当該ファイル内での重複なし。Requirement 13 が本回の新規追加分 |
+| 参照リンク切れ | `steering/` 7 ファイル・`.aidd/feature-list.md`・`.aidd/requirement-list.md`・`specs/issue-request-tutorial/requirements.md`・`specs/property-basic-info/requirements.md` は実在。`docs/architecture/system-overview.md` のみ不在だが第 1 回と同一条件のため新規の指摘にしていない |
+| 追加の存在検査（User Story / 受入基準） | Requirement 1〜13 のすべてに **User Story** と `#### Acceptance Criteria（EARS 形式）` が存在。新規の Requirement 13 は受入基準 11 件 |
+| 追加の存在検査（要求ID の紐づけ） | Requirement 1=REQ-026 / 2=REQ-027 / 3=REQ-028 / 4=REQ-029 / 5=REQ-030 / 6=REQ-031 / 7=REQ-032 / 8=REQ-033 / 9=REQ-034 / 10=REQ-037・REQ-039 / 11=REQ-038 / 12=REQ-026（`issue-request-tutorial` からの委譲） / 13=REQ-048・REQ-049・REQ-050 |
+| 追加の存在検査（繰り上げ番号の付け替え） | Requirement 1 の旧受入基準 5（ZOOM 起動）を削除し、旧 6〜8 を 5〜7 に付け替えている。**本書内から旧番号を参照している箇所が 1 件残っている**（Requirement 12 の受入基準 4 — 指摘 #188）。他の内部参照（Requirement 2 の受入基準 7 が指す「Requirement 1 の受入基準 2・3」「Requirement 9 の受入基準 1」、未確定事項 ⑰ が指す「受入基準 13-6」、未確定事項 ⑯ が指す「Requirement 13」）はいずれも現行の番号を正しく指している |
+
+### issue-request / 第 3 回実行で ② が突合した範囲
+
+| 検査 | 突合した内容 |
+|---|---|
+| 要求ID の突合（feature 単位・双方向） | 上流 → 下流: `.aidd/feature-list.md` の本 feature の `対応要求ID` 15 件（REQ-026〜REQ-034 / REQ-037 / REQ-038 / REQ-039 / REQ-048 / REQ-049 / REQ-050）はすべて Requirement の `> 由来する要求ID:` に現れる。**取りこぼし 0 件。** 下流 → 上流: 本書が挙げる要求IDはすべて `.aidd/requirement-list.md` に実在する。**要求一覧に存在しない要求IDの紐づけ 0 件。** Requirement 12 と REQ-035 の割当不一致は本書自身が注記しており、第 1 回・第 2 回で既出のため新規の指摘にしていない |
+| 2 feature 間の記述一致（本件の前提条件） | Requirement 13（本書）と `specs/property-basic-info/requirements.md` の Requirement 11 を文字列で突合した。**本文の食い違いは検出していない**（差分 3 点はいずれも採番・相互参照に起因する必然の差）。ただし受入基準 13-4 が宣言する保存先 `TWTGM100` は、2 feature で同一の文言でありながら **feature ごとに含意が異なる**（指摘 #189 / property-basic-info #180 / 横断 #195） |
+| ZOOM 参照の残存 | 本書に残る ZOOM への言及は `## Out of Scope` と Requirement 13 受入基準 1 の 2 か所のみで、いずれも**廃止したことを述べる記述**である。`organization-search-zoom` への参照は `## Dependencies` の付け替えの経緯 1 か所のみ。**呼び出し・依存としての参照は 0 件。** Mermaid 図から ZOOM の participant と 2 本の矢印が除かれていることを確認した |
+| Dependencies / Adjacent の宣言整合 | `.aidd/feature-list.md` の本 feature の `依存` 列は `issue-request-tutorial`。本書の `## Dependencies` の `依存` も同 feature を挙げており一致する。`Adjacent` の `property-basic-info`（作成組織の同一仕様）は「feature 間の依存関係ではない」と明記され `### 要求IDの多重割当` と整合する。未確定事項 ⑩・⑬ は「`property-basic-info` への依存が生じる場合は Phase 3 への差戻しとして扱う」と宣言しており `依存` 列と整合する。**食い違い 0 件** |
+| steering 適合 | `steering/` 7 ファイルを全文読み突合した。**違反は検出していない。** 矛盾 1 件（指摘 #193）、逸脱 1 件（指摘 #190） |
+| 根拠のない記述の検出 | Requirement 13 が用いる固有名・値はすべて `.aidd/requirement-list.md` の REQ-049 / REQ-050 または `## 要求の変更履歴` に対応する記述がある。**根拠なし 0 件。** 受入基準 3 の絞り込みのみ根拠が示せない（指摘 #190） |
+| 意味的重複・冗長要件 | Requirement 13 と Requirement 1〜12 のあいだに、同一の振る舞いを定義する対、および他要件の受入基準の部分集合となる要件は検出していない |
+| 非機能要件の誤配置 | 全 feature 共通の非機能方針が本書に個別記載されている箇所は検出していない。非機能要件表のセキュリティ行の追随漏れは指摘 #194 |
+
+### 【横断】第 2 回実行で ② が突合した範囲
+
+> ZOOM 廃止に伴う差戻し（2026-09-24）後の再検査。対象は 6 feature（`organization-search-zoom` は廃止され `.aidd/archive/2026-09-24-organization-search-zoom/` へ退避済み）。
+
+| 検査 | 突合した内容 |
+|---|---|
+| 要求ID の全件突合（上流 → 下流・分母は分類 `機能` のみ） | `.aidd/requirement-list.md` の分類 `機能` は 38 件（REQ-012〜REQ-045 のうち `制約` の REQ-046 を除いたもの、および REQ-047 / REQ-048 / REQ-049 / REQ-050）。38 件すべてが `specs/*/requirements.md` のいずれかに現れる。**未割当の要求ID 0 件。** REQ-048 / REQ-049 / REQ-050 が 2 feature に現れることは `.aidd/feature-list.md` の `### 要求IDの多重割当` で ③ が確定済みのため指摘していない |
+| `feature-list.md` の網羅 | `.aidd/feature-list.md` の 6 feature（property-basic-info / issue-request-tutorial / issue-request / contract-application-status / contract-info-import / contract-info-download）すべてに `specs/<feature>/requirements.md` が存在する。`specs/` 配下に `feature-list.md` に無いディレクトリは無い（`specs/organization-search-zoom/` は削除済み）。**欠落 0 件** |
+| 廃止 feature への参照の残存（6 feature 全件） | `specs/*/requirements.md` 6 本を `ZOOM` / `organization-search-zoom` / `ZWTZ072` / `作成組織` で走査した。**変更していない 4 feature（issue-request-tutorial / contract-application-status / contract-info-import / contract-info-download）には 1 件も現れない。** 残存は変更した 2 feature の、廃止を述べる記述と付け替えの経緯のみである |
+| feature 間の Dependencies / Adjacent の相互整合（受け手不在） | `contract-application-status` → `property-basic-info`（物件基本情報とステータス・履歴の登録・更新）は受け手の `In Scope` に存在。`contract-application-status` → `issue-request`（発行依頼書と申請・承認状態の登録・更新）は受け手の `In Scope` に存在。`issue-request-tutorial` → `issue-request`（設定の画面への組み込み）は受け手の `In Scope` に存在。`contract-info-download` → `contract-info-import`（取込形式の定義）は受け手の `Adjacent` および未確定事項 ② に存在。**受け手不在は 1 件**（`property-basic-info` → `issue-request` 側テーブルへの保存。指摘 #195） |
+
+### property-basic-info / 第 6 回実行で ① が確認した範囲
+
+> 第 5 回 / 第 3 回 / 横断 第 2 回の指摘 #178〜#197 に対する修正後の再検査。**これは合否の記載ではなく、検査した範囲の記録である。**
+> **② へ進んだ根拠**: テンプレート基線の不一致（#178 / #179）は ③ が「対応せず進める」（旧テンプレートのまま進める / 2026-09-24）と判断済みであり、**6 feature すべてに等しく該当する既決事項**である。現行テンプレートとの見出し・セクション順・プレースホルダー名・EARS の言語・受入基準IDの体系（`1.1` 形式と「一度付けたら変えない」規約）の差は本回の ① の指摘に含めず、旧テンプレートを基線として検査したうえで ② を実行した。
+
+| 検査 | 確認した内容 |
+|---|---|
+| 必須セクションの欠落 | 旧テンプレートの見出し（`## Introduction（概要）` / `## 業務フロー（任意）` / `## Boundary Context（境界文脈）` / `## Requirements（要件）` / `### Requirement N:` / `#### Acceptance Criteria（EARS 形式）` / `## Non-Functional Requirements（非機能要件）` / `## Out of Scope（明示的に対象外）` / `## Dependencies / Assumptions（前提と依存）`）はすべて存在し、第 5 回から増減していない |
+| フロントマター | キーは `feature` / `status` / `updated_at` の 3 つ。`feature: property-basic-info` は `.aidd/feature-list.md` の feature 名およびディレクトリ名と完全一致。`status: draft`、`updated_at: 2026-09-24T21:30:00+09:00`（ISO 8601・オフセット付き） |
+| プレースホルダー残存 | `<UPPER_SNAKE>` 系統は非機能要件表の 16 件のみ。いずれも同一行に不要理由（`不要 / 人間 2026-09-11: …`）が併記されているため ① の指摘対象外。**理由が明記されていない未記入プレースホルダーは 0 件**（`open_placeholders` = 0）。`{{...}}` 系統の未置換なし |
+| ID 書式 | 要件ID は `1`〜`11`。いずれも数値のみ（アルファベット ID なし）、当該ファイル内での重複なし。Requirement 11 は本回「作成組織の会社名の表示」へ全面的に書き換えられ、受入基準は 11 件 → 6 件になった |
+| 参照リンク切れ | 本文が参照する相対パスのうち `steering/` 7 ファイル・`.aidd/feature-list.md`・`.aidd/requirement-list.md` は実在。`docs/architecture/system-overview.md` のみ不在だが **第 1 回 #25 と同一条件**で ③ が既に判断済みのため新規の指摘にしていない。第 5 回まで存在した `specs/issue-request/requirements.md` への相対パス参照は本回の書き換えで無くなった |
+| 追加の存在検査（User Story / 受入基準） | Requirement 1〜11 のすべてに **User Story** と `#### Acceptance Criteria（EARS 形式）` が存在する |
+| 追加の存在検査（要求ID の紐づけ） | Requirement 1=REQ-015 / 2=REQ-016 / 3=REQ-017 / 4=REQ-018 / 5=REQ-019 / 6=REQ-020 / 7=REQ-021 / 8=REQ-022 / 9=REQ-023・REQ-024 / 10=REQ-025 / **11=REQ-048 のみ**（REQ-049 / REQ-050 は本回外れた）。すべての Requirement に `> 由来する要求ID:` が付いている |
+| 追加の存在検査（内部参照の追随） | 本回の受入基準の削除・書き換えに伴う**内部参照の不整合は検出していない**。第 5 回まで存在した `未確定事項 ⑭` と、それが参照していた `受入基準 11-6` を指す記述は残っていない（第 3 回 #188 と同型の残存 0 件）。非機能要件表が指す「Requirement 11 の受入基準 4」は現行の 4 番（参照のみ・書き込まない）を正しく指す |
+| 追加の存在検査（未確定事項の件数と番号） | 「次の 13 件」の宣言に対し ①〜⑬ の 13 件が並び、欠番・重複は無い。ただし ⑬ の本文と、その直後に本回追加された注記が指す論点が一致しない（指摘 #198） |
+| 参考（指摘にしていない事実） | ファイル末尾の改行が本回の編集で失われている（`git diff` の `No newline at end of file`）。テンプレート適合の検査項目ではないため指摘にしていない |
+
+### property-basic-info / 第 6 回実行で ② が突合した範囲
+
+| 検査 | 突合した内容 |
+|---|---|
+| 要求ID の突合（feature 単位・双方向） | 上流 → 下流: `.aidd/feature-list.md` の本 feature の `対応要求ID` 12 件（REQ-015〜REQ-025 / REQ-048）はすべて `> 由来する要求ID:` に現れる。**取りこぼし 0 件。** 下流 → 上流: 本書が挙げる要求IDはすべて `.aidd/requirement-list.md` に実在する。**要求一覧に存在しない要求IDの紐づけ 0 件。** 本文が言及する REQ-049 / REQ-050 は `issue-request` の責務として引用しているのみで `> 由来する要求ID:` には含まれない。**上流 2 ファイルはいずれも `status: approved`**（横断 第 2 回 #197 は解消） |
+| ZOOM / 廃止 feature への参照 | `ZOOM` の言及は `## Out of Scope`（作成しない）と受入基準 11-3（起動しない）の 2 か所のみで、いずれも**廃止したことを述べる記述**である。`organization-search-zoom` への言及は `## Dependencies` の付け替えの経緯 1 か所のみ。**呼び出し・依存としての参照は 0 件。** Mermaid 図に ZOOM の participant・矢印は無い |
+| Requirement 11 と他セクションの整合（本回の重点） | `In Scope`（作成組織の会社名の表示）・`Out of Scope`（入力と `TWTGM100` への書き込みは `issue-request`）・`Adjacent`（`issue-request` が書き込む側）・`Dependencies` の `依存`（`なし`。`TWTGM100` は参照のみ）・非機能要件表のセキュリティ行（参照専用の扱いと Mapper XML の確認）・`## Introduction` の第 3 段落は、いずれも受入基準 11-1〜11-6 と同じ方向を向いている。**食い違いは 2 件**（未確定事項 ⑬ の本文と注記 — #198、⑬ の「期待を宣言していない」と `Adjacent` — #199）。業務フローの Mermaid は参照を DB の participant に通していない（#200） |
+| Dependencies / Adjacent の宣言整合（SSoT = `.aidd/feature-list.md` の `依存` 列） | `依存` 列は `なし`。本書の `依存` も `なし` と宣言しており一致する。`Adjacent` の `issue-request` は「feature 間の依存関係ではない」と明記され `### 要求IDの多重割当（REQ-048）` と整合する。`contract-application-status` を「本フィーチャーに依存する側」とする記述も `依存` 列と整合する。**食い違い 0 件** |
+| steering 適合 | `steering/` 7 ファイルを全文読み突合した。**違反・矛盾・逸脱は検出していない。** 第 5 回 #184（`steering/product.md` の `## 開発物の概要・背景` が ZOOM を新規機能に数えていたこと）は解消済み（同節は「作成組織は発行依頼書の画面内の入力欄として扱い、独立した検索画面（ZOOM）は作成しない」に置き換わっている）。第 5 回 #181（コードマスタの選択肢母集合への所有権境界の適用）は当該受入基準の削除により解消。`api-standards.md` の `### ZOOM 画面のメソッド（例外規定）`・`architecture.md` の `### プレゼンテーション層`・`tech.md` の ZOOM 記述は既存 WiNG の ZOOM 17 本に対する規約であり、本書が新規 ZOOM を作らないことと両立するため矛盾として扱っていない |
+| 根拠のない記述の検出 | Requirement 11 が用いる固有名・値（`TWTGM100` / `Keiyaku_Ringi_Kiansha_Kaisha_Name` / WTG070 画面設計の項目5）はいずれも `.aidd/requirement-list.md` の REQ-048 の要求文、または `## 要求の変更履歴`（`### 固有名・値の出所` を含む）に対応する記述がある。**根拠なし 0 件** |
+| 意味的重複・冗長要件 | Requirement 11 と Requirement 1〜10 のあいだに、同一の振る舞いを定義する対、および他要件の受入基準の部分集合となる要件は検出していない。REQ-048 の 2 feature への多重割当は `### 要求IDの多重割当（REQ-048）` で ③ が確定済みのため指摘していない |
+| 受入基準の網羅性（正常系 / 異常系 / 境界値） | Requirement 11 は正常系（11-1・11-2）と異常系（11-5。行の不在・会社名が空のときの扱い）を持つ。表示のみで入力桁を持たないため境界値は対象外。**不足は検出していない** |
+| 非機能要件の誤配置 | `steering/non-functional.md` / `steering/security.md` に存在しない全 feature 共通の非機能方針が本書に個別記載されている箇所は検出していない。第 5 回 #185（非機能要件表が Requirement 11 に追随していないこと）は解消済み |
+
+### issue-request / 第 4 回実行で ① が確認した範囲
+
+> 第 5 回 / 第 3 回 / 横断 第 2 回の指摘 #178〜#197 に対する修正後の再検査。② へ進んだ根拠は property-basic-info 第 6 回と同じである（#186 / #187 のテンプレート基線の差は ③ が「対応せず進める」と判断済みの既決事項であり、本回の ① の指摘に含めない）。
+
+| 検査 | 確認した内容 |
+|---|---|
+| 必須セクションの欠落 | 旧テンプレートの見出しはすべて存在し、第 3 回から増減していない |
+| フロントマター | キーは `feature` / `status` / `updated_at` の 3 つ。`feature: issue-request` は `.aidd/feature-list.md` の feature 名およびディレクトリ名と完全一致。`status: draft`、`updated_at: 2026-09-24T21:30:00+09:00`（ISO 8601・オフセット付き） |
+| プレースホルダー残存 | `<UPPER_SNAKE>` 系統は非機能要件表の 14 件のみ。いずれも同一行に不要理由が併記されているため ① の指摘対象外。**理由が明記されていない未記入プレースホルダーは 0 件**（`open_placeholders` = 0）。`{{...}}` 系統の未置換なし |
+| ID 書式 | 要件ID は `1`〜`13`。いずれも数値のみ、当該ファイル内での重複なし。Requirement 13 の受入基準は 11 件 → 14 件になった（5 を新設して旧 5〜11 を 6〜12 へ繰り下げ、13・14 を追加） |
+| 参照リンク切れ | `steering/` 7 ファイル・`.aidd/feature-list.md`・`.aidd/requirement-list.md`・`specs/issue-request-tutorial/requirements.md` は実在。`docs/architecture/system-overview.md` のみ不在だが第 1 回と同一条件のため新規の指摘にしていない |
+| 追加の存在検査（User Story / 受入基準） | Requirement 1〜13 のすべてに **User Story** と `#### Acceptance Criteria（EARS 形式）` が存在する |
+| 追加の存在検査（要求ID の紐づけ） | Requirement 1=REQ-026 / 2=REQ-027 / 3=REQ-028 / 4=REQ-029 / 5=REQ-030 / 6=REQ-031 / 7=REQ-032 / 8=REQ-033 / 9=REQ-034 / 10=REQ-037・REQ-039 / 11=REQ-038 / 12=REQ-026 / 13=REQ-048・REQ-049・REQ-050 |
+| 追加の存在検査（内部参照の追随） | **繰り下げ・新設に伴う内部参照の不整合は検出していない。** 第 3 回 #188（Requirement 12 受入基準 4 が「Requirement 1 の受入基準 7」を指していたこと）は「同 6」に修正済みで、現行の 6 番（入力チェック）を正しく指す。Requirement 1 受入基準 7 が指す「Requirement 13 の受入基準 5」= 保存先、非機能要件表が指す「Requirement 13 の受入基準 12」= 非活性項目のサーバ側での再決定、受入基準 13-13 / 13-14 が指す「受入基準 10」= 会社名の必須、未確定事項 ⑰ が指す「受入基準 13-7 / 13-4 / 13-13」、Requirement 2 受入基準 7 が指す「Requirement 1 の受入基準 2・3」「Requirement 9 の受入基準 1」は、いずれも現行の番号を正しく指す |
+| 追加の存在検査（未確定事項の件数と番号） | 「次の 17 件」の宣言に対し ①〜⑰ の 17 件が並び、欠番・重複は無い。⑰ は (a) `CD2` の意味 / (b)「100 桁」の単位 / (c) メッセージID の 3 論点を含む。ただし受入基準 1-7 が参照する論点は ② の本文に含まれていない（指摘 #201） |
+| 参考（指摘にしていない事実） | ファイル末尾の改行が本回の編集で失われている。テンプレート適合の検査項目ではないため指摘にしていない |
+
+### issue-request / 第 4 回実行で ② が突合した範囲
+
+| 検査 | 突合した内容 |
+|---|---|
+| 要求ID の突合（feature 単位・双方向） | 上流 → 下流: `.aidd/feature-list.md` の本 feature の `対応要求ID` 15 件（REQ-026〜REQ-034 / REQ-037 / REQ-038 / REQ-039 / REQ-048 / REQ-049 / REQ-050）はすべて `> 由来する要求ID:` に現れる。**取りこぼし 0 件。** 下流 → 上流: 本書が挙げる要求IDはすべて `.aidd/requirement-list.md` に実在する。**要求一覧に存在しない要求IDの紐づけ 0 件。** Requirement 12 と REQ-035 の割当不一致は本書自身が注記しており既出のため新規の指摘にしていない。**上流 2 ファイルはいずれも `status: approved`** |
+| ZOOM / 廃止 feature への参照 | `ZOOM` の言及は `## Out of Scope`（実装しない）と受入基準 13-1（起動しない）の 2 か所のみで、いずれも廃止を述べる記述である。`organization-search-zoom` への言及は `## Dependencies` の付け替えの経緯 1 か所のみ。**呼び出し・依存としての参照は 0 件** |
+| Requirement 13 と他セクションの整合（本回の重点） | `In Scope`（入力欄の提供・必須／活性の制御・`TWTGM100` への保存）・`Out of Scope`（ZOOM を作らない）・`Adjacent` の `property-basic-info`（入力・保存は本 feature、相手は参照のみ）・Requirement 13 の注記・業務フローの `担当者->>画面: 作成組織（会社名・所属①②）を入力する` は、いずれも受入基準 13-1〜13-14 と同じ方向を向いている。**食い違いは 1 件**（`Dependencies` の `依存` の末尾の一文 — #205）。受入基準 5 と Requirement 1 受入基準 7 の関係は #201、受入基準 5 と steering の関係は #202、受入基準 13・14 の成立条件は #203・#204 で報告する |
+| Dependencies / Adjacent の宣言整合（SSoT = `.aidd/feature-list.md` の `依存` 列） | `依存` 列は `issue-request-tutorial`。本書の `依存` も同 feature を挙げており一致する。未確定事項 ⑩・⑬ は「`property-basic-info` への依存が生じる場合は Phase 3 への差戻しとして扱う」と宣言しており `依存` 列と整合する。**宣言そのものの食い違い 0 件**（`依存` の末尾の一文の内容の誤りは #205 で別に報告する） |
+| steering 適合 | `steering/` 7 ファイルを全文読み突合した。**矛盾 1 件**（`steering/database.md` の `## 設計思想` — 指摘 #202）。第 3 回 #193（`steering/product.md` の ZOOM 記述）は解消済み。第 3 回 #190（コードマスタの選択肢母集合への所有権境界の適用）は当該受入基準の削除により解消 |
+| 根拠のない記述の検出 | Requirement 13 が用いる固有名・値（`TWTZM040` / `WTG` / `PARAM` / `P26` / `P71` / `Key3` / `MEISHO` / `CD1` / `CD2` / `1` = 社外 / 100 桁 / `TWTGM100` の 4 列）はいずれも `.aidd/requirement-list.md` の REQ-049 / REQ-050 の要求文または `### 固有名・値の出所` に対応する記述がある。**根拠が示せないもの 1 件**: 受入基準 13-5 の「列の追加…を行わない」は引用した REQ-052 と `steering/database.md` のいずれからも導けない（#202 で steering との矛盾として報告し、本検査では重ねて指摘しない） |
+| 意味的重複・冗長要件 | Requirement 13 と Requirement 1〜12 のあいだに、同一の振る舞いを定義する対、および他要件の受入基準の部分集合となる要件は検出していない |
+| 受入基準の網羅性（正常系 / 異常系 / 境界値） | Requirement 13 は正常系（13-1・13-2・13-3・13-5・13-7・13-8・13-9）、異常系（13-10・13-11・13-12・13-13・13-14）、境界値（13-4。100 桁以下を受け付け、超過をエラーとする対で書かれており第 3 回 #191 の許容側の欠落は解消）を持つ。**種別としての不足は検出していない。** 新設した異常系 2 件の成立条件については #203・#204 |
+| 非機能要件の誤配置 | 全 feature 共通の非機能方針が本書に個別記載されている箇所は検出していない。第 3 回 #194（非機能要件表の追随漏れ）は解消済み |
+
+### 【横断】第 3 回実行で ② が突合した範囲
+
+> 第 5 回 / 第 3 回 / 横断 第 2 回の指摘 #178〜#197 に対する修正後の再検査。対象は 6 feature（変更した 2 feature と、変更していない 4 feature）。
+
+| 検査 | 突合した内容 |
+|---|---|
+| 要求ID の全件突合（上流 → 下流・分母は分類 `機能` のみ） | `.aidd/requirement-list.md` の分類 `機能` は 38 件（REQ-012〜REQ-045 のうち `制約` の REQ-046 を除いたもの、および REQ-047〜REQ-050）。38 件すべてが `specs/*/requirements.md` のいずれかの `> 由来する要求ID:` に現れる。**未割当の要求ID 0 件。** 本回 REQ-049 / REQ-050 は `property-basic-info` 側から外れ `issue-request` のみになったが被覆は維持されている。REQ-048 が 2 feature に現れることは `### 要求IDの多重割当（REQ-048）` で ③ が確定済みのため指摘していない |
+| `feature-list.md` の網羅 | `.aidd/feature-list.md` の 6 feature すべてに `specs/<feature>/requirements.md` が存在する。`specs/` 配下に `feature-list.md` に無いディレクトリは無い。**欠落 0 件** |
+| 廃止 feature への参照の残存（6 feature 全件） | `specs/*/requirements.md` 6 本を `ZOOM` / `organization-search-zoom` / `ZWTZ072` / `作成組織` で走査した。**変更していない 4 feature（issue-request-tutorial / contract-application-status / contract-info-import / contract-info-download）には 1 件も現れない。** 残存は変更した 2 feature の、廃止を述べる記述（各 2 か所）と `## Dependencies` の付け替えの経緯（各 1 か所）のみである |
+| feature 間の Dependencies / Adjacent の相互整合（受け手不在） | `contract-application-status` → `property-basic-info` / `issue-request`、`issue-request-tutorial` → `issue-request`、`contract-info-download` → `contract-info-import` はいずれも受け手の `In Scope`（または `Adjacent` と未確定事項）に存在する。**`property-basic-info` → `issue-request`（`TWTGM100` への作成組織の保存）は受け手の `In Scope` に存在するようになり、横断 第 2 回 #195 は解消。** `issue-request` → `property-basic-info`（`TWTGM100` の会社名のラベル表示）も受け手の `In Scope` に存在する。**受け手不在は 1 件**（`property-basic-info` が表示する `TWTGM100` の行を特定するキー。指摘 #206） |
+| 2 feature の未確定事項の対称性 | 横断 第 2 回 #196（`P71` による社内／社外の判定に関する未確定事項が片側にしか立っていないこと）は、`property-basic-info` が表示のみになり同判定を持たなくなったため解消。ただし**物件基本情報と発行依頼書の紐づけ**については、同じ確定事項に対する帰結の書き方が 2 feature で異なる（#206 に含めて報告する） |
+
+### property-basic-info / 第 7 回実行で ① が確認した範囲
+
+> `## 修正内容（… 第 6 回 / 第 4 回 / 横断 第 3 回の指摘 #198〜#206）` と、その直後の `### 追加の修正（… #203 の差し戻しと 未確定事項 ⑭ の確定）` の **2 度の処理を経た状態**に対する再検査である。**これは合否の記載ではなく、検査した範囲の記録である。**
+> **② へ進んだ根拠**: テンプレート基線の不一致（#178 / #179 / #186 / #187）は ③ が「旧テンプレートのまま進める」と判断済みの既決事項であり、本回の ① の指摘に含めない。それ以外にテンプレート構造・フロントマター・プレースホルダー残存・ID 書式・追加の存在検査の不備は検出していないため、② を実行した。
+
+| 検査 | 確認した内容 |
+|---|---|
+| 必須セクションの欠落 | 旧テンプレートの見出し（`## Introduction（概要）` / `## 業務フロー（任意）` / `## Boundary Context（境界文脈）` / `## Requirements（要件）` / `### Requirement N:` / `#### Acceptance Criteria（EARS 形式）` / `## Non-Functional Requirements（非機能要件）` / `## Out of Scope（明示的に対象外）` / `## Dependencies / Assumptions（前提と依存）`）はすべて存在し、第 6 回から増減していない |
+| フロントマター | キーは `feature` / `status` / `updated_at` の 3 つ。`feature: property-basic-info` は `.aidd/feature-list.md` の feature 名およびディレクトリ名と完全一致。本実行の開始時点で `status: draft`、`updated_at: 2026-09-24T23:10:00+09:00`（ISO 8601・オフセット付き） |
+| プレースホルダー残存 | `<UPPER_SNAKE>` 系統は非機能要件表の 12 件のみ（セキュリティ行は実値で埋まっている）。いずれも同一セルに不要理由（`不要 / 人間 2026-09-11: …` または `（同上）`）が併記されているため ① の指摘対象外。**理由が明記されていない未記入プレースホルダーは 0 件**（`open_placeholders` = 0）。`{{...}}` 系統の未置換なし |
+| ID 書式 | 要件ID は `1`〜`11`。いずれも数値のみ（アルファベット ID なし）、当該ファイル内での重複なし。各 Requirement の受入基準は `1.` からのフラットな連番で階層番号の混在なし。Requirement 11 の受入基準は本回の追加の修正により **6 本 → 7 本**（11-2 に外部結合の条件を挿入し、以降を繰り下げ） |
+| 参照リンク切れ | 本文が参照する相対パスのうち `steering/` 7 ファイル・`.aidd/feature-list.md`・`.aidd/requirement-list.md` は実在。`docs/architecture/system-overview.md` のみ不在だが **第 1 回 #25 と同一条件**で ③ が判断済みのため新規の指摘にしていない。`WTX_Batch/src/jp/co/kccs/wt/wtg/wtg090/PWTGB090Job.java` を典拠とする `## Dependencies` の記述は、当該ファイルの実在と `TWTGM080` / `TWTGM100` 双方の出現（各 27 箇所）を確認した |
+| 追加の存在検査（User Story / 受入基準） | Requirement 1〜11 のすべてに **User Story** と `#### Acceptance Criteria（EARS 形式）` が存在する |
+| 追加の存在検査（要求ID の紐づけ） | Requirement 1=REQ-015 / 2=REQ-016 / 3=REQ-017 / 4=REQ-018 / 5=REQ-019 / 6=REQ-020 / 7=REQ-021 / 8=REQ-022 / 9=REQ-023・REQ-024 / 10=REQ-025 / 11=REQ-048。すべての Requirement に `> 由来する要求ID:` が付いている |
+| 追加の存在検査（内部参照の追随 — 本回の重点） | 本書が持つ受入基準への内部参照は 3 か所（`Adjacent` の `受入基準 11-2`、非機能要件表セキュリティ行の `Requirement 11 の受入基準 4`、未確定事項 ⑬ の `受入基準 11-2`）。うち `受入基準 11-2` の 2 か所は挿入後の 2 番（外部結合の条件）を正しく指す。**非機能要件表の 1 か所は繰り下げに追随していない**（指摘 #207） |
+| 追加の存在検査（未確定事項の件数と番号） | 「次の 13 件」の宣言に対し ①〜⑬ の 13 件が並び、欠番・重複は無い（⑭ の削除に伴う 14 件 → 13 件の戻しは番号の付け替えを伴っておらず、⑭ を参照する記述の残存も 0 件） |
+| 追加の存在検査（feature 名の一致） | フロントマターの `feature` 値・ディレクトリ名・`.aidd/feature-list.md` の feature 名がすべて `property-basic-info` で一致 |
+
+### property-basic-info / 第 7 回実行で ② が突合した範囲
+
+| 検査 | 突合した内容 |
+|---|---|
+| 要求ID の突合（feature 単位・双方向） | 上流 → 下流: `.aidd/feature-list.md` の本 feature の `対応要求ID` 12 件（REQ-015〜REQ-025 / REQ-048）はすべて `> 由来する要求ID:` に現れる。**取りこぼし 0 件。** 下流 → 上流: 本書が挙げる要求IDはすべて `.aidd/requirement-list.md` に実在する（機械照合で差分 0）。**要求一覧に存在しない要求IDの紐づけ 0 件** |
+| ZOOM / 廃止 feature への参照 | `ZOOM` の言及は `## Out of Scope`（作成しない）と受入基準 11-4（起動しない）の 2 か所のみで、いずれも廃止を述べる記述である。`organization-search-zoom` への言及は `## Dependencies` の付け替えの経緯 1 か所のみ。**呼び出し・依存としての参照は 0 件** |
+| 2 度の修正に伴う内部参照の追随（本回の重点） | 受入基準の繰り下げ（6 本 → 7 本）に対し、本文・`Adjacent`・未確定事項・非機能要件表の 4 系統を全件照合した。**追随漏れ 1 件**（指摘 #207） |
+| 未確定事項 ⑭ の削除の波及 | 削除した ⑭（表示対象の行を特定するキー）を参照する記述は本書に残っていない。⑬ の本文は「表示対象の行の特定方法も受入基準 11-2 で確定している」と書き改められており、⑭ の役割は 11-2 に移っている。**残存参照 0 件**（ただし `issue-request` 側との非対称は横断スコープの #212 で扱う） |
+| Dependencies / Adjacent の宣言整合（SSoT = `.aidd/feature-list.md` の `依存` 列） | `依存` 列は `なし`。本書の `依存` も `なし` と宣言しており一致する。`Adjacent` の `issue-request`（入力・保存側）・`contract-application-status`（本 feature に依存する側）はいずれも `依存` 列および `### 要求IDの多重割当（REQ-048）` と整合する。**食い違い 0 件** |
+| steering 適合 | `steering/` 7 ファイルを全文読み、本回変更された箇所（受入基準 11-2 / 11-6 / `Adjacent` / `Dependencies` / 業務フローの Mermaid）と突き合わせた。**違反・矛盾は検出していない。** 11-7 の会社コードの `WHERE` への包含は `security.md` の `#### 所有権・エンティティ境界` および `database.md` の `## クエリパターン` と整合し、`architecture.md` の機能パッケージ間の直接依存の禁止にも抵触しない（他 feature の Service を呼ばず、自 feature の Mapper で `TWTGM100` を参照する形である） |
+| 根拠のない記述の検出 | 受入基準 11-2 が引用する「WTG070 機能定義書の転送仕様」は本書が全文を引用しており、11-1 / `In Scope` が引用する「WTG070 画面設計の項目5」は `.aidd/requirement-list.md` の `## 要求の変更履歴` の `合意の根拠` に同じ表記で記載がある。**上流に対応記述を持たない固有名・値 0 件。** ただし受入基準 11-2 の結合の左辺（本フィーチャーが扱う物件基本情報が `TWTGM080` の行であること）は本書のどこでも定義されていない（指摘 #208） |
+| 意味的重複・冗長要件 | Requirement 11 の 7 件の受入基準のあいだ、および Requirement 1〜10 とのあいだに、同一の振る舞いを定義する対、他要件の受入基準の部分集合となる要件は検出していない。11-3（入力欄を設けない）・11-4（ZOOM を起動しない）・11-5（書き込まない）はいずれも異なる対象への禁止である |
+| 受入基準の網羅性（正常系 / 異常系 / 境界値） | Requirement 11 は正常系（11-1・11-2）と異常系（11-6。外部結合で行が得られない場合と会社名が空の場合）を持つ。表示のみで入力桁を持たないため境界値は対象外。**種別としての不足は検出していない。** ただし権限判定（Requirement 2）への言及が 11 だけ欠けている点は指摘 #209 |
+| 非機能要件の誤配置 | `steering/non-functional.md` / `steering/security.md` に存在しない全 feature 共通の非機能方針が本書に個別記載されている箇所は検出していない。非機能要件表セキュリティ行の追記は `TWTGM100` を参照専用とする feature 固有の扱いであり誤配置ではない（参照先の番号の誤りは #207 で扱う） |
+
+### issue-request / 第 5 回実行で ① が確認した範囲
+
+> 2 度の処理を経た状態に対する再検査である。② へ進んだ根拠は property-basic-info 第 7 回と同じである。
+
+| 検査 | 確認した内容 |
+|---|---|
+| 必須セクションの欠落 | 旧テンプレートの見出しはすべて存在し、第 4 回から増減していない |
+| フロントマター | キーは `feature` / `status` / `updated_at` の 3 つ。`feature: issue-request` は `.aidd/feature-list.md` の feature 名およびディレクトリ名と完全一致。本実行の開始時点で `status: draft`、`updated_at: 2026-09-24T23:10:00+09:00` |
+| プレースホルダー残存 | `<UPPER_SNAKE>` 系統は非機能要件表の 12 件のみ（セキュリティ行は実値で埋まっている）。いずれも同一セルに不要理由が併記されているため ① の指摘対象外。**理由が明記されていない未記入プレースホルダーは 0 件**（`open_placeholders` = 0）。`{{...}}` 系統の未置換なし |
+| ID 書式 | 要件ID は `1`〜`13`。いずれも数値のみ、当該ファイル内での重複なし。Requirement 13 の受入基準は本回の追加の修正により **16 本 → 15 本**（旧 13-13「`P71` に行が無い場合は保存しない」を削除し、以降を繰り上げ）。連番に欠番・重複なし |
+| 参照リンク切れ | `steering/` 7 ファイル・`.aidd/feature-list.md`・`.aidd/requirement-list.md`・`specs/issue-request-tutorial/requirements.md`・`.claude/skills/aidd-flow/references/status-protocol.md` は実在。`docs/architecture/system-overview.md` のみ不在だが第 1 回と同一条件のため新規の指摘にしていない。`WTX_Batch` の `PWTGB110Job` は実在を確認した |
+| 追加の存在検査（User Story / 受入基準） | Requirement 1〜13 のすべてに **User Story** と `#### Acceptance Criteria（EARS 形式）` が存在する |
+| 追加の存在検査（要求ID の紐づけ） | Requirement 1=REQ-026 / 2=REQ-027 / 3=REQ-028 / 4=REQ-029 / 5=REQ-030 / 6=REQ-031 / 7=REQ-032 / 8=REQ-033 / 9=REQ-034 / 10=REQ-037・REQ-039 / 11=REQ-038 / 12=REQ-026 / 13=REQ-048・REQ-049・REQ-050 |
+| 追加の存在検査（内部参照の追随 — 本回の重点） | 本書が持つ内部参照 17 か所（`Requirement 13 の受入基準 5` / `Requirement 1 の受入基準 2・3` / `Requirement 9 の受入基準 1` / `Requirement 1 の受入基準 6` / 13-13 の `受入基準 10` / 13-14 の `受入基準 10` / 13-15 の `受入基準 14`・`受入基準 7`・`受入基準 13` / 非機能要件表の `Requirement 13 の受入基準 12` / 未確定事項 ② の `受入基準 13-5`・`受入基準 1-7` / ⑬ の `受入基準 11-2`（他 feature 宛）/ ⑰ の `受入基準 13-7`・`13-4`・`13-13` ほか）を全件照合した。**繰り上げ（16 本 → 15 本）に伴う追随漏れは 0 件。** 他 feature への参照 `specs/issue-request-tutorial/requirements.md` の `Requirement 3 の受入基準 5` も実在を確認した |
+| 追加の存在検査（未確定事項の件数と番号） | 「次の 17 件」の宣言に対し ①〜⑰ の 17 件が並び、欠番・重複は無い。⑰ は (a) `CD2` の意味 / (b)「100 桁」の単位 / (c) 受入基準 13-13 のメッセージID の 3 論点で、(c) が指す 13-13 は繰り上げ後の「社外 かつ `CD2` が空」の基準を正しく指す。削除された「`P71` に行が無い場合」の論点は ⑰ から外れており、参照の残存も 0 件 |
+| 追加の存在検査（feature 名の一致） | フロントマターの `feature` 値・ディレクトリ名・`.aidd/feature-list.md` の feature 名がすべて `issue-request` で一致 |
+
+### issue-request / 第 5 回実行で ② が突合した範囲
+
+| 検査 | 突合した内容 |
+|---|---|
+| 要求ID の突合（feature 単位・双方向） | 上流 → 下流: `.aidd/feature-list.md` の本 feature の `対応要求ID` 15 件（REQ-026〜REQ-034 / REQ-037 / REQ-038 / REQ-039 / REQ-048 / REQ-049 / REQ-050）はすべて `> 由来する要求ID:` に現れる。**取りこぼし 0 件。** 下流 → 上流: 本書が挙げる要求IDはすべて `.aidd/requirement-list.md` に実在する（機械照合で差分 0）。**要求一覧に存在しない要求IDの紐づけ 0 件** |
+| ZOOM / 廃止 feature への参照 | `ZOOM` の言及は `## Out of Scope`（実装しない）と受入基準 13-1（起動しない）の 2 か所のみ。`organization-search-zoom` への言及は `## Dependencies` の付け替えの経緯 1 か所のみ。**呼び出し・依存としての参照は 0 件** |
+| 2 度の修正に伴う内部参照の追随（本回の重点） | 繰り上げ（16 本 → 15 本）に対し、本文・非機能要件表・未確定事項 ⑰ の 3 系統を全件照合した。**追随漏れ 0 件**（第 6 回 / 第 4 回の #188・#201 と同型の残存は無い） |
+| #203 の差し戻し後の整合 | 受入基準 13-6 は「`CD1` が `1` のときのみ社外。`1` 以外のとき、および行が存在しないときはいずれも社内」と書き改められ、13-7 / 13-9 / 13-11（社外・社内それぞれの扱い）と条件が排他かつ網羅になっている。削除した基準を指す記述は本文・⑰ のいずれにも残っていない。**規則そのものの妥当性は ③ が 2026-09-24 に確定済みであり本ゲートの検査対象外**（根拠の記載のしかたについては指摘 #210） |
+| Dependencies / Adjacent の宣言整合（SSoT = `.aidd/feature-list.md` の `依存` 列） | `依存` 列は `issue-request-tutorial`。本書の `依存` も同 feature を挙げており一致する。#205 で指摘した末尾の一文は「入力側と表示側に分かれる」に改められ、`Adjacent`・Requirement 13 の注記・`### 要求IDの多重割当（REQ-048）` と同じ方向を向いている。未確定事項 ⑩ は「`property-basic-info` への依存が生じる場合は Phase 3 への差戻し」と宣言しており `依存` 列と整合する。⑬ は紐づきが確定したうえで「既存テーブルどうしであるため依存を生まない」と述べており、`.aidd/feature-list.md` の `### 要求IDの多重割当（REQ-048）` の判断と一致する。**食い違い 0 件** |
+| steering 適合 | `steering/` 7 ファイルを全文読み、本回変更された箇所（受入基準 13-5 / 13-6 / 13-13〜13-15 / `Dependencies` / 未確定事項 ⑬）と突き合わせた。**違反・矛盾は検出していない。** 第 4 回 #202（`steering/database.md` の `## 設計思想` との矛盾）は「既存の列の削除・型変更・意味の変更を行わない」への書き換えにより解消している |
+| 根拠のない記述の検出 | Requirement 13 が用いる固有名・値（`TWTZM040` / `WTG` / `PARAM` / `P26` / `P71` / `Key3` / `MEISHO` / `CD1` / `CD2` / `1` = 社外 / 100 桁 / `TWTGM100` の 4 列）はいずれも `.aidd/requirement-list.md` の REQ-049 / REQ-050 の要求文または `### 固有名・値の出所` に対応する記述がある。**根拠が示せないもの 1 件**: 13-6 の「当該グループの行が存在しないときも社内」の出所（指摘 #210） |
+| 意味的重複・冗長要件 | Requirement 13 の 15 件の受入基準のあいだ、および Requirement 1〜12 とのあいだに、同一の振る舞いを定義する対、他要件の受入基準の部分集合となる要件は検出していない。13-13 と 13-15 は前者が条件の定義、後者が別条件からの参照であり重複しない |
+| 受入基準の網羅性（正常系 / 異常系 / 境界値） | Requirement 13 は正常系（13-1・13-2・13-3・13-5・13-6・13-7・13-8・13-9）、異常系（13-10・13-11・13-12・13-13・13-14・13-15）、境界値（13-4。100 桁以下の許容と超過の拒否の対）を持つ。**不足は検出していない** |
+| 非機能要件の誤配置 | 全 feature 共通の非機能方針が本書に個別記載されている箇所は検出していない |
+
+### 【横断】第 4 回実行で ② が突合した範囲
+
+> 2 度の処理を経た状態に対する再検査。対象は 6 feature（変更した 2 feature と、変更していない 4 feature）。
+
+| 検査 | 突合した内容 |
+|---|---|
+| 要求ID の全件突合（上流 → 下流・分母は分類 `機能` のみ） | `.aidd/requirement-list.md` の分類 `機能` は 38 件。38 件すべてが `specs/*/requirements.md` のいずれかの `> 由来する要求ID:` に現れる（機械照合で差分 0）。**未割当の要求ID 0 件** |
+| `feature-list.md` の網羅 | `.aidd/feature-list.md` の 6 feature すべてに `specs/<feature>/requirements.md` が存在する。`specs/` 配下に `feature-list.md` に無いディレクトリは無い。**欠落 0 件** |
+| 廃止 feature への参照の残存（6 feature 全件） | `specs/*/requirements.md` 6 本を `ZOOM` / `organization-search-zoom` / `ZWTZ072` / `作成組織` で走査した。**変更していない 4 feature には 1 件も現れない。** 残存は変更した 2 feature の、廃止を述べる記述（各 2 か所）と `## Dependencies` の付け替えの経緯（各 1 か所）のみ。**呼び出し・依存としての参照は 0 件** |
+| 変更した 2 feature への外部参照（4 feature からの受入基準番号の参照） | `contract-application-status` / `contract-info-import` / `contract-info-download` / `issue-request-tutorial` の 4 本を `作成組織` / `TWTGM100` / `TWTGM080` / `Requirement 11` / `Requirement 13` / `受入基準 11` で走査した。**本回の繰り下げ・繰り上げの影響を受ける参照は 0 件**（`contract-info-import` の `Requirement 2 の受入基準 11` は同 feature 内の参照である） |
+| feature 間の Dependencies / Adjacent の相互整合（受け手不在） | `contract-application-status` → `property-basic-info` / `issue-request`、`issue-request-tutorial` → `issue-request`、`contract-info-download` → `contract-info-import`、`property-basic-info` → `issue-request`（作成組織の `TWTGM100` への保存）、`issue-request` → `property-basic-info`（会社名のラベル表示）はいずれも受け手の `In Scope` に存在する。**受け手不在 1 件**: `property-basic-info` の受入基準 11-2 が前提とする `TWTGM100` の行の結合キー（会社コード + 申請No）の設定責務（指摘 #212）。バーコードと QR コードの突合（`issue-request` 未確定事項 ⑪）の片側宣言は **第 1 回 #167 で既に報告済み**のため本回重ねて指摘していない |
+| 2 feature の記述の相互矛盾（本回の重点） | `TWTGM100` の扱い（入力・保存は `issue-request` / 参照のみは `property-basic-info`）、`TWTGM080` との外部結合の条件、既存 WiNG のテーブルであることを理由に feature 間の依存を生まないとする判断、`Adjacent` と `Dependencies` の宣言は、2 feature と `.aidd/feature-list.md` の `### 要求IDの多重割当（REQ-048）` の 3 者で一致している。**矛盾 0 件。** 残るのは確定・未確定の非対称（#212） |
+| 根拠の記録先の対称性 | `property-basic-info` が引用する「WTG070 画面設計の項目5」は `.aidd/requirement-list.md` の `## 要求の変更履歴` の `合意の根拠` に記載があるのに対し、`issue-request` が引用する「WTG080 画面設計の項目5」と 2 feature が引用する「WTG070 機能定義書の転送仕様」は `requirements.md` 本文にしか現れない。**上流（Phase 1 の `approved` 成果物）への記録の有無が非対称**（feature スコープの指摘 #210 で報告した） |
+
+### property-basic-info / 第 8 回実行で ① が確認した範囲
+
+> `## 追加の改訂（2026-09-24 …）` に対する再検査である。**これは合否の記載ではなく、検査した範囲の記録である。**
+> ② へ進んだ根拠: 本回の ① では指摘を検出していない。テンプレート基線の不一致（#178 / #179 / #186 / #187）は ③ が 2026-09-24 に「旧テンプレートのまま進める」と判断済みであり、本回は形式の不備として扱わず ② を実行した。
+
+| 検査 | 確認した内容 |
+|---|---|
+| 必須セクションの欠落（旧テンプレート基線） | `# 要件定義書` / `## Introduction（概要）` / `## 業務フロー（任意）` / `## Boundary Context（境界文脈）` / `## Requirements（要件）` / `### Requirement …` / `#### Acceptance Criteria（EARS 形式）` / `## Non-Functional Requirements（非機能要件）` / `## Out of Scope（明示的に対象外）` / `## Dependencies / Assumptions（前提と依存）` がすべて存在する。`### Requirement` ブロックは **12 回**（前回 11 回。Requirement 12 を新設）複製されている |
+| フロントマター | キーは `feature` / `status` / `updated_at` の 3 つ。`feature: property-basic-info` はディレクトリ名および `.aidd/feature-list.md` の feature 名と完全一致。検査開始時点で `status: draft`、`updated_at: 2026-09-24T09:40:00+09:00`（ISO 8601・オフセット付き） |
+| プレースホルダー残存 | `<UPPER_SNAKE>` 系統が 14 件（非機能要件表 7 区分 × 2 列）。いずれも同一セル内に不要理由が併記されている。**理由が明記されていない未記入プレースホルダーは 0 件**（`open_placeholders` = 0）。`{{...}}` 系統の未置換なし |
+| ID 書式 | 要件ID は `1` 〜 `12` で数値のみ（アルファベット ID なし）。当該ファイル内での重複なし。各 Requirement の受入基準はフラットな連番で階層番号の混在なし |
+| 受入基準の本数（本回の改訂対象） | Requirement 1 = **8 件**（前回 7 件。受入基準 5 を挿入し旧 5〜7 を 6〜8 へ繰り下げ）、Requirement 11 = 7 件（変更なし）、Requirement 12 = **5 件**（新設）。`## 追加の改訂` の記載と一致する |
+| 追加の存在検査（User Story / 受入基準） | Requirement 1 〜 12 のすべてに **User Story** と `#### Acceptance Criteria（EARS 形式）` が存在する（新設した Requirement 12 を含む） |
+| 追加の存在検査（要求ID の紐づけ） | Requirement 1 〜 12 のすべてに `> 由来する要求ID:` の行がある。Requirement 12 は REQ-015 |
+| 未確定事項の番号 | ①〜⑮ が欠番・重複なく 15 件。本文が参照する丸数字（①〜⑫ / ⑭ / ⑮）はすべて定義側に実在する（⑬ は定義のみで本文からの参照を持たないが、これは前回から変わらない） |
+| 参照リンク切れ | 本文が参照する相対パスのうち `steering/` 6 ファイルと `.aidd/feature-list.md` / `.aidd/requirement-list.md` / `specs/issue-request/requirements.md` は実在。`docs/architecture/system-overview.md` のみ不在（#25 と同一条件で既決） |
+
+### property-basic-info / 第 8 回実行で ② が突合した範囲
+
+> 突合の結果として差分が出なかった項目を記録する。**これは合否の記載ではなく、検査した範囲の記録である。**
+
+| 検査 | 突合の内容と結果 |
+|---|---|
+| 受入基準の繰り下げに対する内部参照の追随（本回の重点） | Requirement 1 が 7 本 → 8 本になったことに伴う追随漏れは **0 件**。本書には Requirement 1 の受入基準を番号で指す参照が**本文・非機能要件表・未確定事項・他の Requirement のいずれにも存在しない**ため、繰り下げによって壊れる参照が無い。本書が持つ受入基準への番号参照は 9 か所（`Adjacent` の `Requirement 12 の受入基準 4` / `受入基準 11-2` / `受入基準 12-5`、Requirement 12 受入基準 5 の `Requirement 11 の受入基準 5`、非機能要件表の `Requirement 11 の受入基準 5`、未確定事項 ⑬ の `受入基準 11-2`、⑭ の `受入基準 12-2`、⑮ の `受入基準 12-3` / `受入基準 12-4`）で、**9 か所すべてが現在の番号を正しく指す**。#207 が直した非機能要件表の `11-5` も正しいままである |
+| 要求ID の突合（上流 → 下流） | 分母は `.aidd/feature-list.md` の `property-basic-info` 行の `対応要求ID` 12 件（REQ-015 〜 REQ-025 / REQ-048）のみ（他 feature の要求を分母に含めない）。12 件すべてが `> 由来する要求ID:` の行に現れる。**取りこぼし 0 件**。新設した Requirement 12 の由来 REQ-015 は Requirement 1 も担う要求だが、`対応要求ID` の分母内であり未割当・不一致は生じていない |
+| 要求ID の突合（下流 → 上流） | 本書が引用する要求ID はすべて `.aidd/requirement-list.md`（`approved`）に実在。**要求一覧に存在しない要求ID 0 件** |
+| #208 の解消状況 | 前回「結合の左辺（物件基本情報が `TWTGM080` の行であること、申請No を持つこと）が本書のどこにも定義されていない」と指摘した条件は、**受入基準 1-5（格納先 = `TWTGM080`、キー = 会社コード + 申請No）と Requirement 12 の新設により解消している**。`## Dependencies` の `依存` も `TWTGM080`（格納先）/ `TWTGM100`（参照のみ）と書き分けられ、両立しない 2 つの読み方は残っていない |
+| steering 適合（違反の有無） | `steering/` 7 ファイルを全文読み、制約として機能する記述と突き合わせた。**steering が禁止・限定していることを本書が行っている「違反」は検出していない。** 検出したのは `steering/database.md` の採番の設計ルールのうち本書が触れていない項目であり、指摘 #215 に記載した。受入基準 12-2（`TWTZM050` / `NumberingService` への相乗り・機能ごとの独自採番の禁止）は同ファイルの `### 業務コード・区分値・採番の設計ルール` と整合し、受入基準 12-1 のキー（会社コード + 申請No）と受入基準 1-6 は `steering/security.md` の `#### 所有権・エンティティ境界` と整合する |
+| 非機能要件の誤配置（下流 → 上流） | 本回追加した記述（受入基準 1-5・Requirement 12 の 5 件・`In Scope` / `Adjacent` / `Dependencies` の追記）に、`steering/non-functional.md` / `steering/security.md` に無い**全 feature 共通の非機能方針**の個別記載は**検出していない**。非機能要件表の 7 区分は前回から変更が無い |
+| 根拠のない記述（evidence-guard） | 本回追加した記述のうち WTG070 機能定義書を根拠とするもの（受入基準 1-5 / 12-1 / 12-3）は **③ が 2026-09-24 に確定済みであり、根拠の所在（本リポジトリ外）を理由とする指摘は行わない**（③ の指示。#210 は「対応せず進める」で閉じ済み）。それ以外の追加記述はいずれも `steering/database.md` / `.aidd/requirement-list.md` / `.aidd/feature-list.md` に根拠を持つ。**新規の指摘 0 件** |
+| Dependencies / Adjacent の宣言整合（SSoT = `.aidd/feature-list.md` の `依存` 列） | `feature-list.md` の `property-basic-info` 行の `依存` は `なし`。`## Dependencies` の `依存` は「`依存` 列は `なし`」と明示して引用し、`issue-request` が本 feature に依存する側であること（2026-09-24 の改訂）も正しく書いている。**一方、`Adjacent` の `issue-request` 行と未確定事項 ⑬ には 2026-09-24 の改訂前の表現が残る**（指摘 #213） |
+
+### issue-request / 第 6 回実行で ① が確認した範囲
+
+> `## 追加の改訂（2026-09-24 …）` に対する再検査である。**これは合否の記載ではなく、検査した範囲の記録である。**
+> ② へ進んだ根拠: 本回の ① では指摘を検出していない。テンプレート基線の不一致は ③ が「旧テンプレートのまま進める」と判断済みであり、形式の不備として扱っていない。
+
+| 検査 | 確認した内容 |
+|---|---|
+| 必須セクションの欠落（旧テンプレート基線） | テンプレートの見出し 10 種がすべて存在する。`### Requirement` ブロックは 13 回複製されている（前回から増減なし） |
+| フロントマター | キーは `feature` / `status` / `updated_at` の 3 つ。`feature: issue-request` はディレクトリ名および `.aidd/feature-list.md` の feature 名と完全一致。検査開始時点で `status: draft`、`updated_at: 2026-09-24T09:40:00+09:00` |
+| プレースホルダー残存 | `<UPPER_SNAKE>` 系統が 14 件（非機能要件表 7 区分 × 2 列）。いずれも不要理由が併記されている。**理由が明記されていない未記入プレースホルダーは 0 件**（`open_placeholders` = 0）。`{{...}}` 系統の未置換なし |
+| ID 書式 | 要件ID は `1` 〜 `13` で数値のみ。当該ファイル内での重複なし。受入基準はいずれもフラットな連番 |
+| 受入基準の本数（本回の改訂対象） | Requirement 13 = **16 件**（前回 15 件。受入基準 6 を挿入し旧 6〜15 を 7〜16 へ繰り下げ）。他の Requirement の本数に変更なし。`## 追加の改訂` の記載と一致する |
+| 追加の存在検査（User Story / 受入基準） | Requirement 1 〜 13 のすべてに **User Story** と `#### Acceptance Criteria（EARS 形式）` が存在する |
+| 追加の存在検査（要求ID の紐づけ） | Requirement 1 〜 13 のすべてに `> 由来する要求ID:` の行がある。Requirement 12 の REQ-035 の割当不一致は同要件の注記に記載済みの既知事項 |
+| 未確定事項の番号 | ①〜⑰ が欠番・重複なく 17 件。本文が参照する丸数字（①〜⑰）はすべて定義側に実在する。⑰ は (a) 〜 (d) の 4 つの未決を持ち、本文の「4 つの未決」と一致する |
+| 参照リンク切れ | 本文が参照する相対パスのうち `steering/` 5 ファイルと `.aidd/feature-list.md` / `.aidd/requirement-list.md` / `specs/issue-request-tutorial/requirements.md` / `specs/property-basic-info/requirements.md` は実在。`docs/architecture/system-overview.md` のみ不在（既決） |
+
+### issue-request / 第 6 回実行で ② が突合した範囲
+
+> 突合の結果として差分が出なかった項目を記録する。**これは合否の記載ではなく、検査した範囲の記録である。**
+
+| 検査 | 突合の内容と結果 |
+|---|---|
+| 受入基準の繰り下げに対する内部参照の追随（本回の重点） | Requirement 13 が 15 本 → 16 本になったことに伴う追随漏れは **0 件**。番号で受入基準を指す参照 15 か所（`Adjacent` の `Requirement 12 の受入基準 1・3・4` / `受入基準 13-5` / `受入基準 13-6`、受入基準 1-7 の `Requirement 13 の受入基準 5`、受入基準 2-7 の `Requirement 1 の受入基準 2・3` / `Requirement 9 の受入基準 1`、受入基準 12-4 の `Requirement 1 の受入基準 6`、受入基準 13-14 の `受入基準 11`、13-15 の `受入基準 11`、13-16 の `受入基準 15` / `受入基準 8` / `受入基準 14`、非機能要件表の `Requirement 13 の受入基準 13`、未確定事項 ② の `受入基準 13-5` / `受入基準 1-7`、⑬ の `受入基準 11-2`、⑰ (a) の `受入基準 13-8`、(b) の `受入基準 13-4`、(c) の `受入基準 13-14`、(d) の `受入基準 13-6`）を全件照合し、**すべてが現在の番号を正しく指す**。`## 追加の改訂` が「6 か所を修正」とする箇所（新 14 / 新 15 / 新 16 / 非機能要件表 / ⑰ (a) / ⑰ (c)）もいずれも正しい |
+| 要求ID の突合（上流 → 下流） | 分母は `.aidd/feature-list.md` の `issue-request` 行の `対応要求ID` 15 件（REQ-026 〜 REQ-034 / REQ-037 / REQ-038 / REQ-039 / REQ-048 / REQ-049 / REQ-050）のみ。15 件すべてが `> 由来する要求ID:` の行に現れる。**取りこぼし 0 件** |
+| 要求ID の突合（下流 → 上流） | 本書が引用する要求ID はすべて `.aidd/requirement-list.md`（`approved`）に実在。**要求一覧に存在しない要求ID 0 件** |
+| steering 適合（違反の有無） | `steering/` 7 ファイルを全文読み、制約として機能する記述と突き合わせた。**本回新設・改訂した受入基準 13-5 / 13-6 と `In Scope` の追記が、`steering/security.md` の `#### 所有権・エンティティ境界` の 検証タイミング（「画面からの受け取り値に依存しない」）と両立しない**（指摘 #218）。それ以外の追加記述（`Out of Scope` の申請No の採番、`Adjacent` / `Dependencies` の書き換え）に steering への違反は検出していない |
+| 非機能要件の誤配置（下流 → 上流） | 本回追加した記述に、`steering/non-functional.md` / `steering/security.md` に無い**全 feature 共通の非機能方針**の個別記載は**検出していない**。非機能要件表は前回から内部参照の番号（`受入基準 12` → `13`）のみが変わっている |
+| 根拠のない記述（evidence-guard） | 本回追加した記述のうち WTG070 / WTG080 の機能定義書を根拠とするもの（受入基準 13-5 の後段・13-6）は **③ が 2026-09-24 に確定済みであり、根拠の所在を理由とする指摘は行わない**（#210 は「対応せず進める」で閉じ済み）。それ以外の追加記述は `.aidd/feature-list.md` の 2026-09-24 の改訂と `specs/property-basic-info/requirements.md` の Requirement 12 に根拠を持つ。**新規の指摘 0 件** |
+| Dependencies / Adjacent の宣言整合（SSoT = `.aidd/feature-list.md` の `依存` 列） | `feature-list.md` の `issue-request` 行の `依存` は 2026-09-24 に `property-basic-info, issue-request-tutorial` へ改訂された。`## Dependencies` の `依存` と `## Introduction` の第 3 段落は**この 2 件を正しく引用している**。**一方、未確定事項 ⑬ / ⑩ と `Adjacent` の 2 本目の `property-basic-info` 行には改訂前の表現が残る**（指摘 #219 / #220） |
+| 業務フローの Mermaid（前回 #211 の解消状況） | 本回 `画面->>WTG: 引き渡された申請No と会社コードで発行依頼書情報マスタ（TWTGM100）へ作成組織を保存する（REQ-049）` が追加され、**#211 が指摘した「作成組織の保存が図に現れない」条件は解消している**。申請No を `property-basic-info` から受け取る経路そのものは図に現れないが、これは #211 に対する ③ の判断（図と受入基準の情報量の差は規約違反ではない）と同種であるため指摘にしていない |
+
+### 【横断】第 5 回実行で ② が突合した範囲
+
+> `## 追加の改訂（2026-09-24 …）` 後の再検査。対象は 6 feature（改訂した 2 feature と、改訂していない 4 feature）。
+
+| 検査 | 突合した内容 |
+|---|---|
+| 要求ID の全件突合（上流 → 下流・分母は分類 `機能` のみ） | `.aidd/requirement-list.md` の分類 `機能` は **38 件**。38 件すべてが 6 本の `requirements.md` のいずれかに現れる。**未割当 0 件。** 要求一覧に存在しない要求IDの引用も 0 件 |
+| `feature-list.md` の網羅 | `.aidd/feature-list.md` の 6 feature すべてに `specs/<feature>/requirements.md` が存在する。`specs/` 配下に `feature-list.md` に無いディレクトリは無い |
+| 廃止 feature への参照の残存（6 feature 全件） | `specs/*/requirements.md` 6 本に `organization-search-zoom` / `ZWTZ072` への参照は**残っていない**。`ZOOM` の語は「起動しない」「作成しない」という否定形の記述としてのみ残っており、廃止の事実と整合する |
+| 改訂した 2 feature への外部参照（4 feature からの受入基準番号の参照） | `issue-request-tutorial` / `contract-application-status` / `contract-info-import` / `contract-info-download` の 4 本から、`property-basic-info` / `issue-request` の**受入基準を番号で指す参照は 1 件も無い**（`contract-application-status` が `property-basic-info` の REQ-018 に言及する 1 か所のみで、要求IDによる参照である）。したがって Requirement 1 / Requirement 13 の繰り下げが 4 feature へ波及した箇所は無い |
+| 4 feature への影響（申請No / `TWTGM100` / `TWTGM080`） | 4 本のいずれにも `申請No` / `TWTGM100` / `TWTGM080` の記述が無く、本回の確定事項に起因する不整合は**検出していない**。4 feature はいずれも `status: approved` を維持しており、引き下げを要する条件は本回検出していない |
+| feature 間の Dependencies / Adjacent の相互整合（受け手不在） | `property-basic-info` 受入基準 12-4（申請No の引き渡し）→ `issue-request` の `In Scope`（「保存先の行は `property-basic-info` から引き渡された申請No と会社コードで特定する」）で**受け手が宣言されている**。`property-basic-info` 受入基準 12-5 / `Adjacent`（再製本時の行の作り直しは `issue-request` が行う）→ `issue-request` 受入基準 13-6 で**受け手が宣言されている**。逆方向（`issue-request` の `Adjacent` が `property-basic-info` に期待する採番・引き渡し・ラベル表示）も `property-basic-info` の Requirement 12 / Requirement 11 と `In Scope` で受けられている。**本回新設した期待に受け手不在は無い。** 残るのは `TWTGM100` の行の**初回の**作成主体であり、指摘 #221 に記載した |
+| 2 feature の記述の相互矛盾（本回の重点） | 申請No の採番元（`property-basic-info`）・引き渡し・`TWTGM100` の行の作り直し（`issue-request`）・`TWTGM080` への格納（`property-basic-info`）・`TWTGM100` への書き込み（`issue-request` のみ）について、`In Scope` / `Out of Scope` / `Adjacent` / `Dependencies` / 受入基準を突き合わせた。**両 feature の役割分担の記述そのものに矛盾は無い。** 検出したのは、2026-09-24 の `依存` 列の改訂に追随していない残留表現（feature スコープの #213 / #219 / #220 で報告）と、`TWTGM100` の行の初回作成の非対称（#221）である |
+| 未確定事項の相互整合 | `property-basic-info` の ⑭（採番定義）/ ⑮（再製本・修正稟議の判定条件・引き渡し経路）と、`issue-request` の ⑰ (d)（行を作り直す契機）は、**同じ事象の両端を互いに重複せずに分担している**（採番側と受け手側）。⑰ (d) が `property-basic-info` の ⑮ の確定を要することは `issue-request` 側に明記されているが、`property-basic-info` の ⑮ 側には ⑰ (d) への言及が無い。ただし ⑮ の確定内容がそのまま受け手側の入力になるため、**受け手不在には当たらない**と判断し指摘にしていない |
+
 ## 指摘
 
 > ゲート項目に ID は採番しない（層 ① / ② / ③ の分類のみを持つ）。
@@ -683,6 +996,87 @@ updated_at: 2026-09-16T14:05:00+09:00
 
 > **feature スコープでの承認の意味（第 4 回）**: 本実行も当該 `requirements.md` 内で完結する検査と、上流の `approved` 成果物（`.aidd/requirement-list.md` / `.aidd/feature-list.md` / `steering/`）との突合のみを材料としている。他 feature の `requirements.md` との相互整合（受け手不在の期待）は横断スコープで検査するため、ここでの `approved` は **「その `requirements.md` 内で完結する検査を材料に承認した」ことのみを意味する**。
 
+
+#### 第 5 回実行（2026-09-24。ZOOM 廃止に伴う差戻し後の再検査）
+
+| # | 回数 | 層 | 対象箇所 | 指摘内容 | 判断 | 理由 |
+|---|---|---|---|---|---|---|
+| 178 | 5 | ① | ファイル全体 ↔ `Templates/specs/_template/requirements.md` | **テンプレート基線が一致していない。** 現行テンプレートは 2026-09-18 の α2 資産移行（コミット `5e1f6d8`）で差し替えられており、その見出し `## 概要（Introduction）` / `## 業務フロー` / `## スコープの境界（Boundary Context）` / `## 対象外` / `## 前提と依存（Dependencies / Assumptions）` / `## 要件（Requirements）` / `### 要件 N: …` / `#### 受け入れ基準（Acceptance Criteria）` / `## 非機能要件（Non-Functional Requirements）` は **本書に 1 つも存在しない**。本書は旧テンプレートの見出し（`## Introduction（概要）` / `## Requirements（要件）` / `### Requirement N:` / `#### Acceptance Criteria（EARS 形式）` ほか）を保持している。セクションの順序も異なる（現行: 対象外 → 前提と依存 → 要件 → 非機能要件／本書: 要件 → 非機能要件 → Out of Scope → Dependencies）。非機能要件表のプレースホルダー名も旧体系（`<NFR_PERFORMANCE_REQUIREMENT>` ほか。現行は `<REQ_NFR_PERFORMANCE>` ほか）。受入基準の記法も旧体系（英語 EARS `The system shall …`。現行テンプレートは日本語表記と語尾「しなければならない」を指定し、義務・禁止の書き分けを求める）。**本件は本回の ZOOM 廃止差戻しで生じたものではなく、全 6 feature の `requirements.md` に等しく該当する。** `format-conformance` 手順 5 は形式の不備を検出した場合 ② に進まないと定めるが、本件はテンプレート基線の差し替えによるもので本書固有の不備ではないため、その事実を明示したうえで ② を実行した（判断の当否は ③ の観点）。 | 対応せず進める | 人間判断（2026-09-24）: 2026-09-18 の α2 資産移行（`5e1f6d8`）で `Templates/specs/_template/requirements.md` が差し替わったことに起因し、**6 feature すべてに等しく該当する**。旧テンプレートのまま進める（③ の判断 / 2026-09-24）。6 feature 全件（`approved` の 4 件を含む）を整形し直す作業量に対して得られるのが書式の統一にとどまるため。**Phase 5 以降の成果物と書式が混在することは承知のうえの選択である。** 現行テンプレートが定める受入基準の `1.1` 形式の ID と「一度付けたら変えない」規約も、旧テンプレートを採る以上は適用しない。**② を実行した判断は妥当と認める**（テンプレート基線の差し替えに起因する形式差で ② を止めると、以後どの feature も意味チェックを受けられなくなるため）。 |
+| 179 | 5 | ① | `## Requirements` / 全 Requirement の `#### Acceptance Criteria（EARS 形式）`、とくに Requirement 1 | **受入基準IDの体系が現行テンプレートと異なり、本回その番号を付け替えている。** 現行テンプレートは受入基準に `1.1` / `1.2` 形式の受け入れ基準ID を付け「`design.md`・`tasks.md` と外部の対応表から参照されるので、**一度付けたら変えない**」と定める。本書は Requirement 内の連番（`1.` `2.` …）を用いており、本回 Requirement 1 の ZOOM 起動の基準（旧 4）を削除して旧 5〜8 を 4〜7 へ付け替えた。現行テンプレートの規約ではこの付け替えは禁止される。なお本書内から旧番号を参照している箇所は無いが、Phase 5 以降の成果物（`.aidd/archive/` へ退避した design を含む）が旧番号を参照している可能性は本スコープでは判定していない。 | 対応せず進める | 人間判断（2026-09-24）: 2026-09-18 の α2 資産移行（`5e1f6d8`）で `Templates/specs/_template/requirements.md` が差し替わったことに起因し、**6 feature すべてに等しく該当する**。旧テンプレートのまま進める（③ の判断 / 2026-09-24）。6 feature 全件（`approved` の 4 件を含む）を整形し直す作業量に対して得られるのが書式の統一にとどまるため。**Phase 5 以降の成果物と書式が混在することは承知のうえの選択である。** 現行テンプレートが定める受入基準の `1.1` 形式の ID と「一度付けたら変えない」規約も、旧テンプレートを採る以上は適用しない。**② を実行した判断は妥当と認める**（テンプレート基線の差し替えに起因する形式差で ② を止めると、以後どの feature も意味チェックを受けられなくなるため）。 |
+| 180 | 5 | ② | Requirement 11（作成組織の入力）受入基準 4 ↔ `## Out of Scope` / `## Boundary Context` の `Adjacent` / `## Dependencies` の `依存` | **本 feature が対象外と宣言している `issue-request` 側のテーブルへの保存を、受入基準が宣言している。** 受入基準 4 は所属①・所属②の保存先を「`TWTGM100` の `Keiyaku_Ringi_Kiansha_Shozoku1` / `Keiyaku_Ringi_Kiansha_Shozoku2`」とする。`TWTGM100` は**発行依頼書情報マスタ**であり、退避済みの `.aidd/archive/2026-09-24-organization-search-zoom/specs-organization-search-zoom/design.md` が既存実装（`WTX_Batch/src/jp/co/kccs/wt/wtg/wtg090/PWTGB090Job.java` の `setTWTGM100IssueRequest`）を根拠にそう記述し、あわせて「保存は `issue-request` の責務であり本フィーチャーは行わない」としている。一方、本書の `## Out of Scope` は「発行依頼書の登録・変更・発番。`issue-request` が持つ」と宣言し、`## Dependencies` の `依存` は `なし`、`Adjacent` の `issue-request` の行は「作成組織の入力について同一の仕様を持つ。feature 間の依存関係ではない」としか述べていない。**物件基本情報側で入力された作成組織がどこに保存されるのかが本書から決まらず、`TWTGM100` が正だとすれば宣言されていない feature 間のデータ依存が生じる。** 未確定事項にも挙がっていない。 | 修正済 | — |
+| 181 | 5 | ② | Requirement 11 受入基準 3 と受入基準 8 ↔ `steering/security.md` の `#### 所有権・エンティティ境界` | **コードマスタの選択肢母集合への所有権境界の適用が、同じ要件の別の受入基準と両立するかが読み取れず、根拠も示せない。** 受入基準 3 は会社名プルダウンの選択肢（`TWTZM040` の `WTG` / `PARAM` / `P26` 行）に「ログインユーザーの会社コードによる絞り込みを適用する」とするが、受入基準 8 は社内ユーザーに対し「会社名のプルダウンを空白の状態で初期表示し、担当者に**選択させる**」とする。絞り込みを適用すると選択肢が自社 1 件に収束しうるため、両者が両立するかが本書から判定できない。また `steering/security.md` の `#### 所有権・エンティティ境界` は「会社コード（`CompanyCD`）を全テーブル共通のキーに含め、ログインユーザーの会社コードで絞り込む」「検証タイミングは**検索・更新の SQL 実行時**」と定めており、**業務データの絞り込み**を対象としている。これをコードマスタの選択肢母集合に適用することは steering にも要求一覧（REQ-049 / REQ-050）にも根拠が無い（**逸脱**。steering 側の記述不足か本書の飛躍かを問う形で出す）。 | 修正済 | — |
+| 182 | 5 | ② | Requirement 11 受入基準 4（境界値） | **境界の許容側が受入基準に無く、「桁」の単位も決まらない。** 受入基準 4 は「いずれも 100 桁を超える入力を入力チェックのエラーとして扱う」と**拒否側のみ**を述べ、**100 桁ちょうどが受け付けられること**の基準が無い。現行テンプレートは「上位の決定が『〜のみ可／〜以外は不可』と定めている場合は、拒否される場合だけでなく、**許可される場合も対にして書く**」と定める。あわせて「桁」がバイト数か文字数かが本書からも未確定事項 ⑭ からも決まらない。保存先の `TWTGM100` の 2 列は `VARCHAR2` であり（`steering/database.md` の `## 型の指針`）、Oracle の `VARCHAR2` は `BYTE` / `CHAR` のいずれの意味にも取れる。所属①②は日本語が入る項目であるため、どちらを採るかで受け付けられる文字数が変わる。 | 修正済 | — |
+| 183 | 5 | ② | Requirement 11 受入基準 5・6・2（異常系） | **判定の前提となるマスタ行が存在しない場合の振る舞いが、受入基準にも未確定事項にも無い。** 受入基準 5 は `TWTZM040` の `WTG` / `PARAM` / `P71` に「`Key3` = ログインユーザーのグループ」の行が**存在する前提**で社内／社外を判定するが、当該行が存在しない場合（グループ未登録・グループ自体が未設定）に社内扱いとするのか、社外扱いとするのか、業務エラーとするのかが決まらない。同様に、受入基準 6 の `CD2` が空の場合、受入基準 2 の `P26` の選択肢が 0 件の場合の振る舞いも決まらない。社外ユーザーは会社名を選択できない（受入基準 6 で非活性）ため、`CD2` が空であれば必須（受入基準 9）を満たす手段が無くなり、保存できない状態になりうる。`steering/api-standards.md` の `## エラーハンドリング（API 契約）` の `### 分類` は入力エラーと業務エラーの経路を分けて定めているが、本要件からはどちらに落ちるかが読み取れない。 | 修正済 | — |
+| 184 | 5 | ② | `## Out of Scope`（ZOOM を作成しない）・Requirement 11 受入基準 1 ↔ `steering/product.md` の `## 開発物の概要・背景` | **steering と本書が両立しない。** `steering/product.md` の `## 開発物の概要・背景` は「物件契約情報の申請状況の検索・一覧、物件基本情報の登録・変更と承認、発行依頼書の登録・変更と発番、契約情報の取込・ダウンロード、**作成組織検索（ZOOM）を WTG に新規機能として追加する**（REQ-011〜REQ-050）」と述べている。本書の `## Out of Scope`（「作成組織を検索する独立した画面（ZOOM）の作成。2026-09-24 の設計変更により作成しない」）および置換後の REQ-048（「作成組織検索（ZOOM）画面は作成しない」）と矛盾する。`steering/product.md` は 2026-09-24T17:30 に `approved` へ遷移しているが、当該の文は ZOOM 廃止に追随していない。なお `steering/architecture.md` の `### プレゼンテーション層` の「ZOOM 画面（別ウインドウ）の呼び出し」と `steering/api-standards.md` の `### ZOOM 画面のメソッド（例外規定）` は**既存 WiNG の ZOOM 17 本に対する既存規約の記述**と読めるため矛盾として扱っていないが、本プロジェクトで新規に作る ZOOM が 0 本になったことを踏まえた整理が必要かは同じ判断の対象になる。**差戻し先候補: Phase 2（人間承認必須）。** | 修正済 | — |
+| 185 | 5 | ② | `## Non-Functional Requirements（非機能要件）` の表 / セキュリティ行 | **Requirement 11 の追加に非機能要件表が追随していない。** 受入基準 11 が定める「社外ユーザーの非活性項目について、画面から送られた値を採用せずサーバ側で決定した値を用いる」は、`steering/security.md` の `### 入り口 — 入力検証`（ブラウザの活性制御は入力補助であり検証の正としない）に直結する本 feature 固有の検証観点である。しかしセキュリティ行の `要件` にも `計測 / 検証方法` にも、作成組織の入力欄・非活性項目の改ざん・コードマスタ由来の値の扱いは現れない（`計測 / 検証方法` は権限・他社データ・登録ファイルの 3 点のみ）。 | 修正済 | — |
+
+> **第 5 回実行の差戻し先候補（提示のみ。戻すかどうかは ③ が決める）**
+> - **Phase 1（`.aidd/requirement-list.md`）**: 第 5 回で新たに検出した候補は無い。本書が引用する要求IDはすべて要求一覧に実在し、指摘 #180〜#183 はいずれも要求文の欠落ではなく本書の記述で解消しうる条件である。ただし `.aidd/requirement-list.md` は現在 `status: review` であり、本回の突合は `approved` でない上流に対して行っている（横断 #197）。
+> - **Phase 2（`steering/`）**: 指摘 #184（`steering/product.md` の `## 開発物の概要・背景` が ZOOM の新規作成を述べており、REQ-048 の置換後の内容および本書と矛盾する）。指摘 #181 は steering 側の記述不足である可能性を含むため、本書を直すか `steering/security.md` を直すかを ③ が切り分ける。
+> - **Phase 3（`.aidd/feature-list.md`）**: 第 5 回で新たに検出した候補は無い。`依存` 列・`対応要求ID`・`### 要求IDの多重割当` と本書のあいだに食い違いは検出していない。ただし指摘 #180 が「`TWTGM100` への保存は `issue-request` 側の責務である」と確定した場合、`依存` 列に `issue-request` を加える必要が生じ、Phase 3 への差戻しになりうる。
+> - **同一フェーズ内（Phase 4）での修正**: 指摘 #179・#180・#182・#183・#185 は当該 `requirements.md` の記述で解消しうる範囲である（`status-protocol.md` §3 は当該フェーズ内での修正を既定とする）。**ただし #180・#182・#183 を直す場合、`specs/issue-request/requirements.md` の Requirement 13 を同じ内容で直さなければ「2 feature の作成組織の入力要件は同一仕様」という前提（`.aidd/feature-list.md` の `### 要求IDの多重割当`）が崩れる。**
+> - **フロー資産（`Templates/`）**: 指摘 #178・#179 はテンプレート基線の差し替え（2026-09-18 の α2 移行）に起因し、Phase 1〜7 のいずれの成果物の不備でもない。戻し先の候補が上表に無いため、**適用範囲（旧テンプレートで作成済みの 6 feature を現行テンプレートへ整形し直すか、本リリースは旧テンプレートのまま進めるか）を ③ が決める事項**として提示する。
+
+> **第 5 回実行で実行しなかった検査**: (a) 知能アセットを活用した独自観点でのチェックは、知能アセットの取り込み方法が未決であるため実行していない。(b) 横断スコープの検査（要求IDの全件突合・`feature-list.md` の網羅・feature 間の受け手不在の期待）は本スコープでは実行しておらず、`### 【横断】` の第 2 回として別に記録した。(c) Phase 5 以降の成果物（`design.md` / 画面モック）が本書の旧受入基準番号を参照しているかどうかは Phase 4 のスコープ外であり判定していない。
+
+> **受入基準の観測可能性についての注記（第 5 回）**: 指摘 #182・#183（および過去回の #34〜#36・#41・#45・#53）は「読み取れないもの」を列挙したものであり、**指摘が 0 件であることを「すべての受入基準が観測可能」の意味にしてはならない**。観測可能性の判定は基準を定義しない限り主観に依存するため、**③ が引き続き見る**。とくに Requirement 11 の受入基準 1〜11 は本回が初回の検査であり、確認の主体（人 / テスト / ログ）と対象が特定できるかを ③ が改めて確認する。
+
+> **feature スコープでの承認の意味（第 5 回）**: 本実行も当該 `requirements.md` 内で完結する検査と、上流成果物（`.aidd/requirement-list.md` / `.aidd/feature-list.md` / `steering/`）との突合のみを材料としている。他 feature の `requirements.md` との相互整合（受け手不在の期待）は横断スコープで検査するため、ここでの `approved` は **「その `requirements.md` 内で完結する検査を材料に承認した」ことのみを意味する**。加えて本回は、上流の `.aidd/requirement-list.md` と `.aidd/feature-list.md` が **`approved` ではなく `review`** の状態で突合している（横断 #197）。
+
+#### 第 6 回実行（2026-09-24。指摘 #178〜#197 に対する修正後の再検査）
+
+| # | 回数 | 層 | 対象箇所 | 指摘内容 | 判断 | 理由 |
+|---|---|---|---|---|---|---|
+| 198 | 6 | ② | `## Dependencies / Assumptions（前提と依存）` の未確定事項 ⑬ と、その直後に本回追加された注記 ↔ Requirement 11 受入基準 1 | **注記が「⑬ に含む」とした論点を、⑬ の本文が扱っていない。** 本回追加された注記は「本フィーチャーが受入基準 11-1 で参照する `TWTGM100` の行をどのキーで特定するかは、上記 ⑬（**物件基本情報と発行依頼書の紐づけ**）の確定結果に従う。未確定事項としては ⑬ に含み、別項目として数えない」とする。しかし ⑬ の本文は「**帳票の出力情報である「発行依頼書」（REQ-023）の元データを、本フィーチャーと `issue-request`（REQ-026）のどちらが保持するか**」であり、物件基本情報と発行依頼書の紐づけおよびそのキーを論点として挙げていない。元データの保持者を決めることと、表示対象の行を特定するキーを決めることは別の問いであるため、**受入基準 11-1 が成立するために必要なキーの確定が、どの未確定事項にも登録されていない**状態になっている。未確定事項の件数（13 件）と番号（①〜⑬）自体に欠番・重複は無い。 | 修正済 | — |
+| 199 | 6 | ② | `## Dependencies / Assumptions` の未確定事項 ⑬ ↔ `## Boundary Context` の `Adjacent`（`issue-request` の行）・Requirement 11 受入基準 1・4 | **同一文書内で記述が両立しない。** ⑬ は「`.aidd/feature-list.md` の `依存` 列は本フィーチャーと `issue-request` のあいだに依存を置いていないため、**本書では `issue-request` への期待を宣言していない**」と述べる。一方、本回書き換えた `Adjacent` は「`issue-request`: 作成組織（会社名・所属①・所属②）の入力を持ち、発行依頼書情報マスタ（`TWTGM100`）へ書き込む側である」と、同 feature が書き込むことを明示的に宣言している。受入基準 11-1（同テーブルの会社名を表示する）・11-4（保存は `issue-request` の責務）も、その宣言が成り立つことを前提にしている。⑬ の当該一文は書き換え前（作成組織を ZOOM 経由で入力していた時点）の記述のまま残っている。 | 修正済 | — |
+| 200 | 6 | ② | `## 業務フロー（任意）` の Mermaid（本回追加された `画面-->>担当者` の行） | **図の上で `TWTGM100` の参照経路が読み取れない。** 本回追加された行は `画面-->>担当者: 作成組織の会社名を TWTGM100 から読み出してラベル表示する（REQ-048）` であり、**DB を表す participant（`WTG as WiNG（WTG / DB）`）を経由しない、画面から担当者への応答矢印**として描かれている。同じ図の他の DB アクセス（ステータス更新・履歴登録）はいずれも `画面->>WTG` で描かれており、本行だけが表現の型が異なる。テンプレートは本セクションの記法を「人とシステムの責務境界が図で追える形にする」と定めており、受入基準 11-1・11-6（`TWTGM100` を参照する SQL に会社コードを含める）が図と対応していない。 | 修正済 | — |
+
+> **第 6 回実行の差戻し先候補（提示のみ。戻すかどうかは ③ が決める）**
+> - **Phase 4（当該 `requirements.md`）**: 指摘 #198・#199・#200 はいずれも本書の記述で解消しうる（未確定事項 ⑬ の本文の書き足し、⑬ の一文の書き換え、Mermaid の 1 行の書き換え）。**上流の不備を疑う必要は無い。**
+> - **Phase 3（`.aidd/feature-list.md`）**: 指摘 #198 に関連して、物件基本情報と発行依頼書の紐づけが「紐づく」に確定した場合は `依存` 列の見直しが必要になりうる。ただし**本回の時点では紐づけの有無が未確定であり、差戻しの要否は判定できない**（横断 #206 も参照）。
+
+> **受入基準の観測可能性についての注記（第 6 回）**: 本回、Requirement 11 の 6 件の受入基準について「何をどう確かめれば満たしたと言えるか」が読み取れないものは検出していない。**ただしこれは「すべての受入基準が観測可能である」ことを意味しない。** 観測可能性の判定は基準を定めない限り主観に依存するため、**③ が引き続き確認する観点である**（② の不検出を承認の根拠にしない）。
+
+> **feature スコープでの承認の意味（第 6 回）**: 本実行も当該 `requirements.md` 内で完結する検査と、上流の `approved` 成果物（`.aidd/requirement-list.md` / `.aidd/feature-list.md` / `steering/` 7 ファイル）との突合のみを材料としている。他 feature の `requirements.md` との相互整合は横断スコープで検査するため、ここでの `approved` は **「その `requirements.md` 内で完結する検査を材料に承認した」ことのみを意味する**。
+
+#### 第 7 回実行（2026-09-24。指摘 #198〜#206 に対する修正、および `### 追加の修正`（#203 の差し戻しと 未確定事項 ⑭ の確定）後の再検査）
+
+| # | 回数 | 層 | 対象箇所 | 指摘内容 | 判断 | 理由 |
+|---|---|---|---|---|---|---|
+| 207 | 7 | ② | `## Non-Functional Requirements（非機能要件）` のセキュリティ行 ↔ Requirement 11 の受入基準 | **受入基準の繰り下げに内部参照が追随していない。** 非機能要件表のセキュリティ行は「発行依頼書情報マスタ（`TWTGM100`）に対する参照専用の扱い（本フィーチャーからの書き込みを行わない — **Requirement 11 の受入基準 4**）」と書いている。`### 追加の修正` で受入基準 11-2（外部結合の条件）が挿入され 6 本 → 7 本になったため、**書き込みを行わないことを定めているのは現在 11-5 であり、11-4 は「作成組織を検索する別ウインドウの画面（ZOOM）を起動しない」である。** 参照先が別の基準を指している。第 6 回の ① の記録は「非機能要件表が指す『Requirement 11 の受入基準 4』は現行の 4 番（参照のみ・書き込まない）を正しく指す」と確認しており、**本件は 2 度目の処理で新たに生じた不整合**である。なお同じ挿入に対し、`Adjacent` と 未確定事項 ⑬ が指す `受入基準 11-2` は正しく追随している。 | 修正済 | — |
+| 208 | 7 | ② | Requirement 11 受入基準 2 ↔ Requirement 1 / `## Dependencies / Assumptions` の `依存` / 未確定事項 | **結合の左辺が本書のどこにも定義されていない。** 受入基準 11-2 は「表示対象の `TWTGM100` の行を、物件申請情報（`TWTGM080`）との外部結合で特定する。結合条件は `TWTGM100.会社コード = TWTGM080.会社コード AND TWTGM100.申請No = TWTGM080.申請No`」と定めるが、**本フィーチャーが登録・変更する物件基本情報が `TWTGM080` の行であること、および物件基本情報が申請No を持つことは、本書のどの受入基準にも書かれていない。** Requirement 1 は格納先のテーブルに一切触れておらず（`issue-request` の受入基準 1-7 に相当する「テーブルを新たに追加する場合」の基準が本書には無い）、未確定事項 ①〜⑬ にも格納先に関する項目は無い。唯一の手がかりである `## Dependencies` の「既存テーブル `TWTGM100` / `TWTGM080`（**いずれも参照**。`TWTGM100` は**参照のみ**）」は、`TWTGM080` が参照のみなのか書き込みも行うのかを決めておらず、両立しない 2 つの読み方が残る。結合条件は ③ が WTG070 機能定義書の転送仕様を根拠に確定させたものであり**規則そのものは本ゲートの検査対象外**だが、その結合を成立させる前提が本書に不在である。 | 対応せず進める | 人間判断（2026-09-24）: 物件基本情報の格納先テーブルは `property-basic-info` の未確定事項 ①（画面・帳票を何本のプログラムに分割するか）および ②（入力項目の一覧・桁・必須）とあわせて基本設計で確定する事項であり、要求一覧・steering のいずれからも決まらない。受入基準で断定しない扱いは `history.phase4_conventions` の `undecided_items` に沿う。**基本設計で `TWTGM080` が本フィーチャーの格納先でないと判明した場合は受入基準 11-2 の再検討が必要**であり、その旨を申し送りとする。 |
+| 209 | 7 | ② | Requirement 11 の受入基準 全 7 件 ↔ Requirement 2 / Requirement 6 受入基準 4 / Requirement 9 受入基準 3 / Requirement 10 受入基準 3 | **本回書き換えた Requirement だけ権限判定への言及が無い。** 本書では、Requirement 6（受入基準 4）・Requirement 9（受入基準 3）・Requirement 10（受入基準 3）がいずれも「Requirement 2 と同じ権限判定を適用する」と明示しているのに対し、Requirement 11 は会社コードによるデータ範囲の絞り込み（11-7）のみで、**機能ID（PGID）に対する権限判定と、権限に応じた画面要素の制御（REQ-016 / Requirement 2 受入基準 2）が当該ラベルに及ぶかどうかが読み取れない。** 作成組織の会社名は契約稟議起案者を示す情報であり、非機能要件表のセキュリティ行が「契約金額・契約先などの契約情報を権限のある利用者にのみ開示する」と定める範囲に含まれるかが決まらない。Requirement 2 受入基準 2 の一般規定で足りるとみなすこともできるため、**不足と断定していない。** | 対応せず進める | 人間判断（2026-09-24）: Requirement 2 の受入基準 2 が権限判定の一般規定を置いており、Requirement 11 は表示のみで固有の権限要件を持たない。ゲート自身も「不足と断定していない」としている。 |
+
+> **第 7 回実行の差戻し先候補（提示のみ。戻すかどうかは ③ が決める）**
+> - **Phase 4（当該 `requirements.md`）**: 指摘 #207・#209 は本書の記述で解消しうる（参照番号の 1 か所の修正、Requirement 11 への権限判定の 1 行の追加または不要理由の明記）。**上流の不備を疑う必要は無い。**
+> - **Phase 4（当該 `requirements.md`）または Phase 3（`.aidd/feature-list.md`）**: 指摘 #208 は、Requirement 1 または未確定事項に「物件基本情報の格納先（既存 `TWTGM080` か新規テーブルか、申請No の持ち方）」を置けば Phase 4 内で閉じる。格納先が既存テーブルではなく新規テーブルであり、かつ `TWTGM080` への書き込みを他 feature に委ねる形になる場合に限り、`依存` 列の見直し（Phase 3）が視野に入る。**本回の時点では格納先が決まっていないため、差戻しの要否は判定できない。**
+> - **横断で検出した事項との関係**: #208 と横断 #212 は「`TWTGM080` 側」「`TWTGM100` 側」で同じ結合の両端を見たものであり、**片方だけを直すと結合の成立条件が揃わない。**
+
+> **受入基準の観測可能性についての注記（第 7 回）**: 本回、Requirement 11 の 7 件の受入基準について「何をどう確かめれば満たしたと言えるか」が読み取れないものは検出していない。**ただしこれは「すべての受入基準が観測可能である」ことを意味しない。** 観測可能性の判定は基準を定義しない限り主観に依存するため、**③ が引き続き確認する観点である。② の不検出を根拠にしないこと。**
+
+> **feature スコープでの承認の意味（第 7 回）**: 本実行も当該 `requirements.md` 内で完結する検査と、上流の `approved` 成果物（`.aidd/requirement-list.md` / `.aidd/feature-list.md` / `steering/` 7 ファイル）との突合のみを材料としている。ここでの `approved` は **「その `requirements.md` 内で完結する検査を材料に承認した」ことのみを意味する。** 他 feature との相互整合は横断スコープが扱う。
+
+#### 第 8 回実行（2026-09-24。`## 追加の改訂（2026-09-24 …）` — 申請No の採番元と物件基本情報の格納先の確定 — に対する差分検査）
+
+| # | 回数 | 層 | 対象箇所 | 指摘内容 | 判断 | 理由 |
+|---|---|---|---|---|---|---|
+| 213 | 8 | ② | `## Boundary Context` の `Adjacent`（`issue-request` の行）/ `## Dependencies / Assumptions` 未確定事項 ⑬ ↔ `.aidd/feature-list.md`（依存の SSoT。2026-09-24 改訂）/ `.aidd/gates/phase-3-feature.md` の `### 追加の改訂（2026-09-24 …）` | **依存の SSoT の改訂に本書の 2 か所が追随していない。** 2026-09-24 に `.aidd/feature-list.md` の `issue-request` 行の `依存` が `issue-request-tutorial` → **`property-basic-info, issue-request-tutorial`** へ改訂され、Phase 3 のゲート記録は「2026-09-24 に『両 feature をまたぐ依存は発生しない』と記していたが、**これは申請No の採番元が未確定だった時点の判断であり、本改訂で取り消す**」と明記している。しかし本書には取り消された側の表現が 2 か所残る。(a) `Adjacent` の `issue-request` 行の末尾「`TWTGM100` は既存 WiNG のテーブル…であり本プロジェクトで新設しないため、**同 feature の完成を待つ必要が無く、feature 間の依存関係ではない**（`.aidd/feature-list.md` の `### 要求IDの多重割当（REQ-048）`）」。根拠として引いている当の `feature-list.md` は、同じ節に「**ただし 2026-09-24 に、両 feature のあいだに依存が 1 本あることが確定した。** テーブルの共有ではなく**申請No の採番元**による依存である」と追記済みである。(b) 未確定事項 ⑬ の「`.aidd/feature-list.md` の `依存` 列は**本フィーチャーと `issue-request` のあいだに依存を置いていない**」は、改訂後の `依存` 列と食い違う。なお `## Dependencies` の `依存` は「`issue-request` は本フィーチャーが採番する申請No に依存する側である（2026-09-24 の改訂）」と正しく更新されており、**同一の事実について本書の中で更新済みの記述と未更新の記述が混在している**。依存の向き（本 feature が他へ依存しないこと）自体は誤っていない。 | 修正済 | — |
+| 214 | 8 | ② | Requirement 12（本回新設）の受入基準 全 5 件 ↔ `specs/issue-request/requirements.md` Requirement 3 受入基準 4 / 未確定事項 ⑮ | **採番の異常系が無く、受入基準 12-3 / 12-4 は確かめる手段が本書から定まらない。** (a) **異常系**: Requirement 12 は 5 件とも正常系で構成され、**採番に失敗した場合の扱いが無い**。同じ採番マスタ（`TWTZM050`）/ `NumberingService` に載せる `issue-request` の Requirement 3 は、受入基準 4 で「If 採番に失敗した場合、then …発行依頼書を確定させず、業務エラー（`ApplicationException` 系）として…」を定めており、**同種の処理で 2 feature の網羅性が非対称**である。申請No は `TWTGM080` の行のキー（受入基準 1-5）であるため、採番に失敗したときに物件基本情報の登録をどう扱うか（確定させないか、別のキーで保存するか）が決まらない。(b) **観測可能性**: 受入基準 12-3 は「再製本または修正稟議が行われたとき」を契機とするが、その判定条件は未確定事項 ⑮ に委ねられているため、**何を起こせばこの基準を確かめられるかが本書から決まらない**。受入基準 12-4 も「発行依頼書登録変更画面へ引き渡す」の引き渡し経路が同じく ⑮ に委ねられており、**引き渡されたことを何で確かめるかが定まらない**（`issue-request` の受入基準 13-5 は「画面から受け取った申請No」とだけ述べ、経路を定めていない）。本フェーズの他の未確定事項と同じ扱いにできるかは ③ の判断に委ねる。 | 修正済 | — |
+| 215 | 8 | ② | Requirement 12 受入基準 2 ↔ `steering/database.md` の `### 業務コード・区分値・採番の設計ルール`（`採番の直列化` の行）/ `## クエリパターン`（排他制御の行） | **steering が採番に課している直列化の規定に、本書が対応していない。** `steering/database.md` は `採番の直列化` として「採番は `SELECT ... FOR UPDATE` で行を固定してから更新する」と定め、`## クエリパターン` の排他制御の行も「採番のように直列化が必要な処理のみ `SELECT ... FOR UPDATE`（`NumberingMapper.selectNumberingForLock`）」と述べている。Requirement 12 の受入基準 2 は「採番マスタ（`TWTZM050`）と `NumberingService` の既存の仕組みに載せ、機能ごとに独自の採番処理を作らない」までを定めるが、**同時実行で同じ申請No を払い出さないことに触れていない**。`issue-request` の Requirement 3 は受入基準 1（仕組みへの相乗り）と受入基準 2（`SELECT ... FOR UPDATE` による直列化）を**分けて**持っており、**同じ steering 規定に対する 2 feature の書き方が非対称**である。直列化は `NumberingService` 側の責務と読むこともできるため、**不足と断定していない。** | 修正済 | — |
+| 216 | 8 | ② | `## 業務フロー（任意）` の Mermaid / その下の `図に載せていない振る舞い` コメント ↔ `In Scope`（本回追加）/ Requirement 12 | **本回 `In Scope` に追加した振る舞いが図にも除外理由にも現れない。** `In Scope` に「**申請No の採番**（新規登録時、および再製本・修正稟議時の新規採番）と、発行依頼書登録変更画面への引き渡し（REQ-015）」が追加され、Requirement 12 として 5 件の受入基準が置かれた。しかし Mermaid には採番も引き渡しも現れず（`画面->>WTG` の矢印は `TWTGM100` の読み出し・ステータス更新・履歴登録のみ）、**`<!-- 図に載せていない振る舞い: … -->` のコメントにも挙がっていない**（同コメントが挙げるのは REQ-021 と REQ-022 のみ）。本書は #200 の修正で「DB アクセスは `画面->>WTG` で表す」表現に揃えた経緯があり、**採番（DB アクセス）と他 feature への引き渡し（責務境界をまたぐ動き）のいずれも、テンプレートが本セクションに求める「人とシステムの責務境界が図で追える形」に該当しうる**。同種の指摘 #211 に対して ③ は「図と受入基準の情報量の差は規約違反ではない」と判断しているため、**規約違反としては挙げていない。** | 修正済 | — |
+| 217 | 8 | ② | Requirement 1 受入基準 5（本回新設）↔ Requirement 12 受入基準 1（本回新設） | **同一の事実が 2 か所で定義され、SSoT が一意でない。** 受入基準 1-5 は「物件基本情報を**物件申請情報マスタ（`TWTGM080`）**に格納する。行を特定するキーは **会社コード + 申請No** とする」と述べ、受入基準 12-1 は「申請No を採番し、**会社コードとあわせて物件申請情報マスタ（`TWTGM080`）の行のキーとする**」と述べる。**「`TWTGM080` の行のキー = 会社コード + 申請No」という同一の事実を、2 つの受入基準が独立に定義している。** 受入基準 11-2 の外部結合条件も同じキーに依存しており、参照者は 3 か所になる。本フェーズはこれまで 3 回（#188 / #207 / 本回の重点）にわたり「片方だけを直した結果の追随漏れ」を検出しており、**この二重定義は同型の不整合が再発する経路**である。振る舞いそのもの（格納先の指定と採番）は異なるため、**重複要件として削除すべきとは述べていない。** どちらを正とし他方を参照に改めるかは ③ の判断に委ねる。 | 修正済 | — |
+
+> **第 8 回実行の差戻し先候補（提示のみ。戻すかどうかは ③ が決める）**
+> - **Phase 4（当該 `requirements.md`）**: 指摘 #213 / #214 / #215 / #216 / #217 はいずれも本書の記述で解消しうる。#213 は `Adjacent` の 1 文と未確定事項 ⑬ の 1 文の書き換え、#215 は受入基準 1 行の追加、#217 は片方を参照に改める編集で足りる。
+> - **Phase 3（`.aidd/feature-list.md`）**: **不要。** #213 は `feature-list.md` 側が既に 2026-09-24 に改訂済みであり、追随していないのは本書の側である。
+> - **Phase 1 / Phase 2**: 本回、要求一覧・steering の側の不備は検出していない（#215 は steering の規定に本書が対応していない件であり、steering の内容に不備があるという指摘ではない）。
+
+> **受入基準の観測可能性についての注記（第 8 回）**: 本回は Requirement 1 の 8 件と Requirement 12 の 5 件について「何をどう確かめれば満たしたと言えるか」を読み取れるかを検査し、**確認の主体と対象が特定できない基準として 受入基準 12-3 / 12-4 を挙げた**（#214）。**指摘がこの 2 件に留まったことを「残りの受入基準はすべて観測可能である」の意味に取ってはならない。** 観測可能性の判定は基準を定義しない限り主観に依存するため、**③ が引き続き見る観点である。**
+
+> **本回の検査から外した前提（③ が確定済みのため）**: 物件基本情報の格納先が `TWTGM080` であること、キーが 会社コード + 申請No であること、申請No を採番するのが `property-basic-info` であること、再製本・修正稟議で新しく採番すること、およびこれらの根拠が WTG070 / WTG080 の機能定義書（本リポジトリ外）であることは、いずれも ③ が 2026-09-24 に確定済みである。**妥当性と、根拠が本リポジトリに存在しないことは本回の指摘に含めていない**（#210 は「対応せず進める」で閉じ済み）。
+
+> **feature スコープでの承認の意味（第 8 回）**: 本実行も当該 `requirements.md` 内で完結する検査と、上流の `approved` 成果物（`.aidd/requirement-list.md` / `.aidd/feature-list.md` / `steering/` 7 ファイル）との突合のみを材料としている。**feature スコープでの `approved` は「その `requirements.md` 内で完結する検査を材料に承認した」ことのみを意味する。** 他 feature との相互整合は横断スコープ（第 5 回）が別に扱う。
+
 ### issue-request-tutorial
 
 | # | 回数 | 層 | 対象箇所 | 指摘内容 | 判断 | 理由 |
@@ -782,6 +1176,91 @@ updated_at: 2026-09-16T14:05:00+09:00
 > **受入基準の観測可能性についての注記（第 2 回）**: 指摘 #94、および第 1 回から条件が変わっていない #84・#85・#86 は「読み取れないもの」を列挙したものであり、**ここに挙がっていない受入基準が観測可能であることを意味しない**。観測可能性の判定は基準を定義しない限り主観に依存するため、**指摘が 0 件であることを「すべての受入基準が観測可能」の意味にしてはならない**。③ 人間レビューが 67 件すべてについて引き続き確認する観点である（ゲートの不検出を根拠にしない）。
 
 > **feature スコープでの承認の意味（第 2 回）**: 本実行は当該 `requirements.md` 内で完結する検査と、上流の `approved` 成果物（`.aidd/requirement-list.md` / `.aidd/feature-list.md` / `steering/` 7 ファイル）との突合のみを材料としている。他 feature の `requirements.md` との相互整合（受け手不在の期待）は横断スコープで検査するため、ここでの `approved` は **「その `requirements.md` 内で完結する検査を材料に承認した」ことのみを意味する**。
+
+
+#### 第 3 回実行（2026-09-24。ZOOM 廃止に伴う差戻し後の再検査）
+
+| # | 回数 | 層 | 対象箇所 | 指摘内容 | 判断 | 理由 |
+|---|---|---|---|---|---|---|
+| 186 | 3 | ① | ファイル全体 ↔ `Templates/specs/_template/requirements.md` | **テンプレート基線が一致していない**（`property-basic-info` 第 5 回 #178 と同一条件）。現行テンプレート（2026-09-18 の α2 資産移行で差し替え）の見出し 9 件が本書に 1 つも存在せず、本書は旧テンプレートの見出し・セクション順・プレースホルダー名・英語 EARS の記法を保持している。**本回の ZOOM 廃止差戻しで生じたものではなく、全 6 feature に等しく該当する。** `format-conformance` 手順 5 の停止規則を適用せず ② を実行した理由は #178 と同じである。 | 対応せず進める | 人間判断（2026-09-24）: 2026-09-18 の α2 資産移行（`5e1f6d8`）で `Templates/specs/_template/requirements.md` が差し替わったことに起因し、**6 feature すべてに等しく該当する**。旧テンプレートのまま進める（③ の判断 / 2026-09-24）。6 feature 全件（`approved` の 4 件を含む）を整形し直す作業量に対して得られるのが書式の統一にとどまるため。**Phase 5 以降の成果物と書式が混在することは承知のうえの選択である。** 現行テンプレートが定める受入基準の `1.1` 形式の ID と「一度付けたら変えない」規約も、旧テンプレートを採る以上は適用しない。 |
+| 187 | 3 | ① | `## Requirements` / 全 Requirement の `#### Acceptance Criteria（EARS 形式）`、とくに Requirement 1 | **受入基準IDの体系が現行テンプレートと異なり、本回その番号を付け替えている**（#179 と同一条件）。現行テンプレートは `1.1` / `1.2` 形式の受け入れ基準ID を「一度付けたら変えない」と定めるが、本書は Requirement 内の連番を用い、本回 Requirement 1 の旧 5（ZOOM 起動）を削除して旧 6〜8 を 5〜7 へ付け替えた。 | 対応せず進める | 人間判断（2026-09-24）: 2026-09-18 の α2 資産移行（`5e1f6d8`）で `Templates/specs/_template/requirements.md` が差し替わったことに起因し、**6 feature すべてに等しく該当する**。旧テンプレートのまま進める（③ の判断 / 2026-09-24）。6 feature 全件（`approved` の 4 件を含む）を整形し直す作業量に対して得られるのが書式の統一にとどまるため。**Phase 5 以降の成果物と書式が混在することは承知のうえの選択である。** 現行テンプレートが定める受入基準の `1.1` 形式の ID と「一度付けたら変えない」規約も、旧テンプレートを採る以上は適用しない。 |
+| 188 | 3 | ② | Requirement 12（チュートリアルの画面への組み込み）受入基準 4 → Requirement 1 の受入基準 | **繰り上げ番号の付け替えに追随していない内部参照が 1 件残っている。** 受入基準 4 は「入力チェックは **Requirement 1 の受入基準 7** に従ってサーバ側で行う」と参照している。本回 Requirement 1 の旧受入基準 5（ZOOM 起動）を削除し旧 6〜8 を 5〜7 へ繰り上げたため、**入力チェックを定める基準は現在 6 番**であり、**現在の 7 番は「発行依頼書を保持するテーブルを、既存の命名規則と共通カラム（`CompanyCD` / `RegisteredPerson` / … / `ExclusiveFG`）の規約に沿って追加する」**（テーブルの命名規約）である。参照が別の基準を指している。なお同じ本書の他の内部参照（Requirement 2 受入基準 7 の「Requirement 1 の受入基準 2・3」「Requirement 9 の受入基準 1」、未確定事項 ⑰ の「受入基準 13-6」、未確定事項 ⑯ の「Requirement 13」）はいずれも現行の番号を正しく指している。 | 修正済 | — |
+| 189 | 3 | ② | Requirement 13（作成組織の入力）受入基準 4 ↔ Requirement 1 の受入基準 7 | **発行依頼書の保持先が新規テーブルなのか既存 `TWTGM100` なのかが本書内で一意に決まらない。** 受入基準 13-4 は所属①・所属②の保存先を「`TWTGM100` の `Keiyaku_Ringi_Kiansha_Shozoku1` / `Keiyaku_Ringi_Kiansha_Shozoku2`、各 100 桁」とする。`TWTGM100` は**既存テーブル**であり（退避済み `.aidd/archive/2026-09-24-organization-search-zoom/specs-organization-search-zoom/design.md` が当該 2 列の実在を既存実装 `WTX_Batch/src/jp/co/kccs/wt/wtg/wtg090/PWTGB090Job.java` の `setTWTGM100IssueRequest` で確認済みと記述し、同 design は `TWTGM100` を「発行依頼書情報マスタ」と呼んでいる）。一方 Requirement 1 の受入基準 7 は「発行依頼書を保持するテーブルを、既存の命名規則と共通カラムの規約に沿って**追加する**」と述べている。新規テーブルを追加するのか、既存 `TWTGM100` を使うのか、両方（新規テーブル＋既存テーブルへの書き込み）なのかが読み取れず、未確定事項にも挙がっていない。**`steering/database.md` の `## 設計思想` は「既存テーブルの定義（カラムの削除・型変更・意味の変更）を行わない」（REQ-052）と定めており、既存 `TWTGM100` への書き込みが既存 WTG 機能に影響しないかの判断材料も本書に無い。** | 修正済 | — |
+| 190 | 3 | ② | Requirement 13 受入基準 3 と受入基準 8 ↔ `steering/security.md` の `#### 所有権・エンティティ境界` | **コードマスタの選択肢母集合への所有権境界の適用が、同じ要件の別の受入基準と両立するかが読み取れず、根拠も示せない**（`property-basic-info` #181 と同一条件。2 feature の当該要件は同一仕様であることが前提のため、両方に同じ条件が現れる）。受入基準 3 の「ログインユーザーの会社コードによる絞り込み」を適用すると、受入基準 8 の「社内ユーザーには空白から選択させる」が成立しなくなりうる。`steering/security.md` の所有権境界は検索・更新の SQL を対象としており、コードマスタの選択肢への適用は steering にも REQ-049 / REQ-050 にも根拠が無い（**逸脱**）。 | 修正済 | — |
+| 191 | 3 | ② | Requirement 13 受入基準 4（境界値） | **境界の許容側が受入基準に無く、「桁」の単位も決まらない**（#182 と同一条件）。「100 桁を超える入力をエラーとして扱う」と拒否側のみを述べ、100 桁ちょうどが受け付けられることの基準が無い。保存先が `VARCHAR2` であるため「桁」がバイト数か文字数かも本書・未確定事項 ⑰ のいずれからも決まらない。 | 修正済 | — |
+| 192 | 3 | ② | Requirement 13 受入基準 5・6・2（異常系） | **判定の前提となるマスタ行が存在しない場合の振る舞いが、受入基準にも未確定事項にも無い**（#183 と同一条件）。`P71` に「`Key3` = ログインユーザーのグループ」の行が無い場合、`CD2` が空の場合、`P26` の選択肢が 0 件の場合のいずれも、社内扱い／社外扱い／業務エラーのどれになるかが決まらない。社外ユーザーは会社名を選択できないため、`CD2` が空であれば受入基準 9 の必須を満たす手段が無くなり保存できない状態になりうる。 | 修正済 | — |
+| 193 | 3 | ② | `## Out of Scope`（ZOOM を作成しない）・Requirement 13 受入基準 1 ↔ `steering/product.md` の `## 開発物の概要・背景` | **steering と本書が両立しない**（#184 と同一条件）。`steering/product.md` は「…作成組織検索（ZOOM）を WTG に新規機能として追加する（REQ-011〜REQ-050）」と述べており、本書の `## Out of Scope`（「作成組織を検索する独立した画面（ZOOM）の実装。2026-09-24 の設計変更により作成しない」）および置換後の REQ-048 と矛盾する。**差戻し先候補: Phase 2（人間承認必須）。** | 修正済 | — |
+| 194 | 3 | ② | `## Non-Functional Requirements（非機能要件）` の表 / セキュリティ行 | **Requirement 13 の追加に非機能要件表が追随していない**（#185 と同一条件）。本書のセキュリティ行は `@FuncID` による権限判定・既存 WTB 方式・会社コードの絞り込み・CSRF・Thymeleaf のエスケープ・MyBatis の `#{...}` に触れるが、受入基準 13-11 が定める「社外ユーザーの非活性項目について画面から送られた値を採用せずサーバ側で決定した値を用いる」（`steering/security.md` の `### 入り口 — 入力検証`）は `要件` にも `計測 / 検証方法` にも現れない。 | 修正済 | — |
+
+> **第 3 回実行の差戻し先候補（提示のみ。戻すかどうかは ③ が決める）**
+> - **Phase 1（`.aidd/requirement-list.md`）**: 第 3 回で新たに検出した候補は無い。第 1 回・第 2 回から残る REQ-035 の割当不一致（Requirement 12 の注記）については ③ が既に「割当を更新しないまま進める」と承知済みである。ただし `.aidd/requirement-list.md` は現在 `status: review` であり、本回の突合は `approved` でない上流に対して行っている（横断 #197）。
+> - **Phase 2（`steering/`）**: 指摘 #193（`steering/product.md` の ZOOM の記述）。指摘 #190 は steering 側の記述不足である可能性を含む。
+> - **Phase 3（`.aidd/feature-list.md`）**: 第 3 回で新たに検出した候補は無い。`依存` 列（`issue-request-tutorial`）・`対応要求ID` 15 件・`### 要求IDの多重割当` と本書のあいだに食い違いは検出していない。
+> - **同一フェーズ内（Phase 4）での修正**: 指摘 #187・#188・#189・#191・#192・#194 は当該 `requirements.md` の記述で解消しうる範囲である。**#191・#192 を直す場合は、`specs/property-basic-info/requirements.md` の Requirement 11 を同じ内容で直さなければ「2 feature の作成組織の入力要件は同一仕様」という前提が崩れる。** 一方 **#189 は本 feature 固有の条件**であり（`property-basic-info` 側では同じ文言が別の条件 #180 を生む）、同一仕様を保ったまま解消できるかを ③ が切り分ける必要がある。
+> - **フロー資産（`Templates/`）**: 指摘 #186・#187 はテンプレート基線の差し替えに起因する（#178・#179 と同じ扱い）。
+
+> **第 3 回実行で実行しなかった検査**: (a) 知能アセットを活用した独自観点でのチェックは、知能アセットの取り込み方法が未決であるため実行していない。(b) 横断スコープの検査は本スコープでは実行しておらず、`### 【横断】` の第 2 回として別に記録した。(c) Phase 5 以降の成果物が本書の旧受入基準番号を参照しているかどうかは Phase 4 のスコープ外であり判定していない。
+
+> **受入基準の観測可能性についての注記（第 3 回）**: 指摘 #191・#192（および第 1 回・第 2 回の該当指摘）は「読み取れないもの」を列挙したものであり、**指摘が 0 件であることを「すべての受入基準が観測可能」の意味にしてはならない**。観測可能性の判定は基準を定義しない限り主観に依存するため、**③ が引き続き見る**。Requirement 13 の受入基準 1〜11 は本回が初回の検査である。
+
+> **feature スコープでの承認の意味（第 3 回）**: 本実行も当該 `requirements.md` 内で完結する検査と、上流成果物との突合のみを材料としている。ここでの `approved` は **「その `requirements.md` 内で完結する検査を材料に承認した」ことのみを意味する**。加えて本回は、上流の `.aidd/requirement-list.md` と `.aidd/feature-list.md` が **`approved` ではなく `review`** の状態で突合している（横断 #197）。
+
+#### 第 4 回実行（2026-09-24。指摘 #178〜#197 に対する修正後の再検査）
+
+| # | 回数 | 層 | 対象箇所 | 指摘内容 | 判断 | 理由 |
+|---|---|---|---|---|---|---|
+| 201 | 4 | ② | Requirement 1 受入基準 7（本回改訂）↔ `## Dependencies / Assumptions` の未確定事項 ② / Requirement 13 受入基準 5 | **受入基準が参照する論点が、参照先の未確定事項に登録されていない。** 受入基準 1-7 は本回「新規テーブルと `TWTGM100` の役割分担は基本設計で確定する（**未確定事項 ②**）」を追記した。しかし未確定事項 ② の本文は「**発行依頼書の入力項目の一覧・桁・必須と、入力チェックの内容**（REQ-026）。あわせて現行の様式・手順の入手元…を確定する（REQ-073）」であり、テーブルの役割分担を論点に含んでいない（② の本文は本回変更されていない）。結果として、**発行依頼書の現在値をどのテーブルが持つか**（新規テーブルか既存 `TWTGM100` か、両方ならどの項目がどちらか）がどの未確定事項にも登録されていない。これに伴い、受入基準 13-5 の「保存する」が `TWTGM100` の既存行の更新なのか新規行の追加なのか、発行依頼書 1 件に対する `TWTGM100` の行がいつ作られるのかも本書から決まらない。 | 修正済 | — |
+| 202 | 4 | ② | Requirement 13 受入基準 5（本回新設）↔ `steering/database.md` の `## 設計思想` | **steering と本書が両立しない。** 受入基準 13-5 は「`TWTGM100` は既存 WiNG のテーブルであり、**列の追加**・型変更・意味の変更を行わない（REQ-052 / `steering/database.md` の設計思想）」とする。しかし `steering/database.md` の `## 設計思想` は「既存テーブルの定義（**カラムの削除**・型変更・意味の変更）を行わない。既存 WTG 機能にデグレードを発生させないため、**必要な項目は新規テーブルまたはカラム追加で表現する**（REQ-052）」と定めており、**カラム追加を禁じていないどころか、必要な項目を表現する手段として明示的に挙げている**。REQ-052 の要求文（既存 WTG 機能に対するデグレードを発生させない）にもカラム追加の禁止は含まれない。したがって「列の追加を行わない」の部分は、本書が引用した 2 つの根拠のいずれからも導けない。 | 修正済 | — |
+| 203 | 4 | ② | Requirement 13 受入基準 13（本回新設）↔ 同 受入基準 6 | **条件が先行する受入基準の下で成立しない。** 受入基準 13-13 は「If ログインユーザーが**社外で**、`P71` に当該グループの**行が存在しない**、または `CD2` が空の場合」を条件とする。しかし受入基準 13-6 は「社内か社外かを、…`P71`（`Key3` = ログインユーザーのグループ）の `CD1` で判定し、`1` を社外として扱う」と定めており、**`P71` に当該グループの行が無ければ社外と判定する手段が無い**。したがって 13-13 の 2 条件のうち「行が存在しない」側は到達しえず、**第 3 回 #192 が指摘した「`P71` に当該グループの行が存在しない場合に社内扱い・社外扱い・業務エラーのいずれとするか」は依然として本書から決まらない**。本回の追加で決まったのは「社外と判定できた利用者の `CD2` が空の場合」だけである。 | 修正済 | — |
+| 204 | 4 | ② | Requirement 13 受入基準 14（本回新設）↔ 同 受入基準 7・9・10 / 未確定事項 ⑰ (a) | **社外ユーザーに適用されるかが決まらない。** 受入基準 13-14 は「`P26` から取得した会社名の選択肢が 0 件の場合、空のプルダウンを表示し、会社名が**未選択であることによる入力チェックのエラー（受入基準 10）**として扱う」とする。これは受入基準 9（社内ユーザーは空白から選択する）の経路では成立するが、社外ユーザーは受入基準 7 により会社名を `CD2` から自動設定され、プルダウンを操作できない。加えて未確定事項 ⑰ (a) は「`CD2` が保持する値が会社コードか会社名か」を未決とし、「会社コードであれば `P26` の `Key3` と突き合わせて会社名を得る」としているため、`CD2` が会社コードであった場合の選択肢 0 件は、社外ユーザーの会社名を決められないことを意味する。その場合に 13-14 の「未選択エラー」を適用するのか、13-13 と同じ扱い（保存せずメッセージIDに対応する文言を表示して管理者への連絡を促す）とするのかが本書から決まらない。 | 修正済 | — |
+| 205 | 4 | ② | `## Dependencies / Assumptions（前提と依存）` の `依存` の末尾の一文 ↔ Requirement 13 の注記・`## Boundary Context` の `Adjacent`・`.aidd/feature-list.md` の `### 要求IDの多重割当（REQ-048）` | **本回確定した方針に追随していない記述が残っている。** `依存` は「`property-basic-info` とは**作成組織の入力仕様を共有する**が、feature 間の依存ではない」と述べる。しかし `.aidd/feature-list.md` の `### 要求IDの多重割当（REQ-048）` は「**2 feature の振る舞いは同一ではなく、入力側と表示側に分かれる**」「2 つの `requirements.md` に同一仕様を要請しない」と定めており、`property-basic-info` は `TWTGM100` の会社名をラベル表示するのみで入力仕様を持たない。同じ本書の Requirement 13 の注記（「作成組織の入力欄を持つのは本フィーチャーだけである」）と `Adjacent`（「入力・保存は本フィーチャーの責務であり、同 feature は参照のみ行う」）は方針どおりに書き換えられており、**`依存` の当該一文だけが書き換え前（2 feature が同一仕様を共有していた時点）の表現のまま残っている**。 | 修正済 | — |
+
+> **第 4 回実行の差戻し先候補（提示のみ。戻すかどうかは ③ が決める）**
+> - **Phase 4（当該 `requirements.md`）**: 指摘 #201・#203・#204・#205 はいずれも本書の記述で解消しうる（未確定事項 ② への論点の追記、受入基準 13-13 の条件の書き直し、13-14 の適用範囲の明示、`依存` の一文の書き換え）。
+> - **Phase 2（`steering/database.md`）または Phase 4**: 指摘 #202 は、(a) 本書の受入基準 13-5 から「列の追加」を外して steering に合わせる、(b) `steering/database.md` の `## 設計思想` を「既存テーブルには列も追加しない」に改める、のいずれでも解消しうる。**(b) を採る場合は Phase 2 への差戻し（人間承認必須）となり、既存テーブルへのカラム追加を前提にしている他の成果物への影響を洗い出す必要がある。** どちらを採るかは ③ の判断である。
+
+> **受入基準の観測可能性についての注記（第 4 回）**: 指摘 #203・#204 は「受入基準の書き方が観測可能か」ではなく、**条件が成立しうるか / 適用範囲が決まるか**を述べたものである。本回、観測可能性そのものが読み取れない受入基準は検出していない。**ただしこれは「すべての受入基準が観測可能である」ことを意味しない。** 判定は基準を定めない限り主観に依存するため、**③ が引き続き確認する観点である**。
+
+> **feature スコープでの承認の意味（第 4 回）**: 本実行も当該 `requirements.md` 内で完結する検査と、上流の `approved` 成果物との突合のみを材料としている。ここでの `approved` は **「その `requirements.md` 内で完結する検査を材料に承認した」ことのみを意味する**。
+
+#### 第 5 回実行（2026-09-24。指摘 #198〜#206 に対する修正、および `### 追加の修正`（#203 の差し戻しと 未確定事項 ⑭ の確定）後の再検査）
+
+| # | 回数 | 層 | 対象箇所 | 指摘内容 | 判断 | 理由 |
+|---|---|---|---|---|---|---|
+| 210 | 5 | ② | Requirement 13 受入基準 6（本回書き改め）↔ `.aidd/requirement-list.md` の REQ-050 / `## 要求の変更履歴` の `合意の根拠` ↔ `specs/property-basic-info/requirements.md` 受入基準 11-1・11-6 | **根拠の出所が本書限りであり、引用文が基準の全文を支えていない。** 受入基準 13-6 は「`CD1` が `1` のときのみ社外として扱い、`1` 以外のとき、**および当該グループの行が存在しないとき**は、いずれも社内として扱う」とし、根拠に「WTG080 画面設計の項目5『文字項目1＝`1`（社外）の場合…非活性、それ以外の場合、空白』」を挙げている。**規則そのものは ③ が 2026-09-24 に確定済みであり、その妥当性は本ゲートの検査対象外である。** 指摘するのは記載のしかたの 3 点である。(a) 併記された引用文は `CD1` が `1` 以外の場合を述べるに留まり、**「行が存在しないとき」を明示していない**。基準の後半の出所が引用文からは追えない。(b) 「WTG080 画面設計」は `.aidd/requirement-list.md`（Phase 1 の `approved` 成果物）にも `steering/` にも現れず、**上流に記録が無い**。同じ 2026-09-24 の確定でも、`property-basic-info` が引用する「WTG070 画面設計の項目5」は `.aidd/requirement-list.md` の `## 要求の変更履歴` の `合意の根拠` に同じ表記で記載されており、**2 feature で根拠の記録先が非対称**である（2 feature が引用する「WTG070 機能定義書の転送仕様」も同様に上流に記録が無い）。(c) `property-basic-info` の受入基準 11-6 が「（**人間判断 / 2026-09-24**。…）」と確定主体・確定日を明示しているのに対し、13-6 は設計書名のみで確定主体を書いていない。 | 対応せず進める | 人間判断（2026-09-24）: WTG070 / WTG080 の設計書は本リポジトリ外の既存資産であり、③ が根拠として提示したものである。要求一覧の `## 要求の変更履歴` に記録があるのは ZOOM 廃止に関わる WTG070 画面設計の項目5 のみで、社内／社外の判定規則（WTG080 画面設計の項目5）と結合条件（WTG070 機能定義書の転送仕様）は本工程で新たに提示されたため記録先が非対称になっている。**これは Phase 1 への差戻しで解消できるが、要求一覧は同日 approved 済みであり、往復上限（各フェーズ 1 回）を使い切っている。** 根拠の実体は 2 feature の受入基準に書かれており追跡は可能なため、記録先の非対称は残したまま進める。 |
+| 211 | 5 | ② | `## 業務フロー（任意）` の Mermaid ↔ Requirement 13 受入基準 5 / 図の下の `図に載せていない振る舞い` コメント | **作成組織の保存が図に現れない。** 本書の Mermaid は作成組織について `担当者->>画面: 作成組織（会社名・所属①②）を入力する（REQ-048・REQ-049・REQ-050）` の 1 本だけを持ち、**受入基準 13-5 が定める `TWTGM100` の 4 列への保存（`画面->>WTG`）が図に無い。** 同図では他の DB アクセス（履歴登録・発番）はいずれも `画面->>WTG` で表現されており、作成組織だけが画面で完結するように読める。`property-basic-info` 側は指摘 #200 の修正で `画面->>WTG` / `WTG-->>画面` の 2 本に揃えられており、**同じ観点の修正が入力側に入っていない**（表示側だけが直された）。なお本書には `<!-- 図に載せていない振る舞い: … -->` のコメントで図から外した振る舞いと理由を書く慣行があるが（サンプル入力・バーコードの論理削除・発番の契機）、作成組織の保存はそこにも挙がっていない。 | 対応せず進める | 人間判断（2026-09-24）: 業務フローの Mermaid は概要を示す図であり、受入基準 13-5 が `TWTGM100` への保存を定めている。図と受入基準の情報量の差は、`property-basic-info` 側（#200）が DB participant を経由する表現に揃えたことで生じた非対称だが、**規約違反ではない**。本回以降の本文修正を増やさない方針（③ / 2026-09-24）により、対応せず進める。 |
+
+> **第 5 回実行の差戻し先候補（提示のみ。戻すかどうかは ③ が決める）**
+> - **Phase 1（`.aidd/requirement-list.md`）または Phase 4（当該 `requirements.md`）**: 指摘 #210 は、(a) 要求一覧の `## 要求の変更履歴` の `合意の根拠` に「WTG080 画面設計の項目5」と「WTG070 機能定義書の転送仕様」を追記して 2 feature の根拠の記録先を揃える（Phase 1・再承認を要する）、(b) 本書の 13-6 に「人間判断 / 2026-09-24」と、引用文が直接は述べていない「行が存在しないとき」の扱いが ③ の確定であることを書き添える（Phase 4 内で閉じる）、のいずれでも解消しうる。**どちらを採るかは ③ の判断である。**
+> - **Phase 4（当該 `requirements.md`）**: 指摘 #211 は本書の Mermaid の 1〜2 行の追加、または `図に載せていない振る舞い` コメントへの理由の追記で解消しうる。**上流の不備を疑う必要は無い。**
+
+> **受入基準の観測可能性についての注記（第 5 回）**: 本回、Requirement 13 の 15 件の受入基準について「何をどう確かめれば満たしたと言えるか」が読み取れないものは検出していない。**ただしこれは「すべての受入基準が観測可能である」ことを意味しない。** 観測可能性の判定は基準を定義しない限り主観に依存するため、**③ が引き続き確認する観点である。② の不検出を根拠にしないこと。**
+
+> **本回の検査から外した前提（③ が確定済みのため）**: 社内／社外の判定規則（`CD1` が `1` のときのみ社外。`1` 以外および行の不在はいずれも社内）、`TWTGM100` と `TWTGM080` の外部結合による紐づけ、両テーブルが既存 WiNG のものであるため feature 間の依存を生まないこと、REQ-048 のみを 2 feature へ多重割当すること、テンプレート基線の不一致。いずれも ③ が判断済みであり、**本ゲートはその妥当性を指摘していない。**
+
+> **feature スコープでの承認の意味（第 5 回）**: 本実行も当該 `requirements.md` 内で完結する検査と、上流の `approved` 成果物との突合のみを材料としている。ここでの `approved` は **「その `requirements.md` 内で完結する検査を材料に承認した」ことのみを意味する。**
+
+#### 第 6 回実行（2026-09-24。`## 追加の改訂（2026-09-24 …）` — 申請No の採番元と物件基本情報の格納先の確定 — に対する差分検査）
+
+| # | 回数 | 層 | 対象箇所 | 指摘内容 | 判断 | 理由 |
+|---|---|---|---|---|---|---|
+| 218 | 6 | ② | Requirement 13 受入基準 5（本回改訂）/ `## Boundary Context` の `In Scope`（本回追記）↔ `steering/security.md` の `#### 所有権・エンティティ境界`（`検証タイミング` の行）・`### 入り口 — 入力検証`・共通ルール 1 ↔ 同書 Requirement 1 受入基準 5 / Requirement 13 受入基準 13 | **保存先の行を特定する値の出所が、steering の所有権境界の規定および本書の他の受入基準と両立しない。** 本回、受入基準 13-5 に「**保存先の行は、画面から受け取った申請No と会社コードで特定する**」が、`In Scope` に「保存先の行は `property-basic-info` から**引き渡された**申請No と会社コードで特定する」が追加された。`steering/security.md` の `#### 所有権・エンティティ境界` は 検証タイミング を「検索・更新の SQL 実行時（`WHERE` 条件に会社コードを含める）。**画面からの受け取り値に依存しない**」と定めており、同ファイルの共通ルール 1 は「画面での制御だけを根拠にサーバ側の検証を省略しない（画面は補助、サーバが正）」、`### 入り口 — 入力検証` はブラウザ（画面）を「入力補助と即時の気づき。**検証の正とはしない**」と定める。指摘は 3 点である。(a) **会社コードの出所**: 「画面から受け取った申請No と会社コード」は、会社コードも画面由来と読める書き方であり、`検証タイミング` の「画面からの受け取り値に依存しない」と両立しない。同書の受入基準 1-5 は「発行依頼書の検索・更新の SQL の `WHERE` 条件に、**ログインユーザーの**会社コードを必ず含める」と定めており、**同じ書き込みについて 2 つの受入基準が異なる出所を指している。** (b) **申請No の検証**: 申請No は `TWTGM100` の行を特定するキーであるにもかかわらず、**画面から受け取った申請No が当該利用者の物件申請のものであることをサーバ側で検証する受入基準が無い**。引き渡し経路は `property-basic-info` の未確定事項 ⑮ で「画面遷移のパラメータか、別の手段か」が未確定であり、画面遷移のパラメータであれば改変可能な経路になる。(c) **本書内の非対称**: 受入基準 13-13 は「社外ユーザーの会社名・所属①②について、画面から送られた値を採用せずサーバ側で決定した値を用いる」と定め、非機能要件表のセキュリティ行も同じ趣旨を掲げているのに対し、**行のキーである申請No だけが画面由来の値のまま検証されない。** 値の中身より行の特定のほうが影響が大きい（他の申請の行へ書き込みうる）。 | 修正済 | — |
+| 219 | 6 | ② | `## Dependencies / Assumptions` 未確定事項 ⑬ / 同 ⑩ ↔ `.aidd/feature-list.md`（依存の SSoT。2026-09-24 改訂）/ `.aidd/gates/phase-3-feature.md` の `### 追加の改訂（2026-09-24 …）` | **依存の SSoT の改訂に未確定事項 2 件が追随していない。** 2026-09-24 に `.aidd/feature-list.md` の本 feature の `依存` へ `property-basic-info` が追加された。本書の `## Dependencies` の `依存` と `## Introduction` は改訂を正しく引用しているが、未確定事項の側に改訂前の表現が残る。(a) **⑬**: 「両テーブルとも既存 WiNG のテーブルであるため、この紐づきは feature 間の依存を生まず、`.aidd/feature-list.md` の `依存` 列の変更（Phase 3 差戻し）は**不要である**（人間判断 / 2026-09-24）」は、Phase 3 のゲート記録が「2026-09-24 の『両 feature をまたぐ依存は発生しない』を**本改訂で取り消す**」としたことと食い違う。同じ ⑬ の後段「**『紐づく』に確定した場合**は、`依存` 列に `property-basic-info` を加える必要が生じる。その変更は Phase 3 への差戻しとして扱う」も、**条件が既に成立し変更も実施済み**であるため、未来形の条件文として残す意味を失っている。(b) **⑩**: 「『`property-basic-info` の承認フローと同一のもの』に確定した場合は、`依存` 列に `property-basic-info` を加える必要が生じる。その変更は Phase 3 への差戻しとして扱う（⑬ と同じ扱い）」も、**`依存` 列には既に `property-basic-info` が入っている**ため、確定前から成立している記述になっている。⑩ が未確定として残すべき論点（承認フローの定義が同一か独立か）は有効だが、**それに付随する `依存` 列の帰結の記述だけが古い。** | 修正済 | — |
+| 220 | 6 | ② | `## Boundary Context` の `Adjacent`（**2 本目**の `property-basic-info` の行）↔ 同 `Adjacent`（1 本目の `property-basic-info` の行）/ Requirement 13 受入基準 5・6 / 未確定事項 ⑬ | **同一の隣接 feature について 2 つの行があり、後者が本書の確定事項と矛盾する。** `Adjacent` には `property-basic-info` の箇条書きが 2 本ある。1 本目は本回「**申請No を採番し、発行依頼書登録変更画面へ引き渡す側である**…本フィーチャーは受け取った申請No で `TWTGM100` の行を特定する（受入基準 13-5）」と書き改められた。しかし**書き改められていない 2 本目**は「契約稟議の側で物件基本情報を管理する。**発行依頼書が物件基本情報と紐づくかどうかは本書では確定していない（未確定事項 ⑬）**」のままである。参照先の ⑬ 自身が「**紐づきの有無とキーは 2026-09-24 に確定した**: …**会社コード + 申請No で外部結合**する」と述べており、受入基準 13-5 も引き渡された申請No で行を特定すると定めている。**同じ `Adjacent` の中で、紐づきを前提とする宣言と、紐づきが未確定とする宣言が併存している。** 隣接 feature ごとに 1 行とする書き方に戻すか、2 本目の当該文を削除するかは ③ の判断に委ねる。 | 修正済 | — |
+
+> **第 6 回実行の差戻し先候補（提示のみ。戻すかどうかは ③ が決める）**
+> - **Phase 4（当該 `requirements.md`）**: 指摘 #218 / #219 / #220 はいずれも本書の記述で解消しうる。#218 は受入基準 13-5 の「会社コード」の出所の明示（ログインユーザーの会社コードであること）と、画面から受け取った申請No に対するサーバ側の妥当性検証の受入基準の追加。#219 / #220 は未確定事項 ⑬ / ⑩ と `Adjacent` の各 1 文の書き換え。
+> - **Phase 2（`steering/`）**: **不要。** #218 は steering の規定に本書が合っていない件であり、steering の内容に不備があるという指摘ではない。
+> - **Phase 3（`.aidd/feature-list.md`）**: **不要。** #219 は `feature-list.md` 側が既に改訂済みであり、追随していないのは本書の側である。
+> - **横断で検出した事項との関係**: #218 は `TWTGM100` の行の**特定**、横断 #221 は同じ行の**生成**を見たものであり、いずれも「行のキーを誰がどう決めるか」の同じ論点の別面である。片方だけを直すと整合しない。
+
+> **受入基準の観測可能性についての注記（第 6 回）**: 本回は Requirement 13 の 16 件について「何をどう確かめれば満たしたと言えるか」を読み取れるかを検査した。**確認の主体と対象が特定できない受入基準は検出していない**（新設した 13-6 は「新しい申請No で `TWTGM100` の行を作り直す」であり、行の有無と申請No の値で確かめられる。契機が未確定である点は ⑰ (d) に登録済み）。**指摘 0 件を「すべての受入基準が観測可能である」の意味に取ってはならない。** 観測可能性の判定は基準を定義しない限り主観に依存するため、**③ が引き続き見る観点である。** なお #218 は観測可能性ではなく steering 適合として挙げている。
+
+> **受入基準の網羅性についての注記（第 6 回）**: 本回新設した 13-6（再製本・修正稟議での行の作り直し）について、**異常系（作り直しの対象行が存在しない場合、作り直しの途中で失敗した場合の旧行の扱い）は定めていない**が、作り直しの契機自体が未確定事項 ⑰ (d) に登録されており、契機が決まらないうちは異常系を書き分けられない。したがって**本回は指摘にせず ③ へ委ねる**（⑰ (d) の確定時に併せて確認する）。
+
+> **本回の検査から外した前提（③ が確定済みのため）**: 申請No の採番元が `property-basic-info` であること、`issue-request` が画面から受け取った申請No で `TWTGM100` に登録すること、再製本・修正稟議で行を作り直すこと、およびこれらの根拠が WTG070 / WTG080 の機能定義書（本リポジトリ外）であることは、いずれも ③ が 2026-09-24 に確定済みである。**妥当性と、根拠が本リポジトリに存在しないことは本回の指摘に含めていない**（#210 は「対応せず進める」で閉じ済み）。
+
+> **feature スコープでの承認の意味（第 6 回）**: 本実行も当該 `requirements.md` 内で完結する検査と、上流の `approved` 成果物との突合のみを材料としている。**feature スコープでの `approved` は「その `requirements.md` 内で完結する検査を材料に承認した」ことのみを意味する。**
 
 ### contract-application-status
 
@@ -963,6 +1442,73 @@ updated_at: 2026-09-16T14:05:00+09:00
 | 176 | 1 | ② | 全 7 feature の `## Dependencies / Assumptions` 未確定事項 ① と各 Requirement 1 の受入基準 1 / `.aidd/feature-list.md` の `### 共通基盤を feature にしない基準` | **画面ID・PGID の採番（REQ-051）が 7 feature すべてに個別の未確定事項として置かれており、同一の採番空間に対する一意性を担保する主体がどの成果物にも宣言されていない。** 7 本の未確定事項 ① はいずれも「画面ID・PGID の採番の具体値と、画面（・帳票・バッチ）を何本のプログラムに分割するかは基本設計で確定する（REQ-010 / REQ-051）」という同じ形であり、各 Requirement 1 の受入基準 1 も「既存の体系（`GWTG` + 3 桁 / `PWTGO` + 3 桁）に従って採番する。具体値は基本設計で確定する」と feature ごとに個別に採番する形になっている。しかし `GWTGxxx` / `PWTGOxxx` / `PWTGBxxx` は **7 feature が共有する 1 つの番号空間**であり、feature ごとに独立に確定させると番号の衝突・欠番が起きうる。`.aidd/feature-list.md` の `### 共通基盤を feature にしない基準` が「採番（`NumberingService`）」として feature にしないと述べているのは**業務データの採番**であり、画面ID・PGID の採番体系には触れていない。**7 feature をまたいで採番を突き合わせる工程がどの成果物にも置かれていない。** | 対応せず進める | 画面ID・PGID の採番は REQ-051 が既存体系に従うことを定めており、7 feature 分をまとめて払い出すのは基本設計の作業である。requirements の側で一意性を担保する主体を定める性質の事項ではない。**基本設計で 7 feature 分の採番を一括で行い、既存の採番と重複しないことを確認すること**を申し送りとする（記入: 人間 Junichi Noumi / 2026-09-16） |
 | 177 | 1 | ② | `specs/issue-request/requirements.md` 未確定事項 ⑯ / `specs/contract-application-status/requirements.md` 同 ⑤ / `specs/contract-info-import/requirements.md` 同 ⑧ / `specs/contract-info-download/requirements.md` 同 ④ と、`specs/property-basic-info/requirements.md` / `specs/organization-search-zoom/requirements.md` / `specs/issue-request-tutorial/requirements.md` の `## Out of Scope` | **REQ-046（新規機能の権限制御を既存 WTB と同様の方式に合わせる）の扱いが 7 feature で二分している。** 4 feature（`issue-request` ⑯ / `contract-application-status` ⑤ / `contract-info-import` ⑧ / `contract-info-download` ④）は「要求一覧は方式を既存 WTB に合わせるとだけ述べ、**steering も同じ表現に留まっている**ため、既存 WTB の実装を調査して確定する」として**未確定事項に置いている**。残る 3 feature（`property-basic-info` / `organization-search-zoom` / `issue-request-tutorial`）は「ベンダー／施工会社に対する権限制御方式そのものの定義は対象外。**方式の正は `steering/security.md` であり、本フィーチャーはそれに従う**」と `Out of Scope` に書き、未確定事項に置いていない。しかし `steering/security.md` は 4 箇所（`## 基本方針`、`## 機密データ`、`## 認証・認可` のモデルとチェック層の表）で「既存 WTB と同様の方式とする」と述べるのみで**実体を持たない**ため、後者の 3 feature は**実体の無い記述に準拠すると宣言している**ことになる。とくに `property-basic-info` は REQ-016（権限による画面制御）を持ち未確定事項 ③ で「権限（メニューID × 機能ID）と制御する画面要素の対応」を挙げているが、REQ-046 のベンダー／施工会社に対するデータ範囲の制御には触れていない（同じ構造の `issue-request` は REQ-027 に対して ③ と ⑯ の両方を置いている）。**同一の制約に対する未解決の扱いが feature 間でそろっていない。** 上流の `steering/security.md` に方式の実体が無いことが根の原因である（**差戻し先候補: Phase 2**、人間承認必須。基本設計での調査に委ねる場合は戻さない）。 | 対応せず進める | **Phase 2 へは差し戻さない**（#64・#74・#87・#101・#120・#133 と同じ判断を維持する）。REQ-046 は `制約` 分類で feature 割当の分母外であり、方式の正は `steering/security.md` にある。実体が無いことは 4 feature が未確定事項として明示しており、残る 3 feature（zoom・tutorial・property）は REQ-046 に対応する受入基準の必要性が低い。**基本設計で既存 WTB の実装を調査して実体を確定させ、7 feature に同じ方式を適用すること**を申し送りとする（記入: 人間 Junichi Noumi / 2026-09-16） |
 
+#### 第 2 回実行（2026-09-24。ZOOM 廃止に伴う差戻し後の再検査。対象 6 feature）
+
+| # | 回数 | 層 | 対象 feature | 指摘内容 | 判断 | 理由 |
+|---|---|---|---|---|---|---|
+| 195 | 2 | ② | `specs/property-basic-info/requirements.md` Requirement 11 受入基準 4 ↔ `specs/issue-request/requirements.md` の `## Boundary Context` / `In Scope`・`.aidd/feature-list.md` の `依存` 列 | **受け手不在の期待。** `property-basic-info` の Requirement 11 受入基準 4 は、所属①・所属②の保存先を `TWTGM100`（発行依頼書情報マスタ。`issue-request` 側が扱う対象）と宣言している。しかし `issue-request` の `In Scope` に「`property-basic-info` が入力した作成組織を保存する」責務は無く（`In Scope` が挙げるのは発行依頼書自身の登録・変更・発番・ステータス・履歴・バーコード・チュートリアル組み込み・作成組織の入力欄の提供）、`property-basic-info` 側の `Adjacent` にも当該の期待が宣言されていない。`.aidd/feature-list.md` の `依存` 列は両 feature のあいだに依存を置かず、`## 優先度の決定方針` の `**2026-09-24 の改訂**` は「**両 feature をまたぐ依存は発生しない**（同一仕様を 2 画面が個別に持つ）」と明記している。**この 3 つは同時には成り立たない。** 同一の受入基準文が 2 feature に置かれているため、`property-basic-info` 側では「他 feature のテーブルへの保存」（feature スコープ #180）、`issue-request` 側では「新規テーブルか既存テーブルか」（feature スコープ #189）と、**同じ文言が feature ごとに別の未解決を生んでいる**。**差戻し先候補: Phase 3（`.aidd/feature-list.md` の `依存` 列）または Phase 4（2 feature の記述）。どちらで解くかは ③ が決める。** | 修正済 | — |
+| 196 | 2 | ② | `specs/issue-request/requirements.md` 未確定事項 ⑯ ↔ `specs/property-basic-info/requirements.md` の `## Dependencies / Assumptions` 未確定事項 | **「2 feature の作成組織の入力要件は同一仕様」という前提に対し、その仕様が依存する未確定の論点が片側にしか立っていない。** `issue-request` の未確定事項 ⑯ は「『既存 WTB と同様の権限制御方式』の実体」に加え、本回の改訂で「**あわせて、本書が用いるコードマスタ `P71` の `CD1`（`1` = 社外）による社内／社外の判定が、この方式と同じものかを確認する**（REQ-050 / Requirement 13）」を含めている。一方 `property-basic-info` は同じ `P71` / `CD1` による社内／社外の判定を Requirement 11 受入基準 5 で用いているにもかかわらず、対応する未確定事項を持たない（同 feature には REQ-046 の方式の実体に関する未確定事項自体が無く、`## Out of Scope` で「方式の正は `steering/security.md`」と述べるに留まる。これは第 1 回 #177 で既に指摘され ③ が「対応せず進める」と判断した構図だが、**本回の改訂で `property-basic-info` 側にも `P71` による社内／社外判定が入ったため、条件が変わっている**）。基本設計で ⑯ を確定させた結果が `property-basic-info` 側に反映される経路が、どちらの `requirements.md` にも宣言されていない。 | 修正済 | — |
+| 197 | 2 | ② | `.aidd/requirement-list.md`（`status: review`）/ `.aidd/feature-list.md`（`status: review`）↔ 本回の feature スコープ 2 件・横断スコープ 1 件のすべての突合 | **本回のすべての突合は、`approved` でない上流に対して行っている。** `.claude/skills/aidd-flow/references/paths.md` §6 は「**`status: approved` でないドキュメントを下流フェーズの入力にしない**」と定め、`status-protocol.md` §2 の絶対禁止も同じことを述べている。`.aidd/requirement-list.md`（Phase 1）と `.aidd/feature-list.md`（Phase 3）はいずれも 2026-09-24 の ZOOM 廃止に伴い `review` へ引き下げられており、同日中に Phase 1 / 3 / 4 のゲートを各 1 回実行する計画（`.aidd/phase-progress.json` の `current.next_action`）の途中である。**本回の要求ID 突合・多重割当の扱い・`依存` 列との整合の結果は、Phase 1 / 3 の再承認で上流が変わればすべて再確認が必要になる。** これは 2 ファイルの不備の指摘ではなく、**③ が Phase 4 の承認順序を決めるための条件**として記録する。 | 対応せず進める | 人間判断（2026-09-24）: Phase 3 #24 と同じ理由。ZOOM 廃止は Phase 1 / 3 / 4 に同時に及ぶため、上流を先に approved にしてから下流を改訂する順序は構造上とれない。**承認の順序を Phase 1 → Phase 3 → Phase 4 とすることで解消する**。3 フェーズのゲートはいずれも同日に実行済みである。 |
+
+> **第 2 回実行の差戻し先候補（提示のみ。戻すかどうかは ③ が決める）**
+> - **Phase 3（`.aidd/feature-list.md`）**: 指摘 #195。`property-basic-info` が `TWTGM100`（`issue-request` 側のテーブル）に保存するのであれば、`依存` 列と `## 優先度の決定方針` の「両 feature をまたぐ依存は発生しない」の記述を見直す必要がある。保存先が `property-basic-info` 側の別テーブルであるなら Phase 4 内の修正で足りる。
+> - **Phase 4（2 feature の `requirements.md`）**: 指摘 #195・#196 はいずれも 2 feature の記述で解消しうる。ただし **2 feature の `作成組織の入力` 要件は同一仕様であることが前提**（`.aidd/feature-list.md` の `### 要求IDの多重割当`）であるため、**片方だけを直してはならない**。
+> - **Phase 1 / Phase 3（上流の `status`）**: 指摘 #197。上流 2 ファイルの再承認と Phase 4 の承認のどちらを先にするかを ③ が決める。
+> - **横断で新たに検出した要求IDの未割当・feature の欠落**: 無し（分類 `機能` 38 件はすべて割当済み、6 feature すべてに `requirements.md` が存在）。
+
+> **横断スコープにおける status の扱い**: 本実行は **`status` を一切遷移させていない**（横断スコープは承認対象の文書を持たないため）。検査対象 6 本のうち `property-basic-info` / `issue-request` は本実行の開始時点で既に `review`、残る 4 本は `approved` のままである。**指摘 #195・#196 を受けて `approved` の 4 本に影響があるかどうか、および `approved` を引き下げるかどうかは ③ が判断する**（本回の指摘はいずれも変更した 2 feature に閉じており、4 本の記述を直接の対象としていない）。引き下げが決まった場合、ゲートは操作を代行するのみであり、自ら差戻しを決めてはならない。
+
+> **横断スコープで検出できないこと**: 本実行は 6 本の `requirements.md` と上流成果物（`.aidd/requirement-list.md` / `.aidd/feature-list.md` / `steering/` 7 ファイル）のみを材料としている。要求一覧に載っていない要求（RFP からの抽出漏れ。REQ-048〜REQ-050 の置換内容が RFP §4-6 と異なることを含む）は Phase 1 の検査範囲であり、本実行では検出できない。また、廃止した `organization-search-zoom` を参照している Phase 5 以降の成果物（退避済みの `design.md` / `.aidd/wireframe/`）の整合は Phase 5 のスコープであり、本実行では扱っていない。
+
+#### 第 3 回実行（2026-09-24。指摘 #178〜#197 に対する修正後の再検査。対象 6 feature）
+
+| # | 回数 | 層 | 対象 feature | 指摘内容 | 判断 | 理由 |
+|---|---|---|---|---|---|---|
+| 206 | 3 | ② | `specs/property-basic-info/requirements.md` Requirement 11 受入基準 1・未確定事項 ⑬ ↔ `specs/issue-request/requirements.md` の `## Boundary Context` / `In Scope`・未確定事項 ⑬ | **受け手不在の期待。** `property-basic-info` の受入基準 11-1 は、物件基本情報の画面に `TWTGM100` の当該行の契約稟議起案者_会社名を表示することを求めており、**どの物件基本情報がどの `TWTGM100` の行に対応するか**を前提としている。しかし `issue-request` の `In Scope` に「発行依頼書を物件基本情報と紐づけて保持する」責務は無く（`In Scope` が挙げるのは発行依頼書自身の登録・変更・発番・ステータス・履歴・バーコード・チュートリアルの組み込み・作成組織の入力と `TWTGM100` への保存）、同 feature の未確定事項 ⑬ は「発行依頼書が `property-basic-info` の物件基本情報と紐づくかどうか」自体を未確定としている。**紐づけの有無が確定するまで、受入基準 11-1 は受け手のいない期待である。** あわせて、同じ確定事項に対する帰結の書き方が 2 feature で異なる: `issue-request` の ⑬ は「『紐づく』に確定した場合は `.aidd/feature-list.md` の `依存` 列に `property-basic-info` を加える必要が生じ、その変更は Phase 3 への差戻しとして扱う」と宣言するが、`property-basic-info` 側には当該帰結の記載が無く、キーの確定先として挙げた ⑬ の本文がそもそも紐づけを論点にしていない（feature スコープ #198）。 | 修正済 | — |
+
+> **第 3 回実行の差戻し先候補（提示のみ。戻すかどうかは ③ が決める）**
+> - **Phase 4（2 feature の `requirements.md`）**: 指摘 #206 は 2 feature の記述で解消しうる（`issue-request` の `In Scope` または未確定事項に紐づけの所在を置く／`property-basic-info` の未確定事項 ⑬ にキーと帰結を明記する）。**いずれも `approved` ではなく `review` の文書であるため、引き下げは不要である。**
+> - **Phase 3（`.aidd/feature-list.md`）**: 紐づけが「紐づく」に確定した場合に限り、`依存` 列の見直しが必要になりうる。**本回の時点では確定していないため、差戻しの要否は判定できない。**
+> - **横断で新たに検出した要求IDの未割当・feature の欠落**: 無し（分類 `機能` 38 件はすべて割当済み、6 feature すべてに `requirements.md` が存在）。
+> - **既に `approved` の 4 feature の不備**: 無し（`issue-request-tutorial` / `contract-application-status` / `contract-info-import` / `contract-info-download` に本回の変更に起因する不整合・廃止 feature への参照は検出していない）。**したがって本回、`approved` の引き下げを要する指摘は出していない。**
+
+> **横断スコープにおける status の扱い**: 本実行は **`status` を一切遷移させていない**（横断スコープは承認対象の文書を持たないため）。`approved` の 4 feature の引き下げが必要かは ③ の判断である。
+
+> **横断スコープで検出できないこと**: 本実行は 6 本の `requirements.md` と上流成果物（`.aidd/requirement-list.md` / `.aidd/feature-list.md` / `steering/` 7 ファイル）の記述のみを材料としている。既存 WiNG の実装（`TWTGM100` の実カラム構成・`P71` の `CD2` の実値など）を参照して裏を取ってはいない。
+
+#### 第 4 回実行（2026-09-24。指摘 #198〜#206 に対する修正、および `### 追加の修正`（#203 の差し戻しと 未確定事項 ⑭ の確定）後の再検査。対象 6 feature）
+
+| # | 回数 | 層 | 対象 feature | 指摘内容 | 判断 | 理由 |
+|---|---|---|---|---|---|---|
+| 212 | 4 | ② | `specs/property-basic-info/requirements.md` 受入基準 11-2 / 未確定事項 ⑬ ↔ `specs/issue-request/requirements.md` `## Boundary Context` の `In Scope` / 受入基準 13-5 / 未確定事項 ② | **受け手不在の期待。結合キーを誰が設定するかが、いずれの feature にも無い。** `property-basic-info` の受入基準 11-2 は、`TWTGM100.会社コード` と `TWTGM100.申請No` が `TWTGM080` の当該行と一致することを前提に外部結合し、表示対象の行を特定する。しかし **`TWTGM100` の行の `申請No`（および会社コード）を、誰がどの契機で設定するのかは 6 本の `requirements.md` のどこにも書かれていない。** `issue-request` の受入基準 13-5 が定める保存先は作成組織の 4 列（`Keiyaku_Ringi_Kiansha_Kaisha_Cd` / `Kaisha_Name` / `Shozoku1` / `Shozoku2`）だけであり、同 feature の `In Scope` にも「発行依頼書を物件基本情報と紐づけて保持する」責務は無い。さらに同 feature の未確定事項 ② は「**受入基準 13-5 の『保存』が `TWTGM100` の既存行の更新か新規行の追加か、両者を結ぶキー**」を未確定としており、新規行の追加であれば結合キーの設定主体が必要になる。**すなわち、`property-basic-info` 側は未確定事項 ⑬ で「表示対象の行の特定方法も受入基準 11-2 で確定している」と確定扱いにしているのに対し、`issue-request` 側はその行の作られ方を未確定のまま残しており、同じ結合の両端で確定・未確定が非対称である。** 外部結合であるため行が得られなくても 11-6 により空欄表示に落ちる（画面は壊れない）が、その状態では受入基準 11-1 の「会社名を表示する」が常に空欄でも満たされてしまい、**11-1 を満たしたかどうかを確かめる手段が無い**。なお `TWTGM100` / `TWTGM080` がともに既存 WiNG のテーブルであり feature 間の依存を生まないという ③ の判断（2026-09-24）は本指摘の対象外であり、**依存の有無ではなく責務の所在が決まっていないことを述べている。** | 対応せず進める | 人間判断（2026-09-24）: `TWTGM100` の申請No を誰がどの契機で設定するかは、`issue-request` の未確定事項 ②（新規テーブルと `TWTGM100` の役割分担。13-5 の「保存」が既存行の更新か新規行の追加か、両者を結ぶキー）で基本設計の確定対象としている。**外部結合であるため画面は壊れない**（行が得られない場合は空欄表示 — 受入基準 11-6）。ゲートが指摘する「常に空欄でも 11-1 を満たしてしまう」点は妥当であり、**基本設計で申請No の設定契機を確定させたうえで、`property-basic-info` 側の検証方法を定めること**を申し送りとする。#208 と同じ結合の両端であり、両方とも基本設計で同時に解く。 |
+
+> **第 4 回実行の差戻し先候補（提示のみ。戻すかどうかは ③ が決める）**
+> - **Phase 4（2 feature の `requirements.md`）**: 指摘 #212 は 2 feature の記述で解消しうる。`issue-request` 側に「`TWTGM100` の行を作る／更新する際の会社コード + 申請No の設定」を受入基準または未確定事項として置くか、`property-basic-info` 側の 11-2 に「当該行の作成は本フィーチャーの対象外であり、`issue-request` または既存 WiNG のいずれが設定するかは基本設計で確定する」と明記するかのいずれかである。**片方だけを直すと結合の両端が揃わない**ため、feature スコープの指摘 #208 とあわせて扱う必要がある。
+> - **Phase 3（`.aidd/feature-list.md`）**: `TWTGM100` の行の作成責務が `issue-request` にあると確定した場合でも、③ は 2026-09-24 に「既存テーブルの共有は feature 間の依存を生まない」と判断済みであり、**その判断が覆らない限り `依存` 列の見直しは不要である。** 本回、`依存` 列の不備は検出していない。
+> - **横断で新たに検出した要求IDの未割当・feature の欠落**: 無し（分類 `機能` 38 件はすべて割当済み、6 feature すべてに `requirements.md` が存在）。
+> - **既に `approved` の 4 feature の不備**: 無し（`issue-request-tutorial` / `contract-application-status` / `contract-info-import` / `contract-info-download` に、本回の変更に起因する不整合・廃止 feature への参照・繰り上げ／繰り下げの影響を受ける参照は検出していない）。**したがって本回、`approved` の引き下げを要する指摘は出していない。**
+
+> **横断スコープにおける status の扱い**: 本実行は **`status` を一切遷移させていない**（横断スコープは承認対象の文書を持たないため）。`approved` の 4 feature の引き下げが必要かは ③ の判断である。
+
+> **横断スコープで検出できないこと**: 本実行は 6 本の `requirements.md` と上流成果物（`.aidd/requirement-list.md` / `.aidd/feature-list.md` / `steering/` 7 ファイル）の記述のみを材料としている。③ が口頭で提示した既存設計書（WTG070 機能定義書 / WTG070 画面設計 / WTG080 画面設計）は本リポジトリに無く、**引用された内容の正しさは検証していない**（`WTX_Batch/src/jp/co/kccs/wt/wtg/wtg090/PWTGB090Job.java` が `TWTGM080` / `TWTGM100` の双方を使用していることのみ、実ファイルで確認した）。また `TWTGM100` の実カラム構成・`P71` の `CD2` の実値の裏取りも行っていない。
+
+#### 第 5 回実行（2026-09-24。`## 追加の改訂（2026-09-24 …）` — 申請No の採番元と物件基本情報の格納先の確定 — 後の再検査。対象 6 feature）
+
+| # | 回数 | 層 | 対象 feature | 指摘内容 | 判断 | 理由 |
+|---|---|---|---|---|---|---|
+| 221 | 5 | ② | `specs/property-basic-info/requirements.md` 受入基準 11-2 / 12-4 ↔ `specs/issue-request/requirements.md` 受入基準 13-5 / 13-6 / `## Dependencies / Assumptions` 未確定事項 ② | **同じ行の生成について、再製本時は確定し初回は未確定のまま残っている（#212 の残余）。** 本回の改訂で、`property-basic-info` は受入基準 12-4 で申請No を引き渡し、受入基準 12-5 と `Adjacent` で「新しい申請No での `TWTGM100` の行の作り直しは `issue-request` が行う」と宣言した。`issue-request` はこれを受入基準 13-6（「新しい申請No で `TWTGM100` の行を作り直す」）と `In Scope` で受けている。**したがって再製本・修正稟議のときの行の生成主体は確定した。** しかし**初回の行の生成主体は確定していない**。`issue-request` の未確定事項 ② は依然として「受入基準 13-5 の『保存』が `TWTGM100` の既存行の更新か新規行の追加か」を未決として残しており、受入基準 13-5 が定めるのは作成組織の 4 列への保存だけである。一方 `property-basic-info` の受入基準 11-2 は `TWTGM100` に当該 (会社コード, 申請No) の行が存在することを前提に外部結合して会社名を表示する。**結果として、同一の行について「作り直し = 確定」「初回の作成 = 未確定」という非対称が残る。** 外部結合であるため行が得られなくても 11-6 により空欄表示に落ちるが、その状態では受入基準 11-1 が常に空欄でも満たされてしまい、#212 が指摘した「11-1 を満たしたかを確かめる手段が無い」条件は**初回登録の経路については解消していない**。なお本件は依存の有無ではなく責務の所在を述べている（依存は 2026-09-24 に `feature-list.md` へ反映済み）。 | 修正済 | — |
+
+> **第 5 回実行の差戻し先候補（提示のみ。戻すかどうかは ③ が決める）**
+> - **Phase 4（2 feature の `requirements.md`）**: 指摘 #221 は 2 feature の記述で解消しうる。`issue-request` の未確定事項 ② から「既存行の更新か新規行の追加か」を外し、受入基準 13-5 に初回の行の生成（INSERT）を含めるか、あるいは初回の生成主体を明示した受入基準を追加する。`property-basic-info` 側は Requirement 12 の `Adjacent` の記述をそれに合わせる。
+> - **Phase 3（`.aidd/feature-list.md`）**: **不要。** 依存は 2026-09-24 の改訂で `依存` 列に反映済みであり、本指摘は責務の所在に関するものである。
+> - **横断で新たに検出した要求IDの未割当・feature の欠落**: 無し（分類 `機能` 38 件はすべて割当済み、6 feature すべてに `requirements.md` が存在する）。
+> - **既に `approved` の 4 feature の不備**: 無し（`issue-request-tutorial` / `contract-application-status` / `contract-info-import` / `contract-info-download` に、本回の改訂に起因する不整合・廃止 feature への参照・受入基準の繰り下げの波及は検出していない）。
+> - **feature スコープで検出した事項との関係**: #218（画面から受け取った申請No で行を特定する）と #221（その行を誰が作るか）は同じ論点の別面である。#213 / #219 / #220（2026-09-24 の `依存` 列改訂への追随漏れ）は feature スコープで報告済みであり、横断では重ねて挙げていない。
+
+> **横断スコープにおける status の扱い**: 本実行は **`status` を一切遷移させていない**（横断スコープは承認対象の文書を持たないため）。検査対象 6 本のうち `property-basic-info` / `issue-request` は feature スコープ側（第 8 回 / 第 6 回）が `draft` → `review` へ遷移させている。`approved` の 4 feature の引き下げが必要かは ③ の判断である（本回、引き下げを要する条件は検出していない）。
+
+> **横断スコープで検出できないこと**: 本実行は 6 本の `requirements.md` と上流成果物（`.aidd/requirement-list.md` / `.aidd/feature-list.md` / `steering/` 7 ファイル）の記述のみを材料としている。③ が提示した WTG070 / WTG080 の機能定義書は本リポジトリに無く、**引用内容の正しさはゲートで検証していない**（`TWTGM080` / `TWTGM100` が既存テーブルであることのみ `WTX_Batch/src/jp/co/kccs/wt/wtg/wtg090/PWTGB090Job.java` で確認済み）。要求一覧に載っていない要求の取りこぼしも本スコープでは検出できない。
+
 ## 差戻し
 
 > 上流フェーズへ戻した場合に記録する。戻し先の固定ルールは各フェーズ設計書の「差戻し」に従う。
@@ -1073,3 +1619,173 @@ updated_at: 2026-09-16T14:05:00+09:00
 ---
 
 _検査の記録であり、仕様ではありません。履歴として残し、上書きしないでください。指摘の対象となった成果物側の正はそれぞれの仕様ファイルです。_
+---
+
+## 修正内容（2026-09-24 / ③ Junichi Noumi） — 第 5 回 / 第 3 回 / 横断 第 2 回の指摘 #178〜#197
+
+> **前提となる方針の変更**: 2026-09-24 に ③ が 2 度目の方針確定を行った。**作成組織（会社名・所属①・所属②）を入力するのは発行依頼書登録変更画面（`issue-request`）だけ**であり、保存先は既存の発行依頼書情報マスタ `TWTGM100`。**`property-basic-info` は `TWTGM100` の `Keiyaku_Ringi_Kiansha_Kaisha_Name` をラベル表示するだけ**で、入力欄も所属①②も持たない（根拠: **WTG070 画面設計の項目5**）。これにより #180 / #189 / #195 の `TWTGM100` の帰属、#196 の非対称、Phase 3 #25 の SSoT 未定が同時に解消した。
+
+| # | 対象 | 変更内容 |
+|---|---|---|
+| 180 / 195 | `specs/property-basic-info/requirements.md` | `Requirement 11` を「作成組織の入力」から **「作成組織の会社名の表示」** へ全面的に書き換えた。由来する要求IDは REQ-048 のみ。受入基準は 6 本で、`TWTGM100` の `Keiyaku_Ringi_Kiansha_Kaisha_Name` のラベル表示、入力欄を設けないこと、ZOOM を起動しないこと、**`TWTGM100` へ書き込まないこと**、行が無い／会社名が空のときは空欄表示でエラーとしないこと、参照 SQL に会社コードを含めることを定めた。`In Scope` / `Out of Scope` / `Adjacent` / `Dependencies` / 業務フローの Mermaid も同方針へ揃えた |
+| 189 | `specs/issue-request/requirements.md` | `Requirement 13` の受入基準 5 を新設し、保存先を `TWTGM100` の 4 列（`Keiyaku_Ringi_Kiansha_Kaisha_Cd` / `Kaisha_Name` / `Shozoku1` / `Shozoku2`）と明記したうえで、**既存テーブルであり列の追加・型変更・意味の変更を行わない**（REQ-052）と定めた。あわせて Requirement 1 の受入基準 7 を「新たに追加する場合」の条件付きに改め、作成組織の 4 項目は `TWTGM100` に保存すること・新規テーブルとの役割分担は基本設計で確定すること（未確定事項 ②）を明記した |
+| 181 / 190 | 2 feature | コードマスタの選択肢母集合に会社コードの絞り込みを適用する受入基準を **削除**した。`steering/security.md` の所有権境界は検索・更新の SQL を対象としており、選択肢母集合への適用は steering にも REQ-049 / REQ-050 にも根拠が無く、「社内ユーザーには空白から選択させる」とも両立しないため |
+| 182 / 191 | 2 feature | `issue-request` の受入基準 4 を「**100 桁以下の入力を受け付け**、100 桁を超える入力をエラーとして扱う」と許容側・拒否側の対で書き直し、「桁」がバイト数か文字数かを未確定事項 ⑰ (b) に登録した。`property-basic-info` は表示のみとなり本件の対象外になった |
+| 183 / 192 | `specs/issue-request/requirements.md` | 前提マスタ行が無い場合の受入基準を 2 本追加した。受入基準 13（`P71` に行が無い／`CD2` が空 → 保存せずメッセージIDに対応する文言を表示して管理者への連絡を促す。社外ユーザーは会社名を自分で選べず必須を満たす手段が無いため）と 受入基準 14（`P26` の選択肢が 0 件 → 空のプルダウンを表示し、未選択としての入力チェックのエラーに落とす）。メッセージIDは未確定事項 ⑰ (c) に登録した |
+| 184 / 193 | `steering/product.md` | `## 開発物の概要・背景` の新規機能の列挙から ZOOM を外した（Phase 3 #22 と同一の修正）。**Phase 2 は `draft` へ引き下げず approved を維持し**、`.aidd/gates/phase-2-steering.md` の `### 承認（2 回目 — 2026-09-24）` の 再ゲートの状況 に経緯を追記した |
+| 185 | `specs/property-basic-info/requirements.md` | 非機能要件表のセキュリティ行に、`TWTGM100` を参照専用として扱うことを `要件` に、**実装が `TWTGM100` への INSERT / UPDATE / DELETE を持たないことの確認（Mapper XML の全 SQL を対象）** を `計測 / 検証方法` に追記した |
+| 188 | `specs/issue-request/requirements.md` | `Requirement 12` の受入基準 4 の参照を「Requirement 1 の受入基準 7」→「同 6」に修正した（繰り上げ付け替えの追随漏れ） |
+| 194 | `specs/issue-request/requirements.md` | 非機能要件表のセキュリティ行に、非活性項目のサーバ側での再決定を `要件` に、**社外ユーザーのセッションで会社名・所属①②のパラメータを改変したリクエストを送っても保存値が変わらないことの確認** を `計測 / 検証方法` に追記した |
+| 196 | 2 feature | `property-basic-info` 側から `P71` / `CD1` による社内／社外の判定が無くなった（表示のみになったため）ので、非対称そのものが解消した。`property-basic-info` の未確定事項は 14 件 → 13 件に戻し、`issue-request` の ⑯ に残した `P71` 判定と REQ-046 の方式の突合はそのまま維持している |
+---
+
+## 修正内容（2026-09-24 / ③ Junichi Noumi） — 第 6 回 / 第 4 回 / 横断 第 3 回の指摘 #198〜#206
+
+> 9 件すべてを `修正済` として処理した。**うち 8 件（#198〜#204 / #206）は前回（#178〜#197）の修正で新たに生じた不備、1 件（#205）は修正漏れ**である。いずれも Phase 4 内で閉じた。
+
+| # | 対象 | 変更内容 |
+|---|---|---|
+| 198 / 206 | `specs/property-basic-info/requirements.md` / `specs/issue-request/requirements.md` | 表示対象の `TWTGM100` の行を特定するキーを、⑬ への注記ではなく**独立した未確定事項 ⑭**として立てた（13 件 → 14 件）。`issue-request` の未確定事項 ⑬ と**同一の論点であり同時に確定させる**こと、**「紐づかない」に確定した場合は `property-basic-info` の Requirement 11 が成立しなくなる**ことを両 feature に対称に明記し、確定結果を `property-basic-info` へ必ず戻すことを `issue-request` 側に書いた |
+| 199 | `specs/property-basic-info/requirements.md` | 未確定事項 ⑬ の「`issue-request` への期待を宣言していない」を、**作成組織の会社名については `Adjacent` で宣言済みであり、帳票の元データ全般についてのみ未宣言**である旨に改めた |
+| 200 | `specs/property-basic-info/requirements.md` | 業務フローの Mermaid を、DB participant（`WTG`）を経由する 2 本の矢印（`画面->>WTG` / `WTG-->>画面`）に改め、他の DB アクセスと表現を揃えた |
+| 201 | `specs/issue-request/requirements.md` | 未確定事項 ② に、**新規テーブルと既存 `TWTGM100` の役割分担**（どの項目をどちらが持つか、受入基準 13-5 の「保存」が既存行の更新か新規行の追加か、両者を結ぶキー）を追加した。受入基準 1-7 の参照先が実体を持つようになった |
+| 202 | `specs/issue-request/requirements.md` | 受入基準 13-5 の「**列の追加**・型変更・意味の変更を行わない」を「**既存の列の削除**・型変更・意味の変更を行わない」に改め、`steering/database.md` の `## 設計思想`（必要な項目は新規テーブルまたはカラム追加で表現する）および REQ-052 と整合させた。項目の追加が必要な場合の扱いも追記した |
+| 203 | `specs/issue-request/requirements.md` | 到達しえない条件（社外 **かつ** `P71` に行が無い）を 2 本に分割した。新 13-13「`P71` にグループの行が存在しない → 社内・社外のいずれとしても扱わず保存しない」（行が無いことを社内扱いにすると社外ユーザーが会社名を任意に選べる状態になりうるため）、新 13-14「社外 かつ `CD2` が空 → 保存しない」。前者の扱いが運用実態と合うかは未確定事項 ⑰ (c) に登録した |
+| 204 | `specs/issue-request/requirements.md` | `P26` が 0 件の基準（新 13-15）を**社内ユーザーに限定**し、新 13-16 で社外ユーザーへの不適用と、`CD2` が会社コードであった場合に `P26` から会社名を解決できないときの扱い（13-14 と同じ）を明示した |
+| 205 | `specs/issue-request/requirements.md` | `## Dependencies` の `依存` に残っていた「`property-basic-info` とは作成組織の**入力仕様を共有する**」を、**入力側と表示側に分かれる**旨へ改めた（`feature-list.md` の `### 要求IDの多重割当（REQ-048）`・Requirement 13 の注記・`Adjacent` と揃えた） |
+
+### 追加の修正（2026-09-24 / ③ Junichi Noumi） — #203 の差し戻しと 未確定事項 ⑭ の確定
+
+> 上表の #203 / #198 / #206 の処理を、③ が新たに提示した既存設計書の根拠に基づいて**さらに改めた**。指摘番号は増やさない（同じ指摘に対する 2 度目の処理である）。
+
+| 対象 | 変更内容 |
+|---|---|
+| #203 の差し戻し | **`P71` にログインユーザーのグループの行が存在しない場合は社内として扱う**（③ の判断 / 2026-09-24。根拠: **WTG080 画面設計の項目5**「文字項目1＝`1`（社外）の場合…非活性、それ以外の場合、空白」）。受入基準 13-6 を「`CD1` が `1` のときのみ社外。`1` 以外のとき、および行が存在しないときはいずれも社内」と書き改め、先に追加した「行が無い場合は保存しない」基準を**削除**して以降を繰り上げた（Requirement 13 の受入基準は 16 本 → 15 本）。未確定事項 ⑰ (c) からも当該論点を外した。**先の修正は、既存設計書が定める判定規則を確認せずにフェイルセーフ側へ倒したものであり、実装の実態と合っていなかった。** |
+| 未確定事項 ⑭ の確定 | **`TWTGM100` は物件申請情報（`TWTGM080`）と、会社コード + 申請No で外部結合して紐づける**（③ の判断 / 2026-09-24。根拠: **WTG070 機能定義書の転送仕様**「発行依頼書情報ﾏｽﾀ＜外部結合＞ GM100．会社ｺｰﾄﾞ＝GM080．会社ｺｰﾄﾞ AND GM100．申請No＝GM080．申請No」）。`property-basic-info` に受入基準 11-2（結合条件）を追加し、11-6 を「外部結合の結果として行が得られない場合は空欄で表示しエラーとしない」に書き改めた（受入基準は 6 本 → 7 本）。**未確定事項 ⑭ は確定したため削除**（14 件 → 13 件）。`issue-request` の未確定事項 ⑬ からも紐づきの有無とキーを外し、残るのは物件基本情報のステータスが登録・変更の可否に影響するかのみとした |
+| 依存の判定 | `TWTGM100` / `TWTGM080` はいずれも**既存 WiNG のテーブル**であることを確認した（`WTX_Batch/src/jp/co/kccs/wt/wtg/wtg090/PWTGB090Job.java` が両方を使用）。したがって外部結合による紐づきは feature 間の依存を生まず、**`.aidd/feature-list.md` の `依存` 列の変更（Phase 3 差戻し）は不要**である（③ の判断 / 2026-09-24）。両 feature の `Dependencies` にこの根拠を明記した |
+### 修正内容（2026-09-24 / ③ Junichi Noumi） — 第 7 回 / 第 5 回 / 横断 第 4 回の指摘 #207〜#212
+
+| # | 対象 | 変更内容 |
+|---|---|---|
+| 207 | `specs/property-basic-info/requirements.md` | 非機能要件表セキュリティ行の内部参照を「Requirement 11 の受入基準 **4**」→「同 **5**」に修正した。受入基準 11-2（外部結合の条件）を挿入して 6 本 → 7 本になった際の追随漏れ |
+
+## 承認
+
+### 承認（2026-09-24。ZOOM 廃止に伴う差戻し後）
+
+| 項目 | 内容 |
+|---|---|
+| 対象成果物 | `specs/property-basic-info/requirements.md` / `specs/issue-request/requirements.md`（feature スコープ 2 件）および横断スコープ |
+| 承認者 | Junichi Noumi |
+| 承認日 | 2026-09-24 |
+| 承認時の残件 | 未対応 0 件。本差戻しで検出した 35 件（#178〜#212）のうち **修正済 25 件 / 対応せず進める 10 件**（#178 / #179 / #186 / #187 / #197 / #208〜#212）。変更していない 4 feature（`issue-request-tutorial` / `contract-application-status` / `contract-info-import` / `contract-info-download`）は `approved` を維持し、引き下げを要する指摘は出ていない |
+| ゲートの実行 | ZOOM 廃止後に **3 回**実行した（feature スコープは property-basic-info 第 5〜7 回 / issue-request 第 3〜5 回、横断は第 2〜4 回）。指摘は 20 件 → 9 件 → 6 件と推移し、いずれの回も ① / ② の両層を実行している |
+| 再ゲートの状況 | **第 7 回の指摘に対する修正 1 件（#207。内部参照の番号の訂正）は、再ゲートを通していない。** ③ の判断（2026-09-24）: 1 行の参照先の訂正であり、受入基準・要件の内容を変えていないため。往復上限（③ が設定した 1 回を 1 回だけ延長し、計 2 回使用）を使い切っている |
+| 基本設計への申し送り | (1) **物件基本情報の格納先テーブル**（#208）。`TWTGM080` でないと判明した場合は `property-basic-info` の受入基準 11-2 の再検討が要る。(2) **`TWTGM100` の申請No を誰がどの契機で設定するか**（#212）。確定させたうえで、`property-basic-info` の受入基準 11-1 を「常に空欄」でない形で検証する手段を定める。(1) と (2) は同じ外部結合の両端であり同時に解く。(3) **WTG070 / WTG080 の設計書の根拠が要求一覧に記録されていない**（#210）。記録先を揃えるには Phase 1 への差戻しが要る |
+| 留保 | ゲートは合否を出していない。**② で受入基準の観測可能性の指摘が 0 件だったことは「すべて観測可能」を意味しない**（ゲート自身の申し送り）。また ③ が提示した WTG070 / WTG080 の設計書は本リポジトリに無く、**引用内容の正しさはゲートで検証していない**（`TWTGM080` / `TWTGM100` が既存テーブルであることのみ `WTX_Batch/src/jp/co/kccs/wt/wtg/wtg090/PWTGB090Job.java` で確認済み） |
+| 遷移後の `status` | `approved`（2 feature とも） |
+
+---
+
+## 追加の改訂（2026-09-24 / ③ Junichi Noumi） — 申請No の採番元と物件基本情報の格納先の確定
+
+> 指摘に対する対応ではなく、**③ が新たに確定した事項による改訂**である。2026-09-24 の承認記録に `基本設計への申し送り` として残した (1) 物件基本情報の格納先テーブル（#208）と (2) `TWTGM100` の申請No の設定契機（#212）が、上流の設計書を根拠として確定したため、申し送りから受入基準へ引き上げた。**(3) WTG070 / WTG080 の根拠が要求一覧に記録されていない（#210）は「対応せず進める」のまま**（③ の判断 / 2026-09-24）。
+
+| 項目 | 内容 |
+|---|---|
+| 確定した事項 | **物件基本情報の格納先は物件申請情報マスタ（`TWTGM080`）。キーは 会社コード + 申請No。申請No を採番するのは `property-basic-info`** であり、`issue-request` は画面から受け取った申請No で `TWTGM100` に登録する。再製本・修正稟議のときは `property-basic-info` が申請No を新しく採番し、`TWTGM100` の行は新しい申請No で `issue-request` が作り直す |
+| 根拠 | WTG070 機能定義書の「更新条件(物件申請情報ﾏｽﾀ)」「更新条件(発行依頼書情報ﾏｽﾀ)」（申請No＝「再製本時に新規採番した申請No」）、WTG080 機能定義書の「更新条件(発行依頼書情報ﾄﾗﾝ)」（申請No＝申請画面．申請No）。既存実装では `WTX_Batch/src/jp/co/kccs/wt/wtg/wtg090/PWTGB090Job.java` が `TWTGM080` / `TWTGM100` をいずれも (会社コード, 申請No) で引く |
+
+### `specs/property-basic-info/requirements.md` の変更
+
+| 箇所 | 変更内容 |
+|---|---|
+| Requirement 1 | 受入基準 5 を新設（格納先 = `TWTGM080`、キー = 会社コード + 申請No、既存の列の削除・型変更・意味の変更を行わない）。旧 5〜7 を 6〜8 へ繰り下げ（**7 本 → 8 本**） |
+| Requirement 12（新設） | `申請No の採番と引き渡し`（由来: REQ-015）。受入基準 5 本 — 新規登録時の採番、採番マスタ（`TWTZM050`）/ `NumberingService` への相乗り、**再製本・修正稟議での新規採番（既存行の申請No を書き換えない）**、発行依頼書登録変更画面への引き渡し、`TWTGM100` を本 feature から作成・更新しないこと |
+| In Scope / Adjacent / Dependencies | 申請No の採番と引き渡しを `In Scope` に追加。`Adjacent` の `issue-request` に、引き渡した申請No で書き込む側であること・再製本時の行の作り直しは同 feature が行うことを明記。`Dependencies` の依存先に `TWTGM080`（格納先）と採番マスタ / `NumberingService` を追加 |
+| 未確定事項 | ⑭（申請No の採番定義）と ⑮（再製本・修正稟議の判定条件、申請No の引き渡し経路）を新設（**13 件 → 15 件**） |
+
+### `specs/issue-request/requirements.md` の変更
+
+| 箇所 | 変更内容 |
+|---|---|
+| Requirement 13 | 受入基準 5 に「**保存先の行は画面から受け取った申請No と会社コードで特定する。申請No を本フィーチャーで採番しない**」を追記。受入基準 6 を新設（**再製本・修正稟議で新しい申請No が採番されたとき、新しい申請No で `TWTGM100` の行を作り直す**）。旧 6〜15 を 7〜16 へ繰り下げ（**15 本 → 16 本**） |
+| 内部参照の追随 | 繰り下げに伴い 6 か所を修正 — 新 14 内の「受入基準 10」→ 11、新 15 内の「受入基準 10」→ 11、新 16 内の「受入基準 14」→ 15 / 「受入基準 7」→ 8 / 「受入基準 13」→ 14、非機能要件表の「受入基準 12」→ 13、未確定事項 ⑰ (a) の「13-7」→ 13-8、⑰ (c) の「13-13」→ 13-14 |
+| In Scope / Out of Scope / Adjacent / Dependencies | `In Scope` に「保存先の行は引き渡された申請No と会社コードで特定する（採番は行わない）」、`Out of Scope` に「**申請No の採番。`property-basic-info` が持つ**」を追加。`Adjacent` の `property-basic-info` を「申請No を採番し引き渡す側」に書き改め、`Dependencies` の `依存` に `property-basic-info` を追加（Phase 3 の `依存` 列と整合） |
+| 未確定事項 | ② から「両者を結ぶキー」を外し（会社コード + 申請No で確定）、⑰ に (d)（`TWTGM100` の行を作り直す契機）を追加して「4 つの未決」とした（件数は 17 件のまま） |
+| 業務フロー | Mermaid に `画面->>WTG` の保存の矢印を追加した（前回 #211 として「対応せず進める」で閉じた非対称も、本改訂で解消した） |
+### 修正内容（2026-09-24 / ③ Junichi Noumi） — 第 8 回 / 第 6 回 / 横断 第 5 回の指摘 #213〜#221
+
+> 9 件すべてを `修正済` として処理した（規約違反 3 件 + ③ への判断材料 6 件）。**最重点だった「受入基準の繰り下げに対する内部参照の追随」はゲートが 24 か所を照合して 0 件と確認しており、過去 2 回（#188 / #207）と同型の漏れは発生していない。**
+
+| # | 対象 | 変更内容 |
+|---|---|---|
+| 213 | `specs/property-basic-info/requirements.md` | `Adjacent` の `issue-request` 行と 未確定事項 ⑬ の「feature 間の依存関係ではない」「依存を置いていない」を、**`issue-request` → 本フィーチャーの向き（申請No の採番元）でのみ依存がある**旨へ改めた（`## Dependencies` は既に更新済みで、未更新箇所との混在を解消） |
+| 214 | `specs/property-basic-info/requirements.md` | Requirement 12 に**採番の異常系**（受入基準 5: 採番に失敗した場合は登録を確定させず業務エラーとして扱う）を追加した。`issue-request` の Requirement 3 受入基準 4 と同じ扱いとし、2 feature の非対称を解消。旧 5 は 6 へ繰り下げ（**5 本 → 6 本**）。表示するメッセージIDは未確定事項 ⑮ に登録 |
+| 215 | `specs/property-basic-info/requirements.md` | 受入基準 12-2 に「**採番は `SELECT ... FOR UPDATE` で行を固定してから更新する**」を追記し、`steering/database.md` の `### 業務コード・区分値・採番の設計ルール`（採番の直列化）に適合させた |
+| 216 | `specs/property-basic-info/requirements.md` | 業務フローの Mermaid に「申請No を採番し `TWTGM080` へ登録する」の矢印（`画面->>WTG`）を追加した |
+| 217 | `specs/property-basic-info/requirements.md` | `TWTGM080` の行のキー（会社コード + 申請No）の二重定義を解消した。**受入基準 1-5 を正本**とし、受入基準 12-1 は「1-5 が定めるキーの一部となる（本節で再定義しない）」に改めた |
+| **218** | `specs/issue-request/requirements.md` | **steering 違反。** 受入基準 13-5 と `In Scope` の「画面から受け取った申請No **と会社コード**で特定する」を、**「画面から受け取った申請No と、ログインユーザーの会社コード」**に改めた（会社コードは画面からの受け取り値を用いない — `steering/security.md` の `#### 所有権・エンティティ境界`）。あわせて**受入基準 13-6 を新設**し、画面から渡された申請No について「ログインユーザーの会社コードで `TWTGM080` に当該申請No の行が存在することをサーバ側で確認し、存在しなければ保存せず業務エラー」と定めた（申請No は改変されうる値であり、行の特定に用いる前に検証する） |
+| 219 | `specs/issue-request/requirements.md` | 未確定事項 ⑬ の「`依存` 列の変更（Phase 3 差戻し）は不要である」を「**2026-09-24 に `property-basic-info` を追加済みである**」に、⑩ の未来形の条件文を「**追加は実施済みであり、本項が確定しても `依存` 列の追加は生じない**」に改めた |
+| 220 | `specs/issue-request/requirements.md` | `Adjacent` に 2 本あった `property-basic-info` の行のうち、書き改められていなかった 2 本目（「紐づくかどうかは本書では確定していない」）を「**紐づきは 会社コード + 申請No で確定済み**」に改め、観点（承認フロー・帳票）を見出しに付して 1 本目との重複を解消した |
+| 221 | `specs/issue-request/requirements.md` | **初回の行の生成主体を確定**した。受入基準 13-7 を新設し「当該申請No の行が `TWTGM100` に存在しない場合は新規に追加し、存在する場合は更新する。**行を作るのは本フィーチャーであり `property-basic-info` は作成・更新しない**」と定めた。#218 と同じ論点の別面（行の特定 / 行の生成）であり同時に解いた |
+| 内部参照 | 2 feature | 上記の挿入により Requirement 13 は 16 本 → **18 本**、Requirement 12 は 5 本 → **6 本** になったため、内部参照と相互参照を計 12 か所追随させた（`issue-request` の 14 / 15 / 18 内の参照、非機能要件表の `13-14` → `13-15`、未確定事項 ⑰ の (a) `13-8` → `13-10` / (c) `13-14` → `13-16` / (d) `13-6` → `13-8`、`property-basic-info` の `Adjacent` の `12-5` → `12-6`、`issue-request` の `Adjacent` と 13-7 の `12-5` → `12-6` ほか） |
+
+## 承認（2 回目 — 2026-09-24。申請No の採番元の確定後）
+
+| 項目 | 内容 |
+|---|---|
+| 対象成果物 | `specs/property-basic-info/requirements.md` / `specs/issue-request/requirements.md` および横断スコープ |
+| 承認者 | Junichi Noumi |
+| 承認日 | 2026-09-24 |
+| 承認時の残件 | 未対応 0 件。2026-09-24 の追加改訂で検出した 9 件（#213〜#221）は**全件修正済**。2026-09-24 の差戻し分とあわせた通算は 44 件（#178〜#221）で、**修正済 34 件 / 対応せず進める 10 件** |
+| ゲートの実行 | 追加改訂に対して 1 回実行した（property 第 8 回 / issue-request 第 6 回 / 横断 第 5 回）。① 0 件・② 9 件。**最重点だった受入基準の繰り下げに対する内部参照の追随は 24 か所を照合して 0 件** |
+| 再ゲートの状況 | **#213〜#221 に対する修正 9 件は、再ゲートを通していない。** ③ の判断（2026-09-24）: うち 3 件（#213 / #219 / #220）は既に確定した事項への文言の追随、4 件（#214〜#217）は受入基準 1 本の追加・参照への置き換え・図への追記、2 件（#218 / #221）は steering 適合のための受入基準の追加であり、**いずれも新しい設計判断を含まない**。**Requirement 13 が 18 本・Requirement 12 が 6 本になった繰り下げに伴う内部参照 12 か所の追随は未検査である** — 後続で番号のずれが見つかった場合はここを疑うこと |
+| 基本設計への申し送り | (1) WTG070 / WTG080 の根拠が要求一覧に記録されていない（#210。「対応せず進める」のまま）。(2) `property-basic-info` の未確定事項 ⑭（申請No の採番定義）・⑮（再製本の判定条件 / 引き渡し経路 / 採番失敗時のメッセージID）。(3) `issue-request` の未確定事項 ②（新規テーブルと `TWTGM100` の役割分担）・⑰ (a)〜(d) |
+| 遷移後の `status` | `approved`（2 feature とも） |
+
+---
+
+## 追加の改訂（2026-09-24 / ③ Junichi Noumi） — `TWTGM080` / `TWTGM100` を新規テーブルに訂正
+
+> **前提の訂正**: `TWTGM080`（物件申請情報マスタ）と `TWTGM100`（発行依頼書情報マスタ）は**既存テーブルではなく、本プロジェクト（PJ45）で新規に追加するテーブル**である（人間判断 / 2026-09-24）。`WTX_Batch/src/jp/co/kccs/wt/wtg/wtg090/PWTGB090Job.java` が両テーブルを参照しているが、**これは本プロジェクトより後に作られたコードである**ため、既存資産としての根拠にならない。**列の構成は design で定義してよい。**
+
+| 対象 | 変更内容 |
+|---|---|
+| `specs/property-basic-info/requirements.md` | 受入基準 1-5 の「`TWTGM080` は既存 WiNG のテーブルであり、既存の列の削除・型変更・意味の変更を行わない（REQ-052）」を、**「本プロジェクトで新規に追加するテーブルである。既存の命名規則と共通カラム（6 列）の規約に沿って追加し、列の構成は design で定義する」**（`steering/database.md` / REQ-009 / REQ-053）に改めた。`Dependencies` と `Adjacent` の「既存テーブル」の記述も訂正し、**`TWTGM080` は本 feature が、`TWTGM100` は `issue-request` が定義する**ことを明記した |
+| `specs/issue-request/requirements.md` | 受入基準 13-5 の同旨を同様に訂正。受入基準 1-7 を「発行依頼書を保持するテーブルを**新規に追加**する。`TWTGM100` もその 1 つであり作成組織の 4 項目を保持する」に改め、未確定事項 ② を「`TWTGM100` のほかに発行依頼書用のテーブルを設けるかどうかと役割分担」に絞った。`Dependencies` にも両テーブルが新規であることと定義の担当を明記 |
+| `.aidd/feature-list.md` | `### 要求IDの多重割当（REQ-048）` の「いずれも既存 WiNG のテーブルであり本プロジェクトで新設しない」を訂正し、**新規テーブルであること・`PWTGB090Job` が本プロジェクトより後のコードであること・定義の担当**を明記した。`## 優先度の決定方針` の 2026-09-24 の注記からも「既存テーブル」の語を外した |
+| REQ-052 との関係 | REQ-052（既存 WTG 機能にデグレードを発生させない）および `steering/database.md` の「既存テーブルの定義を行わない」は、**両テーブルには適用されない**（新規テーブルのため）。要求一覧・steering の記述そのものは変更していない |
+| 依存の向き | **変更なし。** `issue-request` → `property-basic-info`（申請No の採番元）の 1 本のみ。循環は生じない。`property-basic-info` が `TWTGM100` の会社名を読む点は、**同 feature の design が「読む 2 列とキー」を契約として宣言し、`TWTGM100` の全体を定義する `issue-request` がそれを満たす**形で解く（依存の追加ではなく契約の宣言として扱う — ③ の判断 / 2026-09-24） |
+| 再ゲートの状況 | **本訂正は再ゲートを通していない**（③ の判断 / 2026-09-24）。前提の訂正であり、受入基準が課す制約を**緩める**方向の変更である（既存テーブルの改変禁止 → 新規テーブルの定義可）。2 feature の `status` は `approved` を維持する |
+
+### 追加の改訂（2026-09-24 / ③ Junichi Noumi） — 受入基準 7-1 / 9-5 のダウンロード方式の文言
+
+> **Phase 5（`property-basic-info` の design 作成）で検出した食い違いの解消。** 2026-09-24 の指摘 #48 で `steering/api-standards.md` の `### パラメータ配置`「大量データ」を `DownLoadFileInfo` → `executeDownLoad` への forward 方式に改めたが、**2 feature の受入基準が「ストリームで返す」のまま追随していなかった**。
+
+| 対象 | 変更内容 |
+|---|---|
+| `specs/property-basic-info/requirements.md` 受入基準 7-1 | 「`Content-Disposition` を付けたレスポンスをストリームで返す」を「**既存のファイルダウンロードの仕組みに載せて `Content-Disposition` 付きで返す**（`DownLoadFileInfo` でファイルパスとファイル名を受け取り、`FileInfo` を `executeDownLoad` へ forward する）」に改めた。後段の「既存の仕組みに載せ、本フィーチャー独自の出力経路を作らない」はそのまま維持している |
+| `specs/property-basic-info/requirements.md` 受入基準 9-5 | 同旨に改めた |
+| `specs/issue-request/requirements.md` | **該当する受入基準を持たないため変更なし**（CSV・帳票の出力は本 feature の責務ではない） |
+| 再ゲートの状況 | **本改訂は再ゲートを通していない**（③ の判断 / 2026-09-24）。`steering/api-standards.md` の既決事項に受入基準の文言を追随させたものであり、新しい設計判断を含まない。2 feature の `status` は `approved` を維持する |
+| 経緯 | ③ の判断（2026-09-24）: design 側の方式（`DownLoadFileInfo`）を正とし、受入基準の側を合わせる。既存実装（`Pwtgo006Controller#doDownLoad`）が実際に採っている方式であり REQ-053 に適合するため |
+
+### 追加の改訂（2026-09-24 / ③ Junichi Noumi） — `issue-request` に契約局情報マスタ `TWTGM140` を追記
+
+| 項目 | 内容 |
+|---|---|
+| 確定した事項 | **`TWTGM140`（契約局情報マスタ）は PJ45 で新規に追加し、`issue-request` が定義・更新する。** `property-basic-info` の帳票は `TWTGM100` を主に `TWTGM140` を内部結合して読み取りのみで読み、読む列の範囲は `issue-request` の design で確定する（未確定事項 ⑬ の確定 — `specs/property-basic-info/design.md` の判断 7） |
+| 根拠 | WTG_ｴﾝﾃｨﾃｨ一覧 の改訂履歴 3、WTG080 機能定義書「更新条件(契約局情報ﾏｽﾀ)」、WTG070 機能定義書_印刷・閲覧用帳票 |
+| `specs/issue-request/requirements.md` の変更 | `In Scope` に `TWTGM140` の定義と更新を 1 行追加 / 受入基準 1-7 に `TWTGM140` を 1 文追記 / `Adjacent`（`property-basic-info` の帳票の観点）に帳票の読み取りと列の範囲の確定先を追記 / `依存` の新規テーブルの列挙に `TWTGM140` を追加 / 未確定事項 ② に `TWTGM140` の列構成を design で定義する旨を追記 |
+| 再ゲートの状況 | **本改訂は再ゲートを通していない。** ③ の判断（2026-09-24）: `property-basic-info` の design が終わった時点で、未検査の改訂をまとめて 1 回だけ再ゲートする（`phase-5-design.md` #28） |
+| 承認 | Junichi Noumi / 2026-09-24。`status` は `approved` を維持する |
+
+### 追加の改訂（2026-09-24 / ③ Junichi Noumi） — `issue-request` の依存の記述に残っていた「`TWTGM100` は既存」の訂正
+
+| 項目 | 内容 |
+|---|---|
+| 変更 | `specs/issue-request/requirements.md` の `## Dependencies / Assumptions` の `依存` の末尾「`TWTGM100` は既存 WiNG のテーブルであるため feature 間の依存ではない」を、「本フィーチャーが定義する新規テーブルであり、`property-basic-info` は読み取りのみで参照する（依存は宣言せず契約で受ける）」に改めた |
+| 理由 | 2026-09-24 に `TWTGM100` が新規テーブルと確定した後も、同じ段落の中に訂正前の表現が残っていた（Phase 5 の `property-basic-info` design の作成中に検出） |
+| 再ゲートの状況 | **再ゲートを通していない。** `phase-5-design.md` #28 のまとめ再ゲートに含める |
+| 承認 | Junichi Noumi / 2026-09-24。`status` は `approved` を維持する |

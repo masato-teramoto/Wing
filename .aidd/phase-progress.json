@@ -1,12 +1,12 @@
 {
-  "updated_at": "2026-09-18T21:00:00+09:00",
+  "updated_at": "2026-09-24T23:30:00+09:00",
   "schema_note": "2026-09-18 に α2 資産（.claude/）へ移行したためフェーズ番号を α2 の 7 段構成へ組み直した。α1.1 の Phase 5（画面モック生成）の記録は history.wireframe_phase に退避している（フェーズ番号は重複するが別工程）。",
   "current": {
-    "phase": 2,
-    "phase_name": "Steering 作成",
+    "phase": 5,
+    "phase_name": "design 作成",
     "waiting_for": "human_review",
-    "next_action": "【2026-09-18 中断】Phase 2 の ③ 人間レビュー待ちで停止。steering-check-subagent の 2 回目（一括スコープ）が ① のみ実行し 6 件（#11〜#16）を検出した（② は 2 回連続未実行）。判断は未転記（判断列・理由列は空欄）。**再開の最初の行動は #11〜#16 の判断を選択式で聞き取り、ゲート記録へ転記すること。** #11〜#15 は approved の 6 ファイル側にあるため、直すなら ③ が 6 ファイルの approved 引き下げを決める必要がある。#16 は今回の部分改訂（api-standards.md のみ draft にした）の結果。Phase 2 が approved に戻ったら Phase 5 の organization-search-zoom へ戻り、design.md の 判断 2 を『steering と差異がある』から『steering に従う』へ書き換えてから design-check-subagent（成果物単位スコープ）を 1 回起動する。",
-    "open_blockers": 1,
+    "next_action": "【2026-09-24 ゲート 1 回目の指摘 30/31 件を反映済み】property-basic-info の design.md（draft）。#28 のみ未対応（まとめ再ゲート待ち）。③ の追加確定: 帳票は Excel テンプレート方式（原本 Excel をコピー→値を書き込み→PDF 変換。QR は zxing で画像を生成して貼る。ファイル名「<稟議バーコードNo>.pdf」、ダウンロード後にサーバの PDF を削除。Excel ライブラリは未確定で追加が要る。判断 9）／閲覧は ServiceBase に inline 用メソッドを追加／ボタン条件の「組織」はログインユーザーの所属組織、「発番済み」は Status が受付済以降／CompanyCD は VARCHAR2(5)／tech.md（Controller のサブパス・帳票ID）と api-standards.md（ステータスコード方針）を改訂し phase-2 に追記／issue-request の「TWTGM100 は既存」の古い一文を訂正し phase-4 に追記。／**次の行動**: ③ への確認 2 件（(1) 受入基準 9-4 と steering/tech.md の主要ライブラリが JasperReports 前提で判断 9 と食い違う — 改訂するか (2) zxing core 3.2.1 を pom に明示宣言するか）を聞いて反映し、2 回目のゲート（design-check-subagent）を通す。／**#28**: property-basic-info の design が終わった時点で、steering / requirements / feature-list の未検査の改訂をまとめて 1 回だけ再ゲートする。",
+    "open_blockers": 0,
     "input_extension": {
       "decided_by": "Junichi Noumi",
       "decided_at": "2026-09-18",
@@ -19,15 +19,15 @@
       "name": "要求受入",
       "artifact": "要求一覧",
       "status": "approved",
-      "updated_at": "2026-09-11T15:17:00+09:00",
+      "updated_at": "2026-09-24T21:30:00+09:00",
       "gate_record": ".aidd/gates/phase-1-intake.md"
     },
     {
       "phase": 2,
       "name": "Steering 作成",
       "artifact": "steering/ 7ファイル",
-      "status": "review",
-      "updated_at": "2026-09-18T16:30:06+09:00",
+      "status": "approved",
+      "updated_at": "2026-09-24T17:30:00+09:00",
       "gate_record": ".aidd/gates/phase-2-steering.md"
     },
     {
@@ -35,7 +35,7 @@
       "name": "Feature 分割",
       "artifact": "feature-list.md",
       "status": "approved",
-      "updated_at": "2026-09-11T15:59:23+09:00",
+      "updated_at": "2026-09-24T21:30:00+09:00",
       "gate_record": ".aidd/gates/phase-3-feature.md"
     },
     {
@@ -43,7 +43,7 @@
       "name": "requirements 作成",
       "artifact": "specs/*/requirements.md",
       "status": "approved",
-      "updated_at": "2026-09-16T13:08:57+09:00",
+      "updated_at": "2026-09-24T11:30:00+09:00",
       "gate_record": ".aidd/gates/phase-4-requirements.md"
     },
     {
@@ -51,7 +51,7 @@
       "name": "design 作成",
       "artifact": "specs/*/design.md",
       "status": "draft",
-      "updated_at": "2026-09-18T17:20:00+09:00",
+      "updated_at": "2026-09-24T14:30:00+09:00",
       "gate_record": ".aidd/gates/phase-5-design.md"
     },
     {
@@ -74,64 +74,64 @@
   "steering": {
     "product": {
       "status": "approved",
-      "updated_at": "2026-09-11T12:02:27+09:00",
+      "updated_at": "2026-09-24T17:30:00+09:00",
       "waiting_for": null,
       "open_placeholders": 0
     },
     "tech": {
       "status": "approved",
-      "updated_at": "2026-09-11T12:02:27+09:00",
+      "updated_at": "2026-09-24T17:30:00+09:00",
       "waiting_for": null,
       "open_placeholders": 0
     },
     "architecture": {
       "status": "approved",
-      "updated_at": "2026-09-11T12:02:27+09:00",
+      "updated_at": "2026-09-24T17:30:00+09:00",
       "waiting_for": null,
       "open_placeholders": 0
     },
     "security": {
       "status": "approved",
-      "updated_at": "2026-09-11T12:02:27+09:00",
+      "updated_at": "2026-09-24T17:30:00+09:00",
       "waiting_for": null,
       "open_placeholders": 0
     },
     "non-functional": {
       "status": "approved",
-      "updated_at": "2026-09-11T12:02:27+09:00",
+      "updated_at": "2026-09-24T17:30:00+09:00",
       "waiting_for": null,
       "open_placeholders": 0
     },
     "database": {
       "status": "approved",
-      "updated_at": "2026-09-11T12:02:27+09:00",
+      "updated_at": "2026-09-24T17:30:00+09:00",
       "waiting_for": null,
       "open_placeholders": 0
     },
     "api-standards": {
-      "status": "review",
-      "updated_at": "2026-09-18T16:30:06+09:00",
-      "waiting_for": "human_review",
+      "status": "approved",
+      "updated_at": "2026-09-24T17:30:00+09:00",
+      "waiting_for": null,
       "open_placeholders": 0
     }
   },
   "features": [
     {
       "priority": 1,
-      "name": "organization-search-zoom",
-      "type": "Platform",
+      "name": "property-basic-info",
+      "type": "User",
       "documents": {
         "requirements": {
           "status": "approved",
-          "updated_at": "2026-09-14T13:57:45+09:00",
+          "updated_at": "2026-09-24T11:30:00+09:00",
           "waiting_for": null,
           "open_placeholders": 0
         },
         "design": {
           "status": "draft",
-          "updated_at": "2026-09-18T19:40:00+09:00",
-          "waiting_for": "human_answer",
-          "open_placeholders": 3
+          "updated_at": "2026-09-24T23:30:00+09:00",
+          "waiting_for": "human_review",
+          "open_placeholders": 14
         },
         "tasks": {
           "status": "not_started",
@@ -143,31 +143,6 @@
     },
     {
       "priority": 2,
-      "name": "property-basic-info",
-      "type": "User",
-      "documents": {
-        "requirements": {
-          "status": "approved",
-          "updated_at": "2026-09-14T19:42:51+09:00",
-          "waiting_for": null,
-          "open_placeholders": 0
-        },
-        "design": {
-          "status": "not_started",
-          "updated_at": null,
-          "waiting_for": null,
-          "open_placeholders": null
-        },
-        "tasks": {
-          "status": "not_started",
-          "updated_at": null,
-          "waiting_for": null,
-          "open_placeholders": null
-        }
-      }
-    },
-    {
-      "priority": 3,
       "name": "issue-request-tutorial",
       "type": "User",
       "documents": {
@@ -192,13 +167,13 @@
       }
     },
     {
-      "priority": 4,
+      "priority": 3,
       "name": "issue-request",
       "type": "User",
       "documents": {
         "requirements": {
           "status": "approved",
-          "updated_at": "2026-09-16T09:54:56+09:00",
+          "updated_at": "2026-09-24T11:30:00+09:00",
           "waiting_for": null,
           "open_placeholders": 0
         },
@@ -217,7 +192,7 @@
       }
     },
     {
-      "priority": 5,
+      "priority": 4,
       "name": "contract-application-status",
       "type": "User",
       "documents": {
@@ -242,7 +217,7 @@
       }
     },
     {
-      "priority": 6,
+      "priority": 5,
       "name": "contract-info-import",
       "type": "User",
       "documents": {
@@ -267,7 +242,7 @@
       }
     },
     {
-      "priority": 7,
+      "priority": 6,
       "name": "contract-info-download",
       "type": "User",
       "documents": {
@@ -312,17 +287,7 @@
       "open_placeholders": null
     }
   },
-  "blockers": [
-    {
-      "target": "steering/api-standards.md",
-      "status_from": "approved",
-      "status_to": "review",
-      "return_to_phase": 2,
-      "detected_by": "phase-5-design-authoring",
-      "reason": "ZOOM 画面の初期表示・ページングが既存実装では POST だが、api-standards.md は GET と定めている。逸脱記録を 7 feature 分積むより steering を実態に合わせる、という ③ の判断（2026-09-18）。",
-      "gate_record": ".aidd/gates/phase-5-design.md"
-    }
-  ],
+  "blockers": [],
   "history": {
     "phase4_closed": {
       "closed_at": "2026-09-16T16:21:06+09:00",

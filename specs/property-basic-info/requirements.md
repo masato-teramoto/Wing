@@ -1,7 +1,7 @@
 ---
 feature: property-basic-info
 status: approved
-updated_at: 2026-09-14T19:42:51+09:00
+updated_at: 2026-09-24T15:40:00+09:00
 ---
 
 # 要件定義書
@@ -20,7 +20,7 @@ updated_at: 2026-09-14T19:42:51+09:00
 
 画面では権限による表示制御（REQ-016）、引用ボタンによるデータの複製（REQ-017）、承認フロー（5 段階または 3 段階。それぞれスキップ等もあり — REQ-018）、ステータスと履歴の管理（REQ-019）、契約稟議に関するファイル登録（REQ-020）、進捗管理DBインポート用の CSV 出力（REQ-021）、編集中データの処理の促し（REQ-022）を扱う。帳票では表紙情報（QR コード印字 — REQ-024）・発行依頼書・契約局情報を出力し、閲覧では別ウインドウで PDF 表示する（REQ-023 / REQ-025）。
 
-利用者の用事が本フィーチャー単体で完結する User Feature であり、想定規模は「大」である（`.aidd/feature-list.md`）。作成組織の入力に `organization-search-zoom` を用いるため同 feature に依存し、優先度 2 に置かれている。
+利用者の用事が本フィーチャー単体で完結する User Feature であり、想定規模は「大」である（`.aidd/feature-list.md`）。他 feature への依存を持たず、優先度 1 に置かれている。作成組織は**会社名をラベルとして表示するのみ**で、入力欄は持たない（REQ-048。入力は `issue-request` が持つ）。
 
 - **背景**: 契約書発行依頼業務が WiNG の契約・管財管理（WTG）で管理されておらず（REQ-001）、入力項目が多いことが担当者の負担になっている（REQ-002）。誤入力による不備指摘のやり取りが契約書発行までの納期を延ばしており（REQ-003）、稟議資料は紙に印刷して回覧する形式のため製本に手間と時間がかかっている（REQ-004）
 - **対象ユーザー**: 契約書発行依頼業務を担当する社員、および権限制御の対象となるベンダー・施工会社（`steering/product.md` の対象ユーザー / REQ-005 / REQ-046）
@@ -47,13 +47,13 @@ sequenceDiagram
     autonumber
     actor 担当者
     participant 画面 as 物件基本情報登録・変更画面
-    participant ZOOM as 作成組織検索（ZOOM）
     participant WTG as WiNG（WTG / DB）
     actor 承認者
 
     担当者->>画面: 物件基本情報を登録・変更する（引用による複製を含む / REQ-015・REQ-017）
-    画面->>ZOOM: 作成組織検索を起動する（REQ-050）
-    ZOOM-->>画面: 選択された作成組織を返す（REQ-050）
+    画面->>WTG: 申請No を採番し、物件申請情報マスタ（`TWTGM080`）へ登録する（REQ-015）
+    画面->>WTG: 発行依頼書情報マスタ（`TWTGM100`）から契約稟議起案者_会社名を読み出す（REQ-048）
+    WTG-->>画面: 契約稟議起案者_会社名を返す（REQ-048）
     担当者->>画面: 契約稟議に関するファイルを登録する（REQ-020）
     担当者->>画面: 申請する（REQ-018）
     画面->>WTG: ステータスを更新し、変更を履歴に登録する（REQ-019）
@@ -85,17 +85,20 @@ sequenceDiagram
   - 編集中データの処理を利用者に促す振る舞い（REQ-022）
   - 帳票の出力（表紙情報・発行依頼書・契約局情報。表紙情報への QR コード印字を含む）（REQ-023 / REQ-024）
   - 出力情報の別ウインドウでの PDF 表示（REQ-025）
-  - 作成組織の入力欄からの作成組織検索（ZOOM）の起動と、返された値の設定（REQ-050。呼び出し先は `organization-search-zoom`。本 feature の対応要求IDには含まれないが、`.aidd/feature-list.md` の `依存` 列が本 feature を呼び出し元と定めている）
+  - 作成組織の会社名の表示（発行依頼書情報マスタ `TWTGM100` の `Keiyaku_Ringi_Kiansha_Kaisha_Name` をラベルとして表示する。REQ-048。根拠: WTG070 画面設計の項目5）
+  - **申請No の採番**（新規登録時、および再製本・修正稟議時の新規採番）と、発行依頼書登録変更画面への引き渡し（REQ-015）
   - ログインユーザーの会社コードによるデータ範囲の絞り込み（`steering/security.md` の所有権・エンティティ境界）
 - **Out of Scope（扱わない）**:
-  - 作成組織検索（ZOOM）画面そのものの作成。`organization-search-zoom` が持つ（REQ-048 / REQ-049）
+  - 作成組織を検索する独立した画面（ZOOM）の作成。2026-09-24 の設計変更により作成しない（`.aidd/requirement-list.md` の `## 要求の変更履歴` / REQ-048）
+  - **作成組織の入力**（会社名のプルダウン、所属①・所属②の自由入力、社内／社外による必須・活性の制御）と、`TWTGM100` への書き込み。`issue-request` が持つ（REQ-049 / REQ-050）。本フィーチャーは `TWTGM100` を参照のみ行う
+  - コードマスタ（`TWTZM040`）そのものの保守。既存 WiNG のマスタを参照するのみであり、本プロジェクトの改修対象外（REQ-007 / REQ-008）
   - 発行依頼書の登録・変更・発番。`issue-request` が持つ（REQ-026 / REQ-028）。本フィーチャーが扱うのは帳票の出力情報としての「発行依頼書」に限る（REQ-023）
   - 物件契約情報申請状況の検索・一覧・CSV 出力。`contract-application-status` が持つ（REQ-012 / REQ-013 / REQ-014）
   - 契約情報の取込・ダウンロード。`contract-info-import` / `contract-info-download` が持つ（REQ-040 / REQ-044）
   - 進捗管理DB そのものの改修。UQ 様社内システムは改修対象外であり（REQ-006 / REQ-008）、本フィーチャーが担うのはインポート用 CSV の出力までである（REQ-021）
   - ファイルアップロード・採番・コードマスタ取得・帳票エンジン・権限制御の各共通基盤の新規作成。既存 WiNG の構成要素であり本プロジェクトで作らない（REQ-053 / `steering/architecture.md` の共通基盤）
 - **Adjacent（隣接システム / 隣接スペックへの期待）**:
-  - `organization-search-zoom`: 作成組織検索（ZOOM）画面を提供し、選択された作成組織の値を呼び出し元へ返す（REQ-048 / REQ-050）
+  - `issue-request`: 作成組織（会社名・所属①・所属②）の入力を持ち、**本フィーチャーが採番して引き渡した申請No** で発行依頼書情報マスタ（`TWTGM100`）へ書き込む側である（REQ-049 / REQ-050 / Requirement 12 の受入基準 4）。本フィーチャーは同テーブルの `Keiyaku_Ringi_Kiansha_Kaisha_Name` を、物件申請情報（`TWTGM080`）との外部結合（会社コード + 申請No）で特定して参照・表示するだけである（受入基準 11-2）。**再製本・修正稟議で申請No を新しく採番した場合、新しい申請No での `TWTGM100` の行の作り直しは同 feature が行う**（受入基準 12-6）。**`issue-request` は本フィーチャーが採番する申請No に依存する側であり、`.aidd/feature-list.md` の同 feature の `依存` 列に `property-basic-info` が入っている**（2026-09-24 の Phase 3 改訂）。本フィーチャーから同 feature への依存は無い。**`TWTGM100` は本プロジェクトで新規に追加するテーブルであり、その列の構成を定義するのは同 feature である**（本フィーチャーは `Keiyaku_Ringi_Kiansha_Kaisha_Name` を参照するのみ。人間判断 / 2026-09-24）
   - `contract-application-status`: 本フィーチャーが登録・申請した物件契約情報を、申請状況として検索・一覧表示する（`.aidd/feature-list.md` の `依存` 列で同 feature が本 feature に依存する）
   - 既存 WiNG の共通基盤: 認証・セッション（`LoginService` / `SessionCheckInterceptor`）、権限制御（`AccessControlInterceptor` + `@FuncID`）、ファイルアップロード（`FileUploadService`）、採番（`NumberingService`）、コードマスタ取得（`CodeMstService`）、帳票（JasperReports）を提供する（`steering/architecture.md` / `steering/tech.md`）
 
@@ -107,7 +110,7 @@ sequenceDiagram
 
 ### Requirement 1: 物件基本情報の登録・変更
 
-> 由来する要求ID: REQ-015（受入基準 4 は REQ-050 の受け手としての振る舞い）
+> 由来する要求ID: REQ-015
 
 **User Story**: 契約書発行依頼業務の担当者として、物件基本情報を WiNG 上で登録・変更したい。なぜなら契約稟議のもとになる情報を紙ではなくシステムで管理したいから。
 
@@ -118,8 +121,8 @@ sequenceDiagram
 1. The system shall 物件基本情報を登録・変更する画面を新規に作成し、画面ID・PGID を既存の体系（`GWTG` + 3 桁 / `PWTGO` + 3 桁）に従って採番する（REQ-051 / `steering/tech.md` の命名規則）。採番の具体値と、画面・帳票を何本のプログラムに分割するかは基本設計で確定する（未確定事項 ①）。
 2. When 担当者が物件基本情報を新規に登録したとき、the system shall 入力された内容を保存し、以降の表示・変更の対象にする。
 3. When 担当者が既存の物件基本情報を変更して保存したとき、the system shall 排他フラグ（`ExclusiveFG`）を `WHERE` 条件に含めて更新し、更新件数が 0 件の場合は排他エラー（`ExclusiveException`）として処理する（`steering/database.md` のクエリパターン）。
-4. When 担当者が作成組織の入力欄から作成組織検索の起動操作を行ったとき、the system shall 作成組織検索（ZOOM）画面を起動し、返された値を当該入力欄に設定する（REQ-050。呼び出し先は `organization-search-zoom`）。
-5. If ログインしていないセッションから本画面のリクエストが行われた場合、then the system shall 画面を表示せずログイン画面へ遷移させる（`steering/security.md` の認証フロー）。
+4. If ログインしていないセッションから本画面のリクエストが行われた場合、then the system shall 画面を表示せずログイン画面へ遷移させる（`steering/security.md` の認証フロー）。
+5. The system shall 物件基本情報を**物件申請情報マスタ（`TWTGM080`）**に格納する。行を特定するキーは **会社コード + 申請No** とする（人間判断 / 2026-09-24。根拠: WTG070 機能定義書の「更新条件(物件申請情報ﾏｽﾀ)」）。**`TWTGM080` は本プロジェクトで新規に追加するテーブルである**（人間判断 / 2026-09-24）。既存の命名規則と共通カラム（`CompanyCD` / `RegisteredPerson` / `RegisteredDT` / `UpdatedPerson` / `UpdatedDT` / `ExclusiveFG`）の規約に沿って追加し、列の構成は design で定義する（`steering/database.md` の命名規則・設計思想 / REQ-009 / REQ-053）。
 6. The system shall 物件基本情報の検索・更新の SQL の `WHERE` 条件に、ログインユーザーの会社コードを必ず含める（`steering/security.md` の所有権・エンティティ境界 / `steering/database.md` のクエリパターン）。
 7. If 入力チェックでエラーが検出された場合、then the system shall 元の画面を再表示し、`BindingResult` に積んだ全件のエラーを該当項目の近くに表示する（`steering/api-standards.md` のエラーハンドリング）。入力項目の一覧・桁・必須の定義は基本設計で確定する（未確定事項 ②）。
 8. The system shall 物件基本情報のステータスに応じて変更を許すかどうかを判定し、許さない状態で変更の操作が行われた場合は保存せず業務エラーとして扱う（`steering/product.md` のビジネスルール「申請は承認フローを経て確定する」/ REQ-018 / REQ-019）。どのステータスで変更を許すか（申請中・承認済みを含む状態ごとの可否）は基本設計で確定する（未確定事項 ⑥）。
@@ -204,7 +207,7 @@ sequenceDiagram
 
 #### Acceptance Criteria（EARS 形式）
 
-1. When 担当者が進捗管理DBインポート用出力の操作を行ったとき、the system shall CSV ファイルを生成し、`Content-Disposition` を付けたレスポンスをストリームで返す（`steering/api-standards.md` の大量データ）。ファイルの入出力は既存のファイルアップロード／ダウンロードの仕組み（`FileUploadService` / `DownLoadFileInfo`）に載せ、本フィーチャー独自の出力経路を作らない（`steering/architecture.md` の `### 外部 API / 外部システム`。同節は責務に REQ-021 を明記している）。
+1. When 担当者が進捗管理DBインポート用出力の操作を行ったとき、the system shall CSV ファイルを生成し、**既存のファイルダウンロードの仕組みに載せて `Content-Disposition` 付きで返す**（`DownLoadFileInfo` でファイルパスとファイル名を受け取り、`FileInfo` を `executeDownLoad` へ forward する。`steering/api-standards.md` の `### パラメータ配置`「大量データ」）。本フィーチャー独自の出力経路を作らない（`steering/architecture.md` の `### 外部 API / 外部システム`。同節は責務に REQ-021 を明記している）。
 2. The system shall CSV の内容を、本フィーチャーが扱う物件基本情報を取得する SQL の結果から作り、出力のためだけに別条件の SQL を作らない（`steering/database.md` のクエリパターンの CSV 出力。同行は REQ-021 を対象に含めている）。
 3. The system shall CSV の文字コードを既存の設定（`wing-web.properties` の `CHARSET`）に従って決定し、区切り・引用符の扱いを本フィーチャー独自に変えない（`steering/security.md` の出力エスケープ）。
 4. The system shall 出力の対象を、ログインユーザーの会社コードと権限の範囲に限る（`steering/security.md` の機密データ・所有権）。
@@ -235,7 +238,7 @@ sequenceDiagram
 2. The system shall 「表紙情報」に QR コードを印字する（REQ-024）。QR コードに埋め込む内容は基本設計で確定する（未確定事項 ⑩）。
 3. The system shall 帳票の出力に Requirement 2 と同じ権限判定を適用し、権限外の項目を帳票に含めない（`steering/security.md` の機密データ）。
 4. The system shall 帳票の生成を既存の帳票基盤（JasperReports）に載せ、本フィーチャー独自の帳票基盤を作らない（`steering/tech.md` の主要ライブラリ）。
-5. The system shall 帳票を `Content-Disposition` を付けたレスポンスとしてストリームで返す（`steering/api-standards.md` の大量データ）。
+5. The system shall 帳票を、**既存のファイルダウンロードの仕組みに載せて `Content-Disposition` 付きで返す**（`DownLoadFileInfo` / `executeDownLoad`。`steering/api-standards.md` の `### パラメータ配置`「大量データ」）。
 6. The system shall 3 種それぞれの出力項目とレイアウトを、基本設計で確定した内容に従う（未確定事項 ⑩）。
 
 ### Requirement 10: 出力情報の閲覧（PDF 表示）
@@ -251,6 +254,38 @@ sequenceDiagram
 3. The system shall 閲覧に Requirement 2 と同じ権限判定を適用する（`steering/security.md` の機密データ）。
 4. The system shall 閲覧と印刷で同じ出力内容になるようにし、閲覧のためだけに別の出力情報を持たない（REQ-023）。出力経路（同一の帳票定義を用いるか）は基本設計で確定する（未確定事項 ⑪）。
 
+### Requirement 11: 作成組織の会社名の表示
+
+> 由来する要求ID: REQ-048
+> **本要件は表示のみを扱う。** 作成組織の入力（会社名のプルダウン・所属①②の自由入力・必須／活性の制御）は `issue-request` が持つ（REQ-049 / REQ-050。`.aidd/feature-list.md` の `### 要求IDの多重割当（REQ-048）`）。
+
+**User Story**: 契約書発行依頼業務の担当者として、物件基本情報の画面で作成組織の会社名を確認したい。なぜなら発行依頼書で指定された契約稟議起案者の会社を、物件基本情報を見るときにも把握したいから。
+
+#### Acceptance Criteria（EARS 形式）
+
+1. The system shall 作成組織の会社名を、発行依頼書情報マスタ（`TWTGM100`）の `Keiyaku_Ringi_Kiansha_Kaisha_Name`（契約稟議起案者_会社名）からラベルとして表示する（REQ-048。根拠: WTG070 画面設計の項目5）。
+2. The system shall 表示対象の `TWTGM100` の行を、物件申請情報（`TWTGM080`）との**外部結合**で特定する。結合条件は `TWTGM100.会社コード = TWTGM080.会社コード AND TWTGM100.申請No = TWTGM080.申請No` とする（REQ-048。根拠: WTG070 機能定義書の転送仕様「発行依頼書情報ﾏｽﾀ＜外部結合＞ GM100．会社ｺｰﾄﾞ＝GM080．会社ｺｰﾄﾞ AND GM100．申請No＝GM080．申請No」）。
+3. The system shall 作成組織について入力欄を設けない。会社名は編集できず、所属①・所属②は本画面で保持も表示もしない（REQ-048）。
+4. The system shall 作成組織を検索する別ウインドウの画面（ZOOM）を起動しない（REQ-048）。
+5. The system shall `TWTGM100` に対して参照のみを行い、書き込みを行わない（`TWTGM100` への保存は `issue-request` の責務 — REQ-049）。
+6. If 外部結合の結果として `TWTGM100` の行が得られない（発行依頼書がまだ作られていない）、または `Keiyaku_Ringi_Kiansha_Kaisha_Name` が空の場合、then the system shall 当該ラベルを**空欄で表示し、エラーとして扱わない**（人間判断 / 2026-09-24。外部結合であり、発行依頼書の有無にかかわらず物件基本情報を表示できる必要があるため）。
+7. The system shall `TWTGM100` を参照する SQL の `WHERE` 条件に、ログインユーザーの会社コードを必ず含める（`steering/security.md` の所有権・エンティティ境界 / `steering/database.md` のクエリパターン）。
+
+### Requirement 12: 申請No の採番と引き渡し
+
+> 由来する要求ID: REQ-015
+
+**User Story**: 契約書発行依頼業務の担当者として、物件基本情報を登録したときに申請No が自動で付与されてほしい。なぜなら発行依頼書や帳票からこの物件申請を一意に指せるようにしたいから。
+
+#### Acceptance Criteria（EARS 形式）
+
+1. When 担当者が物件基本情報を新規に登録したとき、the system shall 申請No を採番する。採番した申請No は、Requirement 1 の受入基準 5 が定める `TWTGM080` の行のキー（会社コード + 申請No）の一部となる（**キーの定義は受入基準 1-5 を正とし、本節で再定義しない**。人間判断 / 2026-09-24。根拠: WTG070 機能定義書の「更新条件(物件申請情報ﾏｽﾀ)」）。
+2. The system shall 申請No の採番を、採番マスタ（`TWTZM050`）と `NumberingService` の既存の仕組みに載せ、機能ごとに独自の採番処理を作らない。**採番は `SELECT ... FOR UPDATE` で行を固定してから更新する**（`steering/database.md` の `### 業務コード・区分値・採番の設計ルール`）。採番定義（グループID・識別コード・プレフィックス・連番の範囲・採番区分）は基本設計で確定する（未確定事項 ⑭）。
+3. When 再製本または修正稟議が行われたとき、the system shall 申請No を**新しく採番**し、既存の行の申請No を書き換えない（人間判断 / 2026-09-24。根拠: WTG070 機能定義書の「更新条件(発行依頼書情報ﾏｽﾀ)」の 申請No＝「再製本時に新規採番した申請No」）。再製本・修正稟議と判定する条件は基本設計で確定する（未確定事項 ⑮）。
+4. The system shall 採番した申請No を、発行依頼書登録変更画面へ引き渡す（`issue-request` が当該申請No で `TWTGM100` の行を登録するため — `specs/issue-request/requirements.md` の Requirement 13）。引き渡しの経路は基本設計で確定する（未確定事項 ⑮）。
+5. If 申請No の採番に失敗した場合、then the system shall 物件基本情報の登録を確定させず、メッセージIDに対応する文言を表示して業務エラーとして扱う（`specs/issue-request/requirements.md` の Requirement 3 の受入基準 4 と同じ扱い）。表示するメッセージIDは基本設計で確定する（未確定事項 ⑮）。
+6. The system shall 申請No を新しく採番した場合も、`TWTGM100` の行を本フィーチャーから作成・更新しない。新しい申請No での `TWTGM100` の行の作り直しは `issue-request` が行う（Requirement 11 の受入基準 5 と整合）。
+
 ## Non-Functional Requirements（非機能要件）
 
 > 当該フィーチャーで成立させるべき非機能要件のみ記述（steering で固定済みのものは引用に留める）。
@@ -262,7 +297,7 @@ sequenceDiagram
 | パフォーマンス | <NFR_PERFORMANCE_REQUIREMENT>（不要 / 人間 2026-09-11: `non-functional.md` に準拠し、feature 固有の値を設けない） | <NFR_PERFORMANCE_VERIFICATION>（同上） |
 | 可用性 | <NFR_AVAILABILITY_REQUIREMENT>（同上） | <NFR_AVAILABILITY_VERIFICATION>（同上） |
 | 運用・監視 | <NFR_OPERATIONS_REQUIREMENT>（同上） | <NFR_OPERATIONS_VERIFICATION>（同上） |
-| セキュリティ | `steering/security.md` 準拠。`@FuncID` と `AccessControlInterceptor` による毎リクエストの権限判定、権限に応じた画面制御とサーバ側判定の二重防御（REQ-016）、ログインユーザーの会社コードによるデータ範囲の絞り込み、契約金額・契約先などの契約情報と契約稟議ファイルを権限のある利用者にのみ開示すること（帳票・CSV も同じ権限判定）、登録ファイルの直接 URL 参照の禁止、更新系リクエストの CSRF トークン検証、Thymeleaf の自動エスケープによる出力、MyBatis の `#{...}` による SQL 組み立て | 権限を持たないユーザーでのアクセス確認、他社の会社コードのデータが画面・帳票・CSV に現れないことの確認、登録ファイルへの直接 URL アクセスが拒否されることの確認 |
+| セキュリティ | `steering/security.md` 準拠。`@FuncID` と `AccessControlInterceptor` による毎リクエストの権限判定、権限に応じた画面制御とサーバ側判定の二重防御（REQ-016）、ログインユーザーの会社コードによるデータ範囲の絞り込み、契約金額・契約先などの契約情報と契約稟議ファイルを権限のある利用者にのみ開示すること（帳票・CSV も同じ権限判定）、登録ファイルの直接 URL 参照の禁止、更新系リクエストの CSRF トークン検証、Thymeleaf の自動エスケープによる出力、MyBatis の `#{...}` による SQL 組み立て、**発行依頼書情報マスタ（`TWTGM100`）に対する参照専用の扱い**（本フィーチャーからの書き込みを行わない — Requirement 11 の受入基準 5） | 権限を持たないユーザーでのアクセス確認、他社の会社コードのデータが画面・帳票・CSV に現れないことの確認、登録ファイルへの直接 URL アクセスが拒否されることの確認、**本フィーチャーの実装が `TWTGM100` への INSERT / UPDATE / DELETE を持たないことの確認（Mapper XML の全 SQL を対象）** |
 | アクセシビリティ | <NFR_ACCESSIBILITY_REQUIREMENT>（不要 / 人間 2026-09-11: `non-functional.md` に準拠し、feature 固有の値を設けない） | <NFR_ACCESSIBILITY_VERIFICATION>（不要 / 人間 2026-09-11: 同区分の要件を設けないため検証方法も設けない） |
 | i18n / l10n | <NFR_I18N_REQUIREMENT>（不要 / 人間 2026-09-11: `non-functional.md` に準拠し、feature 固有の値を設けない） | <NFR_I18N_VERIFICATION>（不要 / 人間 2026-09-11: 同区分の要件を設けないため検証方法も設けない） |
 | プライバシー | <NFR_PRIVACY_REQUIREMENT>（不要 / 人間 2026-09-11: `non-functional.md` に準拠し、feature 固有の値を設けない） | <NFR_PRIVACY_VERIFICATION>（不要 / 人間 2026-09-11: 同区分の要件を設けないため検証方法も設けない） |
@@ -284,8 +319,8 @@ sequenceDiagram
 > `前提` はこのフィーチャーが成立するために真でなければならない事項、`依存` は他フィーチャー / 既存システム / 外部 API / データ、`未確定事項` は調査・確認待ちのトピック（design に進む前に解消する）。
 
 - **前提**: 既存 WiNG の認証・セッション・権限制御の仕組み（`LoginService` / `SessionCheckInterceptor` / `AccessControlInterceptor`）がそのまま利用できること。ファイルアップロード／ダウンロードの仕組み（`FileUploadService` / `DownLoadFileInfo` と出力管理マスター・出力制御マスター）、帳票基盤（JasperReports）が既存 WiNG に存在し利用できること（REQ-009 / REQ-053 / `steering/architecture.md`）。承認フローの承認者を決めるための組織・権限の情報が既存のマスタから参照できること
-- **依存**: `.aidd/feature-list.md` の `依存` 列は `organization-search-zoom`。作成組織の入力に同 feature の ZOOM 画面を用いるため、同 feature が先に完成している必要がある（REQ-050）。加えて既存 WiNG の共通基盤（前提に挙げたもの）に依存する。なお `contract-application-status` は本フィーチャーに依存する側であり、本フィーチャーからの依存ではない
-- **未確定事項**: 次の 13 件は **いずれも基本設計で確定する**（REQ-010。Phase 4 の共通の扱いとして人間が確定 / 2026-09-11）。
+- **依存**: `.aidd/feature-list.md` の `依存` 列は `なし`。既存 WiNG の共通基盤（前提に挙げたもの）と、採番マスタ（`TWTZM050`）・`NumberingService` に依存する。**`TWTGM080`（格納先）と `TWTGM100`（参照のみ）はいずれも本プロジェクトで新規に追加するテーブルであり**（人間判断 / 2026-09-24）、`TWTGM080` は本フィーチャーが、`TWTGM100` は `issue-request` が定義する。**本フィーチャーは他 feature に依存しないが、`issue-request` は本フィーチャーが採番する申請No に依存する側である**（`.aidd/feature-list.md` の 2026-09-24 の改訂）。なお `contract-application-status` は本フィーチャーに依存する側であり、本フィーチャーからの依存ではない。`issue-request` は `TWTGM100` へ書き込む側だが、同テーブルは既存 WiNG のものであり同 feature の完成を待つ必要が無いため、feature 間の依存ではない
+- **未確定事項**: 次の 15 件は **いずれも基本設計で確定する**（REQ-010。Phase 4 の共通の扱いとして人間が確定 / 2026-09-11）。
   - ① **画面ID・PGID の採番の具体値**と、画面・帳票を何本のプログラムに分割するか（REQ-010 / REQ-051）
   - ② **物件基本情報の入力項目**の一覧・桁・必須の定義（REQ-015）
   - ③ **権限（メニューID × 機能ID）と、制御する画面要素の対応**（REQ-016）。権限の判定単位が機能ID（PGID）であることは `steering/security.md` の権限モデルが定めており、画面内のどの要素をどの権限でどう制御するかが未確定である
@@ -298,7 +333,10 @@ sequenceDiagram
   - ⑩ **帳票 3 種（表紙情報・発行依頼書・契約局情報）の出力項目とレイアウト**、および **QR コードに埋め込む内容**（REQ-023 / REQ-024）
   - ⑪ **閲覧（PDF 表示）と印刷の出力経路の違い**（同一の帳票定義を用いるか）（REQ-025）
   - ⑫ **現状（Before）の業務手順の詳細**（誰がどの様式に記入し、どの順で回覧しているか）。要求一覧に記載が無く、`## 業務フロー（任意）` の `Before` はそこから読み取れる範囲に留めている
-  - ⑬ **帳票の出力情報である「発行依頼書」（REQ-023）の元データを、本フィーチャーと `issue-request`（REQ-026）のどちらが保持するか**。`.aidd/feature-list.md` の `依存` 列は本フィーチャーと `issue-request` のあいだに依存を置いていないため、本書では `issue-request` への期待を宣言していない
+  - ⑬ **帳票の出力情報である「発行依頼書」（REQ-023）の元データを、本フィーチャーと `issue-request`（REQ-026）のどちらが保持するか**。`.aidd/feature-list.md` の `依存` 列は、`issue-request` → 本フィーチャーの向き（申請No の採番元）でのみ依存を置いており、本フィーチャーから同 feature への依存は無い。**作成組織の会社名については `Adjacent` で `issue-request` が `TWTGM100` へ書き込む側であることを宣言済みであり、表示対象の行の特定方法も受入基準 11-2 で確定している。本項が未確定として残すのは、帳票の元データ全般についての分担である**
+  - ⑭ **申請No の採番定義**（グループID・識別コード・プレフィックス・連番の範囲・採番区分）（受入基準 12-2 / `steering/database.md` の採番の設計ルール）
+  - ⑮ **再製本・修正稟議と判定する条件**（受入基準 12-3）、**採番した申請No を発行依頼書登録変更画面へ引き渡す経路**（受入基準 12-4。画面遷移のパラメータか、別の手段か）、および**採番に失敗した場合に表示するメッセージID**（受入基準 12-5）
+
 
 ---
 

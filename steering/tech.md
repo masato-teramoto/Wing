@@ -1,6 +1,6 @@
 ---
 status: approved
-updated_at: 2026-09-11T12:02:27+09:00
+updated_at: 2026-09-24T17:30:00+09:00
 ---
 
 # 技術スタック
@@ -30,6 +30,28 @@ updated_at: 2026-09-11T12:02:27+09:00
 | キャッシュ / KVS | 採用しない | — | 既存 WiNG に該当構成が無い。HTTP セッション（`HttpSession`）以外のキャッシュ層を新規に導入しない |
 | メッセージング | 採用しない | — | 非同期処理は JavaKit バッチエンジンへのタスク登録で行う（`BatchCommonService`） |
 
+## 主要な技術選定と理由
+
+> なぜこのスタックを選んだか、代替案を含めて 1 セット 3〜5 行で。議論になりやすいカテゴリ（言語・FW・DB 等）だけ書く。不要なら節ごと省略可。
+
+### 言語: Java（コンパイルターゲット 1.7）
+
+- **採用理由**: 本改修は既存 WiNG への機能追加であり、既存のアーキテクチャ・フレームワーク・コーディング規約に従うため（REQ-053）。既存資産（`wing` / `WTX` / `WTX_Batch` / `WTX_Common`）がすべて Java で実装されている
+- **代替案**: <TECH_CHOICE_LANGUAGE_ALTERNATIVE> — **不要（記入者: 人間 / 2026-09-11）**: 既存構成を変えないため代替案の検討を行わない（REQ-053）
+- **再評価条件**: <TECH_CHOICE_LANGUAGE_REEVAL> — **不要（記入者: 人間 / 2026-09-11）**: 同上
+
+### フレームワーク: Spring MVC 4.3.5 + MyBatis 3.4.5 + Thymeleaf 3（オンライン）／ JavaKit バッチエンジン（バッチ）
+
+- **採用理由**: 既存の WTG 画面（例: `wtg004` = PWTGO008）が Controller / Service / Form / Mapper の構成で実装済みであり、新規機能も同一構成で追加することで既存機能との整合性（画面ID・PGID体系、権限制御、マスタ構造）を維持できる（REQ-009 / REQ-053）。バッチは既存の JavaKit バッチエンジンでタスク登録・実行される仕組みに合わせる
+- **代替案**: <TECH_CHOICE_FRAMEWORK_ALTERNATIVE> — **不要（記入者: 人間 / 2026-09-11）**: 既存構成を変えないため代替案の検討を行わない（REQ-053）
+- **再評価条件**: <TECH_CHOICE_FRAMEWORK_REEVAL> — **不要（記入者: 人間 / 2026-09-11）**: 同上
+
+### データベース: Oracle Database
+
+- **採用理由**: 既存 WiNG が Oracle（ojdbc7 12.1.0.2、JNDI データソース `jdbc/wingDB`）で稼働しており、新規テーブルも同一スキーマに追加するため（REQ-053）。既存マスタ構造との整合性を維持する必要がある（REQ-009）
+- **代替案**: <TECH_CHOICE_DATABASE_ALTERNATIVE> — **不要（記入者: 人間 / 2026-09-11）**: 既存構成を変えないため代替案の検討を行わない（REQ-053）
+- **再評価条件**: <TECH_CHOICE_DATABASE_REEVAL> — **不要（記入者: 人間 / 2026-09-11）**: 同上
+
 ## 主要ライブラリ
 
 > 開発パターンに影響する主要ライブラリのみ。全依存はここに書かない。繰り返しが必要な項目は `*_N` を行追加用スロットとして使う。
@@ -42,7 +64,7 @@ updated_at: 2026-09-11T12:02:27+09:00
 - **帳票**: JasperReports 6.5.1（オンライン）／ report-engine（`WTX_Batch`）— 帳票出力（REQ-023 / REQ-025）の基盤
 - **ログ**: Log4j 2（log4j-api / log4j-core 2.12.4）— 設定は `wing/src/main/resources/log4j2.xml`。出力方針は `non-functional.md` の `### ログ方針` を正とする
 - **JSON / シリアライズ**: Jackson 2.9.4 / Gson 2.8.1 — 画面の非同期通信で使用
-- **ファイルアップロード**: commons-fileupload 1.3.3（`CommonsMultipartResolver`。`maxUploadSize` は 1,048,576,000 バイト）— 契約稟議に関するファイル登録（REQ-020）で使用
+- **ファイルアップロード**: commons-fileupload 1.3.3（`CommonsMultipartResolver`。`maxUploadSize` は 1,048,576,000 バイト。**本項を上限値の正本とする**）— 契約稟議に関するファイル登録（REQ-020）で使用
 - **ボイラープレート削減**: Lombok 1.16.18 — `domain` パッケージの `@Data` / `@NoArgsConstructor` / `@AllArgsConstructor`
 
 ## 開発環境
@@ -60,15 +82,19 @@ updated_at: 2026-09-11T12:02:27+09:00
 
 ### 推奨 OS / IDE
 
-- OS: 開発は Windows（`execute_task.bat` / `dsz015.bat` の起動スクリプト、`wing-web.properties` の `CHARSET=Windows-31J` が Windows 前提）。実行環境は Linux（`WTX_Batch/config_linux/`、`log4j2.xml` のログ出力先 `/home/const/logs/online/wing.log`）
+- OS: 開発は Windows（`execute_task.bat` / `dsz015.bat` の起動スクリプト、`wing-web.properties` の `CHARSET=Windows-31J` が Windows 前提）。実行環境は Linux（`WTX_Batch/config_linux/`。`log4j2.xml` のログ出力先は `non-functional.md` の `#### 監視基盤` を正とする）
 - IDE: Eclipse（Pleiades）、推奨拡張: Checkstyle プラグイン（`.checkstyle` と `CodeStyle/kccs-checkstyle-2.0.1.xml` を読む）、Tomcat プラグイン（`WTX/.tomcatplugin`）、m2e（`wing/.settings/org.eclipse.m2e.core.prefs`）
 
-### Git戦略
+### Git 戦略
 
 > **不要（記入者: 人間 / 2026-09-11）**: 既存 WiNG の開発運用に従い、本プロジェクトで新たに定めない。以下のプレースホルダーはこの理由で未記入のまま残す。
 
-<GIT_BRANCHING_MODEL> を採用する。
-保護ブランチ `<PROTECTED_BRANCH>`（直接 push 禁止・PR 必須・CIによる <CI_REQUIRED_CHECKS> の通過必須）から短命ブランチを切り、<MERGE_STRATEGY> で取り込む。
+- **ブランチ運用モデル**: <GIT_BRANCHING_MODEL>
+- **保護ブランチ**: <PROTECTED_BRANCH>
+- **保護ブランチの条件**: <PROTECTED_BRANCH_RULE>（直接 push 禁止・PR 必須・CI の通過必須）
+- **マージ方法**: <MERGE_STRATEGY>（短命ブランチを切って取り込む）
+- **リリースタグ**: <RELEASE_TAG_CONVENTION>（リリース時のみ `<PROTECTED_BRANCH>` ブランチに付与する。例: `v1.2.3`）
+
 ※マージ条件・詳細ルールは `## 開発標準`、CI 詳細は本ファイルの `## テスト方針` > `### CI 統合`、本番リリース・障害対応は `non-functional.md`、シークレット管理は `security.md` を参照。
 
 #### 運用ルール一覧
@@ -76,15 +102,14 @@ updated_at: 2026-09-11T12:02:27+09:00
 | 項目 | 運用ルール |
 | --- | --- |
 | **ブランチ名** | <BRANCH_NAMING_RULE> |
-| **仕様管理 (spec)** | <SPEC_MANAGEMENT_RULE> |
+| **仕様管理（spec）** | <SPEC_MANAGEMENT_RULE> |
 | **コミット** | <COMMIT_CONVENTION_RULE> |
-| **PR (プルリク)** | <PR_RULE> |
+| **PR（プルリクエスト）** | <PR_RULE> |
 
 **禁止事項:**
 
 - <GIT_PROHIBITED_PRACTICE_N>
 
-※リリース時のみ、`<PROTECTED_BRANCH>` ブランチに <RELEASE_TAG_CONVENTION>（例: `v1.2.3`）を付与する。
 
 ## 共通コマンド
 
@@ -124,28 +149,6 @@ updated_at: 2026-09-11T12:02:27+09:00
 - **品質ゲート**: <DEV_STANDARD_QUALITY_GATE>（不要 / 人間 2026-09-11: 既存 WiNG の開発運用に従う）
 - **レビュー**: 対象設計書とレビュー実施時期は RFP §10-1 のレビュー計画に従う。基本設計は五月雨式にレビューを依頼する（REQ-068）。コードレビューの運用は <DEV_STANDARD_REVIEW>（不要 / 人間 2026-09-11: 既存 WiNG の開発運用に従う）
 
-## 主要な技術選定と理由
-
-> なぜこのスタックを選んだか、代替案を含めて 1 セット 3〜5 行で。議論になりやすいカテゴリ（言語・FW・DB 等）だけ書く。不要なら節ごと省略可。
-
-### 言語: Java（コンパイルターゲット 1.7）
-
-- **採用理由**: 本改修は既存 WiNG への機能追加であり、既存のアーキテクチャ・フレームワーク・コーディング規約に従うため（REQ-053）。既存資産（`wing` / `WTX` / `WTX_Batch` / `WTX_Common`）がすべて Java で実装されている
-- **代替案**: <TECH_CHOICE_LANGUAGE_ALTERNATIVE> — **不要（記入者: 人間 / 2026-09-11）**: 既存構成を変えないため代替案の検討を行わない（REQ-053）
-- **再評価条件**: <TECH_CHOICE_LANGUAGE_REEVAL> — **不要（記入者: 人間 / 2026-09-11）**: 同上
-
-### フレームワーク: Spring MVC 4.3.5 + MyBatis 3.4.5 + Thymeleaf 3（オンライン）／ JavaKit バッチエンジン（バッチ）
-
-- **採用理由**: 既存の WTG 画面（例: `wtg004` = PWTGO008）が Controller / Service / Form / Mapper の構成で実装済みであり、新規機能も同一構成で追加することで既存機能との整合性（画面ID・PGID体系、権限制御、マスタ構造）を維持できる（REQ-009 / REQ-053）。バッチは既存の JavaKit バッチエンジンでタスク登録・実行される仕組みに合わせる
-- **代替案**: <TECH_CHOICE_FRAMEWORK_ALTERNATIVE> — **不要（記入者: 人間 / 2026-09-11）**: 既存構成を変えないため代替案の検討を行わない（REQ-053）
-- **再評価条件**: <TECH_CHOICE_FRAMEWORK_REEVAL> — **不要（記入者: 人間 / 2026-09-11）**: 同上
-
-### データベース: Oracle Database
-
-- **採用理由**: 既存 WiNG が Oracle（ojdbc7 12.1.0.2、JNDI データソース `jdbc/wingDB`）で稼働しており、新規テーブルも同一スキーマに追加するため（REQ-053）。既存マスタ構造との整合性を維持する必要がある（REQ-009）
-- **代替案**: <TECH_CHOICE_DATABASE_ALTERNATIVE> — **不要（記入者: 人間 / 2026-09-11）**: 既存構成を変えないため代替案の検討を行わない（REQ-053）
-- **再評価条件**: <TECH_CHOICE_DATABASE_REEVAL> — **不要（記入者: 人間 / 2026-09-11）**: 同上
-
 ## 命名規則
 
 > _分担_: ディレクトリ構成・import / path alias は `architecture.md` を参照する。ここは **識別子・ファイル名・テーブル名等の命名形式** を定義する。
@@ -156,13 +159,14 @@ updated_at: 2026-09-11T12:02:27+09:00
 | PGID（オンライン） | `PWTGO` + 3 桁の連番。既存の PGID 体系に従って採番する（REQ-051） | `PWTGO008` |
 | PGID（バッチ） | `PWTGB` + 3 桁の連番。既存の PGID 体系に従って採番する（REQ-051） | `PWTGB001` |
 | 機能パッケージ | `jp.co.kccs.wt.function.<サブシステムコード小文字>.<画面ID小文字>` | `jp.co.kccs.wt.function.wtg.wtg004` |
-| Controller クラス | PGID の先頭大文字 + `Controller`。`@Controller` / `@RequestMapping("/<画面ID小文字>")` / `@FuncID("<PGID大文字>")` を付与する | `Pwtgo008Controller` |
+| Controller クラス | PGID の先頭大文字 + `Controller`。`@Controller` / `@RequestMapping("/<画面ID小文字>")` / `@FuncID("<PGID大文字>")` を付与する。**同じ画面IDに属する別の PGID は、同じ機能パッケージに置いて `@RequestMapping("/<画面ID小文字>/<サブパス>")` で受ける**（既存 `Pwtgo007Controller` の `/wtg003/payInfoRef`。人間が確定 / 2026-09-24） | `Pwtgo008Controller` |
+| 帳票ID | `R` + サブシステムコード + 3 桁。既存の帳票ID体系（WT_機能一覧）に従って採番する（REQ-051。人間が確定 / 2026-09-24） | `RWTG070` |
 | Service クラス | PGID の先頭大文字 + `Service` | `Pwtgo008Service` |
 | Form クラス | PGID の先頭大文字 + `Form`。`FormBase` を継承する | `Pwtgo008Form` |
 | Mapper インタフェース | PGID の先頭大文字 + `Mapper`（共通は対象テーブル名の先頭大文字 + `Mapper`）。`@Mapper` を付与する | `Pwtgo008Mapper` / `Twtzm050Mapper` |
 | Mapper XML | Mapper インタフェースと同名の `.xml`。`src/main/resources` 配下の **同一パッケージパス** に置き、`namespace` に完全修飾名を書く | `jp/co/kccs/wt/common/mapper/NumberingMapper.xml` |
-| domain クラス | テーブル名をそのまま大文字で使う | `TWTGA010` |
-| domain のフィールド | カラム名を lowerCamelCase にしたもの。SQL 側で `AS` の別名により対応させる | `CompanyCD` → `companyCd` |
+| domain クラス | `database.md` の `## 命名規則` を正とする | — |
+| domain のフィールド | `database.md` の `## 命名規則` を正とする | — |
 | Thymeleaf テンプレート | `/WEB-INF/pages/<サブシステム小文字>/<画面ID小文字>/<PGID小文字>.html`。画面内の JavaScript は同ディレクトリの `<PGID小文字>Script.html` に分ける | `wtg/wtg004/pwtgo008.html` / `pwtgo008Script.html` |
 | ZOOM 画面 | `z` で始まるパッケージに置き、表示サイズを `wing-web.properties` の `ZOOM_DEFINE.<PGID小文字>` に定義する | `zwtz002` |
 | メッセージID | `<3 文字の区分>-<6 桁の連番>`。`messages.properties` に定義する | `DS-000001` / `GEF-000036` |
@@ -179,7 +183,7 @@ updated_at: 2026-09-11T12:02:27+09:00
 - **日本語コメント**: フィールド・定数の説明は日本語で書く（既存資産が日本語コメントで統一されている）
 - **定数**: リテラルの直書きを避け、共通の値は `jp.co.kccs.wt.common.utils.Constants` に定義する。機能固有の定数は当該機能のクラス内に `static final` で置く
 - **メッセージの外出し**: 画面・ログに出す文言は `messages.properties` にメッセージID付きで定義し、`MessageSource` 経由で取得する。ソースに文言を直書きしない
-- **SQL の置き場**: SQL は Mapper XML に書く。Java 側で SQL 文字列を組み立てない。パラメータは `#{...}` を使い `jdbcType` を明示する（`${...}` による文字列連結は使わない。`security.md` の SQL インジェクション対策と整合）
+- **SQL の置き場・パラメータ**: `database.md` の `## クエリパターン`「SQL の置き場」「パラメータ」を正とする（本ファイルに再掲しない）
 - **新規機能の追加方針**: 既存クラス・既存 SQL を書き換えず、新規の Controller / Service / Mapper / Form を追加する形で実装する。既存 WTG 機能にデグレードを発生させない（REQ-052）
 - **共通処理の再利用**: 採番は `NumberingService`、コードマスタ取得は `CodeMstService`、ファイルアップロードは `FileUploadService`、ログインユーザー情報は `LoginUserUtils` を使う。同等の処理を機能側で作り直さない
 
@@ -192,7 +196,7 @@ updated_at: 2026-09-11T12:02:27+09:00
 ### 例外処理フロー
 
 > ここでは **例外オブジェクト** を各箇所でどう扱い、上位層に渡していくかを定める（exception propagation）。
-> 識別子（`requestId` / `traceId`）の下流伝播は `non-functional.md` の「ログ方針 > トレース ID / requestId の伝播」を参照。
+> 識別子（`requestId` / `traceId`）の下流伝播は `non-functional.md` の「ログ方針 > トレース ID / リクエスト ID の伝播」を参照。
 > _分担_: フィーチャー固有の例外クラス一覧は `specs/design.md` の Error Handling に書く。
 
 | 箇所 | 方針 |
@@ -223,7 +227,7 @@ updated_at: 2026-09-11T12:02:27+09:00
 
 ### グローバルハンドラ
 
-> `HandlerExceptionResolver` の実装 `ExceptionResolver` を `@Component` として登録し、Controller で捕捉されなかった例外を一括で処理する。例外種別ごとにメッセージIDを決め、`MessageSource` で文言化して `error` ビューへ `errorKind` / `errorCode` / `errorMessage` を渡す。既定のエラーコードは `GEF-000000`。
+> `HandlerExceptionResolver` の実装 `ExceptionResolver` を `@Component` として登録し、Controller で捕捉されなかった例外を一括で処理する。例外種別ごとにメッセージIDを決め、`MessageSource` で文言化して `error` ビューへ渡す。**渡すモデル属性名・既定のエラーコードは `api-standards.md` の `### 共通エラー形式` を正とする**（本節に再掲しない）。
 
 | フレームワーク | 実装場所 |
 | --- | --- |

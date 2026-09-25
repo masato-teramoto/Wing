@@ -1,6 +1,6 @@
 ---
 phase: Phase 3: Feature 分割
-updated_at: 2026-09-11T15:32:00+09:00
+updated_at: 2026-09-24T18:40:00+09:00
 ---
 
 # ゲート記録 — Phase 3: Feature 分割
@@ -21,6 +21,7 @@ updated_at: 2026-09-11T15:32:00+09:00
 |---|---|---|---|---|---|---|
 | 成果物単位（feature-list） | 1 | 2026-09-11T13:22:04+09:00 | `.aidd/feature-list.md` | ① / ② | 13 | `review` |
 | 成果物単位（feature-list） | 2 | 2026-09-11T15:32:00+09:00 | `.aidd/feature-list.md` | ① / ② | 8 | `review` |
+| 成果物単位（feature-list） | 3 | 2026-09-24T18:40:00+09:00 | `.aidd/feature-list.md` | ① / ② | 10 | `review`（本実行の開始時点で既に `review`。③ の差戻し判断により引き下げ済みのため、本実行による遷移は発生しない） |
 
 - `draft` → `review` は、① / ② の実行が終わり、**指摘を本記録へ出力し終えた時点**でゲートのサブエージェントが自動で行う。**指摘の件数は遷移条件にしない**（ゲートは合否を出さないため）。`review` は「レビュー材料が揃った」ことのみを意味する。
 - **① で形式の不備が検出された場合は ② に進まない**。その場合は `実行した層` に ① のみを記載する。
@@ -52,6 +53,21 @@ updated_at: 2026-09-11T15:32:00+09:00
 | 追加の存在検査 | 全 7 feature に feature 名・種別・目的・依存・優先度・想定規模・対応要求ID が存在。種別はすべて `User` / `Platform`。想定規模はすべて `大` / `中` / `小`。`依存` 列に現れる feature 名（`organization-search-zoom` / `issue-request-tutorial` / `property-basic-info` / `issue-request` / `contract-info-import`）はいずれも表内に実在 |
 | 要求ID の突合（双方向） | 分母は `.aidd/requirement-list.md`（`approved` / 2026-09-11 再承認）の分類 `機能` の 38 件。REQ-046 は再承認により `制約` となったため分母から除外し、`非機能`（REQ-001〜REQ-004）と他の `制約` も除外。**未割当の要求ID 0 件 / 要求一覧に存在しない対応要求ID 0 件**。割当は重複なしの 1 対 1 |
 | 依存の循環 | `organization-search-zoom` → `property-basic-info` / `issue-request`、`issue-request-tutorial` → `issue-request`、`property-basic-info` / `issue-request` → `contract-application-status`、`contract-info-import` → `contract-info-download` の一方向のみで循環なし。すべての依存先の優先度が依存元より小さく、依存の逆転は無い |
+
+### 第 3 回実行で ① が確認した範囲（指摘なし）
+
+> ② へ進んだ根拠として、① で確認した項目を記録する。**これは合否の記載ではなく、検査した範囲の記録である。**
+
+| 検査 | 確認した内容 |
+|---|---|
+| 必須セクションの欠落 | `Templates/Flow/feature-list.md` の見出し 6 個（`# フィーチャー一覧` / `## フィーチャー一覧` / `### 項目の定義` / `## 種別の判定` / `## 優先度の決定方針` / `## 依存関係図（任意）`）がすべて対象に存在する |
+| フロントマター | キーは `status` / `updated_at` の 2 つでテンプレートと一致。`status: review`、`updated_at: 2026-09-24T18:20:00+09:00`（ISO 8601・オフセット付き） |
+| プレースホルダー残存 | `<UPPER_SNAKE>` 系統・`{{UPPER_SNAKE}}` 系統とも残存なし |
+| ID 書式 | フィーチャー一覧表の feature 名 6 件すべてが小文字英数とハイフンのみ。対応要求ID は延べ 41 件・実数 38 件がすべて `REQ-` + 3 桁。表内で重複するのは REQ-048 / REQ-049 / REQ-050 の 3 件（`property-basic-info` と `issue-request` に各 1 回ずつ）であり、`### 要求IDの多重割当（REQ-048 / REQ-049 / REQ-050）` に意図的である旨と人間判断（2026-09-24）が明記されているため ① の指摘としない（多重割当に伴う SSoT の所在は ② の指摘 #25 で扱う） |
+| 追加の存在検査 | 全 6 feature に feature 名・種別・目的・依存・優先度・想定規模・対応要求ID が存在。種別はすべて `User`。想定規模はすべて `大` / `中`。`依存` 列に現れる feature 名（`issue-request-tutorial` / `property-basic-info` / `issue-request` / `contract-info-import`）はいずれも表内に実在し、廃止した `organization-search-zoom` への参照は本文・図・表のいずれにも残っていない（改訂の経緯を述べる注記 2 箇所を除く） |
+| 要求ID の突合（双方向） | 分母は `.aidd/requirement-list.md` の分類 `機能` の 38 件（REQ-012〜REQ-045・REQ-047〜REQ-050）。`非機能`（REQ-001〜REQ-004）と `制約`（REQ-046 を含む）は分母から除外。**未割当の要求ID 0 件 / 要求一覧に存在しない対応要求ID 0 件**。ZOOM 廃止により割当先が消えた `機能` 要求は無い。ただし分母とした要求一覧は `status: review` である（② の指摘 #24） |
+| 依存の循環（トポロジカル判定） | 頂点 6・有向辺 4（`issue-request` → `issue-request-tutorial`、`contract-application-status` → `property-basic-info`、`contract-application-status` → `issue-request`、`contract-info-download` → `contract-info-import`）。依存を持たない `property-basic-info` / `issue-request-tutorial` / `contract-info-import` を除去 → `issue-request` / `contract-info-download` → `contract-application-status` の順で全 6 頂点をトポロジカルソートでき、**閉路なし**。孤立頂点なし（弱連結成分は 2 つ: {property-basic-info, issue-request-tutorial, issue-request, contract-application-status} と {contract-info-import, contract-info-download}）。依存先の優先度はいずれも依存元より小さく、優先度の振り直し（1〜6）による依存の逆転は無い |
+| 依存関係図との一致 | `## 依存関係図（任意）` の Mermaid `flowchart` のノード 6・エッジ 4 が `依存` 列と過不足なく一致する |
 
 ## 指摘
 
@@ -87,6 +103,16 @@ updated_at: 2026-09-11T15:32:00+09:00
 | 19 | 2 | ② | `### 共通基盤を feature にしない基準` | 本節は採番（`NumberingService`）・ファイルアップロード（`FileUploadService`）・コードマスタ取得（`CodeMstService`）・帳票エンジン・バッチ実行基盤の 5 つを名指しして feature に立てないとしている。`steering/architecture.md` の `### 共通基盤（shared）` はこれらに加えて 認証・セッション管理（`SessionService` / `LoginService`）、CSRF トークンの生成・検証、ログ出力（`LoggingInterceptor` / `LogUtils`）、例外の一括処理（`ExceptionResolver`）、共通ユーティリティを挙げているが、本節の列挙には含まれていない（権限制御のみ直前の `### 権限制御の扱い（feature にしない範囲）` が扱う）。列挙が網羅なのか例示なのかが読めず、`organization-search-zoom` を Platform feature として立てた線引き（新規に作成する画面であり `機能` 分類の要求を持つこと）が、これらにも同じ基準で適用されるかを確認できない。 | 対応せず進める | 人間判断（2026-09-11）: 本節の列挙は例示である。共通基盤の正は steering/architecture.md の ### 共通基盤（shared）であり、本節の目的は feature 化しない基準を示すことにある。 |
 | 20 | 2 | ② | `## フィーチャー一覧` / `contract-info-download` 行、`### 本プロジェクトでの算出根拠` / 優先度 6・7 | `contract-info-download` → `contract-info-import` の依存根拠が REQ-047「契約情報取込で使える形式の CSV ファイルをダウンロードする」であり、算出根拠欄も「取込の形式が確定する本 feature を先に置く」としている。これは CSV 形式の合意という設計上の前提であって、`### 項目の定義` が定める `依存` の意味（先に出来ていなければならない側）に当たるかが判別できない。形式が Phase 4 / 6 で共有されれば実装順の拘束にならない可能性がある。第 1 回の指摘 #6 と同一の記述が残っており `判断` 列は未記入である。 | 対応せず進める | 人間判断（2026-09-11）: 第1回の指摘 #6 と同一であり、同じ判断を採る。REQ-047 により取込側の形式が確定しないと出力仕様を書けないため、実装上の必須先行として意図的に依存に宣言する。 |
 | 21 | 2 | ② | `### 権限制御の扱い（feature にしない範囲）` / `### 共通基盤を feature にしない基準` / `### 本プロジェクトでの判定結果` / `### 本プロジェクトでの算出根拠` | いずれも `Templates/Flow/feature-list.md` に対応する見出しが無い追加セクションであり、第 1 回時点の 2 つ（判定結果・算出根拠）から 4 つに増えている。① 機械チェックはテンプレートに無いセクションを「あるべき」として指摘しないため形式の指摘にはならないが、`steering/database.md` の `### 業務コード・区分値・採番の設計ルール` が採っている「本節はテンプレートに枠が無いが…（配置は人間が承認 / 2026-09-11）」という明記が本ファイルには無い。追加を許容するのか、テンプレートに枠を設けるのかの確認が必要。第 1 回の指摘 #10 は `判断` 列が未記入である。 | 対応せず進める | 人間判断（2026-09-11）: 追加した 4 セクションはいずれも第1回の指摘 #5 / #13 への対応として人間が判断して配置したものである（配置は人間が承認）。database.md と同様の扱いとする。 |
+| 22 | 3 | ② | `## フィーチャー一覧`（表全体）／上流 = `steering/product.md` `## 開発物の概要・背景` | `steering/product.md`（`status: approved` / `updated_at: 2026-09-24T17:30:00+09:00`）の `## 開発物の概要・背景` 第 1 段落は「物件契約情報の申請状況の検索・一覧、物件基本情報の登録・変更と承認、発行依頼書の登録・変更と発番、契約情報の取込・ダウンロード、**作成組織検索（ZOOM）**を WTG に新規機能として追加する（REQ-011〜REQ-050）」と、作成組織検索（ZOOM）を本プロジェクトが追加する新規機能として列挙したままである。本ファイルは 2026-09-24 の改訂で `organization-search-zoom` を廃止して 6 feature としており、steering が固定した対象範囲と feature 分割が両立しない（`steering-conformance` の「矛盾」）。`product.md` は Phase 2 の第 4 回ゲートを経て同日 2026-09-24 に再承認されているが（`.aidd/gates/phase-2-steering.md` `### 承認（2 回目 — 2026-09-24）`）、ZOOM 廃止は反映されていない。 | 修正済 | — |
+| 23 | 3 | ② | `## フィーチャー一覧`（表全体）／上流 = `steering/architecture.md` `### フロントエンド（FE）`、`steering/api-standards.md` `## エンドポイントのパターン`・`### ZOOM 画面のメソッド（例外規定）` | `architecture.md` の `### フロントエンド（FE）` は FE の責務に「ZOOM 画面（別ウインドウ）の呼び出し」を挙げ、`api-standards.md` は「ZOOM 画面は `/zoom/**` の配下に置く」および `### ZOOM 画面のメソッド（例外規定）` を持つ。後者は「Phase 5 からの差戻し（2026-09-18）を受けて ZOOM 画面のメソッドを実態に合わせて固定する必要があるため追加した節である（配置は人間が承認 / 2026-09-24）」と記入根拠を述べており、その差戻し元は本改訂で廃止された `organization-search-zoom` の design である。本プロジェクトが新規 ZOOM 画面を作らなくなった後、これらの記述が「既存 ZOOM 17 本の説明」として残るのか、新規 ZOOM を作る前提のまま残っているのかが steering からも本ファイルからも読めない（`steering-conformance` の「逸脱」。steering 側を整理すべきか、本ファイル側で扱うべきかを問う形で出す）。 | 対応せず進める | 人間判断（2026-09-24）: `architecture.md` の `### フロントエンド（FE）` の「ZOOM 画面（別ウインドウ）の呼び出し」と `api-standards.md` の `/zoom/**` ルール・`### ZOOM 画面のメソッド（例外規定）` は、いずれも既存 ZOOM 17 本に対する FE 一般の責務・既存規約として成立する。新規 ZOOM を作らないことは `product.md` の修正（#22）と REQ-048 で示されるため、これらは変更しない。 |
+| 24 | 3 | ② | 上流 = `.aidd/requirement-list.md`（`status: review`）／本ファイル `### 要求IDの多重割当（REQ-048 / REQ-049 / REQ-050）`・`### 共通基盤を feature にしない基準` | 本ファイルの 2026-09-24 改訂は、置換後の REQ-048 / REQ-049 / REQ-050（`.aidd/requirement-list.md` `## 要求の変更履歴`）を根拠としているが、その `.aidd/requirement-list.md` は `status: review` であり `approved` ではない。`paths.md` §6 は「`status: approved` でないドキュメントを下流フェーズの入力にしない」と定め、Phase 3 の入力を `.aidd/requirement-list.md`（approved）と `steering/`（approved）に限っている。さらに `.aidd/gates/phase-1-intake.md` の `## 実行履歴` に 2026-09-24 の行は無く、置換後の 3 要求は Phase 1 のゲートを通っていない。本実行の要求ID 突合（実数 38 件・双方向で不整合なし）は、この未承認の要求文を分母とした突合である。 | 対応せず進める | 人間判断（2026-09-24）: ZOOM 廃止は Phase 1 と Phase 3 に同時に及ぶため、上流を先に approved にしてから下流を改訂する順序は構造上とれない。**承認の順序を Phase 1 → Phase 3 → Phase 4 とすることで解消する**。Phase 1 のゲート（第 6 回）も同日に実行済みであり、置換後の REQ-048〜050 は未検査ではない。 |
+| 25 | 3 | ② | `### 要求IDの多重割当（REQ-048 / REQ-049 / REQ-050）`／`## フィーチャー一覧` の `property-basic-info` 行・`issue-request` 行（`依存` 列）／`### 本プロジェクトでの算出根拠` 末尾の 2026-09-24 改訂注記 | 多重割当が意図的であることは本ファイルに明記されているが、そこから生じる**入力仕様の SSoT が未定**である。本ファイルは「2 feature の `requirements.md` は同一の入力仕様（会社名プルダウン・所属①②の桁数と必須／活性の条件）を持たねばならず、差異を設けてはならない」と要請する一方で、(1) どちらの feature が当該仕様の SSoT かを示していない、(2)「両 feature をまたぐ依存は発生しない」として `依存` 列に関係を宣言していない、(3)「共通化するかどうかは各 feature の design で扱う」として共通化の判断を feature ごとに委ねている。`paths.md` §6 により Phase 5 が読むのは「**依存 feature の `design.md`**」であるため、依存が宣言されていない `issue-request`（優先度 3）の design は `property-basic-info`（優先度 1）の design を入力に取れず、同一の入力仕様が独立に 2 回設計される。Phase 4 の requirements も両 feature で別々に書かれるため、同一性を担保する経路が本ファイルにも下流の入力規約にも存在しない（`ssot-consistency` の「二重定義」。SSoT の所在が未定のため、どちらを正とするかは人間の確認事項）。 | 修正済 | — |
+| 26 | 3 | ② | `### 本プロジェクトでの算出根拠` / 優先度の表の直後の段落（「依存に循環はない。…」） | 「`property-basic-info`・`issue-request-tutorial`・`contract-info-import` は依存を持たず、**他の 3 feature の依存はすべてこの 3 つから一方向に伸びる**」とあるが、`contract-application-status` の `依存` は `property-basic-info, issue-request` であり、`issue-request` は依存を持たない 3 feature に含まれない（`contract-application-status` → `issue-request` → `issue-request-tutorial` の 2 ホップの連鎖がある）。本文の記述が `## フィーチャー一覧` の `依存` 列と一致しない。なお循環が無いこと自体はトポロジカル判定で別途確認済みである（`### 第 3 回実行で ① が確認した範囲`）。 | 修正済 | — |
+| 27 | 3 | ② | `### 本プロジェクトでの算出根拠` 冒頭（「優先度 1〜4 は依存による必須先行で決まる」）／優先度 1・5 の根拠欄 | 「優先度 1〜4 は依存による必須先行で決まる」が `依存` 列から導けない。依存が定める半順序は `issue-request-tutorial` < `issue-request`、`property-basic-info` < `contract-application-status`、`issue-request` < `contract-application-status`、`contract-info-import` < `contract-info-download` の 4 本のみで、`property-basic-info`(1) と `issue-request-tutorial`(2) の相対順序、および `property-basic-info`(1) と `contract-info-import`(5) の相対順序は依存から出ない。残る根拠として優先度 1 の欄は「`steering/product.md` の主要ユースケースのうち最初に置かれる物件基本情報の登録・承認に対応するため」、優先度 5 の欄は「同ユースケースが `product.md` で最後に置かれているため末尾側に置く」と列挙順に依拠しているが、`product.md` の `## 主要ユースケース` は列挙順が優先順位を表すとは定めておらず、`## 提供価値` からもユースケース間の優劣は導けない。第 1 回の指摘 #11・第 2 回の指摘 #14 と同型だが、優先度を 1〜6 に振り直したことで本文の文言が更新されたため再掲する。 | 対応せず進める | 人間判断（2026-09-24）: 第 1 回 #11・第 2 回 #14 と同型の既決事項。依存が定める半順序で決まらない範囲を `steering/product.md` の主要ユースケースの並びで決めることは、`## 優先度の決定方針` の 2 に沿った扱いである（同方針は「根拠が無い場合は推測で並べず質問して停止する」と定めており、根拠のある並べ方を要求している）。 |
+| 28 | 3 | ② | `### 共通基盤を feature にしない基準` 第 1 段落 | 「採番（`NumberingService`）・ファイルアップロード（`FileUploadService`）・コードマスタ取得（`CodeMstService`）・帳票エンジン・バッチ実行基盤は、`steering/architecture.md` の `### 共通基盤（shared）` および `### バッチ` に既存 WiNG の構成要素として記載済み」とするが、`architecture.md` の `### 共通基盤（shared）` の責務の列挙に「帳票エンジン」は無く、`### バッチ` も責務として「帳票の一括生成」を挙げるのみで帳票エンジンを構成要素として記載していない。帳票の技術選定は `steering/tech.md` の `## 主要ライブラリ`（JasperReports）にある。根拠として示された所在と実際の記載箇所が一致しない（`evidence-guard` の「根拠の飛躍」）。 | 修正済 | — |
+| 29 | 3 | ② | `### 共通基盤を feature にしない基準`（節全体） | 見出しは「共通基盤を feature にしない基準」であるのに対し、第 2 段落は共通基盤ではない「作成組織の入力（REQ-048 / REQ-049 / REQ-050）」を feature にしない理由を扱っており、節内に性質の異なる 2 つの基準が並んでいる（第 1 段落 = 既存 WiNG の構成要素であり本プロジェクトで新たに作らないから／第 2 段落 = それ単体で成立する画面を持たないから）。今後あらわれる候補を feature にするか否かをどちらの基準で判定するのかが読めない。第 2 回の指摘 #19 に対する ③ の判断（列挙は例示であり共通基盤の正は `architecture.md`）は第 1 段落のみを対象としたものであり、第 2 段落は本改訂で新設された。 | 修正済 | — |
+| 30 | 3 | ② | `### 要求IDの多重割当（REQ-048 / REQ-049 / REQ-050）` | `Templates/Flow/feature-list.md` に対応する見出しを持たない追加セクションが 4 つから 5 つに増えた（新設分が本節）。第 2 回の指摘 #21 に対する ③ の判断（2026-09-11）は既存 4 節を「配置は人間が承認」として容認したものであり、本節はその対象外である。`steering/database.md` の `### 業務コード・区分値・採番の設計ルール` や `steering/api-standards.md` の `### ZOOM 画面のメソッド（例外規定）` が採っている「本節はテンプレートに枠が無いが…（配置は人間が承認 / 日付）」の明記が本節には無い。 | 修正済 | — |
+| 31 | 3 | ② | 本ゲート記録 `## 指摘` / `## 差戻し`（対象 = `.aidd/feature-list.md` の 2026-09-24 改訂） | 2026-09-24 の改訂（`organization-search-zoom` の廃止、`status` の `approved` → `review` への引き下げ、成果物の `.aidd/archive/2026-09-24-organization-search-zoom/` への退避）の経緯が、本ゲート記録の `## 指摘`（第 1・2 回の 21 件はいずれも ZOOM 廃止に触れていない）にも `## 差戻し`（1 件のみ。2026-09-11 の REQ-046 に関する Phase 1 差戻し）にも記録されていない。根拠は `.aidd/feature-list.md` 本文の注記（`### 共通基盤を feature にしない基準` 第 2 段落・`### 本プロジェクトでの算出根拠` 末尾）と `.aidd/requirement-list.md` の `## 要求の変更履歴` にのみ存在する。ゲート記録は判断と差戻しの履歴を持つ成果物であるため、現状では改版時に Phase 3 の変更経緯をゲート記録から辿れない。 | 修正済 | — |
 
 #### 第 1 回実行の差戻し先候補（提示のみ。戻すかどうかは ③ が決める）
 
@@ -108,12 +134,36 @@ updated_at: 2026-09-11T15:32:00+09:00
 | **Phase 2**（steering。人間承認必須） | 18 | `steering/security.md` の `#### チェックの適用箇所` が定める Service 層のデータ範囲の制御について、担い手の決め方が steering 側に書かれていない可能性がある。steering 側の記述で解消する場合は Phase 2 の範囲になる |
 | **Phase 1**（要求一覧） | なし | 第 1 回の差戻し（REQ-046 の分類を `機能` → `制約` に変更）は再承認済みの要求一覧に反映されており、要求ID の双方向突合に不整合は検出されなかった |
 
+#### 第 3 回実行の差戻し先候補（提示のみ。戻すかどうかは ③ が決める）
+
+> 本表は上記の指摘に付随する **候補の提示**であり、差戻しの決定ではない。実際に戻した場合は `## 差戻し` に記録する。
+
+| 候補 | 該当する指摘 # | 候補とした理由 |
+|---|---|---|
+| **Phase 3 内で修正**（feature-list 自身の記述・根拠・節構成） | 26 / 27 / 28 / 29 / 30 | 依存の記述と表の不一致、優先度の根拠づけ、根拠の所在の誤り、節に並ぶ 2 つの基準、追加セクションの扱いは、いずれも本ファイルの記述で解消しうる |
+| **Phase 2**（steering。人間承認必須） | 22 / 23 | 22 は `steering/product.md` の `## 開発物の概要・背景` が作成組織検索（ZOOM）を新規機能として挙げたままであること、23 は `architecture.md` / `api-standards.md` の ZOOM 関連記述が新規 ZOOM を前提としているかが読めないこと。いずれも steering 側の記述が対象であり、**ゲートも Phase 3 も steering を書き換えない** |
+| **Phase 1**（要求一覧。人間承認を経て更新） | 24 | 置換後の REQ-048 / REQ-049 / REQ-050 を持つ `.aidd/requirement-list.md` が `status: review` であり、Phase 1 のゲート実行も記録されていない。Phase 3 の確定が Phase 1 の再承認に先行してよいかの確認が要る |
+| **所在の確認が必要**（Phase 3 内 / Phase 4・5 の記述分担のいずれか） | 25 | 作成組織の入力仕様の SSoT を、feature-list の `依存` 列で表すのか、Phase 4 の requirements の記述分担で決めるのか、Phase 5 の design で共通化して決めるのかが確定していない。どこで解決するかの選択自体が人間の判断事項 |
+| **記録の整備**（ゲート記録。転記はオーケストレータ） | 31 | 2026-09-24 の改訂と status 引き下げの経緯がゲート記録に無い。成果物の不備ではなく記録の欠落であるため、差戻し先ではなく記録の追記で解消する候補として挙げる |
+
 ### 【横断】feature をまたぐ検査
 
 > 全 feature が揃ってから実行する横断スコープの検査結果を、feature 別セクションとは分けて置く。
 
 | # | 回数 | 層 | 対象 feature | 指摘内容 | 判断 | 理由 |
 |---|---|---|---|---|---|---|
+
+#### 修正内容（2026-09-24 / ③ Junichi Noumi） — 第 3 回の指摘 #22〜#31
+
+| # | 対象 | 変更内容 |
+|---|---|---|
+| 22 | `steering/product.md` | `## 開発物の概要・背景` の新規機能の列挙から作成組織検索（ZOOM）を外し、「作成組織は発行依頼書の画面内の入力欄として扱い、独立した検索画面（ZOOM）は作成しない（REQ-048）」を追記した。**Phase 2 は `draft` へ引き下げず approved を維持する**（ZOOM 廃止という既決事項への追随であり新しい設計判断を含まないため）。この扱いは `.aidd/gates/phase-2-steering.md` の `### 承認（2 回目 — 2026-09-24）` の 再ゲートの状況 に追記した |
+| 25 | `.aidd/feature-list.md` | 2026-09-24 の 2 度目の方針確定により、**作成組織を入力するのは `issue-request` のみ**となった（`property-basic-info` は既存テーブル `TWTGM100` の契約稟議起案者_会社名をラベル表示するだけ）。これにより「2 feature が同一仕様を持つ」という要請自体が消え、同一仕様が独立に 2 回設計される問題は生じない。`### 要求IDの多重割当` を REQ-048 のみを対象とする内容へ書き直し、2 feature の担う部分（入力 / 表示）を表で分けた |
+| 26 | `.aidd/feature-list.md` | `### 本プロジェクトでの算出根拠` の末尾を修正。「他の 3 feature の依存はすべてこの 3 つから一方向に伸びる」を改め、**`contract-application-status` → `issue-request` → `issue-request-tutorial` が 2 ホップの連鎖である**ことを明記した |
+| 28 | `.aidd/feature-list.md` | `### 共通基盤を feature にしない基準` の記載先を実態に合わせた。採番・ファイルアップロード・コードマスタ取得は `architecture.md` の `### 共通基盤（shared）`、バッチ実行基盤は同 `### バッチ`、**帳票エンジンは `tech.md` の `## 主要ライブラリ`**（一括生成は `architecture.md` の `### バッチ`）と書き分けた |
+| 29 | `.aidd/feature-list.md` | 性質の異なる 2 つの基準を節に分けた。`### 共通基盤を feature にしない基準`（既存 WiNG の構成要素だから）と `### 作成組織を feature にしない理由（共通基盤とは別の理由）`（それ単体で成立する画面を持たないから）。後者に「共通基盤であることを理由としない」と明記した |
+| 30 | `.aidd/feature-list.md` | `### 要求IDの多重割当（REQ-048）` の冒頭に「テンプレートに枠が無いが必要なため追加した節である（配置は人間が承認 / 2026-09-24）」を明記した |
+| 31 | 本記録 | 下の `## 差戻し` に 2026-09-24 の改訂の経緯（引き下げ・改訂内容・アーカイブ退避）を記録した |
 
 ## 差戻し
 
@@ -122,6 +172,7 @@ updated_at: 2026-09-11T15:32:00+09:00
 
 | 回数 | 戻し先 | 対象成果物 | 引き下げた `status` | 理由 |
 |---|---|---|---|---|
+| 1 | Phase 3（本フェーズ内の改訂） | `.aidd/feature-list.md` | `approved` → `review` | 2026-09-24 に ③ が `organization-search-zoom` feature の廃止を決定したため（2024-06-25 に ZOOM 管理台帳から `ZWTZ072` を廃止した設計変更の確定。RFP §4-6 からの変更・発注者と合意済み）。7 feature → 6 feature、優先度を 1〜6 に振り直し、`property-basic-info` の `依存` を `なし`・`issue-request` の `依存` を `issue-request-tutorial` のみに付け替え、REQ-048 を 2 feature へ多重割当（REQ-049 / REQ-050 は `issue-request` のみ）。廃止した feature の成果物は `.aidd/archive/2026-09-24-organization-search-zoom/` へ退避した。同日 Phase 1（要求一覧）と Phase 4（2 feature の requirements）も同じ理由で `review` へ引き下げている |
 | 1 | Phase 1（要求受入） | `.aidd/requirement-list.md` | `approved` → `draft`（Phase 1 で本文を修正するため `draft` まで引き下げる） | 指摘 #13 に対する ③ の判断（2026-09-11）。REQ-046「新規機能の権限制御は、既存 WTB と同様のベンダー／施工会社の権限制御方式に合わせる」は方式の拘束であり、分類を `機能` から `制約` に改める。制約となることで REQ-046 は feature 割当の分母から外れ、`access-control` feature を立てる根拠が無くなるため、Phase 1 での修正と再承認を待って `.aidd/feature-list.md` を修正する。REQ-046 の内容は `steering/security.md` に反映済みで変更が無いため、steering は差し戻さない。 |
 
 ## 承認
@@ -137,6 +188,49 @@ updated_at: 2026-09-11T15:32:00+09:00
 | 承認時の残件 | 未対応 0 件。対応せず進める 11 件（第 1 回 #6・#7・#11／第 2 回 #14〜#21）。修正済 10 件（第 1 回 #1〜#5・#8〜#10・#12・#13）。差戻し 1 件（#13 → Phase 1。2026-09-11 に再承認され解消済み） |
 | 遷移後の `status` | `approved` |
 
+### 承認（2 回目 — 2026-09-24。ZOOM 廃止に伴う差戻し後）
+
+| 項目 | 内容 |
+|---|---|
+| 対象成果物 | `.aidd/feature-list.md` |
+| 承認者 | Junichi Noumi |
+| 承認日 | 2026-09-24 |
+| 承認時の残件 | 未対応 0 件／対応せず進める 3 件（#23 / #24 / #27）。修正済 7 件（#22 / #25 / #26 / #28〜#31）。第 3 回のゲートは ① 0 件・② 10 件を検出し、① / ② の両層を実行している |
+| 再ゲートの状況 | **第 3 回の指摘に対する修正 7 件は、再ゲート（第 4 回）を通していない。** ③ の判断（2026-09-24）: 当該 7 件は事実誤りの訂正・記載先の是正・節の分割・人間承認の明記・経緯の記録であり、feature の分割・依存・優先度そのものを変えていない（#25 は方針確定により要請自体が消えたもの）。往復上限（各フェーズ 1 回）を使い切っていることから、再実行せずに承認する。**#22 に対する `steering/product.md` の修正も Phase 2 の再ゲートを通していない**（`.aidd/gates/phase-2-steering.md` の `### 承認（2 回目 — 2026-09-24）` に記録済み）。 |
+| 上流の状態 | 本承認の時点で `.aidd/requirement-list.md` は同日 `approved` 済み（`phase-1-intake.md` の `### 承認（3 回目 — 2026-09-24）`）。#24 が指摘した「`approved` でない上流を入力にした」状態は、この承認順序により解消している |
+| 遷移後の `status` | `approved` |
+
 ---
 
 _検査の記録であり、仕様ではありません。履歴として残し、上書きしないでください。指摘の対象となった成果物側の正はそれぞれの仕様ファイルです。_
+### 追加の改訂（2026-09-24 / ③ Junichi Noumi） — 申請No の採番元の確定に伴う `依存` の追加
+
+> 指摘に対する対応ではなく、**③ が新たに確定した事項による改訂**である。第 3 回の指摘 #22〜#31 とは独立している。
+
+| 項目 | 内容 |
+|---|---|
+| 確定した事項 | **申請No を採番するのは `property-basic-info`**（物件申請情報マスタ `TWTGM080` に登録する）。`issue-request` は**画面から受け取った申請No**で `TWTGM100` に登録する。再製本・修正稟議のときは `property-basic-info` が申請No を新しく採番し、`TWTGM100` の行も新しい申請No で作り直す（作り直しは `issue-request` が行う） |
+| 根拠 | WTG070 機能定義書の「更新条件(物件申請情報ﾏｽﾀ)」「更新条件(発行依頼書情報ﾏｽﾀ)」（申請No＝「再製本時に新規採番した申請No」）、WTG080 機能定義書の「更新条件(発行依頼書情報ﾄﾗﾝ)」（申請No＝申請画面．申請No）。既存実装では `WTX_Batch/src/jp/co/kccs/wt/wtg/wtg090/PWTGB090Job.java` が `TWTGM080` / `TWTGM100` をいずれも (会社コード, 申請No) で引いていることを確認した |
+| `.aidd/feature-list.md` の変更 | `issue-request` の `依存` を `issue-request-tutorial` → **`property-basic-info, issue-request-tutorial`** に変更。Mermaid に `PROP --> ISSU` を追加（有向辺 4 本 → 5 本）。`### 本プロジェクトでの算出根拠` の優先度 3 の根拠と `**2026-09-24 の改訂**` の注記を更新し、`### 要求IDの多重割当（REQ-048）` にも追記した |
+| 2026-09-24 の記述の取り消し | 同日に「両 feature をまたぐ依存は発生しない」と記していたが、**これは申請No の採番元が未確定だった時点の判断であり、本改訂で取り消す**。依存の根拠はテーブルの共有ではなく申請No の採番元である |
+| 順序への影響 | 優先度は既に `property-basic-info`(1) < `issue-request`(3) であるため**順序の変更は不要**。有向辺 5 本はトポロジカルソート可能であり**循環は生じない** |
+| 再ゲートの状況 | **本改訂は再ゲートを通していない。** ③ の判断（2026-09-24）: `依存` 列 1 セルの追加とその根拠の記述であり、feature の分割・種別・優先度を変えていない。`issue-request` の未確定事項 ⑬ が「『紐づく』に確定した場合は `依存` 列に `property-basic-info` を加える。その変更は Phase 3 への差戻しとして扱う」と**あらかじめ定めていた手順どおりの変更**である |
+| 承認 | Junichi Noumi / 2026-09-24。`status` は `approved` を維持する |
+
+### 追加の改訂（2026-09-24 / ③ Junichi Noumi） — `TWTGM080` / `TWTGM100` を新規テーブルに訂正
+
+> `.aidd/feature-list.md` の `### 要求IDの多重割当（REQ-048）` と `## 優先度の決定方針` の 2026-09-24 の注記にあった「`TWTGM100` / `TWTGM080` はいずれも既存 WiNG のテーブルであり本プロジェクトで新設しない」を訂正した。**両テーブルは本プロジェクト（PJ45）で新規に追加する**（人間判断 / 2026-09-24。`WTX_Batch` の `PWTGB090Job` が参照しているのは本プロジェクトより後に作られたコードである）。`TWTGM080` は `property-basic-info` が、`TWTGM100` は `issue-request` が定義する。
+>
+> **`依存` 列は変更していない。** 依存は `issue-request` → `property-basic-info`（申請No の採番元）の 1 本のみで、循環は生じない。`property-basic-info` が `TWTGM100` を読む点は、同 feature の design が「読む 2 列とキー」を契約として宣言し `issue-request` が満たす形で解く（③ の判断 / 2026-09-24）。
+>
+> **本訂正は再ゲートを通していない。** `status` は `approved` を維持する。
+
+### 追加の改訂（2026-09-24 / ③ Junichi Noumi） — 契約局情報マスタ `TWTGM140` の所有者の明記
+
+| 項目 | 内容 |
+|---|---|
+| 確定した事項 | **契約局情報マスタ `TWTGM140` は PJ45 で新規に追加するテーブルであり、持ち主は `issue-request`**（発行依頼書画面 WTG080 が更新する）。`property-basic-info` は帳票のために読み取りのみで読む |
+| 根拠 | WTG_ｴﾝﾃｨﾃｨ一覧 の改訂履歴 3（新規ｴﾝﾃｨﾃｨ追加 TWTGM140_契約局情報ﾏｽﾀ）、WTG080 機能定義書「更新条件(契約局情報ﾏｽﾀ)」。検出は Phase 5 の `property-basic-info` design（ゲート記録 #9 の判断 C） |
+| `.aidd/feature-list.md` の変更 | `### 要求IDの多重割当（REQ-048）` の注記に `TWTGM140` の所有者と読み取りの関係を 1 文追記した。**`依存` 列・優先度・feature の分割は変更していない**（`依存` の宣言と読み取りの実体の差は `phase-5-design.md` #19 で ③ の判断待ち） |
+| 再ゲートの状況 | **本改訂は再ゲートを通していない。** ③ の判断（2026-09-24）: `property-basic-info` の design が終わった時点で、steering / requirements / feature-list の未検査の改訂をまとめて 1 回だけ再ゲートする（`phase-5-design.md` #28） |
+| 承認 | Junichi Noumi / 2026-09-24。`status` は `approved` を維持する |

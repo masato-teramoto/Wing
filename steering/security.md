@@ -1,6 +1,6 @@
 ---
 status: approved
-updated_at: 2026-09-11T12:02:27+09:00
+updated_at: 2026-09-24T17:30:00+09:00
 ---
 
 # セキュリティ標準
@@ -41,9 +41,9 @@ updated_at: 2026-09-11T12:02:27+09:00
 | --- | --- | --- | --- |
 | ブラウザ（画面） | 入力補助と即時の気づき。検証の正とはしない | 入力欄の書式制御・活性制御・チュートリアルによる誘導（REQ-035） | `specs/design.md` |
 | Interceptor | 認証・権限・CSRF・想定外パラメータの遮断 | `SessionCheckInterceptor` / `PasswordCheckInterceptor` / `AccessControlInterceptor` / `CSRFTokenCheckInterceptor` | 本ファイルの `## 認証・認可` |
-| Controller（Form バインド） | 型・必須・桁・書式の宣言的チェック | Bean Validation（hibernate-validator）+ `BindingResult`。配列のバインド上限は `ControllerBase` で 1024 | `tech.md` の `## 例外処理` |
+| Controller（Form バインド） | 型・必須・桁・書式の宣言的チェック | Bean Validation（hibernate-validator）+ `BindingResult`。配列・明細行のバインド上限は `ControllerBase.configureWebDataBinder` で 1024（**本行を上限値の正本とする**） | `tech.md` の `## 例外処理` |
 | Service（業務チェック） | 業務ルールとしての妥当性・存在確認・整合性 | `ValidationUtils` の共通チェックと、機能固有のチェックを Service に置く。エラーはメッセージIDで返す | `tech.md` の `## 例外処理` |
-| Mapper / DB | データ整合性の最後の砦 | パラメータは `#{...}` と `jdbcType` の明示。制約は `database.md` | `database.md` |
+| Mapper / DB | データ整合性の最後の砦 | パラメータの書き方は `database.md` の `## クエリパターン` を正とする。制約も `database.md` | `database.md` |
 
 ### 出口 — 出力エスケープ
 
@@ -51,7 +51,7 @@ updated_at: 2026-09-11T12:02:27+09:00
 | --- | --- | --- | --- |
 | HTML（Thymeleaf） | XSS | `th:text` による自動エスケープを既定とする | `th:utext` で利用者入力をそのまま描画する |
 | JavaScript | XSS（スクリプト差し込み） | 画面内の JavaScript は `<PGID小文字>Script.html` に分離し、サーバの値はエスケープ済みの属性・データ属性経由で渡す | サーバの値を JavaScript のコードへ文字列連結する |
-| SQL | SQL インジェクション | MyBatis の `#{...}`（プレースホルダ）を使い `jdbcType` を明示する | `${...}` による SQL 文字列の連結 |
+| SQL | SQL インジェクション | `database.md` の `## クエリパターン`「パラメータ」を正とする | `${...}` による SQL 文字列の連結 |
 | CSV（ダウンロード） | 文字化け・取込側の解釈崩れ | 取込で使える形式を維持する（REQ-047）。文字コードは既存の設定（`wing-web.properties` の `CHARSET`）に従う | 区切り・引用符の扱いを機能ごとに変える |
 | 帳票（PDF） | 情報の過剰表示 | 出力情報は表紙情報・発行依頼書・契約局情報に限る（REQ-023） | 権限外の項目を帳票に含める |
 | ログ | 機密情報の流出 | 本ファイルの `## セキュリティログ` と `## 機密データ` に従う | パスワード・セッションIDをログに出す |
@@ -72,9 +72,9 @@ updated_at: 2026-09-11T12:02:27+09:00
 
 | 攻撃 | 対策 | 参照 |
 | --- | --- | --- |
-| SQL インジェクション | MyBatis の `#{...}` を使用し `${...}` を使わない。SQL は Mapper XML に置く | `tech.md` の `## コード規約` |
+| SQL インジェクション | `database.md` の `## クエリパターン`「SQL の置き場」「パラメータ」を正とする | `database.md` |
 | XSS | Thymeleaf の自動エスケープ（`th:text`）を既定とする | 本ファイルの「出口 — 出力エスケープ」 |
-| CSRF | 更新系リクエスト（`/**/regist` / `update` / `delete` / `approved` / `reset` / `execute` / `upload`）に `CSRFTokenCheckInterceptor` でトークン検証。トークンは `CSRFTokenCreateInterceptor` が発行し、セッション（`SESSION_CSRF_TOKEN_KEY`）とリクエスト（`_csrf`）で突合する | `servlet-context.xml` の `mvc:interceptors` |
+| CSRF | 更新系リクエスト（**対象となるアクション名は `api-standards.md` の `## エンドポイントのパターン`「アクション系」を正とする**）に `CSRFTokenCheckInterceptor` でトークン検証。トークンは `CSRFTokenCreateInterceptor` が発行し、セッション（`SESSION_CSRF_TOKEN_KEY`）とリクエスト（`_csrf`）で突合する | `servlet-context.xml` の `mvc:interceptors` |
 | 認可回避（強制ブラウズ） | Controller に `@FuncID` を付け、`AccessControlInterceptor` がメニューID×機能IDの権限を毎リクエスト確認する。権限が無ければ `InvalidAccessErrorException` | 本ファイルの `## 認証・認可` |
 | セッション不正利用 | `SessionCheckInterceptor` による毎リクエストのセッション確認。アクセス元 IP は `X-Forwarded-For` を参照 | 本ファイルの `## セッション / トークンの保管・転送` |
 | パスワードの推測・使い回し | `ValidationUtils` のパスワード規則（文字種・3 連続の禁止・禁止語・禁止記号）と、有効期限・ロックフラグによる制御 | 本ファイルの `### パスワード / MFA` |
@@ -114,8 +114,9 @@ updated_at: 2026-09-11T12:02:27+09:00
 
 | ヘッダ / 設定 | 推奨 |
 | --- | --- |
-| 文字エンコーディング | リクエスト・レスポンスとも UTF-8（`web.xml` の `CharacterEncodingFilter` で `forceEncoding=true`） |
+| 文字エンコーディング | リクエスト・レスポンスとも UTF-8（`web.xml` の `CharacterEncodingFilter` で `forceEncoding=true`）。**本行を正本とする**（`api-standards.md` の `### パラメータ配置` から参照される） |
 | クライアント IP の取得 | `X-Forwarded-For`（`Constants.REQUEST_HEADER_SOURCE_IP`）。リバースプロキシ経由を前提とする |
+| 転送時の暗号化 | ブラウザ ↔ リバースプロキシ間は HTTPS / TLS を前提とする（既存 WiNG の構成に従う — REQ-053）。TLS の終端・証明書・プロトコル版・HSTS は既存のインフラ設定を正とし、本プロジェクトで新たに定めない。Cookie の `Secure` 属性を前提にしてよい |
 | <SECURITY_HEADER_N> | <SECURITY_HEADER_VALUE_N>（不要 / 人間 2026-09-11: 既存 WiNG の運用・実装に従う） |
 
 ## セキュリティログ
@@ -167,7 +168,7 @@ updated_at: 2026-09-11T12:02:27+09:00
 - **採用理由**: 既存 WiNG が本方式で稼働しており、既存機能との整合性を維持したまま WTG に機能を追加するため（REQ-009 / REQ-053）
 - **代替案と不採用理由**: <AUTH_METHOD_ALTERNATIVE> — **不要（記入者: 人間 / 2026-09-11）**: 既存構成を変えないため代替案の検討を行わない（REQ-053）
 
-#### 認証フロー（高レベル）
+#### 認証フロー
 
 > 識別 → 検証 → 発行 → 添付 → 毎リクエスト検証 という不変の骨格に、プロジェクト固有のステップ（OAuth コールバック等）を当てはめて記述する。署名アルゴリズム等の実装詳細は `specs/design.md`。
 
@@ -259,7 +260,7 @@ updated_at: 2026-09-11T12:02:27+09:00
 | MFA | <MFA_POLICY>（不要 / 人間 2026-09-11: 既存 WiNG の運用・実装に従う。本プロジェクトで MFA を新たに導入しない） |
 | アカウントロック | ロックフラグ（`Lock_Flg`）で認証を拒否する。ロックの発動条件と解除手順は <ACCOUNT_LOCK_POLICY>（不要 / 人間 2026-09-11: 既存 WiNG の運用・実装に従う） |
 
-### API 間認証（service-to-service）
+### API 間認証
 
 | 項目 | 内容 |
 | --- | --- |
