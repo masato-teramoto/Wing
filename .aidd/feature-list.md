@@ -1,6 +1,6 @@
 ---
-status: approved
-updated_at: 2026-09-24T12:10:00+09:00
+status: draft
+updated_at: 2026-09-25T10:46:00+09:00
 ---
 
 # フィーチャー一覧
@@ -62,7 +62,7 @@ updated_at: 2026-09-24T12:10:00+09:00
 
 ### 共通基盤を feature にしない基準
 
-> 採番（`NumberingService`）・ファイルアップロード（`FileUploadService`）・コードマスタ取得（`CodeMstService`）は `steering/architecture.md` の `### 共通基盤（shared）`、バッチ実行基盤は同 `### バッチ`、帳票エンジン（JasperReports / report-engine）は `steering/tech.md` の `## 主要ライブラリ`（一括生成は `architecture.md` の `### バッチ`）に、いずれも **既存 WiNG の構成要素として記載済み**であり、本プロジェクトで新たに作るものではない（REQ-053）。したがって feature として立てず、利用する側の feature の中で扱う。
+> 採番（`NumberingService`）・ファイルアップロード（`FileUploadService`）・コードマスタ取得（`CodeMstService`）は `steering/architecture.md` の `### 共通基盤（shared）`、バッチ実行基盤は同 `### バッチ`、帳票エンジン（report-engine）は `steering/tech.md` の `## 主要ライブラリ`（一括生成は `architecture.md` の `### バッチ`）に、いずれも **既存 WiNG の構成要素として記載済み**であり、本プロジェクトで新たに作るものではない（REQ-053）。したがって feature として立てず、利用する側の feature の中で扱う。
 ### 作成組織を feature にしない理由（共通基盤とは別の理由）
 
 > 前節は「既存 WiNG の共通基盤だから feature にしない」という基準であり、本節は理由が異なるため分けて書く。

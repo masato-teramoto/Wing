@@ -234,3 +234,12 @@ _検査の記録であり、仕様ではありません。履歴として残し�
 | `.aidd/feature-list.md` の変更 | `### 要求IDの多重割当（REQ-048）` の注記に `TWTGM140` の所有者と読み取りの関係を 1 文追記した。**`依存` 列・優先度・feature の分割は変更していない**（`依存` の宣言と読み取りの実体の差は `phase-5-design.md` #19 で ③ の判断待ち） |
 | 再ゲートの状況 | **本改訂は再ゲートを通していない。** ③ の判断（2026-09-24）: `property-basic-info` の design が終わった時点で、steering / requirements / feature-list の未検査の改訂をまとめて 1 回だけ再ゲートする（`phase-5-design.md` #28） |
 | 承認 | Junichi Noumi / 2026-09-24。`status` は `approved` を維持する |
+
+### 追加の改訂（2026-09-25 / ③ Junichi Noumi） — 帳票エンジンの記述から JasperReports を外す
+
+| 項目 | 内容 |
+|---|---|
+| 変更 | `.aidd/feature-list.md` の `### 共通基盤を feature にしない基準` の注記（65 行目）の「帳票エンジン（JasperReports / report-engine）」を「帳票エンジン（report-engine）」に改めた |
+| 理由 | `steering/tech.md` の `## 主要ライブラリ` を 2026-09-25 に改訂し、オンラインの帳票を Excel テンプレート方式にして JasperReports を帳票の基盤に使わないとした（Phase 5 の `property-basic-info` design の `### 判断 9`）。その記述と食い違っていた |
+| 再ゲートの状況 | **再ゲートを通していない。** `phase-5-design.md` #28 のまとめ再ゲートに含める（③ の判断 / 2026-09-25） |
+| 承認 | Junichi Noumi / 2026-09-25。`status` は `approved` を維持する |

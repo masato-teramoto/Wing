@@ -1,6 +1,6 @@
 ---
-status: approved
-updated_at: 2026-09-24T17:30:00+09:00
+status: review
+updated_at: 2026-09-25T12:54:34+09:00
 ---
 
 # 技術スタック
@@ -27,7 +27,7 @@ updated_at: 2026-09-24T17:30:00+09:00
 | フレームワーク（BE） | Spring Framework（Spring MVC） | 4.3.5.RELEASE | `DispatcherServlet` + `servlet-context.xml`。JavaKit / geframe（`geframe-core` / `geframe-commons` / `geframe-jk2extension` 3.5.0、`javakit` 2.14.3）と併用 |
 | ランタイム | Apache Tomcat（Servlet 3.0 / WAR デプロイ） | `web.xml` は `web-app_3_0.xsd`。ローカル実行は tomcat7-maven-plugin 2.2 | 成果物名 `wing-web.war`（`pom.xml` の `finalName`） |
 | データベース | Oracle Database | JDBC ドライバ ojdbc7 12.1.0.2（`wing/pom.xml`） | 接続は JNDI データソース `java:comp/env/jdbc/wingDB` |
-| キャッシュ / KVS | 採用しない | — | 既存 WiNG に該当構成が無い。HTTP セッション（`HttpSession`）以外のキャッシュ層を新規に導入しない |
+| キャッシュ / キー・バリューストア（KVS） | 採用しない | — | 既存 WiNG に該当構成が無い。HTTP セッション（`HttpSession`）以外のキャッシュ層を新規に導入しない |
 | メッセージング | 採用しない | — | 非同期処理は JavaKit バッチエンジンへのタスク登録で行う（`BatchCommonService`） |
 
 ## 主要な技術選定と理由
@@ -56,12 +56,14 @@ updated_at: 2026-09-24T17:30:00+09:00
 
 > 開発パターンに影響する主要ライブラリのみ。全依存はここに書かない。繰り返しが必要な項目は `*_N` を行追加用スロットとして使う。
 
-- **ORM / クエリ**: MyBatis 3.4.5 + mybatis-spring 1.3.1 — 既存の DB アクセスが Mapper インタフェース + XML の SQL で実装されており、これに合わせる（REQ-053）
+- **ORM / クエリ / マイグレーション**: MyBatis 3.4.5 + mybatis-spring 1.3.1 — 既存の DB アクセスが Mapper インタフェース + XML の SQL で実装されており、これに合わせる（REQ-053）
 - **バリデーション**: Bean Validation（validation-api 1.1.0.Final / hibernate-validator 5.0.1.Final）+ 業務チェックの `ValidationUtils` — 既存の入力チェックが `LocalValidatorFactoryBean` と `ValidationUtils` の併用で実装されている
 - **テスト**: JUnit 4.12 + spring-test 4.3.5.RELEASE — `wing/pom.xml` の test スコープ依存。適用範囲と運用は本ファイルの `## テスト方針` を参照
 - **認証**: 自前実装（`LoginService` / `SessionCheckInterceptor` / `PasswordCheckInterceptor` / `AccessControlInterceptor`）— 方針は `security.md` の `## 認証・認可` を正とする
 - **HTTP クライアント**: Apache HttpClient 4.5.3 — 外部連携が必要な場合のみ使用する
-- **帳票**: JasperReports 6.5.1（オンライン）／ report-engine（`WTX_Batch`）— 帳票出力（REQ-023 / REQ-025）の基盤
+- **リトライ / 外部依存の遮断**: <LIB_RETRY> — <LIB_RETRY_REASON> — **不要（記入者: 人間 / 2026-09-25）**: wing には既存のリトライ用ライブラリが無く、本リリースでも外部サービスを同期で呼ばないため
+- **帳票**: オンラインは Excel テンプレート方式（原本の Excel をコピーして値を書き込み、PDF に変換する。Excel を扱うライブラリは未確定で、選定したら本行に追記する）／ report-engine（`WTX_Batch`）— 帳票出力（REQ-023 / REQ-025）の基盤。`wing/pom.xml` に宣言のある JasperReports 6.5.1 は帳票の基盤に使わない（人間が確定 / 2026-09-25。根拠: WTG070 機能定義書_印刷・閲覧用帳票）
+- **QR コード**: zxing core 3.2.1 — 帳票の表紙情報に印字する QR コード画像の生成（REQ-024）
 - **ログ**: Log4j 2（log4j-api / log4j-core 2.12.4）— 設定は `wing/src/main/resources/log4j2.xml`。出力方針は `non-functional.md` の `### ログ方針` を正とする
 - **JSON / シリアライズ**: Jackson 2.9.4 / Gson 2.8.1 — 画面の非同期通信で使用
 - **ファイルアップロード**: commons-fileupload 1.3.3（`CommonsMultipartResolver`。`maxUploadSize` は 1,048,576,000 バイト。**本項を上限値の正本とする**）— 契約稟議に関するファイル登録（REQ-020）で使用
@@ -91,9 +93,9 @@ updated_at: 2026-09-24T17:30:00+09:00
 
 - **ブランチ運用モデル**: <GIT_BRANCHING_MODEL>
 - **保護ブランチ**: <PROTECTED_BRANCH>
-- **保護ブランチの条件**: <PROTECTED_BRANCH_RULE>（直接 push 禁止・PR 必須・CI の通過必須）
-- **マージ方法**: <MERGE_STRATEGY>（短命ブランチを切って取り込む）
-- **リリースタグ**: <RELEASE_TAG_CONVENTION>（リリース時のみ `<PROTECTED_BRANCH>` ブランチに付与する。例: `v1.2.3`）
+- **保護ブランチの条件**: <PROTECTED_BRANCH_RULE>
+- **マージ方法**: <MERGE_STRATEGY>
+- **リリースタグ**: <RELEASE_TAG_CONVENTION>
 
 ※マージ条件・詳細ルールは `## 開発標準`、CI 詳細は本ファイルの `## テスト方針` > `### CI 統合`、本番リリース・障害対応は `non-functional.md`、シークレット管理は `security.md` を参照。
 
@@ -167,6 +169,7 @@ updated_at: 2026-09-24T17:30:00+09:00
 | Mapper XML | Mapper インタフェースと同名の `.xml`。`src/main/resources` 配下の **同一パッケージパス** に置き、`namespace` に完全修飾名を書く | `jp/co/kccs/wt/common/mapper/NumberingMapper.xml` |
 | domain クラス | `database.md` の `## 命名規則` を正とする | — |
 | domain のフィールド | `database.md` の `## 命名規則` を正とする | — |
+| ファイル（コンポーネント） | 1 ファイル = 1 クラスとし、ファイル名はクラス名と同じにする（`<クラス名>.java`）。画面のファイルは下の「Thymeleaf テンプレート」の行に従う。`architecture.md` のコンポーネント（責務の単位）とは別の概念である（人間が確定 / 2026-09-25） | `Pwtgo070Controller.java` / `pwtgo070.html` |
 | Thymeleaf テンプレート | `/WEB-INF/pages/<サブシステム小文字>/<画面ID小文字>/<PGID小文字>.html`。画面内の JavaScript は同ディレクトリの `<PGID小文字>Script.html` に分ける | `wtg/wtg004/pwtgo008.html` / `pwtgo008Script.html` |
 | ZOOM 画面 | `z` で始まるパッケージに置き、表示サイズを `wing-web.properties` の `ZOOM_DEFINE.<PGID小文字>` に定義する | `zwtz002` |
 | メッセージID | `<3 文字の区分>-<6 桁の連番>`。`messages.properties` に定義する | `DS-000001` / `GEF-000036` |
@@ -197,7 +200,7 @@ updated_at: 2026-09-24T17:30:00+09:00
 
 > ここでは **例外オブジェクト** を各箇所でどう扱い、上位層に渡していくかを定める（exception propagation）。
 > 識別子（`requestId` / `traceId`）の下流伝播は `non-functional.md` の「ログ方針 > トレース ID / リクエスト ID の伝播」を参照。
-> _分担_: フィーチャー固有の例外クラス一覧は `specs/design.md` の Error Handling に書く。
+> _分担_: フィーチャー固有の例外クラス一覧は `specs/<feature-name>/design.md` の Error Handling に書く。
 
 | 箇所 | 方針 |
 | --- | --- |
@@ -227,7 +230,7 @@ updated_at: 2026-09-24T17:30:00+09:00
 
 ### グローバルハンドラ
 
-> `HandlerExceptionResolver` の実装 `ExceptionResolver` を `@Component` として登録し、Controller で捕捉されなかった例外を一括で処理する。例外種別ごとにメッセージIDを決め、`MessageSource` で文言化して `error` ビューへ渡す。**渡すモデル属性名・既定のエラーコードは `api-standards.md` の `### 共通エラー形式` を正とする**（本節に再掲しない）。
+- **方針**: `HandlerExceptionResolver` の実装 `ExceptionResolver` を `@Component` として登録し、Controller で捕捉されなかった例外を一括で処理する。例外種別ごとにメッセージIDを決め、`MessageSource` で文言化して `error` ビューへ渡す。**渡すモデル属性名・既定のエラーコードは `api-standards.md` の `### 共通エラー形式` を正とする**（本節に再掲しない）。
 
 | フレームワーク | 実装場所 |
 | --- | --- |
@@ -284,7 +287,7 @@ updated_at: 2026-09-24T17:30:00+09:00
 | ファイル | <TEST_FILE_NAMING_RULE> | <TEST_FILE_NAMING_EXAMPLE> |
 | describe | <TEST_DESCRIBE_NAMING_RULE> | <TEST_DESCRIBE_NAMING_EXAMPLE> |
 | it / test | <TEST_IT_NAMING_RULE> | <TEST_IT_NAMING_EXAMPLE> |
-| E2E シナリオ | <TEST_E2E_NAMING_RULE> | <TEST_E2E_NAMING_EXAMPLE> |
+| 通しテスト（E2E）のシナリオ | <TEST_E2E_NAMING_RULE> | <TEST_E2E_NAMING_EXAMPLE> |
 
 | # | 命名に関する補足 |
 | --- | --- |

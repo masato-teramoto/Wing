@@ -1,11 +1,11 @@
 {
-  "updated_at": "2026-09-24T23:30:00+09:00",
+  "updated_at": "2026-09-25T12:54:34+09:00",
   "schema_note": "2026-09-18 に α2 資産（.claude/）へ移行したためフェーズ番号を α2 の 7 段構成へ組み直した。α1.1 の Phase 5（画面モック生成）の記録は history.wireframe_phase に退避している（フェーズ番号は重複するが別工程）。",
   "current": {
     "phase": 5,
     "phase_name": "design 作成",
     "waiting_for": "human_review",
-    "next_action": "【2026-09-24 ゲート 1 回目の指摘 30/31 件を反映済み】property-basic-info の design.md（draft）。#28 のみ未対応（まとめ再ゲート待ち）。③ の追加確定: 帳票は Excel テンプレート方式（原本 Excel をコピー→値を書き込み→PDF 変換。QR は zxing で画像を生成して貼る。ファイル名「<稟議バーコードNo>.pdf」、ダウンロード後にサーバの PDF を削除。Excel ライブラリは未確定で追加が要る。判断 9）／閲覧は ServiceBase に inline 用メソッドを追加／ボタン条件の「組織」はログインユーザーの所属組織、「発番済み」は Status が受付済以降／CompanyCD は VARCHAR2(5)／tech.md（Controller のサブパス・帳票ID）と api-standards.md（ステータスコード方針）を改訂し phase-2 に追記／issue-request の「TWTGM100 は既存」の古い一文を訂正し phase-4 に追記。／**次の行動**: ③ への確認 2 件（(1) 受入基準 9-4 と steering/tech.md の主要ライブラリが JasperReports 前提で判断 9 と食い違う — 改訂するか (2) zxing core 3.2.1 を pom に明示宣言するか）を聞いて反映し、2 回目のゲート（design-check-subagent）を通す。／**#28**: property-basic-info の design が終わった時点で、steering / requirements / feature-list の未検査の改訂をまとめて 1 回だけ再ゲートする。",
+    "next_action": "【2026-09-25T12:54:34+09:00】#28: steering 7 回目（最後の回）のゲートを実行した（① / ②。③ の指定により ① の指摘 2 件（#74 / #75）があっても ② まで実行）。指摘 16 件（① 2 件 #74〜#75 / ② 14 件 #76〜#89）をゲート記録へ追記し、steering 7 ファイルを draft → review に遷移させた。③ で #74〜#89 の判断を聞き取って転記する。そのあと feature-list（4 回目）→ requirements property-basic-info（9 回目）→ issue-request（7 回目）。",
     "open_blockers": 0,
     "input_extension": {
       "decided_by": "Junichi Noumi",
@@ -26,24 +26,24 @@
       "phase": 2,
       "name": "Steering 作成",
       "artifact": "steering/ 7ファイル",
-      "status": "approved",
-      "updated_at": "2026-09-24T17:30:00+09:00",
+      "status": "review",
+      "updated_at": "2026-09-25T12:54:34+09:00",
       "gate_record": ".aidd/gates/phase-2-steering.md"
     },
     {
       "phase": 3,
       "name": "Feature 分割",
       "artifact": "feature-list.md",
-      "status": "approved",
-      "updated_at": "2026-09-24T21:30:00+09:00",
+      "status": "draft",
+      "updated_at": "2026-09-25T11:31:00+09:00",
       "gate_record": ".aidd/gates/phase-3-feature.md"
     },
     {
       "phase": 4,
       "name": "requirements 作成",
       "artifact": "specs/*/requirements.md",
-      "status": "approved",
-      "updated_at": "2026-09-24T11:30:00+09:00",
+      "status": "draft",
+      "updated_at": "2026-09-25T11:31:00+09:00",
       "gate_record": ".aidd/gates/phase-4-requirements.md"
     },
     {
@@ -51,7 +51,7 @@
       "name": "design 作成",
       "artifact": "specs/*/design.md",
       "status": "draft",
-      "updated_at": "2026-09-24T14:30:00+09:00",
+      "updated_at": "2026-09-25T11:17:13+09:00",
       "gate_record": ".aidd/gates/phase-5-design.md"
     },
     {
@@ -73,45 +73,45 @@
   ],
   "steering": {
     "product": {
-      "status": "approved",
-      "updated_at": "2026-09-24T17:30:00+09:00",
-      "waiting_for": null,
+      "status": "review",
+      "updated_at": "2026-09-25T12:54:34+09:00",
+      "waiting_for": "human_review",
       "open_placeholders": 0
     },
     "tech": {
-      "status": "approved",
-      "updated_at": "2026-09-24T17:30:00+09:00",
-      "waiting_for": null,
+      "status": "review",
+      "updated_at": "2026-09-25T12:54:34+09:00",
+      "waiting_for": "human_review",
       "open_placeholders": 0
     },
     "architecture": {
-      "status": "approved",
-      "updated_at": "2026-09-24T17:30:00+09:00",
-      "waiting_for": null,
+      "status": "review",
+      "updated_at": "2026-09-25T12:54:34+09:00",
+      "waiting_for": "human_review",
       "open_placeholders": 0
     },
     "security": {
-      "status": "approved",
-      "updated_at": "2026-09-24T17:30:00+09:00",
-      "waiting_for": null,
+      "status": "review",
+      "updated_at": "2026-09-25T12:54:34+09:00",
+      "waiting_for": "human_review",
       "open_placeholders": 0
     },
     "non-functional": {
-      "status": "approved",
-      "updated_at": "2026-09-24T17:30:00+09:00",
-      "waiting_for": null,
+      "status": "review",
+      "updated_at": "2026-09-25T12:54:34+09:00",
+      "waiting_for": "human_review",
       "open_placeholders": 0
     },
     "database": {
-      "status": "approved",
-      "updated_at": "2026-09-24T17:30:00+09:00",
-      "waiting_for": null,
+      "status": "review",
+      "updated_at": "2026-09-25T12:54:34+09:00",
+      "waiting_for": "human_review",
       "open_placeholders": 0
     },
     "api-standards": {
-      "status": "approved",
-      "updated_at": "2026-09-24T17:30:00+09:00",
-      "waiting_for": null,
+      "status": "review",
+      "updated_at": "2026-09-25T12:54:34+09:00",
+      "waiting_for": "human_review",
       "open_placeholders": 0
     }
   },
@@ -122,15 +122,15 @@
       "type": "User",
       "documents": {
         "requirements": {
-          "status": "approved",
-          "updated_at": "2026-09-24T11:30:00+09:00",
-          "waiting_for": null,
+          "status": "draft",
+          "updated_at": "2026-09-25T11:31:00+09:00",
+          "waiting_for": "agent_work",
           "open_placeholders": 0
         },
         "design": {
-          "status": "draft",
-          "updated_at": "2026-09-24T23:30:00+09:00",
-          "waiting_for": "human_review",
+          "status": "approved",
+          "updated_at": "2026-09-25T11:31:00+09:00",
+          "waiting_for": null,
           "open_placeholders": 14
         },
         "tasks": {
@@ -172,9 +172,9 @@
       "type": "User",
       "documents": {
         "requirements": {
-          "status": "approved",
-          "updated_at": "2026-09-24T11:30:00+09:00",
-          "waiting_for": null,
+          "status": "draft",
+          "updated_at": "2026-09-25T11:31:00+09:00",
+          "waiting_for": "agent_work",
           "open_placeholders": 0
         },
         "design": {

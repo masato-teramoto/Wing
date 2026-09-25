@@ -1,7 +1,7 @@
 ---
 feature: property-basic-info
-status: approved
-updated_at: 2026-09-24T15:40:00+09:00
+status: draft
+updated_at: 2026-09-25T10:37:00+09:00
 ---
 
 # 要件定義書
@@ -100,7 +100,7 @@ sequenceDiagram
 - **Adjacent（隣接システム / 隣接スペックへの期待）**:
   - `issue-request`: 作成組織（会社名・所属①・所属②）の入力を持ち、**本フィーチャーが採番して引き渡した申請No** で発行依頼書情報マスタ（`TWTGM100`）へ書き込む側である（REQ-049 / REQ-050 / Requirement 12 の受入基準 4）。本フィーチャーは同テーブルの `Keiyaku_Ringi_Kiansha_Kaisha_Name` を、物件申請情報（`TWTGM080`）との外部結合（会社コード + 申請No）で特定して参照・表示するだけである（受入基準 11-2）。**再製本・修正稟議で申請No を新しく採番した場合、新しい申請No での `TWTGM100` の行の作り直しは同 feature が行う**（受入基準 12-6）。**`issue-request` は本フィーチャーが採番する申請No に依存する側であり、`.aidd/feature-list.md` の同 feature の `依存` 列に `property-basic-info` が入っている**（2026-09-24 の Phase 3 改訂）。本フィーチャーから同 feature への依存は無い。**`TWTGM100` は本プロジェクトで新規に追加するテーブルであり、その列の構成を定義するのは同 feature である**（本フィーチャーは `Keiyaku_Ringi_Kiansha_Kaisha_Name` を参照するのみ。人間判断 / 2026-09-24）
   - `contract-application-status`: 本フィーチャーが登録・申請した物件契約情報を、申請状況として検索・一覧表示する（`.aidd/feature-list.md` の `依存` 列で同 feature が本 feature に依存する）
-  - 既存 WiNG の共通基盤: 認証・セッション（`LoginService` / `SessionCheckInterceptor`）、権限制御（`AccessControlInterceptor` + `@FuncID`）、ファイルアップロード（`FileUploadService`）、採番（`NumberingService`）、コードマスタ取得（`CodeMstService`）、帳票（JasperReports）を提供する（`steering/architecture.md` / `steering/tech.md`）
+  - 既存 WiNG の共通基盤: 認証・セッション（`LoginService` / `SessionCheckInterceptor`）、権限制御（`AccessControlInterceptor` + `@FuncID`）、ファイルアップロード（`FileUploadService`）、採番（`NumberingService`）、コードマスタ取得（`CodeMstService`）を提供する（`steering/architecture.md` / `steering/tech.md`）
 
 ## Requirements（要件）
 
@@ -236,8 +236,8 @@ sequenceDiagram
 
 1. The system shall 帳票の出力情報を「表紙情報」「発行依頼書」「契約局情報」の 3 種とし、これ以外の情報を帳票に出力しない（REQ-023 / `steering/security.md` の出力エスケープ）。
 2. The system shall 「表紙情報」に QR コードを印字する（REQ-024）。QR コードに埋め込む内容は基本設計で確定する（未確定事項 ⑩）。
-3. The system shall 帳票の出力に Requirement 2 と同じ権限判定を適用し、権限外の項目を帳票に含めない（`steering/security.md` の機密データ）。
-4. The system shall 帳票の生成を既存の帳票基盤（JasperReports）に載せ、本フィーチャー独自の帳票基盤を作らない（`steering/tech.md` の主要ライブラリ）。
+3. The system shall 帳票の出力に Requirement 2 と同じ権限判定を適用し、権限外の項目を帳票に含めない（`steering/security.md` の機密データ）。あわせて、印刷の操作は次の 3 条件をすべて満たすときだけ画面に表示し、満たさない場合は帳票の出力を受け付けない — (a) 契約局情報と発行依頼書が登録済みである (b) 物件申請のステータスが受付済以降である (c) ログインユーザーの所属組織が「K-ENG:プロセス管理センター:プロセス管理4G」である（人間判断 / 2026-09-25。帳票に限った業務上の条件。根拠: WTG070 機能定義書「別紙_ボタン表示制御」）。
+4. The system shall 帳票を、原本の Excel テンプレートをコピーして値を書き込み、PDF に変換する方式で生成する（`steering/tech.md` の主要ライブラリ。人間判断 / 2026-09-25。根拠: WTG070 機能定義書_印刷・閲覧用帳票）。
 5. The system shall 帳票を、**既存のファイルダウンロードの仕組みに載せて `Content-Disposition` 付きで返す**（`DownLoadFileInfo` / `executeDownLoad`。`steering/api-standards.md` の `### パラメータ配置`「大量データ」）。
 6. The system shall 3 種それぞれの出力項目とレイアウトを、基本設計で確定した内容に従う（未確定事項 ⑩）。
 
@@ -249,9 +249,9 @@ sequenceDiagram
 
 #### Acceptance Criteria（EARS 形式）
 
-1. When 担当者が閲覧の操作を行ったとき、the system shall 出力情報を別ウインドウで PDF として表示する（REQ-025）。
+1. When 担当者が閲覧の操作を行ったとき、the system shall 出力情報を別ウインドウで PDF として表示する（REQ-025）。閲覧の操作は、Requirement 9 の受入基準 3 が定める 3 条件をすべて満たすときだけ画面に表示する（人間判断 / 2026-09-25）。
 2. The system shall 閲覧で表示する出力情報を、印刷用の帳票と同じ 3 種（表紙情報・発行依頼書・契約局情報）とする（REQ-023）。
-3. The system shall 閲覧に Requirement 2 と同じ権限判定を適用する（`steering/security.md` の機密データ）。
+3. The system shall 閲覧に Requirement 2 と同じ権限判定を適用する（`steering/security.md` の機密データ）。あわせて、Requirement 9 の受入基準 3 が定める 3 条件を満たさない場合は閲覧を受け付けない（人間判断 / 2026-09-25）。
 4. The system shall 閲覧と印刷で同じ出力内容になるようにし、閲覧のためだけに別の出力情報を持たない（REQ-023）。出力経路（同一の帳票定義を用いるか）は基本設計で確定する（未確定事項 ⑪）。
 
 ### Requirement 11: 作成組織の会社名の表示
@@ -318,7 +318,7 @@ sequenceDiagram
 
 > `前提` はこのフィーチャーが成立するために真でなければならない事項、`依存` は他フィーチャー / 既存システム / 外部 API / データ、`未確定事項` は調査・確認待ちのトピック（design に進む前に解消する）。
 
-- **前提**: 既存 WiNG の認証・セッション・権限制御の仕組み（`LoginService` / `SessionCheckInterceptor` / `AccessControlInterceptor`）がそのまま利用できること。ファイルアップロード／ダウンロードの仕組み（`FileUploadService` / `DownLoadFileInfo` と出力管理マスター・出力制御マスター）、帳票基盤（JasperReports）が既存 WiNG に存在し利用できること（REQ-009 / REQ-053 / `steering/architecture.md`）。承認フローの承認者を決めるための組織・権限の情報が既存のマスタから参照できること
+- **前提**: 既存 WiNG の認証・セッション・権限制御の仕組み（`LoginService` / `SessionCheckInterceptor` / `AccessControlInterceptor`）がそのまま利用できること。ファイルアップロード／ダウンロードの仕組み（`FileUploadService` / `DownLoadFileInfo` と出力管理マスター・出力制御マスター）が既存 WiNG に存在し利用できること（REQ-009 / REQ-053 / `steering/architecture.md`）。承認フローの承認者を決めるための組織・権限の情報が既存のマスタから参照できること
 - **依存**: `.aidd/feature-list.md` の `依存` 列は `なし`。既存 WiNG の共通基盤（前提に挙げたもの）と、採番マスタ（`TWTZM050`）・`NumberingService` に依存する。**`TWTGM080`（格納先）と `TWTGM100`（参照のみ）はいずれも本プロジェクトで新規に追加するテーブルであり**（人間判断 / 2026-09-24）、`TWTGM080` は本フィーチャーが、`TWTGM100` は `issue-request` が定義する。**本フィーチャーは他 feature に依存しないが、`issue-request` は本フィーチャーが採番する申請No に依存する側である**（`.aidd/feature-list.md` の 2026-09-24 の改訂）。なお `contract-application-status` は本フィーチャーに依存する側であり、本フィーチャーからの依存ではない。`issue-request` は `TWTGM100` へ書き込む側だが、同テーブルは既存 WiNG のものであり同 feature の完成を待つ必要が無いため、feature 間の依存ではない
 - **未確定事項**: 次の 15 件は **いずれも基本設計で確定する**（REQ-010。Phase 4 の共通の扱いとして人間が確定 / 2026-09-11）。
   - ① **画面ID・PGID の採番の具体値**と、画面・帳票を何本のプログラムに分割するか（REQ-010 / REQ-051）

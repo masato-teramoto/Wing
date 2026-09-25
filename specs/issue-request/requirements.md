@@ -1,6 +1,6 @@
 ---
 feature: issue-request
-status: approved
+status: draft
 updated_at: 2026-09-24T12:10:00+09:00
 ---
 

@@ -1,6 +1,6 @@
 ---
-status: approved
-updated_at: 2026-09-24T17:30:00+09:00
+status: review
+updated_at: 2026-09-25T12:54:34+09:00
 ---
 
 # システムアーキテクチャ
@@ -75,6 +75,7 @@ updated_at: 2026-09-24T17:30:00+09:00
 - **責務**: 認証・セッション管理（`SessionService` / `LoginService`）、権限制御（`AccessControlInterceptor` + `@FuncID`）、CSRF トークンの生成・検証、ログ出力（`LoggingInterceptor` / `LogUtils`）、採番（`NumberingService`）、コードマスタ取得（`CodeMstService`）、ファイルアップロード（`FileUploadService`）、例外の一括処理（`ExceptionResolver`）、共通ユーティリティ（`utils`）
 - **しないこと**: 特定機能に固有の業務ロジックを持つこと。機能パッケージへの依存を持つこと
 - **配置**: `wing/src/main/java/jp/co/kccs/wt/common/`（`annotation` / `bean` / `controller` / `domain` / `exception` / `form` / `handler` / `interceptor` / `mapper` / `service` / `utils`）
+- **境界**: 機能パッケージ（`jp.co.kccs.wt.function.**`）から呼ばれる側であり、呼ぶ向きは機能 → 共通基盤の一方向とする。共通基盤から機能パッケージのクラスを参照しない。Interceptor・`ExceptionResolver`・`ControllerBase` は `servlet-context.xml` と Spring の登録によって全リクエストに効き、機能側からは呼び出さない。サブシステム内の複数の画面で共有する業務処理は共通基盤に置かず、`jp.co.kccs.wt.function.<サブシステム小文字>.common` に置く（既存の `jp.co.kccs.wt.function.wte.common`。人間が確定 / 2026-09-25）
 
 ### バッチ
 
@@ -94,11 +95,15 @@ updated_at: 2026-09-24T17:30:00+09:00
 
 ## フィーチャー設計との分担
 
+> どの粒度の話をどのファイルに書くかを確定させる節。
+
+> _書き方_: この表はプロジェクトによらず同じ内容になるため、原則そのまま使う。プロジェクト固有の書き分けが増えた場合だけ行を足す。
+
 | 粒度 | 書く場所 |
 |---|---|
 | プロジェクト全体の論理構成・責務 | 本ファイル（`architecture.md`） |
-| フィーチャー固有の画面・API・モジュール境界 | `design.md` の Components and Interfaces |
-| フィーチャー固有の追加ディレクトリ | `design.md` の File Structure Plan |
+| フィーチャー固有の画面・API・モジュール境界 | `specs/<feature>/design.md` の `## コンポーネントとインターフェース（Components and Interfaces）` |
+| フィーチャー固有の追加ディレクトリ | `specs/<feature>/design.md` の `## ファイル配置計画（File Structure Plan）` |
 
 ## ディレクトリ構成
 
@@ -145,7 +150,7 @@ updated_at: 2026-09-24T17:30:00+09:00
 
 > **不要（記入者: 人間 / 2026-09-11）**: 既存構成に従い、Java のパッケージ解決をそのまま用いる（エイリアス機構を導入しない）。下表の枠は未記入のまま残す。
 
-| alias | 解決先 |
+| パスエイリアス | 解決先 |
 |---|---|
 | <PATH_ALIAS_N> | <PATH_ALIAS_TARGET_N> |
 
@@ -161,25 +166,33 @@ updated_at: 2026-09-24T17:30:00+09:00
 
 ### 記入時の連携
 
-> 全体図（`docs/architecture/system-overview.md`）は単独では書けない。他 Steering を **正本として参照** し、値を二重定義しない。
+> 全体図を書くときに、要素ごとにどのファイルを正本として見るかを確定させる節。\
+> _分担_: 図の実体は `docs/architecture/system-overview.md`。ここには正本の対応だけを置き、値そのものは書かない。
 
-| 全体図で参照する内容 | 正本 |
+> _書き方_: この表はプロジェクトによらず同じ内容になるため、原則そのまま使う。正本の欄には、ファイル名と見る節を書く。
+
+| 全体図で書く内容 | 正本 |
 | --- | --- |
 | コンポーネント・レイヤー・ドメイン境界 | 本ファイル（`architecture.md`） |
-| 採用技術名（バージョン除く） | `tech.md` |
-| 主要ユースケースの選定 | `product.md` |
-| 認証・外部 ID 連携 | `security.md` |
-| 失敗時方針の詳細（リトライ・遮断等） | `non-functional.md`（全体図は方針名のみ） |
-| 障害切り分けで全体図を参照 | `non-functional.md` の障害対応フローから参照される |
+| 採用技術名（バージョンを除く） | `tech.md` の `## コアテクノロジ` |
+| 主要ユースケースの選び方 | `product.md` の `## 主要ユースケース` |
+| 認証・外部 ID 連携 | `security.md` の `## 認証・認可` |
+| 失敗したときの方針（再実行・遮断など） | `non-functional.md` の `### リトライ`（全体図には方針名だけを書く） |
+| 障害の切り分けで全体図を見る流れ | `non-functional.md` の `### 障害対応フロー（プロセス骨格）` |
 
 ### 図の種別と粒度
 
-| 図 | 用途 | ノード粒度 | 実体の場所 |
+> 描く図の種類ごとに、何のために描くか、どこまで細かく描くかを確定させる節。\
+> _分担_: 図の実体は `docs/architecture/system-overview.md`。フィーチャー個別の流れは `specs/<feature>/design.md` の `## 処理フロー（System Flows）`。
+
+> _書き方_: 用途には、その図を見た人が何を判断できるようになるかを書く。ノードの細かさには、1 つの箱が何を表すかを書く。この表はプロジェクトによらず同じ内容になるため、原則そのまま使う。
+
+| 図 | 用途 | ノードの細かさ | 実体の場所 |
 | --- | --- | --- | --- |
-| システム全体像（flowchart） | 主要コンポーネントの接続を 1 枚で示す | コンポーネント単位（クラス・メソッド単位は `design.md`） | `docs/architecture/system-overview.md` |
-| 主要ビジネスフロー（sequenceDiagram） | 代表ユースケース 3〜5 個・各 7〜10 ステップ以内 | コンポーネント間のやりとり | `docs/architecture/system-overview.md` |
-| 外部連携の俯瞰（任意） | 外部連携が 3 個以上、または失敗時方針が連携先ごとに異なる場合 | 連携先単位 | `docs/architecture/system-overview.md` |
-| ドメイン境界の地図（任意） | 複数ドメイン（Bounded Context）がある場合 | ドメイン単位 | `docs/architecture/system-overview.md` |
+| システム全体像（flowchart） | 主要コンポーネントのつながりを 1 枚で見せる | コンポーネント単位（クラス・メソッド単位は `specs/<feature>/design.md` の `## コンポーネントとインターフェース（Components and Interfaces）`） | `docs/architecture/system-overview.md` |
+| 主要ビジネスフロー（sequenceDiagram） | 代表的な使われ方を、関係するコンポーネントの順に追えるようにする | コンポーネント間のやりとり | `docs/architecture/system-overview.md` |
+| 外部連携の俯瞰 | 外部との接点と、失敗したときの方針の違いを一覧で見せる | 連携先単位 | `docs/architecture/system-overview.md` |
+| ドメイン境界の地図 | ドメインの境界と、境界をまたぐやりとりを見せる | ドメイン単位 | `docs/architecture/system-overview.md` |
 
 ---
 

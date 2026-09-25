@@ -1,7 +1,7 @@
 ---
 feature: property-basic-info
-status: draft
-updated_at: 2026-09-24T20:00:00+09:00
+status: approved
+updated_at: 2026-09-25T11:31:00+09:00
 ---
 
 # 技術設計書
@@ -42,10 +42,11 @@ updated_at: 2026-09-24T20:00:00+09:00
   - **`TWTGA120`（物件申請情報変更履歴 / 新規テーブル）** — 物件基本情報の変更履歴（`steering/database.md` の種別 `A`）。
   - **`TWTGM180`（物件申請情報承認履歴ﾏｽﾀ / 新規テーブル）** — 申請・承認の判定とコメントの履歴。
   - **申請No（`Application_No`。11 桁）の値とその採番** — 採番マスタ `TWTZM050` に本スペック用の採番定義を 1 件追加して払い出す。
-  - **物件基本情報に紐づく契約稟議ファイルの関連付け** — ファイル本体は既存のファイルアップロードの仕組みが持ち、本スペックは物件申請との紐づけを持つ（REQ-020）。
+  - **`TWTGM090`（契約稟議ファイルマスタ / 新規テーブル）** — 物件申請に紐づく契約稟議ファイルの保存先パス・ファイル名・確定区分。ファイル本体は DB に持たず、サーバ上の保存先に置く（REQ-020 / 受入基準 6-1 / 6-2。③ の判断 / 2026-09-25）。
 - **定義するインターフェース**:
   - 物件基本情報の登録・変更・申請・承認・PDF 閲覧・CSV 出力を行う画面（**画面ID `GWTG070` / PGID `PWTGO070`**）。**帳票の出力は別プログラム（PGID `PWTGO072` / 帳票ID `RWTG070`）** とする（③ の確定 / 2026-09-24。根拠: WT_機能一覧 PJ45.0_20240417。**未確定事項 ① はこれで解消した**）。帳票プログラムは `wtg070` パッケージ内に置き、`@RequestMapping("/wtg070/report")` / `@FuncID("PWTGO072")` とする（`### 判断 8`）。
   - **申請No の引き渡し** — 発行依頼書登録変更画面へ申請No を渡す（受入基準 12-4）。経路は契約 1。
+  - **発番時の物件申請の状態更新** — `issue-request` の発番の処理から呼ばれ、`TWTGM080` の発番日時・ステータスの更新と `TWTGM180` への登録を行う公開メソッド（契約 4）。
   - **`TWTGM100` / `TWTGM140` に対する読み取り契約**（下記 `### データ契約と外部連携` の契約 2）。本スペックは契約を宣言するだけであり、テーブルそのものは `issue-request` が定義する。
 
 ### このスペックが持たない責務（Out of Boundary）
@@ -54,13 +55,13 @@ updated_at: 2026-09-24T20:00:00+09:00
   - `TWTGM100`（発行依頼書情報マスタ / 新規テーブル）の**定義と書き込み** — `issue-request`（REQ-049 / 同 feature の Requirement 13）。本スペックは参照のみ行う。
   - **帳票「発行依頼書」の元データの保持** — `issue-request`（`TWTGM100`）。本スペックの帳票は読むだけである（**未確定事項 ⑬ は本設計で確定した** — `### 判断 7`）。
   - `TWTGM140`（契約局情報）の**定義と書き込み** — `issue-request`。本スペックは帳票のために参照のみ行う（契約 2）。
-  - 発行依頼書の登録・変更・契約書に対する発番・バーコード生成 — `issue-request`（REQ-026 / REQ-028 / REQ-037）。
+  - 発行依頼書の登録・変更・契約書に対する発番・バーコード生成 — `issue-request`（REQ-026 / REQ-028 / REQ-037）。**発番に伴う `TWTGM080` / `TWTGM180` の更新は本スペックが契約 4 で行い、`issue-request` はそれを呼ぶだけである。**
   - 物件契約情報申請状況の検索・一覧・CSV 出力 — `contract-application-status`（REQ-012 / REQ-013 / REQ-014）。
   - 契約情報の取込・ダウンロード — `contract-info-import` / `contract-info-download`（REQ-040 / REQ-044）。
   - 認証・セッション・権限制御・採番・コードマスタ取得・ファイルアップロード・例外の一括処理 — 既存 WiNG の共通基盤（`steering/architecture.md` の `### 共通基盤（shared）` / `steering/tech.md` の `## 主要ライブラリ`）。
 - **後のフェーズに回す作業**:
   - 物件基本情報の**業務項目**の**必須の別と入力チェックの内容**（未確定事項 ② の残り）。**項目の一覧と桁は `#### TWTGM080 の列定義` で確定した。**
-  - 権限と画面要素の対応（③）、引用の対象項目（④）、承認フローの段階数・承認者・スキップ条件（⑤）、ステータスの値と遷移・履歴に残す項目（⑥）、ファイルの種類・件数・形式・サイズ上限（⑦）、CSV の出力項目・並び順・ファイル名・起動契機（⑧）、「編集中」の判定条件と促し方（⑨）、帳票 3 種の出力項目とレイアウト・QR の内容（⑩）、閲覧と印刷の出力経路（⑪）、申請No の採番定義（⑭）、再製本・修正稟議の判定条件・採番失敗時のメッセージID（⑮。引き渡し経路は契約 1 で確定）。
+  - 権限と画面要素の対応（③）、引用の対象項目（④）、承認フローの段階数・承認者・スキップ条件（⑤）、発番以外の遷移の細部・履歴に残す項目（⑥ の残り。`Status` 6 値・`JOTAI_KBN` 7 値の値の一覧、発番の遷移、判定 `"11"`・審査権限 `"02"` は確定済み）、ファイルの種類・件数・形式・サイズ上限（⑦）、CSV の出力項目・並び順・ファイル名・起動契機（⑧）、「編集中」の判定条件と促し方（⑨）、帳票 3 種の出力項目とレイアウト・QR の内容（⑩）、閲覧と印刷の出力経路（⑪）、申請No の採番定義（⑭）、再製本・修正稟議の判定条件・採番失敗時のメッセージID（⑮。引き渡し経路は契約 1 で確定）。
 
 ### 依存してよい対象（Allowed Dependencies）
 
@@ -73,14 +74,15 @@ updated_at: 2026-09-24T20:00:00+09:00
   - `jp.co.kccs.wt.common.service.FileUploadService` と `jp.co.kccs.wt.common.bean.DownLoadFileInfo` — 契約稟議ファイルの登録と、CSV・帳票の受け渡し。
   - `jp.co.kccs.wt.common.handler.ExceptionResolver` / `jp.co.kccs.wt.common.controller.ControllerBase` — 例外の一括処理と Controller 共通の前処理。
   - **Excel を扱うライブラリ（未確定 — wing に無く、技術スタックへの追加が要る）** — 原本 Excel への値の書き込みと PDF への変換（`### 判断 9`）。
-  - zxing core 3.2.1 — QR コード画像の生成。**`wing/pom.xml` には宣言が無く、jasperreports 6.5.1 の推移的依存（compile スコープ）としてクラスパスに載っている**（`wing/.factorypath` と jasperreports 6.5.1 の pom で確認）。
+  - zxing core 3.2.1 — QR コード画像の生成。
   - **`TWTGM100` / `TWTGM140`（`issue-request` が定義）— 下記の読み取り契約（契約 2）の範囲に限る。**
+  - `TWTBM080`（既存 WTB のテーブル）— ベンダー／施工会社のデータ範囲の判定のために `Bs_Vendor_Cd` / `Motouke_Kaisya_Cd` / `Keikaku_Kichikyoku_No` を読むだけで、更新しない（受入基準 2-4）。
 - **依存の制約**:
   - `.aidd/feature-list.md` の `依存` 列は `なし`。**他 feature の完成を前提にしない。** 帳票の SQL の列（契約 2-b）は `issue-request` の design で決まるが、依存は宣言せず契約と `### 再確認が必要になる変更` で受ける（宣言すると `issue-request` → 本スペックと循環する。③ の判断 / 2026-09-24）。 `TWTGM100` / `TWTGM140` については `### データ契約と外部連携` で宣言する契約のみを前提とし、`issue-request` の内部設計（`design.md` の設計判断・ファイル配置・実装方針）に依存しない。
   - `TWTGM100` / `TWTGM140` へ INSERT / UPDATE / DELETE を発行しない（受入基準 11-5）。参照は契約 2 の範囲の `SELECT` のみとする（画面は外部結合、帳票は `TWTGM100` を主とする内部結合）。
   - 依存の向きは `controller` → `service` → `mapper` の一方向とし、逆方向および `controller` からの `mapper` 直接呼び出しを行わない（`steering/architecture.md` の `## レイヤーと依存ルール`）。
   - 機能パッケージ間の直接依存を持たない。`issue-request` のクラスを直接呼び出さない（同上）。
-  - 共通基盤（`jp.co.kccs.wt.common`）を呼ぶ側にはなるが、共通基盤から本機能パッケージへ依存させない（同上）。
+  - 共通基盤（`jp.co.kccs.wt.common`）を呼ぶ側にはなるが、共通基盤から本機能パッケージへ依存させない（同上）。契約 4 の `WTGHatsubanService` / `WTGHatsubanMapper` は `jp.co.kccs.wt.function.wtg.common` に置き、`wtg070` のクラスを呼ばない。
 
 ### 再確認が必要になる変更（Revalidation Triggers）
 
@@ -89,6 +91,7 @@ updated_at: 2026-09-24T20:00:00+09:00
 - 再製本・修正稟議で申請No を新規採番する方針の変更。`issue-request` の受入基準 13-8（行の作り直し）の前提が崩れる。
 - `### データ契約と外部連携` で宣言した `TWTGM100` / `TWTGM140` の読み取り契約（キー・列名。帳票用の列の範囲は `issue-request` の design で確定した値）の変更。
 - 申請No の引き渡し経路（発行依頼書登録変更画面の初期表示への `POST`）の変更。発行依頼書登録変更画面の受け口が変わる。
+- 契約 4（発番時の状態更新）のメソッドの置き場・受け取る値・更新内容の変更、および状態遷移表の「発番」の行の変更。`issue-request` の発番ボタンの処理が呼ぶ先と前提が変わる。
 - 履歴テーブルを分ける方針（`TWTGA120` の変更履歴と `TWTGM180` の承認履歴）の変更。
 - `Moto_Application_No` による元申請との関連づけの廃止。再製本の連鎖を遡れなくなる。
 
@@ -105,17 +108,21 @@ updated_at: 2026-09-24T20:00:00+09:00
 
 ```mermaid
 flowchart LR
-    BR[ブラウザ / Thymeleaf 画面] --> IC[Interceptor 群<br/>SessionCheck / PasswordCheck<br/>AccessControl / CSRFTokenCheck]
-    IC --> CT[PropertyController<br/>controller]
-    CT --> SV[PropertyService<br/>service]
+    BR[ブラウザ / Thymeleaf 画面] --> IC[Interceptor 群<br/>Logging / SessionCheck / PasswordCheck<br/>AccessControl / CSRFTokenCheck]
+    IC --> CT[Pwtgo070Controller<br/>画面 PWTGO070]
+    CT --> SV[Pwtgo070Service]
     SV --> NB[NumberingService<br/>common]
     SV --> FU[FileUploadService<br/>common]
     SV --> CM[CodeMstService<br/>common]
-    SV --> MP[PropertyMapper<br/>mapper]
+    SV --> MP[Pwtgo070Mapper]
     MP --> M80[("TWTGM080<br/>物件申請情報マスタ<br/>本スペックが所有")]
     MP --> A80[("TWTGA120<br/>物件申請情報変更履歴<br/>本スペックが所有")]
     MP --> M180[("TWTGM180<br/>物件申請情報承認履歴ﾏｽﾀ<br/>本スペックが所有")]
+    MP --> M90[("TWTGM090<br/>契約稟議ファイルマスタ<br/>本スペックが所有")]
     MP -. 参照のみ<br/>外部結合 .-> M100[("TWTGM100<br/>発行依頼書情報マスタ<br/>issue-request が所有")]
+    MP -. 参照のみ<br/>行の有無 .-> M140
+    MP -. 参照のみ<br/>データ範囲 .-> B80[("TWTBM080<br/>既存 WTB")]
+    FU --> FS[/"ファイルの保存先<br/>root + wtg070.ring + /申請No"/]
     IC --> RC[Pwtgo072Controller<br/>帳票 PWTGO072]
     RC --> RS[Pwtgo072Service]
     RS --> RP[原本 Excel のコピー・値の書き込み<br/>→ PDF 変換・QR 画像の貼り付け]
@@ -127,13 +134,16 @@ flowchart LR
     NB --> Z50[("TWTZM050<br/>採番マスタ")]
     CM --> Z40[("TWTZM040<br/>コードマスタ")]
     CT -. 申請No を渡す .-> IR[発行依頼書登録変更画面<br/>issue-request]
+    IR -. 発番時に呼ぶ（契約 4） .-> CS[WTGHatsubanService / WTGHatsubanMapper<br/>wtg.common・本スペックが所有]
+    CS --> M80
+    CS --> M180
 ```
 
-- **選択したパターン**: 既存 WTG と同じ Controller → Service → Mapper の 3 層。画面（PGID）単位のパッケージに閉じる。
+- **選択したパターン**: 既存 WTG と同じ Controller → Service → Mapper の 3 層。画面ID 単位のパッケージ（`wtg070`）に閉じる。ただし `issue-request` から呼ばれる発番時の状態更新（契約 4）だけは、サブシステム WTG の共通パッケージ `jp.co.kccs.wt.function.wtg.common` に置く。
 - **ドメイン / 機能の切り分け**: 物件申請（`TWTGM080` / `TWTGA120`）を本スペックの集約とし、発行依頼書（`TWTGM100`）は `issue-request` の集約とする。両者は**申請No を介して結合するのみ**で、互いの集約を直接更新しない。
 - **既存パターンとの整合**: パッケージ名は `jp.co.kccs.wt.function.wtg.wtg070`、クラス名は PGID の先頭大文字 + `Controller` / `Service` / `Form` / `Mapper`（`Pwtgo070Controller` 等）、テンプレートは `/WEB-INF/pages/wtg/wtg070/pwtgo070.html` と同ディレクトリの `pwtgo070Script.html`（`steering/tech.md` の `## 命名規則`）。
 - **新規コンポーネントを置く理由**: 物件基本情報の登録・変更は既存 WTG のどの画面も担っていない新規の業務であり（REQ-011 / REQ-015）、既存画面への機能追加はデグレードの経路になる（REQ-052）。したがって新規の画面パッケージを追加する。**帳票は画面（PGID `PWTGO070`）とは別のプログラム（PGID `PWTGO072` / 帳票ID `RWTG070`）に分ける**（③ の確定 / 2026-09-24。根拠: WT_機能一覧 PJ45.0_20240417）。REQ-010 が求める「画面・帳票を何本のプログラムに分割するか」の判断にあたる。
-- **steering との整合**: `steering/architecture.md` の `## 配置原則`（画面単位のパッケージ）・`## レイヤーと依存ルール`（一方向の依存、`controller` からの `mapper` 直接呼び出しの禁止、機能パッケージ間の直接依存の禁止）に従う。共通で使う処理は本パッケージに閉じ、他画面と共有が必要になった場合のみ `jp.co.kccs.wt.common` へ置く。
+- **steering との整合**: `steering/architecture.md` の `## 配置原則`（画面単位のパッケージ）・`## レイヤーと依存ルール`（一方向の依存、`controller` からの `mapper` 直接呼び出しの禁止、機能パッケージ間の直接依存の禁止）に従う。共通で使う処理は本パッケージに閉じる。他画面から呼ばれる処理（契約 4）は、物件申請に固有の業務ロジックであるため共通基盤（`jp.co.kccs.wt.common`）には置かず、`jp.co.kccs.wt.function.wtg.common` に置く（契約 4 の注記）。
 
 ### 技術スタック（Technology Stack）
 
@@ -141,11 +151,11 @@ flowchart LR
 |---|---|---|---|
 | Frontend | Thymeleaf 3 | 画面描画、入力補助、権限による活性・非活性の表示制御 | `steering/tech.md` のコアテクノロジ。本スペックで追加する技術は無い |
 | Backend / Service | Spring MVC 4.3.5 | Controller / Service / Interceptor | 同上 |
-| Data / Storage | MyBatis 3.4.5 + Oracle | `TWTGM080` / `TWTGA120` / `TWTGM180` の永続化、`TWTGM100` / `TWTGM140` の参照 | 同上 |
-| 帳票 | **Excel テンプレート方式**。Excel を扱うライブラリ: <DSN_TECH_EXCEL_LIBRARY> — **未確定**: wing に無い。原本 Excel のコピー・値の書き込み・PDF への変換ができるものを選ぶ | 稟議資料 3 種の生成と PDF 出力 | **追加が要る**（`### 判断 9`。REQ-023 / REQ-025） |
-| QR コード | zxing core 3.2.1 | 表紙情報に貼る QR コード画像の生成 | 既存のクラスパスにある（jasperreports 6.5.1 の推移的依存）。pom への明示の要否は `### 判断 9` |
+| Data / Storage | MyBatis 3.4.5 + Oracle | `TWTGM080` / `TWTGA120` / `TWTGM180` / `TWTGM090` の永続化、`TWTGM100` / `TWTGM140` / `TWTBM080` の参照 | 同上 |
+| 帳票 | **Excel テンプレート方式**。Excel を扱うライブラリ: <DSN_TECH_EXCEL_LIBRARY> — **未確定**: wing に無い。原本 Excel のコピー・値の書き込み・PDF への変換ができ、**Java 1.7 で動く**ものを選ぶ（`steering/tech.md` のコンパイルターゲット） | 稟議資料 3 種の生成と PDF 出力 | **追加が要る**（`### 判断 9`。REQ-023 / REQ-025） |
+| QR コード | zxing core 3.2.1 | 表紙情報に貼る QR コード画像の生成 | `steering/tech.md` の `## 主要ライブラリ` |
 
-> **本スペックで新規に追加が要るのは、Excel を扱うライブラリ 1 つである**（何を使うかは未確定）。それ以外は `steering/tech.md` で確定済みのスタックのうち本スペックが用いるものの再掲である。**`steering/tech.md` の `## 主要ライブラリ` は帳票の基盤を JasperReports 6.5.1 としており、本判断と食い違う**（`### 判断 9` の影響を参照）。
+> **本スペックで新規に追加が要るのは、Excel を扱うライブラリ 1 つである**（何を使うかは未確定）。それ以外は `steering/tech.md` で確定済みのスタックのうち本スペックが用いるものの再掲である。帳票の方式は `steering/tech.md` の `## 主要ライブラリ`（2026-09-25 に `### 判断 9` に合わせて改訂）と一致する。
 
 ## データモデル（Data Models）
 
@@ -161,7 +171,7 @@ flowchart LR
   - 会社コードは全レコードに必ず入る。検索・更新の `WHERE` に必ず含める（`steering/security.md` の `#### 所有権・エンティティ境界`）。
   - 申請No は 1 つの物件申請に対して 1 つで、**払い出した後は変更しない**。再製本・修正稟議では新しい申請No を採番して**別の物件申請**を作り、**元の申請No を `Moto_Application_No` に保持する**（受入基準 12-3）。
   - ステータスが「変更を許さない状態」のとき、物件基本情報の項目を更新しない（受入基準 1-8。どの状態が該当するかは未確定事項 ⑥）。
-  - 現在値の更新と履歴の登録は必ず同時に成立する。片方だけが反映された状態を作らない（受入基準 5-3）。
+  - 現在値の更新と履歴の登録は必ず同時に成立する。片方だけが反映された状態を作らない（受入基準 5-3）。**対象は物件基本情報の項目を変える操作（更新）であり、発番による状態更新（契約 4）と契約稟議ファイルの確定（`updateRingiFileKakutei`）は含まない**（受入基準 5-3 / 5-4 の対象範囲。③ の判断 / 2026-09-25）。
   - 履歴は物理削除しない（受入基準 5-5）。
   - 承認は当該段階の承認者だけが行える（受入基準 4-5）。
 
@@ -171,7 +181,7 @@ flowchart LR
   - 物件申請 (1) — (0..N) 物件申請変更履歴
   - 物件申請 (1) — (0..N) 物件申請承認履歴
   - 物件申請 (0..1) — (0..N) 物件申請（**元申請 — 再製本後の申請**。`Moto_Application_No` による自己参照）
-  - 物件申請 (1) — (0..N) 契約稟議ファイル
+  - 物件申請 (1) — (0..N) 契約稟議ファイル（`TWTGM090`。会社コード + 申請No + `Seq` で一意）
   - 物件申請 (1) — (0..1) 発行依頼書（`issue-request` が所有。**外部結合であり、存在しないことを正常とする** — 受入基準 11-6）
 - **属性と型**: 会社コードは固定長のコード（`String`）。申請No は採番で払い出される 11 桁の文字列（`String`）。ステータス（`Status` / `JOTAI_KBN`）は各 20 桁の区分値（`String`。コードマスタで管理する — `steering/database.md` の `### 業務コード・区分値・採番の設計ルール`）。登録日時・更新日時は DB レイアウト上 `3:DateTime`、`wing` の Java 側は `String`（`steering/database.md` の `## 型の指針`）。**業務項目の一覧と桁は下記 `### 物理データモデル` で確定した**（2026-09-24 に ③ が DB レイアウトから提示。未確定事項 ② のうち「一覧と桁」は解消し、**必須の別と入力チェックの内容が残る**）。
 - **自然キー / 識別子**: **会社コード + 申請No** を物件申請の識別子とする。変更履歴はこれに**通番**を加えた 3 項目、承認履歴は**審査回 + 通番**を加えた 4 項目を識別子とする（既存 `TWTGA010` が `会社コード + 業務キー + 通番` の形を採っていることに合わせる）。代理キー（連番の ID 列）は設けない。
@@ -184,10 +194,11 @@ flowchart LR
 | RDB（Oracle） — `TWTGM080`（物件申請情報マスタ / **新規**） | 下表 `#### TWTGM080 の列定義` を参照。**インデックス**: 主キーの一意索引。検索条件が確定した時点（未確定事項 ②）で追加の索引を検討する。**分割方針**: 設けない（既存 WTG のテーブルが分割を用いていないため） |
 | RDB（Oracle） — `TWTGA120`（物件申請情報変更履歴 / **新規**） | 下表 `#### TWTGA120 の列定義` を参照。**履歴に残す項目の範囲は未確定事項 ⑥**。**インデックス**: 主キーの一意索引。**物理削除を行わない**（受入基準 5-5）。※ `TWTGA080` は既存の**経費実績履歴**であり本スペックでは使えないため、`TWTGA120` を採る（③ の指摘 / 2026-09-24） |
 | RDB（Oracle） — `TWTGM180`（物件申請情報承認履歴ﾏｽﾀ / **新規**） | 下表 `#### TWTGM180 の列定義` を参照。**インデックス**: 主キーの一意索引。**物理削除を行わない**（受入基準 5-5）。**テーブル名の種別 1 文字 `M` は `steering/database.md` の `## 命名規則`（`M` = マスタ / `A` = 変更履歴）の例外である** — 正解の DB レイアウトで決まっている名前であり、本設計で改名しない（③ の判断 / 2026-09-24）。受入基準 5-4 が種別 `A` で分けて持つと定める「項目の変更履歴」は `TWTGA120` が担い、`TWTGM180` は申請・承認の判定とコメントの記録である |
+| RDB（Oracle） — `TWTGM090`（契約稟議ファイルマスタ / **新規**） | 下表 `#### TWTGM090 の列定義` を参照。**インデックス**: 主キー（`CompanyCD` + `Application_No` + `Seq`）の一意索引。ファイル本体は持たず、保存先のパスとファイル名を持つ（③ の判断 / 2026-09-25） |
 | RDB（Oracle） — `TWTZM050`（採番マスタ / **既存**） | 本スペック用の採番定義を **1 行追加**する（グループID・識別コード・プレフィックス・最小値 / 現在値 / 最大値・採番区分）。**値は未確定（未確定事項 ⑭）。** 既存の列定義は変更しない（REQ-052） |
 | RDB（Oracle） — `TWTGM100`（発行依頼書情報マスタ / **新規。`issue-request` が定義**） | 本スペックは定義しない。読む範囲は `### データ契約と外部連携` の契約 2 に限る |
 | RDB（Oracle） — `TWTGM140`（契約局情報 / **`issue-request` が定義**） | 本スペックは定義しない。帳票のために読む範囲は契約 2 に限る |
-| ファイル | 契約稟議ファイルの本体は DB に格納しない。出力管理マスター・出力制御マスターと `FileUploadService` の仕組みで管理する（受入基準 6-2 / `steering/database.md` の `## 型の指針`） |
+| ファイル | 契約稟議ファイルの本体は DB に格納しない（受入基準 6-2 / `steering/database.md` の `## 型の指針`）。`FileUploadService` で受け取り、**「`swf.upload.directory.root` の値 + `swf.upload.directory.wtg070.ring` の値 + `/{申請No}`」** に保存する。`swf.upload.directory.wtg070.ring` は本スペックで `wing-web.properties` に新しく足すキーで、値は `/wtg/wtg070/ringi` とする（③ の判断 / 2026-09-25）。保存先のパスとファイル名は `TWTGM090` に記録する |
 
 #### `TWTGM080` の列定義
 
@@ -226,22 +237,22 @@ flowchart LR
 
 > **列名 `SHISAKU_CD` / `JOTAI_KBN` の全大文字表記は `steering/database.md` の `## 命名規則`（語ごとに先頭大文字）の例外である** — 正解の DB レイアウトで決まっている名前であり、本設計で改名しない（`TWTGM180` の種別と同じ扱い）。
 >
-> **`Status` は審査フェーズ、`JOTAI_KBN` は審査結果を表す**（値の一覧は `### 判断 6` に置く。実体はコードマスタ `TWTZM040` が持つ）。承認の状況は 2 列の組み合わせで判断する。**許される組み合わせと遷移は WTG070 機能定義書「別紙_承認機能制御」の状態遷移表が正であり、本設計には取り込んでいない**（未確定事項 ⑥ の残り）。
+> **`Status` は審査フェーズ、`JOTAI_KBN` は審査結果を表す**（値の一覧は `### 判断 6` に置く。実体はコードマスタ `TWTZM040` が持つ）。承認の状況は 2 列の組み合わせで判断する。**許される組み合わせと遷移は WTG070 機能定義書「別紙_承認機能制御」の状態遷移表が正である。本設計に取り込んだのは発番の遷移（「起案済・回覧中」→「受付済・回覧中」）とそのコード値（判定 `"11"`・審査権限 `"02"`）だけで、これは ③ の判断（2026-09-25）で確定した（契約 4）。それ以外の遷移は未確定である**（未確定事項 ⑥ の残り）。
 
 #### `TWTGA120` の列定義
 
-> 列構成は既存 `TWTGA010`（`jp.co.kccs.wt.common.domain.TWTGA010`）に合わせ、業務キーの `Keikaku_Kichikyoku_No` + `PlanSiteID_Branch` を `Application_No` に置き換える。**桁は `TWTGA010` の DB レイアウトにそろえる（値は未確定）。** `Upd_Date` は `TWTGA010` の domain が `java.util.Date` で受けており、共通カラムの日時（`String`）と扱いが異なる点も既存に合わせる。
+> 列構成は既存 `TWTGA010`（`jp.co.kccs.wt.common.domain.TWTGA010`）に合わせ、業務キーの `Keikaku_Kichikyoku_No` + `PlanSiteID_Branch` を `Application_No` に置き換える。**桁は `TWTGA010` の DB レイアウトにそろえる（値は未確定）。** `Upd_Date` の Java 側の型は、`steering/database.md` の `## 型の指針` に合わせて共通カラムの日時と同じ `String` とする（既存 `TWTGA010` の domain は `java.util.Date` で受けているが、それには合わせない。③ の判断 / 2026-09-25）。
 
 | 区分 | 列名 | 論理名 | 型 / 桁 |
 |---|---|---|---|
 | 主キー | `CompanyCD` | 会社コード | `VARCHAR2(5)` |
 | 主キー | `Application_No` | 申請No | `VARCHAR2(11)` |
-| 主キー | `Branch_Id` | 通番 | `TWTGA010` に同じ（**未確定**） |
+| 主キー | `Branch_Id` | 通番 | <DSN_TWTGA120_BRANCH_ID_TYPE> — **未確定**: `TWTGA010` の DB レイアウトの桁にそろえるが、その値が上流から得られていない |
 | 共通 | `RegisteredPerson` / `RegisteredDT` / `UpdatedPerson` / `UpdatedDT` / `ExclusiveFG` | 登録者 / 登録日時 / 更新者 / 更新日時 / 排他ﾌﾗｸﾞ | `steering/database.md` の共通カラムに従う |
-| 項目 | `Upd_Date` | 変更日時 | `3:DateTime`（Java 側は `TWTGA010` と同じく `Date`） |
-| 項目 | `Upd_User` | 更新者ユーザーID | `TWTGA010` に同じ（**未確定**） |
-| 項目 | `History_Title` | タイトル | `TWTGA010` に同じ（**未確定**） |
-| 項目 | `History_Body` | 本文 | `TWTGA010` に同じ（**未確定**） |
+| 項目 | `Upd_Date` | 変更日時 | `3:DateTime`（Java 側は `String`） |
+| 項目 | `Upd_User` | 更新者ユーザーID | <DSN_TWTGA120_UPD_USER_TYPE> — **未確定**: 同上 |
+| 項目 | `History_Title` | タイトル | <DSN_TWTGA120_HISTORY_TITLE_TYPE> — **未確定**: 同上 |
+| 項目 | `History_Body` | 本文 | <DSN_TWTGA120_HISTORY_BODY_TYPE> — **未確定**: 同上 |
 
 #### `TWTGM180` の列定義
 
@@ -263,11 +274,28 @@ flowchart LR
 
 > **`Shinsa_Count`（審査回）は承認の履歴の回数であり、承認の段階ではない**（判断 6）。段階は `TWTGM080` の `Status` が表す。
 
+#### `TWTGM090` の列定義
+
+> 列名・桁は **2026-09-25 に ③ が提示した値**である。本スペックが所有する。
+
+| 区分 | 列名 | 論理名 | 型 / 桁 |
+|---|---|---|---|
+| 主キー / 共通 | `CompanyCD` | 会社コード | `VARCHAR2(5)` |
+| 主キー | `Application_No` | 申請No | `VARCHAR2(11)` |
+| 主キー | `Seq` | 連番 | `NUMBER(3)`（会社コード・申請No とあわせて一意） |
+| 共通 | `RegisteredPerson` / `RegisteredDT` / `UpdatedPerson` / `UpdatedDT` / `ExclusiveFG` | 登録者 / 登録日時 / 更新者 / 更新日時 / 排他ﾌﾗｸﾞ | `steering/database.md` の共通カラムに従う |
+| 項目 | `File_Path` | ファイルパス | `VARCHAR2(256)` |
+| 項目 | `File_Name` | ファイル名 | `VARCHAR2(256)` |
+| 項目 | `Kakute_Flg` | 確定ﾌﾗｸﾞ | `VARCHAR2(2)`（`0`: 未確定 / `1`: 確定） |
+| 項目 | `RegisteredPerson_Name` | 登録者名 | `VARCHAR2(20)` |
+
+> **`Kakute_Flg` の `VARCHAR2(2)` は `steering/database.md` のフラグ規約（`VARCHAR2(1)`）の例外である** — ③ が提示した確定値であり、本設計で変えない（③ の判断 / 2026-09-25）。**「確定」に変わる操作は、契約稟議ファイル欄の確定ボタンである。** 確定チェックに変更があるレコードだけを更新する（`POST /wtg070/file/update`）。
+
 ### データ契約と外部連携（Data Contracts & Integration）
 
 - **API**: <DSN_CONTRACT_API> — **不要（記入者: 人間 / 2026-09-24）**: 本スペックは外部公開 API を持たない。画面と同一の WAR 内でサーバサイドレンダリングにより完結する（`steering/api-standards.md` の `## バージョン管理`「外部公開 API を持たない」/ REQ-008）。
 - **イベント**: <DSN_CONTRACT_EVENT> — **不要（記入者: 人間 / 2026-09-24）**: 申請・承認は同期処理で完結し、他コンポーネントへイベントを配信しない。非同期の連携はバッチ経由（`contract-info-import` が担う）であり、本スペックからは発行しない。
-- **サービス間**: 本スペックと `issue-request` のあいだの契約は契約 1・契約 2 の 2 つ、外部システムとの契約は契約 3 の 1 つである。**分散トランザクションは用いない**（同一 DB・同一 WAR であり、各画面のトランザクションで閉じる）。
+- **サービス間**: 本スペックと `issue-request` のあいだの契約は契約 1・契約 2・契約 4 の 3 つ、外部システムとの契約は契約 3 の 1 つである。**分散トランザクションは用いない**（同一 DB・同一 WAR であり、各画面のトランザクションで閉じる）。
 
 #### 契約 1: 申請No の引き渡し（本スペックが提供）
 
@@ -308,6 +336,24 @@ flowchart LR
 | 出力項目・並び順・ファイル名・起動契機 | <DSN_CONTRACT_CSV_SPEC> — **未確定（未確定事項 ⑧）**: 利用側のインポート仕様が上流から決まらない。**利用側の仕様書を入手して確定させる** |
 | 契約が破れる条件 | 利用側のインポート仕様の変更。本スペックの側では検出できないため、変更時は利用側から通知を受ける必要がある |
 
+#### 契約 4: 発番時の物件申請の状態更新（本スペックが提供。`issue-request` が呼ぶ）
+
+> **`TWTGM080` / `TWTGM180` の書き込み元は本スペックのままとし、発番に伴う更新は本スペックが公開するメソッドで行う**（③ の判断 / 2026-09-25）。公開メソッドは、画面パッケージ（`wtg070`）どうしの直接依存を避け、かつ物件申請に固有の業務ロジックを共通基盤（`jp.co.kccs.wt.common`）に置かないため、**サブシステム WTG の共通パッケージ `jp.co.kccs.wt.function.wtg.common` に置く**（③ の判断 / 2026-09-25。`steering/architecture.md` の `## レイヤーと依存ルール` と `### 共通基盤（shared）`。既存の `jp.co.kccs.wt.function.wte.common`（`WTECommonService` / `WTEHistoryService` ほか）と同じ形で、クラス名も「サブシステム + 用途」にならう）。
+
+| 項目 | 内容 |
+|---|---|
+| 提供元 | 本スペック（`jp.co.kccs.wt.function.wtg.common.service.WTGHatsubanService` と `jp.co.kccs.wt.function.wtg.common.mapper.WTGHatsubanMapper`） |
+| 利用側 | `issue-request`（発行依頼書登録変更画面の**発番ボタン**の処理。発行依頼書情報マスタ `TWTGM100` を更新した後に呼ぶ） |
+| 受け取る値 | 申請No（`Application_No`）。会社コード・更新者・更新者名はログインユーザーのものを提供元が `LoginUserUtils` から取得する |
+| `TWTGM080` の UPDATE | 最初に当該行（`Status` / `JOTAI_KBN` / `ExclusiveFG`）を読み、更新前の状態を確かめる。そのうえで `Hatsuban_Uketsuke_DateTime`（発番日時）= システム日時、更新者・更新日時・`UpdatedPerson_Name`（更新者名）を更新し、`Status` / `JOTAI_KBN` を **「起案済・回覧中」→「受付済・回覧中」** にする。`WHERE CompanyCD = <ログインユーザーの会社コード> AND Application_No = <申請No> AND ExclusiveFG = <読んだ ExclusiveFG>`。**更新件数が 0 件なら既存の排他エラー（`ExclusiveException`）と同じ扱いにする**（`steering/database.md` の排他制御。③ の判断 / 2026-09-25） |
+| `TWTGM180` の INSERT | `Hantei`（判定）= `"11"`（発番 / 受付）、`Shinsa_Kengen`（審査権限）= `"02"`（申請者）、`Shinsa_Count`（審査回）= `TWTGM080` の `Application_Count`（申請回数）、`Tsuban`（通番）= 同じ申請No・審査回の `MAX(Tsuban) + 1`（行が無ければ `1`）、`Hantei_Comment`（コメント）= `NULL`。審査回と通番の決め方は `Pwtgo070Mapper` の「承認履歴の登録」と同じである |
+| コード値の持ち方 | 遷移前後の `Status` / `JOTAI_KBN` の値と、判定 `"11"`・審査権限 `"02"` は、使う各クラスの中の定数（`private static final String`）で持つ。本契約では `WTGHatsubanService` の中に持ち、同じ値を使う他のクラスもそれぞれのクラスの中に持つ。機能固有の値として扱い、既存の `Constants` には足さず、新しい定数クラスも作らない（③ の判断 / 2026-09-25）（既存例: `wtg002/service/Pwtgo003Service.java` の `KEY2_C02` ほか）。**これらは ③ の判断（2026-09-25）で確定した値であり、未確定事項 ⑥ のうち発番の遷移だけが確定している**（`### 判断 6`） |
+| 変更履歴 | **発番では `TWTGM080` の更新と `TWTGM180` の登録だけを行い、`TWTGA120`（変更履歴）には登録しない**（状態管理の例外。③ の判断 / 2026-09-25） |
+| 保証すること | 2 つの更新を同時に成立させる。更新前の状態が「起案済・回覧中」でない場合は更新せず業務エラー（`ApplicationException`）を返す（状態遷移表に無い遷移を作らない — `### 判断 6`） |
+| トランザクション | 呼び出し元（`issue-request` の Service）のトランザクションに参加する。`TWTGM100` の更新と本契約の 2 つの更新は同じトランザクションで確定する |
+| 利用側の義務 | `TWTGM080` / `TWTGM180` へ直接 SQL を発行せず、本契約のメソッドだけを呼ぶ |
+| 契約が破れる条件 | 状態遷移表の「発番」の行（遷移前後の `Status` / `JOTAI_KBN`）、判定・審査権限のコード値、`TWTGM080` / `TWTGM180` の該当列の変更 |
+
 ## コンポーネントとインターフェース（Components and Interfaces）
 
 ### コンポーネント一覧（Summary）
@@ -316,13 +362,14 @@ flowchart LR
 |---|---|---|---|---|---|
 | `Pwtgo070Controller` | 物件申請 / controller | HTTP の入口。画面遷移とフォームのバインド、CSRF・権限の通過後の処理振り分け | 1-1, 1-2, 1-3, 1-4, 1-7, 2-1, 3-1, 4-4, 6-1, 7-1, 8-1, 11-1, 12-4 | `Pwtgo070Service` | API 契約 |
 | `Pwtgo070Service` | 物件申請 / service | 業務ロジックとトランザクション境界。登録・変更・申請・承認・履歴登録・採番・CSV | 1-2, 1-3, 1-5, 1-6, 1-8, 2-3, 2-4, 2-5, 3-2, 3-3, 3-4, 3-5, 4-1, 4-2, 4-3, 4-4, 4-5, 4-6, 5-1, 5-2, 5-3, 5-4, 5-5, 5-6, 6-1, 6-2, 6-3, 6-4, 6-5, 7-1, 7-2, 7-3, 7-4, 7-5, 8-1, 8-2, 8-3, 8-4, 11-1, 11-2, 11-5, 11-6, 11-7, 12-1, 12-2, 12-3, 12-4, 12-5, 12-6 | `Pwtgo070Mapper`, `NumberingService`, `FileUploadService`, `CodeMstService` | サービスインターフェース, 状態管理 |
-| `Pwtgo070Mapper` | 物件申請 / mapper | `TWTGM080` / `TWTGA120` / `TWTGM180` の永続化と、`TWTGM100` / `TWTGM140` の参照（契約 2-a。外部結合） | 1-3, 1-5, 1-6, 5-3, 5-4, 11-1, 11-2, 11-5, 11-7 | Oracle（`TWTGM080` / `TWTGA120` / `TWTGM180` / `TWTGM100` / `TWTGM140`） | — |
+| `Pwtgo070Mapper` | 物件申請 / mapper | `TWTGM080` / `TWTGA120` / `TWTGM180` / `TWTGM090` の永続化と、`TWTGM100` / `TWTGM140` の参照（契約 2-a。外部結合）、`TWTBM080` の参照（データ範囲） | 1-3, 1-5, 1-6, 2-4, 5-3, 5-4, 6-1, 11-1, 11-2, 11-5, 11-7 | Oracle（`TWTGM080` / `TWTGA120` / `TWTGM180` / `TWTGM090` / `TWTGM100` / `TWTGM140` / `TWTBM080`） | — |
 | `Pwtgo070Form` | 物件申請 / form | 画面の入力値のバインドと宣言的な入力チェック | 1-7 | — | — |
 | `pwtgo070.html` / `pwtgo070Script.html` | 物件申請 / 画面（Thymeleaf） | 画面の描画。権限・状態による画面要素の活性・非活性・非表示、ステータスの表示、作成組織の会社名のラベル表示、閲覧・印刷ボタンの表示制御と別ウインドウでの呼び出し | 2-2, 5-1, 10-1, 11-1, 11-3, 11-4 | `Pwtgo070Controller`（モデル属性）、`Pwtgo072Controller`（帳票の呼び出し先） | — |
 | `Pwtgo072Controller`（帳票 / PGID `PWTGO072`） | 帳票 / controller | 帳票出力の入口。`@RequestMapping("/wtg070/report")` / `@FuncID("PWTGO072")`。画面とは別プログラム | 9-1, 9-3, 9-5, 10-1, 10-3 | `Pwtgo072Service` | API 契約 |
 | `Pwtgo072Service`（帳票 / PGID `PWTGO072`） | 帳票 / service | 帳票 3 種（帳票ID `RWTG070`）を原本 Excel から生成し PDF で出力 | 9-1, 9-2, 9-3, 9-4, 9-5, 9-6, 10-1, 10-2, 10-3, 10-4 | `Pwtgo072Mapper`, Excel を扱うライブラリ（未確定）, zxing | サービスインターフェース |
 | `Pwtgo072Mapper`（帳票 / PGID `PWTGO072`） | 帳票 / mapper | 帳票の元データの参照（契約 2-b。`TWTGM100` を主とする結合） | 9-1, 9-6, 10-2, 11-5 | Oracle（`TWTGM100` / `TWTGM080` / `TWTGM140` / `TWTGM180` / `TWTZM040`） | — |
-| `TWTGM080` / `TWTGA120` / `TWTGM180`（domain） | 物件申請 / domain | Mapper の `resultType` で受ける POJO（Lombok `@Data`） | — | — | — |
+| `WTGHatsubanService` / `WTGHatsubanMapper`（`jp.co.kccs.wt.function.wtg.common`） | 物件申請 / wtg 共通の service・mapper | 発番時の `TWTGM080` の状態更新と `TWTGM180` への登録（契約 4）。`issue-request` の発番の処理から呼ばれる | — （`issue-request` の発番の処理に付随する更新。本スペックの受入基準には対応しない） | Oracle（`TWTGM080` / `TWTGM180`）、`LoginUserUtils` | 契約 4 |
+| `TWTGM080` / `TWTGA120` / `TWTGM180` / `TWTGM090`（domain） | 物件申請 / domain | Mapper の `resultType` で受ける POJO（Lombok `@Data`） | — | — | — |
 
 ### 物件申請 / controller
 
@@ -335,7 +382,7 @@ flowchart LR
 | 担当 / レビュアー | <DSN_COMPONENT_OWNER> — **不要（記入者: 人間 / 2026-09-24）**: 担当者の割り当ては本プロジェクトの体制で決めるものであり、設計書では固定しない（REQ-061 の体制に従う） |
 
 **責務と制約**:
-- **主たる責務**: `@RequestMapping("/wtg070")` で受け、アクション（`regist` / `update` / `approved` / `download` 等）ごとにメソッドを持つ。Form へのバインド、`BindingResult` のエラーを画面へ戻す、`ModelAndView` のビュー名とモデル属性を組み立てる。
+- **主たる責務**: `@RequestMapping("/wtg070")` で受け、アクション（`regist` / `update` / `approved` / `copy` / `upload` / `downLoad` 等。一覧は下記 `##### API 契約`）ごとにメソッドを持つ。Form へのバインド、`BindingResult` のエラーを画面へ戻す、`ModelAndView` のビュー名とモデル属性を組み立てる。
 - **ドメイン境界 / トランザクションの範囲**: **トランザクションを張らない。** 境界は Service（`steering/database.md` の `## 接続 / トランザクション`）。
 - **データ所有権 / 不変条件**: SQL・業務ロジックを持たない（`steering/architecture.md` の `## レイヤーと依存ルール` の禁止）。`@FuncID("PWTGO070")` を付与し、`AccessControlInterceptor` の権限判定の対象にする。
 
@@ -366,12 +413,17 @@ flowchart LR
 | POST | `/wtg070/regist` | `Pwtgo070Form`（新規登録） | 同画面の再表示（HTML）。成功時は採番した申請No を保持した状態 | 200（`error` ビュー）、元画面の再表示（入力チェックエラー） |
 | POST | `/wtg070/update` | `Pwtgo070Form`（変更。`ExclusiveFG` を含む） | 同画面の再表示（HTML） | 200（`error` ビュー: 排他エラー・業務エラー）、元画面の再表示（入力チェックエラー） |
 | POST | `/wtg070/approved` | `Pwtgo070Form`（申請・承認・スキップの操作） | 同画面の再表示（HTML） | 200（`error` ビュー: 承認者不一致・状態不整合） |
+| POST | `/wtg070/copy` | 引用元の申請No | 同画面の再表示（HTML。引用元の複製対象項目を新規入力の初期値にした、未保存の状態） | 200（`error` ビュー: 対象なし・権限外） |
 | POST | `/wtg070/upload` | `multipart/form-data`（契約稟議ファイル） | 同画面の再表示（HTML） | 200（`error` ビュー）、元画面の再表示（ファイル種別・サイズのエラー） |
 | POST | `/wtg070/downLoad` | `Pwtgo070Form`（出力対象の指定） | `executeDownLoad` へ forward（CSV） | 200（`error` ビュー: 対象なし・権限エラー） |
-| POST | `/wtg070/executeDownLoad` | `FileInfo`（forward で受け取る） | `Content-Disposition` 付きのバイナリ（CSV） | 200（`error` ビュー） |
+| POST | `/wtg070/file/update` | 契約稟議ファイル欄の確定チェック（申請No・`Seq`・`Kakute_Flg`・`ExclusiveFG` の組） | 同画面の再表示（HTML） | 200（`error` ビュー: 排他エラー・権限エラー） |
+| POST | `/wtg070/file/downLoad` | 申請No・`Seq`（参照する契約稟議ファイル） | `/wtg070/executeDownLoad` へ forward（契約稟議ファイル） | 200（`error` ビュー: 対象なし・権限エラー） |
+| POST | `/wtg070/executeDownLoad` | `FileInfo`（forward で受け取る） | `Content-Disposition` 付きのバイナリ（CSV・契約稟議ファイル） | 200（`error` ビュー） |
 
-> **アクション名の選定**: `regist` / `update` / `approved` / `upload` は CSRF 検証の対象、`download` / `downLoad` / `executeDownLoad` は CSRF トークン生成の除外対象である（`steering/api-standards.md` の `## エンドポイントのパターン`「アクション系」が正本）。**新しいアクション名を作らず、既定の名前に収める。**
-> **初期表示はアクション名を付けず、空パスで受ける。メソッドは 2 本に分ける** — メニューから新規に開く場合は `@RequestMapping(value = "", method = RequestMethod.GET)`、遷移元から申請No を受け取って開く場合は `@RequestMapping(value = "", method = RequestMethod.POST)` とする（`steering/api-standards.md` の `## HTTP メソッド`。既存 `Pwtgo008Controller`（GET）/ `Pwtgo006Controller`（POST）。③ の判断 / 2026-09-24）。`init` を使っているのはダイアログのみである（③ の確認 / 2026-09-24）。既定のアクション名に無い名前を新設しないため、`servlet-context.xml` の interceptor マッピングの変更を要しない。
+> **アクション名の選定**: `regist` / `update` / `approved` / `upload` は CSRF 検証の対象、`download` / `downLoad` / `executeDownLoad` は CSRF トークン生成の除外対象である（`steering/api-standards.md` の `## エンドポイントのパターン`「アクション系」が正本）。**`copy` を除き、新しいアクション名を作らず既定の名前に収める。** 引用（受入基準 3-1）の `copy` は既定の名前ではないが、保存を伴わない画面の再表示であり CSRF 検証の対象に含める必要が無いため、既存の `Pwtgo003Controller`（`copy`）と同じ名前を採る（③ の判断 / 2026-09-25 の #37）。**interceptor マッピングの確認結果**: `servlet-context.xml` の `/**` のマッピング（ログ・セッション確認・パスワード有効期限・権限制御・CSRF トークン生成）が `/wtg070/copy` にもそのまま効き、CSRF 検証の対象（`/**/regist` / `update` / `delete` / `approved` / `reset` / `execute` / `upload` の計 7 つ）には当たらないため、マッピングの変更を要しない。
+> **初期表示はアクション名を付けず、空パスで受ける。メソッドは 2 本に分ける** — メニューから新規に開く場合は `@RequestMapping(value = "", method = RequestMethod.GET)`、遷移元から申請No を受け取って開く場合は `@RequestMapping(value = "", method = RequestMethod.POST)` とする（`steering/api-standards.md` の `## HTTP メソッド`。既存 `Pwtgo008Controller`（GET）/ `Pwtgo006Controller`（POST）。③ の判断 / 2026-09-24）。`init` を使っているのはダイアログのみである（③ の確認 / 2026-09-24）。`copy` を含め、使うアクション名はいずれも既存のマッピングで扱いが定まるため、`servlet-context.xml` の interceptor マッピングの変更を要しない。
+> **契約稟議ファイルの参照（受入基準 6-4）は `/wtg070/file/downLoad` で受ける。** CSV の `downLoad` と同じ既定のアクション名を用途別に分けるため、`file` のサブパスの下に置く（`steering/api-standards.md` の `## エンドポイントのパターン`「階層」。既存 `Pwtgo026Controller` の `/wtg002/file/downLoad`。③ の判断 / 2026-09-25）。`Pwtgo070Controller` のメソッドとして持ち（`@FuncID("PWTGO070")`）、末尾が `downLoad` のため CSRF トークン生成の除外がそのまま効く。取得の前に Requirement 2 と同じ権限判定を Service 側で行う。
+> **「編集中」の促し（`listPendingProperties`。受入基準 8-1）を呼び出す画面操作**: <DSN_API_PENDING_TRIGGER> — **未確定（未確定事項 ⑨）**: 促す契機（画面の初期表示か、別の操作か）と促し方が上流から決まらない。確定した時点で本表にエンドポイントを足す。
 > **帳票の出力は `/wtg070/report` 配下（`Pwtgo072Controller`）で受ける**（下記 `### 帳票 / controller`）。
 
 ### 物件申請 / 画面
@@ -392,10 +444,10 @@ flowchart LR
   - **閲覧・印刷ボタンは、次の条件をすべて満たすときだけ表示する**（③ の確定 / 2026-09-24。根拠: WTG070 機能定義書「別紙_ボタン表示制御」の閲覧・印刷の行）。
     1. 契約局情報（`TWTGM140`）と発行依頼書（`TWTGM100`）が登録済みである
     2. 発番済みである — **`TWTGM080.Status` が「受付済」以降**（受付済 / 申請済 / 確認済 / 承認済）で判定する。状態遷移表で「発番」を行うと受付済になるため（③ の確定 / 2026-09-24。根拠: WTG070 機能定義書「別紙_承認機能制御」）
-    3. **ログインユーザーの所属組織**が「K-ENG:プロセス管理センター:プロセス管理4G」である（所属組織は `LoginUserUtils` で取得する。③ の確定 / 2026-09-24）
-    - 判定は `Pwtgo070Service` が行い、Controller がモデル属性で渡す。1 の判定に要る行の有無は契約 2-a で読む。3 の判定値はソースに直書きしない（`steering/database.md` の `### 業務コード・区分値・採番の設計ルール`）。
+    3. **ログインユーザーの所属組織**が「K-ENG:プロセス管理センター:プロセス管理4G」である（③ の確定 / 2026-09-24）。**判定は「ログインユーザーのグループコード（ログイン情報の Group）= `"G6"`」とする**（③ の判断 / 2026-09-25）。グループの一覧は、**本リリースで追加する**コードマスタの区分 `WTG` / `PARAM` / `P71`（キー3 = グループコード、名称 = グループ名）が持ち、キー3 = `"G6"` の行（本リリースで追加する）の名称が「プロセス管理4G」である。**`P71` は `issue-request` の社外判定（文字項目1）と共用する区分である**（③ の判断 / 2026-09-25）
+    - 判定は `Pwtgo070Service` が行い、Controller がモデル属性で渡す。1 の判定に要る行の有無は契約 2-a で読む。3 の判定値 `"G6"` は、判定する各クラス（`Pwtgo070Service` / `Pwtgo072Service`）の中の定数（`private static final String`）で持つ（③ の判断 / 2026-09-25）。
     - **画面を通らずに帳票のエンドポイントへ来た場合の守りとして、`Pwtgo072Service` が同じ条件を再判定し、満たさなければ業務エラーにする。**
-  - **閲覧の操作では、帳票のエンドポイント（`/wtg070/report/downLoad`）へ別ウインドウを出力先にしてフォームを送る**（受入基準 10-1）。応答は `inline` で返す（`### 帳票 / controller`）。
+  - **閲覧の操作では、帳票のエンドポイント（`/wtg070/report/downLoad`）へ出力区分「閲覧」を付け、別ウインドウを出力先にしてフォームを送る**（受入基準 10-1）。応答は `inline` で返す。印刷の操作は出力区分「印刷」を付けて送り、`attachment` で返す（`### 帳票 / controller`）。
 - **ドメイン境界 / トランザクションの範囲**: 持たない。
 - **データ所有権 / 不変条件**: 画面から会社コードを送らない（`steering/security.md` の `#### 所有権・エンティティ境界`）。
 
@@ -411,14 +463,15 @@ flowchart LR
 
 **責務と制約**:
 - **主たる責務**: 物件申請の登録・変更・申請・承認、履歴の登録、申請No の採番、契約稟議ファイルの紐づけ、CSV の生成、`TWTGM100` からの会社名の取得。内訳のうち、設計上の決めが要るものを次に挙げる。
-  - **CSV は物件申請を取得する SQL の結果から作る。** 出力のためだけに別条件の SQL を作らない（受入基準 7-2）。文字コードは `wing-web.properties` の `CHARSET` に従い、区切り・引用符の扱いを本スペック独自に変えない（受入基準 7-3）。
+  - **CSV は `Pwtgo070Mapper` の「物件申請の取得」の SQL の結果から作る。** 入力はログインユーザーの会社コードで、出力のためだけに別条件の SQL を作らない（受入基準 7-2）。**CSV には表示件数の上限を掛けない**（③ の判断 / 2026-09-25）。文字コードは `wing-web.properties` の `CHARSET` に従い、区切り・引用符の扱いを本スペック独自に変えない（受入基準 7-3）。
   - **契約稟議ファイルの参照・登録・CSV 出力は、いずれも Requirement 2 と同じ権限判定を Service 側で行う**（受入基準 6-4 / 7-4）。帳票の出力・PDF 閲覧の権限判定は `Pwtgo072Service` が行う。
   - **「編集中」の促しは読み取りのみで、物件申請の内容を自動的に変更・削除しない**（受入基準 8-3）。対象はログインユーザーの会社コードと権限の範囲に限る（受入基準 8-2）。
   - **作成組織の会社名は `TWTGM100` の 1 列を読むだけである**（受入基準 11-1。契約 2-a）。入力欄を設けないこと・ZOOM を起動しないことは画面の責務（`### 物件申請 / 画面`）。
   - **閲覧・印刷ボタンの表示条件を判定する**（`### 物件申請 / 画面` の 3 条件）。
+  - **ベンダー／施工会社のデータ範囲の制御**（受入基準 2-4）: ログインユーザーの BS ベンダー区分・施工会社区分を `LoginUserUtils` から取得して Mapper に渡す。SQL の条件は `### セキュリティ上の考慮` の `認証・認可`。
   - **引用（複製）の対象項目は本クラス内の 1 か所で一覧として持ち、`quoteProperty` はその一覧にある項目だけを複製する**（受入基準 3-2）。一覧の中身は **未確定事項 ④**。対象外の項目は複製せず、新規入力の初期状態のままにする。
 - **ドメイン境界 / トランザクションの範囲**: **本クラスのメソッドがトランザクション境界である。** 参照のみのメソッドは `@Transactional(readOnly = true)`、更新を伴うメソッドは `@Transactional`（`steering/database.md`）。**現在値の更新と履歴の登録、および申請No の採番と `TWTGM080` の INSERT は、それぞれ同一トランザクション内で行う**（受入基準 5-3 / 12-1）。
-- **データ所有権 / 不変条件**: `TWTGM080` / `TWTGA120` / `TWTGM180` の唯一の書き込み元。`TWTGM100` は参照のみ。すべての検索・更新の `WHERE` にログインユーザーの会社コードを含める（受入基準 1-6）。
+- **データ所有権 / 不変条件**: `TWTGM080` / `TWTGA120` / `TWTGM180` / `TWTGM090` の書き込み元。例外は発番時の `TWTGM080` の更新と `TWTGM180` への登録で、これは本スペックの `WTGHatsubanService`（契約 4）が行う。`TWTGM100` / `TWTGM140` / `TWTBM080` は参照のみ。すべての検索・更新の `WHERE` にログインユーザーの会社コードを含める（受入基準 1-6）。
 
 **依存関係**:
 - **呼び出し元（Inbound）**:
@@ -447,19 +500,21 @@ flowchart LR
 | `quoteProperty` | 引用元の申請No | 複製された入力値（未保存） | 対象なし・権限外（`ApplicationException`） |
 | `applyOrApprove` | 申請No・操作種別（申請 / 承認 / スキップ） | 遷移後のステータスと承認段階 | 承認者不一致・状態不整合（`ApplicationException`） |
 | `registHistory` | 申請No・変更前後の値 | 登録した通番 | — （呼び出し元のトランザクションに参加する） |
-| `uploadRingiFile` | 申請No・`MultipartFile` | 登録したファイルの識別子 | 種別・サイズ超過（`BindingResult`）、アップロード失敗（`ApplicationException`） |
-| `exportProgressCsv` | 検索条件 | `DownLoadFileInfo`（CSV） | 対象なし・権限外（`ApplicationException`） |
+| `uploadRingiFile` | 申請No・`MultipartFile` | 登録した `TWTGM090` の `Seq` | 種別・サイズ超過（`BindingResult`）、アップロード失敗（`ApplicationException`） |
+| `updateRingiFileKakutei` | 申請No・確定チェックの組（`Seq`・`Kakute_Flg`・`ExclusiveFG`） | 更新件数 | 排他エラー（`ExclusiveException`）・権限外（`ApplicationException`） |
+| `downloadRingiFile` | 申請No・`Seq` | `DownLoadFileInfo`（`TWTGM090` の `File_Path` / `File_Name` のファイル） | 対象なし・権限外（`ApplicationException`） |
+| `exportProgressCsv` | ログインユーザーの会社コード（`LoginUserUtils` からサーバ側で取得する） | `DownLoadFileInfo`（CSV）。`Pwtgo070Mapper` の「物件申請の取得」の SQL（申請No を指定しない）の結果から作り、**表示件数の上限を掛けない** | 対象なし・権限外（`ApplicationException`） |
 | `selectKiansyaKaishaName` | 申請No | 契約稟議起案者_会社名（`TWTGM100` 由来。**未登録なら空文字**） | — （行が無いことをエラーとしない — 受入基準 11-6） |
 | `listPendingProperties` | ログインユーザー情報 | 編集中のまま処理が完了していない物件申請の一覧 | — |
 
 - **事前条件（Preconditions）**: 呼び出し時点でセッションが有効であり、`AccessControlInterceptor` による機能IDの認可を通過していること。会社コードは `LoginUserUtils.getCompanyCd()` でサーバ側で取得し、画面からの受け取り値を使わないこと。
-- **事後条件（Postconditions）**: 更新系のメソッドが正常終了したとき、`TWTGM080` の現在値と `TWTGA120` の履歴が同一トランザクションで反映されている。`registProperty` が正常終了したとき、返した申請No で `TWTGM080` に行が存在する。
+- **事後条件（Postconditions）**: 物件基本情報の項目を変える更新メソッドが正常終了したとき、`TWTGM080` の現在値と `TWTGA120` の履歴が同一トランザクションで反映されている（発番による状態更新と契約稟議ファイルの確定は対象外 — `### ドメインモデル` の不変条件と同じ範囲。③ の判断 / 2026-09-25）。`registProperty` が正常終了したとき、返した申請No で `TWTGM080` に行が存在する。
 - **不変条件（Invariants）**: すべての SQL の `WHERE` にログインユーザーの会社コードが含まれる。`TWTGM100` に対して更新系の SQL を発行しない。履歴を物理削除しない。
 
 ##### 状態管理（State Management）
 
-- **状態モデル**: 物件申請は **`Status`（審査フェーズ）** と **`JOTAI_KBN`（審査結果）** の 2 列で状態を表し（値の一覧は `### 判断 6`）、**承認の進行は `Status` が担う**（判断 6）。`TWTGM180` の `Shinsa_Count` は審査の回数であり段階ではない。承認フローは 5 段階または 3 段階で、各段階についてスキップを行える（受入基準 4-2 / 4-3）。**値の一覧と遷移は未確定事項 ⑥、段階数の決まり方・承認者・スキップ条件は未確定事項 ⑤** であり、本設計では確定しない。区分値はコードマスタ（`TWTZM040`）で持ち、ソースに直書きしない（`steering/database.md` の `### 業務コード・区分値・採番の設計ルール`）。
-- **永続化 / 一貫性**: 状態は `TWTGM080` の列として持ち、遷移のたびに `TWTGA120`（変更履歴）と `TWTGM180`（承認履歴）へ登録する。3 者は同一トランザクション（受入基準 5-3）。
+- **状態モデル**: 物件申請は **`Status`（審査フェーズ）** と **`JOTAI_KBN`（審査結果）** の 2 列で状態を表し（値の一覧は `### 判断 6`）、**承認の進行は `Status` が担う**（判断 6）。`TWTGM180` の `Shinsa_Count` は審査の回数であり段階ではない。承認フローは 5 段階または 3 段階で、各段階についてスキップを行える（受入基準 4-2 / 4-3）。**遷移は発番の遷移（契約 4。③ の判断 / 2026-09-25 で確定）を除いて未確定事項 ⑥、段階数の決まり方・承認者・スキップ条件は未確定事項 ⑤** であり、本設計では確定しない。区分値はコードマスタ（`TWTZM040`）に登録し、画面に出す名称はコードマスタから取る（`steering/database.md` の `### 業務コード・区分値・採番の設計ルール`）。比較・設定に使うコード値は、使う各クラスの中の定数（`private static final String`）で持つ。機能固有の値として扱い、既存の `Constants` には足さず（既存クラスを変えない）、新しい定数クラスも作らない（③ の判断 / 2026-09-25）。
+- **永続化 / 一貫性**: 状態は `TWTGM080` の列として持ち、遷移のたびに `TWTGA120`（変更履歴）と `TWTGM180`（承認履歴）へ登録する。3 者は同一トランザクション（受入基準 5-3）。**例外として、発番（契約 4）では `TWTGM080` の更新と `TWTGM180` の登録だけを行い、`TWTGA120`（変更履歴）には登録しない**（③ の判断 / 2026-09-25）。
 - **並行制御**: **楽観排他。** `ExclusiveFG` を `WHERE` 条件に含めて更新し、更新件数が 0 件なら `ExclusiveException` として扱う（受入基準 1-3 / `steering/database.md`）。画面操作をまたぐトランザクションは張らない。**申請No の採番のみ悲観排他**で、`NumberingService` が `SELECT ... FOR UPDATE` で採番マスタの行を固定する（受入基準 12-2）。
 
 ### 物件申請 / mapper
@@ -468,8 +523,8 @@ flowchart LR
 
 | 項目 | 内容 |
 |---|---|
-| 目的（Intent） | `TWTGM080` / `TWTGA120` / `TWTGM180` の永続化と、`TWTGM100` / `TWTGM140` の外部結合による参照（契約 2-a） |
-| 受け入れ基準ID | 1-3, 1-5, 1-6, 5-3, 5-4, 11-1, 11-2, 11-5, 11-7 |
+| 目的（Intent） | `TWTGM080` / `TWTGA120` / `TWTGM180` / `TWTGM090` の永続化と、`TWTGM100` / `TWTGM140` の外部結合による参照（契約 2-a）、`TWTBM080` の参照（データ範囲） |
+| 受け入れ基準ID | 1-3, 1-5, 1-6, 2-4, 5-3, 5-4, 6-1, 11-1, 11-2, 11-5, 11-7 |
 | 担当 / レビュアー | <DSN_COMPONENT_OWNER> — **不要（記入者: 人間 / 2026-09-24）**: 上記に同じ |
 
 **責務と制約**:
@@ -493,12 +548,15 @@ flowchart LR
 >
 > | 用途 | 形 |
 > |---|---|
-> | 物件申請の取得（会社名の表示を含む） | `TWTGM080` を主、`TWTGM100` を **LEFT OUTER JOIN**（`TWTGM100.CompanyCD = TWTGM080.CompanyCD AND TWTGM100.Application_No = TWTGM080.Application_No`）。`WHERE TWTGM080.CompanyCD = #{companyCd}`。`Keiyaku_Ringi_Kiansha_Kaisha_Name` を `AS` で別名付けして取得する |
+> | 物件申請の取得（会社名の表示を含む） | `TWTGM080` を主、`TWTGM100` を **LEFT OUTER JOIN**（`TWTGM100.CompanyCD = TWTGM080.CompanyCD AND TWTGM100.Application_No = TWTGM080.Application_No`）。`WHERE TWTGM080.CompanyCD = #{companyCd}`。**申請No は任意条件**とし、指定されたときだけ `AND TWTGM080.Application_No = #{shinseiNo}` を付ける — 1 件表示（`POST /wtg070` ほか）は申請No を指定し、CSV（`exportProgressCsv`）は指定しない（③ の判断 / 2026-09-25）。`Keiyaku_Ringi_Kiansha_Kaisha_Name` を `AS` で別名付けして取得する。**ベンダー／施工会社のデータ範囲の条件（`TWTBM080` との `EXISTS`）を付ける**（受入基準 2-4。条件は `### セキュリティ上の考慮` の `認証・認可`） |
 > | 物件申請の登録 | `TWTGM080` への INSERT。共通カラムは既存の設定方法（登録者・登録日時・更新者・更新日時・排他フラグ）に従う |
 > | 物件申請の更新 | `TWTGM080` の UPDATE。`WHERE CompanyCD = #{companyCd} AND Application_No = #{shinseiNo} AND ExclusiveFG = #{exclusiveFg}` |
 > | 変更履歴の登録 | `TWTGA120` への INSERT。通番は当該申請Noの最大値 + 1 |
-> | 承認履歴の登録 | `TWTGM180` への INSERT。審査回は当該申請Noの最大値（新しい審査の開始時に + 1）、通番は当該審査回の最大値 + 1 |
+> | 承認履歴の登録 | `TWTGM180` への INSERT。審査回は `TWTGM080` の `Application_Count`（申請回数）、通番は同じ申請No・審査回の `MAX(Tsuban) + 1`（行が無ければ `1`）。契約 4 の登録と同じ決め方である（③ の判断 / 2026-09-25） |
 > | 承認履歴の取得 | `TWTGM180` を当該申請No・審査回・通番の順に取得する。**現在の段階は `TWTGM080.Status` から求め、審査回から求めない**（判断 6） |
+> | 契約稟議ファイルの登録 | `TWTGM090` への INSERT。`Seq` は当該の会社コード・申請No の最大値 + 1。`File_Path` には保存先（`### 物理データモデル` の `ファイル` 行）を入れる |
+> | 契約稟議ファイルの確定 | `TWTGM090` の UPDATE。確定チェックに変更があるレコードだけを対象に `Kakute_Flg` を更新する。`WHERE CompanyCD = #{companyCd} AND Application_No = #{shinseiNo} AND Seq = #{seq} AND ExclusiveFG = #{exclusiveFg}` |
+> | 契約稟議ファイルの取得 | `TWTGM090` を当該の会社コード・申請No で `Seq` の順に取得する |
 > | 編集中の物件申請の抽出 | `TWTGM080` の SELECT。抽出条件は **未確定（未確定事項 ⑨）** |
 > | 閲覧・印刷ボタンの表示判定 | `TWTGM080` を主に `TWTGM100` / `TWTGM140` を外部結合し、行の有無を取得する。`TWTGM140` の結合キーは `issue-request` の design で確定する（契約 2-a） |
 
@@ -533,10 +591,10 @@ flowchart LR
 
 | Method | Endpoint | Request | Response | Errors |
 |---|---|---|---|---|
-| POST | `/wtg070/report/downLoad` | 申請No・帳票種別（表紙情報 / 発行依頼書 / 契約局情報） | `executeDownLoad` へ forward（PDF） | 200（`error` ビュー: 対象なし・権限エラー・帳票生成失敗） |
-| POST | `/wtg070/report/executeDownLoad` | `FileInfo`（forward で受け取る） | `Content-Disposition` 付きのバイナリ（PDF） | 200（`error` ビュー） |
+| POST | `/wtg070/report/downLoad` | 申請No・帳票種別（表紙情報 / 発行依頼書 / 契約局情報）・**出力区分（閲覧 / 印刷）** | `executeDownLoad` へ forward（PDF。出力区分を引き継ぐ） | 200（`error` ビュー: 対象なし・権限エラー・帳票生成失敗） |
+| POST | `/wtg070/report/executeDownLoad` | `FileInfo` と出力区分（forward で受け取る） | `Content-Disposition` 付きのバイナリ（PDF）。**出力区分が閲覧なら `inline`（別ウインドウに表示 — 受入基準 10-1）、印刷なら `attachment`（ダウンロード）** | 200（`error` ビュー） |
 
-> **閲覧（別ウインドウでの PDF 表示 — 受入基準 10-1）の応答の形**: **共通処理 `ServiceBase` に `Content-Disposition: inline` で返すメソッドを新たに足し**、閲覧ではそれを使う。印刷（ダウンロード）は既存の `attachment` のメソッドを使う。**既存のメソッドは変更しない**（REQ-052。③ の判断 / 2026-09-24）。
+> **閲覧（別ウインドウでの PDF 表示 — 受入基準 10-1）の応答の形**: **共通クラス `ServiceBase` は変更しない。** 閲覧の応答（`Content-Disposition: inline`）は `Pwtgo072Service` の中で組み立てる。印刷（ダウンロード）は既存の `ServiceBase#downloadFile`（`attachment`）をそのまま使う（REQ-052。③ の判断 / 2026-09-25）。
 > `downLoad` / `executeDownLoad` は既定のアクション名であり、`servlet-context.xml` の interceptor マッピング（`/**` および `/**/<アクション>`）がそのまま効く。**マッピングの変更を要しない。**
 
 ### 帳票 / service
@@ -555,6 +613,7 @@ flowchart LR
   - **ダウンロードの後に、サーバ上に生成した PDF（およびコピーした Excel）を削除する。** サーバに帳票のファイルを残さない。
   - **帳票（印刷）と PDF 閲覧は同一の出力情報 3 種を、同一の原本 Excel から生成する。** 閲覧のためだけに別の出力情報を持たない（受入基準 9-1 / 10-2 / 10-4。同一の帳票定義を用いるかは未確定事項 ⑪ だが、**出力内容が一致することは本設計の決めとする**）。
   - **帳票の出力・PDF 閲覧は Requirement 2 と同じ権限判定を Service 側でも行う**（受入基準 9-3 / 10-3）。
+  - **閲覧の応答（`Content-Disposition: inline`）は本クラスの中で組み立てる。** 共通クラス `ServiceBase` にメソッドを足さない。印刷は既存の `ServiceBase#downloadFile`（`attachment`）を使う（受入基準 10-1。③ の判断 / 2026-09-25）。
   - **表紙情報への QR コードの印字**（受入基準 9-2）: zxing で QR コードを画像として生成し、コピーした Excel の所定の位置に**画像として貼る**（③ の判断 / 2026-09-24。根拠: WTG070 機能定義書_印刷・閲覧用帳票）。QR に埋め込む内容は未確定事項 ⑩。
   - **閲覧・印刷ボタンの表示条件（`### 物件申請 / 画面` の 3 条件）を再判定し、満たさなければ業務エラーとする。** 画面を通らずにエンドポイントへ来た場合の守りである（③ の確定 / 2026-09-24）。`TWTGM100` に行が無い場合（契約 2-b が内部結合であるため元データが取れない場合）もこれに含まれる。
 - **ドメイン境界 / トランザクションの範囲**: 参照のみのため `@Transactional(readOnly = true)`。
@@ -576,7 +635,7 @@ flowchart LR
 
 | メソッド | 入力 | 出力 | エラー |
 |---|---|---|---|
-| `exportReport` | 申請No・帳票種別（表紙情報 / 発行依頼書 / 契約局情報） | `DownLoadFileInfo`（PDF） | 対象なし（`TWTGM100` に行が無い場合を含む）・権限外・帳票生成失敗（`ApplicationException`） |
+| `exportReport` | 申請No・帳票種別（表紙情報 / 発行依頼書 / 契約局情報）・出力区分（閲覧 / 印刷） | `DownLoadFileInfo`（PDF）。応答は出力区分により `inline` / `attachment` を切り替える | 対象なし（`TWTGM100` に行が無い場合を含む）・権限外・帳票生成失敗（`ApplicationException`） |
 
 ### 帳票 / mapper
 
@@ -631,9 +690,11 @@ sequenceDiagram
     S->>D: TWTGM080 へ INSERT（同一トランザクション）
     S->>D: TWTGA120 へ履歴を INSERT（同一トランザクション）
     S-->>C: 申請No
-    C-->>W: 画面を再表示する（申請No を保持）
-    W->>D: TWTGM100 を外部結合して契約稟議起案者_会社名を読む
-    D-->>W: 会社名（未登録なら空欄）
+    C->>S: selectKiansyaKaishaName(申請No)
+    S->>D: TWTGM100 を外部結合して契約稟議起案者_会社名を読む
+    D-->>S: 会社名（未登録なら空）
+    S-->>C: 会社名（未登録なら空文字）
+    C-->>W: 画面を再表示する（申請No と会社名を保持。会社名が空なら空欄で表示）
     U->>W: 申請する
     W->>C: POST /wtg070/approved
     C->>S: applyOrApprove(申請No, 申請)
@@ -657,7 +718,7 @@ sequenceDiagram
 
 | チェック対象 | 項目名 | 条件 / ルール | エラーコード | メッセージ例 | UI の対処 |
 |---|---|---|---|---|---|
-| Form（バインド） | 物件基本情報の業務項目 | <DSN_VALIDATION_RULE_BUSINESS> — **未確定（未確定事項 ②）**: 項目の一覧・桁・必須が上流から決まらない | <DSN_VALIDATION_CODE_BUSINESS> — **未確定**: メッセージIDは `messages.properties` の採番簿の管理事項 | — | 元の画面を再表示し、`BindingResult` の全件を該当項目の近くに表示する |
+| Form（バインド） | 物件基本情報の業務項目 | <DSN_VALIDATION_RULE_BUSINESS> — **未確定（未確定事項 ② の残り）**: 必須の別と入力チェックの内容が上流から決まらない（項目の一覧と桁は `#### TWTGM080 の列定義` で確定済み。桁の超過はこの一覧に従って判定する） | <DSN_VALIDATION_CODE_BUSINESS> — **未確定**: メッセージIDは `messages.properties` の採番簿の管理事項 | — | 元の画面を再表示し、`BindingResult` の全件を該当項目の近くに表示する |
 | Service（業務） | ステータス | 変更を許さない状態では更新を受け付けない（受入基準 1-8）。許す状態の一覧は **未確定（未確定事項 ⑥）** | <DSN_VALIDATION_CODE_STATUS> — **未確定** | 「この状態の物件申請は変更できません」 | `error` ビューに遷移し、メッセージIDに対応する文言を表示する |
 | Service（業務） | 承認者 | 操作者が当該段階の承認者であること（受入基準 4-5）。承認者の決め方は **未確定（未確定事項 ⑤）** | <DSN_VALIDATION_CODE_APPROVER> — **未確定** | 「この段階の承認権限がありません」 | 同上 |
 | Service（排他） | `ExclusiveFG` | 更新件数が 0 件なら排他エラー（受入基準 1-3） | 既存の排他エラー（`ExclusiveException`） | 既存の文言に従う | `error` ビューに遷移する |
@@ -724,7 +785,15 @@ wing/src/main/java/jp/co/kccs/wt/function/wtg/wtg070/
 wing/src/main/java/jp/co/kccs/wt/common/domain/
 ├── TWTGM080.java                            # 物件申請情報マスタ（Lombok @Data の POJO）
 ├── TWTGA120.java                            # 物件申請情報変更履歴（同上）
-└── TWTGM180.java                            # 物件申請情報承認履歴ﾏｽﾀ（同上）
+├── TWTGM180.java                            # 物件申請情報承認履歴ﾏｽﾀ（同上）
+└── TWTGM090.java                            # 契約稟議ファイルマスタ（同上）
+
+wing/src/main/java/jp/co/kccs/wt/function/wtg/common/        (既存 function/wte/common と同じ形)
+├── service/WTGHatsubanService.java             # 発番時の状態更新（契約 4。issue-request から呼ばれる）
+└── mapper/WTGHatsubanMapper.java               # 同上の @Mapper インタフェース
+
+wing/src/main/resources/jp/co/kccs/wt/function/wtg/common/
+└── WTGHatsubanMapper.xml                       # 契約 4 の SQL（TWTGM080 の UPDATE / TWTGM180 の INSERT）
 
 wing/src/main/resources/jp/co/kccs/wt/function/wtg/wtg070/
 ├── Pwtgo070Mapper.xml               # SQL（namespace は完全修飾名）
@@ -739,14 +808,14 @@ wing/src/main/resources/（帳票）
                                              # 配置ディレクトリと 3 種のレイアウトは未確定（未確定事項 ⑩）
 ```
 
-> **`domain` の配置について**: 既存の `TWTGM010`〜`TWTGM050` / `TWTGA010` 等はいずれも `jp.co.kccs.wt.common.domain` に置かれている（画面パッケージ配下ではない）。`TWTGM080` / `TWTGA120` / `TWTGM180` も同じ場所に置き、既存の配置に合わせる（REQ-053）。
+> **`domain` の配置について**: 既存の `TWTGM010`〜`TWTGM050` / `TWTGA010` 等はいずれも `jp.co.kccs.wt.common.domain` に置かれている（画面パッケージ配下ではない）。`TWTGM080` / `TWTGA120` / `TWTGM180` / `TWTGM090` も同じ場所に置き、既存の配置に合わせる（REQ-053）。
 
 ### 変更する既存ファイル（Modified Files）
 
 - `wing/src/main/resources/messages.properties` — 本スペックのメッセージIDと文言を追加する。**既存の定義を変更しない**（REQ-052）。
-- `wing/src/main/java/jp/co/kccs/wt/common/service/ServiceBase.java` — `Content-Disposition: inline` で返すメソッドを**追加**する（受入基準 10-1）。**既存のメソッド（`attachment`）は変更しない**（REQ-052）。
-- `wing/pom.xml` — Excel を扱うライブラリ（未確定）の依存を追加する。zxing core を明示するかは `### 判断 9`。
-- `wing/src/main/webapp/WEB-INF/spring/servlet-context.xml` — <DSN_MODIFIED_SERVLET_CONTEXT> — **不要（記入者: 人間 / 2026-09-24）**: 既定のアクション名（`regist` / `update` / `approved` / `upload` / `downLoad` / `executeDownLoad`）に収めるため、interceptor マッピングの変更を要しない（`steering/api-standards.md` の `## エンドポイントのパターン`）。初期表示は空パスで受け（未確定事項 ① は解消済み）、帳票の `/wtg070/report` 配下も既定のアクション名のみを使う。
+- `wing/pom.xml` — Excel を扱うライブラリ（未確定）の依存を追加する。
+- `wing/src/main/resources/wing-web.properties` — 契約稟議ファイルの保存先のキー `swf.upload.directory.wtg070.ring=/wtg/wtg070/ringi` を 1 行足す（③ の判断 / 2026-09-25）。既存のキーは変更しない。
+- `wing/src/main/resources/servlet-context.xml` — <DSN_MODIFIED_SERVLET_CONTEXT> — **不要（記入者: 人間 / 2026-09-24）**: 既定のアクション名（`regist` / `update` / `approved` / `upload` / `downLoad` / `executeDownLoad`）と、既定外の `copy`（CSRF 検証の対象外。上記 `##### API 契約` の注記に確認結果を記載）のいずれも既存のマッピングで扱いが定まるため、interceptor マッピングの変更を要しない（`steering/api-standards.md` の `## エンドポイントのパターン`）。初期表示は空パスで受け（未確定事項 ① は解消済み）、帳票の `/wtg070/report` 配下も既定のアクション名のみを使う。
 - **メニュー・権限のマスタ**（`ZMenuAuth` が引く権限データ）— 新規画面のメニューID × 機能ID（**`PWTGO070` と `PWTGO072` の 2 つ**）の権限を登録する。**登録する値は未確定（未確定事項 ③）**。テーブル定義の変更ではなくデータの追加である。
 
 ## 追加検討事項（Additional Considerations）
@@ -757,10 +826,10 @@ wing/src/main/resources/（帳票）
   - **権限を持たない利用者による契約情報・契約稟議ファイルの閲覧**（Information Disclosure）— `@FuncID` + `AccessControlInterceptor` による毎リクエストの認可に加え、登録・変更・承認・帳票出力の各処理で Service 側でも判定する（受入基準 2-3）。帳票・CSV にも同じ権限判定を適用する（受入基準 9-3 / 7-4）。
   - **他社データへの到達**（Information Disclosure / 認可回避）— すべての SQL の `WHERE` にログインユーザーの会社コードを含める。**画面から送られた会社コードを使わない**（`steering/security.md` の `#### 所有権・エンティティ境界`）。
   - **登録ファイルへの直接 URL アクセス**（Information Disclosure）— ファイル本体を公開パスに置かず、`FileUploadService` と出力管理マスター・出力制御マスターを経由してのみ取得させる（受入基準 6-3）。
-  - **更新系リクエストの偽造**（Tampering）— `CSRFTokenCheckInterceptor` による検証。アクション名を既定のものに収めることで検証対象から漏れない（`steering/api-standards.md`）。
+  - **更新系リクエストの偽造**（Tampering）— `CSRFTokenCheckInterceptor` による検証。保存・更新を伴うアクションは既定の名前（`regist` / `update` / `approved` / `upload`）に収めるため、検証の対象から漏れない（`steering/api-standards.md`）。既定外の `copy` は保存を伴わない画面の再表示であり、検証の対象外である（`##### API 契約` の注記）。
   - **承認者でない利用者による承認**（Elevation of Privilege）— 当該段階の承認者であるかを Service で判定する。**これは機能IDに対する認可とは別のデータ依存の業務判断であり、Interceptor では防げない**（受入基準 4-5）。
   - **画面の非活性・非表示への依存**（Tampering）— ブラウザ側の制御を検証の正としない。権限・ステータス・承認者のいずれもサーバ側で再判定する（受入基準 2-3 / 4-6）。
-- **認証・認可**: `steering/security.md` の `## 認証・認可` に従う。本スペックで認証・認可の方式を新たに定めない。ベンダー／施工会社に対するデータ範囲の制御は既存 WTB と同様の方式に従う（受入基準 2-4 / REQ-046。**方式の実体は上流でも未確定であり、`issue-request` の未確定事項 ⑯ で基本設計時に確定する**）。
+- **認証・認可**: `steering/security.md` の `## 認証・認可` に従う。本スペックで認証・認可の方式を新たに定めない。ベンダー／施工会社に対するデータ範囲の制御は既存 WTB と同様の方式に従う（受入基準 2-4 / REQ-046）。**既存の方式**: ログインユーザーの BS ベンダー区分（`LoginUserUtils.getLoginUserInfo().getCoVendKbn()`）と施工会社区分（同 `getCoSekoKbn()`。いずれも `TWTZM010.Kengen_Kbn` からコードマスタ `WTZ` / `CODE` / `C05` で引かれる）を使い、計画基地局番号で `TWTBM080` を突き合わせて絞る（既存実装: `wing` の `wte020/Pwteo021Mapper.xml` の `EXISTS` 句、`WTX` の `wtb030/PWTBO031Action.java`・`wtb/util/WTBCheckUtils.java`）。本スペックでは `Pwtgo070Mapper` の物件申請を取得する SQL に次の条件を付ける — `EXISTS (SELECT 1 FROM TWTBM080 WHERE TWTBM080.Keikaku_Kichikyoku_No = TWTGM080.Keikaku_Kichikyoku_No AND (TWTBM080.Bs_Vendor_Cd = #{vendKbn} OR TWTBM080.Motouke_Kaisya_Cd = #{sekoKbn}))`。片方の区分だけが入っている場合はその側の条件だけを付ける（既存の `<choose>` と同じ）。**両方の区分が空の利用者（社員）に `EXISTS` 句そのものを付けるか**: <DSN_SECURITY_VENDOR_SCOPE_EMPTY> — **未確定**: 既存 WTE の例は両方とも空でも `EXISTS` を付けるため、`TWTBM080` に計画基地局の行が無い物件申請は社員にも表示されなくなる。物件申請の登録時点で `TWTBM080` の行があることを前提にできるかが上流から決まらない。
 - **ログ**: `steering/non-functional.md` の `### ログ方針` に従う。ユーザーID・グループIDは `LoggingInterceptor` が MDC に載せるため、本スペックで個別に出力しない。例外は `ExceptionResolver` が `error` レベルでスタックトレースとともに出力する。本スペックが独自に出力するのは権限エラー時のユーザーID・メニューID・機能ID（受入基準 2-5）のみで、アップロードされたファイルの中身・契約金額・契約先をログに出さない。
 - **データ保護 / プライバシー**: 契約金額・契約先を機密データとして扱い、画面・帳票・CSV・ログのいずれにも権限外の項目を出さない。例外時の画面にスタックトレース・SQL・内部パスを含めない（`steering/tech.md` の `### グローバルハンドラ` ルール 2）。権限の無いアクセスを検出したときはユーザーID・メニューID・機能IDをログに記録する（受入基準 2-5）。
 
@@ -768,14 +837,14 @@ wing/src/main/resources/（帳票）
 
 - **目標値の参照元と計測方法**: `requirements.md` の `## 非機能要件（Non-Functional Requirements）` はパフォーマンス区分を「`non-functional.md` に準拠し、feature 固有の値を設けない」として不要理由付きで未記入としている。したがって本スペックで数値目標を持たない。SQL のタイムアウトは `steering/database.md` の `## 接続 / トランザクション`「ステートメントタイムアウト」を正とする。
 - **拡張の方針（水平 / 垂直）**: <DSN_PERF_SCALING> — **不要（記入者: 人間 / 2026-09-24）**: 既存 WiNG の配置（Tomcat 上の単一 WAR）に載せるため、本スペックで拡張方針を新たに定めない（REQ-053）。
-- **同期で生成する理由**: 帳票（`exportReport`）は申請No 1 件分の出力、CSV（`exportProgressCsv`）は検索条件に該当する物件申請の出力であり、いずれも画面の操作から同期で生成して返す。既存の画面のダウンロード（`Pwtgo006Controller#doDownLoad`）も同期である。`steering/non-functional.md` の `### 性能・容量運用`「時間のかかる処理 → バッチタスクとして登録する」と `steering/architecture.md` の `### バッチ`「帳票の一括生成」は複数件を一括で生成する処理を指し、本スペックの 1 件単位の帳票はこれに当たらない。**CSV の件数が多く生成時間が問題になる場合は、バッチ化を再検討する。**
-- **キャッシュ / 最適化**: コードマスタの取得は既存の `CodeMstService` の仕組みに従う。**本スペック独自のキャッシュを設けない。** 一覧・CSV 出力は表示件数の上限と並び順を SQL 側で確定させる（`steering/database.md` の `## クエリパターン`。上限値はコードマスタ `WTZ` / `PARAM` / `P01` / PGID の設定に従う）。
+- **同期で生成する理由**: 帳票（`exportReport`）は申請No 1 件分の出力、CSV（`exportProgressCsv`）はログインユーザーの会社コードの物件申請の出力であり、いずれも画面の操作から同期で生成して返す。既存の画面のダウンロード（`Pwtgo006Controller#doDownLoad`）も同期である。`steering/non-functional.md` の `### 性能・容量運用`「時間のかかる処理 → バッチタスクとして登録する」と `steering/architecture.md` の `### バッチ`「帳票の一括生成」は複数件を一括で生成する処理を指し、本スペックの 1 件単位の帳票はこれに当たらない。**CSV の件数が多く生成時間が問題になる場合は、バッチ化を再検討する。**
+- **キャッシュ / 最適化**: コードマスタの取得は既存の `CodeMstService` の仕組みに従う。**本スペック独自のキャッシュを設けない。** 一覧は表示件数の上限と並び順を SQL 側で確定させる（`steering/database.md` の `## クエリパターン`。上限値はコードマスタ `WTZ` / `PARAM` / `P01` / PGID の設定に従う）。**CSV 出力には表示件数の上限を掛けない**（並び順のみ SQL 側で確定させる。③ の判断 / 2026-09-25）。
 
 ### 移行方針（Migration Strategy）
 
 - **段階分け**:
-  - **段階 1: テーブルの追加** — `TWTGM080` / `TWTGA120` / `TWTGM180` を新規に作成する。既存テーブルへの変更を伴わないため、既存機能への影響が無い状態で先行して適用できる。戻す場合はテーブルを削除するだけでよい。
-  - **段階 2: マスタデータの追加** — 採番マスタ `TWTZM050` に本スペックの採番定義を 1 行、コードマスタ `TWTZM040` にステータス・承認段階の区分値を追加する。メニュー・権限のデータも追加する。戻す場合は追加した行を削除する。
+  - **段階 1: テーブルの追加** — `TWTGM080` / `TWTGA120` / `TWTGM180` / `TWTGM090` を新規に作成する。既存テーブルへの変更を伴わないため、既存機能への影響が無い状態で先行して適用できる。戻す場合はテーブルを削除するだけでよい。
+  - **段階 2: マスタデータの追加** — 採番マスタ `TWTZM050` に本スペックの採番定義を 1 行、コードマスタ `TWTZM040` にステータス・承認段階の区分値と、本リリースで追加する区分 `WTG` / `PARAM` / `P71`（`"G6"` 行を含む。`issue-request` の社外判定と共用）を追加する。メニュー・権限のデータも追加する。戻す場合は追加した行を削除する。
   - **段階 3: アプリケーションの配置** — 新規画面を含む WAR を配置する。段階 1・2 が完了していることが前提。戻す場合は前版の WAR に戻す（テーブルとマスタは残しても既存機能に影響しない）。
 - **ロールバックを実施する条件**: 既存 WTG 機能（契約情報変更・参照、支払実績、インポート各種）にデグレードが確認された場合（REQ-052 / REQ-073）。段階 3 のみを戻すことで、段階 1・2 を残したまま復旧できる。
 - **検証チェックポイント**: 段階 1 の後に既存 WTG 機能の動作確認を行う（テーブル追加が既存に影響しないことの確認）。段階 3 の後に、既存 WTG 機能の動作確認と本スペックの新規機能の動作確認をあわせて行う（REQ-073）。
@@ -784,11 +853,13 @@ wing/src/main/resources/（帳票）
 
 | ファイル / テーブル名 | 処理区分 | レコード数見込み | 移行方法 | 移行後の扱い |
 |---|---|---|---|---|
-| `TWTGM080` | 新規 | <DSN_MIGRATION_VOLUME_M080> — **未確定**: 既存の物件基本情報が WiNG 外（紙・他システム）にあり、移行対象とするかが上流から決まらない | 既存データの移行の要否は **未確定** | 引き継ぎ先 — 本スペックが運用 |
+| `TWTGM080` | 新規 | <DSN_MIGRATION_VOLUME_M080> — **未確定**: 既存の物件基本情報が WiNG 外（紙・他システム）にあり、移行対象とするかが上流から決まらない | <DSN_MIGRATION_METHOD_M080> — **未確定**: 既存データを移行するかどうかが上流から決まらない（下の注記を参照） | 引き継ぎ先 — 本スペックが運用 |
 | `TWTGA120` | 新規 | 0（運用開始後に蓄積する） | 移行しない | 引き継ぎ先 — 本スペックが運用 |
 | `TWTGM180` | 新規 | 0（運用開始後に蓄積する） | 移行しない | 引き継ぎ先 — 本スペックが運用 |
+| `TWTGM090` | 新規 | 0（運用開始後に蓄積する） | 移行しない | 引き継ぎ先 — 本スペックが運用 |
 | `TWTZM050`（採番定義 1 行） | 更新（行の追加） | 1 | 投入用の SQL で追加する | 引き継ぎ先 |
-| `TWTZM040`（区分値） | 更新（行の追加） | <DSN_MIGRATION_VOLUME_Z40> — **未確定（未確定事項 ⑥）**: ステータス・承認段階の値の一覧が決まらない | 投入用の SQL で追加する | 引き継ぎ先 |
+| `TWTZM040`（区分値） | 更新（行の追加） | <DSN_MIGRATION_VOLUME_Z40> — **未確定（未確定事項 ⑥ の残り）**: `Status` 6 値・`JOTAI_KBN` 7 値の値の一覧と、発番の遷移・判定 `"11"`・審査権限 `"02"` は確定済み（`### 判断 6` / 契約 4）。発番以外の遷移の細部が決まらないため、承認段階などとあわせて追加する行の総数が決まらない | 投入用の SQL で追加する | 引き継ぎ先 |
+| `TWTZM040`（`WTG` / `PARAM` / `P71` の `"G6"` 行） | 新規（区分 `P71` を本リリースで追加し、`"G6"` 行を含める。`issue-request` の社外判定と共用する区分） | 1 | 投入用の SQL で追加する（閲覧・印刷ボタンの条件 3 の判定値。③ の判断 / 2026-09-25） | 引き継ぎ先 |
 
 > **既存の物件基本情報の移行の要否は本設計では確定しない。** REQ-054 は移行テストの実施主体（発注者）を定めるに留まり、移行そのものの要否を定めていない。`issue-request` の未確定事項 ⑮ が同種の論点（既存の発行依頼データの移行）を挙げており、**両者は同時に確定させる必要がある**（同じ申請No で結合するため、片方だけ移行すると外部結合が成立しない）。
 
@@ -811,16 +882,23 @@ wing/src/main/resources/（帳票）
   - `selectKiansyaKaishaName` が、`TWTGM100` に対応行が無いとき**空文字を返し例外にならない**こと（受入基準 11-6）。
   - `applyOrApprove` が、当該段階の承認者でない利用者の操作を業務エラーにすること（受入基準 4-5）。
   - 再製本・修正稟議の操作で**新しい申請No が採番され、元の行が書き換わらない**こと（受入基準 12-3）。
+  - `quoteProperty` が、引用対象の一覧にある項目だけを複製し、対象外の項目を新規入力の初期状態のままにすること（受入基準 3-2）。
+  - 状態を変える操作（`applyOrApprove`、契約 4 の発番時の更新）で、`Status` と `JOTAI_KBN` の 2 列が同時に更新され、片方だけが変わった状態が残らないこと（`### 判断 6`）。
 - **結合（Integration）**:
   - Mapper の全 SQL が `WHERE` に `CompanyCD` を含むこと。**`TWTGM100` に対する SQL が `SELECT` のみであること**（Mapper XML の静的な走査。受入基準 11-5 / `requirements.md` の非機能要件表の検証方法）。
   - `TWTGM080` と `TWTGM100` の **LEFT OUTER JOIN** が、`TWTGM100` 側 0 件でも `TWTGM080` の行を返すこと（受入基準 11-2 / 11-6）。
   - 現在値の更新中に例外が発生したとき、履歴も含めてロールバックされること（受入基準 5-3）。
   - 他社の会社コードのデータが画面・帳票・CSV のいずれにも現れないこと（受入基準 1-6 / 7-4 / 9-3）。
+  - CSV が「物件申請の取得」の SQL の結果と同じ行を、表示件数の上限を掛けずに出力し、文字コードが `wing-web.properties` の `CHARSET` であること（受入基準 7-2 / 7-3）。
 - **E2E / UI**:
   - 権限を持たない利用者で画面を開いたときに `error` ビューへ遷移し、ログにユーザーID・メニューID・機能IDが記録されること（受入基準 2-1 / 2-5）。
   - 未ログインのセッションから画面のリクエストを行ったときにログイン画面へ遷移すること（受入基準 1-4）。
   - 引用ボタンで複製した内容が、保存するまで引用元を変更しないこと（受入基準 3-3 / 3-4）。
   - 契約稟議ファイルの直接 URL 参照が拒否されること（受入基準 6-3）。
+  - 権限の異なる利用者で画面を開いたとき、画面要素の活性・非活性・非表示が権限に応じて切り替わること（受入基準 2-2。対象の画面要素と権限の対応は未確定事項 ③ の確定後に確認する）。
+  - 帳票「表紙情報」に QR コードの画像が貼られていること（受入基準 9-2。埋め込む内容は未確定事項 ⑩ の確定後に確認する）。
+  - 閲覧の操作で PDF が別ウインドウに `Content-Disposition: inline` で表示され、ダウンロードにならないこと（受入基準 10-1）。
+  - 「編集中」の物件申請に対する促し（受入基準 8-1〜8-3）は、促す契機の確定後（未確定事項 ⑨）に確認する。
   - 帳票 3 種と PDF 閲覧で**同じ出力内容**になること（受入基準 10-4）。
   - ダウンロードの後に、サーバ上に生成した PDF とコピーした Excel が**残っていない**こと（`### 判断 9`）。
   - 閲覧・印刷ボタンの 3 条件のいずれかを満たさない物件申請で、ボタンが表示されず、帳票のエンドポイントを直接呼んでも業務エラーになること。
@@ -850,10 +928,10 @@ wing/src/main/resources/（帳票）
 ### 判断 3: 変更履歴を `TWTGA120` として分け、集約の外側に置く
 
 - **背景（Context）**: 受入基準 5-4 は履歴を種別 `A` のテーブルとしてマスタと分けて保持すると定めている。一方、履歴を物件申請の集約に含めるかどうかは決まっていなかった。
-- **判断（Decision）**: 履歴は**集約の外側**に置く。ただし現在値の更新と履歴の登録は**同一トランザクション**で行う。
+- **判断（Decision）**: 履歴は**集約の外側**に置く。ただし現在値の更新と履歴の登録は**同一トランザクション**で行う。対象は物件基本情報の項目を変える操作（更新）に限り、発番による状態更新（契約 4）と契約稟議ファイルの確定は含まない（受入基準 5-3 / 5-4 の対象範囲。③ の判断 / 2026-09-25）。
 - **採用理由（Rationale）**: 履歴は追記専用で、現在値の不変条件（ステータスと承認段階の整合）に関与しない。集約に含めると、履歴が増えるたびに集約全体を読み込むことになる。同一トランザクションを守れば受入基準 5-3 は満たせる。
 - **代替案（Alternatives）**: 履歴を集約に含める案 — 上記の理由で不採用。非同期に履歴を登録する案 — 受入基準 5-3（片方だけが反映された状態を作らない）に反するため不採用。
-- **採用による影響（Consequences）**: 履歴の登録漏れがトランザクションの外では検出できない。Service のすべての更新メソッドで履歴の登録を呼ぶ必要があり、**呼び忘れが単体テストの対象になる**（`## テスト戦略` に挙げている）。
+- **採用による影響（Consequences）**: 履歴の登録漏れがトランザクションの外では検出できない。物件基本情報の項目を変える更新メソッドのすべてで履歴の登録を呼ぶ必要があり、**呼び忘れが単体テストの対象になる**（`## テスト戦略` に挙げている）。
 
 ### 判断 4: 日時は DB レイアウト上 `3:DateTime`、`wing` の Java 側は `String` とする
 
@@ -879,7 +957,7 @@ wing/src/main/resources/（帳票）
   - `JOTAI_KBN`（審査結果）: **下書き / 回覧中 / 取込中 / 確認中 / 差戻し / 取下げ / 完了**
 - **採用理由（Rationale）**: 段階を現在値の列（`Status`）で持てば、一覧表示でも `TWTGM080` の単純な SELECT で段階を出せる。履歴テーブルの集約に頼らないため、`TWTGM180` が増えても読み出しの形が変わらない。「フェーズ」と「結果」を分けることで、同じフェーズにおける差戻し・取下げを別の列で表せる。
 - **代替案（Alternatives）**: `TWTGM180` の最大の審査回を段階とする案 — 本設計の初版で採ったが、③ の確定（2026-09-24）により不採用。一覧表示のたびに履歴の集約が必要になり、審査回が「何回審査したか」であって「どこまで進んだか」ではないため、意味的にも合わない。
-- **採用による影響（Consequences）**: **`Status` と `JOTAI_KBN` の遷移が 2 列で組になるため、片方だけを更新すると不整合になる。** 2 列の更新を必ず同時に行い、許される組み合わせを Service 側で判定する必要がある。**許される組み合わせと遷移の一覧は、WTG070 機能定義書「別紙_承認機能制御」の状態遷移表が正であり、本設計には取り込んでいない**（未確定事項 ⑥ の残り。値の一覧は本判断で確定した）。
+- **採用による影響（Consequences）**: **`Status` と `JOTAI_KBN` の遷移が 2 列で組になるため、片方だけを更新すると不整合になる。** 2 列の更新を必ず同時に行い、許される組み合わせを Service 側で判定する必要がある。**許される組み合わせと遷移の一覧は、WTG070 機能定義書「別紙_承認機能制御」の状態遷移表が正である。本設計に取り込んだのは発番の遷移とそのコード値だけで（契約 4。③ の判断 / 2026-09-25）、それ以外の遷移は未確定である**（未確定事項 ⑥ のうち、確定: `Status` 6 値・`JOTAI_KBN` 7 値の値の一覧、発番の遷移、判定 `"11"`・審査権限 `"02"`／未確定: 発番以外の遷移の細部。③ の判断 / 2026-09-25）。
 
 ### 判断 7: 帳票「発行依頼書」の元データは `TWTGM100` とし、読み取り契約を画面用と帳票用の 2 段に分ける
 
@@ -904,9 +982,9 @@ wing/src/main/resources/（帳票）
 - **採用理由（Rationale）**: 機能定義書が定める手順そのものであり、帳票のレイアウトを原本 Excel として業務側が持てる。
 - **代替案（Alternatives）**: JasperReports で帳票定義を作る案 — 機能定義書の手順と合わず、wing に JasperReports を使った実装の前例も無いため不採用。
 - **採用による影響（Consequences）**:
-  - **`requirements.md` の受入基準 9-4（帳票の生成を既存の帳票基盤（JasperReports）に載せ、独自の帳票基盤を作らない）と、`steering/tech.md` の `## 主要ライブラリ`（帳票の基盤は JasperReports 6.5.1）に反する。** 両者の改訂が要る（③ への確認待ち / 2026-09-24）。
-  - Excel を扱うライブラリの選定が要る。PDF への変換までできるかが選定の条件になる。選定後は `steering/tech.md` の `## 主要ライブラリ` にも行を足す必要がある。
-  - **zxing は jasperreports の推移的依存としてしか入っていない。** jasperreports の版を変えたり外したりすると、QR の生成が壊れる。本スペックが直接使うため、`wing/pom.xml` に zxing core 3.2.1 を明示的に宣言することを推奨する（③ への確認待ち / 2026-09-24）。
+  - `requirements.md` の受入基準 9-4 と `steering/tech.md` の `## 主要ライブラリ` は JasperReports を前提にしていたため、本判断に合わせて両者を改訂した（③ の判断 / 2026-09-25。上流の再ゲートは `.aidd/gates/phase-5-design.md` #28 のまとめ再ゲートに含める）。
+  - Excel を扱うライブラリの選定が要る。**PDF への変換までできること**と、**Java 1.7 で動くこと**（`steering/tech.md` のコンパイルターゲット。③ の判断 / 2026-09-25）が選定の条件になる。選定後は `steering/tech.md` の `## 主要ライブラリ` にも行を足す必要がある。
+  - QR コードの生成には zxing core 3.2.1 を使う。`wing/pom.xml` に明示して宣言するかは tasks（実装時）で決める（③ の判断 / 2026-09-25）。
   - 帳票の生成中はコピーした Excel と PDF を一時ファイルとしてサーバに置く。置き場は既存の `FileUploadService` / `DownLoadFileInfo` の運用に従い、ダウンロードの後に削除する。
 
 ## 補足資料（Supporting References）
