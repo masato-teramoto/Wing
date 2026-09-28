@@ -1,0 +1,24 @@
+{
+  "operation_id": "07b45ee1-3015-4530-bf78-880e9ea0a910",
+  "dispatch": {
+    "call": "requirement-intake-revise",
+    "unit": "requirement-intake-revise/requirement-intake-revise[-]::run",
+    "event": "requirement-intake-revise",
+    "item": null,
+    "status": "emit",
+    "config_sha256": "bd35b4971bac9839d212c0b1bd5e5441a000c15bc4e8acdacc1d80a0b0c0cd37",
+    "detail": null,
+    "id": "c7955701c7fd423b88695f16e6b04f2e"
+  },
+  "result": {
+    "status": "completed",
+    "targets": [
+      ".aidd/requirement-list.md"
+    ],
+    "questions": [],
+    "open_placeholders": 0,
+    "changed_findings": [],
+    "return_candidates": [],
+    "summary": "α2 移行の再検査依頼（origin: reopen）に対応。本文は編集していない。確認結果: (1) α2 最終承認（2026-09-24）以降、RFP と要求一覧の本文に変更なし（変更は移行による status の approved→draft のみ）。(2) テンプレート Templates/Flow/requirement-list.md は未改訂で、固定文の節（項目の定義・記入ルール・要求IDの安定性ルール・廃止済み要求）は一致。テンプレート外の『## 要求の変更履歴』は人間承認済み（2026-09-24）の記録を保持。(3) 旧ゲート記録の承認時残件は未対応 0 件・対応せず進める 6 件（#50/#52/#53/#54/#61/#63）。第 6 回の修正 8 件（#51/#55〜#60/#62）は再ゲート未実施のため、α3 の検査で対象となる。"
+  }
+}

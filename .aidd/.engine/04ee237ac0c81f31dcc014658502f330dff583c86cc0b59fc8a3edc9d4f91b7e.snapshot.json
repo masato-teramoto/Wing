@@ -1,0 +1,19 @@
+{
+  "schema": 2,
+  "phase": "intake",
+  "event": "requirement-intake-revise",
+  "scope": "phase",
+  "at": "2026-09-28T11:18:12+09:00",
+  "artifacts": {
+    ".aidd/requirement-list.md": {
+      "status": "draft",
+      "sha256": "b7a11ad12beeca741b65407bb5817ab431d34a4b99abd5691d904cf4291b276f"
+    }
+  },
+  "record": {
+    "bytes": 2195,
+    "sha256": "c2a11953cd3d44dd2b99185c9c0a8540398ce1898e69524f4578e1681e893a15",
+    "blocks": 3
+  },
+  "run": 2
+}

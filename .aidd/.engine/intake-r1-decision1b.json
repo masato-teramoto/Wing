@@ -1,0 +1,24 @@
+{
+  "operation_id": "ae50d8bb-ca0d-4c63-a4e1-60b57bb817b4",
+  "action": "decision",
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "requirement-intake-revise",
+    "event": "requirement-intake-revise",
+    "item": "",
+    "dispatch_id": "9a8dd7a0fee94f54a69a684c081bc146",
+    "unit": "requirement-intake-revise/requirement-intake-revise[-]::end.review",
+    "scope": "phase",
+    "run": 1,
+    "snapshot": "3cb6ef1e274f5d5f5a38f93684118ea0bdbc06c5ebfd4c47c6a3929d0163ab2a",
+    "record_hash": "1f0bfc1b9d0ba84fb6aadb3c3e6dc33d784e723d00d5fb23d8369e2adc0b59ed"
+  },
+  "data": {
+    "scope": "phase",
+    "run": 1,
+    "number": 1,
+    "decision": "修正",
+    "reason": "「## 要求の変更履歴」節（配下の ### 2節を含む）を、要求一覧から別ファイルに移してください。 - 移し先: .aidd/requirement-change-history.md（中身はそのまま移す） - 要求一覧には、テンプレートに無い節を残さない。 - REQ-048・049・050 の行の既存の列（備考または出典）に、「変更経緯は .aidd/requirement-change-history.md」と1行書く。 - ID の扱い（置換後も継続）と RFP を改版しない判断は、移し先にそのまま残す。"
+  }
+}

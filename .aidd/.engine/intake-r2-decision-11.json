@@ -1,0 +1,24 @@
+{
+  "operation_id": "b9fb222a-102c-44d9-9b81-f5ff5eb2e299",
+  "action": "decision",
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "requirement-intake-revise",
+    "event": "requirement-intake-revise",
+    "item": "",
+    "dispatch_id": "29670bfa8f3148679c51fb9dcf23a45e",
+    "unit": "requirement-intake-revise/requirement-intake-revise[-]::end.review",
+    "scope": "phase",
+    "run": 2,
+    "snapshot": "3d8b4d88b3b0ca48deb0bea71828b695b08e1e0f844fc64620aba6dc4d71a0ed",
+    "record_hash": "dee8dfb82c11c6b2841dddb66374a01f6d80c8134a2e7d10a183bd71b9998514"
+  },
+  "data": {
+    "scope": "phase",
+    "run": 2,
+    "number": 11,
+    "decision": "対応せず進める",
+    "reason": "区分どうしの関係は、反映先のフェーズ（requirements / design）で明確にする（記入ルール「曖昧さの解消は反映先が担う」）"
+  }
+}

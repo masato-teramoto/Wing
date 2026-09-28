@@ -1,0 +1,24 @@
+{
+  "operation_id": "26d7d5e6-ad85-4936-9abc-ec1b4e88eb32",
+  "action": "decision",
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "requirement-intake-revise",
+    "event": "requirement-intake-revise",
+    "item": "",
+    "dispatch_id": "29670bfa8f3148679c51fb9dcf23a45e",
+    "unit": "requirement-intake-revise/requirement-intake-revise[-]::end.review",
+    "scope": "phase",
+    "run": 2,
+    "snapshot": "3d8b4d88b3b0ca48deb0bea71828b695b08e1e0f844fc64620aba6dc4d71a0ed",
+    "record_hash": "d2669282ab0c50b641ecfb8a302f7c1c316280a030d7e94be785346c8a3ccb6f"
+  },
+  "data": {
+    "scope": "phase",
+    "run": 2,
+    "number": 10,
+    "decision": "対応せず進める",
+    "reason": "構成は REQ-010 のとおり基本設計で決める。REQ-015・026・040 は RFP の想定構成を出典どおり写したもの"
+  }
+}

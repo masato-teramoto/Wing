@@ -1,0 +1,24 @@
+{
+  "operation_id": "d69d62a9-4a20-4647-b918-c529adee5991",
+  "action": "decision",
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "requirement-intake-revise",
+    "event": "requirement-intake-revise",
+    "item": "",
+    "dispatch_id": "29670bfa8f3148679c51fb9dcf23a45e",
+    "unit": "requirement-intake-revise/requirement-intake-revise[-]::end.review",
+    "scope": "phase",
+    "run": 2,
+    "snapshot": "3d8b4d88b3b0ca48deb0bea71828b695b08e1e0f844fc64620aba6dc4d71a0ed",
+    "record_hash": "23039d61f35cbdd4c3801ddf192340dea40aa3ac2d4383a16c3bc5da03593f3b"
+  },
+  "data": {
+    "scope": "phase",
+    "run": 2,
+    "number": 1,
+    "decision": "対応せず進める",
+    "reason": "プロジェクト運営上の日程・担当の記述であり、システム要件には影響しない。期間は REQ-060・REQ-070 の記載で足りる"
+  }
+}

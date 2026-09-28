@@ -1,0 +1,33 @@
+{
+  "operation_id": "9c95444b-5329-44d2-bda1-43ca3a6787c4",
+  "action": "repair",
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "requirement-intake-revise",
+    "event": "requirement-intake-revise",
+    "item": "",
+    "dispatch_id": "f6aeabbf273b40af92bc02d2c9ad6e47",
+    "unit": "requirement-intake-revise/requirement-intake-revise[-]::end.review",
+    "scope": "phase",
+    "run": 1,
+    "snapshot": "3cb6ef1e274f5d5f5a38f93684118ea0bdbc06c5ebfd4c47c6a3929d0163ab2a",
+    "record_hash": "c2a11953cd3d44dd2b99185c9c0a8540398ce1898e69524f4578e1681e893a15"
+  },
+  "data": {
+    "event": "requirement-intake-generate",
+    "item": "",
+    "targets": [
+      ".aidd/requirement-list.md"
+    ],
+    "findings": [
+      {
+        "phase": "intake",
+        "scope": "phase",
+        "run": 1,
+        "number": 1,
+        "instruction": "「## 要求の変更履歴」節（配下の「固有名・値の出所」を含む）を、中身を変えずにそのまま .aidd/requirement-change-history.md へ移す（新ファイルはフロー外の経緯記録として作成し、冒頭に「フロー外の経緯記録であり、後工程の入力ではない」と1行書く）。要求一覧にはテンプレートに無い節を残さない。REQ-048〜050 の出典アンカーの末尾に「（変更経緯は .aidd/requirement-change-history.md）」と足す。列は増やさない。ID の扱い（置換後も継続）と RFP を改版しない判断は移し先にそのまま残す。"
+      }
+    ]
+  }
+}

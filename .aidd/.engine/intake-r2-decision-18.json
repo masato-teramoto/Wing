@@ -1,0 +1,24 @@
+{
+  "operation_id": "9607106e-d5f3-4f79-abd3-1668079589cd",
+  "action": "decision",
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "requirement-intake-revise",
+    "event": "requirement-intake-revise",
+    "item": "",
+    "dispatch_id": "29670bfa8f3148679c51fb9dcf23a45e",
+    "unit": "requirement-intake-revise/requirement-intake-revise[-]::end.review",
+    "scope": "phase",
+    "run": 2,
+    "snapshot": "3d8b4d88b3b0ca48deb0bea71828b695b08e1e0f844fc64620aba6dc4d71a0ed",
+    "record_hash": "27d82726cd0f9d0d3c548fda4269d6db3be4925dcccd90f9b1093da63fa5c46c"
+  },
+  "data": {
+    "scope": "phase",
+    "run": 2,
+    "number": 18,
+    "decision": "対応せず進める",
+    "reason": "要求には加えない（RFP に記載がなく、人間判断で不要とした）。必要になれば requirements / design で扱う"
+  }
+}

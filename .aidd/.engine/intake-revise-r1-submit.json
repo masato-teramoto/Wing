@@ -1,0 +1,31 @@
+{
+  "operation_id": "5bd2afca-fc4a-48f1-8453-82c157e17c23",
+  "dispatch": {
+    "call": "requirement-intake-revise",
+    "unit": "requirement-intake-revise/requirement-intake-revise[-]::run",
+    "event": "requirement-intake-revise",
+    "item": null,
+    "status": "emit",
+    "config_sha256": "bd35b4971bac9839d212c0b1bd5e5441a000c15bc4e8acdacc1d80a0b0c0cd37",
+    "detail": null,
+    "id": "fbbd6098832a46b2893a0c140d2dddae"
+  },
+  "result": {
+    "status": "completed",
+    "targets": [
+      ".aidd/requirement-list.md"
+    ],
+    "questions": [],
+    "open_placeholders": 0,
+    "changed_findings": [
+      {
+        "phase": "intake",
+        "scope": "phase",
+        "run": 1,
+        "number": 1
+      }
+    ],
+    "return_candidates": [],
+    "summary": "「## 要求の変更履歴」節（配下の「2026-09-24: 作成組織検索（ZOOM / ZWTZ072）の廃止」「固有名・値の出所」を含む）を要求一覧から削除し、中身を変えずに .aidd/requirement-change-history.md（冒頭に「フロー外の経緯記録であり、後工程の入力ではない。」を記載。フロー外作業として人間の指示で作成）へ移した。REQ-048〜050 の出典アンカー末尾に「（変更経緯は .aidd/requirement-change-history.md）」を追記した。列は増やしていない。"
+  }
+}
