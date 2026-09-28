@@ -1,0 +1,18 @@
+{
+  "operation_id": "0e481372-c67b-42e4-8f10-0d2add667b8c",
+  "action": "approve",
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "feature-decomposition-revise",
+    "event": "feature-decomposition-revise",
+    "item": "",
+    "dispatch_id": "9bde5dcd9356405cbce2a4554fc485c9",
+    "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::end.review",
+    "scope": "phase",
+    "run": 2,
+    "snapshot": "9fe0c8b984e7ec34717e1819926c7415fe3606bacc84e9052173f2eee79d8ac1",
+    "record_hash": "b3d6782f7c16ceae0f8608adcd13f506aa34665a6b6744f1b2f866a498f4a2e2"
+  },
+  "data": {}
+}

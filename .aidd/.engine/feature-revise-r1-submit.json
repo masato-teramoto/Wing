@@ -1,0 +1,24 @@
+{
+  "operation_id": "e391067c-2e7a-4dcd-af1b-462a36a0d25c",
+  "dispatch": {
+    "call": "feature-decomposition-revise",
+    "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::run",
+    "event": "feature-decomposition-revise",
+    "item": null,
+    "status": "emit",
+    "config_sha256": "bd35b4971bac9839d212c0b1bd5e5441a000c15bc4e8acdacc1d80a0b0c0cd37",
+    "detail": null,
+    "id": "c6de70615aee4dc0a6ee523f4f3815ff"
+  },
+  "result": {
+    "status": "completed",
+    "targets": [
+      ".aidd/feature-list.md"
+    ],
+    "questions": [],
+    "open_placeholders": 0,
+    "changed_findings": [],
+    "return_candidates": [],
+    "summary": "α2 の本文・判断を引き継ぎ、人間の指示により見出しだけを直した。テンプレートに無い ### 見出し 6 か所（要求IDの多重割当（REQ-048）／権限制御の扱い（feature にしない範囲）／共通基盤を feature にしない基準／作成組織を feature にしない理由（共通基盤とは別の理由）／本プロジェクトでの判定結果／本プロジェクトでの算出根拠）を同じ文言の太字の行に置き換え、本文は変えずに同じ親の節に残した。1 つ目の冒頭の「本節はテンプレートに枠が無いが…追加した節である（配置は人間が承認 / 2026-09-24）」の一文を削除した。太字の行が直前の引用ブロックに取り込まれないよう、1 か所に空行を足した。"
+  }
+}

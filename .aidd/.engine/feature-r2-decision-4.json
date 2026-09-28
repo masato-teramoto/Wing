@@ -1,0 +1,24 @@
+{
+  "operation_id": "ccb57170-0651-49cc-9261-1b73fd2f9c4a",
+  "action": "decision",
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "feature-decomposition-revise",
+    "event": "feature-decomposition-revise",
+    "item": "",
+    "dispatch_id": "9bde5dcd9356405cbce2a4554fc485c9",
+    "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::end.review",
+    "scope": "phase",
+    "run": 2,
+    "snapshot": "9fe0c8b984e7ec34717e1819926c7415fe3606bacc84e9052173f2eee79d8ac1",
+    "record_hash": "f13bcb0ffcdbb6a9f0d506ad6c42dcb8c5158b8c1800d59a13a3f782127d648a"
+  },
+  "data": {
+    "scope": "phase",
+    "run": 2,
+    "number": 4,
+    "decision": "対応せず進める",
+    "reason": "ログ出力・CSRF・例外の一括処理は既存 WiNG の共通基盤であり、「共通基盤を feature にしない基準」と同じ扱い。列挙から漏れているだけで、feature にはしない"
+  }
+}

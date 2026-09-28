@@ -1,0 +1,24 @@
+{
+  "event": "feature-decomposition-revise",
+  "scope": "phase",
+  "run": 2,
+  "snapshot": "9fe0c8b984e7ec34717e1819926c7415fe3606bacc84e9052173f2eee79d8ac1",
+  "record_bytes": 8174,
+  "record_hash": "1d001bbd065a7b844bde72e472b38f4da54a1c7f346d1e280e602f80f6e18e55",
+  "targets": [
+    ".aidd/feature-list.md"
+  ],
+  "hashes": {
+    ".aidd/feature-list.md": "4d59b0c69eb0b8f2a9ccd109e05eb9f3307dbc1264b8ed9f85fb2dd23d005ec2"
+  },
+  "inputs": {
+    ".aidd/requirement-list.md": "b7a11ad12beeca741b65407bb5817ab431d34a4b99abd5691d904cf4291b276f",
+    "steering/product.md": "aa2752b530b1dbc5c9a3d23950493344212fee6371050f5c4f8e41c54f27f06d",
+    "steering/tech.md": "12402a14b957c06e971ab3a0220ec3a9a6dda4915e6cfc0cd01fb2754c6f154a",
+    "steering/architecture.md": "af2d3e5ecc025f8b63db5dc6d3b86468cd5ba5ea6d1cfb8fccde0246df60be98",
+    "steering/security.md": "9eb93acaaf855adcf71594edd05656f6c81f41ef2e4791086cb046d9c2b7fddb",
+    "steering/non-functional.md": "a13bfb3135eb11dc7ba20f5e47c844aa452e249f324d131fcf692a5ea3da3052",
+    "steering/database.md": "ea037fa97af45061634b8fed7bbc6a6c493748febf300390de86b4e9ec334323",
+    "steering/api-standards.md": "2f809c682bc9fd960b3958c7758b7c135dce6edc2332c3222135057cb6b51cd3"
+  }
+}

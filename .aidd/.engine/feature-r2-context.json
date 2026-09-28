@@ -1,0 +1,13 @@
+{
+  "root": "C:\\project\\Wing",
+  "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+  "call": "feature-decomposition-revise",
+  "event": "feature-decomposition-revise",
+  "item": "",
+  "dispatch_id": "9bde5dcd9356405cbce2a4554fc485c9",
+  "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::end.review",
+  "scope": "phase",
+  "run": 2,
+  "snapshot": "9fe0c8b984e7ec34717e1819926c7415fe3606bacc84e9052173f2eee79d8ac1",
+  "record_hash": "1d001bbd065a7b844bde72e472b38f4da54a1c7f346d1e280e602f80f6e18e55"
+}

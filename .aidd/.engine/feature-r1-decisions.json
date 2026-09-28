@@ -1,0 +1,20 @@
+{
+  "operation_id": "ae2df178-0749-4e78-8596-0b4f383a0bce",
+  "action": "decisions",
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "feature-decomposition-revise",
+    "event": "feature-decomposition-revise",
+    "item": "",
+    "dispatch_id": "c66d7ff75d4445f3b7bd07da59c9b43f",
+    "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::end.review",
+    "scope": "phase",
+    "run": 1,
+    "snapshot": "9876e594e4f3b1c6895b3600294598e4b5399900ee73dac155709b77c33c07d2",
+    "record_hash": "eab9d6003a0aba9112dd068cdd43bf8fa87e79f86c750b73dc1de62c010f25e2"
+  },
+  "data": {
+    "answer": "全件:A 直し方は案のとおり。修正後、①②で再検査してください。"
+  }
+}
