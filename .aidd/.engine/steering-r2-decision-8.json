@@ -1,0 +1,24 @@
+{
+  "operation_id": "1a345ca1-5d73-4b48-90f6-ce0a52a189b5",
+  "action": "decision",
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "steering-authoring-revise",
+    "event": "steering-authoring-revise",
+    "item": "",
+    "dispatch_id": "27197d291204467aad43d9714fc72a7b",
+    "unit": "steering-authoring-revise/steering-authoring-revise[-]::end.review",
+    "scope": "phase",
+    "run": 2,
+    "snapshot": "3ea2771e21c77383ad062bb970677e08432dc2ade7699d18d3cffeb5c9aa8796",
+    "record_hash": "ec2e3c59126b337e36ed264a2dfd79724f543f7d2c6d6f8c197a5af217d22871"
+  },
+  "data": {
+    "scope": "phase",
+    "run": 2,
+    "number": 8,
+    "decision": "対応せず進める",
+    "reason": "プロジェクト管理・提案に関する制約であり、steering で決める技術方針ではない。正本は要求一覧にある"
+  }
+}

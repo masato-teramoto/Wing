@@ -1,0 +1,24 @@
+{
+  "operation_id": "6acc1928-c02b-4316-ba47-18dff29b29ad",
+  "action": "decision",
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "steering-authoring-revise",
+    "event": "steering-authoring-revise",
+    "item": "",
+    "dispatch_id": "e652bc252be94e3e82fb80f7d52e296b",
+    "unit": "steering-authoring-revise/steering-authoring-revise[-]::end.review",
+    "scope": "phase",
+    "run": 1,
+    "snapshot": "c76d3d67d200009abd68350a1ace470b7624f49a0294b5d4b4c18b9a4975ce5a",
+    "record_hash": "ce29f3e25232f387053df553e6a874a9c168862c1e1f09de29123d597a4937cf"
+  },
+  "data": {
+    "scope": "phase",
+    "run": 1,
+    "number": 1,
+    "decision": "修正",
+    "reason": "## 運用ツール参照 節は削除してください。中身は REQ-065〜067（プロジェクト管理のルール）の書き写しで、正本は要求一覧にある。設計やコードの入力には要らない。Backlog への言及は、non-functional.md の障害対応フロー（利用者からの申告）と security.md に残っているのでそのままでよい。"
+  }
+}

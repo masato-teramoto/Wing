@@ -1,6 +1,6 @@
 ---
-status: draft
-updated_at: 2026-09-25T12:54:34+09:00
+status: approved
+updated_at: 2026-09-28T13:54:57+09:00
 ---
 
 # 技術スタック

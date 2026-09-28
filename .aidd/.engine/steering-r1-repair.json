@@ -1,0 +1,49 @@
+{
+  "operation_id": "272f88ef-cd7c-439b-8b5c-0285b040c053",
+  "action": "repair",
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "steering-authoring-revise",
+    "event": "steering-authoring-revise",
+    "item": "",
+    "dispatch_id": "e652bc252be94e3e82fb80f7d52e296b",
+    "unit": "steering-authoring-revise/steering-authoring-revise[-]::end.review",
+    "scope": "phase",
+    "run": 1,
+    "snapshot": "c76d3d67d200009abd68350a1ace470b7624f49a0294b5d4b4c18b9a4975ce5a",
+    "record_hash": "68227675768a33bee36d40441748302da98d06dbf7d00f0e2ecb94e85fbb6e37"
+  },
+  "data": {
+    "event": "steering-authoring-generate",
+    "item": "",
+    "targets": [
+      "steering/non-functional.md",
+      "steering/database.md",
+      "steering/api-standards.md"
+    ],
+    "findings": [
+      {
+        "phase": "steering",
+        "scope": "phase",
+        "run": 1,
+        "number": 1,
+        "instruction": "## 運用ツール参照 節は削除してください。中身は REQ-065〜067（プロジェクト管理のルール）の書き写しで、正本は要求一覧にある。設計やコードの入力には要らない。Backlog への言及は、non-functional.md の障害対応フロー（利用者からの申告）と security.md に残っているのでそのままでよい。 修正後、①②で再検査してください。"
+      },
+      {
+        "phase": "steering",
+        "scope": "phase",
+        "run": 1,
+        "number": 2,
+        "instruction": "### 業務コード・区分値・採番の設計ルール の見出しを外し、表の4行（コード体系／区分値／採番／採番の直列化）を、中身を変えずに同じファイルの ## 設計思想 へ移してください（表のままでも箇条書きでもよい）。## 関連ドキュメント の表で「本ファイルの ### 業務コード・区分値・採番の設計ルール」と書いている箇所は「本ファイルの ## 設計思想」に直してください。 修正後、①②で再検査してください。"
+      },
+      {
+        "phase": "steering",
+        "scope": "phase",
+        "run": 1,
+        "number": 3,
+        "instruction": "### ZOOM 画面のメソッド（例外規定） の見出しを外し、本文（POST にする理由と待機画面・初期表示・ページングの表、ZOOM ID が機能IDを兼ねるという注記）を、中身を変えずに ## HTTP メソッド の箇条書きの後ろへ入れてください。 修正後、①②で再検査してください。"
+      }
+    ]
+  }
+}

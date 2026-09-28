@@ -1,0 +1,24 @@
+{
+  "operation_id": "40255359-9282-4b80-90e9-c881d00a2b9f",
+  "action": "decision",
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "steering-authoring-revise",
+    "event": "steering-authoring-revise",
+    "item": "",
+    "dispatch_id": "27197d291204467aad43d9714fc72a7b",
+    "unit": "steering-authoring-revise/steering-authoring-revise[-]::end.review",
+    "scope": "phase",
+    "run": 2,
+    "snapshot": "3ea2771e21c77383ad062bb970677e08432dc2ade7699d18d3cffeb5c9aa8796",
+    "record_hash": "233b2691bd4c5e568cc68f577f488396fcbc0ca4f91820669e98b4028ecb63f0"
+  },
+  "data": {
+    "scope": "phase",
+    "run": 2,
+    "number": 3,
+    "decision": "対応せず進める",
+    "reason": "脆弱性の修正 SLA は、既存 WiNG の運用に従うため本プロジェクトでは定めない（不要）。参照している文は、SLA が無いことを前提に読む"
+  }
+}

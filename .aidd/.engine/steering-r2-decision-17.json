@@ -1,0 +1,24 @@
+{
+  "operation_id": "134383ab-fa1d-47f5-8635-a039a6379c75",
+  "action": "decision",
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "steering-authoring-revise",
+    "event": "steering-authoring-revise",
+    "item": "",
+    "dispatch_id": "27197d291204467aad43d9714fc72a7b",
+    "unit": "steering-authoring-revise/steering-authoring-revise[-]::end.review",
+    "scope": "phase",
+    "run": 2,
+    "snapshot": "3ea2771e21c77383ad062bb970677e08432dc2ade7699d18d3cffeb5c9aa8796",
+    "record_hash": "cbc6ced2110ddba131c1f0fe7a8e9d3bd7c1ae883ce0434d6301db05ec06ea1a"
+  },
+  "data": {
+    "scope": "phase",
+    "run": 2,
+    "number": 17,
+    "decision": "対応せず進める",
+    "reason": "サービス拒否への対策は既存 WiNG の基盤に従う。本プロジェクトでは個別に定めない"
+  }
+}

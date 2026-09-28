@@ -1,0 +1,22 @@
+{
+  "operation_id": "8513f22c-6ef8-44f6-8ffa-e38fe87bb779",
+  "action": "resolve",
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "steering-authoring-revise",
+    "event": "steering-authoring-revise",
+    "item": "",
+    "dispatch_id": "27197d291204467aad43d9714fc72a7b",
+    "unit": "steering-authoring-revise/steering-authoring-revise[-]::end.review",
+    "scope": "phase",
+    "run": 2,
+    "snapshot": "3ea2771e21c77383ad062bb970677e08432dc2ade7699d18d3cffeb5c9aa8796",
+    "record_hash": "007e60042fdf7e8f57a4254195c7b02555dd8d1f996b8b3720f566e425bf8377"
+  },
+  "data": {
+    "scope": "phase",
+    "run": 1,
+    "number": 3
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "operation_id": "20b59cb2-089c-4d0e-b390-3a4d7298d261",
+  "action": "decision",
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "steering-authoring-revise",
+    "event": "steering-authoring-revise",
+    "item": "",
+    "dispatch_id": "27197d291204467aad43d9714fc72a7b",
+    "unit": "steering-authoring-revise/steering-authoring-revise[-]::end.review",
+    "scope": "phase",
+    "run": 2,
+    "snapshot": "3ea2771e21c77383ad062bb970677e08432dc2ade7699d18d3cffeb5c9aa8796",
+    "record_hash": "029cb3ccc9769afb5ef3d6af1607c17b1e065dfaa8bf7140aa23e7bf0f119e19"
+  },
+  "data": {
+    "scope": "phase",
+    "run": 2,
+    "number": 16,
+    "decision": "対応せず進める",
+    "reason": "業務データの保持期間・越境移転は既存 WiNG の運用に従う。本プロジェクトでは個別に定めない"
+  }
+}

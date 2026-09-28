@@ -1,6 +1,6 @@
 ---
-status: draft
-updated_at: 2026-09-25T12:54:34+09:00
+status: approved
+updated_at: 2026-09-28T13:54:57+09:00
 ---
 
 # API 設計標準
@@ -64,10 +64,6 @@ updated_at: 2026-09-25T12:54:34+09:00
 - 画面（ZOOM 画面を除く）の初期表示は、メニューから新規に開く場合を GET、遷移元から業務キー（申請No 等）を受け取って開く場合を POST とし、同じ空パスに 2 本のメソッドを置く（既存 `Pwtgo008Controller`（`/wtg004`、GET）/ `Pwtgo006Controller`（`/wtg003/ref`、POST）。人間が確定 / 2026-09-24）
 - PUT / DELETE / PATCH は使用しない（既存の画面遷移方式に合わせる）
 - 二重送信の防止は CSRF トークン（`CSRFTokenCheckInterceptor`）と画面側のボタン制御で行う
-
-### ZOOM 画面のメソッド（例外規定）
-
-> **本節はテンプレートに枠が無いが、Phase 5 からの差戻し（2026-09-18）を受けて ZOOM 画面のメソッドを実態に合わせて固定する必要があるため追加した節である（配置は人間が承認 / 2026-09-24）。** 記入根拠は既存実装（既存 ZOOM Controller 17 本と共通フラグメント `pages/common/zoomForm.html`）と REQ-053 / REQ-052。
 
 **ZOOM 画面（`/zoom/**`）の初期表示・ページングは POST とする。** 一般の画面の初期表示が GET であるのと異なる。
 
