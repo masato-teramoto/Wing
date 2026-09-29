@@ -1,0 +1,24 @@
+{
+  "operation_id": "83c34748-0bf7-4b05-bda8-4fd27195c0e9",
+  "action": "decision",
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "requirements-authoring-revise",
+    "event": "requirements-authoring-revise",
+    "item": "property-basic-info",
+    "dispatch_id": "27007bf6dcc04f1d8a83e6359b3ea019",
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::end.review",
+    "scope": "feature:property-basic-info",
+    "run": 1,
+    "snapshot": "bee4294275f5cd13e7702159ec401a5fba5a46d09911cc5a29706d8e10502ab4",
+    "record_hash": "b6e70c3d121a8ff962a889a3be5cadebd944cfc9aa3326caf4bfc1a0752ec320"
+  },
+  "data": {
+    "scope": "feature:property-basic-info",
+    "run": 1,
+    "number": 14,
+    "decision": "対応せず進める",
+    "reason": "issue-request の requirements は同じ Phase の成果物で、そちらの再検査で整合を確かめる"
+  }
+}

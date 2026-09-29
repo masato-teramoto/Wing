@@ -1,0 +1,24 @@
+{
+  "operation_id": "90c69fc5-b2ea-4977-9c13-4be62da1342d",
+  "action": "decision",
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "requirements-authoring-revise",
+    "event": "requirements-authoring-revise",
+    "item": "property-basic-info",
+    "dispatch_id": "bb96b1057d934804be81685daac56d61",
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::end.review",
+    "scope": "feature:property-basic-info",
+    "run": 2,
+    "snapshot": "61fffb2a69eeea7a06d5c0418c6d9bd6a727f4bc5b9d47a42911f4522325eae0",
+    "record_hash": "2b679f000657fd9c45c2653288ab32642c4ba67296834358ce93c31858b5f342"
+  },
+  "data": {
+    "scope": "feature:property-basic-info",
+    "run": 2,
+    "number": 1,
+    "decision": "修正",
+    "reason": "冒頭を「次の 14 件（⑬ は解消済み）は、いずれも基本設計で確定する」に直してください。"
+  }
+}

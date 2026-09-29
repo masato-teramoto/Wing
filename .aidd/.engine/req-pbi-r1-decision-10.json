@@ -1,0 +1,24 @@
+{
+  "operation_id": "b526e2fa-1c39-470f-a9f7-c9ab5169fc9c",
+  "action": "decision",
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "requirements-authoring-revise",
+    "event": "requirements-authoring-revise",
+    "item": "property-basic-info",
+    "dispatch_id": "27007bf6dcc04f1d8a83e6359b3ea019",
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::end.review",
+    "scope": "feature:property-basic-info",
+    "run": 1,
+    "snapshot": "bee4294275f5cd13e7702159ec401a5fba5a46d09911cc5a29706d8e10502ab4",
+    "record_hash": "18a95f18b5f6ef7928b9c153bf6e39c988c0f9143bc359f24a4f10464479aafe"
+  },
+  "data": {
+    "scope": "feature:property-basic-info",
+    "run": 1,
+    "number": 10,
+    "decision": "対応せず進める",
+    "reason": "feature ごとに追えるよう、あえて AC として書いている。食い違いは無い"
+  }
+}

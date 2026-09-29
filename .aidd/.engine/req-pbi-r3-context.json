@@ -1,0 +1,13 @@
+{
+  "root": "C:\\project\\Wing",
+  "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+  "call": "requirements-authoring-revise",
+  "event": "requirements-authoring-revise",
+  "item": "property-basic-info",
+  "dispatch_id": "ae14eb539c0a4b04af1e233484c643ad",
+  "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::end.review",
+  "scope": "feature:property-basic-info",
+  "run": 3,
+  "snapshot": "6c2fd49c15a80d872f9d9acaf83f987bb9aaa8cfd6be23954bbbe29e785a67fd",
+  "record_hash": "d61f96aa8e439f9a0f67fa6b2fc0a90b9c23a7baff56f1018758bfe6d3bb649c"
+}

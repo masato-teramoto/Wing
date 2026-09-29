@@ -1,0 +1,24 @@
+{
+  "operation_id": "d7b2b169-dc5a-445e-b4b8-703d5d00175f",
+  "action": "decision",
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "requirements-authoring-revise",
+    "event": "requirements-authoring-revise",
+    "item": "property-basic-info",
+    "dispatch_id": "27007bf6dcc04f1d8a83e6359b3ea019",
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::end.review",
+    "scope": "feature:property-basic-info",
+    "run": 1,
+    "snapshot": "bee4294275f5cd13e7702159ec401a5fba5a46d09911cc5a29706d8e10502ab4",
+    "record_hash": "a7bfff11ec2b36266f1b91a650f9dfa98fd526d23005dd286923511a55499cd6"
+  },
+  "data": {
+    "scope": "feature:property-basic-info",
+    "run": 1,
+    "number": 2,
+    "decision": "対応せず進める",
+    "reason": "1.1・4.1 は普遍要件で、画面・承認フローがあるかどうかで判定できる"
+  }
+}

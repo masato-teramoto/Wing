@@ -1,0 +1,24 @@
+{
+  "operation_id": "4f220ea6-48a4-4119-a173-10a3404b90ac",
+  "action": "decision",
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "requirements-authoring-revise",
+    "event": "requirements-authoring-revise",
+    "item": "property-basic-info",
+    "dispatch_id": "27007bf6dcc04f1d8a83e6359b3ea019",
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::end.review",
+    "scope": "feature:property-basic-info",
+    "run": 1,
+    "snapshot": "bee4294275f5cd13e7702159ec401a5fba5a46d09911cc5a29706d8e10502ab4",
+    "record_hash": "bf3de1a91ccfdebbc6f6929715dd012c8357c04578375203933927fdd6d1c279"
+  },
+  "data": {
+    "scope": "feature:property-basic-info",
+    "run": 1,
+    "number": 15,
+    "decision": "修正",
+    "reason": "## 前提と依存 の依存の末尾の文を「issue-request は TWTGM100 へ書き込む側だが、本フィーチャーは参照のみで、行が無い場合も空欄で表示する（受け入れ基準 11.6）。そのため同 feature の完成を待つ必要は無く、feature 間の依存ではない」に置き換えてください。"
+  }
+}

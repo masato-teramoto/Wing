@@ -1,0 +1,24 @@
+{
+  "operation_id": "28ff1160-9f01-4dc2-9f0c-e5ebc28c7539",
+  "action": "decision",
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "requirements-authoring-revise",
+    "event": "requirements-authoring-revise",
+    "item": "property-basic-info",
+    "dispatch_id": "27007bf6dcc04f1d8a83e6359b3ea019",
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::end.review",
+    "scope": "feature:property-basic-info",
+    "run": 1,
+    "snapshot": "bee4294275f5cd13e7702159ec401a5fba5a46d09911cc5a29706d8e10502ab4",
+    "record_hash": "241123894089c7e4824d2bd1bb319a6011b5d89051061464710797dda164b0b6"
+  },
+  "data": {
+    "scope": "feature:property-basic-info",
+    "run": 1,
+    "number": 1,
+    "decision": "修正",
+    "reason": "## スコープの境界 の Adjacent（issue-request）に「本フィーチャーは帳票の元データとして TWTGM100・TWTGM140 を読み取りのみで読む（定義・書き込みは issue-request。.aidd/feature-list.md の『要求IDの多重割当（REQ-048）』）」を加えてください。未確定事項⑬は番号を詰めずに「解消: 帳票の元データ（発行依頼書・契約局情報）は issue-request が TWTGM100・TWTGM140 に保持し、本フィーチャーは読み取りのみ（feature-list の分担による）」に置き換えてください。受け入れ基準は増やさないでください。"
+  }
+}

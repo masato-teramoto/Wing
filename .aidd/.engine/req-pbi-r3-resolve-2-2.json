@@ -1,0 +1,22 @@
+{
+  "operation_id": "a966b897-4815-4f73-b98c-096845f9c3fc",
+  "action": "resolve",
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "requirements-authoring-revise",
+    "event": "requirements-authoring-revise",
+    "item": "property-basic-info",
+    "dispatch_id": "ae14eb539c0a4b04af1e233484c643ad",
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::end.review",
+    "scope": "feature:property-basic-info",
+    "run": 3,
+    "snapshot": "6c2fd49c15a80d872f9d9acaf83f987bb9aaa8cfd6be23954bbbe29e785a67fd",
+    "record_hash": "aecc228c2540c332e42fdeef821ace4a63354ee9eb419699d620d4f761105b4f"
+  },
+  "data": {
+    "scope": "feature:property-basic-info",
+    "run": 2,
+    "number": 2
+  }
+}

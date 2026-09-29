@@ -1,0 +1,40 @@
+{
+  "operation_id": "73c2a05a-4334-4161-920d-e07aeecd5a77",
+  "action": "repair",
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "requirements-authoring-revise",
+    "event": "requirements-authoring-revise",
+    "item": "property-basic-info",
+    "dispatch_id": "27007bf6dcc04f1d8a83e6359b3ea019",
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::end.review",
+    "scope": "feature:property-basic-info",
+    "run": 1,
+    "snapshot": "bee4294275f5cd13e7702159ec401a5fba5a46d09911cc5a29706d8e10502ab4",
+    "record_hash": "4228315dab04dfe41cf5b1c9b4ab5d04502619c37d1814f6ab8d743872901145"
+  },
+  "data": {
+    "event": "requirements-authoring-generate",
+    "item": "property-basic-info",
+    "targets": [
+      "specs/property-basic-info/requirements.md"
+    ],
+    "findings": [
+      {
+        "phase": "requirements",
+        "scope": "feature:property-basic-info",
+        "run": 1,
+        "number": 1,
+        "instruction": "## スコープの境界 の Adjacent（issue-request）に「本フィーチャーは帳票の元データとして TWTGM100・TWTGM140 を読み取りのみで読む（定義・書き込みは issue-request。.aidd/feature-list.md の『要求IDの多重割当（REQ-048）』）」を加えてください。未確定事項⑬は番号を詰めずに「解消: 帳票の元データ（発行依頼書・契約局情報）は issue-request が TWTGM100・TWTGM140 に保持し、本フィーチャーは読み取りのみ（feature-list の分担による）」に置き換えてください。受け入れ基準は増やさないでください。 直したら再検査する。"
+      },
+      {
+        "phase": "requirements",
+        "scope": "feature:property-basic-info",
+        "run": 1,
+        "number": 15,
+        "instruction": "## 前提と依存 の依存の末尾の文を「issue-request は TWTGM100 へ書き込む側だが、本フィーチャーは参照のみで、行が無い場合も空欄で表示する（受け入れ基準 11.6）。そのため同 feature の完成を待つ必要は無く、feature 間の依存ではない」に置き換えてください。 直したら再検査する。"
+      }
+    ]
+  }
+}

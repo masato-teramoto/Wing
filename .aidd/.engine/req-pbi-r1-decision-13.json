@@ -1,0 +1,24 @@
+{
+  "operation_id": "7a8502fb-1032-4e6a-8e43-88434b608673",
+  "action": "decision",
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "requirements-authoring-revise",
+    "event": "requirements-authoring-revise",
+    "item": "property-basic-info",
+    "dispatch_id": "27007bf6dcc04f1d8a83e6359b3ea019",
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::end.review",
+    "scope": "feature:property-basic-info",
+    "run": 1,
+    "snapshot": "bee4294275f5cd13e7702159ec401a5fba5a46d09911cc5a29706d8e10502ab4",
+    "record_hash": "e1c9e221f9735e4b6c1f4a0c0c5f5eba15c338a6395deb71098cdc5d555c92ec"
+  },
+  "data": {
+    "scope": "feature:property-basic-info",
+    "run": 1,
+    "number": 13,
+    "decision": "対応せず進める",
+    "reason": "結合条件と空欄での表示は、人間が WTG070 機能定義書から示した確定事項（2026-09-24）"
+  }
+}
