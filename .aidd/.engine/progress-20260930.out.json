@@ -1,0 +1,12 @@
+{
+  "status": "fail",
+  "action": "progress",
+  "result": {
+    "schema": 1,
+    "status": "unavailable",
+    "documents": null,
+    "feature_status": "unavailable",
+    "reason": "previously synchronized feature source is missing or not approved",
+    "cache_saved": true
+  }
+}

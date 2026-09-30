@@ -1,0 +1,24 @@
+{
+  "operation_id": "f28d3aa0-9091-44e8-a94b-fa5b257aade9",
+  "action": "decision",
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "feature-decomposition-revise",
+    "event": "feature-decomposition-revise",
+    "item": "",
+    "dispatch_id": "6bb91baa70f84361b82f1f051290d86b",
+    "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::end.review",
+    "scope": "phase",
+    "run": 3,
+    "snapshot": "1b3247cd95a9352c15053629c357196af162acc09ad8e9d49dc03659236ff8b4",
+    "record_hash": "543909653654dad918896a99b0f613ccbbdfe1233bfaa4166be9d5e06dac95c8"
+  },
+  "data": {
+    "scope": "phase",
+    "run": 3,
+    "number": 4,
+    "decision": "修正",
+    "reason": "責務の説明は目的列だけを正とします。優先度 2 の根拠は「依存を持たない。issue-request が本ポップアップを開き、設定された値を受け取るため、issue-request より先行させる」だけに縮めてください。"
+  }
+}

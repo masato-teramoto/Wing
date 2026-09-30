@@ -1,0 +1,24 @@
+{
+  "operation_id": "7a0ab520-22ca-48e2-83ca-14189ec95b28",
+  "action": "decision",
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "feature-decomposition-revise",
+    "event": "feature-decomposition-revise",
+    "item": "",
+    "dispatch_id": "1aeb31cc92d04068af354d2d972af137",
+    "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::end.review",
+    "scope": "phase",
+    "run": 4,
+    "snapshot": "6ddc4f710d07e4b70f5b3efaedba345e06c7602cfb51c9f4f7253ccb40f056ee",
+    "record_hash": "0eb209c3731361f50ad3c9e7f7bc48a4e66bbaf3034c55aa84eb4bcb33f1a2ef"
+  },
+  "data": {
+    "scope": "phase",
+    "run": 4,
+    "number": 1,
+    "decision": "修正",
+    "reason": "113 行目の冒頭文を次の文に直してください。「優先度 3・4 は依存による必須先行で決まる。1・2 は依存を持たない feature で、依存からは前後が決まらない。そこで property-basic-info は steering/product.md の主要ユースケースの並びで先頭に置き、issue-request-tutorial は issue-request の直前に置く。5・6 は依存の連鎖から独立しているため、steering/product.md の主要ユースケース 5（外部で作成された契約情報の反映と CSV ダウンロード）に対応することを根拠に末尾へ置く。」表の中の根拠は変えません。"
+  }
+}

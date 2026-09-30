@@ -1,7 +1,7 @@
 ---
 feature: property-basic-info
-status: approved
-updated_at: 2026-09-29T10:22:19+09:00
+status: draft
+updated_at: 2026-09-30T18:16:21+09:00
 ---
 
 # 要件定義書

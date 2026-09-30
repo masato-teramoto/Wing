@@ -1,0 +1,156 @@
+{
+  "status": "ok",
+  "action": "submit",
+  "result": {
+    "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::end.feature-check",
+    "flow": "feature-decomposition-revise",
+    "event": "feature-decomposition-revise",
+    "item": null,
+    "gate": "feature-check",
+    "hookPoint": "end",
+    "name": "feature-check",
+    "type": "skill",
+    "target": "feature-check",
+    "isAgent": true,
+    "requiresHuman": false,
+    "calls": [
+      "format-conformance",
+      "traceability",
+      "traceability",
+      "ssot-consistency",
+      "ssot-consistency",
+      "classification-validity",
+      "platform-foundation-coverage",
+      "steering-conformance",
+      "evidence-guard",
+      "gate-report"
+    ],
+    "status": "emit",
+    "call": "feature-decomposition-revise",
+    "dispatch": {
+      "call": "feature-decomposition-revise",
+      "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::end.feature-check",
+      "event": "feature-decomposition-revise",
+      "item": null,
+      "status": "emit",
+      "config_sha256": "bd35b4971bac9839d212c0b1bd5e5441a000c15bc4e8acdacc1d80a0b0c0cd37",
+      "detail": null,
+      "id": "57132d96c4f140979e040631be4a69d7"
+    },
+    "label": "feature-decomposition-revise / feature-decomposition-revise",
+    "allowed_actions": [
+      "submit"
+    ],
+    "context": {
+      "event": "feature-decomposition-revise",
+      "item": "",
+      "scope": "phase",
+      "targets": [
+        ".aidd/feature-list.md"
+      ],
+      "upstream": [
+        ".aidd/requirement-list.md",
+        "steering/product.md",
+        "steering/tech.md",
+        "steering/architecture.md",
+        "steering/security.md",
+        "steering/non-functional.md",
+        "steering/database.md",
+        "steering/api-standards.md"
+      ],
+      "gate_record_path": "C:\\project\\Wing\\.aidd\\gates\\phase-3-feature.md",
+      "authoring_inputs": [
+        ".aidd/requirement-list.md",
+        "steering/product.md",
+        "steering/tech.md",
+        "steering/architecture.md",
+        "steering/security.md",
+        "steering/non-functional.md",
+        "steering/database.md",
+        "steering/api-standards.md"
+      ],
+      "snapshot_path": "C:\\project\\Wing\\.aidd\\.engine\\f13b8709e1394005f5bbaca40fe5c0e96d6347380b168a45d17d60ee2e7616b7.snapshot.json",
+      "snapshot": {
+        "schema": 2,
+        "phase": "feature",
+        "event": "feature-decomposition-revise",
+        "scope": "phase",
+        "at": "2026-09-30T16:32:10+09:00",
+        "artifacts": {
+          ".aidd/feature-list.md": {
+            "status": "draft",
+            "sha256": "abc3cb1f338d742e2597470d3c7cf13cbbf8b362cc78c3b135240a789a2a2ef4"
+          }
+        },
+        "record": {
+          "bytes": 12338,
+          "sha256": "0f43f3e9f7fc4d2367e5db59f5bcec1521d2eb12ae659dae798889d6d3ce25e2",
+          "blocks": 17
+        },
+        "run": 3
+      },
+      "findings_path": "C:\\project\\Wing\\.aidd\\.engine\\f13b8709e1394005f5bbaca40fe5c0e96d6347380b168a45d17d60ee2e7616b7.findings.json",
+      "findings": [],
+      "questions": {
+        "status": "answered",
+        "targets": [
+          ".aidd/feature-list.md"
+        ],
+        "questions": [
+          {
+            "id": "FL-TUT-Q1",
+            "target": ".aidd/feature-list.md",
+            "location": "## 種別の判定 > 本プロジェクトでの判定結果 > issue-request-tutorial 行（判定・根拠）／REQ-035・REQ-036",
+            "question": "issue-request-tutorial の種別判定の根拠は「チュートリアルの設定を担当する利用者が、設定画面で設定を作り終えられる（REQ-035・REQ-036）。設定という用事がその画面で完結するため Platform としない」となっているが、#1 の確定（管理画面・保存テーブルを持たず、WTG080 から開くポップアップで選んだ値を WTG080 へ設定する）によりこの前提が無くなった。判定（User / Platform）とその根拠をどうするか。",
+            "reason": "種別は「この feature だけで誰かが用事を済ませて終われるか」で決めるが、ポップアップ単体で用事が終わるかの根拠が上流・回答に無い。判定が変わると本文 87 行目の「6 件すべてが User Feature」も変わる"
+          }
+        ],
+        "open_placeholders": 0,
+        "changed_findings": [
+          {
+            "phase": "requirements",
+            "scope": "feature:issue-request-tutorial",
+            "run": 1,
+            "number": 1
+          }
+        ],
+        "return_candidates": [],
+        "summary": "#1 に従い issue-request-tutorial の目的（表の目的列）と算出根拠（優先度 2 の行）を人間指定の文に置き換えた。依存・優先度・対応要求ID は変更なし。ほかの feature の依存の理由文に消えた前提は無い。種別判定の根拠に同じ前提が残るため質問で停止",
+        "actor": "",
+        "at": "2026-09-30T16:23:27+09:00",
+        "answers": [
+          "FL-TUT-Q1：判定は User のままとし、根拠を次の文に置き換えてください。\n\n「発行依頼書を登録・変更する利用者が、発行依頼画面（WTG080）から開くチュートリアルで契約種別・局種別などの質問に順に答える。そうすると、その依頼に当てはまる転貸借・契約形態が決まり、WTG080 の該当欄に設定されたところで終われる（REQ-035・REQ-036）。どの契約形態に当たるかを決めるという用事がこの画面で完結し、ほかの feature の土台として使われるものではないため、Platform としない。」\n\n本文 87 行目「6 件すべてが User Feature」は変更不要です。"
+        ],
+        "answered_by": "Junichi Noumi",
+        "answered_at": "2026-09-30T16:31:40+09:00"
+      },
+      "repair": {
+        "event": "feature-decomposition-revise",
+        "item": "",
+        "targets": [
+          ".aidd/feature-list.md"
+        ],
+        "findings": [
+          {
+            "phase": "requirements",
+            "scope": "feature:issue-request-tutorial",
+            "run": 1,
+            "number": 1,
+            "instruction": "人間確定（2026-09-29）: チュートリアル（WTG081）は発行依頼書画面のボタンから開くポップアップで、契約種別→局種別→設置設備…と選択に応じて画面を順に表示し、選んだ値を発行依頼書画面の項目に設定する。設定内容を定義・保存する管理画面ではなく、保存用テーブルは持たない。REQ-035 の表示の振る舞いは本 feature が持ち、issue-request はボタンと値の受け取りを持つ。feature-list の目的・算出根拠を直してから requirements を作り直す"
+          }
+        ],
+        "instruction": "",
+        "origin": "finding",
+        "actor": "Junichi Noumi",
+        "at": "2026-09-29T10:50:00+09:00",
+        "id": "614cf7e6dced1fe5e64a31a06d941393ce87c38782b1c5039f15210774a20e60",
+        "scheduled": "2026-09-30T16:17:30+09:00"
+      },
+      "inspection_path": "C:\\project\\Wing\\.aidd\\.engine\\f13b8709e1394005f5bbaca40fe5c0e96d6347380b168a45d17d60ee2e7616b7.inspection.md"
+    },
+    "next_action": "作業中（AI が 検査 を実行します）。人の操作は不要です。",
+    "operation_id": "523b7e0d-0057-4ddf-8df9-9dc6d75a30c4",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

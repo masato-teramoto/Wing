@@ -1,0 +1,110 @@
+{
+  "status": "ok",
+  "action": "advance",
+  "result": {
+    "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::run",
+    "flow": "feature-decomposition-revise",
+    "event": "feature-decomposition-revise",
+    "item": null,
+    "gate": null,
+    "hookPoint": null,
+    "name": "feature-decomposition-revise",
+    "type": "skill",
+    "target": "feature-revision",
+    "isAgent": false,
+    "requiresHuman": false,
+    "calls": [],
+    "status": "emit",
+    "call": "feature-decomposition-revise",
+    "dispatch": {
+      "call": "feature-decomposition-revise",
+      "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::run",
+      "event": "feature-decomposition-revise",
+      "item": null,
+      "status": "emit",
+      "config_sha256": "bd35b4971bac9839d212c0b1bd5e5441a000c15bc4e8acdacc1d80a0b0c0cd37",
+      "detail": null,
+      "id": "1db3133f59bd418697a923a466535aae"
+    },
+    "label": "feature-decomposition-revise / feature-decomposition-revise",
+    "allowed_actions": [
+      "submit"
+    ],
+    "context": {
+      "event": "feature-decomposition-revise",
+      "item": "",
+      "scope": "phase",
+      "targets": [
+        ".aidd/feature-list.md"
+      ],
+      "upstream": [
+        ".aidd/requirement-list.md",
+        "steering/product.md",
+        "steering/tech.md",
+        "steering/architecture.md",
+        "steering/security.md",
+        "steering/non-functional.md",
+        "steering/database.md",
+        "steering/api-standards.md"
+      ],
+      "gate_record_path": "C:\\project\\Wing\\.aidd\\gates\\phase-3-feature.md",
+      "authoring_inputs": [
+        ".aidd/requirement-list.md",
+        "steering/product.md",
+        "steering/tech.md",
+        "steering/architecture.md",
+        "steering/security.md",
+        "steering/non-functional.md",
+        "steering/database.md",
+        "steering/api-standards.md"
+      ],
+      "snapshot_path": "C:\\project\\Wing\\.aidd\\.engine\\f13b8709e1394005f5bbaca40fe5c0e96d6347380b168a45d17d60ee2e7616b7.snapshot.json",
+      "snapshot": {
+        "schema": 2,
+        "phase": "feature",
+        "event": "feature-decomposition-revise",
+        "scope": "phase",
+        "at": "2026-09-28T15:17:49+09:00",
+        "artifacts": {
+          ".aidd/feature-list.md": {
+            "status": "draft",
+            "sha256": "4d59b0c69eb0b8f2a9ccd109e05eb9f3307dbc1264b8ed9f85fb2dd23d005ec2"
+          }
+        },
+        "record": {
+          "bytes": 3457,
+          "sha256": "708f395429a8fd99ba6576c399f82da7b50194d7d87f1027faba2852ed148411",
+          "blocks": 5
+        },
+        "run": 2
+      },
+      "findings_path": "C:\\project\\Wing\\.aidd\\.engine\\f13b8709e1394005f5bbaca40fe5c0e96d6347380b168a45d17d60ee2e7616b7.findings.json",
+      "findings": [],
+      "questions": null,
+      "repair": {
+        "event": "feature-decomposition-revise",
+        "item": "",
+        "targets": [
+          ".aidd/feature-list.md"
+        ],
+        "findings": [
+          {
+            "phase": "requirements",
+            "scope": "feature:issue-request-tutorial",
+            "run": 1,
+            "number": 1,
+            "instruction": "人間確定（2026-09-29）: チュートリアル（WTG081）は発行依頼書画面のボタンから開くポップアップで、契約種別→局種別→設置設備…と選択に応じて画面を順に表示し、選んだ値を発行依頼書画面の項目に設定する。設定内容を定義・保存する管理画面ではなく、保存用テーブルは持たない。REQ-035 の表示の振る舞いは本 feature が持ち、issue-request はボタンと値の受け取りを持つ。feature-list の目的・算出根拠を直してから requirements を作り直す"
+          }
+        ],
+        "instruction": "",
+        "origin": "finding",
+        "actor": "Junichi Noumi",
+        "at": "2026-09-29T10:50:00+09:00",
+        "id": "614cf7e6dced1fe5e64a31a06d941393ce87c38782b1c5039f15210774a20e60",
+        "scheduled": "2026-09-30T16:17:30+09:00"
+      },
+      "inspection_path": "C:\\project\\Wing\\.aidd\\.engine\\f13b8709e1394005f5bbaca40fe5c0e96d6347380b168a45d17d60ee2e7616b7.inspection.md"
+    },
+    "next_action": "作業中（AI が 作成・修正 を実行します）。人の操作は不要です。"
+  }
+}

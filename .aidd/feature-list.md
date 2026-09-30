@@ -1,6 +1,6 @@
 ---
-status: draft
-updated_at: 2026-09-29T10:48:25+09:00
+status: approved
+updated_at: 2026-09-30T18:16:20+09:00
 ---
 
 # フィーチャー一覧
@@ -18,8 +18,8 @@ updated_at: 2026-09-29T10:48:25+09:00
 | feature 名 | 種別 | 目的 | 依存 | 優先度 | 想定規模 | 対応要求ID |
 |---|---|---|---|---|---|---|
 | property-basic-info | User | 物件基本情報を登録・変更し、承認フローとステータス・履歴・契約稟議ファイルを管理したうえで、稟議資料となる帳票を出力する。作成組織は会社名をラベル表示するのみ | なし | 1 | 大 | REQ-015, REQ-016, REQ-017, REQ-018, REQ-019, REQ-020, REQ-021, REQ-022, REQ-023, REQ-024, REQ-025, REQ-048 |
-| issue-request-tutorial | User | 発行依頼書の入力を誘導するチュートリアルの設定画面を提供する（現行の設定用ウインドウ 26 フォーム相当を新規に実現する） | なし | 2 | 中 | REQ-035, REQ-036 |
-| issue-request | User | 発行依頼書を登録・変更して契約書に対する発番を行い、作成組織（会社名・所属①②）を画面上で入力させ、チュートリアルによる入力補助とバーコード生成を提供する | property-basic-info, issue-request-tutorial | 3 | 大 | REQ-026, REQ-027, REQ-028, REQ-029, REQ-030, REQ-031, REQ-032, REQ-033, REQ-034, REQ-037, REQ-038, REQ-039, REQ-048, REQ-049, REQ-050 |
+| issue-request-tutorial | User | WTG080（発行依頼）のボタンから開くポップアップ（WTG081）。契約種別 → 局種別 → 設置設備…の順に、前の選択に応じて、次の選択肢または入力欄とその入力例を順に表示する（REQ-035）。現行の設定用ウインドウ 26 フォームに相当する画面群を、1 つのポップアップの中で順に切り替えて表示する（REQ-036）。選んだ値は WTG080 の入力項目へ設定する。専用の保存テーブル・管理画面・CRUD・排他は持たない（出典: 人間判断 2026-09-29（tutorial requirements 1回目 #1）、2026-09-30（FL-TUT-Q1）） | なし | 2 | 中 | REQ-035, REQ-036 |
+| issue-request | User | 発行依頼書を登録・変更して契約書に対する発番を行い、作成組織（会社名・所属①②）を画面上で入力させ、チュートリアルを開くボタンと、チュートリアルで設定された値の受け取りとバーコード生成を提供する | property-basic-info, issue-request-tutorial | 3 | 大 | REQ-026, REQ-027, REQ-028, REQ-029, REQ-030, REQ-031, REQ-032, REQ-033, REQ-034, REQ-037, REQ-038, REQ-039, REQ-048, REQ-049, REQ-050 |
 | contract-application-status | User | 物件契約情報の申請状況を検索・一覧表示し、CSV として出力する | property-basic-info, issue-request | 4 | 中 | REQ-012, REQ-013, REQ-014 |
 | contract-info-import | User | 契約情報の取込バッチを画面から実行し、新規・変更・削除の取込と洗替更新を行う | なし | 5 | 中 | REQ-040, REQ-041, REQ-042, REQ-043 |
 | contract-info-download | User | 既存の契約情報検索と同一の条件・表示項目で契約情報を検索し、取込で使える形式の CSV としてダウンロードする | contract-info-import | 6 | 中 | REQ-044, REQ-045, REQ-047 |
@@ -91,11 +91,13 @@ updated_at: 2026-09-29T10:48:25+09:00
 | feature 名 | 判定 | 根拠 |
 |---|---|---|
 | property-basic-info | User | 担当者が物件基本情報を登録・変更し、承認に回して帳票を出すところまで終えられる（REQ-015〜REQ-025）。作成組織は会社名のラベル表示のみ（REQ-048） |
-| issue-request-tutorial | User | チュートリアルの設定を担当する利用者が、設定画面で設定を作り終えられる（REQ-035・REQ-036）。設定という用事がその画面で完結するため Platform としない |
+| issue-request-tutorial | User | 発行依頼書を登録・変更する利用者が、発行依頼画面（WTG080）から開くチュートリアルで契約種別・局種別などの質問に順に答える。そうすると、その依頼に当てはまる転貸借・契約形態が決まり、WTG080 の該当欄に設定されたところで終われる（REQ-035・REQ-036）。どの契約形態に当たるかを決めるという用事がこの画面で完結し、ほかの feature の土台として使われるものではないため、Platform としない（出典: 人間判断 2026-09-29（tutorial requirements 1回目 #1）、2026-09-30（FL-TUT-Q1）） |
 | issue-request | User | 担当者が発行依頼書を登録・変更し、発番まで終えられる（REQ-026〜REQ-034・REQ-037〜REQ-039）。作成組織の入力（REQ-048〜REQ-050）は本画面内の入力欄である |
 | contract-application-status | User | 担当者が申請状況を検索・一覧・CSV 出力して確認を終えられる（REQ-012〜REQ-014） |
 | contract-info-import | User | 担当者が取込バッチを実行して契約情報の反映を終えられる（REQ-040〜REQ-043） |
 | contract-info-download | User | 担当者が契約情報を検索して CSV を取得し終えられる（REQ-044・REQ-045・REQ-047） |
+
+> REQ-026・REQ-036 の「チュートリアル設定画面」はこのポップアップを指す。「設定」は WTG080 の欄へ値を設定する意味で、設定データを管理する画面ではない
 
 ## 優先度の決定方針
 
@@ -108,12 +110,12 @@ updated_at: 2026-09-29T10:48:25+09:00
 
 **本プロジェクトでの算出根拠**
 
-優先度 1〜4 は **依存による必須先行で決まる**。5・6 は依存の連鎖から独立しているため、`steering/product.md` の主要ユースケース 5（外部で作成された契約情報の反映と CSV ダウンロード）に対応することを根拠に末尾へ置く。
+優先度 3・4 は **依存による必須先行で決まる**。1・2 は依存を持たない feature で、依存からは前後が決まらない。そこで `property-basic-info` は `steering/product.md` の主要ユースケースの並びで先頭に置き、`issue-request-tutorial` は `issue-request` の直前に置く。5・6 は依存の連鎖から独立しているため、`steering/product.md` の主要ユースケース 5（外部で作成された契約情報の反映と CSV ダウンロード）に対応することを根拠に末尾へ置く。
 
 | 優先度 | feature 名 | 根拠 |
 |---|---|---|
 | 1 | property-basic-info | 依存を持たない。contract-application-status が表示する申請状況のデータを生成する側であるため、同 feature より先行させる。`steering/product.md` の主要ユースケースのうち最初に置かれる物件基本情報の登録・承認に対応するため、依存を持たない 3 feature（本 feature・issue-request-tutorial・contract-info-import）の先頭に置く |
-| 2 | issue-request-tutorial | 依存を持たない。issue-request のチュートリアル（REQ-035: 選択肢により順番に入力欄と例が表示される）が動作するには設定が先に存在する必要があるため、issue-request より先行させる |
+| 2 | issue-request-tutorial | 依存を持たない。issue-request が本ポップアップを開き、設定された値を受け取るため、issue-request より先行させる |
 | 3 | issue-request | `property-basic-info` の後（**申請No を採番するのが同 feature であり、本 feature は画面から受け取った申請No で `TWTGM100` に登録するため** — 2026-09-24 に確定）、`issue-request-tutorial` の後（REQ-035）。contract-application-status が表示する申請状況のデータを生成する側であるため、同 feature より先行させる |
 | 4 | contract-application-status | property-basic-info・issue-request の後。物件契約情報の申請状況（REQ-012）は両 feature が登録・申請したデータを対象とするため、表示対象を生成する側が先行する必要がある |
 | 5 | contract-info-import | 依存を持たない。主要ユースケース 5 に対応し、同ユースケースが `product.md` で最後に置かれているため末尾側に置く。REQ-047 により contract-info-download が「取込で使える形式」を出力するため、取込の形式が確定する本 feature を先に置く |

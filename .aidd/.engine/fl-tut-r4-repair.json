@@ -1,0 +1,33 @@
+{
+  "operation_id": "b3f477c5-dcc7-460b-884c-cfa978186563",
+  "action": "repair",
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "feature-decomposition-revise",
+    "event": "feature-decomposition-revise",
+    "item": "",
+    "dispatch_id": "1aeb31cc92d04068af354d2d972af137",
+    "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::end.review",
+    "scope": "phase",
+    "run": 4,
+    "snapshot": "6ddc4f710d07e4b70f5b3efaedba345e06c7602cfb51c9f4f7253ccb40f056ee",
+    "record_hash": "dc45aefaaf9f90a3642d4bfc151bc8eaab551cde1fcf53a7824f6e0663eee7c3"
+  },
+  "data": {
+    "event": "feature-decomposition-generate",
+    "item": "",
+    "targets": [
+      ".aidd/feature-list.md"
+    ],
+    "findings": [
+      {
+        "phase": "feature",
+        "scope": "phase",
+        "run": 4,
+        "number": 1,
+        "instruction": "113 行目の冒頭文を次の文に直してください。「優先度 3・4 は依存による必須先行で決まる。1・2 は依存を持たない feature で、依存からは前後が決まらない。そこで property-basic-info は steering/product.md の主要ユースケースの並びで先頭に置き、issue-request-tutorial は issue-request の直前に置く。5・6 は依存の連鎖から独立しているため、steering/product.md の主要ユースケース 5（外部で作成された契約情報の反映と CSV ダウンロード）に対応することを根拠に末尾へ置く。」表の中の根拠は変えません。"
+      }
+    ]
+  }
+}

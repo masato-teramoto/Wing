@@ -1,0 +1,104 @@
+{
+  "status": "ok",
+  "action": "respond",
+  "result": {
+    "status": "wait",
+    "allowed_actions": [
+      "decision",
+      "decisions",
+      "resolve",
+      "repair"
+    ],
+    "review_context": {
+      "root": "C:\\project\\Wing",
+      "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+      "call": "feature-decomposition-revise",
+      "event": "feature-decomposition-revise",
+      "item": "",
+      "dispatch_id": "6bb91baa70f84361b82f1f051290d86b",
+      "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::end.review",
+      "scope": "phase",
+      "run": 3,
+      "snapshot": "1b3247cd95a9352c15053629c357196af162acc09ad8e9d49dc03659236ff8b4",
+      "record_hash": "f578374f26a71f04147777c51733a0375df77ecfcff7aca5255b4def9ce76689"
+    },
+    "review": [
+      {
+        "scope": "phase",
+        "run": 3,
+        "number": 1,
+        "current": true,
+        "decision": "修正",
+        "reason": "目的に次を追加してください。「現行の設定用ウインドウ 26 フォームに相当する画面群を、1 つのポップアップの中で順に切り替えて表示する（REQ-036）」",
+        "open": true,
+        "resolved": false,
+        "description": "ID対応あり・内容未充足（意味判定）。REQ-036 は「チュートリアル設定画面では、現行の設定用ウインドウ 26フォーム（画面）に相当する画面を新規に実現する」と定める。`issue-request-tutorial` の目的は WTG080 から開く 1 つのポップアップ（WTG081）で選択肢を順に表示し値を設定することだけを記しており、現行の 26 フォーム（画面）に相当する範囲を実現することが目的・判定結果のどちらにも現れない。REQ-036 の内容がこの feature で満たされることを表から追えない",
+        "location": ".aidd/feature-list.md > ## フィーチャー一覧 の表（issue-request-tutorial 行）、同 > **本プロジェクトでの判定結果**（issue-request-tutorial 行）／.aidd/requirement-list.md の REQ-036"
+      },
+      {
+        "scope": "phase",
+        "run": 3,
+        "number": 2,
+        "current": true,
+        "decision": "",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "ID対応あり・内容の一部未反映（意味判定）。REQ-035 は「選択肢により順番に入力欄と例が表示される」と定める。`issue-request-tutorial` の目的は「前の選択に応じて次の選択肢を表示する」「選んだ値は WTG080 の入力項目へ設定する」であり、REQ-035 のうち「例が表示される」部分が目的に現れない",
+        "location": ".aidd/feature-list.md > ## フィーチャー一覧 の表（issue-request-tutorial 行）／.aidd/requirement-list.md の REQ-035"
+      },
+      {
+        "scope": "phase",
+        "run": 3,
+        "number": 3,
+        "current": true,
+        "decision": "",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "二重定義（食い違いあり）: チュートリアルの責務が 2 feature に記述されている。`issue-request` の目的は「チュートリアルによる入力補助とバーコード生成を提供する」とし、`issue-request-tutorial` の目的はチュートリアルのポップアップ（WTG081）そのものを担うとしている。一方、優先度 2 の根拠は `issue-request` が持つのは「このポップアップを開くボタンと選んだ値の受け取り」だけと書いており、`issue-request` の目的の記述と範囲が食い違う。SSoT の所在は指定されていないため、どちらの記述を正とするかは人間が確認する",
+        "location": ".aidd/feature-list.md > ## フィーチャー一覧 の表（issue-request 行の目的・issue-request-tutorial 行の目的）、同 > **本プロジェクトでの算出根拠** の表（優先度 2 の根拠）"
+      },
+      {
+        "scope": "phase",
+        "run": 3,
+        "number": 4,
+        "current": true,
+        "decision": "",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "二重定義（現時点では同一内容）: `issue-request-tutorial` の責務記述「WTG080（発行依頼）のボタンから開くポップアップ（WTG081）。契約種別 → 局種別 → 設置設備…の順に、前の選択に応じて次の選択肢を表示する。選んだ値は WTG080 の入力項目へ設定する。専用の保存テーブル・管理画面・CRUD・排他は持たない」が、目的列と優先度 2 の根拠の 2 箇所に同じ文で書かれている。片方だけが改訂されると食い違いうる。SSoT の所在は指定されていないため、どちらに置くかは人間が確認する",
+        "location": ".aidd/feature-list.md > ## フィーチャー一覧 の表（issue-request-tutorial 行の目的）、同 > **本プロジェクトでの算出根拠** の表（優先度 2 の根拠）"
+      },
+      {
+        "scope": "phase",
+        "run": 3,
+        "number": 5,
+        "current": true,
+        "decision": "",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "種別 `User` の妥当性に疑いがある（`Platform` が妥当な可能性）。テンプレートの判定基準は「この feature だけが出来上がった状態で、誰かが用事を済ませて終われるか。終われない（他の feature の中で使われる）→ Platform Feature」である。対象の記述では、このポップアップは `issue-request` の画面 WTG080 のボタンから開き（ボタンは `issue-request` が持つ — 優先度 2 の根拠）、選んだ値は WTG080 の入力項目へ設定され、`issue-request` がこの feature に依存している。この feature だけが出来上がった状態では開く手段も値の設定先も無く、他の feature の中で使われて働く形にあたる。判定結果の「ほかの feature の土台として使われるものではない」は、これらの記述と両立しない",
+        "location": ".aidd/feature-list.md > ## フィーチャー一覧 の表（issue-request-tutorial 行の種別）、同 > **本プロジェクトでの判定結果**（issue-request-tutorial 行）"
+      },
+      {
+        "scope": "phase",
+        "run": 3,
+        "number": 6,
+        "current": true,
+        "decision": "",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "出典不明: `issue-request-tutorial` について断定されている次の事項が `.aidd/requirement-list.md`・`steering/*.md` のどこにも無く、対象にも出典が書かれていないため追跡できない。(a) 画面の固有名 WTG081 と、WTG080 のボタンから開くポップアップであること (b) 選択の順序「契約種別 → 局種別 → 設置設備…」 (c) 「専用の保存テーブル・管理画面・CRUD・排他は持たない」 (d) 判定結果の「その依頼に当てはまる転貸借・契約形態が決まり」。なお (c) の「管理画面を持たない」は、REQ-026・REQ-036 の「チュートリアル設定画面」との関係が要求一覧からは導けない",
+        "location": ".aidd/feature-list.md > ## フィーチャー一覧 の表（issue-request-tutorial 行の目的）、同 > **本プロジェクトでの算出根拠** の表（優先度 2 の根拠）、同 > **本プロジェクトでの判定結果**（issue-request-tutorial 行）"
+      }
+    ],
+    "next_action": "検査結果を確認し、指摘ごとに A〜D で判断を回答してください（判断が揃い修正が無ければ承認者名を回答）。",
+    "operation_id": "66451516-a07c-400a-973d-77367f0af2f9",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

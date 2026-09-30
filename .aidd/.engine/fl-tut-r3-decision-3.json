@@ -1,0 +1,24 @@
+{
+  "operation_id": "2ceb293b-1be8-4dd4-9dc0-dd407d057cf0",
+  "action": "decision",
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "feature-decomposition-revise",
+    "event": "feature-decomposition-revise",
+    "item": "",
+    "dispatch_id": "6bb91baa70f84361b82f1f051290d86b",
+    "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::end.review",
+    "scope": "phase",
+    "run": 3,
+    "snapshot": "1b3247cd95a9352c15053629c357196af162acc09ad8e9d49dc03659236ff8b4",
+    "record_hash": "e6db6ef7d2b9b9613a1a2e623cc182af301ad482e1b7c4656f0e8cc2be3cbf10"
+  },
+  "data": {
+    "scope": "phase",
+    "run": 3,
+    "number": 3,
+    "decision": "修正",
+    "reason": "チュートリアルの中身は issue-request-tutorial の目的を正とします。issue-request の目的の「チュートリアルによる入力補助」を、「チュートリアルを開くボタンと、チュートリアルで設定された値の受け取り」に直してください。"
+  }
+}

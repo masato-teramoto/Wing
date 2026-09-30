@@ -1,0 +1,184 @@
+{
+  "status": "ok",
+  "action": "respond",
+  "result": {
+    "status": "rollback",
+    "allowed_actions": [],
+    "blockers": [
+      {
+        "id": "b713716e123e312bb2323de622748418eb0e341e67660bc03ee898184d1f3a5d",
+        "status": "open",
+        "origin": "reopen",
+        "return_to_phase": 4,
+        "target_event": "requirements-authoring-revise",
+        "target_item": "issue-request-tutorial",
+        "targets": [
+          "specs/issue-request-tutorial/requirements.md"
+        ],
+        "finding": null,
+        "instruction": "α2から保存した既存本文・質問・判断を引き継ぎ、変更が必要な箇所だけを反映してα3の検査を行う。旧指摘と再検査省略の記録は .aidd/legacy-gates/ と MIGRATION.md を確認する。",
+        "resume_event": "design-authoring-generate",
+        "resume_item": "issue-request-tutorial",
+        "actor": "α2移行コンバータ（再検査依頼の生成。人間の承認ではない）",
+        "at": "2026-09-25T18:54:54+09:00"
+      },
+      {
+        "id": "78e4976575e495bda0636ed7f21ef3690fd66c99abf6cf0d9fa9b6a0227fff22",
+        "status": "open",
+        "origin": "reopen",
+        "return_to_phase": 4,
+        "target_event": "requirements-authoring-revise",
+        "target_item": "issue-request",
+        "targets": [
+          "specs/issue-request/requirements.md"
+        ],
+        "finding": null,
+        "instruction": "α2から保存した既存本文・質問・判断を引き継ぎ、変更が必要な箇所だけを反映してα3の検査を行う。旧指摘と再検査省略の記録は .aidd/legacy-gates/ と MIGRATION.md を確認する。",
+        "resume_event": "design-authoring-generate",
+        "resume_item": "issue-request-tutorial",
+        "actor": "α2移行コンバータ（再検査依頼の生成。人間の承認ではない）",
+        "at": "2026-09-25T18:54:54+09:00"
+      },
+      {
+        "id": "e5ccb184ccd789bed2c6b517f9d929c7f6673872dde0448ed0bbd39971dd521a",
+        "status": "open",
+        "origin": "reopen",
+        "return_to_phase": 4,
+        "target_event": "requirements-authoring-revise",
+        "target_item": "contract-application-status",
+        "targets": [
+          "specs/contract-application-status/requirements.md"
+        ],
+        "finding": null,
+        "instruction": "α2から保存した既存本文・質問・判断を引き継ぎ、変更が必要な箇所だけを反映してα3の検査を行う。旧指摘と再検査省略の記録は .aidd/legacy-gates/ と MIGRATION.md を確認する。",
+        "resume_event": "design-authoring-generate",
+        "resume_item": "issue-request-tutorial",
+        "actor": "α2移行コンバータ（再検査依頼の生成。人間の承認ではない）",
+        "at": "2026-09-25T18:54:54+09:00"
+      },
+      {
+        "id": "4057cf6ad9f09c9f790b3770abfad7c95e05c40e30ef39bff8f474bdeb013f11",
+        "status": "open",
+        "origin": "reopen",
+        "return_to_phase": 4,
+        "target_event": "requirements-authoring-revise",
+        "target_item": "contract-info-import",
+        "targets": [
+          "specs/contract-info-import/requirements.md"
+        ],
+        "finding": null,
+        "instruction": "α2から保存した既存本文・質問・判断を引き継ぎ、変更が必要な箇所だけを反映してα3の検査を行う。旧指摘と再検査省略の記録は .aidd/legacy-gates/ と MIGRATION.md を確認する。",
+        "resume_event": "design-authoring-generate",
+        "resume_item": "issue-request-tutorial",
+        "actor": "α2移行コンバータ（再検査依頼の生成。人間の承認ではない）",
+        "at": "2026-09-25T18:54:54+09:00"
+      },
+      {
+        "id": "28d56dc4e58f1a2fd31db220d13da65efbef5f3ee9a3289e19fc81e6f32d938f",
+        "status": "open",
+        "origin": "reopen",
+        "return_to_phase": 4,
+        "target_event": "requirements-authoring-revise",
+        "target_item": "contract-info-download",
+        "targets": [
+          "specs/contract-info-download/requirements.md"
+        ],
+        "finding": null,
+        "instruction": "α2から保存した既存本文・質問・判断を引き継ぎ、変更が必要な箇所だけを反映してα3の検査を行う。旧指摘と再検査省略の記録は .aidd/legacy-gates/ と MIGRATION.md を確認する。",
+        "resume_event": "design-authoring-generate",
+        "resume_item": "issue-request-tutorial",
+        "actor": "α2移行コンバータ（再検査依頼の生成。人間の承認ではない）",
+        "at": "2026-09-25T18:54:54+09:00"
+      },
+      {
+        "id": "9efe916e5945c7f5651f7c281d5cea61efb488967527dc9ccec65012bc2f57d7",
+        "status": "open",
+        "origin": "reopen",
+        "return_to_phase": 5,
+        "target_event": "design-authoring-revise",
+        "target_item": "property-basic-info",
+        "targets": [
+          "specs/property-basic-info/design.md"
+        ],
+        "finding": null,
+        "instruction": "α2から保存した既存本文・質問・判断を引き継ぎ、変更が必要な箇所だけを反映してα3の検査を行う。旧指摘と再検査省略の記録は .aidd/legacy-gates/ と MIGRATION.md を確認する。",
+        "resume_event": "design-authoring-generate",
+        "resume_item": "issue-request-tutorial",
+        "actor": "α2移行コンバータ（再検査依頼の生成。人間の承認ではない）",
+        "at": "2026-09-25T18:54:54+09:00"
+      },
+      {
+        "id": "fab58de377ad07ff963e32dbd8a37d4452b6a9fb52e73acc523bb295f4cb8620:10",
+        "status": "open",
+        "return_to_phase": 3,
+        "target_event": "feature-decomposition-revise",
+        "target_item": "",
+        "targets": [
+          ".aidd/feature-list.md"
+        ],
+        "finding": {
+          "phase": "requirements",
+          "scope": "feature:issue-request-tutorial",
+          "run": 1,
+          "number": 1,
+          "instruction": "人間確定（2026-09-29）: チュートリアル（WTG081）は発行依頼書画面のボタンから開くポップアップで、契約種別→局種別→設置設備…と選択に応じて画面を順に表示し、選んだ値を発行依頼書画面の項目に設定する。設定内容を定義・保存する管理画面ではなく、保存用テーブルは持たない。REQ-035 の表示の振る舞いは本 feature が持ち、issue-request はボタンと値の受け取りを持つ。feature-list の目的・算出根拠を直してから requirements を作り直す"
+        },
+        "resume_event": "requirements-authoring-revise",
+        "resume_item": "issue-request-tutorial",
+        "actor": "Junichi Noumi",
+        "at": "2026-09-29T10:48:25+09:00"
+      },
+      {
+        "id": "05a144d008f63082dfb60e1b30635dbf3cf7a4a0f903e226fa0a4a3a9963c381:11",
+        "status": "open",
+        "return_to_phase": 3,
+        "target_event": "feature-decomposition-revise",
+        "target_item": "",
+        "targets": [
+          ".aidd/feature-list.md"
+        ],
+        "finding": {
+          "phase": "requirements",
+          "scope": "feature:issue-request-tutorial",
+          "run": 1,
+          "number": 1,
+          "instruction": "人間確定（2026-09-29）: チュートリアル（WTG081）は発行依頼書画面のボタンから開くポップアップで、契約種別→局種別→設置設備…と選択に応じて画面を順に表示し、選んだ値を発行依頼書画面の項目に設定する。設定内容を定義・保存する管理画面ではなく、保存用テーブルは持たない。REQ-035 の表示の振る舞いは本 feature が持ち、issue-request はボタンと値の受け取りを持つ。feature-list の目的・算出根拠を直してから requirements を作り直す"
+        },
+        "resume_event": "requirements-authoring-revise",
+        "resume_item": "issue-request-tutorial",
+        "actor": "Junichi Noumi",
+        "at": "2026-09-29T10:49:24+09:00"
+      },
+      {
+        "id": "614cf7e6dced1fe5e64a31a06d941393ce87c38782b1c5039f15210774a20e60:12",
+        "status": "open",
+        "return_to_phase": 3,
+        "target_event": "feature-decomposition-revise",
+        "target_item": "",
+        "targets": [
+          ".aidd/feature-list.md"
+        ],
+        "finding": {
+          "phase": "requirements",
+          "scope": "feature:issue-request-tutorial",
+          "run": 1,
+          "number": 1,
+          "instruction": "人間確定（2026-09-29）: チュートリアル（WTG081）は発行依頼書画面のボタンから開くポップアップで、契約種別→局種別→設置設備…と選択に応じて画面を順に表示し、選んだ値を発行依頼書画面の項目に設定する。設定内容を定義・保存する管理画面ではなく、保存用テーブルは持たない。REQ-035 の表示の振る舞いは本 feature が持ち、issue-request はボタンと値の受け取りを持つ。feature-list の目的・算出根拠を直してから requirements を作り直す"
+        },
+        "resume_event": "requirements-authoring-revise",
+        "resume_item": "issue-request-tutorial",
+        "actor": "Junichi Noumi",
+        "at": "2026-09-29T10:50:00+09:00"
+      }
+    ],
+    "next_action": "差戻し先の工程（blockers の target_event / target_item）を実行し、再承認後に upstream-approved を記録してから元の工程へ戻ってください。",
+    "repair": {
+      "event": "feature-decomposition-revise",
+      "item": "",
+      "call": "requirements-init"
+    },
+    "operation_id": "4c414291-5e92-4f61-bb24-d22ae51bdab9",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

@@ -1,7 +1,7 @@
 ---
 feature: issue-request-tutorial
-status: review
-updated_at: 2026-09-29T10:41:35+09:00
+status: draft
+updated_at: 2026-09-30T16:17:31+09:00
 ---
 
 # 要件定義書

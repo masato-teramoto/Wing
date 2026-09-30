@@ -1,0 +1,24 @@
+{
+  "operation_id": "14d0495d-595b-45c6-80b4-9cfc3e597b0c",
+  "action": "decision",
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "feature-decomposition-revise",
+    "event": "feature-decomposition-revise",
+    "item": "",
+    "dispatch_id": "6bb91baa70f84361b82f1f051290d86b",
+    "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::end.review",
+    "scope": "phase",
+    "run": 3,
+    "snapshot": "1b3247cd95a9352c15053629c357196af162acc09ad8e9d49dc03659236ff8b4",
+    "record_hash": "3e590d5aea31cb4f32f0651ad1b2cf5bc2eb7a0856ee437c0ba0f4b46ffe756f"
+  },
+  "data": {
+    "scope": "phase",
+    "run": 3,
+    "number": 6,
+    "decision": "修正",
+    "reason": "目的と判定結果の末尾に出典として「人間判断 2026-09-29（tutorial requirements 1回目 #1）、2026-09-30（FL-TUT-Q1）」を付けてください。あわせて判定結果の下に注記を 1 行足してください。「REQ-026・REQ-036 の『チュートリアル設定画面』はこのポップアップを指す。『設定』は WTG080 の欄へ値を設定する意味で、設定データを管理する画面ではない」"
+  }
+}
