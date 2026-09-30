@@ -1,0 +1,25 @@
+{
+  "event": "requirements-authoring-revise",
+  "scope": "feature:issue-request-tutorial",
+  "run": 1,
+  "snapshot": "9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983",
+  "record_bytes": 32054,
+  "record_hash": "e516e28becfafb6d83e3f168c2c47ca2ddce3187db9c7f8bf84d2221de090e27",
+  "targets": [
+    "specs/issue-request-tutorial/requirements.md"
+  ],
+  "hashes": {
+    "specs/issue-request-tutorial/requirements.md": "1702b231e0ac00d9c213d5501018eeaf449e1df144752c96e55966e25984b25a"
+  },
+  "inputs": {
+    ".aidd/requirement-list.md": "b7a11ad12beeca741b65407bb5817ab431d34a4b99abd5691d904cf4291b276f",
+    ".aidd/feature-list.md": "4d59b0c69eb0b8f2a9ccd109e05eb9f3307dbc1264b8ed9f85fb2dd23d005ec2",
+    "steering/product.md": "aa2752b530b1dbc5c9a3d23950493344212fee6371050f5c4f8e41c54f27f06d",
+    "steering/tech.md": "12402a14b957c06e971ab3a0220ec3a9a6dda4915e6cfc0cd01fb2754c6f154a",
+    "steering/architecture.md": "af2d3e5ecc025f8b63db5dc6d3b86468cd5ba5ea6d1cfb8fccde0246df60be98",
+    "steering/security.md": "9eb93acaaf855adcf71594edd05656f6c81f41ef2e4791086cb046d9c2b7fddb",
+    "steering/non-functional.md": "a13bfb3135eb11dc7ba20f5e47c844aa452e249f324d131fcf692a5ea3da3052",
+    "steering/database.md": "ea037fa97af45061634b8fed7bbc6a6c493748febf300390de86b4e9ec334323",
+    "steering/api-standards.md": "2f809c682bc9fd960b3958c7758b7c135dce6edc2332c3222135057cb6b51cd3"
+  }
+}

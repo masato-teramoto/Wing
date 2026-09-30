@@ -1,0 +1,117 @@
+{
+  "status": "ok",
+  "action": "submit",
+  "result": {
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.requirements-check",
+    "flow": "requirements-authoring-revise",
+    "event": "requirements-authoring-revise",
+    "item": "issue-request-tutorial",
+    "gate": "requirements-check",
+    "hookPoint": "end",
+    "name": "requirements-check",
+    "type": "skill",
+    "target": "requirements-check",
+    "isAgent": true,
+    "requiresHuman": false,
+    "calls": [
+      "format-conformance",
+      "traceability",
+      "verifiable-criteria-check",
+      "ac-coverage-completeness",
+      "traceability",
+      "evidence-guard",
+      "ssot-consistency",
+      "steering-conformance",
+      "ssot-consistency",
+      "gate-report"
+    ],
+    "status": "emit",
+    "call": "requirements-authoring-revise",
+    "dispatch": {
+      "call": "requirements-authoring-revise",
+      "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.requirements-check",
+      "event": "requirements-authoring-revise",
+      "item": "issue-request-tutorial",
+      "status": "emit",
+      "config_sha256": "bd35b4971bac9839d212c0b1bd5e5441a000c15bc4e8acdacc1d80a0b0c0cd37",
+      "detail": null,
+      "id": "8f04ad52a9184631aa628fd8e175b797"
+    },
+    "label": "requirements-authoring-revise / requirements-authoring-revise [issue-request-tutorial]",
+    "allowed_actions": [
+      "submit"
+    ],
+    "context": {
+      "event": "requirements-authoring-revise",
+      "item": "issue-request-tutorial",
+      "scope": "feature:issue-request-tutorial",
+      "targets": [
+        "specs/issue-request-tutorial/requirements.md"
+      ],
+      "upstream": [
+        ".aidd/requirement-list.md",
+        ".aidd/feature-list.md",
+        "steering/product.md",
+        "steering/tech.md",
+        "steering/architecture.md",
+        "steering/security.md",
+        "steering/non-functional.md",
+        "steering/database.md",
+        "steering/api-standards.md"
+      ],
+      "gate_record_path": "C:\\project\\Wing\\.aidd\\gates\\phase-4-requirements.md",
+      "authoring_inputs": [
+        ".aidd/requirement-list.md",
+        ".aidd/feature-list.md",
+        "steering/product.md",
+        "steering/tech.md",
+        "steering/architecture.md",
+        "steering/security.md",
+        "steering/non-functional.md",
+        "steering/database.md",
+        "steering/api-standards.md"
+      ],
+      "snapshot_path": "C:\\project\\Wing\\.aidd\\.engine\\da5db8315aefc2bdc57bf6b23c7a0c00e7456c796b78c49b6d61e0918e2448b7.snapshot.json",
+      "snapshot": {
+        "schema": 2,
+        "phase": "requirements",
+        "event": "requirements-authoring-revise",
+        "scope": "feature:issue-request-tutorial",
+        "at": "2026-09-29T10:37:58+09:00",
+        "artifacts": {
+          "specs/issue-request-tutorial/requirements.md": {
+            "status": "draft",
+            "sha256": "1702b231e0ac00d9c213d5501018eeaf449e1df144752c96e55966e25984b25a"
+          }
+        },
+        "record": {
+          "bytes": 25276,
+          "sha256": "d3d6f23c81651c5a63d5c0b8e50afdda3446384fe6cf80cb123c90c3ef5ee821",
+          "blocks": 36
+        },
+        "run": 1
+      },
+      "findings_path": "C:\\project\\Wing\\.aidd\\.engine\\da5db8315aefc2bdc57bf6b23c7a0c00e7456c796b78c49b6d61e0918e2448b7.findings.json",
+      "findings": [],
+      "questions": null,
+      "repair": {
+        "id": "b713716e123e312bb2323de622748418eb0e341e67660bc03ee898184d1f3a5d",
+        "event": "requirements-authoring-revise",
+        "item": "issue-request-tutorial",
+        "targets": [
+          "specs/issue-request-tutorial/requirements.md"
+        ],
+        "findings": [],
+        "instruction": "α2から保存した既存本文・質問・判断を引き継ぎ、変更が必要な箇所だけを反映してα3の検査を行う。旧指摘と再検査省略の記録は .aidd/legacy-gates/ と MIGRATION.md を確認する。",
+        "origin": "reopen",
+        "actor": "α2移行コンバータ（再検査依頼の生成。人間の承認ではない）",
+        "at": "2026-09-25T18:54:54+09:00"
+      },
+      "inspection_path": "C:\\project\\Wing\\.aidd\\.engine\\da5db8315aefc2bdc57bf6b23c7a0c00e7456c796b78c49b6d61e0918e2448b7.inspection.md"
+    },
+    "next_action": "作業中（AI が 検査 を実行します）。人の操作は不要です。",
+    "operation_id": "095dc7b3-c21b-41eb-b624-f9df94b5aba8",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

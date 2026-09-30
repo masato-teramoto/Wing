@@ -1,0 +1,33 @@
+{
+  "operation_id": "4c414291-5e92-4f61-bb24-d22ae51bdab9",
+  "action": "repair",
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "requirements-authoring-revise",
+    "event": "requirements-authoring-revise",
+    "item": "issue-request-tutorial",
+    "dispatch_id": "a0f7bc27ebd94b968c90520a7f9b4afc",
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+    "scope": "feature:issue-request-tutorial",
+    "run": 1,
+    "snapshot": "9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983",
+    "record_hash": "24eadfcd969712e6050c31c1fe6ed9637f69781706816879bb6ae5cf76ee737a"
+  },
+  "data": {
+    "event": "feature-decomposition-generate",
+    "item": "",
+    "targets": [
+      ".aidd/feature-list.md"
+    ],
+    "findings": [
+      {
+        "phase": "requirements",
+        "scope": "feature:issue-request-tutorial",
+        "run": 1,
+        "number": 1,
+        "instruction": "人間確定（2026-09-29）: チュートリアル（WTG081）は発行依頼書画面のボタンから開くポップアップで、契約種別→局種別→設置設備…と選択に応じて画面を順に表示し、選んだ値を発行依頼書画面の項目に設定する。設定内容を定義・保存する管理画面ではなく、保存用テーブルは持たない。REQ-035 の表示の振る舞いは本 feature が持ち、issue-request はボタンと値の受け取りを持つ。feature-list の目的・算出根拠を直してから requirements を作り直す"
+      }
+    ]
+  }
+}

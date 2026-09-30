@@ -1,6 +1,6 @@
 ---
-status: approved
-updated_at: 2026-09-28T15:39:50+09:00
+status: draft
+updated_at: 2026-09-29T10:48:25+09:00
 ---
 
 # フィーチャー一覧

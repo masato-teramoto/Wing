@@ -1,0 +1,7 @@
+{
+  "phase": "requirements",
+  "event": "requirements-authoring-revise",
+  "scope": "feature:issue-request-tutorial",
+  "run": 1,
+  "findings": []
+}

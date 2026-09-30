@@ -1,0 +1,24 @@
+{
+  "operation_id": "8dc02b5e-3c98-43eb-be5e-cda0d9fb7a50",
+  "action": "decision",
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "requirements-authoring-revise",
+    "event": "requirements-authoring-revise",
+    "item": "issue-request-tutorial",
+    "dispatch_id": "a0f7bc27ebd94b968c90520a7f9b4afc",
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+    "scope": "feature:issue-request-tutorial",
+    "run": 1,
+    "snapshot": "9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983",
+    "record_hash": "ad168604a6b4eb425ea6440d7bfb774cd462da3cd41bc3ece0ce076c33208918"
+  },
+  "data": {
+    "scope": "feature:issue-request-tutorial",
+    "run": 1,
+    "number": 2,
+    "decision": "未対応",
+    "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する"
+  }
+}

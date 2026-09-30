@@ -1990,11 +1990,318 @@
       "flow": "requirements-authoring-revise",
       "event": "requirements-authoring-revise",
       "item": "property-basic-info"
+    },
+    {
+      "at": "2026-09-29T10:34:30+09:00",
+      "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::start.feature-sync",
+      "flow": "requirements-authoring-revise",
+      "event": "requirements-authoring-revise",
+      "item": "issue-request-tutorial",
+      "gate": "feature-sync",
+      "hookPoint": "start",
+      "type": "script",
+      "result": "ok",
+      "note": "feature snapshot synchronized: 6"
+    },
+    {
+      "at": "2026-09-29T10:34:30+09:00",
+      "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::start.upstream-check",
+      "flow": "requirements-authoring-revise",
+      "event": "requirements-authoring-revise",
+      "item": "issue-request-tutorial",
+      "gate": "upstream-check",
+      "hookPoint": "start",
+      "type": "script",
+      "result": "ok",
+      "note": "upstream and workflow prerequisites are satisfied"
+    },
+    {
+      "at": "2026-09-29T10:34:30+09:00",
+      "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::start.blockers-check",
+      "flow": "requirements-authoring-revise",
+      "event": "requirements-authoring-revise",
+      "item": "issue-request-tutorial",
+      "gate": "blockers-check",
+      "hookPoint": "start",
+      "type": "script",
+      "result": "ok",
+      "note": "no unresolved rollback blocks this event"
+    },
+    {
+      "at": "2026-09-29T10:34:30+09:00",
+      "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::start.repair-request-check",
+      "flow": "requirements-authoring-revise",
+      "event": "requirements-authoring-revise",
+      "item": "issue-request-tutorial",
+      "gate": "repair-request-check",
+      "hookPoint": "start",
+      "type": "script",
+      "result": "ok",
+      "note": "explicit repair request is available"
+    },
+    {
+      "at": "2026-09-29T10:37:57+09:00",
+      "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::run",
+      "flow": "requirements-authoring-revise",
+      "event": "requirements-authoring-revise",
+      "item": "issue-request-tutorial",
+      "gate": null,
+      "hookPoint": null,
+      "type": "skill",
+      "result": "ok"
+    },
+    {
+      "at": "2026-09-29T10:37:58+09:00",
+      "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.authoring-result-check",
+      "flow": "requirements-authoring-revise",
+      "event": "requirements-authoring-revise",
+      "item": "issue-request-tutorial",
+      "gate": "authoring-result-check",
+      "hookPoint": "end",
+      "type": "script",
+      "result": "ok",
+      "note": "authoring result is complete"
+    },
+    {
+      "at": "2026-09-29T10:37:58+09:00",
+      "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.snapshot",
+      "flow": "requirements-authoring-revise",
+      "event": "requirements-authoring-revise",
+      "item": "issue-request-tutorial",
+      "gate": "snapshot",
+      "hookPoint": "end",
+      "type": "script",
+      "result": "ok",
+      "note": "AIDD-LOG: 回数=1\ninspection snapshot captured"
+    },
+    {
+      "at": "2026-09-29T10:41:34+09:00",
+      "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.requirements-check",
+      "flow": "requirements-authoring-revise",
+      "event": "requirements-authoring-revise",
+      "item": "issue-request-tutorial",
+      "gate": "requirements-check",
+      "hookPoint": "end",
+      "type": "skill",
+      "result": "ok"
+    },
+    {
+      "at": "2026-09-29T10:41:35+09:00",
+      "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.scope-check",
+      "flow": "requirements-authoring-revise",
+      "event": "requirements-authoring-revise",
+      "item": "issue-request-tutorial",
+      "gate": "scope-check",
+      "hookPoint": "end",
+      "type": "script",
+      "result": "ok",
+      "note": "AIDD-LOG: 回数=1 指摘=9\ngate write scope is intact"
+    },
+    {
+      "at": "2026-09-29T10:41:35+09:00",
+      "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+      "flow": "requirements-authoring-revise",
+      "event": "requirements-authoring-revise",
+      "item": "issue-request-tutorial",
+      "gate": "review",
+      "hookPoint": "end",
+      "type": "script",
+      "result": "wait",
+      "note": "AIDD-REVIEW-CONTEXT: {\"unit\": \"requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review\", \"snapshot\": \"9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983\", \"run\": 1, \"inspection_hash\": \"e516e28becfafb6d83e3f168c2c47ca2ddce3187db9c7f8bf84d2221de090e27\"}\n**Phase 4（requirements 作成）の品質ゲートを実行しました。** 指摘ごとに判断を選んでください。\n\n**対象**: `specs/issue-request-tutorial/requirements.md`（スコープ: 成果物単位（issue-request-tutorial） / 1 回目）\n**実行した層**: ① / ②\n\n**指摘**（ゲート記録 `.aidd/gates/phase-4-requirements.md` の当該実行分）\n\n| # | 層 | 対象箇所 | 指摘内容 |\n|---|---|---|---|\n| 1 | ② | specs/issue-request-tutorial/requirements.md 要件 3（受け入れ基準 3.1〜3.5）・`## スコープの境界（Boundary Context）` Out of Scope（発行依頼書登録変更画面への組み込み）・Adjacent（`issue-request`） ／ .aidd/feature-list.md `issue-request-tutorial` 行・`issue-request` 行の `対応要求ID` ／ .aidd/requirement-list.md REQ-035 | ID対応あり・内容未充足（REQ-035）: REQ-035「チュートリアルでは、選択肢により順番に入力欄と例が表示される」は feature-list で本 feature だけに割り当てられており、`issue-request` の `対応要求ID` には含まれていない。一方、requirements.md は選択肢が選ばれたときに入力欄と例を実際に提示する振る舞い（画面側の実装）を `issue-request` に渡しており、本書の受け入れ基準は「定義できる」「参照できる形で保存する」までで、順番に表示されることそのものを判定する基準が無い。REQ-035 の表示の振る舞いがどちらの feature の受け入れ基準でも検証されない状態になっている |\n| 2 | ② | 受け入れ基準 1.1 | 1.1 は画面ID・PGID の採番形式（`GWTG` + 3 桁 / `PWTGO` + 3 桁）という判定できる部分に加えて、「採番の具体値と、画面を何本のプログラムに分割するかは基本設計で確定する」という判定対象でない説明文を同じ番号付きの基準の中に含んでいる。また「画面を新規に作成し」は開発で作るものを述べているだけで、外から見て YES / NO を判定できる応答・拒否・状態変化になっていない |\n| 3 | ② | 受け入れ基準 2.2・2.3・3.3・3.4・3.6（前段） | 判定基準が「基本設計で洗い出した内容／確定した構成／確定した内容に従わなければならない」だけで、何を満たせば合格かがこの文書の中に書かれていない（未確定事項 ②・③・④・⑤・⑥ に委ねている）。requirements.md 単体では合否を判定できない |\n| 4 | ② | 受け入れ基準 2.1・3.2・3.5 | 判定の対象が未定義で、観測可能な合否を定められない。2.1 は「26 フォームに相当する設定項目」の中身が未確定（未確定事項 ②）のため、何を設定できれば合格かを判定できない。3.2 は「順番に提示されるという振る舞いを…定義できるようにしなければならない」とするが、順序の持ち方を本基準では確定させないとしており、何が定義できれば満たすのかが書かれていない。3.5 は「チュートリアルから参照できる形で保存しなければならない」の「参照できる形」が定義されておらず、保存結果のどの状態を見れば合格かを第三者が判定できない |\n| 5 | ② | 要件 2（現行の設定用ウインドウ 26 フォーム相当の設定項目） | 設定の登録・変更・削除という入力を受けて状態を変える要件だが、境界値のACが無い。1.5 は入力チェックエラー時の再表示を一般的に定めるだけで、設定項目の件数・桁数などの上限・下限や空の場合の応答が定められていない |\n| 6 | ② | 要件 3（選択肢に応じた入力欄と例の順次表示の定義） | 選択肢・入力欄・例とその対応を定義させる要件だが、異常系・境界値のACが無い。対応する入力欄・例を持たない選択肢の定義、同じ順番の重複や順番の欠番、選択肢・入力欄・例の件数や例の文言の長さの上限を超えた場合の応答が定められていない |\n| 7 | ② | 受け入れ基準 1.2・1.3・1.4 ／ steering/security.md `#### 認証フロー`・`### 認可`・`#### 所有権・エンティティ境界` ／ requirements.md `## 非機能要件` セキュリティ行 | 誤配置: どの機能にも適用される `security.md` の横断方針（未認証時のログイン画面への遷移、機能IDに対する権限が無い場合のエラー表示、検索・更新の `WHERE` への会社コードの付与）を、この feature 固有の要素を加えずに機能要件のACとして書き直している。同じ内容が `## 非機能要件` のセキュリティ行にも書かれている |\n| 8 | ② | `## 概要（Introduction）` 第 3 段落「`issue-request`（優先度 4）…優先度 3 に置かれている」 ／ .aidd/feature-list.md `## フィーチャー一覧` 表・`**本プロジェクトでの算出根拠**` 表 | 根拠なし: feature-list では本 feature（`issue-request-tutorial`）の優先度は 2、`issue-request` の優先度は 3 であり、本文の「`issue-request`（優先度 4）」「優先度 3 に置かれている」という値に対応する記述が根拠のどこにも無い（優先度を置く理由の文は feature-list の算出根拠と同じ内容） |\n| 9 | ② | `## 前提と依存（Dependencies / Assumptions）` 未確定事項（冒頭の文） | 根拠の飛躍: 「次の 8 件は いずれも基本設計で確定する（REQ-010。…人間が確定 / 2026-09-11）」とあるが、REQ-010 が基本設計に委ねているのはプログラムの分割と画面・帳票・バッチの構成だけで、選択肢の種類と入力欄・例の対応（④）、表示順序の決まり方（⑤）、適用範囲（⑥）、変更履歴の要否（⑦）、削除の方式（⑧）まで基本設計に回す根拠にはならない。人間の確定（2026-09-11）は指定された根拠に含まれず、追跡できない |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- #1: 人間による確認（REQ-035 の表示の振る舞いを Phase 3 の `.aidd/feature-list.md` で `issue-request` にも割り当てるのか、本 requirements.md 側で表示の受け入れ基準を持つのかを、検査側では決められない）\n\n**判断の選択肢**（指摘ごとに 1 つ選ぶ）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n\n回答例: `1:A / 2:C 既存システムの制約で変更できない / 3:D 次回レビューまで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。"
+    },
+    {
+      "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::start.upstream-check",
+      "flow": "feature-decomposition-revise",
+      "event": "feature-decomposition-revise",
+      "item": null,
+      "gate": "upstream-check",
+      "hookPoint": "start",
+      "type": "script",
+      "at": "2026-09-29T10:48:25+09:00",
+      "result": "invalidated",
+      "note": "redo requested"
+    },
+    {
+      "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::start.blockers-check",
+      "flow": "feature-decomposition-revise",
+      "event": "feature-decomposition-revise",
+      "item": null,
+      "gate": "blockers-check",
+      "hookPoint": "start",
+      "type": "script",
+      "at": "2026-09-29T10:48:25+09:00",
+      "result": "invalidated",
+      "note": "redo requested"
+    },
+    {
+      "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::start.repair-request-check",
+      "flow": "feature-decomposition-revise",
+      "event": "feature-decomposition-revise",
+      "item": null,
+      "gate": "repair-request-check",
+      "hookPoint": "start",
+      "type": "script",
+      "at": "2026-09-29T10:48:25+09:00",
+      "result": "invalidated",
+      "note": "redo requested"
+    },
+    {
+      "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::run",
+      "flow": "feature-decomposition-revise",
+      "event": "feature-decomposition-revise",
+      "item": null,
+      "gate": null,
+      "hookPoint": null,
+      "type": "skill",
+      "at": "2026-09-29T10:48:25+09:00",
+      "result": "invalidated",
+      "note": "redo requested"
+    },
+    {
+      "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::end.authoring-result-check",
+      "flow": "feature-decomposition-revise",
+      "event": "feature-decomposition-revise",
+      "item": null,
+      "gate": "authoring-result-check",
+      "hookPoint": "end",
+      "type": "script",
+      "at": "2026-09-29T10:48:25+09:00",
+      "result": "invalidated",
+      "note": "redo requested"
+    },
+    {
+      "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::end.snapshot",
+      "flow": "feature-decomposition-revise",
+      "event": "feature-decomposition-revise",
+      "item": null,
+      "gate": "snapshot",
+      "hookPoint": "end",
+      "type": "script",
+      "at": "2026-09-29T10:48:25+09:00",
+      "result": "invalidated",
+      "note": "redo requested"
+    },
+    {
+      "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::end.id-format-check",
+      "flow": "feature-decomposition-revise",
+      "event": "feature-decomposition-revise",
+      "item": null,
+      "gate": "id-format-check",
+      "hookPoint": "end",
+      "type": "script",
+      "at": "2026-09-29T10:48:25+09:00",
+      "result": "invalidated",
+      "note": "redo requested"
+    },
+    {
+      "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::end.dependency-cycle-check",
+      "flow": "feature-decomposition-revise",
+      "event": "feature-decomposition-revise",
+      "item": null,
+      "gate": "dependency-cycle-check",
+      "hookPoint": "end",
+      "type": "script",
+      "at": "2026-09-29T10:48:25+09:00",
+      "result": "invalidated",
+      "note": "redo requested"
+    },
+    {
+      "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::end.sequence-consistency-check",
+      "flow": "feature-decomposition-revise",
+      "event": "feature-decomposition-revise",
+      "item": null,
+      "gate": "sequence-consistency-check",
+      "hookPoint": "end",
+      "type": "script",
+      "at": "2026-09-29T10:48:25+09:00",
+      "result": "invalidated",
+      "note": "redo requested"
+    },
+    {
+      "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::end.feature-check",
+      "flow": "feature-decomposition-revise",
+      "event": "feature-decomposition-revise",
+      "item": null,
+      "gate": "feature-check",
+      "hookPoint": "end",
+      "type": "skill",
+      "at": "2026-09-29T10:48:25+09:00",
+      "result": "invalidated",
+      "note": "redo requested"
+    },
+    {
+      "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::end.scope-check",
+      "flow": "feature-decomposition-revise",
+      "event": "feature-decomposition-revise",
+      "item": null,
+      "gate": "scope-check",
+      "hookPoint": "end",
+      "type": "script",
+      "at": "2026-09-29T10:48:25+09:00",
+      "result": "invalidated",
+      "note": "redo requested"
+    },
+    {
+      "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::end.review",
+      "flow": "feature-decomposition-revise",
+      "event": "feature-decomposition-revise",
+      "item": null,
+      "gate": "review",
+      "hookPoint": "end",
+      "type": "script",
+      "at": "2026-09-29T10:48:25+09:00",
+      "result": "invalidated",
+      "note": "redo requested"
+    },
+    {
+      "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::end.decisions-check",
+      "flow": "feature-decomposition-revise",
+      "event": "feature-decomposition-revise",
+      "item": null,
+      "gate": "decisions-check",
+      "hookPoint": "end",
+      "type": "script",
+      "at": "2026-09-29T10:48:25+09:00",
+      "result": "invalidated",
+      "note": "redo requested"
+    },
+    {
+      "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::end.approval-check",
+      "flow": "feature-decomposition-revise",
+      "event": "feature-decomposition-revise",
+      "item": null,
+      "gate": "approval-check",
+      "hookPoint": "end",
+      "type": "script",
+      "at": "2026-09-29T10:48:25+09:00",
+      "result": "invalidated",
+      "note": "redo requested"
+    },
+    {
+      "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::end.completion-check",
+      "flow": "feature-decomposition-revise",
+      "event": "feature-decomposition-revise",
+      "item": null,
+      "gate": "completion-check",
+      "hookPoint": "end",
+      "type": "script",
+      "at": "2026-09-29T10:48:25+09:00",
+      "result": "invalidated",
+      "note": "redo requested"
+    },
+    {
+      "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::event",
+      "flow": "feature-decomposition-revise",
+      "event": "feature-decomposition-revise",
+      "item": null,
+      "at": "2026-09-29T10:48:25+09:00",
+      "result": "invalidated",
+      "note": "redo requested"
     }
   ],
   "current": {
     "call": "requirements-authoring-revise",
-    "return_to_call": "requirements-cross-gate"
+    "return_to_call": "feature-decomposition-revise"
   },
   "release": "alpha3",
   "features": [
@@ -2631,6 +2938,69 @@
       "resume_item": "issue-request-tutorial",
       "actor": "α2移行コンバータ（再検査依頼の生成。人間の承認ではない）",
       "at": "2026-09-25T18:54:54+09:00"
+    },
+    {
+      "id": "fab58de377ad07ff963e32dbd8a37d4452b6a9fb52e73acc523bb295f4cb8620:10",
+      "status": "open",
+      "return_to_phase": 3,
+      "target_event": "feature-decomposition-revise",
+      "target_item": "",
+      "targets": [
+        ".aidd/feature-list.md"
+      ],
+      "finding": {
+        "phase": "requirements",
+        "scope": "feature:issue-request-tutorial",
+        "run": 1,
+        "number": 1,
+        "instruction": "人間確定（2026-09-29）: チュートリアル（WTG081）は発行依頼書画面のボタンから開くポップアップで、契約種別→局種別→設置設備…と選択に応じて画面を順に表示し、選んだ値を発行依頼書画面の項目に設定する。設定内容を定義・保存する管理画面ではなく、保存用テーブルは持たない。REQ-035 の表示の振る舞いは本 feature が持ち、issue-request はボタンと値の受け取りを持つ。feature-list の目的・算出根拠を直してから requirements を作り直す"
+      },
+      "resume_event": "requirements-authoring-revise",
+      "resume_item": "issue-request-tutorial",
+      "actor": "Junichi Noumi",
+      "at": "2026-09-29T10:48:25+09:00"
+    },
+    {
+      "id": "05a144d008f63082dfb60e1b30635dbf3cf7a4a0f903e226fa0a4a3a9963c381:11",
+      "status": "open",
+      "return_to_phase": 3,
+      "target_event": "feature-decomposition-revise",
+      "target_item": "",
+      "targets": [
+        ".aidd/feature-list.md"
+      ],
+      "finding": {
+        "phase": "requirements",
+        "scope": "feature:issue-request-tutorial",
+        "run": 1,
+        "number": 1,
+        "instruction": "人間確定（2026-09-29）: チュートリアル（WTG081）は発行依頼書画面のボタンから開くポップアップで、契約種別→局種別→設置設備…と選択に応じて画面を順に表示し、選んだ値を発行依頼書画面の項目に設定する。設定内容を定義・保存する管理画面ではなく、保存用テーブルは持たない。REQ-035 の表示の振る舞いは本 feature が持ち、issue-request はボタンと値の受け取りを持つ。feature-list の目的・算出根拠を直してから requirements を作り直す"
+      },
+      "resume_event": "requirements-authoring-revise",
+      "resume_item": "issue-request-tutorial",
+      "actor": "Junichi Noumi",
+      "at": "2026-09-29T10:49:24+09:00"
+    },
+    {
+      "id": "614cf7e6dced1fe5e64a31a06d941393ce87c38782b1c5039f15210774a20e60:12",
+      "status": "open",
+      "return_to_phase": 3,
+      "target_event": "feature-decomposition-revise",
+      "target_item": "",
+      "targets": [
+        ".aidd/feature-list.md"
+      ],
+      "finding": {
+        "phase": "requirements",
+        "scope": "feature:issue-request-tutorial",
+        "run": 1,
+        "number": 1,
+        "instruction": "人間確定（2026-09-29）: チュートリアル（WTG081）は発行依頼書画面のボタンから開くポップアップで、契約種別→局種別→設置設備…と選択に応じて画面を順に表示し、選んだ値を発行依頼書画面の項目に設定する。設定内容を定義・保存する管理画面ではなく、保存用テーブルは持たない。REQ-035 の表示の振る舞いは本 feature が持ち、issue-request はボタンと値の受け取りを持つ。feature-list の目的・算出根拠を直してから requirements を作り直す"
+      },
+      "resume_event": "requirements-authoring-revise",
+      "resume_item": "issue-request-tutorial",
+      "actor": "Junichi Noumi",
+      "at": "2026-09-29T10:50:00+09:00"
     }
   ],
   "workflow": {
@@ -2704,33 +3074,18 @@
         ],
         "findings": [
           {
-            "phase": "feature",
-            "scope": "phase",
+            "phase": "requirements",
+            "scope": "feature:issue-request-tutorial",
             "run": 1,
             "number": 1,
-            "instruction": "### 項目の定義 の表の「feature 名」「依存」「優先度」の 3 行を、テンプレートの文言に置き換える（表の値は変えない）。 修正後、①②で再検査する。"
-          },
-          {
-            "phase": "feature",
-            "scope": "phase",
-            "run": 1,
-            "number": 2,
-            "instruction": "8 行目の注記を、テンプレートの文言「Phase 4 は優先度順に feature を選び、Phase 5 は依存先を推論せず本ファイルの `依存` 列から引きます。」に置き換える。 修正後、①②で再検査する。"
-          },
-          {
-            "phase": "feature",
-            "scope": "phase",
-            "run": 1,
-            "number": 3,
-            "instruction": "## 優先度の決定方針 の項目 3 を、テンプレートの文言「Phase 4 以降の変更は Phase 3 の修正・再検査・再承認を経る。承認後に JSON を同期し、下流の計画・検査をやり直す。**依存の逆転は禁止**」に置き換える。 修正後、①②で再検査する。"
+            "instruction": "人間確定（2026-09-29）: チュートリアル（WTG081）は発行依頼書画面のボタンから開くポップアップで、契約種別→局種別→設置設備…と選択に応じて画面を順に表示し、選んだ値を発行依頼書画面の項目に設定する。設定内容を定義・保存する管理画面ではなく、保存用テーブルは持たない。REQ-035 の表示の振る舞いは本 feature が持ち、issue-request はボタンと値の受け取りを持つ。feature-list の目的・算出根拠を直してから requirements を作り直す"
           }
         ],
         "instruction": "",
         "origin": "finding",
         "actor": "Junichi Noumi",
-        "at": "2026-09-28T15:16:52+09:00",
-        "id": "d74c9a68ee22f7862d1f1d8ecb9a8f7938a1b5850fd185dc4874de5a3f3be366",
-        "consumed": "2026-09-28T15:39:51+09:00"
+        "at": "2026-09-29T10:50:00+09:00",
+        "id": "614cf7e6dced1fe5e64a31a06d941393ce87c38782b1c5039f15210774a20e60"
       },
       "requirements-authoring-revise[property-basic-info]": {
         "event": "requirements-authoring-revise",
@@ -3157,6 +3512,17 @@
         "steering/api-standards.md": "2f809c682bc9fd960b3958c7758b7c135dce6edc2332c3222135057cb6b51cd3"
       },
       "requirements-authoring-revise[property-basic-info]": {
+        ".aidd/requirement-list.md": "b7a11ad12beeca741b65407bb5817ab431d34a4b99abd5691d904cf4291b276f",
+        ".aidd/feature-list.md": "4d59b0c69eb0b8f2a9ccd109e05eb9f3307dbc1264b8ed9f85fb2dd23d005ec2",
+        "steering/product.md": "aa2752b530b1dbc5c9a3d23950493344212fee6371050f5c4f8e41c54f27f06d",
+        "steering/tech.md": "12402a14b957c06e971ab3a0220ec3a9a6dda4915e6cfc0cd01fb2754c6f154a",
+        "steering/architecture.md": "af2d3e5ecc025f8b63db5dc6d3b86468cd5ba5ea6d1cfb8fccde0246df60be98",
+        "steering/security.md": "9eb93acaaf855adcf71594edd05656f6c81f41ef2e4791086cb046d9c2b7fddb",
+        "steering/non-functional.md": "a13bfb3135eb11dc7ba20f5e47c844aa452e249f324d131fcf692a5ea3da3052",
+        "steering/database.md": "ea037fa97af45061634b8fed7bbc6a6c493748febf300390de86b4e9ec334323",
+        "steering/api-standards.md": "2f809c682bc9fd960b3958c7758b7c135dce6edc2332c3222135057cb6b51cd3"
+      },
+      "requirements-authoring-revise[issue-request-tutorial]": {
         ".aidd/requirement-list.md": "b7a11ad12beeca741b65407bb5817ab431d34a4b99abd5691d904cf4291b276f",
         ".aidd/feature-list.md": "4d59b0c69eb0b8f2a9ccd109e05eb9f3307dbc1264b8ed9f85fb2dd23d005ec2",
         "steering/product.md": "aa2752b530b1dbc5c9a3d23950493344212fee6371050f5c4f8e41c54f27f06d",
@@ -31376,6 +31742,2046 @@
           "operation_id": "56ba2d83-f925-4ff1-91f4-b8d105382f43",
           "operation_applied": true
         }
+      },
+      "095dc7b3-c21b-41eb-b624-f9df94b5aba8": {
+        "status": "finished",
+        "request": {
+          "kind": "submit",
+          "payload": {
+            "operation_id": "095dc7b3-c21b-41eb-b624-f9df94b5aba8",
+            "dispatch": {
+              "call": "requirements-authoring-revise",
+              "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::run",
+              "event": "requirements-authoring-revise",
+              "item": "issue-request-tutorial",
+              "status": "emit",
+              "config_sha256": "bd35b4971bac9839d212c0b1bd5e5441a000c15bc4e8acdacc1d80a0b0c0cd37",
+              "detail": null,
+              "id": "ebf03377932146aaabcae1e3e83e2d51"
+            },
+            "result": {
+              "status": "completed",
+              "targets": [
+                "specs/issue-request-tutorial/requirements.md"
+              ],
+              "questions": [],
+              "open_placeholders": 0,
+              "changed_findings": [],
+              "return_candidates": [],
+              "summary": "α2 の本文・判断を引き継ぎ、人間の指示により中身を変えずに書式だけをテンプレート（Templates/specs/_template/requirements.md）に合わせた（property-basic-info と同じ方式）。見出しの名前と並び（対象外・前提と依存を要件の前へ）・案内文・プレースホルダー名をテンプレートどおりにし、受け入れ基準を「要件番号.連番」の ID と日本語の EARS 表記（しなければならない／してはならない）に改めた（要件 3・受け入れ基準 18 件は前後で一致）。2 文目以降は義務・禁止を述べる文だけを義務形にし（2.7 の 2・3 文目、3.6 の 2 文目）、説明の文は残した。業務フローの節は人間判断（2026-09-14）の「不要」の注記と理由を残し、スロット名だけ今のテンプレートの名前にした（人間の指示）。本文中の旧番号の参照を新番号に直した。旧番号との対応は .aidd/ac-id-mapping.md（フロー外の記録）に残した。"
+            }
+          },
+          "actor": "",
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial",
+          "root": "C:\\project\\Wing",
+          "state": "C:\\project\\Wing\\.aidd\\phase-progress.json"
+        },
+        "dispatch": {
+          "call": "requirements-authoring-revise",
+          "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::run",
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial",
+          "status": "emit",
+          "config_sha256": "bd35b4971bac9839d212c0b1bd5e5441a000c15bc4e8acdacc1d80a0b0c0cd37",
+          "detail": null,
+          "id": "ebf03377932146aaabcae1e3e83e2d51"
+        },
+        "result": "ok",
+        "output": {
+          "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.requirements-check",
+          "flow": "requirements-authoring-revise",
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial",
+          "gate": "requirements-check",
+          "hookPoint": "end",
+          "name": "requirements-check",
+          "type": "skill",
+          "target": "requirements-check",
+          "isAgent": true,
+          "requiresHuman": false,
+          "calls": [
+            "format-conformance",
+            "traceability",
+            "verifiable-criteria-check",
+            "ac-coverage-completeness",
+            "traceability",
+            "evidence-guard",
+            "ssot-consistency",
+            "steering-conformance",
+            "ssot-consistency",
+            "gate-report"
+          ],
+          "status": "emit",
+          "call": "requirements-authoring-revise",
+          "dispatch": {
+            "call": "requirements-authoring-revise",
+            "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.requirements-check",
+            "event": "requirements-authoring-revise",
+            "item": "issue-request-tutorial",
+            "status": "emit",
+            "config_sha256": "bd35b4971bac9839d212c0b1bd5e5441a000c15bc4e8acdacc1d80a0b0c0cd37",
+            "detail": null,
+            "id": "8f04ad52a9184631aa628fd8e175b797"
+          },
+          "label": "requirements-authoring-revise / requirements-authoring-revise [issue-request-tutorial]",
+          "allowed_actions": [
+            "submit"
+          ],
+          "context": {
+            "event": "requirements-authoring-revise",
+            "item": "issue-request-tutorial",
+            "scope": "feature:issue-request-tutorial",
+            "targets": [
+              "specs/issue-request-tutorial/requirements.md"
+            ],
+            "upstream": [
+              ".aidd/requirement-list.md",
+              ".aidd/feature-list.md",
+              "steering/product.md",
+              "steering/tech.md",
+              "steering/architecture.md",
+              "steering/security.md",
+              "steering/non-functional.md",
+              "steering/database.md",
+              "steering/api-standards.md"
+            ],
+            "gate_record_path": "C:\\project\\Wing\\.aidd\\gates\\phase-4-requirements.md",
+            "authoring_inputs": [
+              ".aidd/requirement-list.md",
+              ".aidd/feature-list.md",
+              "steering/product.md",
+              "steering/tech.md",
+              "steering/architecture.md",
+              "steering/security.md",
+              "steering/non-functional.md",
+              "steering/database.md",
+              "steering/api-standards.md"
+            ],
+            "snapshot_path": "C:\\project\\Wing\\.aidd\\.engine\\da5db8315aefc2bdc57bf6b23c7a0c00e7456c796b78c49b6d61e0918e2448b7.snapshot.json",
+            "snapshot": {
+              "schema": 2,
+              "phase": "requirements",
+              "event": "requirements-authoring-revise",
+              "scope": "feature:issue-request-tutorial",
+              "at": "2026-09-29T10:37:58+09:00",
+              "artifacts": {
+                "specs/issue-request-tutorial/requirements.md": {
+                  "status": "draft",
+                  "sha256": "1702b231e0ac00d9c213d5501018eeaf449e1df144752c96e55966e25984b25a"
+                }
+              },
+              "record": {
+                "bytes": 25276,
+                "sha256": "d3d6f23c81651c5a63d5c0b8e50afdda3446384fe6cf80cb123c90c3ef5ee821",
+                "blocks": 36
+              },
+              "run": 1
+            },
+            "findings_path": "C:\\project\\Wing\\.aidd\\.engine\\da5db8315aefc2bdc57bf6b23c7a0c00e7456c796b78c49b6d61e0918e2448b7.findings.json",
+            "findings": [],
+            "questions": null,
+            "repair": {
+              "id": "b713716e123e312bb2323de622748418eb0e341e67660bc03ee898184d1f3a5d",
+              "event": "requirements-authoring-revise",
+              "item": "issue-request-tutorial",
+              "targets": [
+                "specs/issue-request-tutorial/requirements.md"
+              ],
+              "findings": [],
+              "instruction": "α2から保存した既存本文・質問・判断を引き継ぎ、変更が必要な箇所だけを反映してα3の検査を行う。旧指摘と再検査省略の記録は .aidd/legacy-gates/ と MIGRATION.md を確認する。",
+              "origin": "reopen",
+              "actor": "α2移行コンバータ（再検査依頼の生成。人間の承認ではない）",
+              "at": "2026-09-25T18:54:54+09:00"
+            },
+            "inspection_path": "C:\\project\\Wing\\.aidd\\.engine\\da5db8315aefc2bdc57bf6b23c7a0c00e7456c796b78c49b6d61e0918e2448b7.inspection.md"
+          },
+          "next_action": "作業中（AI が 検査 を実行します）。人の操作は不要です。",
+          "operation_id": "095dc7b3-c21b-41eb-b624-f9df94b5aba8",
+          "operation_applied": true
+        }
+      },
+      "515f52ac-b8db-450b-8a55-c84891aafed4": {
+        "status": "finished",
+        "request": {
+          "kind": "submit",
+          "payload": {
+            "operation_id": "515f52ac-b8db-450b-8a55-c84891aafed4",
+            "dispatch": {
+              "call": "requirements-authoring-revise",
+              "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.requirements-check",
+              "event": "requirements-authoring-revise",
+              "item": "issue-request-tutorial",
+              "status": "emit",
+              "config_sha256": "bd35b4971bac9839d212c0b1bd5e5441a000c15bc4e8acdacc1d80a0b0c0cd37",
+              "detail": null,
+              "id": "8f04ad52a9184631aa628fd8e175b797"
+            },
+            "result": {
+              "status": "completed"
+            }
+          },
+          "actor": "",
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial",
+          "root": "C:\\project\\Wing",
+          "state": "C:\\project\\Wing\\.aidd\\phase-progress.json"
+        },
+        "dispatch": {
+          "call": "requirements-authoring-revise",
+          "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.requirements-check",
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial",
+          "status": "emit",
+          "config_sha256": "bd35b4971bac9839d212c0b1bd5e5441a000c15bc4e8acdacc1d80a0b0c0cd37",
+          "detail": null,
+          "id": "8f04ad52a9184631aa628fd8e175b797"
+        },
+        "result": "ok",
+        "output": {
+          "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+          "flow": "requirements-authoring-revise",
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial",
+          "gate": "review",
+          "hookPoint": "end",
+          "name": "review",
+          "type": "script",
+          "target": "scripts/approval.py",
+          "isAgent": false,
+          "requiresHuman": true,
+          "calls": [],
+          "status": "wait",
+          "call": "requirements-authoring-revise",
+          "dispatch": {
+            "call": "requirements-authoring-revise",
+            "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+            "event": "requirements-authoring-revise",
+            "item": "issue-request-tutorial",
+            "status": "wait",
+            "config_sha256": "bd35b4971bac9839d212c0b1bd5e5441a000c15bc4e8acdacc1d80a0b0c0cd37",
+            "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review\", \"snapshot\": \"9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983\", \"run\": 1, \"inspection_hash\": \"e516e28becfafb6d83e3f168c2c47ca2ddce3187db9c7f8bf84d2221de090e27\"}\n**Phase 4（requirements 作成）の品質ゲートを実行しました。** 指摘ごとに判断を選んでください。\n\n**対象**: `specs/issue-request-tutorial/requirements.md`（スコープ: 成果物単位（issue-request-tutorial） / 1 回目）\n**実行した層**: ① / ②\n\n**指摘**（ゲート記録 `.aidd/gates/phase-4-requirements.md` の当該実行分）\n\n| # | 層 | 対象箇所 | 指摘内容 |\n|---|---|---|---|\n| 1 | ② | specs/issue-request-tutorial/requirements.md 要件 3（受け入れ基準 3.1〜3.5）・`## スコープの境界（Boundary Context）` Out of Scope（発行依頼書登録変更画面への組み込み）・Adjacent（`issue-request`） ／ .aidd/feature-list.md `issue-request-tutorial` 行・`issue-request` 行の `対応要求ID` ／ .aidd/requirement-list.md REQ-035 | ID対応あり・内容未充足（REQ-035）: REQ-035「チュートリアルでは、選択肢により順番に入力欄と例が表示される」は feature-list で本 feature だけに割り当てられており、`issue-request` の `対応要求ID` には含まれていない。一方、requirements.md は選択肢が選ばれたときに入力欄と例を実際に提示する振る舞い（画面側の実装）を `issue-request` に渡しており、本書の受け入れ基準は「定義できる」「参照できる形で保存する」までで、順番に表示されることそのものを判定する基準が無い。REQ-035 の表示の振る舞いがどちらの feature の受け入れ基準でも検証されない状態になっている |\n| 2 | ② | 受け入れ基準 1.1 | 1.1 は画面ID・PGID の採番形式（`GWTG` + 3 桁 / `PWTGO` + 3 桁）という判定できる部分に加えて、「採番の具体値と、画面を何本のプログラムに分割するかは基本設計で確定する」という判定対象でない説明文を同じ番号付きの基準の中に含んでいる。また「画面を新規に作成し」は開発で作るものを述べているだけで、外から見て YES / NO を判定できる応答・拒否・状態変化になっていない |\n| 3 | ② | 受け入れ基準 2.2・2.3・3.3・3.4・3.6（前段） | 判定基準が「基本設計で洗い出した内容／確定した構成／確定した内容に従わなければならない」だけで、何を満たせば合格かがこの文書の中に書かれていない（未確定事項 ②・③・④・⑤・⑥ に委ねている）。requirements.md 単体では合否を判定できない |\n| 4 | ② | 受け入れ基準 2.1・3.2・3.5 | 判定の対象が未定義で、観測可能な合否を定められない。2.1 は「26 フォームに相当する設定項目」の中身が未確定（未確定事項 ②）のため、何を設定できれば合格かを判定できない。3.2 は「順番に提示されるという振る舞いを…定義できるようにしなければならない」とするが、順序の持ち方を本基準では確定させないとしており、何が定義できれば満たすのかが書かれていない。3.5 は「チュートリアルから参照できる形で保存しなければならない」の「参照できる形」が定義されておらず、保存結果のどの状態を見れば合格かを第三者が判定できない |\n| 5 | ② | 要件 2（現行の設定用ウインドウ 26 フォーム相当の設定項目） | 設定の登録・変更・削除という入力を受けて状態を変える要件だが、境界値のACが無い。1.5 は入力チェックエラー時の再表示を一般的に定めるだけで、設定項目の件数・桁数などの上限・下限や空の場合の応答が定められていない |\n| 6 | ② | 要件 3（選択肢に応じた入力欄と例の順次表示の定義） | 選択肢・入力欄・例とその対応を定義させる要件だが、異常系・境界値のACが無い。対応する入力欄・例を持たない選択肢の定義、同じ順番の重複や順番の欠番、選択肢・入力欄・例の件数や例の文言の長さの上限を超えた場合の応答が定められていない |\n| 7 | ② | 受け入れ基準 1.2・1.3・1.4 ／ steering/security.md `#### 認証フロー`・`### 認可`・`#### 所有権・エンティティ境界` ／ requirements.md `## 非機能要件` セキュリティ行 | 誤配置: どの機能にも適用される `security.md` の横断方針（未認証時のログイン画面への遷移、機能IDに対する権限が無い場合のエラー表示、検索・更新の `WHERE` への会社コードの付与）を、この feature 固有の要素を加えずに機能要件のACとして書き直している。同じ内容が `## 非機能要件` のセキュリティ行にも書かれている |\n| 8 | ② | `## 概要（Introduction）` 第 3 段落「`issue-request`（優先度 4）…優先度 3 に置かれている」 ／ .aidd/feature-list.md `## フィーチャー一覧` 表・`**本プロジェクトでの算出根拠**` 表 | 根拠なし: feature-list では本 feature（`issue-request-tutorial`）の優先度は 2、`issue-request` の優先度は 3 であり、本文の「`issue-request`（優先度 4）」「優先度 3 に置かれている」という値に対応する記述が根拠のどこにも無い（優先度を置く理由の文は feature-list の算出根拠と同じ内容） |\n| 9 | ② | `## 前提と依存（Dependencies / Assumptions）` 未確定事項（冒頭の文） | 根拠の飛躍: 「次の 8 件は いずれも基本設計で確定する（REQ-010。…人間が確定 / 2026-09-11）」とあるが、REQ-010 が基本設計に委ねているのはプログラムの分割と画面・帳票・バッチの構成だけで、選択肢の種類と入力欄・例の対応（④）、表示順序の決まり方（⑤）、適用範囲（⑥）、変更履歴の要否（⑦）、削除の方式（⑧）まで基本設計に回す根拠にはならない。人間の確定（2026-09-11）は指定された根拠に含まれず、追跡できない |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- #1: 人間による確認（REQ-035 の表示の振る舞いを Phase 3 の `.aidd/feature-list.md` で `issue-request` にも割り当てるのか、本 requirements.md 側で表示の受け入れ基準を持つのかを、検査側では決められない）\n\n**判断の選択肢**（指摘ごとに 1 つ選ぶ）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n\n回答例: `1:A / 2:C 既存システムの制約で変更できない / 3:D 次回レビューまで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。",
+            "id": "a0f7bc27ebd94b968c90520a7f9b4afc"
+          },
+          "label": "requirements-authoring-revise / requirements-authoring-revise [issue-request-tutorial]",
+          "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review\", \"snapshot\": \"9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983\", \"run\": 1, \"inspection_hash\": \"e516e28becfafb6d83e3f168c2c47ca2ddce3187db9c7f8bf84d2221de090e27\"}\n**Phase 4（requirements 作成）の品質ゲートを実行しました。** 指摘ごとに判断を選んでください。\n\n**対象**: `specs/issue-request-tutorial/requirements.md`（スコープ: 成果物単位（issue-request-tutorial） / 1 回目）\n**実行した層**: ① / ②\n\n**指摘**（ゲート記録 `.aidd/gates/phase-4-requirements.md` の当該実行分）\n\n| # | 層 | 対象箇所 | 指摘内容 |\n|---|---|---|---|\n| 1 | ② | specs/issue-request-tutorial/requirements.md 要件 3（受け入れ基準 3.1〜3.5）・`## スコープの境界（Boundary Context）` Out of Scope（発行依頼書登録変更画面への組み込み）・Adjacent（`issue-request`） ／ .aidd/feature-list.md `issue-request-tutorial` 行・`issue-request` 行の `対応要求ID` ／ .aidd/requirement-list.md REQ-035 | ID対応あり・内容未充足（REQ-035）: REQ-035「チュートリアルでは、選択肢により順番に入力欄と例が表示される」は feature-list で本 feature だけに割り当てられており、`issue-request` の `対応要求ID` には含まれていない。一方、requirements.md は選択肢が選ばれたときに入力欄と例を実際に提示する振る舞い（画面側の実装）を `issue-request` に渡しており、本書の受け入れ基準は「定義できる」「参照できる形で保存する」までで、順番に表示されることそのものを判定する基準が無い。REQ-035 の表示の振る舞いがどちらの feature の受け入れ基準でも検証されない状態になっている |\n| 2 | ② | 受け入れ基準 1.1 | 1.1 は画面ID・PGID の採番形式（`GWTG` + 3 桁 / `PWTGO` + 3 桁）という判定できる部分に加えて、「採番の具体値と、画面を何本のプログラムに分割するかは基本設計で確定する」という判定対象でない説明文を同じ番号付きの基準の中に含んでいる。また「画面を新規に作成し」は開発で作るものを述べているだけで、外から見て YES / NO を判定できる応答・拒否・状態変化になっていない |\n| 3 | ② | 受け入れ基準 2.2・2.3・3.3・3.4・3.6（前段） | 判定基準が「基本設計で洗い出した内容／確定した構成／確定した内容に従わなければならない」だけで、何を満たせば合格かがこの文書の中に書かれていない（未確定事項 ②・③・④・⑤・⑥ に委ねている）。requirements.md 単体では合否を判定できない |\n| 4 | ② | 受け入れ基準 2.1・3.2・3.5 | 判定の対象が未定義で、観測可能な合否を定められない。2.1 は「26 フォームに相当する設定項目」の中身が未確定（未確定事項 ②）のため、何を設定できれば合格かを判定できない。3.2 は「順番に提示されるという振る舞いを…定義できるようにしなければならない」とするが、順序の持ち方を本基準では確定させないとしており、何が定義できれば満たすのかが書かれていない。3.5 は「チュートリアルから参照できる形で保存しなければならない」の「参照できる形」が定義されておらず、保存結果のどの状態を見れば合格かを第三者が判定できない |\n| 5 | ② | 要件 2（現行の設定用ウインドウ 26 フォーム相当の設定項目） | 設定の登録・変更・削除という入力を受けて状態を変える要件だが、境界値のACが無い。1.5 は入力チェックエラー時の再表示を一般的に定めるだけで、設定項目の件数・桁数などの上限・下限や空の場合の応答が定められていない |\n| 6 | ② | 要件 3（選択肢に応じた入力欄と例の順次表示の定義） | 選択肢・入力欄・例とその対応を定義させる要件だが、異常系・境界値のACが無い。対応する入力欄・例を持たない選択肢の定義、同じ順番の重複や順番の欠番、選択肢・入力欄・例の件数や例の文言の長さの上限を超えた場合の応答が定められていない |\n| 7 | ② | 受け入れ基準 1.2・1.3・1.4 ／ steering/security.md `#### 認証フロー`・`### 認可`・`#### 所有権・エンティティ境界` ／ requirements.md `## 非機能要件` セキュリティ行 | 誤配置: どの機能にも適用される `security.md` の横断方針（未認証時のログイン画面への遷移、機能IDに対する権限が無い場合のエラー表示、検索・更新の `WHERE` への会社コードの付与）を、この feature 固有の要素を加えずに機能要件のACとして書き直している。同じ内容が `## 非機能要件` のセキュリティ行にも書かれている |\n| 8 | ② | `## 概要（Introduction）` 第 3 段落「`issue-request`（優先度 4）…優先度 3 に置かれている」 ／ .aidd/feature-list.md `## フィーチャー一覧` 表・`**本プロジェクトでの算出根拠**` 表 | 根拠なし: feature-list では本 feature（`issue-request-tutorial`）の優先度は 2、`issue-request` の優先度は 3 であり、本文の「`issue-request`（優先度 4）」「優先度 3 に置かれている」という値に対応する記述が根拠のどこにも無い（優先度を置く理由の文は feature-list の算出根拠と同じ内容） |\n| 9 | ② | `## 前提と依存（Dependencies / Assumptions）` 未確定事項（冒頭の文） | 根拠の飛躍: 「次の 8 件は いずれも基本設計で確定する（REQ-010。…人間が確定 / 2026-09-11）」とあるが、REQ-010 が基本設計に委ねているのはプログラムの分割と画面・帳票・バッチの構成だけで、選択肢の種類と入力欄・例の対応（④）、表示順序の決まり方（⑤）、適用範囲（⑥）、変更履歴の要否（⑦）、削除の方式（⑧）まで基本設計に回す根拠にはならない。人間の確定（2026-09-11）は指定された根拠に含まれず、追跡できない |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- #1: 人間による確認（REQ-035 の表示の振る舞いを Phase 3 の `.aidd/feature-list.md` で `issue-request` にも割り当てるのか、本 requirements.md 側で表示の受け入れ基準を持つのかを、検査側では決められない）\n\n**判断の選択肢**（指摘ごとに 1 つ選ぶ）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n\n回答例: `1:A / 2:C 既存システムの制約で変更できない / 3:D 次回レビューまで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。",
+          "allowed_actions": [
+            "decision",
+            "decisions",
+            "resolve",
+            "repair"
+          ],
+          "review_context": {
+            "root": "C:\\project\\Wing",
+            "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+            "call": "requirements-authoring-revise",
+            "event": "requirements-authoring-revise",
+            "item": "issue-request-tutorial",
+            "dispatch_id": "a0f7bc27ebd94b968c90520a7f9b4afc",
+            "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+            "scope": "feature:issue-request-tutorial",
+            "run": 1,
+            "snapshot": "9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983",
+            "record_hash": "e516e28becfafb6d83e3f168c2c47ca2ddce3187db9c7f8bf84d2221de090e27"
+          },
+          "review": [
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 1,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "ID対応あり・内容未充足（REQ-035）: REQ-035「チュートリアルでは、選択肢により順番に入力欄と例が表示される」は feature-list で本 feature だけに割り当てられており、`issue-request` の `対応要求ID` には含まれていない。一方、requirements.md は選択肢が選ばれたときに入力欄と例を実際に提示する振る舞い（画面側の実装）を `issue-request` に渡しており、本書の受け入れ基準は「定義できる」「参照できる形で保存する」までで、順番に表示されることそのものを判定する基準が無い。REQ-035 の表示の振る舞いがどちらの feature の受け入れ基準でも検証されない状態になっている",
+              "location": "specs/issue-request-tutorial/requirements.md 要件 3（受け入れ基準 3.1〜3.5）・`## スコープの境界（Boundary Context）` Out of Scope（発行依頼書登録変更画面への組み込み）・Adjacent（`issue-request`） ／ .aidd/feature-list.md `issue-request-tutorial` 行・`issue-request` 行の `対応要求ID` ／ .aidd/requirement-list.md REQ-035"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 2,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "1.1 は画面ID・PGID の採番形式（`GWTG` + 3 桁 / `PWTGO` + 3 桁）という判定できる部分に加えて、「採番の具体値と、画面を何本のプログラムに分割するかは基本設計で確定する」という判定対象でない説明文を同じ番号付きの基準の中に含んでいる。また「画面を新規に作成し」は開発で作るものを述べているだけで、外から見て YES / NO を判定できる応答・拒否・状態変化になっていない",
+              "location": "受け入れ基準 1.1"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 3,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "判定基準が「基本設計で洗い出した内容／確定した構成／確定した内容に従わなければならない」だけで、何を満たせば合格かがこの文書の中に書かれていない（未確定事項 ②・③・④・⑤・⑥ に委ねている）。requirements.md 単体では合否を判定できない",
+              "location": "受け入れ基準 2.2・2.3・3.3・3.4・3.6（前段）"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 4,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "判定の対象が未定義で、観測可能な合否を定められない。2.1 は「26 フォームに相当する設定項目」の中身が未確定（未確定事項 ②）のため、何を設定できれば合格かを判定できない。3.2 は「順番に提示されるという振る舞いを…定義できるようにしなければならない」とするが、順序の持ち方を本基準では確定させないとしており、何が定義できれば満たすのかが書かれていない。3.5 は「チュートリアルから参照できる形で保存しなければならない」の「参照できる形」が定義されておらず、保存結果のどの状態を見れば合格かを第三者が判定できない",
+              "location": "受け入れ基準 2.1・3.2・3.5"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 5,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "設定の登録・変更・削除という入力を受けて状態を変える要件だが、境界値のACが無い。1.5 は入力チェックエラー時の再表示を一般的に定めるだけで、設定項目の件数・桁数などの上限・下限や空の場合の応答が定められていない",
+              "location": "要件 2（現行の設定用ウインドウ 26 フォーム相当の設定項目）"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 6,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "選択肢・入力欄・例とその対応を定義させる要件だが、異常系・境界値のACが無い。対応する入力欄・例を持たない選択肢の定義、同じ順番の重複や順番の欠番、選択肢・入力欄・例の件数や例の文言の長さの上限を超えた場合の応答が定められていない",
+              "location": "要件 3（選択肢に応じた入力欄と例の順次表示の定義）"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 7,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "誤配置: どの機能にも適用される `security.md` の横断方針（未認証時のログイン画面への遷移、機能IDに対する権限が無い場合のエラー表示、検索・更新の `WHERE` への会社コードの付与）を、この feature 固有の要素を加えずに機能要件のACとして書き直している。同じ内容が `## 非機能要件` のセキュリティ行にも書かれている",
+              "location": "受け入れ基準 1.2・1.3・1.4 ／ steering/security.md `#### 認証フロー`・`### 認可`・`#### 所有権・エンティティ境界` ／ requirements.md `## 非機能要件` セキュリティ行"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 8,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "根拠なし: feature-list では本 feature（`issue-request-tutorial`）の優先度は 2、`issue-request` の優先度は 3 であり、本文の「`issue-request`（優先度 4）」「優先度 3 に置かれている」という値に対応する記述が根拠のどこにも無い（優先度を置く理由の文は feature-list の算出根拠と同じ内容）",
+              "location": "`## 概要（Introduction）` 第 3 段落「`issue-request`（優先度 4）…優先度 3 に置かれている」 ／ .aidd/feature-list.md `## フィーチャー一覧` 表・`**本プロジェクトでの算出根拠**` 表"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 9,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "根拠の飛躍: 「次の 8 件は いずれも基本設計で確定する（REQ-010。…人間が確定 / 2026-09-11）」とあるが、REQ-010 が基本設計に委ねているのはプログラムの分割と画面・帳票・バッチの構成だけで、選択肢の種類と入力欄・例の対応（④）、表示順序の決まり方（⑤）、適用範囲（⑥）、変更履歴の要否（⑦）、削除の方式（⑧）まで基本設計に回す根拠にはならない。人間の確定（2026-09-11）は指定された根拠に含まれず、追跡できない",
+              "location": "`## 前提と依存（Dependencies / Assumptions）` 未確定事項（冒頭の文）"
+            }
+          ],
+          "next_action": "検査結果を確認し、指摘ごとに A〜D で判断を回答してください（判断が揃い修正が無ければ承認者名を回答）。",
+          "operation_id": "515f52ac-b8db-450b-8a55-c84891aafed4",
+          "operation_applied": true
+        }
+      },
+      "a8c9a11f-dc2e-4c87-8a30-3c6ba25cf67d": {
+        "status": "finished",
+        "request": {
+          "kind": "respond",
+          "payload": {
+            "operation_id": "a8c9a11f-dc2e-4c87-8a30-3c6ba25cf67d",
+            "action": "decision",
+            "expected": {
+              "root": "C:\\project\\Wing",
+              "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+              "call": "requirements-authoring-revise",
+              "event": "requirements-authoring-revise",
+              "item": "issue-request-tutorial",
+              "dispatch_id": "a0f7bc27ebd94b968c90520a7f9b4afc",
+              "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "snapshot": "9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983",
+              "record_hash": "e516e28becfafb6d83e3f168c2c47ca2ddce3187db9c7f8bf84d2221de090e27"
+            },
+            "data": {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 1,
+              "decision": "差戻し",
+              "reason": "Phase 3 feature-list へ差戻し。人間確定（2026-09-29）: チュートリアル（WTG081）は発行依頼書画面のボタンから開くポップアップで、契約種別→局種別→設置設備…と選択に応じて画面を順に表示し、選んだ値を発行依頼書画面の項目に設定する。設定内容を定義・保存する管理画面ではなく、保存用テーブルは持たない。REQ-035 の表示の振る舞いは本 feature が持ち、issue-request はボタンと値の受け取りを持つ。feature-list の目的・算出根拠を直してから requirements を作り直す"
+            }
+          },
+          "actor": "Junichi Noumi",
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial",
+          "root": "C:\\project\\Wing",
+          "state": "C:\\project\\Wing\\.aidd\\phase-progress.json"
+        },
+        "dispatch": {
+          "call": "requirements-authoring-revise",
+          "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial",
+          "status": "wait",
+          "config_sha256": "bd35b4971bac9839d212c0b1bd5e5441a000c15bc4e8acdacc1d80a0b0c0cd37",
+          "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review\", \"snapshot\": \"9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983\", \"run\": 1, \"inspection_hash\": \"e516e28becfafb6d83e3f168c2c47ca2ddce3187db9c7f8bf84d2221de090e27\"}\n**Phase 4（requirements 作成）の品質ゲートを実行しました。** 指摘ごとに判断を選んでください。\n\n**対象**: `specs/issue-request-tutorial/requirements.md`（スコープ: 成果物単位（issue-request-tutorial） / 1 回目）\n**実行した層**: ① / ②\n\n**指摘**（ゲート記録 `.aidd/gates/phase-4-requirements.md` の当該実行分）\n\n| # | 層 | 対象箇所 | 指摘内容 |\n|---|---|---|---|\n| 1 | ② | specs/issue-request-tutorial/requirements.md 要件 3（受け入れ基準 3.1〜3.5）・`## スコープの境界（Boundary Context）` Out of Scope（発行依頼書登録変更画面への組み込み）・Adjacent（`issue-request`） ／ .aidd/feature-list.md `issue-request-tutorial` 行・`issue-request` 行の `対応要求ID` ／ .aidd/requirement-list.md REQ-035 | ID対応あり・内容未充足（REQ-035）: REQ-035「チュートリアルでは、選択肢により順番に入力欄と例が表示される」は feature-list で本 feature だけに割り当てられており、`issue-request` の `対応要求ID` には含まれていない。一方、requirements.md は選択肢が選ばれたときに入力欄と例を実際に提示する振る舞い（画面側の実装）を `issue-request` に渡しており、本書の受け入れ基準は「定義できる」「参照できる形で保存する」までで、順番に表示されることそのものを判定する基準が無い。REQ-035 の表示の振る舞いがどちらの feature の受け入れ基準でも検証されない状態になっている |\n| 2 | ② | 受け入れ基準 1.1 | 1.1 は画面ID・PGID の採番形式（`GWTG` + 3 桁 / `PWTGO` + 3 桁）という判定できる部分に加えて、「採番の具体値と、画面を何本のプログラムに分割するかは基本設計で確定する」という判定対象でない説明文を同じ番号付きの基準の中に含んでいる。また「画面を新規に作成し」は開発で作るものを述べているだけで、外から見て YES / NO を判定できる応答・拒否・状態変化になっていない |\n| 3 | ② | 受け入れ基準 2.2・2.3・3.3・3.4・3.6（前段） | 判定基準が「基本設計で洗い出した内容／確定した構成／確定した内容に従わなければならない」だけで、何を満たせば合格かがこの文書の中に書かれていない（未確定事項 ②・③・④・⑤・⑥ に委ねている）。requirements.md 単体では合否を判定できない |\n| 4 | ② | 受け入れ基準 2.1・3.2・3.5 | 判定の対象が未定義で、観測可能な合否を定められない。2.1 は「26 フォームに相当する設定項目」の中身が未確定（未確定事項 ②）のため、何を設定できれば合格かを判定できない。3.2 は「順番に提示されるという振る舞いを…定義できるようにしなければならない」とするが、順序の持ち方を本基準では確定させないとしており、何が定義できれば満たすのかが書かれていない。3.5 は「チュートリアルから参照できる形で保存しなければならない」の「参照できる形」が定義されておらず、保存結果のどの状態を見れば合格かを第三者が判定できない |\n| 5 | ② | 要件 2（現行の設定用ウインドウ 26 フォーム相当の設定項目） | 設定の登録・変更・削除という入力を受けて状態を変える要件だが、境界値のACが無い。1.5 は入力チェックエラー時の再表示を一般的に定めるだけで、設定項目の件数・桁数などの上限・下限や空の場合の応答が定められていない |\n| 6 | ② | 要件 3（選択肢に応じた入力欄と例の順次表示の定義） | 選択肢・入力欄・例とその対応を定義させる要件だが、異常系・境界値のACが無い。対応する入力欄・例を持たない選択肢の定義、同じ順番の重複や順番の欠番、選択肢・入力欄・例の件数や例の文言の長さの上限を超えた場合の応答が定められていない |\n| 7 | ② | 受け入れ基準 1.2・1.3・1.4 ／ steering/security.md `#### 認証フロー`・`### 認可`・`#### 所有権・エンティティ境界` ／ requirements.md `## 非機能要件` セキュリティ行 | 誤配置: どの機能にも適用される `security.md` の横断方針（未認証時のログイン画面への遷移、機能IDに対する権限が無い場合のエラー表示、検索・更新の `WHERE` への会社コードの付与）を、この feature 固有の要素を加えずに機能要件のACとして書き直している。同じ内容が `## 非機能要件` のセキュリティ行にも書かれている |\n| 8 | ② | `## 概要（Introduction）` 第 3 段落「`issue-request`（優先度 4）…優先度 3 に置かれている」 ／ .aidd/feature-list.md `## フィーチャー一覧` 表・`**本プロジェクトでの算出根拠**` 表 | 根拠なし: feature-list では本 feature（`issue-request-tutorial`）の優先度は 2、`issue-request` の優先度は 3 であり、本文の「`issue-request`（優先度 4）」「優先度 3 に置かれている」という値に対応する記述が根拠のどこにも無い（優先度を置く理由の文は feature-list の算出根拠と同じ内容） |\n| 9 | ② | `## 前提と依存（Dependencies / Assumptions）` 未確定事項（冒頭の文） | 根拠の飛躍: 「次の 8 件は いずれも基本設計で確定する（REQ-010。…人間が確定 / 2026-09-11）」とあるが、REQ-010 が基本設計に委ねているのはプログラムの分割と画面・帳票・バッチの構成だけで、選択肢の種類と入力欄・例の対応（④）、表示順序の決まり方（⑤）、適用範囲（⑥）、変更履歴の要否（⑦）、削除の方式（⑧）まで基本設計に回す根拠にはならない。人間の確定（2026-09-11）は指定された根拠に含まれず、追跡できない |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- #1: 人間による確認（REQ-035 の表示の振る舞いを Phase 3 の `.aidd/feature-list.md` で `issue-request` にも割り当てるのか、本 requirements.md 側で表示の受け入れ基準を持つのかを、検査側では決められない）\n\n**判断の選択肢**（指摘ごとに 1 つ選ぶ）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n\n回答例: `1:A / 2:C 既存システムの制約で変更できない / 3:D 次回レビューまで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。",
+          "id": "a0f7bc27ebd94b968c90520a7f9b4afc"
+        },
+        "result": "ok",
+        "output": {
+          "status": "wait",
+          "allowed_actions": [
+            "decision",
+            "decisions",
+            "resolve",
+            "repair"
+          ],
+          "review_context": {
+            "root": "C:\\project\\Wing",
+            "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+            "call": "requirements-authoring-revise",
+            "event": "requirements-authoring-revise",
+            "item": "issue-request-tutorial",
+            "dispatch_id": "a0f7bc27ebd94b968c90520a7f9b4afc",
+            "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+            "scope": "feature:issue-request-tutorial",
+            "run": 1,
+            "snapshot": "9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983",
+            "record_hash": "2f98de938fb6ba3d66cea8a4cffa9b7214500b5cbc2cb26d03df289544f49352"
+          },
+          "review": [
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 1,
+              "current": true,
+              "decision": "差戻し",
+              "reason": "Phase 3 feature-list へ差戻し。人間確定（2026-09-29）: チュートリアル（WTG081）は発行依頼書画面のボタンから開くポップアップで、契約種別→局種別→設置設備…と選択に応じて画面を順に表示し、選んだ値を発行依頼書画面の項目に設定する。設定内容を定義・保存する管理画面ではなく、保存用テーブルは持たない。REQ-035 の表示の振る舞いは本 feature が持ち、issue-request はボタンと値の受け取りを持つ。feature-list の目的・算出根拠を直してから requirements を作り直す",
+              "open": true,
+              "resolved": false,
+              "description": "ID対応あり・内容未充足（REQ-035）: REQ-035「チュートリアルでは、選択肢により順番に入力欄と例が表示される」は feature-list で本 feature だけに割り当てられており、`issue-request` の `対応要求ID` には含まれていない。一方、requirements.md は選択肢が選ばれたときに入力欄と例を実際に提示する振る舞い（画面側の実装）を `issue-request` に渡しており、本書の受け入れ基準は「定義できる」「参照できる形で保存する」までで、順番に表示されることそのものを判定する基準が無い。REQ-035 の表示の振る舞いがどちらの feature の受け入れ基準でも検証されない状態になっている",
+              "location": "specs/issue-request-tutorial/requirements.md 要件 3（受け入れ基準 3.1〜3.5）・`## スコープの境界（Boundary Context）` Out of Scope（発行依頼書登録変更画面への組み込み）・Adjacent（`issue-request`） ／ .aidd/feature-list.md `issue-request-tutorial` 行・`issue-request` 行の `対応要求ID` ／ .aidd/requirement-list.md REQ-035"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 2,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "1.1 は画面ID・PGID の採番形式（`GWTG` + 3 桁 / `PWTGO` + 3 桁）という判定できる部分に加えて、「採番の具体値と、画面を何本のプログラムに分割するかは基本設計で確定する」という判定対象でない説明文を同じ番号付きの基準の中に含んでいる。また「画面を新規に作成し」は開発で作るものを述べているだけで、外から見て YES / NO を判定できる応答・拒否・状態変化になっていない",
+              "location": "受け入れ基準 1.1"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 3,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "判定基準が「基本設計で洗い出した内容／確定した構成／確定した内容に従わなければならない」だけで、何を満たせば合格かがこの文書の中に書かれていない（未確定事項 ②・③・④・⑤・⑥ に委ねている）。requirements.md 単体では合否を判定できない",
+              "location": "受け入れ基準 2.2・2.3・3.3・3.4・3.6（前段）"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 4,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "判定の対象が未定義で、観測可能な合否を定められない。2.1 は「26 フォームに相当する設定項目」の中身が未確定（未確定事項 ②）のため、何を設定できれば合格かを判定できない。3.2 は「順番に提示されるという振る舞いを…定義できるようにしなければならない」とするが、順序の持ち方を本基準では確定させないとしており、何が定義できれば満たすのかが書かれていない。3.5 は「チュートリアルから参照できる形で保存しなければならない」の「参照できる形」が定義されておらず、保存結果のどの状態を見れば合格かを第三者が判定できない",
+              "location": "受け入れ基準 2.1・3.2・3.5"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 5,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "設定の登録・変更・削除という入力を受けて状態を変える要件だが、境界値のACが無い。1.5 は入力チェックエラー時の再表示を一般的に定めるだけで、設定項目の件数・桁数などの上限・下限や空の場合の応答が定められていない",
+              "location": "要件 2（現行の設定用ウインドウ 26 フォーム相当の設定項目）"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 6,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "選択肢・入力欄・例とその対応を定義させる要件だが、異常系・境界値のACが無い。対応する入力欄・例を持たない選択肢の定義、同じ順番の重複や順番の欠番、選択肢・入力欄・例の件数や例の文言の長さの上限を超えた場合の応答が定められていない",
+              "location": "要件 3（選択肢に応じた入力欄と例の順次表示の定義）"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 7,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "誤配置: どの機能にも適用される `security.md` の横断方針（未認証時のログイン画面への遷移、機能IDに対する権限が無い場合のエラー表示、検索・更新の `WHERE` への会社コードの付与）を、この feature 固有の要素を加えずに機能要件のACとして書き直している。同じ内容が `## 非機能要件` のセキュリティ行にも書かれている",
+              "location": "受け入れ基準 1.2・1.3・1.4 ／ steering/security.md `#### 認証フロー`・`### 認可`・`#### 所有権・エンティティ境界` ／ requirements.md `## 非機能要件` セキュリティ行"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 8,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "根拠なし: feature-list では本 feature（`issue-request-tutorial`）の優先度は 2、`issue-request` の優先度は 3 であり、本文の「`issue-request`（優先度 4）」「優先度 3 に置かれている」という値に対応する記述が根拠のどこにも無い（優先度を置く理由の文は feature-list の算出根拠と同じ内容）",
+              "location": "`## 概要（Introduction）` 第 3 段落「`issue-request`（優先度 4）…優先度 3 に置かれている」 ／ .aidd/feature-list.md `## フィーチャー一覧` 表・`**本プロジェクトでの算出根拠**` 表"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 9,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "根拠の飛躍: 「次の 8 件は いずれも基本設計で確定する（REQ-010。…人間が確定 / 2026-09-11）」とあるが、REQ-010 が基本設計に委ねているのはプログラムの分割と画面・帳票・バッチの構成だけで、選択肢の種類と入力欄・例の対応（④）、表示順序の決まり方（⑤）、適用範囲（⑥）、変更履歴の要否（⑦）、削除の方式（⑧）まで基本設計に回す根拠にはならない。人間の確定（2026-09-11）は指定された根拠に含まれず、追跡できない",
+              "location": "`## 前提と依存（Dependencies / Assumptions）` 未確定事項（冒頭の文）"
+            }
+          ],
+          "next_action": "検査結果を確認し、指摘ごとに A〜D で判断を回答してください（判断が揃い修正が無ければ承認者名を回答）。",
+          "operation_id": "a8c9a11f-dc2e-4c87-8a30-3c6ba25cf67d",
+          "operation_applied": true
+        }
+      },
+      "0f1bffba-04f4-4812-a04a-171caabee9d5": {
+        "status": "finished",
+        "request": {
+          "kind": "respond",
+          "payload": {
+            "operation_id": "0f1bffba-04f4-4812-a04a-171caabee9d5",
+            "action": "decision",
+            "expected": {
+              "root": "C:\\project\\Wing",
+              "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+              "call": "requirements-authoring-revise",
+              "event": "requirements-authoring-revise",
+              "item": "issue-request-tutorial",
+              "dispatch_id": "a0f7bc27ebd94b968c90520a7f9b4afc",
+              "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "snapshot": "9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983",
+              "record_hash": "2f98de938fb6ba3d66cea8a4cffa9b7214500b5cbc2cb26d03df289544f49352"
+            },
+            "data": {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 8,
+              "decision": "修正",
+              "reason": "優先度の値を feature-list（本 feature 2、issue-request 3）に合わせる"
+            }
+          },
+          "actor": "Junichi Noumi",
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial",
+          "root": "C:\\project\\Wing",
+          "state": "C:\\project\\Wing\\.aidd\\phase-progress.json"
+        },
+        "dispatch": {
+          "call": "requirements-authoring-revise",
+          "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial",
+          "status": "wait",
+          "config_sha256": "bd35b4971bac9839d212c0b1bd5e5441a000c15bc4e8acdacc1d80a0b0c0cd37",
+          "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review\", \"snapshot\": \"9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983\", \"run\": 1, \"inspection_hash\": \"e516e28becfafb6d83e3f168c2c47ca2ddce3187db9c7f8bf84d2221de090e27\"}\n**Phase 4（requirements 作成）の品質ゲートを実行しました。** 指摘ごとに判断を選んでください。\n\n**対象**: `specs/issue-request-tutorial/requirements.md`（スコープ: 成果物単位（issue-request-tutorial） / 1 回目）\n**実行した層**: ① / ②\n\n**指摘**（ゲート記録 `.aidd/gates/phase-4-requirements.md` の当該実行分）\n\n| # | 層 | 対象箇所 | 指摘内容 |\n|---|---|---|---|\n| 1 | ② | specs/issue-request-tutorial/requirements.md 要件 3（受け入れ基準 3.1〜3.5）・`## スコープの境界（Boundary Context）` Out of Scope（発行依頼書登録変更画面への組み込み）・Adjacent（`issue-request`） ／ .aidd/feature-list.md `issue-request-tutorial` 行・`issue-request` 行の `対応要求ID` ／ .aidd/requirement-list.md REQ-035 | ID対応あり・内容未充足（REQ-035）: REQ-035「チュートリアルでは、選択肢により順番に入力欄と例が表示される」は feature-list で本 feature だけに割り当てられており、`issue-request` の `対応要求ID` には含まれていない。一方、requirements.md は選択肢が選ばれたときに入力欄と例を実際に提示する振る舞い（画面側の実装）を `issue-request` に渡しており、本書の受け入れ基準は「定義できる」「参照できる形で保存する」までで、順番に表示されることそのものを判定する基準が無い。REQ-035 の表示の振る舞いがどちらの feature の受け入れ基準でも検証されない状態になっている |\n| 2 | ② | 受け入れ基準 1.1 | 1.1 は画面ID・PGID の採番形式（`GWTG` + 3 桁 / `PWTGO` + 3 桁）という判定できる部分に加えて、「採番の具体値と、画面を何本のプログラムに分割するかは基本設計で確定する」という判定対象でない説明文を同じ番号付きの基準の中に含んでいる。また「画面を新規に作成し」は開発で作るものを述べているだけで、外から見て YES / NO を判定できる応答・拒否・状態変化になっていない |\n| 3 | ② | 受け入れ基準 2.2・2.3・3.3・3.4・3.6（前段） | 判定基準が「基本設計で洗い出した内容／確定した構成／確定した内容に従わなければならない」だけで、何を満たせば合格かがこの文書の中に書かれていない（未確定事項 ②・③・④・⑤・⑥ に委ねている）。requirements.md 単体では合否を判定できない |\n| 4 | ② | 受け入れ基準 2.1・3.2・3.5 | 判定の対象が未定義で、観測可能な合否を定められない。2.1 は「26 フォームに相当する設定項目」の中身が未確定（未確定事項 ②）のため、何を設定できれば合格かを判定できない。3.2 は「順番に提示されるという振る舞いを…定義できるようにしなければならない」とするが、順序の持ち方を本基準では確定させないとしており、何が定義できれば満たすのかが書かれていない。3.5 は「チュートリアルから参照できる形で保存しなければならない」の「参照できる形」が定義されておらず、保存結果のどの状態を見れば合格かを第三者が判定できない |\n| 5 | ② | 要件 2（現行の設定用ウインドウ 26 フォーム相当の設定項目） | 設定の登録・変更・削除という入力を受けて状態を変える要件だが、境界値のACが無い。1.5 は入力チェックエラー時の再表示を一般的に定めるだけで、設定項目の件数・桁数などの上限・下限や空の場合の応答が定められていない |\n| 6 | ② | 要件 3（選択肢に応じた入力欄と例の順次表示の定義） | 選択肢・入力欄・例とその対応を定義させる要件だが、異常系・境界値のACが無い。対応する入力欄・例を持たない選択肢の定義、同じ順番の重複や順番の欠番、選択肢・入力欄・例の件数や例の文言の長さの上限を超えた場合の応答が定められていない |\n| 7 | ② | 受け入れ基準 1.2・1.3・1.4 ／ steering/security.md `#### 認証フロー`・`### 認可`・`#### 所有権・エンティティ境界` ／ requirements.md `## 非機能要件` セキュリティ行 | 誤配置: どの機能にも適用される `security.md` の横断方針（未認証時のログイン画面への遷移、機能IDに対する権限が無い場合のエラー表示、検索・更新の `WHERE` への会社コードの付与）を、この feature 固有の要素を加えずに機能要件のACとして書き直している。同じ内容が `## 非機能要件` のセキュリティ行にも書かれている |\n| 8 | ② | `## 概要（Introduction）` 第 3 段落「`issue-request`（優先度 4）…優先度 3 に置かれている」 ／ .aidd/feature-list.md `## フィーチャー一覧` 表・`**本プロジェクトでの算出根拠**` 表 | 根拠なし: feature-list では本 feature（`issue-request-tutorial`）の優先度は 2、`issue-request` の優先度は 3 であり、本文の「`issue-request`（優先度 4）」「優先度 3 に置かれている」という値に対応する記述が根拠のどこにも無い（優先度を置く理由の文は feature-list の算出根拠と同じ内容） |\n| 9 | ② | `## 前提と依存（Dependencies / Assumptions）` 未確定事項（冒頭の文） | 根拠の飛躍: 「次の 8 件は いずれも基本設計で確定する（REQ-010。…人間が確定 / 2026-09-11）」とあるが、REQ-010 が基本設計に委ねているのはプログラムの分割と画面・帳票・バッチの構成だけで、選択肢の種類と入力欄・例の対応（④）、表示順序の決まり方（⑤）、適用範囲（⑥）、変更履歴の要否（⑦）、削除の方式（⑧）まで基本設計に回す根拠にはならない。人間の確定（2026-09-11）は指定された根拠に含まれず、追跡できない |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- #1: 人間による確認（REQ-035 の表示の振る舞いを Phase 3 の `.aidd/feature-list.md` で `issue-request` にも割り当てるのか、本 requirements.md 側で表示の受け入れ基準を持つのかを、検査側では決められない）\n\n**判断の選択肢**（指摘ごとに 1 つ選ぶ）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n\n回答例: `1:A / 2:C 既存システムの制約で変更できない / 3:D 次回レビューまで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。",
+          "id": "a0f7bc27ebd94b968c90520a7f9b4afc"
+        },
+        "result": "ok",
+        "output": {
+          "status": "wait",
+          "allowed_actions": [
+            "decision",
+            "decisions",
+            "resolve",
+            "repair"
+          ],
+          "review_context": {
+            "root": "C:\\project\\Wing",
+            "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+            "call": "requirements-authoring-revise",
+            "event": "requirements-authoring-revise",
+            "item": "issue-request-tutorial",
+            "dispatch_id": "a0f7bc27ebd94b968c90520a7f9b4afc",
+            "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+            "scope": "feature:issue-request-tutorial",
+            "run": 1,
+            "snapshot": "9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983",
+            "record_hash": "ad168604a6b4eb425ea6440d7bfb774cd462da3cd41bc3ece0ce076c33208918"
+          },
+          "review": [
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 1,
+              "current": true,
+              "decision": "差戻し",
+              "reason": "Phase 3 feature-list へ差戻し。人間確定（2026-09-29）: チュートリアル（WTG081）は発行依頼書画面のボタンから開くポップアップで、契約種別→局種別→設置設備…と選択に応じて画面を順に表示し、選んだ値を発行依頼書画面の項目に設定する。設定内容を定義・保存する管理画面ではなく、保存用テーブルは持たない。REQ-035 の表示の振る舞いは本 feature が持ち、issue-request はボタンと値の受け取りを持つ。feature-list の目的・算出根拠を直してから requirements を作り直す",
+              "open": true,
+              "resolved": false,
+              "description": "ID対応あり・内容未充足（REQ-035）: REQ-035「チュートリアルでは、選択肢により順番に入力欄と例が表示される」は feature-list で本 feature だけに割り当てられており、`issue-request` の `対応要求ID` には含まれていない。一方、requirements.md は選択肢が選ばれたときに入力欄と例を実際に提示する振る舞い（画面側の実装）を `issue-request` に渡しており、本書の受け入れ基準は「定義できる」「参照できる形で保存する」までで、順番に表示されることそのものを判定する基準が無い。REQ-035 の表示の振る舞いがどちらの feature の受け入れ基準でも検証されない状態になっている",
+              "location": "specs/issue-request-tutorial/requirements.md 要件 3（受け入れ基準 3.1〜3.5）・`## スコープの境界（Boundary Context）` Out of Scope（発行依頼書登録変更画面への組み込み）・Adjacent（`issue-request`） ／ .aidd/feature-list.md `issue-request-tutorial` 行・`issue-request` 行の `対応要求ID` ／ .aidd/requirement-list.md REQ-035"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 2,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "1.1 は画面ID・PGID の採番形式（`GWTG` + 3 桁 / `PWTGO` + 3 桁）という判定できる部分に加えて、「採番の具体値と、画面を何本のプログラムに分割するかは基本設計で確定する」という判定対象でない説明文を同じ番号付きの基準の中に含んでいる。また「画面を新規に作成し」は開発で作るものを述べているだけで、外から見て YES / NO を判定できる応答・拒否・状態変化になっていない",
+              "location": "受け入れ基準 1.1"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 3,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "判定基準が「基本設計で洗い出した内容／確定した構成／確定した内容に従わなければならない」だけで、何を満たせば合格かがこの文書の中に書かれていない（未確定事項 ②・③・④・⑤・⑥ に委ねている）。requirements.md 単体では合否を判定できない",
+              "location": "受け入れ基準 2.2・2.3・3.3・3.4・3.6（前段）"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 4,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "判定の対象が未定義で、観測可能な合否を定められない。2.1 は「26 フォームに相当する設定項目」の中身が未確定（未確定事項 ②）のため、何を設定できれば合格かを判定できない。3.2 は「順番に提示されるという振る舞いを…定義できるようにしなければならない」とするが、順序の持ち方を本基準では確定させないとしており、何が定義できれば満たすのかが書かれていない。3.5 は「チュートリアルから参照できる形で保存しなければならない」の「参照できる形」が定義されておらず、保存結果のどの状態を見れば合格かを第三者が判定できない",
+              "location": "受け入れ基準 2.1・3.2・3.5"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 5,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "設定の登録・変更・削除という入力を受けて状態を変える要件だが、境界値のACが無い。1.5 は入力チェックエラー時の再表示を一般的に定めるだけで、設定項目の件数・桁数などの上限・下限や空の場合の応答が定められていない",
+              "location": "要件 2（現行の設定用ウインドウ 26 フォーム相当の設定項目）"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 6,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "選択肢・入力欄・例とその対応を定義させる要件だが、異常系・境界値のACが無い。対応する入力欄・例を持たない選択肢の定義、同じ順番の重複や順番の欠番、選択肢・入力欄・例の件数や例の文言の長さの上限を超えた場合の応答が定められていない",
+              "location": "要件 3（選択肢に応じた入力欄と例の順次表示の定義）"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 7,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "誤配置: どの機能にも適用される `security.md` の横断方針（未認証時のログイン画面への遷移、機能IDに対する権限が無い場合のエラー表示、検索・更新の `WHERE` への会社コードの付与）を、この feature 固有の要素を加えずに機能要件のACとして書き直している。同じ内容が `## 非機能要件` のセキュリティ行にも書かれている",
+              "location": "受け入れ基準 1.2・1.3・1.4 ／ steering/security.md `#### 認証フロー`・`### 認可`・`#### 所有権・エンティティ境界` ／ requirements.md `## 非機能要件` セキュリティ行"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 8,
+              "current": true,
+              "decision": "修正",
+              "reason": "優先度の値を feature-list（本 feature 2、issue-request 3）に合わせる",
+              "open": true,
+              "resolved": false,
+              "description": "根拠なし: feature-list では本 feature（`issue-request-tutorial`）の優先度は 2、`issue-request` の優先度は 3 であり、本文の「`issue-request`（優先度 4）」「優先度 3 に置かれている」という値に対応する記述が根拠のどこにも無い（優先度を置く理由の文は feature-list の算出根拠と同じ内容）",
+              "location": "`## 概要（Introduction）` 第 3 段落「`issue-request`（優先度 4）…優先度 3 に置かれている」 ／ .aidd/feature-list.md `## フィーチャー一覧` 表・`**本プロジェクトでの算出根拠**` 表"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 9,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "根拠の飛躍: 「次の 8 件は いずれも基本設計で確定する（REQ-010。…人間が確定 / 2026-09-11）」とあるが、REQ-010 が基本設計に委ねているのはプログラムの分割と画面・帳票・バッチの構成だけで、選択肢の種類と入力欄・例の対応（④）、表示順序の決まり方（⑤）、適用範囲（⑥）、変更履歴の要否（⑦）、削除の方式（⑧）まで基本設計に回す根拠にはならない。人間の確定（2026-09-11）は指定された根拠に含まれず、追跡できない",
+              "location": "`## 前提と依存（Dependencies / Assumptions）` 未確定事項（冒頭の文）"
+            }
+          ],
+          "next_action": "検査結果を確認し、指摘ごとに A〜D で判断を回答してください（判断が揃い修正が無ければ承認者名を回答）。",
+          "operation_id": "0f1bffba-04f4-4812-a04a-171caabee9d5",
+          "operation_applied": true
+        }
+      },
+      "8dc02b5e-3c98-43eb-be5e-cda0d9fb7a50": {
+        "status": "finished",
+        "request": {
+          "kind": "respond",
+          "payload": {
+            "operation_id": "8dc02b5e-3c98-43eb-be5e-cda0d9fb7a50",
+            "action": "decision",
+            "expected": {
+              "root": "C:\\project\\Wing",
+              "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+              "call": "requirements-authoring-revise",
+              "event": "requirements-authoring-revise",
+              "item": "issue-request-tutorial",
+              "dispatch_id": "a0f7bc27ebd94b968c90520a7f9b4afc",
+              "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "snapshot": "9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983",
+              "record_hash": "ad168604a6b4eb425ea6440d7bfb774cd462da3cd41bc3ece0ce076c33208918"
+            },
+            "data": {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 2,
+              "decision": "未対応",
+              "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する"
+            }
+          },
+          "actor": "Junichi Noumi",
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial",
+          "root": "C:\\project\\Wing",
+          "state": "C:\\project\\Wing\\.aidd\\phase-progress.json"
+        },
+        "dispatch": {
+          "call": "requirements-authoring-revise",
+          "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial",
+          "status": "wait",
+          "config_sha256": "bd35b4971bac9839d212c0b1bd5e5441a000c15bc4e8acdacc1d80a0b0c0cd37",
+          "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review\", \"snapshot\": \"9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983\", \"run\": 1, \"inspection_hash\": \"e516e28becfafb6d83e3f168c2c47ca2ddce3187db9c7f8bf84d2221de090e27\"}\n**Phase 4（requirements 作成）の品質ゲートを実行しました。** 指摘ごとに判断を選んでください。\n\n**対象**: `specs/issue-request-tutorial/requirements.md`（スコープ: 成果物単位（issue-request-tutorial） / 1 回目）\n**実行した層**: ① / ②\n\n**指摘**（ゲート記録 `.aidd/gates/phase-4-requirements.md` の当該実行分）\n\n| # | 層 | 対象箇所 | 指摘内容 |\n|---|---|---|---|\n| 1 | ② | specs/issue-request-tutorial/requirements.md 要件 3（受け入れ基準 3.1〜3.5）・`## スコープの境界（Boundary Context）` Out of Scope（発行依頼書登録変更画面への組み込み）・Adjacent（`issue-request`） ／ .aidd/feature-list.md `issue-request-tutorial` 行・`issue-request` 行の `対応要求ID` ／ .aidd/requirement-list.md REQ-035 | ID対応あり・内容未充足（REQ-035）: REQ-035「チュートリアルでは、選択肢により順番に入力欄と例が表示される」は feature-list で本 feature だけに割り当てられており、`issue-request` の `対応要求ID` には含まれていない。一方、requirements.md は選択肢が選ばれたときに入力欄と例を実際に提示する振る舞い（画面側の実装）を `issue-request` に渡しており、本書の受け入れ基準は「定義できる」「参照できる形で保存する」までで、順番に表示されることそのものを判定する基準が無い。REQ-035 の表示の振る舞いがどちらの feature の受け入れ基準でも検証されない状態になっている |\n| 2 | ② | 受け入れ基準 1.1 | 1.1 は画面ID・PGID の採番形式（`GWTG` + 3 桁 / `PWTGO` + 3 桁）という判定できる部分に加えて、「採番の具体値と、画面を何本のプログラムに分割するかは基本設計で確定する」という判定対象でない説明文を同じ番号付きの基準の中に含んでいる。また「画面を新規に作成し」は開発で作るものを述べているだけで、外から見て YES / NO を判定できる応答・拒否・状態変化になっていない |\n| 3 | ② | 受け入れ基準 2.2・2.3・3.3・3.4・3.6（前段） | 判定基準が「基本設計で洗い出した内容／確定した構成／確定した内容に従わなければならない」だけで、何を満たせば合格かがこの文書の中に書かれていない（未確定事項 ②・③・④・⑤・⑥ に委ねている）。requirements.md 単体では合否を判定できない |\n| 4 | ② | 受け入れ基準 2.1・3.2・3.5 | 判定の対象が未定義で、観測可能な合否を定められない。2.1 は「26 フォームに相当する設定項目」の中身が未確定（未確定事項 ②）のため、何を設定できれば合格かを判定できない。3.2 は「順番に提示されるという振る舞いを…定義できるようにしなければならない」とするが、順序の持ち方を本基準では確定させないとしており、何が定義できれば満たすのかが書かれていない。3.5 は「チュートリアルから参照できる形で保存しなければならない」の「参照できる形」が定義されておらず、保存結果のどの状態を見れば合格かを第三者が判定できない |\n| 5 | ② | 要件 2（現行の設定用ウインドウ 26 フォーム相当の設定項目） | 設定の登録・変更・削除という入力を受けて状態を変える要件だが、境界値のACが無い。1.5 は入力チェックエラー時の再表示を一般的に定めるだけで、設定項目の件数・桁数などの上限・下限や空の場合の応答が定められていない |\n| 6 | ② | 要件 3（選択肢に応じた入力欄と例の順次表示の定義） | 選択肢・入力欄・例とその対応を定義させる要件だが、異常系・境界値のACが無い。対応する入力欄・例を持たない選択肢の定義、同じ順番の重複や順番の欠番、選択肢・入力欄・例の件数や例の文言の長さの上限を超えた場合の応答が定められていない |\n| 7 | ② | 受け入れ基準 1.2・1.3・1.4 ／ steering/security.md `#### 認証フロー`・`### 認可`・`#### 所有権・エンティティ境界` ／ requirements.md `## 非機能要件` セキュリティ行 | 誤配置: どの機能にも適用される `security.md` の横断方針（未認証時のログイン画面への遷移、機能IDに対する権限が無い場合のエラー表示、検索・更新の `WHERE` への会社コードの付与）を、この feature 固有の要素を加えずに機能要件のACとして書き直している。同じ内容が `## 非機能要件` のセキュリティ行にも書かれている |\n| 8 | ② | `## 概要（Introduction）` 第 3 段落「`issue-request`（優先度 4）…優先度 3 に置かれている」 ／ .aidd/feature-list.md `## フィーチャー一覧` 表・`**本プロジェクトでの算出根拠**` 表 | 根拠なし: feature-list では本 feature（`issue-request-tutorial`）の優先度は 2、`issue-request` の優先度は 3 であり、本文の「`issue-request`（優先度 4）」「優先度 3 に置かれている」という値に対応する記述が根拠のどこにも無い（優先度を置く理由の文は feature-list の算出根拠と同じ内容） |\n| 9 | ② | `## 前提と依存（Dependencies / Assumptions）` 未確定事項（冒頭の文） | 根拠の飛躍: 「次の 8 件は いずれも基本設計で確定する（REQ-010。…人間が確定 / 2026-09-11）」とあるが、REQ-010 が基本設計に委ねているのはプログラムの分割と画面・帳票・バッチの構成だけで、選択肢の種類と入力欄・例の対応（④）、表示順序の決まり方（⑤）、適用範囲（⑥）、変更履歴の要否（⑦）、削除の方式（⑧）まで基本設計に回す根拠にはならない。人間の確定（2026-09-11）は指定された根拠に含まれず、追跡できない |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- #1: 人間による確認（REQ-035 の表示の振る舞いを Phase 3 の `.aidd/feature-list.md` で `issue-request` にも割り当てるのか、本 requirements.md 側で表示の受け入れ基準を持つのかを、検査側では決められない）\n\n**判断の選択肢**（指摘ごとに 1 つ選ぶ）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n\n回答例: `1:A / 2:C 既存システムの制約で変更できない / 3:D 次回レビューまで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。",
+          "id": "a0f7bc27ebd94b968c90520a7f9b4afc"
+        },
+        "result": "ok",
+        "output": {
+          "status": "wait",
+          "allowed_actions": [
+            "decision",
+            "decisions",
+            "resolve",
+            "repair"
+          ],
+          "review_context": {
+            "root": "C:\\project\\Wing",
+            "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+            "call": "requirements-authoring-revise",
+            "event": "requirements-authoring-revise",
+            "item": "issue-request-tutorial",
+            "dispatch_id": "a0f7bc27ebd94b968c90520a7f9b4afc",
+            "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+            "scope": "feature:issue-request-tutorial",
+            "run": 1,
+            "snapshot": "9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983",
+            "record_hash": "95e27249bdc133cc032a281aaa4017d4e5518bc7bbdb663f3b33c5612afa8ab6"
+          },
+          "review": [
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 1,
+              "current": true,
+              "decision": "差戻し",
+              "reason": "Phase 3 feature-list へ差戻し。人間確定（2026-09-29）: チュートリアル（WTG081）は発行依頼書画面のボタンから開くポップアップで、契約種別→局種別→設置設備…と選択に応じて画面を順に表示し、選んだ値を発行依頼書画面の項目に設定する。設定内容を定義・保存する管理画面ではなく、保存用テーブルは持たない。REQ-035 の表示の振る舞いは本 feature が持ち、issue-request はボタンと値の受け取りを持つ。feature-list の目的・算出根拠を直してから requirements を作り直す",
+              "open": true,
+              "resolved": false,
+              "description": "ID対応あり・内容未充足（REQ-035）: REQ-035「チュートリアルでは、選択肢により順番に入力欄と例が表示される」は feature-list で本 feature だけに割り当てられており、`issue-request` の `対応要求ID` には含まれていない。一方、requirements.md は選択肢が選ばれたときに入力欄と例を実際に提示する振る舞い（画面側の実装）を `issue-request` に渡しており、本書の受け入れ基準は「定義できる」「参照できる形で保存する」までで、順番に表示されることそのものを判定する基準が無い。REQ-035 の表示の振る舞いがどちらの feature の受け入れ基準でも検証されない状態になっている",
+              "location": "specs/issue-request-tutorial/requirements.md 要件 3（受け入れ基準 3.1〜3.5）・`## スコープの境界（Boundary Context）` Out of Scope（発行依頼書登録変更画面への組み込み）・Adjacent（`issue-request`） ／ .aidd/feature-list.md `issue-request-tutorial` 行・`issue-request` 行の `対応要求ID` ／ .aidd/requirement-list.md REQ-035"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 2,
+              "current": true,
+              "decision": "未対応",
+              "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する",
+              "open": false,
+              "resolved": false,
+              "description": "1.1 は画面ID・PGID の採番形式（`GWTG` + 3 桁 / `PWTGO` + 3 桁）という判定できる部分に加えて、「採番の具体値と、画面を何本のプログラムに分割するかは基本設計で確定する」という判定対象でない説明文を同じ番号付きの基準の中に含んでいる。また「画面を新規に作成し」は開発で作るものを述べているだけで、外から見て YES / NO を判定できる応答・拒否・状態変化になっていない",
+              "location": "受け入れ基準 1.1"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 3,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "判定基準が「基本設計で洗い出した内容／確定した構成／確定した内容に従わなければならない」だけで、何を満たせば合格かがこの文書の中に書かれていない（未確定事項 ②・③・④・⑤・⑥ に委ねている）。requirements.md 単体では合否を判定できない",
+              "location": "受け入れ基準 2.2・2.3・3.3・3.4・3.6（前段）"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 4,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "判定の対象が未定義で、観測可能な合否を定められない。2.1 は「26 フォームに相当する設定項目」の中身が未確定（未確定事項 ②）のため、何を設定できれば合格かを判定できない。3.2 は「順番に提示されるという振る舞いを…定義できるようにしなければならない」とするが、順序の持ち方を本基準では確定させないとしており、何が定義できれば満たすのかが書かれていない。3.5 は「チュートリアルから参照できる形で保存しなければならない」の「参照できる形」が定義されておらず、保存結果のどの状態を見れば合格かを第三者が判定できない",
+              "location": "受け入れ基準 2.1・3.2・3.5"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 5,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "設定の登録・変更・削除という入力を受けて状態を変える要件だが、境界値のACが無い。1.5 は入力チェックエラー時の再表示を一般的に定めるだけで、設定項目の件数・桁数などの上限・下限や空の場合の応答が定められていない",
+              "location": "要件 2（現行の設定用ウインドウ 26 フォーム相当の設定項目）"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 6,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "選択肢・入力欄・例とその対応を定義させる要件だが、異常系・境界値のACが無い。対応する入力欄・例を持たない選択肢の定義、同じ順番の重複や順番の欠番、選択肢・入力欄・例の件数や例の文言の長さの上限を超えた場合の応答が定められていない",
+              "location": "要件 3（選択肢に応じた入力欄と例の順次表示の定義）"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 7,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "誤配置: どの機能にも適用される `security.md` の横断方針（未認証時のログイン画面への遷移、機能IDに対する権限が無い場合のエラー表示、検索・更新の `WHERE` への会社コードの付与）を、この feature 固有の要素を加えずに機能要件のACとして書き直している。同じ内容が `## 非機能要件` のセキュリティ行にも書かれている",
+              "location": "受け入れ基準 1.2・1.3・1.4 ／ steering/security.md `#### 認証フロー`・`### 認可`・`#### 所有権・エンティティ境界` ／ requirements.md `## 非機能要件` セキュリティ行"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 8,
+              "current": true,
+              "decision": "修正",
+              "reason": "優先度の値を feature-list（本 feature 2、issue-request 3）に合わせる",
+              "open": true,
+              "resolved": false,
+              "description": "根拠なし: feature-list では本 feature（`issue-request-tutorial`）の優先度は 2、`issue-request` の優先度は 3 であり、本文の「`issue-request`（優先度 4）」「優先度 3 に置かれている」という値に対応する記述が根拠のどこにも無い（優先度を置く理由の文は feature-list の算出根拠と同じ内容）",
+              "location": "`## 概要（Introduction）` 第 3 段落「`issue-request`（優先度 4）…優先度 3 に置かれている」 ／ .aidd/feature-list.md `## フィーチャー一覧` 表・`**本プロジェクトでの算出根拠**` 表"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 9,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "根拠の飛躍: 「次の 8 件は いずれも基本設計で確定する（REQ-010。…人間が確定 / 2026-09-11）」とあるが、REQ-010 が基本設計に委ねているのはプログラムの分割と画面・帳票・バッチの構成だけで、選択肢の種類と入力欄・例の対応（④）、表示順序の決まり方（⑤）、適用範囲（⑥）、変更履歴の要否（⑦）、削除の方式（⑧）まで基本設計に回す根拠にはならない。人間の確定（2026-09-11）は指定された根拠に含まれず、追跡できない",
+              "location": "`## 前提と依存（Dependencies / Assumptions）` 未確定事項（冒頭の文）"
+            }
+          ],
+          "next_action": "検査結果を確認し、指摘ごとに A〜D で判断を回答してください（判断が揃い修正が無ければ承認者名を回答）。",
+          "operation_id": "8dc02b5e-3c98-43eb-be5e-cda0d9fb7a50",
+          "operation_applied": true
+        }
+      },
+      "87db4984-8082-4ac7-a4ce-e7a0758582b8": {
+        "status": "finished",
+        "request": {
+          "kind": "respond",
+          "payload": {
+            "operation_id": "87db4984-8082-4ac7-a4ce-e7a0758582b8",
+            "action": "decision",
+            "expected": {
+              "root": "C:\\project\\Wing",
+              "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+              "call": "requirements-authoring-revise",
+              "event": "requirements-authoring-revise",
+              "item": "issue-request-tutorial",
+              "dispatch_id": "a0f7bc27ebd94b968c90520a7f9b4afc",
+              "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "snapshot": "9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983",
+              "record_hash": "95e27249bdc133cc032a281aaa4017d4e5518bc7bbdb663f3b33c5612afa8ab6"
+            },
+            "data": {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 3,
+              "decision": "未対応",
+              "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する"
+            }
+          },
+          "actor": "Junichi Noumi",
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial",
+          "root": "C:\\project\\Wing",
+          "state": "C:\\project\\Wing\\.aidd\\phase-progress.json"
+        },
+        "dispatch": {
+          "call": "requirements-authoring-revise",
+          "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial",
+          "status": "wait",
+          "config_sha256": "bd35b4971bac9839d212c0b1bd5e5441a000c15bc4e8acdacc1d80a0b0c0cd37",
+          "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review\", \"snapshot\": \"9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983\", \"run\": 1, \"inspection_hash\": \"e516e28becfafb6d83e3f168c2c47ca2ddce3187db9c7f8bf84d2221de090e27\"}\n**Phase 4（requirements 作成）の品質ゲートを実行しました。** 指摘ごとに判断を選んでください。\n\n**対象**: `specs/issue-request-tutorial/requirements.md`（スコープ: 成果物単位（issue-request-tutorial） / 1 回目）\n**実行した層**: ① / ②\n\n**指摘**（ゲート記録 `.aidd/gates/phase-4-requirements.md` の当該実行分）\n\n| # | 層 | 対象箇所 | 指摘内容 |\n|---|---|---|---|\n| 1 | ② | specs/issue-request-tutorial/requirements.md 要件 3（受け入れ基準 3.1〜3.5）・`## スコープの境界（Boundary Context）` Out of Scope（発行依頼書登録変更画面への組み込み）・Adjacent（`issue-request`） ／ .aidd/feature-list.md `issue-request-tutorial` 行・`issue-request` 行の `対応要求ID` ／ .aidd/requirement-list.md REQ-035 | ID対応あり・内容未充足（REQ-035）: REQ-035「チュートリアルでは、選択肢により順番に入力欄と例が表示される」は feature-list で本 feature だけに割り当てられており、`issue-request` の `対応要求ID` には含まれていない。一方、requirements.md は選択肢が選ばれたときに入力欄と例を実際に提示する振る舞い（画面側の実装）を `issue-request` に渡しており、本書の受け入れ基準は「定義できる」「参照できる形で保存する」までで、順番に表示されることそのものを判定する基準が無い。REQ-035 の表示の振る舞いがどちらの feature の受け入れ基準でも検証されない状態になっている |\n| 2 | ② | 受け入れ基準 1.1 | 1.1 は画面ID・PGID の採番形式（`GWTG` + 3 桁 / `PWTGO` + 3 桁）という判定できる部分に加えて、「採番の具体値と、画面を何本のプログラムに分割するかは基本設計で確定する」という判定対象でない説明文を同じ番号付きの基準の中に含んでいる。また「画面を新規に作成し」は開発で作るものを述べているだけで、外から見て YES / NO を判定できる応答・拒否・状態変化になっていない |\n| 3 | ② | 受け入れ基準 2.2・2.3・3.3・3.4・3.6（前段） | 判定基準が「基本設計で洗い出した内容／確定した構成／確定した内容に従わなければならない」だけで、何を満たせば合格かがこの文書の中に書かれていない（未確定事項 ②・③・④・⑤・⑥ に委ねている）。requirements.md 単体では合否を判定できない |\n| 4 | ② | 受け入れ基準 2.1・3.2・3.5 | 判定の対象が未定義で、観測可能な合否を定められない。2.1 は「26 フォームに相当する設定項目」の中身が未確定（未確定事項 ②）のため、何を設定できれば合格かを判定できない。3.2 は「順番に提示されるという振る舞いを…定義できるようにしなければならない」とするが、順序の持ち方を本基準では確定させないとしており、何が定義できれば満たすのかが書かれていない。3.5 は「チュートリアルから参照できる形で保存しなければならない」の「参照できる形」が定義されておらず、保存結果のどの状態を見れば合格かを第三者が判定できない |\n| 5 | ② | 要件 2（現行の設定用ウインドウ 26 フォーム相当の設定項目） | 設定の登録・変更・削除という入力を受けて状態を変える要件だが、境界値のACが無い。1.5 は入力チェックエラー時の再表示を一般的に定めるだけで、設定項目の件数・桁数などの上限・下限や空の場合の応答が定められていない |\n| 6 | ② | 要件 3（選択肢に応じた入力欄と例の順次表示の定義） | 選択肢・入力欄・例とその対応を定義させる要件だが、異常系・境界値のACが無い。対応する入力欄・例を持たない選択肢の定義、同じ順番の重複や順番の欠番、選択肢・入力欄・例の件数や例の文言の長さの上限を超えた場合の応答が定められていない |\n| 7 | ② | 受け入れ基準 1.2・1.3・1.4 ／ steering/security.md `#### 認証フロー`・`### 認可`・`#### 所有権・エンティティ境界` ／ requirements.md `## 非機能要件` セキュリティ行 | 誤配置: どの機能にも適用される `security.md` の横断方針（未認証時のログイン画面への遷移、機能IDに対する権限が無い場合のエラー表示、検索・更新の `WHERE` への会社コードの付与）を、この feature 固有の要素を加えずに機能要件のACとして書き直している。同じ内容が `## 非機能要件` のセキュリティ行にも書かれている |\n| 8 | ② | `## 概要（Introduction）` 第 3 段落「`issue-request`（優先度 4）…優先度 3 に置かれている」 ／ .aidd/feature-list.md `## フィーチャー一覧` 表・`**本プロジェクトでの算出根拠**` 表 | 根拠なし: feature-list では本 feature（`issue-request-tutorial`）の優先度は 2、`issue-request` の優先度は 3 であり、本文の「`issue-request`（優先度 4）」「優先度 3 に置かれている」という値に対応する記述が根拠のどこにも無い（優先度を置く理由の文は feature-list の算出根拠と同じ内容） |\n| 9 | ② | `## 前提と依存（Dependencies / Assumptions）` 未確定事項（冒頭の文） | 根拠の飛躍: 「次の 8 件は いずれも基本設計で確定する（REQ-010。…人間が確定 / 2026-09-11）」とあるが、REQ-010 が基本設計に委ねているのはプログラムの分割と画面・帳票・バッチの構成だけで、選択肢の種類と入力欄・例の対応（④）、表示順序の決まり方（⑤）、適用範囲（⑥）、変更履歴の要否（⑦）、削除の方式（⑧）まで基本設計に回す根拠にはならない。人間の確定（2026-09-11）は指定された根拠に含まれず、追跡できない |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- #1: 人間による確認（REQ-035 の表示の振る舞いを Phase 3 の `.aidd/feature-list.md` で `issue-request` にも割り当てるのか、本 requirements.md 側で表示の受け入れ基準を持つのかを、検査側では決められない）\n\n**判断の選択肢**（指摘ごとに 1 つ選ぶ）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n\n回答例: `1:A / 2:C 既存システムの制約で変更できない / 3:D 次回レビューまで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。",
+          "id": "a0f7bc27ebd94b968c90520a7f9b4afc"
+        },
+        "result": "ok",
+        "output": {
+          "status": "wait",
+          "allowed_actions": [
+            "decision",
+            "decisions",
+            "resolve",
+            "repair"
+          ],
+          "review_context": {
+            "root": "C:\\project\\Wing",
+            "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+            "call": "requirements-authoring-revise",
+            "event": "requirements-authoring-revise",
+            "item": "issue-request-tutorial",
+            "dispatch_id": "a0f7bc27ebd94b968c90520a7f9b4afc",
+            "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+            "scope": "feature:issue-request-tutorial",
+            "run": 1,
+            "snapshot": "9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983",
+            "record_hash": "02430fb5a80afe1293f542e5102d54873a536a3aae936f15640752d6501d4403"
+          },
+          "review": [
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 1,
+              "current": true,
+              "decision": "差戻し",
+              "reason": "Phase 3 feature-list へ差戻し。人間確定（2026-09-29）: チュートリアル（WTG081）は発行依頼書画面のボタンから開くポップアップで、契約種別→局種別→設置設備…と選択に応じて画面を順に表示し、選んだ値を発行依頼書画面の項目に設定する。設定内容を定義・保存する管理画面ではなく、保存用テーブルは持たない。REQ-035 の表示の振る舞いは本 feature が持ち、issue-request はボタンと値の受け取りを持つ。feature-list の目的・算出根拠を直してから requirements を作り直す",
+              "open": true,
+              "resolved": false,
+              "description": "ID対応あり・内容未充足（REQ-035）: REQ-035「チュートリアルでは、選択肢により順番に入力欄と例が表示される」は feature-list で本 feature だけに割り当てられており、`issue-request` の `対応要求ID` には含まれていない。一方、requirements.md は選択肢が選ばれたときに入力欄と例を実際に提示する振る舞い（画面側の実装）を `issue-request` に渡しており、本書の受け入れ基準は「定義できる」「参照できる形で保存する」までで、順番に表示されることそのものを判定する基準が無い。REQ-035 の表示の振る舞いがどちらの feature の受け入れ基準でも検証されない状態になっている",
+              "location": "specs/issue-request-tutorial/requirements.md 要件 3（受け入れ基準 3.1〜3.5）・`## スコープの境界（Boundary Context）` Out of Scope（発行依頼書登録変更画面への組み込み）・Adjacent（`issue-request`） ／ .aidd/feature-list.md `issue-request-tutorial` 行・`issue-request` 行の `対応要求ID` ／ .aidd/requirement-list.md REQ-035"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 2,
+              "current": true,
+              "decision": "未対応",
+              "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する",
+              "open": false,
+              "resolved": false,
+              "description": "1.1 は画面ID・PGID の採番形式（`GWTG` + 3 桁 / `PWTGO` + 3 桁）という判定できる部分に加えて、「採番の具体値と、画面を何本のプログラムに分割するかは基本設計で確定する」という判定対象でない説明文を同じ番号付きの基準の中に含んでいる。また「画面を新規に作成し」は開発で作るものを述べているだけで、外から見て YES / NO を判定できる応答・拒否・状態変化になっていない",
+              "location": "受け入れ基準 1.1"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 3,
+              "current": true,
+              "decision": "未対応",
+              "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する",
+              "open": false,
+              "resolved": false,
+              "description": "判定基準が「基本設計で洗い出した内容／確定した構成／確定した内容に従わなければならない」だけで、何を満たせば合格かがこの文書の中に書かれていない（未確定事項 ②・③・④・⑤・⑥ に委ねている）。requirements.md 単体では合否を判定できない",
+              "location": "受け入れ基準 2.2・2.3・3.3・3.4・3.6（前段）"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 4,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "判定の対象が未定義で、観測可能な合否を定められない。2.1 は「26 フォームに相当する設定項目」の中身が未確定（未確定事項 ②）のため、何を設定できれば合格かを判定できない。3.2 は「順番に提示されるという振る舞いを…定義できるようにしなければならない」とするが、順序の持ち方を本基準では確定させないとしており、何が定義できれば満たすのかが書かれていない。3.5 は「チュートリアルから参照できる形で保存しなければならない」の「参照できる形」が定義されておらず、保存結果のどの状態を見れば合格かを第三者が判定できない",
+              "location": "受け入れ基準 2.1・3.2・3.5"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 5,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "設定の登録・変更・削除という入力を受けて状態を変える要件だが、境界値のACが無い。1.5 は入力チェックエラー時の再表示を一般的に定めるだけで、設定項目の件数・桁数などの上限・下限や空の場合の応答が定められていない",
+              "location": "要件 2（現行の設定用ウインドウ 26 フォーム相当の設定項目）"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 6,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "選択肢・入力欄・例とその対応を定義させる要件だが、異常系・境界値のACが無い。対応する入力欄・例を持たない選択肢の定義、同じ順番の重複や順番の欠番、選択肢・入力欄・例の件数や例の文言の長さの上限を超えた場合の応答が定められていない",
+              "location": "要件 3（選択肢に応じた入力欄と例の順次表示の定義）"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 7,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "誤配置: どの機能にも適用される `security.md` の横断方針（未認証時のログイン画面への遷移、機能IDに対する権限が無い場合のエラー表示、検索・更新の `WHERE` への会社コードの付与）を、この feature 固有の要素を加えずに機能要件のACとして書き直している。同じ内容が `## 非機能要件` のセキュリティ行にも書かれている",
+              "location": "受け入れ基準 1.2・1.3・1.4 ／ steering/security.md `#### 認証フロー`・`### 認可`・`#### 所有権・エンティティ境界` ／ requirements.md `## 非機能要件` セキュリティ行"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 8,
+              "current": true,
+              "decision": "修正",
+              "reason": "優先度の値を feature-list（本 feature 2、issue-request 3）に合わせる",
+              "open": true,
+              "resolved": false,
+              "description": "根拠なし: feature-list では本 feature（`issue-request-tutorial`）の優先度は 2、`issue-request` の優先度は 3 であり、本文の「`issue-request`（優先度 4）」「優先度 3 に置かれている」という値に対応する記述が根拠のどこにも無い（優先度を置く理由の文は feature-list の算出根拠と同じ内容）",
+              "location": "`## 概要（Introduction）` 第 3 段落「`issue-request`（優先度 4）…優先度 3 に置かれている」 ／ .aidd/feature-list.md `## フィーチャー一覧` 表・`**本プロジェクトでの算出根拠**` 表"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 9,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "根拠の飛躍: 「次の 8 件は いずれも基本設計で確定する（REQ-010。…人間が確定 / 2026-09-11）」とあるが、REQ-010 が基本設計に委ねているのはプログラムの分割と画面・帳票・バッチの構成だけで、選択肢の種類と入力欄・例の対応（④）、表示順序の決まり方（⑤）、適用範囲（⑥）、変更履歴の要否（⑦）、削除の方式（⑧）まで基本設計に回す根拠にはならない。人間の確定（2026-09-11）は指定された根拠に含まれず、追跡できない",
+              "location": "`## 前提と依存（Dependencies / Assumptions）` 未確定事項（冒頭の文）"
+            }
+          ],
+          "next_action": "検査結果を確認し、指摘ごとに A〜D で判断を回答してください（判断が揃い修正が無ければ承認者名を回答）。",
+          "operation_id": "87db4984-8082-4ac7-a4ce-e7a0758582b8",
+          "operation_applied": true
+        }
+      },
+      "0c16d1dc-9ee6-4674-bbc0-400fcab9cdf9": {
+        "status": "finished",
+        "request": {
+          "kind": "respond",
+          "payload": {
+            "operation_id": "0c16d1dc-9ee6-4674-bbc0-400fcab9cdf9",
+            "action": "decision",
+            "expected": {
+              "root": "C:\\project\\Wing",
+              "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+              "call": "requirements-authoring-revise",
+              "event": "requirements-authoring-revise",
+              "item": "issue-request-tutorial",
+              "dispatch_id": "a0f7bc27ebd94b968c90520a7f9b4afc",
+              "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "snapshot": "9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983",
+              "record_hash": "02430fb5a80afe1293f542e5102d54873a536a3aae936f15640752d6501d4403"
+            },
+            "data": {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 4,
+              "decision": "未対応",
+              "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する"
+            }
+          },
+          "actor": "Junichi Noumi",
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial",
+          "root": "C:\\project\\Wing",
+          "state": "C:\\project\\Wing\\.aidd\\phase-progress.json"
+        },
+        "dispatch": {
+          "call": "requirements-authoring-revise",
+          "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial",
+          "status": "wait",
+          "config_sha256": "bd35b4971bac9839d212c0b1bd5e5441a000c15bc4e8acdacc1d80a0b0c0cd37",
+          "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review\", \"snapshot\": \"9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983\", \"run\": 1, \"inspection_hash\": \"e516e28becfafb6d83e3f168c2c47ca2ddce3187db9c7f8bf84d2221de090e27\"}\n**Phase 4（requirements 作成）の品質ゲートを実行しました。** 指摘ごとに判断を選んでください。\n\n**対象**: `specs/issue-request-tutorial/requirements.md`（スコープ: 成果物単位（issue-request-tutorial） / 1 回目）\n**実行した層**: ① / ②\n\n**指摘**（ゲート記録 `.aidd/gates/phase-4-requirements.md` の当該実行分）\n\n| # | 層 | 対象箇所 | 指摘内容 |\n|---|---|---|---|\n| 1 | ② | specs/issue-request-tutorial/requirements.md 要件 3（受け入れ基準 3.1〜3.5）・`## スコープの境界（Boundary Context）` Out of Scope（発行依頼書登録変更画面への組み込み）・Adjacent（`issue-request`） ／ .aidd/feature-list.md `issue-request-tutorial` 行・`issue-request` 行の `対応要求ID` ／ .aidd/requirement-list.md REQ-035 | ID対応あり・内容未充足（REQ-035）: REQ-035「チュートリアルでは、選択肢により順番に入力欄と例が表示される」は feature-list で本 feature だけに割り当てられており、`issue-request` の `対応要求ID` には含まれていない。一方、requirements.md は選択肢が選ばれたときに入力欄と例を実際に提示する振る舞い（画面側の実装）を `issue-request` に渡しており、本書の受け入れ基準は「定義できる」「参照できる形で保存する」までで、順番に表示されることそのものを判定する基準が無い。REQ-035 の表示の振る舞いがどちらの feature の受け入れ基準でも検証されない状態になっている |\n| 2 | ② | 受け入れ基準 1.1 | 1.1 は画面ID・PGID の採番形式（`GWTG` + 3 桁 / `PWTGO` + 3 桁）という判定できる部分に加えて、「採番の具体値と、画面を何本のプログラムに分割するかは基本設計で確定する」という判定対象でない説明文を同じ番号付きの基準の中に含んでいる。また「画面を新規に作成し」は開発で作るものを述べているだけで、外から見て YES / NO を判定できる応答・拒否・状態変化になっていない |\n| 3 | ② | 受け入れ基準 2.2・2.3・3.3・3.4・3.6（前段） | 判定基準が「基本設計で洗い出した内容／確定した構成／確定した内容に従わなければならない」だけで、何を満たせば合格かがこの文書の中に書かれていない（未確定事項 ②・③・④・⑤・⑥ に委ねている）。requirements.md 単体では合否を判定できない |\n| 4 | ② | 受け入れ基準 2.1・3.2・3.5 | 判定の対象が未定義で、観測可能な合否を定められない。2.1 は「26 フォームに相当する設定項目」の中身が未確定（未確定事項 ②）のため、何を設定できれば合格かを判定できない。3.2 は「順番に提示されるという振る舞いを…定義できるようにしなければならない」とするが、順序の持ち方を本基準では確定させないとしており、何が定義できれば満たすのかが書かれていない。3.5 は「チュートリアルから参照できる形で保存しなければならない」の「参照できる形」が定義されておらず、保存結果のどの状態を見れば合格かを第三者が判定できない |\n| 5 | ② | 要件 2（現行の設定用ウインドウ 26 フォーム相当の設定項目） | 設定の登録・変更・削除という入力を受けて状態を変える要件だが、境界値のACが無い。1.5 は入力チェックエラー時の再表示を一般的に定めるだけで、設定項目の件数・桁数などの上限・下限や空の場合の応答が定められていない |\n| 6 | ② | 要件 3（選択肢に応じた入力欄と例の順次表示の定義） | 選択肢・入力欄・例とその対応を定義させる要件だが、異常系・境界値のACが無い。対応する入力欄・例を持たない選択肢の定義、同じ順番の重複や順番の欠番、選択肢・入力欄・例の件数や例の文言の長さの上限を超えた場合の応答が定められていない |\n| 7 | ② | 受け入れ基準 1.2・1.3・1.4 ／ steering/security.md `#### 認証フロー`・`### 認可`・`#### 所有権・エンティティ境界` ／ requirements.md `## 非機能要件` セキュリティ行 | 誤配置: どの機能にも適用される `security.md` の横断方針（未認証時のログイン画面への遷移、機能IDに対する権限が無い場合のエラー表示、検索・更新の `WHERE` への会社コードの付与）を、この feature 固有の要素を加えずに機能要件のACとして書き直している。同じ内容が `## 非機能要件` のセキュリティ行にも書かれている |\n| 8 | ② | `## 概要（Introduction）` 第 3 段落「`issue-request`（優先度 4）…優先度 3 に置かれている」 ／ .aidd/feature-list.md `## フィーチャー一覧` 表・`**本プロジェクトでの算出根拠**` 表 | 根拠なし: feature-list では本 feature（`issue-request-tutorial`）の優先度は 2、`issue-request` の優先度は 3 であり、本文の「`issue-request`（優先度 4）」「優先度 3 に置かれている」という値に対応する記述が根拠のどこにも無い（優先度を置く理由の文は feature-list の算出根拠と同じ内容） |\n| 9 | ② | `## 前提と依存（Dependencies / Assumptions）` 未確定事項（冒頭の文） | 根拠の飛躍: 「次の 8 件は いずれも基本設計で確定する（REQ-010。…人間が確定 / 2026-09-11）」とあるが、REQ-010 が基本設計に委ねているのはプログラムの分割と画面・帳票・バッチの構成だけで、選択肢の種類と入力欄・例の対応（④）、表示順序の決まり方（⑤）、適用範囲（⑥）、変更履歴の要否（⑦）、削除の方式（⑧）まで基本設計に回す根拠にはならない。人間の確定（2026-09-11）は指定された根拠に含まれず、追跡できない |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- #1: 人間による確認（REQ-035 の表示の振る舞いを Phase 3 の `.aidd/feature-list.md` で `issue-request` にも割り当てるのか、本 requirements.md 側で表示の受け入れ基準を持つのかを、検査側では決められない）\n\n**判断の選択肢**（指摘ごとに 1 つ選ぶ）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n\n回答例: `1:A / 2:C 既存システムの制約で変更できない / 3:D 次回レビューまで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。",
+          "id": "a0f7bc27ebd94b968c90520a7f9b4afc"
+        },
+        "result": "ok",
+        "output": {
+          "status": "wait",
+          "allowed_actions": [
+            "decision",
+            "decisions",
+            "resolve",
+            "repair"
+          ],
+          "review_context": {
+            "root": "C:\\project\\Wing",
+            "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+            "call": "requirements-authoring-revise",
+            "event": "requirements-authoring-revise",
+            "item": "issue-request-tutorial",
+            "dispatch_id": "a0f7bc27ebd94b968c90520a7f9b4afc",
+            "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+            "scope": "feature:issue-request-tutorial",
+            "run": 1,
+            "snapshot": "9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983",
+            "record_hash": "746c8886284138bbbc9d151c1d53d32ef51d31cc16405bd5f9d007a3bf3c0be4"
+          },
+          "review": [
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 1,
+              "current": true,
+              "decision": "差戻し",
+              "reason": "Phase 3 feature-list へ差戻し。人間確定（2026-09-29）: チュートリアル（WTG081）は発行依頼書画面のボタンから開くポップアップで、契約種別→局種別→設置設備…と選択に応じて画面を順に表示し、選んだ値を発行依頼書画面の項目に設定する。設定内容を定義・保存する管理画面ではなく、保存用テーブルは持たない。REQ-035 の表示の振る舞いは本 feature が持ち、issue-request はボタンと値の受け取りを持つ。feature-list の目的・算出根拠を直してから requirements を作り直す",
+              "open": true,
+              "resolved": false,
+              "description": "ID対応あり・内容未充足（REQ-035）: REQ-035「チュートリアルでは、選択肢により順番に入力欄と例が表示される」は feature-list で本 feature だけに割り当てられており、`issue-request` の `対応要求ID` には含まれていない。一方、requirements.md は選択肢が選ばれたときに入力欄と例を実際に提示する振る舞い（画面側の実装）を `issue-request` に渡しており、本書の受け入れ基準は「定義できる」「参照できる形で保存する」までで、順番に表示されることそのものを判定する基準が無い。REQ-035 の表示の振る舞いがどちらの feature の受け入れ基準でも検証されない状態になっている",
+              "location": "specs/issue-request-tutorial/requirements.md 要件 3（受け入れ基準 3.1〜3.5）・`## スコープの境界（Boundary Context）` Out of Scope（発行依頼書登録変更画面への組み込み）・Adjacent（`issue-request`） ／ .aidd/feature-list.md `issue-request-tutorial` 行・`issue-request` 行の `対応要求ID` ／ .aidd/requirement-list.md REQ-035"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 2,
+              "current": true,
+              "decision": "未対応",
+              "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する",
+              "open": false,
+              "resolved": false,
+              "description": "1.1 は画面ID・PGID の採番形式（`GWTG` + 3 桁 / `PWTGO` + 3 桁）という判定できる部分に加えて、「採番の具体値と、画面を何本のプログラムに分割するかは基本設計で確定する」という判定対象でない説明文を同じ番号付きの基準の中に含んでいる。また「画面を新規に作成し」は開発で作るものを述べているだけで、外から見て YES / NO を判定できる応答・拒否・状態変化になっていない",
+              "location": "受け入れ基準 1.1"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 3,
+              "current": true,
+              "decision": "未対応",
+              "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する",
+              "open": false,
+              "resolved": false,
+              "description": "判定基準が「基本設計で洗い出した内容／確定した構成／確定した内容に従わなければならない」だけで、何を満たせば合格かがこの文書の中に書かれていない（未確定事項 ②・③・④・⑤・⑥ に委ねている）。requirements.md 単体では合否を判定できない",
+              "location": "受け入れ基準 2.2・2.3・3.3・3.4・3.6（前段）"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 4,
+              "current": true,
+              "decision": "未対応",
+              "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する",
+              "open": false,
+              "resolved": false,
+              "description": "判定の対象が未定義で、観測可能な合否を定められない。2.1 は「26 フォームに相当する設定項目」の中身が未確定（未確定事項 ②）のため、何を設定できれば合格かを判定できない。3.2 は「順番に提示されるという振る舞いを…定義できるようにしなければならない」とするが、順序の持ち方を本基準では確定させないとしており、何が定義できれば満たすのかが書かれていない。3.5 は「チュートリアルから参照できる形で保存しなければならない」の「参照できる形」が定義されておらず、保存結果のどの状態を見れば合格かを第三者が判定できない",
+              "location": "受け入れ基準 2.1・3.2・3.5"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 5,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "設定の登録・変更・削除という入力を受けて状態を変える要件だが、境界値のACが無い。1.5 は入力チェックエラー時の再表示を一般的に定めるだけで、設定項目の件数・桁数などの上限・下限や空の場合の応答が定められていない",
+              "location": "要件 2（現行の設定用ウインドウ 26 フォーム相当の設定項目）"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 6,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "選択肢・入力欄・例とその対応を定義させる要件だが、異常系・境界値のACが無い。対応する入力欄・例を持たない選択肢の定義、同じ順番の重複や順番の欠番、選択肢・入力欄・例の件数や例の文言の長さの上限を超えた場合の応答が定められていない",
+              "location": "要件 3（選択肢に応じた入力欄と例の順次表示の定義）"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 7,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "誤配置: どの機能にも適用される `security.md` の横断方針（未認証時のログイン画面への遷移、機能IDに対する権限が無い場合のエラー表示、検索・更新の `WHERE` への会社コードの付与）を、この feature 固有の要素を加えずに機能要件のACとして書き直している。同じ内容が `## 非機能要件` のセキュリティ行にも書かれている",
+              "location": "受け入れ基準 1.2・1.3・1.4 ／ steering/security.md `#### 認証フロー`・`### 認可`・`#### 所有権・エンティティ境界` ／ requirements.md `## 非機能要件` セキュリティ行"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 8,
+              "current": true,
+              "decision": "修正",
+              "reason": "優先度の値を feature-list（本 feature 2、issue-request 3）に合わせる",
+              "open": true,
+              "resolved": false,
+              "description": "根拠なし: feature-list では本 feature（`issue-request-tutorial`）の優先度は 2、`issue-request` の優先度は 3 であり、本文の「`issue-request`（優先度 4）」「優先度 3 に置かれている」という値に対応する記述が根拠のどこにも無い（優先度を置く理由の文は feature-list の算出根拠と同じ内容）",
+              "location": "`## 概要（Introduction）` 第 3 段落「`issue-request`（優先度 4）…優先度 3 に置かれている」 ／ .aidd/feature-list.md `## フィーチャー一覧` 表・`**本プロジェクトでの算出根拠**` 表"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 9,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "根拠の飛躍: 「次の 8 件は いずれも基本設計で確定する（REQ-010。…人間が確定 / 2026-09-11）」とあるが、REQ-010 が基本設計に委ねているのはプログラムの分割と画面・帳票・バッチの構成だけで、選択肢の種類と入力欄・例の対応（④）、表示順序の決まり方（⑤）、適用範囲（⑥）、変更履歴の要否（⑦）、削除の方式（⑧）まで基本設計に回す根拠にはならない。人間の確定（2026-09-11）は指定された根拠に含まれず、追跡できない",
+              "location": "`## 前提と依存（Dependencies / Assumptions）` 未確定事項（冒頭の文）"
+            }
+          ],
+          "next_action": "検査結果を確認し、指摘ごとに A〜D で判断を回答してください（判断が揃い修正が無ければ承認者名を回答）。",
+          "operation_id": "0c16d1dc-9ee6-4674-bbc0-400fcab9cdf9",
+          "operation_applied": true
+        }
+      },
+      "9db507b9-0dc1-4397-859c-f52da4fd78b2": {
+        "status": "finished",
+        "request": {
+          "kind": "respond",
+          "payload": {
+            "operation_id": "9db507b9-0dc1-4397-859c-f52da4fd78b2",
+            "action": "decision",
+            "expected": {
+              "root": "C:\\project\\Wing",
+              "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+              "call": "requirements-authoring-revise",
+              "event": "requirements-authoring-revise",
+              "item": "issue-request-tutorial",
+              "dispatch_id": "a0f7bc27ebd94b968c90520a7f9b4afc",
+              "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "snapshot": "9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983",
+              "record_hash": "746c8886284138bbbc9d151c1d53d32ef51d31cc16405bd5f9d007a3bf3c0be4"
+            },
+            "data": {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 5,
+              "decision": "未対応",
+              "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する"
+            }
+          },
+          "actor": "Junichi Noumi",
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial",
+          "root": "C:\\project\\Wing",
+          "state": "C:\\project\\Wing\\.aidd\\phase-progress.json"
+        },
+        "dispatch": {
+          "call": "requirements-authoring-revise",
+          "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial",
+          "status": "wait",
+          "config_sha256": "bd35b4971bac9839d212c0b1bd5e5441a000c15bc4e8acdacc1d80a0b0c0cd37",
+          "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review\", \"snapshot\": \"9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983\", \"run\": 1, \"inspection_hash\": \"e516e28becfafb6d83e3f168c2c47ca2ddce3187db9c7f8bf84d2221de090e27\"}\n**Phase 4（requirements 作成）の品質ゲートを実行しました。** 指摘ごとに判断を選んでください。\n\n**対象**: `specs/issue-request-tutorial/requirements.md`（スコープ: 成果物単位（issue-request-tutorial） / 1 回目）\n**実行した層**: ① / ②\n\n**指摘**（ゲート記録 `.aidd/gates/phase-4-requirements.md` の当該実行分）\n\n| # | 層 | 対象箇所 | 指摘内容 |\n|---|---|---|---|\n| 1 | ② | specs/issue-request-tutorial/requirements.md 要件 3（受け入れ基準 3.1〜3.5）・`## スコープの境界（Boundary Context）` Out of Scope（発行依頼書登録変更画面への組み込み）・Adjacent（`issue-request`） ／ .aidd/feature-list.md `issue-request-tutorial` 行・`issue-request` 行の `対応要求ID` ／ .aidd/requirement-list.md REQ-035 | ID対応あり・内容未充足（REQ-035）: REQ-035「チュートリアルでは、選択肢により順番に入力欄と例が表示される」は feature-list で本 feature だけに割り当てられており、`issue-request` の `対応要求ID` には含まれていない。一方、requirements.md は選択肢が選ばれたときに入力欄と例を実際に提示する振る舞い（画面側の実装）を `issue-request` に渡しており、本書の受け入れ基準は「定義できる」「参照できる形で保存する」までで、順番に表示されることそのものを判定する基準が無い。REQ-035 の表示の振る舞いがどちらの feature の受け入れ基準でも検証されない状態になっている |\n| 2 | ② | 受け入れ基準 1.1 | 1.1 は画面ID・PGID の採番形式（`GWTG` + 3 桁 / `PWTGO` + 3 桁）という判定できる部分に加えて、「採番の具体値と、画面を何本のプログラムに分割するかは基本設計で確定する」という判定対象でない説明文を同じ番号付きの基準の中に含んでいる。また「画面を新規に作成し」は開発で作るものを述べているだけで、外から見て YES / NO を判定できる応答・拒否・状態変化になっていない |\n| 3 | ② | 受け入れ基準 2.2・2.3・3.3・3.4・3.6（前段） | 判定基準が「基本設計で洗い出した内容／確定した構成／確定した内容に従わなければならない」だけで、何を満たせば合格かがこの文書の中に書かれていない（未確定事項 ②・③・④・⑤・⑥ に委ねている）。requirements.md 単体では合否を判定できない |\n| 4 | ② | 受け入れ基準 2.1・3.2・3.5 | 判定の対象が未定義で、観測可能な合否を定められない。2.1 は「26 フォームに相当する設定項目」の中身が未確定（未確定事項 ②）のため、何を設定できれば合格かを判定できない。3.2 は「順番に提示されるという振る舞いを…定義できるようにしなければならない」とするが、順序の持ち方を本基準では確定させないとしており、何が定義できれば満たすのかが書かれていない。3.5 は「チュートリアルから参照できる形で保存しなければならない」の「参照できる形」が定義されておらず、保存結果のどの状態を見れば合格かを第三者が判定できない |\n| 5 | ② | 要件 2（現行の設定用ウインドウ 26 フォーム相当の設定項目） | 設定の登録・変更・削除という入力を受けて状態を変える要件だが、境界値のACが無い。1.5 は入力チェックエラー時の再表示を一般的に定めるだけで、設定項目の件数・桁数などの上限・下限や空の場合の応答が定められていない |\n| 6 | ② | 要件 3（選択肢に応じた入力欄と例の順次表示の定義） | 選択肢・入力欄・例とその対応を定義させる要件だが、異常系・境界値のACが無い。対応する入力欄・例を持たない選択肢の定義、同じ順番の重複や順番の欠番、選択肢・入力欄・例の件数や例の文言の長さの上限を超えた場合の応答が定められていない |\n| 7 | ② | 受け入れ基準 1.2・1.3・1.4 ／ steering/security.md `#### 認証フロー`・`### 認可`・`#### 所有権・エンティティ境界` ／ requirements.md `## 非機能要件` セキュリティ行 | 誤配置: どの機能にも適用される `security.md` の横断方針（未認証時のログイン画面への遷移、機能IDに対する権限が無い場合のエラー表示、検索・更新の `WHERE` への会社コードの付与）を、この feature 固有の要素を加えずに機能要件のACとして書き直している。同じ内容が `## 非機能要件` のセキュリティ行にも書かれている |\n| 8 | ② | `## 概要（Introduction）` 第 3 段落「`issue-request`（優先度 4）…優先度 3 に置かれている」 ／ .aidd/feature-list.md `## フィーチャー一覧` 表・`**本プロジェクトでの算出根拠**` 表 | 根拠なし: feature-list では本 feature（`issue-request-tutorial`）の優先度は 2、`issue-request` の優先度は 3 であり、本文の「`issue-request`（優先度 4）」「優先度 3 に置かれている」という値に対応する記述が根拠のどこにも無い（優先度を置く理由の文は feature-list の算出根拠と同じ内容） |\n| 9 | ② | `## 前提と依存（Dependencies / Assumptions）` 未確定事項（冒頭の文） | 根拠の飛躍: 「次の 8 件は いずれも基本設計で確定する（REQ-010。…人間が確定 / 2026-09-11）」とあるが、REQ-010 が基本設計に委ねているのはプログラムの分割と画面・帳票・バッチの構成だけで、選択肢の種類と入力欄・例の対応（④）、表示順序の決まり方（⑤）、適用範囲（⑥）、変更履歴の要否（⑦）、削除の方式（⑧）まで基本設計に回す根拠にはならない。人間の確定（2026-09-11）は指定された根拠に含まれず、追跡できない |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- #1: 人間による確認（REQ-035 の表示の振る舞いを Phase 3 の `.aidd/feature-list.md` で `issue-request` にも割り当てるのか、本 requirements.md 側で表示の受け入れ基準を持つのかを、検査側では決められない）\n\n**判断の選択肢**（指摘ごとに 1 つ選ぶ）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n\n回答例: `1:A / 2:C 既存システムの制約で変更できない / 3:D 次回レビューまで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。",
+          "id": "a0f7bc27ebd94b968c90520a7f9b4afc"
+        },
+        "result": "ok",
+        "output": {
+          "status": "wait",
+          "allowed_actions": [
+            "decision",
+            "decisions",
+            "resolve",
+            "repair"
+          ],
+          "review_context": {
+            "root": "C:\\project\\Wing",
+            "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+            "call": "requirements-authoring-revise",
+            "event": "requirements-authoring-revise",
+            "item": "issue-request-tutorial",
+            "dispatch_id": "a0f7bc27ebd94b968c90520a7f9b4afc",
+            "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+            "scope": "feature:issue-request-tutorial",
+            "run": 1,
+            "snapshot": "9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983",
+            "record_hash": "850127e049d9bf674595019568f863241868db27af084ed814116b2d78105b80"
+          },
+          "review": [
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 1,
+              "current": true,
+              "decision": "差戻し",
+              "reason": "Phase 3 feature-list へ差戻し。人間確定（2026-09-29）: チュートリアル（WTG081）は発行依頼書画面のボタンから開くポップアップで、契約種別→局種別→設置設備…と選択に応じて画面を順に表示し、選んだ値を発行依頼書画面の項目に設定する。設定内容を定義・保存する管理画面ではなく、保存用テーブルは持たない。REQ-035 の表示の振る舞いは本 feature が持ち、issue-request はボタンと値の受け取りを持つ。feature-list の目的・算出根拠を直してから requirements を作り直す",
+              "open": true,
+              "resolved": false,
+              "description": "ID対応あり・内容未充足（REQ-035）: REQ-035「チュートリアルでは、選択肢により順番に入力欄と例が表示される」は feature-list で本 feature だけに割り当てられており、`issue-request` の `対応要求ID` には含まれていない。一方、requirements.md は選択肢が選ばれたときに入力欄と例を実際に提示する振る舞い（画面側の実装）を `issue-request` に渡しており、本書の受け入れ基準は「定義できる」「参照できる形で保存する」までで、順番に表示されることそのものを判定する基準が無い。REQ-035 の表示の振る舞いがどちらの feature の受け入れ基準でも検証されない状態になっている",
+              "location": "specs/issue-request-tutorial/requirements.md 要件 3（受け入れ基準 3.1〜3.5）・`## スコープの境界（Boundary Context）` Out of Scope（発行依頼書登録変更画面への組み込み）・Adjacent（`issue-request`） ／ .aidd/feature-list.md `issue-request-tutorial` 行・`issue-request` 行の `対応要求ID` ／ .aidd/requirement-list.md REQ-035"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 2,
+              "current": true,
+              "decision": "未対応",
+              "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する",
+              "open": false,
+              "resolved": false,
+              "description": "1.1 は画面ID・PGID の採番形式（`GWTG` + 3 桁 / `PWTGO` + 3 桁）という判定できる部分に加えて、「採番の具体値と、画面を何本のプログラムに分割するかは基本設計で確定する」という判定対象でない説明文を同じ番号付きの基準の中に含んでいる。また「画面を新規に作成し」は開発で作るものを述べているだけで、外から見て YES / NO を判定できる応答・拒否・状態変化になっていない",
+              "location": "受け入れ基準 1.1"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 3,
+              "current": true,
+              "decision": "未対応",
+              "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する",
+              "open": false,
+              "resolved": false,
+              "description": "判定基準が「基本設計で洗い出した内容／確定した構成／確定した内容に従わなければならない」だけで、何を満たせば合格かがこの文書の中に書かれていない（未確定事項 ②・③・④・⑤・⑥ に委ねている）。requirements.md 単体では合否を判定できない",
+              "location": "受け入れ基準 2.2・2.3・3.3・3.4・3.6（前段）"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 4,
+              "current": true,
+              "decision": "未対応",
+              "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する",
+              "open": false,
+              "resolved": false,
+              "description": "判定の対象が未定義で、観測可能な合否を定められない。2.1 は「26 フォームに相当する設定項目」の中身が未確定（未確定事項 ②）のため、何を設定できれば合格かを判定できない。3.2 は「順番に提示されるという振る舞いを…定義できるようにしなければならない」とするが、順序の持ち方を本基準では確定させないとしており、何が定義できれば満たすのかが書かれていない。3.5 は「チュートリアルから参照できる形で保存しなければならない」の「参照できる形」が定義されておらず、保存結果のどの状態を見れば合格かを第三者が判定できない",
+              "location": "受け入れ基準 2.1・3.2・3.5"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 5,
+              "current": true,
+              "decision": "未対応",
+              "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する",
+              "open": false,
+              "resolved": false,
+              "description": "設定の登録・変更・削除という入力を受けて状態を変える要件だが、境界値のACが無い。1.5 は入力チェックエラー時の再表示を一般的に定めるだけで、設定項目の件数・桁数などの上限・下限や空の場合の応答が定められていない",
+              "location": "要件 2（現行の設定用ウインドウ 26 フォーム相当の設定項目）"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 6,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "選択肢・入力欄・例とその対応を定義させる要件だが、異常系・境界値のACが無い。対応する入力欄・例を持たない選択肢の定義、同じ順番の重複や順番の欠番、選択肢・入力欄・例の件数や例の文言の長さの上限を超えた場合の応答が定められていない",
+              "location": "要件 3（選択肢に応じた入力欄と例の順次表示の定義）"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 7,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "誤配置: どの機能にも適用される `security.md` の横断方針（未認証時のログイン画面への遷移、機能IDに対する権限が無い場合のエラー表示、検索・更新の `WHERE` への会社コードの付与）を、この feature 固有の要素を加えずに機能要件のACとして書き直している。同じ内容が `## 非機能要件` のセキュリティ行にも書かれている",
+              "location": "受け入れ基準 1.2・1.3・1.4 ／ steering/security.md `#### 認証フロー`・`### 認可`・`#### 所有権・エンティティ境界` ／ requirements.md `## 非機能要件` セキュリティ行"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 8,
+              "current": true,
+              "decision": "修正",
+              "reason": "優先度の値を feature-list（本 feature 2、issue-request 3）に合わせる",
+              "open": true,
+              "resolved": false,
+              "description": "根拠なし: feature-list では本 feature（`issue-request-tutorial`）の優先度は 2、`issue-request` の優先度は 3 であり、本文の「`issue-request`（優先度 4）」「優先度 3 に置かれている」という値に対応する記述が根拠のどこにも無い（優先度を置く理由の文は feature-list の算出根拠と同じ内容）",
+              "location": "`## 概要（Introduction）` 第 3 段落「`issue-request`（優先度 4）…優先度 3 に置かれている」 ／ .aidd/feature-list.md `## フィーチャー一覧` 表・`**本プロジェクトでの算出根拠**` 表"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 9,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "根拠の飛躍: 「次の 8 件は いずれも基本設計で確定する（REQ-010。…人間が確定 / 2026-09-11）」とあるが、REQ-010 が基本設計に委ねているのはプログラムの分割と画面・帳票・バッチの構成だけで、選択肢の種類と入力欄・例の対応（④）、表示順序の決まり方（⑤）、適用範囲（⑥）、変更履歴の要否（⑦）、削除の方式（⑧）まで基本設計に回す根拠にはならない。人間の確定（2026-09-11）は指定された根拠に含まれず、追跡できない",
+              "location": "`## 前提と依存（Dependencies / Assumptions）` 未確定事項（冒頭の文）"
+            }
+          ],
+          "next_action": "検査結果を確認し、指摘ごとに A〜D で判断を回答してください（判断が揃い修正が無ければ承認者名を回答）。",
+          "operation_id": "9db507b9-0dc1-4397-859c-f52da4fd78b2",
+          "operation_applied": true
+        }
+      },
+      "012934e7-eab9-4405-9ab3-b4a5debaae65": {
+        "status": "finished",
+        "request": {
+          "kind": "respond",
+          "payload": {
+            "operation_id": "012934e7-eab9-4405-9ab3-b4a5debaae65",
+            "action": "decision",
+            "expected": {
+              "root": "C:\\project\\Wing",
+              "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+              "call": "requirements-authoring-revise",
+              "event": "requirements-authoring-revise",
+              "item": "issue-request-tutorial",
+              "dispatch_id": "a0f7bc27ebd94b968c90520a7f9b4afc",
+              "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "snapshot": "9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983",
+              "record_hash": "850127e049d9bf674595019568f863241868db27af084ed814116b2d78105b80"
+            },
+            "data": {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 6,
+              "decision": "未対応",
+              "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する"
+            }
+          },
+          "actor": "Junichi Noumi",
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial",
+          "root": "C:\\project\\Wing",
+          "state": "C:\\project\\Wing\\.aidd\\phase-progress.json"
+        },
+        "dispatch": {
+          "call": "requirements-authoring-revise",
+          "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial",
+          "status": "wait",
+          "config_sha256": "bd35b4971bac9839d212c0b1bd5e5441a000c15bc4e8acdacc1d80a0b0c0cd37",
+          "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review\", \"snapshot\": \"9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983\", \"run\": 1, \"inspection_hash\": \"e516e28becfafb6d83e3f168c2c47ca2ddce3187db9c7f8bf84d2221de090e27\"}\n**Phase 4（requirements 作成）の品質ゲートを実行しました。** 指摘ごとに判断を選んでください。\n\n**対象**: `specs/issue-request-tutorial/requirements.md`（スコープ: 成果物単位（issue-request-tutorial） / 1 回目）\n**実行した層**: ① / ②\n\n**指摘**（ゲート記録 `.aidd/gates/phase-4-requirements.md` の当該実行分）\n\n| # | 層 | 対象箇所 | 指摘内容 |\n|---|---|---|---|\n| 1 | ② | specs/issue-request-tutorial/requirements.md 要件 3（受け入れ基準 3.1〜3.5）・`## スコープの境界（Boundary Context）` Out of Scope（発行依頼書登録変更画面への組み込み）・Adjacent（`issue-request`） ／ .aidd/feature-list.md `issue-request-tutorial` 行・`issue-request` 行の `対応要求ID` ／ .aidd/requirement-list.md REQ-035 | ID対応あり・内容未充足（REQ-035）: REQ-035「チュートリアルでは、選択肢により順番に入力欄と例が表示される」は feature-list で本 feature だけに割り当てられており、`issue-request` の `対応要求ID` には含まれていない。一方、requirements.md は選択肢が選ばれたときに入力欄と例を実際に提示する振る舞い（画面側の実装）を `issue-request` に渡しており、本書の受け入れ基準は「定義できる」「参照できる形で保存する」までで、順番に表示されることそのものを判定する基準が無い。REQ-035 の表示の振る舞いがどちらの feature の受け入れ基準でも検証されない状態になっている |\n| 2 | ② | 受け入れ基準 1.1 | 1.1 は画面ID・PGID の採番形式（`GWTG` + 3 桁 / `PWTGO` + 3 桁）という判定できる部分に加えて、「採番の具体値と、画面を何本のプログラムに分割するかは基本設計で確定する」という判定対象でない説明文を同じ番号付きの基準の中に含んでいる。また「画面を新規に作成し」は開発で作るものを述べているだけで、外から見て YES / NO を判定できる応答・拒否・状態変化になっていない |\n| 3 | ② | 受け入れ基準 2.2・2.3・3.3・3.4・3.6（前段） | 判定基準が「基本設計で洗い出した内容／確定した構成／確定した内容に従わなければならない」だけで、何を満たせば合格かがこの文書の中に書かれていない（未確定事項 ②・③・④・⑤・⑥ に委ねている）。requirements.md 単体では合否を判定できない |\n| 4 | ② | 受け入れ基準 2.1・3.2・3.5 | 判定の対象が未定義で、観測可能な合否を定められない。2.1 は「26 フォームに相当する設定項目」の中身が未確定（未確定事項 ②）のため、何を設定できれば合格かを判定できない。3.2 は「順番に提示されるという振る舞いを…定義できるようにしなければならない」とするが、順序の持ち方を本基準では確定させないとしており、何が定義できれば満たすのかが書かれていない。3.5 は「チュートリアルから参照できる形で保存しなければならない」の「参照できる形」が定義されておらず、保存結果のどの状態を見れば合格かを第三者が判定できない |\n| 5 | ② | 要件 2（現行の設定用ウインドウ 26 フォーム相当の設定項目） | 設定の登録・変更・削除という入力を受けて状態を変える要件だが、境界値のACが無い。1.5 は入力チェックエラー時の再表示を一般的に定めるだけで、設定項目の件数・桁数などの上限・下限や空の場合の応答が定められていない |\n| 6 | ② | 要件 3（選択肢に応じた入力欄と例の順次表示の定義） | 選択肢・入力欄・例とその対応を定義させる要件だが、異常系・境界値のACが無い。対応する入力欄・例を持たない選択肢の定義、同じ順番の重複や順番の欠番、選択肢・入力欄・例の件数や例の文言の長さの上限を超えた場合の応答が定められていない |\n| 7 | ② | 受け入れ基準 1.2・1.3・1.4 ／ steering/security.md `#### 認証フロー`・`### 認可`・`#### 所有権・エンティティ境界` ／ requirements.md `## 非機能要件` セキュリティ行 | 誤配置: どの機能にも適用される `security.md` の横断方針（未認証時のログイン画面への遷移、機能IDに対する権限が無い場合のエラー表示、検索・更新の `WHERE` への会社コードの付与）を、この feature 固有の要素を加えずに機能要件のACとして書き直している。同じ内容が `## 非機能要件` のセキュリティ行にも書かれている |\n| 8 | ② | `## 概要（Introduction）` 第 3 段落「`issue-request`（優先度 4）…優先度 3 に置かれている」 ／ .aidd/feature-list.md `## フィーチャー一覧` 表・`**本プロジェクトでの算出根拠**` 表 | 根拠なし: feature-list では本 feature（`issue-request-tutorial`）の優先度は 2、`issue-request` の優先度は 3 であり、本文の「`issue-request`（優先度 4）」「優先度 3 に置かれている」という値に対応する記述が根拠のどこにも無い（優先度を置く理由の文は feature-list の算出根拠と同じ内容） |\n| 9 | ② | `## 前提と依存（Dependencies / Assumptions）` 未確定事項（冒頭の文） | 根拠の飛躍: 「次の 8 件は いずれも基本設計で確定する（REQ-010。…人間が確定 / 2026-09-11）」とあるが、REQ-010 が基本設計に委ねているのはプログラムの分割と画面・帳票・バッチの構成だけで、選択肢の種類と入力欄・例の対応（④）、表示順序の決まり方（⑤）、適用範囲（⑥）、変更履歴の要否（⑦）、削除の方式（⑧）まで基本設計に回す根拠にはならない。人間の確定（2026-09-11）は指定された根拠に含まれず、追跡できない |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- #1: 人間による確認（REQ-035 の表示の振る舞いを Phase 3 の `.aidd/feature-list.md` で `issue-request` にも割り当てるのか、本 requirements.md 側で表示の受け入れ基準を持つのかを、検査側では決められない）\n\n**判断の選択肢**（指摘ごとに 1 つ選ぶ）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n\n回答例: `1:A / 2:C 既存システムの制約で変更できない / 3:D 次回レビューまで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。",
+          "id": "a0f7bc27ebd94b968c90520a7f9b4afc"
+        },
+        "result": "ok",
+        "output": {
+          "status": "wait",
+          "allowed_actions": [
+            "decision",
+            "decisions",
+            "resolve",
+            "repair"
+          ],
+          "review_context": {
+            "root": "C:\\project\\Wing",
+            "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+            "call": "requirements-authoring-revise",
+            "event": "requirements-authoring-revise",
+            "item": "issue-request-tutorial",
+            "dispatch_id": "a0f7bc27ebd94b968c90520a7f9b4afc",
+            "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+            "scope": "feature:issue-request-tutorial",
+            "run": 1,
+            "snapshot": "9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983",
+            "record_hash": "bd6cca79763d179e7e569820e8c807cc6e550ac2c473f91de3fe2e28ab324328"
+          },
+          "review": [
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 1,
+              "current": true,
+              "decision": "差戻し",
+              "reason": "Phase 3 feature-list へ差戻し。人間確定（2026-09-29）: チュートリアル（WTG081）は発行依頼書画面のボタンから開くポップアップで、契約種別→局種別→設置設備…と選択に応じて画面を順に表示し、選んだ値を発行依頼書画面の項目に設定する。設定内容を定義・保存する管理画面ではなく、保存用テーブルは持たない。REQ-035 の表示の振る舞いは本 feature が持ち、issue-request はボタンと値の受け取りを持つ。feature-list の目的・算出根拠を直してから requirements を作り直す",
+              "open": true,
+              "resolved": false,
+              "description": "ID対応あり・内容未充足（REQ-035）: REQ-035「チュートリアルでは、選択肢により順番に入力欄と例が表示される」は feature-list で本 feature だけに割り当てられており、`issue-request` の `対応要求ID` には含まれていない。一方、requirements.md は選択肢が選ばれたときに入力欄と例を実際に提示する振る舞い（画面側の実装）を `issue-request` に渡しており、本書の受け入れ基準は「定義できる」「参照できる形で保存する」までで、順番に表示されることそのものを判定する基準が無い。REQ-035 の表示の振る舞いがどちらの feature の受け入れ基準でも検証されない状態になっている",
+              "location": "specs/issue-request-tutorial/requirements.md 要件 3（受け入れ基準 3.1〜3.5）・`## スコープの境界（Boundary Context）` Out of Scope（発行依頼書登録変更画面への組み込み）・Adjacent（`issue-request`） ／ .aidd/feature-list.md `issue-request-tutorial` 行・`issue-request` 行の `対応要求ID` ／ .aidd/requirement-list.md REQ-035"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 2,
+              "current": true,
+              "decision": "未対応",
+              "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する",
+              "open": false,
+              "resolved": false,
+              "description": "1.1 は画面ID・PGID の採番形式（`GWTG` + 3 桁 / `PWTGO` + 3 桁）という判定できる部分に加えて、「採番の具体値と、画面を何本のプログラムに分割するかは基本設計で確定する」という判定対象でない説明文を同じ番号付きの基準の中に含んでいる。また「画面を新規に作成し」は開発で作るものを述べているだけで、外から見て YES / NO を判定できる応答・拒否・状態変化になっていない",
+              "location": "受け入れ基準 1.1"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 3,
+              "current": true,
+              "decision": "未対応",
+              "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する",
+              "open": false,
+              "resolved": false,
+              "description": "判定基準が「基本設計で洗い出した内容／確定した構成／確定した内容に従わなければならない」だけで、何を満たせば合格かがこの文書の中に書かれていない（未確定事項 ②・③・④・⑤・⑥ に委ねている）。requirements.md 単体では合否を判定できない",
+              "location": "受け入れ基準 2.2・2.3・3.3・3.4・3.6（前段）"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 4,
+              "current": true,
+              "decision": "未対応",
+              "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する",
+              "open": false,
+              "resolved": false,
+              "description": "判定の対象が未定義で、観測可能な合否を定められない。2.1 は「26 フォームに相当する設定項目」の中身が未確定（未確定事項 ②）のため、何を設定できれば合格かを判定できない。3.2 は「順番に提示されるという振る舞いを…定義できるようにしなければならない」とするが、順序の持ち方を本基準では確定させないとしており、何が定義できれば満たすのかが書かれていない。3.5 は「チュートリアルから参照できる形で保存しなければならない」の「参照できる形」が定義されておらず、保存結果のどの状態を見れば合格かを第三者が判定できない",
+              "location": "受け入れ基準 2.1・3.2・3.5"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 5,
+              "current": true,
+              "decision": "未対応",
+              "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する",
+              "open": false,
+              "resolved": false,
+              "description": "設定の登録・変更・削除という入力を受けて状態を変える要件だが、境界値のACが無い。1.5 は入力チェックエラー時の再表示を一般的に定めるだけで、設定項目の件数・桁数などの上限・下限や空の場合の応答が定められていない",
+              "location": "要件 2（現行の設定用ウインドウ 26 フォーム相当の設定項目）"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 6,
+              "current": true,
+              "decision": "未対応",
+              "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する",
+              "open": false,
+              "resolved": false,
+              "description": "選択肢・入力欄・例とその対応を定義させる要件だが、異常系・境界値のACが無い。対応する入力欄・例を持たない選択肢の定義、同じ順番の重複や順番の欠番、選択肢・入力欄・例の件数や例の文言の長さの上限を超えた場合の応答が定められていない",
+              "location": "要件 3（選択肢に応じた入力欄と例の順次表示の定義）"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 7,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "誤配置: どの機能にも適用される `security.md` の横断方針（未認証時のログイン画面への遷移、機能IDに対する権限が無い場合のエラー表示、検索・更新の `WHERE` への会社コードの付与）を、この feature 固有の要素を加えずに機能要件のACとして書き直している。同じ内容が `## 非機能要件` のセキュリティ行にも書かれている",
+              "location": "受け入れ基準 1.2・1.3・1.4 ／ steering/security.md `#### 認証フロー`・`### 認可`・`#### 所有権・エンティティ境界` ／ requirements.md `## 非機能要件` セキュリティ行"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 8,
+              "current": true,
+              "decision": "修正",
+              "reason": "優先度の値を feature-list（本 feature 2、issue-request 3）に合わせる",
+              "open": true,
+              "resolved": false,
+              "description": "根拠なし: feature-list では本 feature（`issue-request-tutorial`）の優先度は 2、`issue-request` の優先度は 3 であり、本文の「`issue-request`（優先度 4）」「優先度 3 に置かれている」という値に対応する記述が根拠のどこにも無い（優先度を置く理由の文は feature-list の算出根拠と同じ内容）",
+              "location": "`## 概要（Introduction）` 第 3 段落「`issue-request`（優先度 4）…優先度 3 に置かれている」 ／ .aidd/feature-list.md `## フィーチャー一覧` 表・`**本プロジェクトでの算出根拠**` 表"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 9,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "根拠の飛躍: 「次の 8 件は いずれも基本設計で確定する（REQ-010。…人間が確定 / 2026-09-11）」とあるが、REQ-010 が基本設計に委ねているのはプログラムの分割と画面・帳票・バッチの構成だけで、選択肢の種類と入力欄・例の対応（④）、表示順序の決まり方（⑤）、適用範囲（⑥）、変更履歴の要否（⑦）、削除の方式（⑧）まで基本設計に回す根拠にはならない。人間の確定（2026-09-11）は指定された根拠に含まれず、追跡できない",
+              "location": "`## 前提と依存（Dependencies / Assumptions）` 未確定事項（冒頭の文）"
+            }
+          ],
+          "next_action": "検査結果を確認し、指摘ごとに A〜D で判断を回答してください（判断が揃い修正が無ければ承認者名を回答）。",
+          "operation_id": "012934e7-eab9-4405-9ab3-b4a5debaae65",
+          "operation_applied": true
+        }
+      },
+      "39e08c21-90b0-434b-ab8e-ce85faa5176d": {
+        "status": "finished",
+        "request": {
+          "kind": "respond",
+          "payload": {
+            "operation_id": "39e08c21-90b0-434b-ab8e-ce85faa5176d",
+            "action": "decision",
+            "expected": {
+              "root": "C:\\project\\Wing",
+              "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+              "call": "requirements-authoring-revise",
+              "event": "requirements-authoring-revise",
+              "item": "issue-request-tutorial",
+              "dispatch_id": "a0f7bc27ebd94b968c90520a7f9b4afc",
+              "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "snapshot": "9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983",
+              "record_hash": "bd6cca79763d179e7e569820e8c807cc6e550ac2c473f91de3fe2e28ab324328"
+            },
+            "data": {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 7,
+              "decision": "未対応",
+              "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する"
+            }
+          },
+          "actor": "Junichi Noumi",
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial",
+          "root": "C:\\project\\Wing",
+          "state": "C:\\project\\Wing\\.aidd\\phase-progress.json"
+        },
+        "dispatch": {
+          "call": "requirements-authoring-revise",
+          "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial",
+          "status": "wait",
+          "config_sha256": "bd35b4971bac9839d212c0b1bd5e5441a000c15bc4e8acdacc1d80a0b0c0cd37",
+          "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review\", \"snapshot\": \"9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983\", \"run\": 1, \"inspection_hash\": \"e516e28becfafb6d83e3f168c2c47ca2ddce3187db9c7f8bf84d2221de090e27\"}\n**Phase 4（requirements 作成）の品質ゲートを実行しました。** 指摘ごとに判断を選んでください。\n\n**対象**: `specs/issue-request-tutorial/requirements.md`（スコープ: 成果物単位（issue-request-tutorial） / 1 回目）\n**実行した層**: ① / ②\n\n**指摘**（ゲート記録 `.aidd/gates/phase-4-requirements.md` の当該実行分）\n\n| # | 層 | 対象箇所 | 指摘内容 |\n|---|---|---|---|\n| 1 | ② | specs/issue-request-tutorial/requirements.md 要件 3（受け入れ基準 3.1〜3.5）・`## スコープの境界（Boundary Context）` Out of Scope（発行依頼書登録変更画面への組み込み）・Adjacent（`issue-request`） ／ .aidd/feature-list.md `issue-request-tutorial` 行・`issue-request` 行の `対応要求ID` ／ .aidd/requirement-list.md REQ-035 | ID対応あり・内容未充足（REQ-035）: REQ-035「チュートリアルでは、選択肢により順番に入力欄と例が表示される」は feature-list で本 feature だけに割り当てられており、`issue-request` の `対応要求ID` には含まれていない。一方、requirements.md は選択肢が選ばれたときに入力欄と例を実際に提示する振る舞い（画面側の実装）を `issue-request` に渡しており、本書の受け入れ基準は「定義できる」「参照できる形で保存する」までで、順番に表示されることそのものを判定する基準が無い。REQ-035 の表示の振る舞いがどちらの feature の受け入れ基準でも検証されない状態になっている |\n| 2 | ② | 受け入れ基準 1.1 | 1.1 は画面ID・PGID の採番形式（`GWTG` + 3 桁 / `PWTGO` + 3 桁）という判定できる部分に加えて、「採番の具体値と、画面を何本のプログラムに分割するかは基本設計で確定する」という判定対象でない説明文を同じ番号付きの基準の中に含んでいる。また「画面を新規に作成し」は開発で作るものを述べているだけで、外から見て YES / NO を判定できる応答・拒否・状態変化になっていない |\n| 3 | ② | 受け入れ基準 2.2・2.3・3.3・3.4・3.6（前段） | 判定基準が「基本設計で洗い出した内容／確定した構成／確定した内容に従わなければならない」だけで、何を満たせば合格かがこの文書の中に書かれていない（未確定事項 ②・③・④・⑤・⑥ に委ねている）。requirements.md 単体では合否を判定できない |\n| 4 | ② | 受け入れ基準 2.1・3.2・3.5 | 判定の対象が未定義で、観測可能な合否を定められない。2.1 は「26 フォームに相当する設定項目」の中身が未確定（未確定事項 ②）のため、何を設定できれば合格かを判定できない。3.2 は「順番に提示されるという振る舞いを…定義できるようにしなければならない」とするが、順序の持ち方を本基準では確定させないとしており、何が定義できれば満たすのかが書かれていない。3.5 は「チュートリアルから参照できる形で保存しなければならない」の「参照できる形」が定義されておらず、保存結果のどの状態を見れば合格かを第三者が判定できない |\n| 5 | ② | 要件 2（現行の設定用ウインドウ 26 フォーム相当の設定項目） | 設定の登録・変更・削除という入力を受けて状態を変える要件だが、境界値のACが無い。1.5 は入力チェックエラー時の再表示を一般的に定めるだけで、設定項目の件数・桁数などの上限・下限や空の場合の応答が定められていない |\n| 6 | ② | 要件 3（選択肢に応じた入力欄と例の順次表示の定義） | 選択肢・入力欄・例とその対応を定義させる要件だが、異常系・境界値のACが無い。対応する入力欄・例を持たない選択肢の定義、同じ順番の重複や順番の欠番、選択肢・入力欄・例の件数や例の文言の長さの上限を超えた場合の応答が定められていない |\n| 7 | ② | 受け入れ基準 1.2・1.3・1.4 ／ steering/security.md `#### 認証フロー`・`### 認可`・`#### 所有権・エンティティ境界` ／ requirements.md `## 非機能要件` セキュリティ行 | 誤配置: どの機能にも適用される `security.md` の横断方針（未認証時のログイン画面への遷移、機能IDに対する権限が無い場合のエラー表示、検索・更新の `WHERE` への会社コードの付与）を、この feature 固有の要素を加えずに機能要件のACとして書き直している。同じ内容が `## 非機能要件` のセキュリティ行にも書かれている |\n| 8 | ② | `## 概要（Introduction）` 第 3 段落「`issue-request`（優先度 4）…優先度 3 に置かれている」 ／ .aidd/feature-list.md `## フィーチャー一覧` 表・`**本プロジェクトでの算出根拠**` 表 | 根拠なし: feature-list では本 feature（`issue-request-tutorial`）の優先度は 2、`issue-request` の優先度は 3 であり、本文の「`issue-request`（優先度 4）」「優先度 3 に置かれている」という値に対応する記述が根拠のどこにも無い（優先度を置く理由の文は feature-list の算出根拠と同じ内容） |\n| 9 | ② | `## 前提と依存（Dependencies / Assumptions）` 未確定事項（冒頭の文） | 根拠の飛躍: 「次の 8 件は いずれも基本設計で確定する（REQ-010。…人間が確定 / 2026-09-11）」とあるが、REQ-010 が基本設計に委ねているのはプログラムの分割と画面・帳票・バッチの構成だけで、選択肢の種類と入力欄・例の対応（④）、表示順序の決まり方（⑤）、適用範囲（⑥）、変更履歴の要否（⑦）、削除の方式（⑧）まで基本設計に回す根拠にはならない。人間の確定（2026-09-11）は指定された根拠に含まれず、追跡できない |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- #1: 人間による確認（REQ-035 の表示の振る舞いを Phase 3 の `.aidd/feature-list.md` で `issue-request` にも割り当てるのか、本 requirements.md 側で表示の受け入れ基準を持つのかを、検査側では決められない）\n\n**判断の選択肢**（指摘ごとに 1 つ選ぶ）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n\n回答例: `1:A / 2:C 既存システムの制約で変更できない / 3:D 次回レビューまで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。",
+          "id": "a0f7bc27ebd94b968c90520a7f9b4afc"
+        },
+        "result": "ok",
+        "output": {
+          "status": "wait",
+          "allowed_actions": [
+            "decision",
+            "decisions",
+            "resolve",
+            "repair"
+          ],
+          "review_context": {
+            "root": "C:\\project\\Wing",
+            "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+            "call": "requirements-authoring-revise",
+            "event": "requirements-authoring-revise",
+            "item": "issue-request-tutorial",
+            "dispatch_id": "a0f7bc27ebd94b968c90520a7f9b4afc",
+            "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+            "scope": "feature:issue-request-tutorial",
+            "run": 1,
+            "snapshot": "9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983",
+            "record_hash": "827fee783d6794f5d8e86867e8c664187d3e4179d9aa8e9615831219e7b30476"
+          },
+          "review": [
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 1,
+              "current": true,
+              "decision": "差戻し",
+              "reason": "Phase 3 feature-list へ差戻し。人間確定（2026-09-29）: チュートリアル（WTG081）は発行依頼書画面のボタンから開くポップアップで、契約種別→局種別→設置設備…と選択に応じて画面を順に表示し、選んだ値を発行依頼書画面の項目に設定する。設定内容を定義・保存する管理画面ではなく、保存用テーブルは持たない。REQ-035 の表示の振る舞いは本 feature が持ち、issue-request はボタンと値の受け取りを持つ。feature-list の目的・算出根拠を直してから requirements を作り直す",
+              "open": true,
+              "resolved": false,
+              "description": "ID対応あり・内容未充足（REQ-035）: REQ-035「チュートリアルでは、選択肢により順番に入力欄と例が表示される」は feature-list で本 feature だけに割り当てられており、`issue-request` の `対応要求ID` には含まれていない。一方、requirements.md は選択肢が選ばれたときに入力欄と例を実際に提示する振る舞い（画面側の実装）を `issue-request` に渡しており、本書の受け入れ基準は「定義できる」「参照できる形で保存する」までで、順番に表示されることそのものを判定する基準が無い。REQ-035 の表示の振る舞いがどちらの feature の受け入れ基準でも検証されない状態になっている",
+              "location": "specs/issue-request-tutorial/requirements.md 要件 3（受け入れ基準 3.1〜3.5）・`## スコープの境界（Boundary Context）` Out of Scope（発行依頼書登録変更画面への組み込み）・Adjacent（`issue-request`） ／ .aidd/feature-list.md `issue-request-tutorial` 行・`issue-request` 行の `対応要求ID` ／ .aidd/requirement-list.md REQ-035"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 2,
+              "current": true,
+              "decision": "未対応",
+              "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する",
+              "open": false,
+              "resolved": false,
+              "description": "1.1 は画面ID・PGID の採番形式（`GWTG` + 3 桁 / `PWTGO` + 3 桁）という判定できる部分に加えて、「採番の具体値と、画面を何本のプログラムに分割するかは基本設計で確定する」という判定対象でない説明文を同じ番号付きの基準の中に含んでいる。また「画面を新規に作成し」は開発で作るものを述べているだけで、外から見て YES / NO を判定できる応答・拒否・状態変化になっていない",
+              "location": "受け入れ基準 1.1"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 3,
+              "current": true,
+              "decision": "未対応",
+              "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する",
+              "open": false,
+              "resolved": false,
+              "description": "判定基準が「基本設計で洗い出した内容／確定した構成／確定した内容に従わなければならない」だけで、何を満たせば合格かがこの文書の中に書かれていない（未確定事項 ②・③・④・⑤・⑥ に委ねている）。requirements.md 単体では合否を判定できない",
+              "location": "受け入れ基準 2.2・2.3・3.3・3.4・3.6（前段）"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 4,
+              "current": true,
+              "decision": "未対応",
+              "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する",
+              "open": false,
+              "resolved": false,
+              "description": "判定の対象が未定義で、観測可能な合否を定められない。2.1 は「26 フォームに相当する設定項目」の中身が未確定（未確定事項 ②）のため、何を設定できれば合格かを判定できない。3.2 は「順番に提示されるという振る舞いを…定義できるようにしなければならない」とするが、順序の持ち方を本基準では確定させないとしており、何が定義できれば満たすのかが書かれていない。3.5 は「チュートリアルから参照できる形で保存しなければならない」の「参照できる形」が定義されておらず、保存結果のどの状態を見れば合格かを第三者が判定できない",
+              "location": "受け入れ基準 2.1・3.2・3.5"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 5,
+              "current": true,
+              "decision": "未対応",
+              "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する",
+              "open": false,
+              "resolved": false,
+              "description": "設定の登録・変更・削除という入力を受けて状態を変える要件だが、境界値のACが無い。1.5 は入力チェックエラー時の再表示を一般的に定めるだけで、設定項目の件数・桁数などの上限・下限や空の場合の応答が定められていない",
+              "location": "要件 2（現行の設定用ウインドウ 26 フォーム相当の設定項目）"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 6,
+              "current": true,
+              "decision": "未対応",
+              "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する",
+              "open": false,
+              "resolved": false,
+              "description": "選択肢・入力欄・例とその対応を定義させる要件だが、異常系・境界値のACが無い。対応する入力欄・例を持たない選択肢の定義、同じ順番の重複や順番の欠番、選択肢・入力欄・例の件数や例の文言の長さの上限を超えた場合の応答が定められていない",
+              "location": "要件 3（選択肢に応じた入力欄と例の順次表示の定義）"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 7,
+              "current": true,
+              "decision": "未対応",
+              "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する",
+              "open": false,
+              "resolved": false,
+              "description": "誤配置: どの機能にも適用される `security.md` の横断方針（未認証時のログイン画面への遷移、機能IDに対する権限が無い場合のエラー表示、検索・更新の `WHERE` への会社コードの付与）を、この feature 固有の要素を加えずに機能要件のACとして書き直している。同じ内容が `## 非機能要件` のセキュリティ行にも書かれている",
+              "location": "受け入れ基準 1.2・1.3・1.4 ／ steering/security.md `#### 認証フロー`・`### 認可`・`#### 所有権・エンティティ境界` ／ requirements.md `## 非機能要件` セキュリティ行"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 8,
+              "current": true,
+              "decision": "修正",
+              "reason": "優先度の値を feature-list（本 feature 2、issue-request 3）に合わせる",
+              "open": true,
+              "resolved": false,
+              "description": "根拠なし: feature-list では本 feature（`issue-request-tutorial`）の優先度は 2、`issue-request` の優先度は 3 であり、本文の「`issue-request`（優先度 4）」「優先度 3 に置かれている」という値に対応する記述が根拠のどこにも無い（優先度を置く理由の文は feature-list の算出根拠と同じ内容）",
+              "location": "`## 概要（Introduction）` 第 3 段落「`issue-request`（優先度 4）…優先度 3 に置かれている」 ／ .aidd/feature-list.md `## フィーチャー一覧` 表・`**本プロジェクトでの算出根拠**` 表"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 9,
+              "current": true,
+              "decision": "",
+              "reason": "",
+              "open": true,
+              "resolved": false,
+              "description": "根拠の飛躍: 「次の 8 件は いずれも基本設計で確定する（REQ-010。…人間が確定 / 2026-09-11）」とあるが、REQ-010 が基本設計に委ねているのはプログラムの分割と画面・帳票・バッチの構成だけで、選択肢の種類と入力欄・例の対応（④）、表示順序の決まり方（⑤）、適用範囲（⑥）、変更履歴の要否（⑦）、削除の方式（⑧）まで基本設計に回す根拠にはならない。人間の確定（2026-09-11）は指定された根拠に含まれず、追跡できない",
+              "location": "`## 前提と依存（Dependencies / Assumptions）` 未確定事項（冒頭の文）"
+            }
+          ],
+          "next_action": "検査結果を確認し、指摘ごとに A〜D で判断を回答してください（判断が揃い修正が無ければ承認者名を回答）。",
+          "operation_id": "39e08c21-90b0-434b-ab8e-ce85faa5176d",
+          "operation_applied": true
+        }
+      },
+      "c2128f0a-c486-41d2-b451-9f478f00e9d2": {
+        "status": "finished",
+        "request": {
+          "kind": "respond",
+          "payload": {
+            "operation_id": "c2128f0a-c486-41d2-b451-9f478f00e9d2",
+            "action": "decision",
+            "expected": {
+              "root": "C:\\project\\Wing",
+              "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+              "call": "requirements-authoring-revise",
+              "event": "requirements-authoring-revise",
+              "item": "issue-request-tutorial",
+              "dispatch_id": "a0f7bc27ebd94b968c90520a7f9b4afc",
+              "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "snapshot": "9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983",
+              "record_hash": "827fee783d6794f5d8e86867e8c664187d3e4179d9aa8e9615831219e7b30476"
+            },
+            "data": {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 9,
+              "decision": "未対応",
+              "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する"
+            }
+          },
+          "actor": "Junichi Noumi",
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial",
+          "root": "C:\\project\\Wing",
+          "state": "C:\\project\\Wing\\.aidd\\phase-progress.json"
+        },
+        "dispatch": {
+          "call": "requirements-authoring-revise",
+          "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial",
+          "status": "wait",
+          "config_sha256": "bd35b4971bac9839d212c0b1bd5e5441a000c15bc4e8acdacc1d80a0b0c0cd37",
+          "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review\", \"snapshot\": \"9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983\", \"run\": 1, \"inspection_hash\": \"e516e28becfafb6d83e3f168c2c47ca2ddce3187db9c7f8bf84d2221de090e27\"}\n**Phase 4（requirements 作成）の品質ゲートを実行しました。** 指摘ごとに判断を選んでください。\n\n**対象**: `specs/issue-request-tutorial/requirements.md`（スコープ: 成果物単位（issue-request-tutorial） / 1 回目）\n**実行した層**: ① / ②\n\n**指摘**（ゲート記録 `.aidd/gates/phase-4-requirements.md` の当該実行分）\n\n| # | 層 | 対象箇所 | 指摘内容 |\n|---|---|---|---|\n| 1 | ② | specs/issue-request-tutorial/requirements.md 要件 3（受け入れ基準 3.1〜3.5）・`## スコープの境界（Boundary Context）` Out of Scope（発行依頼書登録変更画面への組み込み）・Adjacent（`issue-request`） ／ .aidd/feature-list.md `issue-request-tutorial` 行・`issue-request` 行の `対応要求ID` ／ .aidd/requirement-list.md REQ-035 | ID対応あり・内容未充足（REQ-035）: REQ-035「チュートリアルでは、選択肢により順番に入力欄と例が表示される」は feature-list で本 feature だけに割り当てられており、`issue-request` の `対応要求ID` には含まれていない。一方、requirements.md は選択肢が選ばれたときに入力欄と例を実際に提示する振る舞い（画面側の実装）を `issue-request` に渡しており、本書の受け入れ基準は「定義できる」「参照できる形で保存する」までで、順番に表示されることそのものを判定する基準が無い。REQ-035 の表示の振る舞いがどちらの feature の受け入れ基準でも検証されない状態になっている |\n| 2 | ② | 受け入れ基準 1.1 | 1.1 は画面ID・PGID の採番形式（`GWTG` + 3 桁 / `PWTGO` + 3 桁）という判定できる部分に加えて、「採番の具体値と、画面を何本のプログラムに分割するかは基本設計で確定する」という判定対象でない説明文を同じ番号付きの基準の中に含んでいる。また「画面を新規に作成し」は開発で作るものを述べているだけで、外から見て YES / NO を判定できる応答・拒否・状態変化になっていない |\n| 3 | ② | 受け入れ基準 2.2・2.3・3.3・3.4・3.6（前段） | 判定基準が「基本設計で洗い出した内容／確定した構成／確定した内容に従わなければならない」だけで、何を満たせば合格かがこの文書の中に書かれていない（未確定事項 ②・③・④・⑤・⑥ に委ねている）。requirements.md 単体では合否を判定できない |\n| 4 | ② | 受け入れ基準 2.1・3.2・3.5 | 判定の対象が未定義で、観測可能な合否を定められない。2.1 は「26 フォームに相当する設定項目」の中身が未確定（未確定事項 ②）のため、何を設定できれば合格かを判定できない。3.2 は「順番に提示されるという振る舞いを…定義できるようにしなければならない」とするが、順序の持ち方を本基準では確定させないとしており、何が定義できれば満たすのかが書かれていない。3.5 は「チュートリアルから参照できる形で保存しなければならない」の「参照できる形」が定義されておらず、保存結果のどの状態を見れば合格かを第三者が判定できない |\n| 5 | ② | 要件 2（現行の設定用ウインドウ 26 フォーム相当の設定項目） | 設定の登録・変更・削除という入力を受けて状態を変える要件だが、境界値のACが無い。1.5 は入力チェックエラー時の再表示を一般的に定めるだけで、設定項目の件数・桁数などの上限・下限や空の場合の応答が定められていない |\n| 6 | ② | 要件 3（選択肢に応じた入力欄と例の順次表示の定義） | 選択肢・入力欄・例とその対応を定義させる要件だが、異常系・境界値のACが無い。対応する入力欄・例を持たない選択肢の定義、同じ順番の重複や順番の欠番、選択肢・入力欄・例の件数や例の文言の長さの上限を超えた場合の応答が定められていない |\n| 7 | ② | 受け入れ基準 1.2・1.3・1.4 ／ steering/security.md `#### 認証フロー`・`### 認可`・`#### 所有権・エンティティ境界` ／ requirements.md `## 非機能要件` セキュリティ行 | 誤配置: どの機能にも適用される `security.md` の横断方針（未認証時のログイン画面への遷移、機能IDに対する権限が無い場合のエラー表示、検索・更新の `WHERE` への会社コードの付与）を、この feature 固有の要素を加えずに機能要件のACとして書き直している。同じ内容が `## 非機能要件` のセキュリティ行にも書かれている |\n| 8 | ② | `## 概要（Introduction）` 第 3 段落「`issue-request`（優先度 4）…優先度 3 に置かれている」 ／ .aidd/feature-list.md `## フィーチャー一覧` 表・`**本プロジェクトでの算出根拠**` 表 | 根拠なし: feature-list では本 feature（`issue-request-tutorial`）の優先度は 2、`issue-request` の優先度は 3 であり、本文の「`issue-request`（優先度 4）」「優先度 3 に置かれている」という値に対応する記述が根拠のどこにも無い（優先度を置く理由の文は feature-list の算出根拠と同じ内容） |\n| 9 | ② | `## 前提と依存（Dependencies / Assumptions）` 未確定事項（冒頭の文） | 根拠の飛躍: 「次の 8 件は いずれも基本設計で確定する（REQ-010。…人間が確定 / 2026-09-11）」とあるが、REQ-010 が基本設計に委ねているのはプログラムの分割と画面・帳票・バッチの構成だけで、選択肢の種類と入力欄・例の対応（④）、表示順序の決まり方（⑤）、適用範囲（⑥）、変更履歴の要否（⑦）、削除の方式（⑧）まで基本設計に回す根拠にはならない。人間の確定（2026-09-11）は指定された根拠に含まれず、追跡できない |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- #1: 人間による確認（REQ-035 の表示の振る舞いを Phase 3 の `.aidd/feature-list.md` で `issue-request` にも割り当てるのか、本 requirements.md 側で表示の受け入れ基準を持つのかを、検査側では決められない）\n\n**判断の選択肢**（指摘ごとに 1 つ選ぶ）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n\n回答例: `1:A / 2:C 既存システムの制約で変更できない / 3:D 次回レビューまで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。",
+          "id": "a0f7bc27ebd94b968c90520a7f9b4afc"
+        },
+        "result": "ok",
+        "output": {
+          "status": "wait",
+          "allowed_actions": [
+            "decision",
+            "decisions",
+            "resolve",
+            "repair"
+          ],
+          "review_context": {
+            "root": "C:\\project\\Wing",
+            "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+            "call": "requirements-authoring-revise",
+            "event": "requirements-authoring-revise",
+            "item": "issue-request-tutorial",
+            "dispatch_id": "a0f7bc27ebd94b968c90520a7f9b4afc",
+            "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+            "scope": "feature:issue-request-tutorial",
+            "run": 1,
+            "snapshot": "9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983",
+            "record_hash": "24eadfcd969712e6050c31c1fe6ed9637f69781706816879bb6ae5cf76ee737a"
+          },
+          "review": [
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 1,
+              "current": true,
+              "decision": "差戻し",
+              "reason": "Phase 3 feature-list へ差戻し。人間確定（2026-09-29）: チュートリアル（WTG081）は発行依頼書画面のボタンから開くポップアップで、契約種別→局種別→設置設備…と選択に応じて画面を順に表示し、選んだ値を発行依頼書画面の項目に設定する。設定内容を定義・保存する管理画面ではなく、保存用テーブルは持たない。REQ-035 の表示の振る舞いは本 feature が持ち、issue-request はボタンと値の受け取りを持つ。feature-list の目的・算出根拠を直してから requirements を作り直す",
+              "open": true,
+              "resolved": false,
+              "description": "ID対応あり・内容未充足（REQ-035）: REQ-035「チュートリアルでは、選択肢により順番に入力欄と例が表示される」は feature-list で本 feature だけに割り当てられており、`issue-request` の `対応要求ID` には含まれていない。一方、requirements.md は選択肢が選ばれたときに入力欄と例を実際に提示する振る舞い（画面側の実装）を `issue-request` に渡しており、本書の受け入れ基準は「定義できる」「参照できる形で保存する」までで、順番に表示されることそのものを判定する基準が無い。REQ-035 の表示の振る舞いがどちらの feature の受け入れ基準でも検証されない状態になっている",
+              "location": "specs/issue-request-tutorial/requirements.md 要件 3（受け入れ基準 3.1〜3.5）・`## スコープの境界（Boundary Context）` Out of Scope（発行依頼書登録変更画面への組み込み）・Adjacent（`issue-request`） ／ .aidd/feature-list.md `issue-request-tutorial` 行・`issue-request` 行の `対応要求ID` ／ .aidd/requirement-list.md REQ-035"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 2,
+              "current": true,
+              "decision": "未対応",
+              "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する",
+              "open": false,
+              "resolved": false,
+              "description": "1.1 は画面ID・PGID の採番形式（`GWTG` + 3 桁 / `PWTGO` + 3 桁）という判定できる部分に加えて、「採番の具体値と、画面を何本のプログラムに分割するかは基本設計で確定する」という判定対象でない説明文を同じ番号付きの基準の中に含んでいる。また「画面を新規に作成し」は開発で作るものを述べているだけで、外から見て YES / NO を判定できる応答・拒否・状態変化になっていない",
+              "location": "受け入れ基準 1.1"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 3,
+              "current": true,
+              "decision": "未対応",
+              "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する",
+              "open": false,
+              "resolved": false,
+              "description": "判定基準が「基本設計で洗い出した内容／確定した構成／確定した内容に従わなければならない」だけで、何を満たせば合格かがこの文書の中に書かれていない（未確定事項 ②・③・④・⑤・⑥ に委ねている）。requirements.md 単体では合否を判定できない",
+              "location": "受け入れ基準 2.2・2.3・3.3・3.4・3.6（前段）"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 4,
+              "current": true,
+              "decision": "未対応",
+              "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する",
+              "open": false,
+              "resolved": false,
+              "description": "判定の対象が未定義で、観測可能な合否を定められない。2.1 は「26 フォームに相当する設定項目」の中身が未確定（未確定事項 ②）のため、何を設定できれば合格かを判定できない。3.2 は「順番に提示されるという振る舞いを…定義できるようにしなければならない」とするが、順序の持ち方を本基準では確定させないとしており、何が定義できれば満たすのかが書かれていない。3.5 は「チュートリアルから参照できる形で保存しなければならない」の「参照できる形」が定義されておらず、保存結果のどの状態を見れば合格かを第三者が判定できない",
+              "location": "受け入れ基準 2.1・3.2・3.5"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 5,
+              "current": true,
+              "decision": "未対応",
+              "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する",
+              "open": false,
+              "resolved": false,
+              "description": "設定の登録・変更・削除という入力を受けて状態を変える要件だが、境界値のACが無い。1.5 は入力チェックエラー時の再表示を一般的に定めるだけで、設定項目の件数・桁数などの上限・下限や空の場合の応答が定められていない",
+              "location": "要件 2（現行の設定用ウインドウ 26 フォーム相当の設定項目）"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 6,
+              "current": true,
+              "decision": "未対応",
+              "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する",
+              "open": false,
+              "resolved": false,
+              "description": "選択肢・入力欄・例とその対応を定義させる要件だが、異常系・境界値のACが無い。対応する入力欄・例を持たない選択肢の定義、同じ順番の重複や順番の欠番、選択肢・入力欄・例の件数や例の文言の長さの上限を超えた場合の応答が定められていない",
+              "location": "要件 3（選択肢に応じた入力欄と例の順次表示の定義）"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 7,
+              "current": true,
+              "decision": "未対応",
+              "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する",
+              "open": false,
+              "resolved": false,
+              "description": "誤配置: どの機能にも適用される `security.md` の横断方針（未認証時のログイン画面への遷移、機能IDに対する権限が無い場合のエラー表示、検索・更新の `WHERE` への会社コードの付与）を、この feature 固有の要素を加えずに機能要件のACとして書き直している。同じ内容が `## 非機能要件` のセキュリティ行にも書かれている",
+              "location": "受け入れ基準 1.2・1.3・1.4 ／ steering/security.md `#### 認証フロー`・`### 認可`・`#### 所有権・エンティティ境界` ／ requirements.md `## 非機能要件` セキュリティ行"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 8,
+              "current": true,
+              "decision": "修正",
+              "reason": "優先度の値を feature-list（本 feature 2、issue-request 3）に合わせる",
+              "open": true,
+              "resolved": false,
+              "description": "根拠なし: feature-list では本 feature（`issue-request-tutorial`）の優先度は 2、`issue-request` の優先度は 3 であり、本文の「`issue-request`（優先度 4）」「優先度 3 に置かれている」という値に対応する記述が根拠のどこにも無い（優先度を置く理由の文は feature-list の算出根拠と同じ内容）",
+              "location": "`## 概要（Introduction）` 第 3 段落「`issue-request`（優先度 4）…優先度 3 に置かれている」 ／ .aidd/feature-list.md `## フィーチャー一覧` 表・`**本プロジェクトでの算出根拠**` 表"
+            },
+            {
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "number": 9,
+              "current": true,
+              "decision": "未対応",
+              "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する",
+              "open": false,
+              "resolved": false,
+              "description": "根拠の飛躍: 「次の 8 件は いずれも基本設計で確定する（REQ-010。…人間が確定 / 2026-09-11）」とあるが、REQ-010 が基本設計に委ねているのはプログラムの分割と画面・帳票・バッチの構成だけで、選択肢の種類と入力欄・例の対応（④）、表示順序の決まり方（⑤）、適用範囲（⑥）、変更履歴の要否（⑦）、削除の方式（⑧）まで基本設計に回す根拠にはならない。人間の確定（2026-09-11）は指定された根拠に含まれず、追跡できない",
+              "location": "`## 前提と依存（Dependencies / Assumptions）` 未確定事項（冒頭の文）"
+            }
+          ],
+          "next_action": "検査結果を確認し、指摘ごとに A〜D で判断を回答してください（判断が揃い修正が無ければ承認者名を回答）。",
+          "operation_id": "c2128f0a-c486-41d2-b451-9f478f00e9d2",
+          "operation_applied": true
+        }
+      },
+      "4c414291-5e92-4f61-bb24-d22ae51bdab9": {
+        "status": "prepared",
+        "request": {
+          "kind": "respond",
+          "payload": {
+            "operation_id": "4c414291-5e92-4f61-bb24-d22ae51bdab9",
+            "action": "repair",
+            "expected": {
+              "root": "C:\\project\\Wing",
+              "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+              "call": "requirements-authoring-revise",
+              "event": "requirements-authoring-revise",
+              "item": "issue-request-tutorial",
+              "dispatch_id": "a0f7bc27ebd94b968c90520a7f9b4afc",
+              "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+              "scope": "feature:issue-request-tutorial",
+              "run": 1,
+              "snapshot": "9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983",
+              "record_hash": "24eadfcd969712e6050c31c1fe6ed9637f69781706816879bb6ae5cf76ee737a"
+            },
+            "data": {
+              "event": "feature-decomposition-generate",
+              "item": "",
+              "targets": [
+                ".aidd/feature-list.md"
+              ],
+              "findings": [
+                {
+                  "phase": "requirements",
+                  "scope": "feature:issue-request-tutorial",
+                  "run": 1,
+                  "number": 1,
+                  "instruction": "人間確定（2026-09-29）: チュートリアル（WTG081）は発行依頼書画面のボタンから開くポップアップで、契約種別→局種別→設置設備…と選択に応じて画面を順に表示し、選んだ値を発行依頼書画面の項目に設定する。設定内容を定義・保存する管理画面ではなく、保存用テーブルは持たない。REQ-035 の表示の振る舞いは本 feature が持ち、issue-request はボタンと値の受け取りを持つ。feature-list の目的・算出根拠を直してから requirements を作り直す"
+                }
+              ]
+            }
+          },
+          "actor": "Junichi Noumi",
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial",
+          "root": "C:\\project\\Wing",
+          "state": "C:\\project\\Wing\\.aidd\\phase-progress.json"
+        },
+        "dispatch": {
+          "call": "requirements-authoring-revise",
+          "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial",
+          "status": "wait",
+          "config_sha256": "bd35b4971bac9839d212c0b1bd5e5441a000c15bc4e8acdacc1d80a0b0c0cd37",
+          "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review\", \"snapshot\": \"9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983\", \"run\": 1, \"inspection_hash\": \"e516e28becfafb6d83e3f168c2c47ca2ddce3187db9c7f8bf84d2221de090e27\"}\n**Phase 4（requirements 作成）の品質ゲートを実行しました。** 指摘ごとに判断を選んでください。\n\n**対象**: `specs/issue-request-tutorial/requirements.md`（スコープ: 成果物単位（issue-request-tutorial） / 1 回目）\n**実行した層**: ① / ②\n\n**指摘**（ゲート記録 `.aidd/gates/phase-4-requirements.md` の当該実行分）\n\n| # | 層 | 対象箇所 | 指摘内容 |\n|---|---|---|---|\n| 1 | ② | specs/issue-request-tutorial/requirements.md 要件 3（受け入れ基準 3.1〜3.5）・`## スコープの境界（Boundary Context）` Out of Scope（発行依頼書登録変更画面への組み込み）・Adjacent（`issue-request`） ／ .aidd/feature-list.md `issue-request-tutorial` 行・`issue-request` 行の `対応要求ID` ／ .aidd/requirement-list.md REQ-035 | ID対応あり・内容未充足（REQ-035）: REQ-035「チュートリアルでは、選択肢により順番に入力欄と例が表示される」は feature-list で本 feature だけに割り当てられており、`issue-request` の `対応要求ID` には含まれていない。一方、requirements.md は選択肢が選ばれたときに入力欄と例を実際に提示する振る舞い（画面側の実装）を `issue-request` に渡しており、本書の受け入れ基準は「定義できる」「参照できる形で保存する」までで、順番に表示されることそのものを判定する基準が無い。REQ-035 の表示の振る舞いがどちらの feature の受け入れ基準でも検証されない状態になっている |\n| 2 | ② | 受け入れ基準 1.1 | 1.1 は画面ID・PGID の採番形式（`GWTG` + 3 桁 / `PWTGO` + 3 桁）という判定できる部分に加えて、「採番の具体値と、画面を何本のプログラムに分割するかは基本設計で確定する」という判定対象でない説明文を同じ番号付きの基準の中に含んでいる。また「画面を新規に作成し」は開発で作るものを述べているだけで、外から見て YES / NO を判定できる応答・拒否・状態変化になっていない |\n| 3 | ② | 受け入れ基準 2.2・2.3・3.3・3.4・3.6（前段） | 判定基準が「基本設計で洗い出した内容／確定した構成／確定した内容に従わなければならない」だけで、何を満たせば合格かがこの文書の中に書かれていない（未確定事項 ②・③・④・⑤・⑥ に委ねている）。requirements.md 単体では合否を判定できない |\n| 4 | ② | 受け入れ基準 2.1・3.2・3.5 | 判定の対象が未定義で、観測可能な合否を定められない。2.1 は「26 フォームに相当する設定項目」の中身が未確定（未確定事項 ②）のため、何を設定できれば合格かを判定できない。3.2 は「順番に提示されるという振る舞いを…定義できるようにしなければならない」とするが、順序の持ち方を本基準では確定させないとしており、何が定義できれば満たすのかが書かれていない。3.5 は「チュートリアルから参照できる形で保存しなければならない」の「参照できる形」が定義されておらず、保存結果のどの状態を見れば合格かを第三者が判定できない |\n| 5 | ② | 要件 2（現行の設定用ウインドウ 26 フォーム相当の設定項目） | 設定の登録・変更・削除という入力を受けて状態を変える要件だが、境界値のACが無い。1.5 は入力チェックエラー時の再表示を一般的に定めるだけで、設定項目の件数・桁数などの上限・下限や空の場合の応答が定められていない |\n| 6 | ② | 要件 3（選択肢に応じた入力欄と例の順次表示の定義） | 選択肢・入力欄・例とその対応を定義させる要件だが、異常系・境界値のACが無い。対応する入力欄・例を持たない選択肢の定義、同じ順番の重複や順番の欠番、選択肢・入力欄・例の件数や例の文言の長さの上限を超えた場合の応答が定められていない |\n| 7 | ② | 受け入れ基準 1.2・1.3・1.4 ／ steering/security.md `#### 認証フロー`・`### 認可`・`#### 所有権・エンティティ境界` ／ requirements.md `## 非機能要件` セキュリティ行 | 誤配置: どの機能にも適用される `security.md` の横断方針（未認証時のログイン画面への遷移、機能IDに対する権限が無い場合のエラー表示、検索・更新の `WHERE` への会社コードの付与）を、この feature 固有の要素を加えずに機能要件のACとして書き直している。同じ内容が `## 非機能要件` のセキュリティ行にも書かれている |\n| 8 | ② | `## 概要（Introduction）` 第 3 段落「`issue-request`（優先度 4）…優先度 3 に置かれている」 ／ .aidd/feature-list.md `## フィーチャー一覧` 表・`**本プロジェクトでの算出根拠**` 表 | 根拠なし: feature-list では本 feature（`issue-request-tutorial`）の優先度は 2、`issue-request` の優先度は 3 であり、本文の「`issue-request`（優先度 4）」「優先度 3 に置かれている」という値に対応する記述が根拠のどこにも無い（優先度を置く理由の文は feature-list の算出根拠と同じ内容） |\n| 9 | ② | `## 前提と依存（Dependencies / Assumptions）` 未確定事項（冒頭の文） | 根拠の飛躍: 「次の 8 件は いずれも基本設計で確定する（REQ-010。…人間が確定 / 2026-09-11）」とあるが、REQ-010 が基本設計に委ねているのはプログラムの分割と画面・帳票・バッチの構成だけで、選択肢の種類と入力欄・例の対応（④）、表示順序の決まり方（⑤）、適用範囲（⑥）、変更履歴の要否（⑦）、削除の方式（⑧）まで基本設計に回す根拠にはならない。人間の確定（2026-09-11）は指定された根拠に含まれず、追跡できない |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- #1: 人間による確認（REQ-035 の表示の振る舞いを Phase 3 の `.aidd/feature-list.md` で `issue-request` にも割り当てるのか、本 requirements.md 側で表示の受け入れ基準を持つのかを、検査側では決められない）\n\n**判断の選択肢**（指摘ごとに 1 つ選ぶ）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n\n回答例: `1:A / 2:C 既存システムの制約で変更できない / 3:D 次回レビューまで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。",
+          "id": "a0f7bc27ebd94b968c90520a7f9b4afc"
+        },
+        "result": "ok"
       }
     },
     "results": {
@@ -31495,6 +33901,20 @@
         "summary": "#1: 未確定事項の冒頭を「次の 14 件（⑬ は解消済み）は いずれも基本設計で確定する」に直した。#2: Adjacent（issue-request）の「Keiyaku_Ringi_Kiansha_Kaisha_Name を…参照・表示するだけである」と「（本フィーチャーは Keiyaku_Ringi_Kiansha_Kaisha_Name を参照するのみ。…）」の限定を外し、「本フィーチャーは TWTGM100 を、会社名の表示（要件 11）と帳票の元データ（要件 9・10）のために読み取りのみで参照し、帳票の元データとしては TWTGM140 も読み取りのみで読む」にまとめた。末尾に足していた重複の一文はこれに統合した。外部結合による行の特定（受け入れ基準 11.2）の記述は残した。",
         "hashes": {
           "specs/property-basic-info/requirements.md": "2ac3c3ef1c47cf4cc78a87ab69d33329e96566b259e4fe5221ee4a2b94d75cad"
+        }
+      },
+      "requirements-authoring-revise[issue-request-tutorial]": {
+        "status": "completed",
+        "targets": [
+          "specs/issue-request-tutorial/requirements.md"
+        ],
+        "questions": [],
+        "open_placeholders": 0,
+        "changed_findings": [],
+        "return_candidates": [],
+        "summary": "α2 の本文・判断を引き継ぎ、人間の指示により中身を変えずに書式だけをテンプレート（Templates/specs/_template/requirements.md）に合わせた（property-basic-info と同じ方式）。見出しの名前と並び（対象外・前提と依存を要件の前へ）・案内文・プレースホルダー名をテンプレートどおりにし、受け入れ基準を「要件番号.連番」の ID と日本語の EARS 表記（しなければならない／してはならない）に改めた（要件 3・受け入れ基準 18 件は前後で一致）。2 文目以降は義務・禁止を述べる文だけを義務形にし（2.7 の 2・3 文目、3.6 の 2 文目）、説明の文は残した。業務フローの節は人間判断（2026-09-14）の「不要」の注記と理由を残し、スロット名だけ今のテンプレートの名前にした（人間の指示）。本文中の旧番号の参照を新番号に直した。旧番号との対応は .aidd/ac-id-mapping.md（フロー外の記録）に残した。",
+        "hashes": {
+          "specs/issue-request-tutorial/requirements.md": "1702b231e0ac00d9c213d5501018eeaf449e1df144752c96e55966e25984b25a"
         }
       }
     },
@@ -35700,6 +38120,420 @@
           "operation_id": "56ba2d83-f925-4ff1-91f4-b8d105382f43",
           "operation_applied": true
         }
+      },
+      "a8c9a11f-dc2e-4c87-8a30-3c6ba25cf67d": {
+        "status": "applied",
+        "request": {
+          "action": "decision",
+          "data": {
+            "scope": "feature:issue-request-tutorial",
+            "run": 1,
+            "number": 1,
+            "decision": "差戻し",
+            "reason": "Phase 3 feature-list へ差戻し。人間確定（2026-09-29）: チュートリアル（WTG081）は発行依頼書画面のボタンから開くポップアップで、契約種別→局種別→設置設備…と選択に応じて画面を順に表示し、選んだ値を発行依頼書画面の項目に設定する。設定内容を定義・保存する管理画面ではなく、保存用テーブルは持たない。REQ-035 の表示の振る舞いは本 feature が持ち、issue-request はボタンと値の受け取りを持つ。feature-list の目的・算出根拠を直してから requirements を作り直す"
+          },
+          "actor": "Junichi Noumi",
+          "expected": {
+            "root": "C:\\project\\Wing",
+            "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+            "call": "requirements-authoring-revise",
+            "event": "requirements-authoring-revise",
+            "item": "issue-request-tutorial",
+            "dispatch_id": "a0f7bc27ebd94b968c90520a7f9b4afc",
+            "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+            "scope": "feature:issue-request-tutorial",
+            "run": 1,
+            "snapshot": "9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983",
+            "record_hash": "e516e28becfafb6d83e3f168c2c47ca2ddce3187db9c7f8bf84d2221de090e27"
+          },
+          "root": "C:\\project\\Wing",
+          "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial"
+        },
+        "effects": [
+          {
+            "kind": "record",
+            "path": ".aidd/gates/phase-4-requirements.md",
+            "before": "e516e28becfafb6d83e3f168c2c47ca2ddce3187db9c7f8bf84d2221de090e27",
+            "after": "2f98de938fb6ba3d66cea8a4cffa9b7214500b5cbc2cb26d03df289544f49352",
+            "suffix": "\n## 判断\n\n| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 |\n|---|---|---|---|---|---|---|\n| feature:issue-request-tutorial | 1 | 1 | 差戻し | Phase 3 feature-list へ差戻し。人間確定（2026-09-29）: チュートリアル（WTG081）は発行依頼書画面のボタンから開くポップアップで、契約種別→局種別→設置設備…と選択に応じて画面を順に表示し、選んだ値を発行依頼書画面の項目に設定する。設定内容を定義・保存する管理画面ではなく、保存用テーブルは持たない。REQ-035 の表示の振る舞いは本 feature が持ち、issue-request はボタンと値の受け取りを持つ。feature-list の目的・算出根拠を直してから requirements を作り直す | Junichi Noumi | 2026-09-29T10:48:03+09:00 |\n"
+          }
+        ],
+        "result": {
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial",
+          "operation_id": "a8c9a11f-dc2e-4c87-8a30-3c6ba25cf67d",
+          "operation_applied": true
+        }
+      },
+      "0f1bffba-04f4-4812-a04a-171caabee9d5": {
+        "status": "applied",
+        "request": {
+          "action": "decision",
+          "data": {
+            "scope": "feature:issue-request-tutorial",
+            "run": 1,
+            "number": 8,
+            "decision": "修正",
+            "reason": "優先度の値を feature-list（本 feature 2、issue-request 3）に合わせる"
+          },
+          "actor": "Junichi Noumi",
+          "expected": {
+            "root": "C:\\project\\Wing",
+            "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+            "call": "requirements-authoring-revise",
+            "event": "requirements-authoring-revise",
+            "item": "issue-request-tutorial",
+            "dispatch_id": "a0f7bc27ebd94b968c90520a7f9b4afc",
+            "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+            "scope": "feature:issue-request-tutorial",
+            "run": 1,
+            "snapshot": "9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983",
+            "record_hash": "2f98de938fb6ba3d66cea8a4cffa9b7214500b5cbc2cb26d03df289544f49352"
+          },
+          "root": "C:\\project\\Wing",
+          "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial"
+        },
+        "effects": [
+          {
+            "kind": "record",
+            "path": ".aidd/gates/phase-4-requirements.md",
+            "before": "2f98de938fb6ba3d66cea8a4cffa9b7214500b5cbc2cb26d03df289544f49352",
+            "after": "ad168604a6b4eb425ea6440d7bfb774cd462da3cd41bc3ece0ce076c33208918",
+            "suffix": "\n## 判断\n\n| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 |\n|---|---|---|---|---|---|---|\n| feature:issue-request-tutorial | 1 | 8 | 修正 | 優先度の値を feature-list（本 feature 2、issue-request 3）に合わせる | Junichi Noumi | 2026-09-29T10:48:05+09:00 |\n"
+          }
+        ],
+        "result": {
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial",
+          "operation_id": "0f1bffba-04f4-4812-a04a-171caabee9d5",
+          "operation_applied": true
+        }
+      },
+      "8dc02b5e-3c98-43eb-be5e-cda0d9fb7a50": {
+        "status": "applied",
+        "request": {
+          "action": "decision",
+          "data": {
+            "scope": "feature:issue-request-tutorial",
+            "run": 1,
+            "number": 2,
+            "decision": "未対応",
+            "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する"
+          },
+          "actor": "Junichi Noumi",
+          "expected": {
+            "root": "C:\\project\\Wing",
+            "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+            "call": "requirements-authoring-revise",
+            "event": "requirements-authoring-revise",
+            "item": "issue-request-tutorial",
+            "dispatch_id": "a0f7bc27ebd94b968c90520a7f9b4afc",
+            "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+            "scope": "feature:issue-request-tutorial",
+            "run": 1,
+            "snapshot": "9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983",
+            "record_hash": "ad168604a6b4eb425ea6440d7bfb774cd462da3cd41bc3ece0ce076c33208918"
+          },
+          "root": "C:\\project\\Wing",
+          "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial"
+        },
+        "effects": [
+          {
+            "kind": "record",
+            "path": ".aidd/gates/phase-4-requirements.md",
+            "before": "ad168604a6b4eb425ea6440d7bfb774cd462da3cd41bc3ece0ce076c33208918",
+            "after": "95e27249bdc133cc032a281aaa4017d4e5518bc7bbdb663f3b33c5612afa8ab6",
+            "suffix": "\n## 判断\n\n| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 |\n|---|---|---|---|---|---|---|\n| feature:issue-request-tutorial | 1 | 2 | 未対応 | #1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する | Junichi Noumi | 2026-09-29T10:48:06+09:00 |\n"
+          }
+        ],
+        "result": {
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial",
+          "operation_id": "8dc02b5e-3c98-43eb-be5e-cda0d9fb7a50",
+          "operation_applied": true
+        }
+      },
+      "87db4984-8082-4ac7-a4ce-e7a0758582b8": {
+        "status": "applied",
+        "request": {
+          "action": "decision",
+          "data": {
+            "scope": "feature:issue-request-tutorial",
+            "run": 1,
+            "number": 3,
+            "decision": "未対応",
+            "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する"
+          },
+          "actor": "Junichi Noumi",
+          "expected": {
+            "root": "C:\\project\\Wing",
+            "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+            "call": "requirements-authoring-revise",
+            "event": "requirements-authoring-revise",
+            "item": "issue-request-tutorial",
+            "dispatch_id": "a0f7bc27ebd94b968c90520a7f9b4afc",
+            "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+            "scope": "feature:issue-request-tutorial",
+            "run": 1,
+            "snapshot": "9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983",
+            "record_hash": "95e27249bdc133cc032a281aaa4017d4e5518bc7bbdb663f3b33c5612afa8ab6"
+          },
+          "root": "C:\\project\\Wing",
+          "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial"
+        },
+        "effects": [
+          {
+            "kind": "record",
+            "path": ".aidd/gates/phase-4-requirements.md",
+            "before": "95e27249bdc133cc032a281aaa4017d4e5518bc7bbdb663f3b33c5612afa8ab6",
+            "after": "02430fb5a80afe1293f542e5102d54873a536a3aae936f15640752d6501d4403",
+            "suffix": "\n## 判断\n\n| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 |\n|---|---|---|---|---|---|---|\n| feature:issue-request-tutorial | 1 | 3 | 未対応 | #1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する | Junichi Noumi | 2026-09-29T10:48:07+09:00 |\n"
+          }
+        ],
+        "result": {
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial",
+          "operation_id": "87db4984-8082-4ac7-a4ce-e7a0758582b8",
+          "operation_applied": true
+        }
+      },
+      "0c16d1dc-9ee6-4674-bbc0-400fcab9cdf9": {
+        "status": "applied",
+        "request": {
+          "action": "decision",
+          "data": {
+            "scope": "feature:issue-request-tutorial",
+            "run": 1,
+            "number": 4,
+            "decision": "未対応",
+            "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する"
+          },
+          "actor": "Junichi Noumi",
+          "expected": {
+            "root": "C:\\project\\Wing",
+            "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+            "call": "requirements-authoring-revise",
+            "event": "requirements-authoring-revise",
+            "item": "issue-request-tutorial",
+            "dispatch_id": "a0f7bc27ebd94b968c90520a7f9b4afc",
+            "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+            "scope": "feature:issue-request-tutorial",
+            "run": 1,
+            "snapshot": "9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983",
+            "record_hash": "02430fb5a80afe1293f542e5102d54873a536a3aae936f15640752d6501d4403"
+          },
+          "root": "C:\\project\\Wing",
+          "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial"
+        },
+        "effects": [
+          {
+            "kind": "record",
+            "path": ".aidd/gates/phase-4-requirements.md",
+            "before": "02430fb5a80afe1293f542e5102d54873a536a3aae936f15640752d6501d4403",
+            "after": "746c8886284138bbbc9d151c1d53d32ef51d31cc16405bd5f9d007a3bf3c0be4",
+            "suffix": "\n## 判断\n\n| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 |\n|---|---|---|---|---|---|---|\n| feature:issue-request-tutorial | 1 | 4 | 未対応 | #1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する | Junichi Noumi | 2026-09-29T10:48:08+09:00 |\n"
+          }
+        ],
+        "result": {
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial",
+          "operation_id": "0c16d1dc-9ee6-4674-bbc0-400fcab9cdf9",
+          "operation_applied": true
+        }
+      },
+      "9db507b9-0dc1-4397-859c-f52da4fd78b2": {
+        "status": "applied",
+        "request": {
+          "action": "decision",
+          "data": {
+            "scope": "feature:issue-request-tutorial",
+            "run": 1,
+            "number": 5,
+            "decision": "未対応",
+            "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する"
+          },
+          "actor": "Junichi Noumi",
+          "expected": {
+            "root": "C:\\project\\Wing",
+            "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+            "call": "requirements-authoring-revise",
+            "event": "requirements-authoring-revise",
+            "item": "issue-request-tutorial",
+            "dispatch_id": "a0f7bc27ebd94b968c90520a7f9b4afc",
+            "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+            "scope": "feature:issue-request-tutorial",
+            "run": 1,
+            "snapshot": "9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983",
+            "record_hash": "746c8886284138bbbc9d151c1d53d32ef51d31cc16405bd5f9d007a3bf3c0be4"
+          },
+          "root": "C:\\project\\Wing",
+          "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial"
+        },
+        "effects": [
+          {
+            "kind": "record",
+            "path": ".aidd/gates/phase-4-requirements.md",
+            "before": "746c8886284138bbbc9d151c1d53d32ef51d31cc16405bd5f9d007a3bf3c0be4",
+            "after": "850127e049d9bf674595019568f863241868db27af084ed814116b2d78105b80",
+            "suffix": "\n## 判断\n\n| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 |\n|---|---|---|---|---|---|---|\n| feature:issue-request-tutorial | 1 | 5 | 未対応 | #1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する | Junichi Noumi | 2026-09-29T10:48:10+09:00 |\n"
+          }
+        ],
+        "result": {
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial",
+          "operation_id": "9db507b9-0dc1-4397-859c-f52da4fd78b2",
+          "operation_applied": true
+        }
+      },
+      "012934e7-eab9-4405-9ab3-b4a5debaae65": {
+        "status": "applied",
+        "request": {
+          "action": "decision",
+          "data": {
+            "scope": "feature:issue-request-tutorial",
+            "run": 1,
+            "number": 6,
+            "decision": "未対応",
+            "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する"
+          },
+          "actor": "Junichi Noumi",
+          "expected": {
+            "root": "C:\\project\\Wing",
+            "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+            "call": "requirements-authoring-revise",
+            "event": "requirements-authoring-revise",
+            "item": "issue-request-tutorial",
+            "dispatch_id": "a0f7bc27ebd94b968c90520a7f9b4afc",
+            "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+            "scope": "feature:issue-request-tutorial",
+            "run": 1,
+            "snapshot": "9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983",
+            "record_hash": "850127e049d9bf674595019568f863241868db27af084ed814116b2d78105b80"
+          },
+          "root": "C:\\project\\Wing",
+          "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial"
+        },
+        "effects": [
+          {
+            "kind": "record",
+            "path": ".aidd/gates/phase-4-requirements.md",
+            "before": "850127e049d9bf674595019568f863241868db27af084ed814116b2d78105b80",
+            "after": "bd6cca79763d179e7e569820e8c807cc6e550ac2c473f91de3fe2e28ab324328",
+            "suffix": "\n## 判断\n\n| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 |\n|---|---|---|---|---|---|---|\n| feature:issue-request-tutorial | 1 | 6 | 未対応 | #1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する | Junichi Noumi | 2026-09-29T10:48:11+09:00 |\n"
+          }
+        ],
+        "result": {
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial",
+          "operation_id": "012934e7-eab9-4405-9ab3-b4a5debaae65",
+          "operation_applied": true
+        }
+      },
+      "39e08c21-90b0-434b-ab8e-ce85faa5176d": {
+        "status": "applied",
+        "request": {
+          "action": "decision",
+          "data": {
+            "scope": "feature:issue-request-tutorial",
+            "run": 1,
+            "number": 7,
+            "decision": "未対応",
+            "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する"
+          },
+          "actor": "Junichi Noumi",
+          "expected": {
+            "root": "C:\\project\\Wing",
+            "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+            "call": "requirements-authoring-revise",
+            "event": "requirements-authoring-revise",
+            "item": "issue-request-tutorial",
+            "dispatch_id": "a0f7bc27ebd94b968c90520a7f9b4afc",
+            "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+            "scope": "feature:issue-request-tutorial",
+            "run": 1,
+            "snapshot": "9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983",
+            "record_hash": "bd6cca79763d179e7e569820e8c807cc6e550ac2c473f91de3fe2e28ab324328"
+          },
+          "root": "C:\\project\\Wing",
+          "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial"
+        },
+        "effects": [
+          {
+            "kind": "record",
+            "path": ".aidd/gates/phase-4-requirements.md",
+            "before": "bd6cca79763d179e7e569820e8c807cc6e550ac2c473f91de3fe2e28ab324328",
+            "after": "827fee783d6794f5d8e86867e8c664187d3e4179d9aa8e9615831219e7b30476",
+            "suffix": "\n## 判断\n\n| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 |\n|---|---|---|---|---|---|---|\n| feature:issue-request-tutorial | 1 | 7 | 未対応 | #1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する | Junichi Noumi | 2026-09-29T10:48:12+09:00 |\n"
+          }
+        ],
+        "result": {
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial",
+          "operation_id": "39e08c21-90b0-434b-ab8e-ce85faa5176d",
+          "operation_applied": true
+        }
+      },
+      "c2128f0a-c486-41d2-b451-9f478f00e9d2": {
+        "status": "applied",
+        "request": {
+          "action": "decision",
+          "data": {
+            "scope": "feature:issue-request-tutorial",
+            "run": 1,
+            "number": 9,
+            "decision": "未対応",
+            "reason": "#1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する"
+          },
+          "actor": "Junichi Noumi",
+          "expected": {
+            "root": "C:\\project\\Wing",
+            "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+            "call": "requirements-authoring-revise",
+            "event": "requirements-authoring-revise",
+            "item": "issue-request-tutorial",
+            "dispatch_id": "a0f7bc27ebd94b968c90520a7f9b4afc",
+            "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+            "scope": "feature:issue-request-tutorial",
+            "run": 1,
+            "snapshot": "9a3cc3bf69ad35095ee278772d9622ee6836444f1db1944f714e7ebc6c652983",
+            "record_hash": "827fee783d6794f5d8e86867e8c664187d3e4179d9aa8e9615831219e7b30476"
+          },
+          "root": "C:\\project\\Wing",
+          "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial"
+        },
+        "effects": [
+          {
+            "kind": "record",
+            "path": ".aidd/gates/phase-4-requirements.md",
+            "before": "827fee783d6794f5d8e86867e8c664187d3e4179d9aa8e9615831219e7b30476",
+            "after": "24eadfcd969712e6050c31c1fe6ed9637f69781706816879bb6ae5cf76ee737a",
+            "suffix": "\n## 判断\n\n| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 |\n|---|---|---|---|---|---|---|\n| feature:issue-request-tutorial | 1 | 9 | 未対応 | #1 の差戻しで要件2・3を作り直すため、作り直し後の検査で判断する | Junichi Noumi | 2026-09-29T10:48:13+09:00 |\n"
+          }
+        ],
+        "result": {
+          "event": "requirements-authoring-revise",
+          "item": "issue-request-tutorial",
+          "operation_id": "c2128f0a-c486-41d2-b451-9f478f00e9d2",
+          "operation_applied": true
+        }
       }
     },
     "repair_history": [
@@ -35900,7 +38734,7 @@
       "requirements"
     ]
   },
-  "updated_at": "2026-09-29T10:25:05+09:00",
+  "updated_at": "2026-09-29T10:50:00+09:00",
   "engine_reports": {
     "c7955701c7fd423b88695f16e6b04f2e": {
       "request": {
@@ -36508,16 +39342,73 @@
         "requiresHuman": true,
         "calls": []
       }
+    },
+    "ebf03377932146aaabcae1e3e83e2d51": {
+      "request": {
+        "call": "requirements-authoring-revise",
+        "item": "issue-request-tutorial",
+        "result": "ok",
+        "note": null,
+        "detail": null
+      },
+      "unit": {
+        "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::run",
+        "flow": "requirements-authoring-revise",
+        "event": "requirements-authoring-revise",
+        "item": "issue-request-tutorial",
+        "gate": null,
+        "hookPoint": null,
+        "name": "requirements-authoring-revise",
+        "type": "skill",
+        "target": "requirements-revision",
+        "isAgent": false,
+        "requiresHuman": false,
+        "calls": []
+      }
+    },
+    "8f04ad52a9184631aa628fd8e175b797": {
+      "request": {
+        "call": "requirements-authoring-revise",
+        "item": "issue-request-tutorial",
+        "result": "ok",
+        "note": null,
+        "detail": null
+      },
+      "unit": {
+        "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.requirements-check",
+        "flow": "requirements-authoring-revise",
+        "event": "requirements-authoring-revise",
+        "item": "issue-request-tutorial",
+        "gate": "requirements-check",
+        "hookPoint": "end",
+        "name": "requirements-check",
+        "type": "skill",
+        "target": "requirements-check",
+        "isAgent": true,
+        "requiresHuman": false,
+        "calls": [
+          "format-conformance",
+          "traceability",
+          "verifiable-criteria-check",
+          "ac-coverage-completeness",
+          "traceability",
+          "evidence-guard",
+          "ssot-consistency",
+          "steering-conformance",
+          "ssot-consistency",
+          "gate-report"
+        ]
+      }
     }
   },
   "trace": {
-    "orchestrator_id": "01M3NC2W5VRAPPPH4TVKJXAHKF",
+    "orchestrator_id": "01M3NCS4354YVPYPG26HSGQK7M",
     "command": "requirements-authoring-revise",
-    "started_at": "2026-09-29T10:22:20+09:00",
+    "started_at": "2026-09-29T10:34:29+09:00",
     "open": false,
     "last": {
-      "phase": "01M3NC2W5WHWACVFAX50NJF0CT",
-      "sub_phase": "01M3NC2W5WM09VP9V3Q6CSBHGA"
+      "phase": "01M3NCS437FJA2TSQ6C4SGFH2S",
+      "sub_phase": "01M3NCS437ENJKEHM22203GBVS"
     }
   },
   "progress": {
@@ -36602,7 +39493,7 @@
     "source": ".aidd/feature-list.md",
     "schema": 1,
     "sha256": "4d59b0c69eb0b8f2a9ccd109e05eb9f3307dbc1264b8ed9f85fb2dd23d005ec2",
-    "synced_at": "2026-09-29T10:22:20+09:00",
+    "synced_at": "2026-09-29T10:41:35+09:00",
     "definition_sha256": "31ec8d793fc0be60692c07f774e479fecb13c64771b8e975b8ef5de116229bc9"
   },
   "feature_history": []
