@@ -361,8 +361,9 @@ def operate(context, kind, payload, actor=''):
                       'review_context':review_gate.current(context,receipt['call']),
                       'review':review_summary(context)}
             output['next_action'] = _next_action({'status':'wait','gate':'review'}, context)
-        elif kind == 'respond' and action in ('change-plan', 'repair') and not answers_generate_review:
-            if action == 'repair' and repair_actions.is_revise(context):
+        elif kind == 'respond' and action in ('change-plan', 'repair') and (
+                not answers_generate_review or _crosses(context, payload.get('data') or {})):
+            if action == 'repair' and repair_actions.is_revise(context) and not _crosses(context, payload.get('data') or {}):
                 output = _advance(context, receipt['call'])
             else:
                 output = {'status':'rollback','allowed_actions':[],'blockers':[b for b in context.blockers() if b.get('status') != 'resolved'],
@@ -392,6 +393,12 @@ def operate(context, kind, payload, actor=''):
         entry.update(status='finished',output=output)
         _save(context,entries)
         return output
+
+
+def _crosses(context, data):
+    """A repair owned by another phase or feature is a rollback: do not continue this event."""
+    owner = _owner(context, data)
+    return owner.process != context.process or owner.item != context.item
 
 
 def _owner(context, data):

@@ -194,7 +194,9 @@ def reopen_consumer(context, changed):
         redo(context, context.event)
     else:
         owner = repair_actions.revise_context(context)
-        if repair_actions.pending(owner) is None:
+        if repair_actions.pending(owner) is not None:
+            repair_actions.ensure_scheduled(owner)  # an existing request may have been interrupted
+        else:
             targets = [p for p in owner.artifacts() if Path(owner.path(p)).exists()]
             if targets:
                 repair_actions.reopen(context, targets,
@@ -271,13 +273,15 @@ def _manifest(context):
     state = context.state()
     before = state.get("feature_manifest", {}).get("sha256")
     source = feature_manifest.source_hash(context.root, approved=False)
+    pending_change = workflow(context).get("manifest_change", {})
+    resume = bool(pending_change.get("needs_replan")) and pending_change.get("after") == source
     if before and before != source:
         feature = aidd_paths.Context(context.root, context.state_path, aidd_paths.RULES["feature"]["generate"])
         if not evidence_ok(feature):
             raise ValueError(reopen_edited(context, feature, feature_manifest.SOURCE))
     feature_manifest.synchronize(context.root, context.state_path)
     change = dict(workflow(context).get("manifest_change", {}))
-    if not (before and before != source and change.get("needs_replan")):
+    if not (((before and before != source) or resume) and change.get("needs_replan")):
         return
     names = {f["name"]: f for f in context.features()}
     affected = set(change.get("changed", []))
@@ -310,6 +314,18 @@ def _manifest(context):
     change["needs_replan"] = False
     save(context, {"manifest_change": change, "accepted_plans": plans})
     rebaseline(context, [feature_manifest.SOURCE])
+
+
+def sync_approved_manifest(context):
+    """A re-approved feature list is synchronized (or its interrupted sync resumed) before consumers are audited."""
+    before = (context.state().get("feature_manifest") or {}).get("sha256")
+    path = feature_manifest.source_path(context.root)
+    if not before or not path.is_file() or (artifacts.fields(path) or {}).get("status") != "approved":
+        return
+    source = feature_manifest.source_hash(context.root)
+    change = workflow(context).get("manifest_change", {})
+    if before != source or (change.get("needs_replan") and change.get("after") == source):
+        _manifest(context)
 
 
 def preflight(context):
@@ -354,6 +370,9 @@ def audit(context):
     if pending:
         invalidate(context, pending["from_phase"], item=pending.get("item"))
         raise ValueError("interrupted invalidation finished; review the plan")
+    sync_approved_manifest(context)
+    import repair_actions
+    repair_actions.resume_unscheduled(context)
     entries = list(workflow(context).get("inputs", {}).items())
     entries.sort(key=lambda pair: aidd_paths.RULES[aidd_paths.PROCESS_OF[pair[0].split('[', 1)[0]]]["number"])
     for name, previous in entries:

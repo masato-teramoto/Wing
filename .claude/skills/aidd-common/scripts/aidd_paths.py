@@ -30,6 +30,8 @@ PROCESS_OF.update({"requirements-plan": "requirements", "design-plan": "design",
 
 
 class Context:
+    draft_manifest = False
+
     def __init__(self, root=None, state_path=None, event=None, item=None):
         self.root = os.path.abspath(root or os.environ.get("AIDD_ROOT") or os.getcwd())
         self.state_path = state_path or os.environ.get("AIDD_STATE") or self.path(".aidd/phase-progress.json")
@@ -74,7 +76,7 @@ class Context:
         return project_state.read(self.state_path)
 
     def features(self):
-        return feature_manifest.load(self.root, self.state_path)
+        return feature_manifest.load(self.root, self.state_path, approved=not self.draft_manifest)
 
     def blockers(self):
         value = self.state().get("blockers", [])

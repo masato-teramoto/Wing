@@ -1,4 +1,7 @@
-"""One strict reader for feature definitions; consumers use the checked snapshot."""
+"""One strict reader for feature definitions; consumers use the checked snapshot.
+
+Only the rollback reopening of the finder (repair_actions._discovering) reads it
+with approved=False; every other reader requires the approved source."""
 
 import hashlib
 import json
@@ -107,12 +110,12 @@ def synchronize(root, state_path):
     return merged
 
 
-def load(root, state_path):
+def load(root, state_path, approved=True):
     state = project_state.read(state_path)
     metadata = state.get("feature_manifest") or {}
     if metadata.get("schema") != SCHEMA or metadata.get("source") != SOURCE:
         raise ValueError("feature snapshot missing or incompatible; synchronize first")
-    if metadata.get("sha256") != source_hash(root):
+    if metadata.get("sha256") != source_hash(root, approved=approved):
         raise ValueError("feature snapshot stale; synchronize and review the changed plan")
     features = state.get("features")
     if not isinstance(features, list) or not features:

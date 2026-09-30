@@ -75,17 +75,33 @@ def _record(owner, data):
     workflow_state.save(owner, {"repairs": repairs})
 
 
+def _new_request(owner, targets, findings, actor, origin, instruction, extra):
+    at = project_state.now()
+    data = {"event": owner.event, "item": owner.item, "targets": list(targets), "findings": list(findings),
+            "instruction": instruction, "origin": origin, "actor": actor, "at": at, "scheduled": None}
+    data["id"] = hashlib.sha256((workflow_state.key(owner) + at + json.dumps(findings, sort_keys=True, ensure_ascii=False) + instruction).encode()).hexdigest()
+    if extra:
+        data.update(extra)
+    return data
+
+
 def _open(owner, targets, findings, actor, origin, instruction="", extra=None):
     """Record the -revise request for owner (a -revise context) and reopen its targets."""
     if set(targets) - set(owner.artifacts()):
         raise ValueError("repair may change only the selected owner's artifacts")
-    at = project_state.now()
-    data = {"event": owner.event, "item": owner.item, "targets": list(targets), "findings": list(findings),
-            "instruction": instruction, "origin": origin, "actor": actor, "at": at}
-    data["id"] = hashlib.sha256((workflow_state.key(owner) + at + json.dumps(findings, sort_keys=True, ensure_ascii=False) + instruction).encode()).hexdigest()
-    if extra:
-        data.update(extra)
-    _record(owner, data)
+    existing = pending(owner)
+    if existing and all(existing.get(k) == v for k, v in (
+            ("targets", list(targets)), ("findings", list(findings)), ("actor", actor),
+            ("instruction", instruction), ("origin", origin))):
+        data = existing  # a resent request keeps its id, time and instruction
+    else:
+        data = _new_request(owner, targets, findings, actor, origin, instruction, extra)
+        _record(owner, data)
+    return _schedule(owner, data)
+
+
+def _schedule(owner, data):
+    """Reopen the request's targets and redo its -revise event, then mark it scheduled."""
     if owner.process == 'tasks':
         # A plan revision ends the old task journal before the author edits its
         # protected body. Preserve its evidence and invalidate only this feature.
@@ -93,9 +109,32 @@ def _open(owner, targets, findings, actor, origin, instruction="", extra=None):
         import task_runtime
         implementation_repair.invalidate_feature(owner, owner.item)
         task_runtime.retire(owner, owner.item)
-    _set_draft(owner, targets)
+    _set_draft(owner, data["targets"])
     workflow_state.redo(owner, owner.event, owner.item or None)
+    data = dict(data, scheduled=project_state.now())
+    _record(owner, data)
     return data
+
+
+def unscheduled(data):
+    """Saved but not yet reopened/redone. Records from before this field are treated as scheduled."""
+    return isinstance(data, dict) and "scheduled" in data and not data["scheduled"]
+
+
+def ensure_scheduled(owner):
+    """Finish the reopening of this owner's pending request if an interruption left it unscheduled."""
+    data = pending(owner)
+    if unscheduled(data):
+        return _schedule(owner, data)
+    return data
+
+
+def resume_unscheduled(context):
+    """Resume every pending request whose reopening was interrupted (called by audit)."""
+    for data in list(workflow_state.workflow(context).get("repairs", {}).values()):
+        if unscheduled(data) and not data.get("consumed"):
+            owner = aidd_paths.Context(context.root, context.state_path, data["event"], data.get("item") or "")
+            ensure_scheduled(owner)
 
 
 def _redo_cross(context, process):
@@ -129,6 +168,7 @@ def _discovering(context, row, owner_process, actor):
     if rule["per_feature"] and not item:
         return
     owner = revise_context(context, phase, item)
+    owner.draft_manifest = True
     targets = [t for t in owner.artifacts() if Path(owner.path(t)).exists()]
     if targets:
         _open(owner, targets, [row], actor, "rollback", note)
@@ -209,6 +249,10 @@ def request(context, payload, actor, apply=True):
     for row in rows:
         other_feature = row["phase"] == context.process and row["scope"] not in (context.scope, "cross", "phase")
         if aidd_paths.RULES[row["phase"]]["number"] > context.phase or other_feature:
+            if any(b.get("status") == "open" and b.get("target_event") == owner.event and b.get("target_item") == owner.item
+                   and all((b.get("finding") or {}).get(k) == row.get(k) for k in ("phase", "scope", "run", "number"))
+                   for b in blockers):
+                continue  # a resent request after a partial failure
             resume_event, resume_item = discovering_key(row)
             blockers.append({"id": data["id"] + ":" + str(len(blockers)), "status": "open",
                              "return_to_phase": context.phase, "target_event": owner.event,
