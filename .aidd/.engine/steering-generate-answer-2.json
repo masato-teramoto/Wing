@@ -1,0 +1,6 @@
+{
+  "operation_id": "43de9c6ca84c43cfbdbf34c48aeed58b",
+  "answers": [
+    "1. 新しい画面はすべて wing（Spring MVC）で作る。GWTG060、070、080、081、090、100 が対象\n2. 契約情報取込は、画面 GWTG090（PWTGO090）を wing に作り、バッチ PWTGB090 は既存の PWTGB030、040、050 と同じく WTX_Batch の batch-engine で作る。DB アクセスは VE（GreenEARTH の GDBVirtualEntity）を使う\n3. 帳票（PWTGO072、帳票ID RWTG070）は wing の画面から出す。テンプレートは .xlsx。Excel の編集は Apache POI を wing/pom.xml に追加して使い、QR は zxing core 3.2.1 を wing/pom.xml に追加する。PDF 変換の製品は【製品名、または「Phase 5 の基本設計で選定し tech.md に追記する」】\n4. 自動テストは必須にしない。テストは工程ごとの試験仕様書で行う。自動テストを書く場合は JUnit 4.12 と spring-test を使い、src/test/java の同じパッケージに <クラス名>Test.java で置く。カバレッジ目標と CI は設けない（既存に無いため）\n5. 実際のソース管理は Backlog の Git（ABA603）。案件ごとに PJ<番号>_develop ブランチを作り、完了後に master へマージする。保護ブランチは master。コミットメッセージは「課題キー＋内容」（例 ABA603-6249 納品物取込）。リリースタグは使わない\n6. 環境の値は WTZ 共通の「非機能要求」に従う（Web と DB サーバーは Oracle Linux 7.9、Apache HTTP Server 2.4.34、Tomcat 7.0.53、JDK 1.7.0.55、Oracle Database EE 19.15、クライアントは Windows 11 と Edge）。セキュリティの方針も同じ資料に従う（利用者ごとのログインID、一定期間後のパスワード変更要求、権限によるアクセス制御、XSS と SQL インジェクションの対策、Java のセッション、no-cache）。SLO、提供時間、障害の優先度、エスカレーション、リリース手順、DR、RPO と RTO、脆弱性の修正期限、監視ツールは不要（保守運用は既存 WiNG の運用に従い、本プロジェクトでは定めない）\n7. それでよい。api-standards.md は全節不要とし、理由は「画面以外から呼ばれる API を設けない」\n8. 技術価値は不要（本案件では技術面の価値を掲げない。任意項目）\n   セキュリティの気づき（認証情報の平文、WTB の SQL）は本案件の範囲外として扱わない"
+  ]
+}

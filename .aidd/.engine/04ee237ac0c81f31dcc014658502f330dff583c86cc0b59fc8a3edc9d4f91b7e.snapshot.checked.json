@@ -1,0 +1,17 @@
+{
+  "event": "requirement-intake-revise",
+  "scope": "phase",
+  "run": 3,
+  "snapshot": "e8366bf83b23a57b7dd2a37dea8105cf9dfcbb0db09dc3e0c6810d4cc844751f",
+  "record_bytes": 21886,
+  "record_hash": "af20d71f0cbec1d476e7232f0537a5390dd2230dc4860089c29fbfe7dfbe1dcb",
+  "targets": [
+    ".aidd/requirement-list.md"
+  ],
+  "hashes": {
+    ".aidd/requirement-list.md": "bdf3027f78209be11ea79d4b3026928aaa5959c4f6fbebb20c35357626604947"
+  },
+  "inputs": {
+    ".aidd/rfp/RFP.md": "821ef820b9f314a3cc375b7fcdef36a887ee4f84ee2c153a2c3a6f0a37c95f00"
+  }
+}

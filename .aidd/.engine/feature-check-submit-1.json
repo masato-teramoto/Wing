@@ -1,0 +1,16 @@
+{
+  "operation_id": "4c8dfc32efa94518bd209bd8ba8d71d0",
+  "dispatch": {
+    "call": "feature-decomposition-generate",
+    "unit": "feature-decomposition-generate/feature-decomposition-generate[-]::end.feature-check",
+    "event": "feature-decomposition-generate",
+    "item": null,
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "c68c037f930a40f986ca2123eb3a1dcb"
+  },
+  "result": {
+    "status": "completed"
+  }
+}

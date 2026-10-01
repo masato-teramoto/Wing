@@ -1,0 +1,43 @@
+{
+  "schema": 2,
+  "phase": "steering",
+  "event": "steering-authoring-generate",
+  "scope": "phase",
+  "at": "2026-10-01T17:00:40+09:00",
+  "artifacts": {
+    "steering/product.md": {
+      "status": "draft",
+      "sha256": "e2019e35953898d251801920d5c4d36bc5c8418ba8d3e2ac95cf2b0808169367"
+    },
+    "steering/tech.md": {
+      "status": "draft",
+      "sha256": "df7defa3e316b5c3563d2576eff5d10d8d7fd8757e374d985a4e62301cc91e50"
+    },
+    "steering/architecture.md": {
+      "status": "draft",
+      "sha256": "d57f6500969a5a92e72a02fd60b7f609c45ec4e7ba1df56cced8d0340e9768d2"
+    },
+    "steering/security.md": {
+      "status": "draft",
+      "sha256": "fe6a799ac0ba8b2b709535154ad28cb13df53cad50eedb00fa1617b92c14df1c"
+    },
+    "steering/non-functional.md": {
+      "status": "draft",
+      "sha256": "386d92f4b4e572cd4bda280c7b2d0ce4757ad16f8344053aa65547ebacdcb24d"
+    },
+    "steering/database.md": {
+      "status": "draft",
+      "sha256": "52256e748a53199269dc75629e4ab3c747100c3ac2485bacf89f762cdfb96b56"
+    },
+    "steering/api-standards.md": {
+      "status": "draft",
+      "sha256": "70eca8d2facbf08bfa22cf1ae1e781219ecab2066bb8129bf4a3414b0fdeddc1"
+    }
+  },
+  "record": {
+    "bytes": 99,
+    "sha256": "2d6ddf746f16a99fe865713ff610b3fee45daf164317231f05abd1bb0d98c7a5",
+    "blocks": 0
+  },
+  "run": 1
+}

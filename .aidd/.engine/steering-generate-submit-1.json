@@ -1,0 +1,227 @@
+{
+  "operation_id": "f8f5f0913e6646d89e66509f58168e61",
+  "dispatch": {
+    "call": "steering-authoring-generate",
+    "unit": "steering-authoring-generate/steering-authoring-generate[-]::run",
+    "event": "steering-authoring-generate",
+    "item": null,
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "b1931f6e58ea4b518d58c9eaa63e8276"
+  },
+  "result": {
+    "status": "waiting",
+    "targets": [
+      "steering/product.md",
+      "steering/tech.md",
+      "steering/architecture.md",
+      "steering/security.md",
+      "steering/non-functional.md",
+      "steering/database.md",
+      "steering/api-standards.md"
+    ],
+    "questions": [
+      {
+        "id": "Q-STR-001",
+        "target": "steering/product.md",
+        "location": "## 提供価値 — 技術価値（<VALUE_TECHNICAL>）",
+        "question": "技術面の価値（運用負荷の軽減・拡張性など）として書く内容を教えてください。ユーザー価値・ビジネス価値に数値目標（作業時間、不備指摘の回数など）があれば、あわせて教えてください（無ければ数値なしで確定します）。",
+        "reason_unanswered": "要求一覧（approved）と計画了承時の人間確定事項に具体値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-STR-010",
+        "target": "steering/tech.md",
+        "location": "## コアテクノロジ（言語 FE/BE、フレームワーク FE/BE、ランタイム、データベース、キャッシュ/KVS、メッセージング）",
+        "question": "既存 WiNG の言語・フレームワーク（画面側／サーバ側）・ランタイム（AP サーバ等）・データベースの製品名とバージョンを教えてください。キャッシュ/KVS・メッセージングを使っていなければ、その旨（不要理由）を教えてください。",
+        "reason_unanswered": "要求一覧（approved）と計画了承時の人間確定事項に具体値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-STR-011",
+        "target": "steering/tech.md",
+        "location": "## 主要な技術選定と理由（言語・フレームワーク・データベース）",
+        "question": "採用理由を「既存 WiNG への機能追加のため既存に従う（REQ-045）」とした場合、代替案と再評価条件をどう書くか（または不要とする理由）を教えてください。",
+        "reason_unanswered": "要求一覧（approved）と計画了承時の人間確定事項に具体値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-STR-012",
+        "target": "steering/tech.md",
+        "location": "## 主要ライブラリ（ORM・バリデーション・テスト・認証・HTTP クライアント・リトライ、Excel→PDF 変換）",
+        "question": "既存 WiNG で使っているライブラリ（または使わない理由）を区分ごとに教えてください。Excel テンプレートへの値設定と PDF 変換に使う製品・ライブラリも教えてください。",
+        "reason_unanswered": "要求一覧（approved）と計画了承時の人間確定事項に具体値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-STR-013",
+        "target": "steering/tech.md",
+        "location": "## 開発環境（必須ツール、推奨 OS / IDE）",
+        "question": "開発に必須のツールとバージョン、推奨 OS・IDE（拡張機能）を教えてください。",
+        "reason_unanswered": "要求一覧（approved）と計画了承時の人間確定事項に具体値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-STR-014",
+        "target": "steering/tech.md",
+        "location": "### Git 戦略・運用ルール一覧・禁止事項",
+        "question": "ソース管理の方式（Git／SVN 等）、ブランチ運用、保護ブランチと条件、マージ方法、タグ、ブランチ名・spec 管理・コミット・PR（レビュー依頼）のルール、禁止操作を教えてください。",
+        "reason_unanswered": "要求一覧（approved）と計画了承時の人間確定事項に具体値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-STR-015",
+        "target": "steering/tech.md",
+        "location": "## 共通コマンド（依存インストール・ローカル開発・ビルド・テスト全体/単一・Lint/フォーマット・型チェック）",
+        "question": "手元で実際に成功するコマンドを教えてください。該当しない手順（型チェック等）は不要理由を教えてください。",
+        "reason_unanswered": "要求一覧（approved）と計画了承時の人間確定事項に具体値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-STR-016",
+        "target": "steering/tech.md",
+        "location": "## 開発標準・## 命名規則・## コード規約",
+        "question": "既存 WiNG のコーディング規約の内容（型安全・API 境界・品質ゲート・レビュー、変数/クラス/ファイル等の命名と実例、判断が必要なコード方針）を教えてください。規約書があれば、そこから転記する箇所を指定してください。",
+        "reason_unanswered": "要求一覧（approved）と計画了承時の人間確定事項に具体値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-STR-017",
+        "target": "steering/tech.md",
+        "location": "## 例外処理（例外処理フロー・例外クラス命名規約・グローバルハンドラ）",
+        "question": "既存 WiNG の例外の扱い（層ごとの方針、例外クラスの基底と命名、最後に受け止める仕組みと実装場所、利用者に返す情報と記録だけに残す情報の分け方）を教えてください。",
+        "reason_unanswered": "要求一覧（approved）と計画了承時の人間確定事項に具体値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-STR-018",
+        "target": "steering/tech.md",
+        "location": "## テスト方針（基本方針・配置/命名・テスト種類・AAA・モック/フィクスチャ・テストデータ・カバレッジ目標・CI 統合・完了条件との接続）",
+        "question": "テストの原則、テストファイルの置き場所と命名、テストの種類と範囲、モックの線引き、テストデータの作り方、カバレッジ目標値、CI で必須にする項目、受け入れ基準とテストの対応づけ方を教えてください。CI が無い場合はその旨を教えてください。",
+        "reason_unanswered": "要求一覧（approved）と計画了承時の人間確定事項に具体値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-STR-020",
+        "target": "steering/architecture.md",
+        "location": "## アーキテクチャ概要・## 配置原則・## レイヤーと依存ルール",
+        "question": "既存 WiNG の全体構成（単一の Web アプリか等）、配置モデル（どこで動くか）、通信パターン、ファイルのまとめ方（機能ごと/層ごと）、層と許可する依存方向・禁止事項、外部連携を閉じ込める層を教えてください。",
+        "reason_unanswered": "要求一覧（approved）と計画了承時の人間確定事項に具体値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-STR-021",
+        "target": "steering/architecture.md",
+        "location": "## 各システムコンポーネントの役割（FE・BE・外部 API/外部システム・共通基盤・その他：バッチ基盤等）",
+        "question": "各コンポーネントの責務・しないこと・配置・境界を教えてください。本プロジェクトで接続する外部システムが無ければ、その旨を教えてください。契約情報取込バッチ（REQ-033〜REQ-035）を動かすバッチ基盤の構成も教えてください。",
+        "reason_unanswered": "要求一覧（approved）と計画了承時の人間確定事項に具体値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-STR-022",
+        "target": "steering/architecture.md",
+        "location": "## ディレクトリ構成・## インポート / パスエイリアス",
+        "question": "既存 WiNG のソースのディレクトリ構成（ルート名、ドメインごとの置き方、ファイルの拡張子）と、steering/specs/docs を置く Spec ルート（このリポジトリ直下で良いか）、import の原則・別名・禁止事項を教えてください。",
+        "reason_unanswered": "要求一覧（approved）と計画了承時の人間確定事項に具体値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-STR-030",
+        "target": "steering/security.md",
+        "location": "## 基本方針（公開範囲・アクセス経路・接続元の制限を含む）",
+        "question": "WiNG の公開範囲（社内網のみか、社外ユーザーのアクセス経路）と、セキュリティで優先する原則を教えてください。",
+        "reason_unanswered": "要求一覧（approved）と計画了承時の人間確定事項に具体値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-STR-031",
+        "target": "steering/security.md",
+        "location": "## 認証・認可 — 認証方式・認証フロー・トークン/セッションのライフサイクル・セキュリティパターン・パスワード/MFA",
+        "question": "既存 WiNG のログイン方式（ID/パスワード、SSO 等）、ログインから要求ごとの確認までの流れ、セッションの寿命と失効契機、パスワード強度・ハッシュ・リセット・MFA・アカウントロックの方針を教えてください。",
+        "reason_unanswered": "要求一覧（approved）と計画了承時の人間確定事項に具体値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-STR-032",
+        "target": "steering/security.md",
+        "location": "## 認証・認可 — 認証→認可の契約（AuthContext）・権限モデル・チェックの適用箇所・所有権",
+        "question": "WTB と同様のベンダー／施工会社の権限制御方式（REQ-043）の具体（モデル：ロール/グループ等、権限の定義の置き場、確認を行う層、社外ユーザーが自社のデータだけを見る判定のしかた、権限名の形式）と、ログイン後に後ろの層へ渡す利用者情報の項目を教えてください。",
+        "reason_unanswered": "要求一覧（approved）と計画了承時の人間確定事項に具体値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-STR-033",
+        "target": "steering/security.md",
+        "location": "## 入力検証 / 出力エスケープ・## 攻撃対策・## ヘッダ / トランスポート",
+        "question": "画面以外の層（サーバ側・DB）の検証の役割、画面の入力チェックの実装方法、出力先ごとのエスケープ、想定する攻撃と対策、設定するセキュリティヘッダと通信の暗号化を教えてください。",
+        "reason_unanswered": "要求一覧（approved）と計画了承時の人間確定事項に具体値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-STR-034",
+        "target": "steering/security.md",
+        "location": "## シークレット管理・## セッション/トークンの保管・転送・## 機密データ・## セキュリティログ・## 脆弱性対応",
+        "question": "認証情報・鍵の保管場所と入れ替え、セッションの保管と属性、機密として扱うデータの種別（契約書・金額・オーナー情報等）と扱い、記録するセキュリティ上の出来事と保持期間、脆弱性の検査方法と修正期限を教えてください。",
+        "reason_unanswered": "要求一覧（approved）と計画了承時の人間確定事項に具体値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-STR-035",
+        "target": "steering/security.md",
+        "location": "### API 間認証",
+        "question": "システム同士の呼び出し（他システムからの API 呼び出し等）があるか教えてください。無ければ不要理由として記載します。",
+        "reason_unanswered": "要求一覧（approved）と計画了承時の人間確定事項に具体値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-STR-040",
+        "target": "steering/non-functional.md",
+        "location": "## 基本方針・### サービスレベル・### サービス提供時間・### 優先度定義・### 性能・容量運用",
+        "question": "運用で優先する原則、SLO/SLA の目標値と計測方法、サービス提供の曜日・時間帯・休日判定・計画メンテナンス、障害の優先度（P1〜P3）の定義と初動・復旧目標、同時利用数・データ量の方針を教えてください。既存 WiNG の水準に従う場合は、その具体値を教えてください。",
+        "reason_unanswered": "要求一覧（approved）と計画了承時の人間確定事項に具体値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-STR-041",
+        "target": "steering/non-functional.md",
+        "location": "## 環境（開発環境の行、検証機・本番機のデータ/デプロイ元/監視、環境運用ルール）",
+        "question": "開発環境の名称と用途、各環境のデータの扱い・デプロイ元・監視の有無、環境をまたぐ操作のルールを教えてください（検証機＝受入テスト、本番機＝運用は要求一覧から記入済み）。",
+        "reason_unanswered": "要求一覧（approved）と計画了承時の人間確定事項に具体値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-STR-042",
+        "target": "steering/non-functional.md",
+        "location": "## デプロイ / リリース（リリースモデル・リリース前チェックリスト・ロールバック条件・リリース後）",
+        "question": "リリースの方式・頻度・承認手続き（リリース判定の承認者）・禁止事項、リリース前の確認項目、切り戻しの条件と対応、リリース後の確認を教えてください。",
+        "reason_unanswered": "要求一覧（approved）と計画了承時の人間確定事項に具体値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-STR-043",
+        "target": "steering/non-functional.md",
+        "location": "## 信頼性・観測性（ログ方針・トレースID・アラート・リトライ・監視/ヘルス）",
+        "question": "既存 WiNG のログレベル・出力項目・出力しない項目・ログ形式とフィールド、要求 ID の扱い、アラートの条件と通知先、再実行の条件、ヘルスチェックとメトリクスを教えてください。該当しない項目は不要理由を教えてください。",
+        "reason_unanswered": "要求一覧（approved）と計画了承時の人間確定事項に具体値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-STR-044",
+        "target": "steering/non-functional.md",
+        "location": "## 運用・障害対応（監視基盤・ダッシュボード・日常確認・障害対応フロー・エスカレーション・オンコール・変更管理・運用手順書）と ## バックアップ / DR",
+        "question": "監視に使うツール、日常確認と担当、障害の検知経路・初動・切り分け・暫定復旧・再発防止、エスカレーション先（役割名）、時間外対応、本番変更の手続き、運用手順書の置き場所、DR の方針を教えてください。",
+        "reason_unanswered": "要求一覧（approved）と計画了承時の人間確定事項に具体値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-STR-050",
+        "target": "steering/database.md",
+        "location": "## 設計思想・## 命名規則・## 型の指針",
+        "question": "既存 WiNG の DB 設計の原則（正規化、論理削除の扱い等）、テーブル・カラム・主キー・外部キー・インデックス・制約の命名規約と実例（TWTZM040 のような接頭辞の付け方を含む）、用途ごとの型（ID・金額・日時・区分値等）を教えてください。",
+        "reason_unanswered": "要求一覧（approved）と計画了承時の人間確定事項に具体値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-STR-051",
+        "target": "steering/database.md",
+        "location": "## マイグレーション・### 後方互換のあるロールアウト",
+        "question": "スキーマ変更（DDL）の管理と本番への適用方法、ファイル・番号の付け方、戻し方、止めずに変更する手順の要否を教えてください。",
+        "reason_unanswered": "要求一覧（approved）と計画了承時の人間確定事項に具体値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-STR-052",
+        "target": "steering/database.md",
+        "location": "## クエリパターン・## 接続 / トランザクション・## 整合性・## バックアップ / リカバリ・## 関連ドキュメント",
+        "question": "一覧・件数・一括更新の書き方、インデックス方針、接続数・タイムアウト・分離レベル・トランザクションの範囲、DB 制約とアプリ側で守るものの分け方、バックアップの頻度・保持期間・RPO/RTO・復元テスト、DB の関連ドキュメントの場所を教えてください。",
+        "reason_unanswered": "要求一覧（approved）と計画了承時の人間確定事項に具体値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-STR-060",
+        "target": "steering/api-standards.md",
+        "location": "全節（設計思想〜複数フィールドのバリデーション）",
+        "question": "本プロジェクトで、画面以外から呼ばれる API（外部公開 API や画面向け JSON API）を設けるか教えてください。設けない場合は、各節を不要理由付きで残す文言を教えてください。設ける場合は、URL・メソッド・形式・エラー形式の既存標準を教えてください。",
+        "reason_unanswered": "要求一覧（approved）と計画了承時の人間確定事項に具体値が無く、推測で書けないため"
+      }
+    ],
+    "open_placeholders": 420,
+    "changed_findings": [],
+    "return_candidates": [],
+    "summary": "product → tech/architecture → security/non-functional/database/api-standards の順に、要求一覧（approved）と計画了承時の人間確定事項（帳票は Excel テンプレート方式、zxing core 3.2.1、TWTZM040/TWTZM050、ZOOM 画面は作らない）から記入できる箇所だけを記入。product.md は技術価値の1欄を除き記入。下位6ファイルは既存 WiNG の技術構成・運用値の根拠が無く、記入欄の大半が未記入（計420欄）。質問は上位ファイルから順に28件（Q-STR-001〜060）。"
+  }
+}

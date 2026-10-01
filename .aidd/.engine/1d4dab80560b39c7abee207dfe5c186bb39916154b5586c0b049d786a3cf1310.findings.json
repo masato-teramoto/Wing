@@ -1,0 +1,7 @@
+{
+  "phase": "steering",
+  "event": "steering-authoring-generate",
+  "scope": "phase",
+  "run": 1,
+  "findings": []
+}

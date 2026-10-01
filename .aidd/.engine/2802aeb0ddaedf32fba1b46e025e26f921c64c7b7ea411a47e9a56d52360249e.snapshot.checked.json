@@ -1,0 +1,24 @@
+{
+  "event": "feature-decomposition-generate",
+  "scope": "phase",
+  "run": 1,
+  "snapshot": "ef4dc2b9b84e6fd8afff00b29b0f7abfc3eafbb169f39eae7bde7e3fe7eadc33",
+  "record_bytes": 4599,
+  "record_hash": "ac224d9d5b4d8bb3537260d8cbf51ad55b3ee4c4139ade394b35d002805d52a1",
+  "targets": [
+    ".aidd/feature-list.md"
+  ],
+  "hashes": {
+    ".aidd/feature-list.md": "4ea8f44148bd789ba40646fca22e3698a8436bcc0a5daad4c6d21af082a66ef7"
+  },
+  "inputs": {
+    ".aidd/requirement-list.md": "bdf3027f78209be11ea79d4b3026928aaa5959c4f6fbebb20c35357626604947",
+    "steering/product.md": "e2019e35953898d251801920d5c4d36bc5c8418ba8d3e2ac95cf2b0808169367",
+    "steering/tech.md": "58cc32eb0ad29d7b7185bb02e710ce8d882e374f93eb0a609ae293e3903a4966",
+    "steering/architecture.md": "98be0c57ba256c0aeaf1a66d69682e63b47d20ec0f91ab776589a54e5eb8c33d",
+    "steering/security.md": "45a1baa66763e451328062e1c98c15291fa49a28701ef28b7fc8d96834531063",
+    "steering/non-functional.md": "1c144434d7acefb1db259340ce3eb9c6a66ea45489c2cc89fd098b94bd1027e6",
+    "steering/database.md": "52256e748a53199269dc75629e4ab3c747100c3ac2485bacf89f762cdfb96b56",
+    "steering/api-standards.md": "70eca8d2facbf08bfa22cf1ae1e781219ecab2066bb8129bf4a3414b0fdeddc1"
+  }
+}

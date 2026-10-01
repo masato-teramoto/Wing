@@ -1,0 +1,53 @@
+{
+  "operation_id": "522a71bbdaa9488fb775a60a6f0bdf3e",
+  "dispatch": {
+    "call": "feature-decomposition-generate",
+    "unit": "feature-decomposition-generate/feature-decomposition-generate[-]::run",
+    "event": "feature-decomposition-generate",
+    "item": null,
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "afaa3bd4435f4fe488200800095e26ea"
+  },
+  "result": {
+    "status": "waiting",
+    "targets": [
+      ".aidd/feature-list.md"
+    ],
+    "questions": [
+      {
+        "id": "Q-FEA-001",
+        "target": ".aidd/feature-list.md",
+        "location": "依存列：property-basic-info（優先度1）と issue-request（優先度2）",
+        "question": "物件基本情報の帳票（REQ-016：表紙情報・発行依頼書・契約局情報）は、issue-request が持つ TWTGM100・TWTGM140 を出力するため、property-basic-info → issue-request の依存（発行依頼書を先に作る）になります。一方、発行依頼書が物件申請情報（TWTGM080）にひもづくなら issue-request → property-basic-info です。どちらの向きか教えてください。前者の場合、いただいた優先度（070 が 1 番）と逆になるため、並び順の入れ替えも必要です。両方向とも必要な場合は循環になるため、依存の見直し方を教えてください。",
+        "reason_unanswered": "承認済み入力と計画了承時の回答からは決まらないため"
+      },
+      {
+        "id": "Q-FEA-002",
+        "target": ".aidd/feature-list.md",
+        "location": "想定規模：property-basic-info（大）",
+        "question": "対応要求が17件（登録変更・承認フロー・ステータスと履歴・ファイル登録・CSV 出力・帳票・文書バーコード）あり、想定規模を「大」と判断しました。分割案は (a) 物件基本情報の登録変更と承認フロー、(b) 帳票 PWTGO072（RWTG070）、(c) 文書バーコード生成ポップアップ の3つです。この分割を採るか、計画了承時の6分割のまま進めるか教えてください。",
+        "reason_unanswered": "承認済み入力と計画了承時の回答からは決まらないため"
+      },
+      {
+        "id": "Q-FEA-003",
+        "target": ".aidd/feature-list.md",
+        "location": "## 依存関係図（任意）<FEATURE_DEPENDENCY_DIAGRAM>",
+        "question": "依存は表だけで追える本数です。図を作らない場合の不要理由（例：依存が少なく表だけで追えるため）を教えてください。",
+        "reason_unanswered": "承認済み入力と計画了承時の回答からは決まらないため"
+      },
+      {
+        "id": "Q-FEA-004",
+        "target": ".aidd/feature-list.md",
+        "location": "feature 名（6行）",
+        "question": "feature 名は、Phase 1 の回答で使われた issue-request-tutorial・contract-info-import に合わせ、ほかを property-basic-info・issue-request・application-status-search・contract-info-download としました。この名前でよいか教えてください。",
+        "reason_unanswered": "承認済み入力と計画了承時の回答からは決まらないため"
+      }
+    ],
+    "open_placeholders": 3,
+    "changed_findings": [],
+    "return_candidates": [],
+    "summary": "計画了承時の6分割・優先度・チュートリアルの前提・テーブル所有に従い feature-list を作成。対応要求ID は機能要求38件（REQ-006〜039 の廃止2件を除く、REQ-063〜066）を割当て、REQ-063（各画面の入力チェック）は6 feature すべてに割当てた。種別はすべて User。未確定は依存2欄（Q-FEA-001）と依存関係図（Q-FEA-003）。property-basic-info は想定規模が大のため分割案を提示（Q-FEA-002）。feature 名の確認（Q-FEA-004）。"
+  }
+}

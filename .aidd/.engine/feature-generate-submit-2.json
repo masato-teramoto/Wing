@@ -1,0 +1,24 @@
+{
+  "operation_id": "a5e3e014d13b48b0870b61feb9f34792",
+  "dispatch": {
+    "call": "feature-decomposition-generate",
+    "unit": "feature-decomposition-generate/feature-decomposition-generate[-]::run",
+    "event": "feature-decomposition-generate",
+    "item": null,
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "efe70b39c89b474db51862552d3a0d1f"
+  },
+  "result": {
+    "status": "completed",
+    "targets": [
+      ".aidd/feature-list.md"
+    ],
+    "questions": [],
+    "open_placeholders": 0,
+    "changed_findings": [],
+    "return_candidates": [],
+    "summary": "回答 Q-FEA-001〜004 と追加の依存を反映。帳票 PWTGO072（RWTG070）を print-report として分割し、feature は7つ（優先度は回答の順）。依存：issue-request→property-basic-info、issue-request-tutorial→issue-request、print-report→property-basic-info, issue-request、application-status-search→property-basic-info、contract-info-import→property-basic-info, issue-request、contract-info-download→contract-info-import。依存先はすべて先行し、循環なし。機能要求38件を割当て（REQ-063 は画面を持つ6 feature）。property-basic-info は想定規模が大だが、分割の採否は回答 Q-FEA-002 で帳票だけの分割と決まった。依存関係図は不要理由付きで保持。種別はすべて User。"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "operation_id": "12bfa3246d6f4a53afb0247eceec7407",
+  "dispatch": {
+    "call": "requirement-intake-revise",
+    "unit": "requirement-intake-revise/requirement-intake-revise[-]::end.intake-check",
+    "event": "requirement-intake-revise",
+    "item": null,
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "737bb63b02664caab46b16a50efcc58f"
+  },
+  "result": {
+    "status": "completed"
+  }
+}

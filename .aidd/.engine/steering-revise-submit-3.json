@@ -1,0 +1,37 @@
+{
+  "operation_id": "edfb0e06d1bf48a9b3801663a3645370",
+  "dispatch": {
+    "call": "steering-authoring-revise",
+    "unit": "steering-authoring-revise/steering-authoring-revise[-]::run",
+    "event": "steering-authoring-revise",
+    "item": null,
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "d7e0b0c969b24a37a3f90161b94b34e2"
+  },
+  "result": {
+    "status": "completed",
+    "targets": [
+      "steering/tech.md",
+      "steering/product.md",
+      "steering/architecture.md",
+      "steering/security.md",
+      "steering/non-functional.md",
+      "steering/database.md",
+      "steering/api-standards.md"
+    ],
+    "questions": [],
+    "open_placeholders": 0,
+    "changed_findings": [
+      {
+        "phase": "steering",
+        "scope": "phase",
+        "run": 1,
+        "number": 1
+      }
+    ],
+    "return_candidates": [],
+    "summary": "指摘1：tech.md の配置パターン表の2行目（<TEST_LAYOUT_PATTERN_ALT>/<TEST_LAYOUT_EXAMPLE_ALT>/<TEST_LAYOUT_NOTE_ALT>）を戻し、3欄に人間指示の不要理由「自動テストは必須でないため、基本の置き場所以外は定めない」を添えた。ほかの6ファイルはテンプレートの固定スロット（_N 以外）と突き合わせ、同じ消し方は無かった（成果物に無い固定スロットはすべて値で置き換えたもの）。tech.md 以外は編集していない。"
+  }
+}

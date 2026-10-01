@@ -1,0 +1,67 @@
+{
+  "operation_id": "169ae772c87347968be34e7d925b1902",
+  "dispatch": {
+    "call": "steering-authoring-revise",
+    "unit": "steering-authoring-revise/steering-authoring-revise[-]::run",
+    "event": "steering-authoring-revise",
+    "item": null,
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "f9bb6d0459294325ae6ba00e3b9e4dea"
+  },
+  "result": {
+    "status": "completed",
+    "targets": [
+      "steering/tech.md",
+      "steering/architecture.md",
+      "steering/security.md",
+      "steering/non-functional.md",
+      "steering/product.md",
+      "steering/database.md",
+      "steering/api-standards.md"
+    ],
+    "questions": [],
+    "open_placeholders": 0,
+    "changed_findings": [
+      {
+        "phase": "steering",
+        "scope": "phase",
+        "run": 2,
+        "number": 14
+      },
+      {
+        "phase": "steering",
+        "scope": "phase",
+        "run": 2,
+        "number": 15
+      },
+      {
+        "phase": "steering",
+        "scope": "phase",
+        "run": 2,
+        "number": 16
+      },
+      {
+        "phase": "steering",
+        "scope": "phase",
+        "run": 2,
+        "number": 17
+      },
+      {
+        "phase": "steering",
+        "scope": "phase",
+        "run": 2,
+        "number": 18
+      },
+      {
+        "phase": "steering",
+        "scope": "phase",
+        "run": 2,
+        "number": 20
+      }
+    ],
+    "return_candidates": [],
+    "summary": "人間の修正指示どおりに修正。#14 tech.md のランタイムと必須ツール、architecture.md の配置モデルに OpenOffice を追加。#15 security.md 共通ルール1を tech.md の手書き方式に揃え、回答 Q-STR-110 の「Bean Validation と ValidationUtils」を訂正と明記（tech.md バリデーションにも方式を明記）。#16 security.md セキュリティログ1を non-functional.md ログ方針への準拠に置換。#17 non-functional.md 基本方針3点目を product.md ポリシーへの引用に置換。#18 security.md 所有権のパターンを WTG の P71 による判定に置換し、WTB の計画マスタ方式は WTG の新しいデータに使わないと明記。画面表示の行に社外ユーザーの項目非表示・入力不可を追加。#20 non-functional.md の環境に利用者のクライアント環境（Windows 11 と Edge）を追加。product.md・database.md・api-standards.md は編集していない。"
+  }
+}

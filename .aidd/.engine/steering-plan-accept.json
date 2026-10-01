@@ -1,0 +1,17 @@
+{
+  "operation_id": "5a7ae254d4a44900a08ac0a86bbcf690",
+  "action": "accept-plan",
+  "dispatch": {
+    "call": "steering-authoring-generate",
+    "unit": "steering-authoring-generate/steering-authoring-generate[-]::start.plan",
+    "event": "steering-authoring-generate",
+    "item": null,
+    "status": "wait",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": "**Phase 2（Steering 作成）に入ります。** 開始前に実行計画を確認してください。\n\n**生成単位**: 一括（依存順）。ゲートは 7 ファイルを 1 スコープで一括 1 回 通します。\n\n**対象 feature と順序**（`.aidd/feature-list.md` の優先度順）\n- 該当なし（feature 単位ではない）\n\n**入力として読むもの**（すべて `approved`）\n- `.aidd/requirement-list.md`\n\n**出力先**: `steering/product.md` / `steering/tech.md` / `steering/architecture.md` / `steering/security.md` / `steering/non-functional.md` / `steering/database.md` / `steering/api-standards.md`（7 ファイル）\n\n**想定される停止回数**: 1 回。作成中に根拠が足りない箇所があれば、その都度質問して停止します。\n\nこの計画で進めてよいか指示してください。",
+    "id": "25e15a33d14d41f3bf58d0d5151bd370"
+  },
+  "data": {
+    "note": "この計画で了承します。作成時の前提として、以下は人間確定の事実として扱ってください。\n・帳票は Excel テンプレート方式とする（原本 Excel をコピーして値を設定し、PDF に変換する）。JasperReports は使わない\n・QR コードは zxing core 3.2.1 で画像を生成し、帳票に貼る\n・区分値はコードマスタ TWTZM040、採番は TWTZM050 を使う（既存 WiNG の方式）\n・作成組織検索（ZOOM）画面は作らない\n根拠が足りない箇所は質問してください。回答者 Junichi Noumi"
+  }
+}

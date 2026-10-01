@@ -1,0 +1,129 @@
+{
+  "operation_id": "c001d9c9c45f49eebb92b70fd6d3e26e",
+  "dispatch": {
+    "call": "steering-authoring-generate",
+    "unit": "steering-authoring-generate/steering-authoring-generate[-]::run",
+    "event": "steering-authoring-generate",
+    "item": null,
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "3f2cb5cef4e04fd68341601a9e4efdba"
+  },
+  "result": {
+    "status": "waiting",
+    "targets": [
+      "steering/product.md",
+      "steering/tech.md",
+      "steering/architecture.md",
+      "steering/security.md",
+      "steering/non-functional.md",
+      "steering/database.md",
+      "steering/api-standards.md"
+    ],
+    "questions": [
+      {
+        "id": "Q-STR-101",
+        "target": "steering/tech.md",
+        "location": "## 主要な技術選定と理由（言語・フレームワーク・データベースの代替案・再評価条件。6欄）",
+        "question": "代替案と再評価条件を教えてください。既存 WiNG を踏襲するため代替案を比べない場合は、その不要理由を教えてください。",
+        "reason_unanswered": "既存 WiNG のソースと人間の回答（回答 1〜8）からは値が決まらないため"
+      },
+      {
+        "id": "Q-STR-102",
+        "target": "steering/tech.md",
+        "location": "## 主要ライブラリ — PDF 変換（<LIB_NAME_N> / <LIB_REASON_N>）",
+        "question": "回答 3 の PDF 変換の製品が【製品名、または「Phase 5 の基本設計で選定し tech.md に追記する」】のまま選ばれていません。どちらかを教えてください。後者の場合、steering は Phase 2 の成果物なので、Phase 5 で追記するときは steering を開き直して再検査・再承認することになります。",
+        "reason_unanswered": "既存 WiNG のソースと人間の回答（回答 1〜8）からは値が決まらないため"
+      },
+      {
+        "id": "Q-STR-103",
+        "target": "steering/tech.md",
+        "location": "### 推奨 OS / IDE — OS（<RECOMMENDED_OS>）",
+        "question": "開発端末の推奨 OS を教えてください（クライアントの Windows 11 と同じでよいか等）。",
+        "reason_unanswered": "既存 WiNG のソースと人間の回答（回答 1〜8）からは値が決まらないため"
+      },
+      {
+        "id": "Q-STR-104",
+        "target": "steering/tech.md",
+        "location": "### Git 戦略・運用ルール一覧（保護ブランチの条件、仕様管理（spec）、PR、禁止事項。4欄）",
+        "question": "master の保護の条件（直接 push の禁止・レビュー必須など）、steering／specs／docs の管理のしかた、レビュー依頼（プルリクエスト）のルール、禁止する操作を教えてください。使わないものは不要理由を教えてください。",
+        "reason_unanswered": "既存 WiNG のソースと人間の回答（回答 1〜8）からは値が決まらないため"
+      },
+      {
+        "id": "Q-STR-105",
+        "target": "steering/tech.md",
+        "location": "## 共通コマンド（依存インストール・ローカル開発・ビルド・テスト全体/単一・Lint・フォーマット・型チェック。8欄）",
+        "question": "この端末には Java と Maven が無く、コマンドを実行して確かめられません。手元で成功するコマンド（例：wing の Maven ビルド）を教えてください。Eclipse でビルドする等でコマンドを定めない欄は、不要理由を教えてください。",
+        "reason_unanswered": "既存 WiNG のソースと人間の回答（回答 1〜8）からは値が決まらないため"
+      },
+      {
+        "id": "Q-STR-106",
+        "target": "steering/tech.md",
+        "location": "## 開発標準（型安全・品質ゲートの追加条件・レビュー。3欄）と ## コード規約の追加行",
+        "question": "型安全の方針、試験仕様書のほかに次へ進む条件があるか、コードレビューの方針を教えてください。コード規約に追加するものが無ければ、その旨を教えてください。",
+        "reason_unanswered": "既存 WiNG のソースと人間の回答（回答 1〜8）からは値が決まらないため"
+      },
+      {
+        "id": "Q-STR-107",
+        "target": "steering/tech.md",
+        "location": "## テスト方針（配置ルール、describe／it／E2E の命名、命名の補足、テスト種類、選定基準、AAA、モック方針、完了条件との接続。計18欄）",
+        "question": "自動テストを必須にしない前提で、書く場合の決まりを教えてください。JUnit には describe／it が無いので、テストメソッド名の付け方を教えてください。試験仕様書と受け入れ基準の対応づけ方（完了条件との接続）も教えてください。定めない欄は不要理由を教えてください。",
+        "reason_unanswered": "既存 WiNG のソースと人間の回答（回答 1〜8）からは値が決まらないため"
+      },
+      {
+        "id": "Q-STR-108",
+        "target": "steering/architecture.md",
+        "location": "## レイヤーと依存ルール — 禁止（<PROHIBITED_DEPENDENCY>）",
+        "question": "禁止する依存の向き（例：Controller から Mapper を直接呼ばない、など）を教えてください。",
+        "reason_unanswered": "既存 WiNG のソースと人間の回答（回答 1〜8）からは値が決まらないため"
+      },
+      {
+        "id": "Q-STR-109",
+        "target": "steering/architecture.md",
+        "location": "### 外部 API / 外部システム（責務・しないこと・配置・境界。4欄）",
+        "question": "既存のソースには、本プロジェクトの機能が通信する外部システムが見当たりません。この節を不要とするか（理由）、扱う外部システムがあれば教えてください。",
+        "reason_unanswered": "既存 WiNG のソースと人間の回答（回答 1〜8）からは値が決まらないため"
+      },
+      {
+        "id": "Q-STR-110",
+        "target": "steering/security.md",
+        "location": "### 共通ルール、認証方式の代替案、リフレッシュトークン寿命、権限モデルの代替案と禁止、パスワード強度・リセット・MFA・ロック解除。計9欄",
+        "question": "入力と出力の共通ルール、認証・権限モデルの代替案、権限を実装するときの禁止事項、パスワードの強度とリセット、MFA、ロックの解除方法を教えてください。ソースにはリフレッシュトークン・MFA・パスワード強度のチェックが見当たりません。使わないものは不要理由を教えてください。",
+        "reason_unanswered": "既存 WiNG のソースと人間の回答（回答 1〜8）からは値が決まらないため"
+      },
+      {
+        "id": "Q-STR-111",
+        "target": "steering/non-functional.md",
+        "location": "### 性能・容量運用、## 環境（開発環境の行、各環境のデータ・デプロイ元、環境運用ルール）。計11欄",
+        "question": "性能・容量の方針（回答 6 の「保守運用は既存に従う」に含めるか）、開発環境の名称と用途、各環境のデータの扱いとデプロイ元、環境をまたぐ操作のルールを教えてください。",
+        "reason_unanswered": "既存 WiNG のソースと人間の回答（回答 1〜8）からは値が決まらないため"
+      },
+      {
+        "id": "Q-STR-112",
+        "target": "steering/non-functional.md",
+        "location": "### ログ方針 — 出力しない・ログフィールド標準・禁止事項。計7欄",
+        "question": "ログに出してはいけない情報（パスワード等）、フィールドの標準、値の入れ方の禁止事項を教えてください。既存の出力形式に従い、フィールド標準を定めない場合は不要理由を教えてください。",
+        "reason_unanswered": "既存 WiNG のソースと人間の回答（回答 1〜8）からは値が決まらないため"
+      },
+      {
+        "id": "Q-STR-113",
+        "target": "steering/non-functional.md",
+        "location": "### リトライ — 戦略・冪等キー。2欄",
+        "question": "ソースには再試行の間隔の戦略や冪等キーの仕組みが見当たりません。定めるか、不要理由を教えてください。",
+        "reason_unanswered": "既存 WiNG のソースと人間の回答（回答 1〜8）からは値が決まらないため"
+      },
+      {
+        "id": "Q-STR-114",
+        "target": "steering/database.md",
+        "location": "## マイグレーション・### 後方互換のあるロールアウト・インデックス方針。計5欄",
+        "question": "ソースには DDL やマイグレーションの仕組みがありません。テーブル変更（DDL）の管理と本番への適用方法、止めずに変える手順の要否、インデックスを張る方針を教えてください。",
+        "reason_unanswered": "既存 WiNG のソースと人間の回答（回答 1〜8）からは値が決まらないため"
+      }
+    ],
+    "open_placeholders": 81,
+    "changed_findings": [],
+    "return_candidates": [],
+    "summary": "回答（技術構成は wing/WTX/WTX_Batch/WTX_Common から読み取る、回答1〜8）を反映。既存ソースから読み取った値には根拠パスを付け、人間回答の値は「回答 N」と記した。不要とされた欄（技術価値、カバレッジ目標と CI、SLO・提供時間・障害優先度・エスカレーション・リリース手順・DR・RPO/RTO・脆弱性修正期限・監視、api-standards 全節）はプレースホルダーを残し不要理由を添えた。「保守運用は既存 WiNG の運用に従う」の理由は、運用・障害対応の節全体、デプロイ／リリース、アラート、監視/ヘルス、バックアップ／DR、DB のバックアップ欄に適用した。API 間認証は回答7の理由を適用した。product.md は完了。残りは tech 42・architecture 5・security 9・non-functional 20・database 5 の計81欄で、質問14件（Q-STR-101〜114）。回答3の PDF 変換製品が未選択（Q-STR-102）。"
+  }
+}

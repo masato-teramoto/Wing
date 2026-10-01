@@ -1,0 +1,29 @@
+{
+  "event": "steering-authoring-generate",
+  "scope": "phase",
+  "run": 1,
+  "snapshot": "8b5d299c0daa185de1cea92b465f7528ea86c82e65dc6fbde47a6edb15e84f60",
+  "record_bytes": 1871,
+  "record_hash": "42cbe1c01d95e78b2ff38403caa4a67ac34bd132ea7bf51dc788c2ae97b975fc",
+  "targets": [
+    "steering/product.md",
+    "steering/tech.md",
+    "steering/architecture.md",
+    "steering/security.md",
+    "steering/non-functional.md",
+    "steering/database.md",
+    "steering/api-standards.md"
+  ],
+  "hashes": {
+    "steering/product.md": "e2019e35953898d251801920d5c4d36bc5c8418ba8d3e2ac95cf2b0808169367",
+    "steering/tech.md": "df7defa3e316b5c3563d2576eff5d10d8d7fd8757e374d985a4e62301cc91e50",
+    "steering/architecture.md": "d57f6500969a5a92e72a02fd60b7f609c45ec4e7ba1df56cced8d0340e9768d2",
+    "steering/security.md": "fe6a799ac0ba8b2b709535154ad28cb13df53cad50eedb00fa1617b92c14df1c",
+    "steering/non-functional.md": "386d92f4b4e572cd4bda280c7b2d0ce4757ad16f8344053aa65547ebacdcb24d",
+    "steering/database.md": "52256e748a53199269dc75629e4ab3c747100c3ac2485bacf89f762cdfb96b56",
+    "steering/api-standards.md": "70eca8d2facbf08bfa22cf1ae1e781219ecab2066bb8129bf4a3414b0fdeddc1"
+  },
+  "inputs": {
+    ".aidd/requirement-list.md": "bdf3027f78209be11ea79d4b3026928aaa5959c4f6fbebb20c35357626604947"
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "operation_id": "dcd0d7bafe0b42adb7539175235c1f77",
+  "dispatch": {
+    "call": "steering-authoring-generate",
+    "unit": "steering-authoring-generate/steering-authoring-generate[-]::run",
+    "event": "steering-authoring-generate",
+    "item": null,
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "27f2489a22f54577a42bbda31826d9ad"
+  },
+  "result": {
+    "status": "waiting",
+    "targets": [
+      "steering/product.md",
+      "steering/tech.md",
+      "steering/architecture.md",
+      "steering/security.md",
+      "steering/non-functional.md",
+      "steering/database.md",
+      "steering/api-standards.md"
+    ],
+    "questions": [
+      {
+        "id": "Q-STR-110b",
+        "target": "steering/security.md",
+        "location": "#### トークン / セッションのライフサイクル — リフレッシュトークン寿命、#### 権限モデル — 禁止、### パスワード / MFA — パスワード強度・パスワードリセット・MFA・アカウントロックの解除方法（計6欄）",
+        "question": "回答は「パスワードの強度、リセット、MFA、ロックの解除は不要（既存のログイン機能に従い、本」で切れています。不要理由の続きを教えてください。リフレッシュトークン寿命と、権限を実装するときの禁止事項（例：権限名をコードに直接書かない）は回答に含まれていなかったので、あわせて教えてください（不要なら理由）。",
+        "reason_unanswered": "回答 Q-STR-110〜114 の貼り付けで文字が欠けており、欠けた部分を推測で補えないため"
+      },
+      {
+        "id": "Q-STR-111b",
+        "target": "steering/non-functional.md",
+        "location": "## 環境 — 開発環境の用途・データ・デプロイ元、環境運用ルール（計4欄）",
+        "question": "回答は「環境は開発（開発者の端末）、検証機、  ト用データ、…」「環境運用のルー」で切れています。開発環境の用途とデータ（「…ト用データ」の部分）、開発環境のデプロイ元、環境運用のルールをもう一度教えてください。",
+        "reason_unanswered": "回答 Q-STR-110〜114 の貼り付けで文字が欠けており、欠けた部分を推測で補えないため"
+      },
+      {
+        "id": "Q-STR-112b",
+        "target": "steering/non-functional.md",
+        "location": "#### ログフィールド標準 — フィールドの表（5欄）",
+        "question": "回答は「フィールドのの出力形式に従う」と一部が欠けています。この文をもう一度教えてください（例：「フィールドは定めない。既存の出力形式に従う」なら不要理由として記載します）。",
+        "reason_unanswered": "回答 Q-STR-110〜114 の貼り付けで文字が欠けており、欠けた部分を推測で補えないため"
+      },
+      {
+        "id": "Q-STR-113b",
+        "target": "steering/non-functional.md",
+        "location": "### リトライ — 戦略・冪等キー（2欄）",
+        "question": "回答は「再試行の戦略と 呼ばず、再試行の仕組みも既存に無いため）」と大半が欠けています。もう一度教えてください。",
+        "reason_unanswered": "回答 Q-STR-110〜114 の貼り付けで文字が欠けており、欠けた部分を推測で補えないため"
+      },
+      {
+        "id": "Q-STR-114b",
+        "target": "steering/database.md",
+        "location": "## マイグレーション（ルール・内容）とインデックス方針（計3欄）",
+        "question": "回答は「DDL は DB レイ 順書に従って発注者が適用する」「インデックスは主キーと検索条件に使う列に  する」と一部が欠けています。この 2 文をもう一度教えてください（止めずに変える手順は不要として反映済み）。",
+        "reason_unanswered": "回答 Q-STR-110〜114 の貼り付けで文字が欠けており、欠けた部分を推測で補えないため"
+      }
+    ],
+    "open_placeholders": 20,
+    "changed_findings": [],
+    "return_candidates": [],
+    "summary": "回答 Q-STR-101〜114 を反映（Q-STR-110〜114 は文として完結した部分だけ）。zxing は core と javase 3.4.1 に訂正（計画了承時・回答3 の core 3.2.1 を回答 Q-STR-102 で訂正）。PDF 変換は jodconverter 2.2.1 ＋ OpenOffice、Excel は POI 3.17。共通コマンドは回答どおり記入し、この端末では未実行・未確認である旨を明記（回答で許可）。product・tech・architecture・api-standards は未記入 0。残りは security 6・non-functional 9・database 3 の計20欄で、貼り付けの欠けによる再質問5件（Q-STR-110b〜114b）。"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "operation_id": "3d53dfb1bb074f1c95682082395083bf",
+  "dispatch": {
+    "call": "steering-authoring-revise",
+    "unit": "steering-authoring-revise/steering-authoring-revise[-]::end.steering-check",
+    "event": "steering-authoring-revise",
+    "item": null,
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "06d83ab2bbef43cc99cf729eb7639415"
+  },
+  "result": {
+    "status": "completed"
+  }
+}

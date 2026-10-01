@@ -1,0 +1,17 @@
+{
+  "operation_id": "56ed99610cd24a5aab0a1f5e98bffbde",
+  "action": "accept-plan",
+  "dispatch": {
+    "call": "feature-decomposition-generate",
+    "unit": "feature-decomposition-generate/feature-decomposition-generate[-]::start.plan",
+    "event": "feature-decomposition-generate",
+    "item": null,
+    "status": "wait",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": "**Phase 3（Feature 分割）に入ります。** 開始前に実行計画を確認してください。\n\n**生成単位**: 一括。ゲートは 一括 1 回 通します。\n\n**対象 feature と順序**（`.aidd/feature-list.md` の優先度順）\n- 該当なし（feature 単位ではない）\n\n**入力として読むもの**（すべて `approved`）\n- `.aidd/requirement-list.md`\n- `steering/product.md`\n- `steering/tech.md`\n- `steering/architecture.md`\n- `steering/security.md`\n- `steering/non-functional.md`\n- `steering/database.md`\n- `steering/api-standards.md`\n\n**出力先**: `.aidd/feature-list.md`（1 ファイル）\n\n**想定される停止回数**: 1 回。作成中に根拠が足りない箇所があれば、その都度質問して停止します。\n\nこの計画で進めてよいか指示してください。",
+    "id": "5a0c9f5e135140998086af6cc9d7e3ae"
+  },
+  "data": {
+    "note": "この計画で了承します。分け方は次の6つとし、画面 ID を手がかりにしてよい。\n・GWTG070 物件基本情報登録変更（帳票 PWTGO072 と文書バーコード生成のポップアップを含む）\n・GWTG080 発行依頼書登録変更\n・GWTG081 チュートリアル\n・GWTG060 物件契約情報申請状況検索一覧\n・GWTG090 契約情報取込（バッチ PWTGB090 を含む）\n・GWTG100 契約情報ダウンロード\n優先度はこの並び順とする。\nチュートリアルの前提：GWTG081 は、発行依頼書登録変更画面のボタンから開くポップアップである。選択に応じて画面を順に切り替え、選んだ値と入力した値を発行依頼書の項目へ設定する。保存用のテーブルは持たず、選択肢を管理する画面でもない。\nテーブルの所有：TWTGM080（物件申請情報）、TWTGM090（契約稟議ファイル）、TWTGM180（承認履歴）、TWTGA120（変更履歴）は GWTG070、TWTGM100（発行依頼書情報）と TWTGM140（契約局情報）は GWTG080 が持つ。\n要求一覧の updated_at はそのままでよい。\n回答者 Junichi Noumi"
+  }
+}

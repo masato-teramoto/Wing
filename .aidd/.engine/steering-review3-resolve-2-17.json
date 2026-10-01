@@ -1,0 +1,32 @@
+{
+  "operation_id": "9bb77d5f6d1844809326335c6ec17ea1",
+  "action": "resolve",
+  "dispatch": {
+    "call": "steering-authoring-revise",
+    "unit": "steering-authoring-revise/steering-authoring-revise[-]::end.review",
+    "event": "steering-authoring-revise",
+    "item": null,
+    "status": "wait",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"steering-authoring-revise/steering-authoring-revise[-]::end.review\", \"snapshot\": \"23489aab759062f8704141076a87aa8aa0673550a842877cd168f11e2d29144e\", \"run\": 3, \"inspection_hash\": \"716430d021932b38888b3f1cc693cf70ed39773eff71dc4cd787e25b75c1c070\"}\n**Phase 2（Steering 作成）の品質ゲートを実行しました。** 指摘ごとに判断を選んでください。\n\n**対象**: `steering/product.md` / `steering/tech.md` / `steering/architecture.md` / `steering/security.md` / `steering/non-functional.md` / `steering/database.md` / `steering/api-standards.md`（スコープ: 成果物単位 / 3 回目）\n**実行した層**: ① / ②\n\n**指摘**（ゲート記録 `.aidd/gates/phase-2-steering.md` の当該実行分）\n\n| # | 層 | 対象箇所 | 指摘内容 |\n|---|---|---|---|\n| 1 | ② | steering/security.md `### 認証・認可の設計思想` 1点目・`#### 権限モデル`（採用理由）／ steering/product.md `## ビジネスルール / ポリシー`（権限による制御）／ steering/security.md `#### 所有権・エンティティ境界`（パターン） | 二重定義（食い違いの可能性）: 社外ユーザー（ベンダー／施工会社）の権限制御方式。security.md の設計思想は「既存 WTB と同様のベンダー／施工会社の権限制御方式に合わせ、本プロジェクトで別の方式を作らない（REQ-043）」、権限モデルの採用理由は「既存 WTB と同様の権限制御方式に合わせる」、product.md のポリシーは「既存 WTB と同様の権限制御方式に従う」と書いている。一方、今回直した所有権・エンティティ境界のパターンは「WTB の計画マスタ（`TWTBM080`）による方式は、WTG の新しいデータには使わない」とし、P71 と契約稟議起案会社で判定する。7ファイルの分担では認可の方式は security.md が持つ。「WTB と同様」が社外ユーザーを自社のデータに絞る考え方を指すのか、WTB の判定方式そのものを指すのかが読み分けられず、設計思想・採用理由・product.md の記述をパターンに合わせて直すかは人間の確認が要る |\n| 2 | ② | steering/security.md `#### 所有権・エンティティ境界`（パターン）・`#### チェックの適用箇所`（データ取得の行） | 粒度の不足（steering と design.md のどちらで補うかの確認）: パターンは計画マスタの方式を「WTG の新しいデータには使わない」とするが、「新しいデータ」の範囲（物件基本情報・発行依頼書だけか、取込・ダウンロードで扱う契約情報も含むか）が無く、新しいデータに当たらない WTG のデータ（REQ-034・REQ-036〜REQ-039 の契約情報）にどちらの方式を使うかも書かれていない。既存の WTG のバッチ（`WTX_Batch/src/jp/co/kccs/wt/wtg/wtg110/PWTGB110Job.java`）は P71 で社外と判定したうえで `TWTBM080` で絞り込んでいる。各 design.md はこの記述を参照するだけでは契約情報の絞り込み方を決められず、feature ごとに独自解釈が生じうる |\n\n**前回までの指摘**（今回件数に含めない）\n- #1-1 プレースホルダー削除: テンプレート（Templates/steering/tech.md）の配置パターン表は 2 行目に `<TEST_LAYOUT_PATTERN_ALT>` / `<TEST_LAYOUT_EXAMPLE_ALT>` / `<TEST_LAYOUT_NOTE_ALT>` を持つが、成果物の表は 1 行目（PRIMARY）だけで、この 3 つのプレースホルダーが値にも不要理由付きの残置にもならず消えている（`_N` の可変スロットではない固定スロット。保持が規約） [steering/tech.md / ## テスト方針 > ### 配置 / 命名 > #### 配置パターン（パターン表）] — 修正 → 再検査の結果を見て解消を確認してください\n- #2-14 全体方針の不足（層② 意味判定）: tech.md の PDF 変換は「サーバー上の OpenOffice（localhost の 8100 番ポート）に接続して変換する」（回答 Q-STR-102）ことを前提とするが、OpenOffice は tech.md `## コアテクノロジ`（ランタイム）・`### 必須ツール` にも、architecture.md の構成・配置モデルにも無く、製品・版・どのサーバーに置くかが全体方針で決まっていない。既存の wing・WTX・WTX_Batch の本番の設定・コードにも OpenOffice の記述は見当たらない（WTX_Common のテストデータだけ） [全体方針チェック: 帳票 PDF 出力（REQ-016〜REQ-018） / steering/tech.md `## 主要ライブラリ`（PDF 変換）・`## コアテクノロジ`・`### 必須ツール`／steering/architecture.md `## アーキテクチャ概要`] — 修正 → 再検査の結果を見て解消を確認してください\n- #2-15 二重定義（食い違い）: 入力検証の方式。security.md 共通ルール #1 は「入力はサーバー側で必ず検査する（Bean Validation と `ValidationUtils`。回答 Q-STR-110）」とし、tech.md のバリデーションは「専用ライブラリの注釈は使わず、Service の `checkXxx` で `BindingResult.rejectValue` にエラーを積む手書き方式…hibernate-validator 5.0.1 の注釈は使われていない」とし、security.md の入り口の画面の行も手書き方式だけを書いている。7ファイルの分担ではライブラリの選定は tech.md が持つ。security.md 側の出典は人間の回答（Q-STR-110）、tech.md 側の出典は既存 wing の実装（`wing/src/main/java` に javax.validation の注釈の使用は無い）で、どちらに揃えるかは人間の確認が要る [steering/security.md `## 入力検証 / 出力エスケープ` > `### 共通ルール` #1 ／ steering/tech.md `## 主要ライブラリ`（バリデーション）／ steering/security.md `### 入り口 — 入力検証`（画面の行）] — 修正 → 再検査の結果を見て解消を確認してください\n- #2-16 二重定義（同一内容）: 要求ごとのログ項目。security.md は「要求ごとに、利用者ID・グループID・機能ID・URI・接続元 IP・セッションID を記録する（LoggingInterceptor）」とし、non-functional.md は同じ LoggingInterceptor の機能ID・URI・接続元 IP・セッションID（と利用者ID・グループID）を出力項目として定めている。内容は同じで、引用（準拠）の形になっていない。security.md の分担文はログの形式と共通フィールドを non-functional.md `### ログ方針` を正とし、security.md には記録する対象と記録自体の守り方だけを書くとしている [steering/security.md `## セキュリティログ` #1 ／ steering/non-functional.md `#### 出力する` #2・#3] — 修正 → 再検査の結果を見て解消を確認してください\n- #2-17 二重定義（同一内容）: 既存の WTG 機能をデグレードさせない（REQ-044）という方針を、product.md のポリシーと non-functional.md の基本方針がそれぞれ記述しており、non-functional.md 側は product.md を引用（準拠）する形になっていない。7ファイルの分担ではシステム全体の業務上の決まりは product.md が持つ。non-functional.md で運用方針として別に持つ意図かは人間の確認が要る [steering/product.md `## ビジネスルール / ポリシー`（既存 WTG 機能の保全）／ steering/non-functional.md `## 基本方針` 3点目] — 修正 → 再検査の結果を見て解消を確認してください\n- #2-18 粒度の不足（steering と design.md のどちらで補うかの確認）: 社外ユーザーのデータ範囲を「計画マスタ（`TWTBM080`）の `Bs_Vendor_Cd` または `Motouke_Kaisya_Cd` が自社に一致するデータだけ」とする WTB の方式を書いているが、本プロジェクトの WTG のデータ（物件基本情報・発行依頼書・契約情報）を計画マスタへどう結び付けて判定するかの規則が無い。各 design.md はこの記述を参照するだけでは判定の結合先を決められず、feature ごとに独自解釈が生じうる（REQ-038・REQ-043・REQ-064。根拠: security.md `#### チェックの適用箇所` のデータ取得の行がこの節を参照） [steering/security.md `#### 所有権・エンティティ境界`（パターン・検証タイミング）] — 修正 → 再検査の結果を見て解消を確認してください\n- #2-20 利用者側のクライアント環境の方針が無い: 回答 6 はクライアントを Windows 11 と Edge と指定しているが、steering に利用者側の対応ブラウザ・クライアント環境の記述が無く、不要の理由も無い（tech.md の Windows 11 は開発端末の推奨 OS として書かれている） [互換性（クライアント環境） / steering/non-functional.md・steering/architecture.md（参照: steering/tech.md `### 推奨 OS / IDE`）] — 修正 → 再検査の結果を見て解消を確認してください\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n**判断の選択肢**（指摘ごとに 1 つ選ぶ）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n\n回答例: `1:A / 2:C 既存システムの制約で変更できない / 3:D 次回レビューまで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。",
+    "id": "ed83a5f81340447490377a86b5bc69dc"
+  },
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "steering-authoring-revise",
+    "event": "steering-authoring-revise",
+    "item": "",
+    "dispatch_id": "ed83a5f81340447490377a86b5bc69dc",
+    "unit": "steering-authoring-revise/steering-authoring-revise[-]::end.review",
+    "scope": "phase",
+    "run": 3,
+    "snapshot": "23489aab759062f8704141076a87aa8aa0673550a842877cd168f11e2d29144e",
+    "record_hash": "54c8eadd5024975bbddd05d3e0d6f6dbcb81e9cc47e66367b587a8f7249b5523"
+  },
+  "data": {
+    "scope": "phase",
+    "run": 2,
+    "number": 17
+  }
+}

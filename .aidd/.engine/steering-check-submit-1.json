@@ -1,0 +1,16 @@
+{
+  "operation_id": "e449682ab3cc49098fb35ed9640b54b9",
+  "dispatch": {
+    "call": "steering-authoring-generate",
+    "unit": "steering-authoring-generate/steering-authoring-generate[-]::end.steering-check",
+    "event": "steering-authoring-generate",
+    "item": null,
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "c8fa58a08ab1441089ecd30eae7165d3"
+  },
+  "result": {
+    "status": "completed"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "phase": "feature",
+  "event": "feature-decomposition-generate",
+  "scope": "phase",
+  "run": 1,
+  "findings": []
+}

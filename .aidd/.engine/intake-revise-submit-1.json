@@ -1,0 +1,67 @@
+{
+  "operation_id": "c6e395e2f4394f12a46797a895c05481",
+  "dispatch": {
+    "call": "requirement-intake-revise",
+    "unit": "requirement-intake-revise/requirement-intake-revise[-]::run",
+    "event": "requirement-intake-revise",
+    "item": null,
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "5cf299c6a17249dba2492dc451ca2c3d"
+  },
+  "result": {
+    "status": "completed",
+    "targets": [
+      ".aidd/requirement-list.md"
+    ],
+    "questions": [],
+    "open_placeholders": 0,
+    "changed_findings": [
+      {
+        "phase": "intake",
+        "scope": "phase",
+        "run": 1,
+        "number": 1
+      },
+      {
+        "phase": "intake",
+        "scope": "phase",
+        "run": 1,
+        "number": 2
+      },
+      {
+        "phase": "intake",
+        "scope": "phase",
+        "run": 1,
+        "number": 4
+      },
+      {
+        "phase": "intake",
+        "scope": "phase",
+        "run": 1,
+        "number": 5
+      },
+      {
+        "phase": "intake",
+        "scope": "phase",
+        "run": 1,
+        "number": 7
+      },
+      {
+        "phase": "intake",
+        "scope": "phase",
+        "run": 1,
+        "number": 9
+      },
+      {
+        "phase": "intake",
+        "scope": "phase",
+        "run": 1,
+        "number": 10
+      }
+    ],
+    "return_candidates": [],
+    "summary": "人間の修正指示（Junichi Noumi）どおりに修正。#1 REQ-040/041 の廃止理由を指示の文言に置換し台帳名を削除。#2 REQ-060 に五月雨式レビューと別途スケジュール資料の記述を追加（RFP §10-1 で基本設計の行の注記のため「基本設計は」を付した）。#4 REQ-004 に GWTGxxx／PWTGOxxx／PWTGBxxx を記載し出典に §4-7 1点目を併記、REQ-042 を廃止済みへ移動（廃止日 2026-10-01）。#5 REQ-051 から「発注者の希望日程とする」を削除し日付の列挙を残した。#7 REQ-052 を RFP が示す概算スケジュールという事実の記述に変更。#9 REQ-063、#10 REQ-064・REQ-065 を壁打ち行として追加。有効な要求は62件（RFP 59＝機能34・非機能2・制約23、壁打ち3＝機能3）、廃止済み3件（REQ-040/041/042、欠番は再利用しない）。"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "operation_id": "c27d39b179364fdfbb01e5afa38c1971",
+  "dispatch": {
+    "call": "steering-authoring-generate",
+    "unit": "steering-authoring-generate/steering-authoring-generate[-]::run",
+    "event": "steering-authoring-generate",
+    "item": null,
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "0d056a1f991e4ac4a69e22bddb2a4447"
+  },
+  "result": {
+    "status": "completed",
+    "targets": [
+      "steering/product.md",
+      "steering/tech.md",
+      "steering/architecture.md",
+      "steering/security.md",
+      "steering/non-functional.md",
+      "steering/database.md",
+      "steering/api-standards.md"
+    ],
+    "questions": [],
+    "open_placeholders": 0,
+    "changed_findings": [],
+    "return_candidates": [],
+    "summary": "回答 Q-STR-110b〜114b を反映し、7ファイルの未記入欄を 0 にした（記入、または人間の不要理由付きでプレースホルダーを保持）。根拠は要求一覧（approved）、計画了承時の人間確定事項、作成中の質問への人間回答（回答1〜8、Q-STR-101〜114、Q-STR-110b〜114b）、および人間の指示により読み取った既存ソース（wing・WTX・WTX_Batch・WTX_Common。各値に根拠パスを付記）。zxing は回答 Q-STR-102 で core と javase 3.4.1 に訂正。共通コマンドは未実行・未確認である旨を明記（回答 Q-STR-105 で許可）。「保守運用は既存 WiNG の運用に従う」（回答6）の不要理由を、運用・障害対応、デプロイ／リリース、アラート、監視/ヘルス、バックアップ／DR、DB のバックアップの各欄に適用した。API 間認証は回答7の理由を適用。要求一覧に無い新規要求は採用していない。"
+  }
+}

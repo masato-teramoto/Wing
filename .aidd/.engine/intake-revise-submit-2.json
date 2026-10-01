@@ -1,0 +1,49 @@
+{
+  "operation_id": "709fa4c61f7a458cac79e804597afc7e",
+  "dispatch": {
+    "call": "requirement-intake-revise",
+    "unit": "requirement-intake-revise/requirement-intake-revise[-]::run",
+    "event": "requirement-intake-revise",
+    "item": null,
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "404039da3f3144c68f030169af6b74fb"
+  },
+  "result": {
+    "status": "completed",
+    "targets": [
+      ".aidd/requirement-list.md"
+    ],
+    "questions": [],
+    "open_placeholders": 0,
+    "changed_findings": [
+      {
+        "phase": "intake",
+        "scope": "phase",
+        "run": 2,
+        "number": 1
+      },
+      {
+        "phase": "intake",
+        "scope": "phase",
+        "run": 2,
+        "number": 2
+      },
+      {
+        "phase": "intake",
+        "scope": "phase",
+        "run": 2,
+        "number": 3
+      },
+      {
+        "phase": "intake",
+        "scope": "phase",
+        "run": 2,
+        "number": 5
+      }
+    ],
+    "return_candidates": [],
+    "summary": "人間の修正指示（Junichi Noumi）どおりに修正。#2-1 REQ-059 に発注者のフォルダ作成・ファイル格納の記述を追加し出典に注記を併記。#2-2 REQ-052 の2文目を RFP §7-2 原文どおりの概算値との対比に変更（REQ-047 は変更なし）。#2-3 REQ-060 の追記を基本設計のレビューに限る文言に変更。#2-5 REQ-066 を壁打ち行として追加。有効な要求は63件（RFP 59＝機能34・非機能2・制約23、壁打ち4＝機能4）、廃止済み3件。updated_at を実際の編集時刻に更新。"
+  }
+}

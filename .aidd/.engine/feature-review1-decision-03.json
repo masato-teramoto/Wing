@@ -1,0 +1,34 @@
+{
+  "operation_id": "2cf80fd1bb8346658761e78c53181624",
+  "action": "decision",
+  "dispatch": {
+    "call": "feature-decomposition-generate",
+    "unit": "feature-decomposition-generate/feature-decomposition-generate[-]::end.review",
+    "event": "feature-decomposition-generate",
+    "item": null,
+    "status": "wait",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"feature-decomposition-generate/feature-decomposition-generate[-]::end.review\", \"snapshot\": \"ef4dc2b9b84e6fd8afff00b29b0f7abfc3eafbb169f39eae7bde7e3fe7eadc33\", \"run\": 1, \"inspection_hash\": \"ac224d9d5b4d8bb3537260d8cbf51ad55b3ee4c4139ade394b35d002805d52a1\"}\n**Phase 3（Feature 分割）の品質ゲートを実行しました。** 指摘ごとに判断を選んでください。\n\n**対象**: `.aidd/feature-list.md`（スコープ: 成果物単位 / 1 回目）\n**実行した層**: ① / ②\n\n**指摘**（ゲート記録 `.aidd/gates/phase-3-feature.md` の当該実行分）\n\n| # | 層 | 対象箇所 | 指摘内容 |\n|---|---|---|---|\n| 1 | ② | steering/product.md 「主要ユースケース」3／.aidd/requirement-list.md REQ-011・REQ-066／.aidd/feature-list.md 「フィーチャー一覧」property-basic-info 行の目的列 | 機能領域「承認者による承認・差戻し、申請者による取下げ」（product.md 主要ユースケース3「承認フローの承認者が、回ってきた申請を確認し、承認または差戻しを行う」、REQ-066「申請の差戻し・取下げができる」）が、どの feature の目的にも現れない。REQ-011・REQ-066 は property-basic-info の対応要求IDに割り当てられているが、目的は「登録・変更して承認フローへ申請し」と申請側だけを述べている（意味判定: ID対応あり・目的の記述に承認側の領域なし）。 |\n| 2 | ② | .aidd/feature-list.md 「フィーチャー一覧」対応要求ID列（property-basic-info・issue-request・issue-request-tutorial・application-status-search・contract-info-import・contract-info-download の各行） | 多重割当: REQ-063（各画面は入力チェック（必須・桁数・形式）を行い、エラー時はメッセージを表示して処理を止める）が 6 つの feature に割り当てられている（print-report には無い）。要求文は「各画面」を対象とする横断的な要求である。複数割当のままとするか、どれか1つに所有させるかは人間による確認が必要。 |\n| 3 | ② | .aidd/feature-list.md 「フィーチャー一覧」issue-request-tutorial 行の種別列 | 種別が `User` だが、目的は「発行依頼書登録変更画面のボタンから開くポップアップで、…選んだ値と入力した値を発行依頼書の項目へ設定する」であり、テンプレートの判定の一問「この feature だけが出来上がった状態で、誰かが用事を済ませて終われるか」に対し、設定した値の登録は issue-request が行うため単体では終われない（「他の feature の中で使われる」に当たる）。一方で Platform の定義「他の feature に使われて働く共通の仕組み」のうち「共通の」には当たらない（使うのは issue-request だけ）。定義の2つの条件が分かれており、`User` のままか `Platform` かは人間による確認が必要。 |\n| 4 | ② | .aidd/feature-list.md 「フィーチャー一覧」優先度列（issue-request-tutorial=3、print-report=4、application-status-search=5、contract-info-import=6） | 出典不明: 依存の必須先行で決まらない範囲の順序（issue-request-tutorial を print-report・application-status-search・contract-info-import より先、print-report を application-status-search より先、application-status-search を contract-info-import より先）が、steering/product.md・.aidd/requirement-list.md から導けない。product.md の主要ユースケースの列挙順とはおおむね一致するが、product.md は列挙順を優先度として定めておらず、チュートリアルは主要ユースケースに無い（「解決する課題」「提供価値」に入力補助として現れるだけ）。成果物にこの順序の出典（作成時の回答など）の記載が無く、追跡できない。 |\n| 5 | ② | .aidd/feature-list.md 「フィーチャー一覧」目的列（GWTG070・GWTG080・GWTG081・GWTG090・GWTG100・PWTGO072） | 出典不明: 目的列に書かれた画面ID GWTG070・GWTG080・GWTG081・GWTG090・GWTG100 とプログラムID PWTGO072 が、.aidd/requirement-list.md・steering/*.md のどこにも無い（steering/tech.md の命名規則の例に GWTG060・PWTGB090・RWTG070 があるだけ）。REQ-005 は画面・帳票・バッチの構成を基本設計で決めるとしており、成果物に ID の出典（作成時の回答など）の記載が無いため追跡できない。 |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n**判断の選択肢**（指摘ごとに 1 つ選ぶ）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n\n回答例: `1:A / 2:C 既存システムの制約で変更できない / 3:D 次回レビューまで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。",
+    "id": "aaf9e53990274f5b93cf49c0560a4588"
+  },
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "feature-decomposition-generate",
+    "event": "feature-decomposition-generate",
+    "item": "",
+    "dispatch_id": "aaf9e53990274f5b93cf49c0560a4588",
+    "unit": "feature-decomposition-generate/feature-decomposition-generate[-]::end.review",
+    "scope": "phase",
+    "run": 1,
+    "snapshot": "ef4dc2b9b84e6fd8afff00b29b0f7abfc3eafbb169f39eae7bde7e3fe7eadc33",
+    "record_hash": "6ff9c5f7e23c3fb848a8377277f801932ad48076bba2663a317ce38efc7913c6"
+  },
+  "data": {
+    "scope": "phase",
+    "run": 1,
+    "number": 3,
+    "decision": "対応せず進める",
+    "reason": "User のままとする。利用者が自分で操作する画面で、使うのは issue-request だけなので共通の仕組みに当たらない"
+  }
+}

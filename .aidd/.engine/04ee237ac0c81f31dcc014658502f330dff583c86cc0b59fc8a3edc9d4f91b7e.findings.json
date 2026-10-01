@@ -1,0 +1,7 @@
+{
+  "phase": "intake",
+  "event": "requirement-intake-revise",
+  "scope": "phase",
+  "run": 3,
+  "findings": []
+}

@@ -1,0 +1,17 @@
+{
+  "event": "requirement-intake-generate",
+  "scope": "phase",
+  "run": 1,
+  "snapshot": "6d0c1aaf0a571a0caa1280118fa2ba44b9ce941249de7d300b37bbd907fd6747",
+  "record_bytes": 7965,
+  "record_hash": "514ba3b55f2a3ddade243da87aa6a8f6f79a45b2e26be5b008afafe2736523f9",
+  "targets": [
+    ".aidd/requirement-list.md"
+  ],
+  "hashes": {
+    ".aidd/requirement-list.md": "d6c83d23722d6665a69d0921e458b0a811b3eed118191dad5d43c5d781c558e9"
+  },
+  "inputs": {
+    ".aidd/rfp/RFP.md": "821ef820b9f314a3cc375b7fcdef36a887ee4f84ee2c153a2c3a6f0a37c95f00"
+  }
+}

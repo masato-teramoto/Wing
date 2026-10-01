@@ -1,0 +1,24 @@
+{
+  "operation_id": "2ba75997ed314548aaeafdffc83885f8",
+  "dispatch": {
+    "call": "requirement-intake-generate",
+    "unit": "requirement-intake-generate/requirement-intake-generate[-]::run",
+    "event": "requirement-intake-generate",
+    "item": null,
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "943c558077654908acbdd62aff63952c"
+  },
+  "result": {
+    "status": "completed",
+    "targets": [
+      ".aidd/requirement-list.md"
+    ],
+    "questions": [],
+    "open_placeholders": 0,
+    "changed_findings": [],
+    "return_candidates": [],
+    "summary": "Q-INTAKE-001 の実回答（Junichi Noumi）を反映し、REQ-040・REQ-041（作成組織検索（ZOOM））を要求一覧から廃止済み要求へ移した（廃止日 2026-10-01、廃止理由は回答の文言どおり）。有効な要求は60件（機能34・非機能2・制約24）、IDは振り直さず REQ-040/041 は欠番。廃止理由の根拠資料（Zoom管理台帳 改訂52）は .aidd/rfp/ に無く、RFP §4-6 は改版されていない。廃止理由中の「作成組織は発行依頼書登録変更画面で直接入力する」は要求行として追加していない（人間が要求として確定していないため）。§1 背景と課題・§12 提案書に記載すべき事項は要求に含めない。"
+  }
+}

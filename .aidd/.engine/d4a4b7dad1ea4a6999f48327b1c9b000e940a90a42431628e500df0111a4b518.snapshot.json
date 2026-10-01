@@ -1,0 +1,19 @@
+{
+  "schema": 2,
+  "phase": "intake",
+  "event": "requirement-intake-generate",
+  "scope": "phase",
+  "at": "2026-10-01T13:09:36+09:00",
+  "artifacts": {
+    ".aidd/requirement-list.md": {
+      "status": "draft",
+      "sha256": "d6c83d23722d6665a69d0921e458b0a811b3eed118191dad5d43c5d781c558e9"
+    }
+  },
+  "record": {
+    "bytes": 97,
+    "sha256": "637983c642fa78c14bebbd191d77de1e8f037de15e3045f45ce06579341b05ab",
+    "blocks": 0
+  },
+  "run": 1
+}

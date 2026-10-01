@@ -1,0 +1,32 @@
+{
+  "operation_id": "a9cc5e8d855840efbb484d178ee12559",
+  "dispatch": {
+    "call": "requirement-intake-generate",
+    "unit": "requirement-intake-generate/requirement-intake-generate[-]::run",
+    "event": "requirement-intake-generate",
+    "item": null,
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "456495a3d1a94a89bb395bfa20b5bca5"
+  },
+  "result": {
+    "status": "waiting",
+    "targets": [
+      ".aidd/requirement-list.md"
+    ],
+    "questions": [
+      {
+        "id": "Q-INTAKE-001",
+        "target": ".aidd/requirement-list.md",
+        "location": "## 廃止済み要求 の表（<RETIRED_REQUIREMENT_ID_N> / <RETIRED_REQUIREMENT_TEXT_N> / <RETIRED_DATE_N> / <RETIRED_REASON_N> の1行）",
+        "question": "初回作成のため廃止済み要求は0件です。この4つの記入欄を「不要理由」を添えて残してよいですか。よい場合は、記載する不要理由の文言をお知らせください。",
+        "reason_unanswered": "記入欄を埋める・不要とする根拠はRFPに無く、不要理由は人間が明記したものに限られるため"
+      }
+    ],
+    "open_placeholders": 4,
+    "changed_findings": [],
+    "return_candidates": [],
+    "summary": "RFP受入判定3点（目的・対象ユーザー=§2/§1・§4-5、機能範囲=§4-1〜4-6、対象外=§3-2）を満たすと判断。REQ-001〜REQ-062を採番（機能36・非機能2・制約24）。§1 背景と課題は要求でなく背景、§12 提案書に記載すべき事項は提案書の記載指示のため要求に含めない。§4-7 2点目は REQ-037、§5 #3 は REQ-003 に出典アンカーを併記して重複行を作らない。廃止済み要求の記入欄4つが未記入（Q-INTAKE-001）。"
+  }
+}

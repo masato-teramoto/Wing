@@ -1,0 +1,6 @@
+{
+  "operation_id": "affec599699e4feb90c12af3896c4587",
+  "answers": [
+    "Q-FEA-001：依存の向きは issue-request が property-basic-info に依存する（発行依頼書は TWTGM080 に会社コードと申請No でひもづき、申請No は物件基本情報の側で採番する）。循環を解くため、帳票 PWTGO072（帳票ID RWTG070）を別の feature にし、property-basic-info と issue-request の両方に依存させる\nQ-FEA-002：分割は帳票だけとする。登録変更と承認フローと文書バーコードのポップアップは property-basic-info に残す。feature は7つで、優先度は property-basic-info、issue-request、issue-request-tutorial、帳票、application-status-search、contract-info-import、contract-info-download の順\nQ-FEA-003：依存関係図は不要（依存は一覧表の依存の列で足りるため）\nQ-FEA-004：名前はこのままでよい。帳票の feature は print-report とする\n追加：contract-info-import は property-basic-info と issue-request に依存する（取込バッチが TWTGM080 を参照し、TWTGM100 と TWTGM140 を更新するため）"
+  ]
+}
