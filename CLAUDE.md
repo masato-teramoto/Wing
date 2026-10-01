@@ -11,16 +11,9 @@
    案件の`.venv`がある場合はそのPythonも確認し、アプリ・検査ツールが求める版を満たすものを選ぶ。
    Phase 8同梱題材はPython 3.10以上を使う。準備済みならmacOS/Linuxは`.venv/bin/python`、
    Windowsは`.venv/Scripts/python.exe`を以降の`python3`/`python`に読み替える。
-   Gitも必要。起動スクリプトを使わない場合は、この案件自身にGit管理があることを確認する。
-   未準備の配布ZIPはPython 3.10以上で `start.py --prepare-only` を実行して初期配置を整える。
-2. `python3 -X utf8 -B aidd-run.py doctor` を実行し、失敗した確認項目を解消する。
+2. `python3 -X utf8 -B .claude/skills/aidd-common/scripts/aidd_entry.py doctor` を実行し、失敗した確認項目を解消する。
    VS Code 拡張など CLI を使わないホストは `doctor --runtime-only` で実行資材だけ確認する。
-3. `phase8-sample/` がある場合は同梱の `phase8-sample/README.md` を読み、実装開始版として扱う。
-   未準備なら `python -X utf8 -B -S start.py --prepare-only` で展開先の準備を行う。
-   準備済みのPhase 1〜7を最初から実行しない。合成入力での試行を行う実際のユーザー指示を確認し、
-   `specs/reservation-window/tasks.md` の導入範囲に従って `/aidd-implement reservation-window 1` から進める。
-   実装中なら保存された要求から再開し、開始前用の `prepare.py --check` を実行しない。
-   通常版の初回は `/aidd-requirements-init`。続いて `/aidd-requirements`、`/aidd-design`、`/aidd-tasks`。
+3. 初回は `/aidd-requirements-init`。続いて `/aidd-requirements`、`/aidd-design`、`/aidd-tasks`。
    tasks承認後は `/aidd-implement <feature> [task IDs]`。タスクは1件ずつ実行し、実装の承認はfeature全体で行う。
    各入口の `.claude/skills/<名前>/SKILL.md` に従う。再開時も同じ入口を使用する。
 4. 最初の工程を進める前に以下を Read する。
@@ -29,26 +22,25 @@
 
 ## この環境でのコマンド表記
 
-上記資料の `python .../bin/aidd.py --root .` は `python3 -X utf8 -B aidd-run.py engine`、
-`python .../scripts/workflow.py --root .` は `python3 -X utf8 -B aidd-run.py workflow` に読み替える。
-Windows は先頭の `python3` を、開始時に確認した `python` または `py -3` に置き換える。wrapper は同じ Python で実行し、
-root/state/config をこのプロジェクトに固定する。環境ごとの絶対パスを文書に埋め込まない。
+入口は `.claude/skills/aidd-common/scripts/aidd_entry.py` だけ（CommandResolver でコマンドを解決する）。最初の引数は実行中の
+コマンド（`/aidd-requirements` など）、次が操作。呼出し先（`--call` / `--action`）はそのコマンドのものに限る。
+root/state/config はこのプロジェクトに固定される（ファイルの場所から決まる）。Windows は先頭の `python3` を、
+開始時に確認した `python` または `py -3` に置き換える。環境ごとの絶対パスを文書に埋め込まない。
 
 ```sh
-python3 -X utf8 -B aidd-run.py workflow --call requirements-init advance
-python3 -X utf8 -B aidd-run.py workflow --call requirements --item <feature> advance
-python3 -X utf8 -B aidd-run.py workflow --event <返された event> [--item <item>] --payload .aidd/.engine/<保存した>.json submit
-python3 -X utf8 -B aidd-run.py workflow --event <返された event> [--item <item>] --payload .aidd/.engine/<保存した>.json --actor <実回答者> respond
+python3 -X utf8 -B .claude/skills/aidd-common/scripts/aidd_entry.py /aidd-requirements-init advance --call requirement-intake-generate
+python3 -X utf8 -B .claude/skills/aidd-common/scripts/aidd_entry.py /aidd-requirements advance --call requirements-authoring-generate --item <feature>
+python3 -X utf8 -B .claude/skills/aidd-common/scripts/aidd_entry.py /aidd-requirements submit --action <返された event（アクション名）> [--item <item>] --payload .aidd/.engine/<保存した>.json
+python3 -X utf8 -B .claude/skills/aidd-common/scripts/aidd_entry.py /aidd-requirements respond --action <返された event（アクション名）> [--item <item>] --payload .aidd/.engine/<保存した>.json --actor <実回答者>
 ```
 
-これは開始時の例。flow（`requirements-init` / `requirements` / `design` / `docs` / `tasks`）と
-単独イベント（`*-plan`、`*-cross-gate`、`tasks-gate-run`）は host-protocol §1 の表のとおり。
+これは開始時の例。呼び出す順と繰り返しは入口 Skill の手順（host-protocol §1.1）のとおり。
 後続は返された event/item と result.status に従い submit/respond を使い、`next_action` を人へ伝える。
-workflow の終了コードは0/1、次の状態は result.status。L0 の直接 CLI だけが emit=20、wait=10 を返す。
+advance / submit / respond の終了コードは0/1、次の状態は result.status。
 
 ## Claude Code ホストの責務
 
-- 進行は workflow の advance/submit/respond に統一する。内部で audit/preflight と L0 の
+- 進行は入口の advance/submit/respond に統一する。内部で audit/preflight と L0 の
   call/emit/report を順に実行する。event/item を揃える。済んだ単位は advance すると done が返る。
 - 計画・人間レビューの detail は見出し・選択肢を変えずにそのまま人へ示す。推奨・既定値を示さず、
   Skill 名・agent 名を出さない。人の回答（`1:A / 2:C 理由`、`全件:A` など）は言い換えずに respond の decisions に渡す。

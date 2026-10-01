@@ -1,4 +1,5 @@
 """L3 verification envelopes around L4 technical results."""
+import l0  # noqa: F401  L0 の枠組みを import できるようにする
 from pathlib import Path
 import json
 import os
@@ -60,6 +61,7 @@ def final(context):
              'code': review['code'], 'policy_hash': store.fingerprint(review['policy']), 'receipts': results,
              'report_plan_hash': store.fingerprint(review['report_plan']), 'report_receipts': report_results,
              'completed_at': project_state.now(), 'specifications': specifications}
+    value['generated_specifications'] = review['report_plan']['generated_specifications']
     if before != evidence.inventory(context, review['policy']):
         value['source_changed'] = True
     summary_path = bundle + '/README.md'
@@ -72,6 +74,16 @@ def final(context):
         lines += ['単体テスト・coverageの不適用理由: ' + reporting['not_applicable_reason'], '']
     for spec in specifications:
         lines += ['- [仕様: ' + spec['source'] + '](<' + link(spec['path']) + '>)']
+    for spec in value['generated_specifications']:
+        lines += ['- [生成済み単体テスト仕様書: ' + spec['scope'] + '](<' + link(spec['path']) + '>)']
+    # Task-level review entries are recorded in the feature state by the L4 start gate
+    # `task-quality-feature` ({label, path?, note?} per task); L3 renders them as data.
+    import implementation_requests
+    entries = implementation_requests.feature_state(context, context.item).get('report_extensions', {}).get('task_reviews', [])
+    for entry in entries:
+        text = ('[' + entry['label'] + '](<' + link(entry['path']) + '>)') if entry.get('path') else entry['label']
+        lines += ['', '- ' + text + ('; ' + entry['note'] if entry.get('note') else '')]
+    lines += ['', 'feature最終の実テスト・横断検査は本レポートで確認する。']
     for result in results + report_results:
         lines += ['', '## ' + result['check_id'] + ': ' + result['status'], '']
         for entry in result.get('report', {}).get('entries', []):
@@ -83,7 +95,9 @@ def final(context):
             lines += ['- [失敗の診断](<' + link(result['diagnostic']['path']) + '>)']
     lines += ['', '## 実行証跡', '', '```json', json.dumps(value, ensure_ascii=False, indent=2), '```', '']
     raw = '\n'.join(lines).encode('utf-8')
-    Path(context.path(summary_path)).write_bytes(raw)
+    summary_file = implementation_reports.plain_file(context.root, summary_path)
+    summary_file.parent.mkdir(parents=True, exist_ok=True)
+    summary_file.write_bytes(raw)
     value['summary'] = {'path': summary_path, 'sha256': store.digest(raw)}
     store.write(context.root, target, value)
     try:
@@ -108,6 +122,8 @@ def validate_final(context):
             or any(r['status'] != 'passed' for r in value.get('report_receipts', []))):
         raise ValueError('all selected reporting commands and readable outputs must finish and pass')
     implementation_reports.verify_specifications(context.root, reporting['specifications'], value.get('specifications', []))
+    if value.get('generated_specifications') != review['report_plan']['generated_specifications']:
+        raise ValueError('generated specification references changed; repeat final reporting')
     summary = value.get('summary')
     if not summary or store.digest(implementation_reports.plain_file(context.root, summary['path']).read_bytes()) != summary['sha256']:
         raise ValueError('readable verification summary changed or missing')

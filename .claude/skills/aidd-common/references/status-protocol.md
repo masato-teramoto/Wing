@@ -24,14 +24,19 @@ progress_view は表示の可用性と更新日時、progress は文書 status �
 L4 は対象本文、上流文書、状態 JSON、人間判断を書き換えない。approved を下げない。
 L3 はゲート前後の保護ハッシュと記録のバイト先頭ハッシュで書込範囲を検査する。
 生成・修正 Skill は自成果物のみを編集し、進捗操作・承認・検査起動を行わない。
-Phase 1–7 の修正 event は生成 event の直後に毎回実行される。修正要求が無ければ修正 Skill は何も編集せず
-completed（targets 0 件）を返す。修正対象がある場合は L3 進行制御による draft 化を前提とし、
+
+検査ゲートの `target_review`（gate.yaml）から外した出力は、上の review / approved への遷移を持たない（draft のまま）。
+検査中（snapshot から scope-check まで）は本文も status も変更できず、scope-check が snapshot の値と照合する。
+下流はその status の値を承認の証跡にせず、存在だけを確認する。ホストは context の `unreviewed_inputs` で明示する。
+以前に承認され、後から `target_review` から外した出力は、フロントマターが approved のままでも未検査として扱う。
+Phase 1–7 の修正アクション は生成アクション の後、修正要求があるあいだ入口 Skill が修正の 1 回ごとに呼ぶ。修正要求が無ければ
+修正アクションは呼ばれない（万一呼ばれても何も編集せず completed（targets 0 件）を返す）。修正対象がある場合は L3 進行制御による draft 化を前提とし、
 対象が draft でなければ編集せずホストへ返し、Skill 自身では status を変更しない。
 回答後の同じ draft への再入は維持する。
 
 ## 3. 指摘と差戻し
 
-人間が対象指摘と所有工程を決める。当該成果物の不足は同じ工程の修正 event
+人間が対象指摘と所有工程を決める。当該成果物の不足は同じ工程の修正アクション
 （`<base>-revise`）へ戻す。**当該工程内の修正が既定**であり、上流を疑う前に、
 当該工程の記述で解消できないかを先に確認する。
 要求一覧は Phase 1、steering は Phase 2、feature 分割は Phase 3、requirements は
@@ -67,7 +72,7 @@ blockers、features、feature_manifest、progress/progress_view と人間の質�
 L0 の再実行は公開 redo を介し無効化履歴を追記する。L3 から成功印を捏造しない。
 
 workflow.completions は L0 完走後に現在の入力・成果物・検査・承認を照合した証明。
-修正イベント（`<base>-revise`）の完了で生成工程（`<base>-generate`）を満たせるが、元の実行履歴は保持する。
+修正アクション（`<base>-revise`）の完了で生成工程（`<base>-generate`）を満たせるが、元の実行履歴は保持する。
 feature の原本は承認済み feature-list.md。JSON は毎回同期してハッシュを確認する。
 原本変更時は計画・影響する完了証明・下流検査を無効化する。
 
@@ -75,7 +80,7 @@ feature の原本は承認済み feature-list.md。JSON は毎回同期してハ
 正規の tasks 実績更新を除く入力内容が変わった場合、記録された入力を実際に使用する
 成果物を修正・再検査へ戻す。無関係な成果物の承認は保持する。過去の証明は保持し、
 当該成果物が新しい入力で完走したときだけ新しい完了証明を発行する。
-Phase 8 はタスクごとの生成／修正イベントを使い、feature 全体の検査と人間承認を行う。
+Phase 8 はタスクごとの生成／修正アクションを使い、feature 全体の検査と人間承認を行う。
 入力が変わった実装は証跡を保持して無効化し、実装契約の明示的な rebase で再検証する。
 
 再生成できるのは表示等の派生情報であり、質問・回答・修正要求・了承・blocker・実行履歴を
@@ -85,7 +90,7 @@ Phase 8 はタスクごとの生成／修正イベントを使い、feature 全�
 scope-check 成功時、snapshot 隣に `.checked.json` を保存する。検査回・対象・原本・入力・
 記録先頭のハッシュを含み、実 review wait の detail に同じ検査の識別情報を結び付ける。
 L3 は workflow.review_operations に人間書込みの prepared/applied、
-workflow.host_operations に受領から report/次の call までの prepared/saved/reported/finished を保存する。
+L0 の host は状態ストアの `host_operations`（L0 所有）に受領から report/次の call までの prepared/saved/reported/finished を保存する。
 これらは再送と途中停止からの継続に必要な証跡で、進捗キャッシュと同様に削除・再生成してはいけない。
 個々のファイル更新は一時ファイルから置換し、中断時は保存済みハッシュを照合して未実施分のみ進める。
 複数成果物の承認は全ファイル同時のトランザクションではなく、中断時は未完了操作として停止する。

@@ -4,7 +4,7 @@ The wording follows the alpha2 ③ human-review template (aidd-flow Step 4): the
 host shows this text as is. Headings, choice letters and order do not change,
 no recommendation or default is shown, and Skill / agent names are not shown.
 """
-import aidd_paths
+import phase_rules
 import review_contract
 import inspection_seal
 import json
@@ -32,7 +32,7 @@ def scope_label(scope):
 
 
 def main():
-    context = aidd_paths.Context()
+    context = phase_rules.gate_context()
     try:
         record = review_contract.read(context)
         seal = inspection_seal.verify(context, record)
@@ -40,7 +40,7 @@ def main():
               'run':seal['run'],'inspection_hash':seal['record_hash']},ensure_ascii=False))
         scopes = review_contract.scopes(context)
         multi = len(scopes) > 1
-        gate_path = aidd_paths.PHASES[context.process][1]
+        gate_path = phase_rules.PHASES[context.process][1]
         undecided_total = 0
         lines = ["**Phase %s（%s）の品質ゲートを実行しました。** 指摘ごとに判断を選んでください。" % (context.phase, NAMES.get(context.process, context.process)), ""]
         for scope in scopes:
@@ -108,8 +108,8 @@ def main():
                          if context.is_cross else "判断が揃いました。承認の可否を回答してください（承認する場合は承認者名）。")
         print("\n".join(lines))
     except (ValueError, OSError) as error:
-        aidd_paths.fail(str(error))
-    raise SystemExit(aidd_paths.EXIT_WAIT)
+        phase_rules.fail(str(error))
+    raise SystemExit(phase_rules.EXIT_WAIT)
 
 
 if __name__ == "__main__":

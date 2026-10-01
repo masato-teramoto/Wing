@@ -8,9 +8,11 @@ disable-model-invocation: true
 
 対象: `steering/product.md` / `steering/tech.md` / `steering/architecture.md` / `steering/security.md` / `steering/non-functional.md` / `steering/database.md` / `steering/api-standards.md`。feature単位の対象はホストから受け取る。
 テンプレート: `Templates/steering/product.md` / `Templates/steering/tech.md` / `Templates/steering/architecture.md` / `Templates/steering/security.md` / `Templates/steering/non-functional.md` / `Templates/steering/database.md` / `Templates/steering/api-standards.md`。
-起動 event: `steering-authoring-generate`（直後に `steering-authoring-revise` が毎回実行される）。
+起動アクション: `steering-authoring-generate`（修正要求があるときだけ、入口 Skill が続けて `steering-authoring-revise` を呼ぶ）。
 
 ## 手順
+
+役割: 生成（generate）
 
 1. `.claude/skills/aidd-common/references/authoring/contract.md` を読み、受け取った対象・承認済み入力・質問回答を確認する。
 2. `.claude/skills/aidd-common/references/authoring/steering.md` と上記の実行時テンプレートを読む。

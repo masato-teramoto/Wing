@@ -1,0 +1,844 @@
+# main_flow policy and inspection gates. Declaration order is execution order.
+#
+# target_review（各差し口の検査対象）: 省略時はアクションの出力すべて。
+# - 検査ゲート（<工程>-check）の値が、そのアクションの検査・承認の対象になる（-generate と -revise は同じ値）。
+# - 機械検査 script（id-format / revision-diff / dependency-cycle / sequence-consistency）は、出力の一部に絞れる。
+# - それ以外のゲートは、同じアクションの検査ゲートと同じ値を書く（違えば実行時に失敗する）。
+#   検査対象を変えるときは、そのアクションの行をすべて同じ値に直す。
+# - `"**"` はアクションの出力すべて（Phase 8 のタスクのように出力が実行ごとに決まるもの）。
+# - 出力が複数ある steering / docs はファイル名を 1 行ずつ書く（ブロック形式。同梱パーサは複数行の { } を読めない）。
+#   出力を追加したら、その工程の全行に追記する（配布する gate.yaml が全出力を検査することは試験で確認する）。
+# - 出力が複数ある steering / docs はファイル名を 1 行ずつ書く（ブロック形式。同梱パーサは複数行の { } を読めない）。
+#   出力を追加したら、その工程の全行に追記する（配布する gate.yaml が全出力を検査することは試験で確認する）。
+
+# Phase 8 のタスク単位のレビュー（L4）。適用の条件（when）は持たない。各ゲートが自分で「該当なし」を判断する。
+- gate:
+    name: task-quality-feature
+    target_action:
+      - { action: implement-gate-run, hookPoint: start, target_review: [".aidd/implementation/**"] }
+    run: { type: script, target: scripts/gate_task_quality.py }
+
+- gate:
+    name: task-quality-policy
+    target_action:
+      - { action: implement-authoring-generate, hookPoint: start, target_review: ["**"] }
+      - { action: implement-authoring-revise, hookPoint: start, target_review: ["**"] }
+      - { action: implement-gate-run, hookPoint: start, target_review: [".aidd/implementation/**"] }
+    run: { type: script, target: scripts/gate_task_quality.py }
+
+- gate:
+    name: task-code-review-baseline
+    target_action:
+      - { action: implement-authoring-generate, hookPoint: start, target_review: ["**"] }
+      - { action: implement-authoring-revise, hookPoint: start, target_review: ["**"] }
+    run: { type: script, target: scripts/gate_task_quality.py }
+
+- gate:
+    name: implementation-input
+    target_action:
+      - { action: implement-authoring-generate, hookPoint: start, target_review: ["**"] }
+      - { action: implement-authoring-revise, hookPoint: start, target_review: ["**"] }
+      - { action: implement-gate-run, hookPoint: start, target_review: [".aidd/implementation/**"] }
+    run: { type: script, target: scripts/implementation_gate.py }
+
+- gate:
+    name: feature-sync
+    target_action:
+      - { action: requirements-authoring-generate, hookPoint: start, target_review: ["specs/{item}/requirements.md"] }
+      - { action: design-authoring-generate, hookPoint: start, target_review: ["specs/{item}/design.md"] }
+      - action: docs-integration-generate
+        hookPoint: start
+        target_review:
+          - docs/code-design.md
+          - docs/architecture/data-model.md
+          - docs/architecture/system-overview.md
+      - { action: tasks-authoring-generate, hookPoint: start, target_review: ["specs/{item}/tasks.md"] }
+      - { action: requirements-authoring-revise, hookPoint: start, target_review: ["specs/{item}/requirements.md"] }
+      - { action: design-authoring-revise, hookPoint: start, target_review: ["specs/{item}/design.md"] }
+      - action: docs-integration-revise
+        hookPoint: start
+        target_review:
+          - docs/code-design.md
+          - docs/architecture/data-model.md
+          - docs/architecture/system-overview.md
+      - { action: tasks-authoring-revise, hookPoint: start, target_review: ["specs/{item}/tasks.md"] }
+      - { action: requirements-plan, hookPoint: start, target_review: ["specs/**"] }
+      - { action: design-plan, hookPoint: start, target_review: ["specs/**"] }
+      - { action: tasks-plan, hookPoint: start, target_review: ["specs/**"] }
+      - { action: requirements-cross-gate, hookPoint: start, target_review: ["specs/**"] }
+      - { action: design-cross-gate, hookPoint: start, target_review: ["specs/**"] }
+      - { action: tasks-gate-run, hookPoint: start, target_review: ["specs/**"] }
+    run: { type: script, target: scripts/sync_features.py }
+
+- gate:
+    name: upstream-check
+    target_action:
+      - { action: requirement-intake-generate, hookPoint: start, target_review: [".aidd/requirement-list.md"] }
+      - action: steering-authoring-generate
+        hookPoint: start
+        target_review:
+          - steering/product.md
+          - steering/tech.md
+          - steering/architecture.md
+          - steering/security.md
+          - steering/non-functional.md
+          - steering/database.md
+          - steering/api-standards.md
+      - { action: feature-decomposition-generate, hookPoint: start, target_review: [".aidd/feature-list.md"] }
+      - { action: requirements-authoring-generate, hookPoint: start, target_review: ["specs/{item}/requirements.md"] }
+      - { action: design-authoring-generate, hookPoint: start, target_review: ["specs/{item}/design.md"] }
+      - action: docs-integration-generate
+        hookPoint: start
+        target_review:
+          - docs/code-design.md
+          - docs/architecture/data-model.md
+          - docs/architecture/system-overview.md
+      - { action: tasks-authoring-generate, hookPoint: start, target_review: ["specs/{item}/tasks.md"] }
+      - { action: requirement-intake-revise, hookPoint: start, target_review: [".aidd/requirement-list.md"] }
+      - action: steering-authoring-revise
+        hookPoint: start
+        target_review:
+          - steering/product.md
+          - steering/tech.md
+          - steering/architecture.md
+          - steering/security.md
+          - steering/non-functional.md
+          - steering/database.md
+          - steering/api-standards.md
+      - { action: feature-decomposition-revise, hookPoint: start, target_review: [".aidd/feature-list.md"] }
+      - { action: requirements-authoring-revise, hookPoint: start, target_review: ["specs/{item}/requirements.md"] }
+      - { action: design-authoring-revise, hookPoint: start, target_review: ["specs/{item}/design.md"] }
+      - action: docs-integration-revise
+        hookPoint: start
+        target_review:
+          - docs/code-design.md
+          - docs/architecture/data-model.md
+          - docs/architecture/system-overview.md
+      - { action: tasks-authoring-revise, hookPoint: start, target_review: ["specs/{item}/tasks.md"] }
+      - { action: requirements-plan, hookPoint: start, target_review: ["specs/**"] }
+      - { action: design-plan, hookPoint: start, target_review: ["specs/**"] }
+      - { action: tasks-plan, hookPoint: start, target_review: ["specs/**"] }
+      - { action: requirements-cross-gate, hookPoint: start, target_review: ["specs/**"] }
+      - { action: design-cross-gate, hookPoint: start, target_review: ["specs/**"] }
+      - { action: tasks-gate-run, hookPoint: start, target_review: ["specs/**"] }
+    run: { type: script, target: scripts/check_upstream_approved.py }
+
+- gate:
+    name: blockers-check
+    target_action:
+      - { action: requirement-intake-generate, hookPoint: start, target_review: [".aidd/requirement-list.md"] }
+      - action: steering-authoring-generate
+        hookPoint: start
+        target_review:
+          - steering/product.md
+          - steering/tech.md
+          - steering/architecture.md
+          - steering/security.md
+          - steering/non-functional.md
+          - steering/database.md
+          - steering/api-standards.md
+      - { action: feature-decomposition-generate, hookPoint: start, target_review: [".aidd/feature-list.md"] }
+      - { action: requirements-authoring-generate, hookPoint: start, target_review: ["specs/{item}/requirements.md"] }
+      - { action: design-authoring-generate, hookPoint: start, target_review: ["specs/{item}/design.md"] }
+      - action: docs-integration-generate
+        hookPoint: start
+        target_review:
+          - docs/code-design.md
+          - docs/architecture/data-model.md
+          - docs/architecture/system-overview.md
+      - { action: tasks-authoring-generate, hookPoint: start, target_review: ["specs/{item}/tasks.md"] }
+      - { action: requirement-intake-revise, hookPoint: start, target_review: [".aidd/requirement-list.md"] }
+      - action: steering-authoring-revise
+        hookPoint: start
+        target_review:
+          - steering/product.md
+          - steering/tech.md
+          - steering/architecture.md
+          - steering/security.md
+          - steering/non-functional.md
+          - steering/database.md
+          - steering/api-standards.md
+      - { action: feature-decomposition-revise, hookPoint: start, target_review: [".aidd/feature-list.md"] }
+      - { action: requirements-authoring-revise, hookPoint: start, target_review: ["specs/{item}/requirements.md"] }
+      - { action: design-authoring-revise, hookPoint: start, target_review: ["specs/{item}/design.md"] }
+      - action: docs-integration-revise
+        hookPoint: start
+        target_review:
+          - docs/code-design.md
+          - docs/architecture/data-model.md
+          - docs/architecture/system-overview.md
+      - { action: tasks-authoring-revise, hookPoint: start, target_review: ["specs/{item}/tasks.md"] }
+      - { action: requirements-plan, hookPoint: start, target_review: ["specs/**"] }
+      - { action: design-plan, hookPoint: start, target_review: ["specs/**"] }
+      - { action: tasks-plan, hookPoint: start, target_review: ["specs/**"] }
+      - { action: requirements-cross-gate, hookPoint: start, target_review: ["specs/**"] }
+      - { action: design-cross-gate, hookPoint: start, target_review: ["specs/**"] }
+      - { action: tasks-gate-run, hookPoint: start, target_review: ["specs/**"] }
+    run: { type: script, target: scripts/check_no_open_blockers.py }
+
+- gate:
+    name: repair-request-check
+    target_action:
+      - { action: requirement-intake-revise, hookPoint: start, target_review: [".aidd/requirement-list.md"] }
+      - action: steering-authoring-revise
+        hookPoint: start
+        target_review:
+          - steering/product.md
+          - steering/tech.md
+          - steering/architecture.md
+          - steering/security.md
+          - steering/non-functional.md
+          - steering/database.md
+          - steering/api-standards.md
+      - { action: feature-decomposition-revise, hookPoint: start, target_review: [".aidd/feature-list.md"] }
+      - { action: requirements-authoring-revise, hookPoint: start, target_review: ["specs/{item}/requirements.md"] }
+      - { action: design-authoring-revise, hookPoint: start, target_review: ["specs/{item}/design.md"] }
+      - action: docs-integration-revise
+        hookPoint: start
+        target_review:
+          - docs/code-design.md
+          - docs/architecture/data-model.md
+          - docs/architecture/system-overview.md
+      - { action: tasks-authoring-revise, hookPoint: start, target_review: ["specs/{item}/tasks.md"] }
+    run: { type: script, target: scripts/check_repair_request.py }
+
+- gate:
+    name: plan
+    target_action:
+      - action: steering-authoring-generate
+        hookPoint: start
+        target_review:
+          - steering/product.md
+          - steering/tech.md
+          - steering/architecture.md
+          - steering/security.md
+          - steering/non-functional.md
+          - steering/database.md
+          - steering/api-standards.md
+      - { action: feature-decomposition-generate, hookPoint: start, target_review: [".aidd/feature-list.md"] }
+      - action: docs-integration-generate
+        hookPoint: start
+        target_review:
+          - docs/code-design.md
+          - docs/architecture/data-model.md
+          - docs/architecture/system-overview.md
+    run: { type: script, target: scripts/plan.py, requiresHuman: true }
+
+- gate:
+    name: authoring-result-check
+    target_action:
+      - { action: requirement-intake-generate, hookPoint: end, target_review: [".aidd/requirement-list.md"] }
+      - { action: requirement-intake-revise, hookPoint: end, target_review: [".aidd/requirement-list.md"] }
+      - action: steering-authoring-generate
+        hookPoint: end
+        target_review:
+          - steering/product.md
+          - steering/tech.md
+          - steering/architecture.md
+          - steering/security.md
+          - steering/non-functional.md
+          - steering/database.md
+          - steering/api-standards.md
+      - action: steering-authoring-revise
+        hookPoint: end
+        target_review:
+          - steering/product.md
+          - steering/tech.md
+          - steering/architecture.md
+          - steering/security.md
+          - steering/non-functional.md
+          - steering/database.md
+          - steering/api-standards.md
+      - { action: feature-decomposition-generate, hookPoint: end, target_review: [".aidd/feature-list.md"] }
+      - { action: feature-decomposition-revise, hookPoint: end, target_review: [".aidd/feature-list.md"] }
+      - { action: requirements-authoring-generate, hookPoint: end, target_review: ["specs/{item}/requirements.md"] }
+      - { action: requirements-authoring-revise, hookPoint: end, target_review: ["specs/{item}/requirements.md"] }
+      - { action: design-authoring-generate, hookPoint: end, target_review: ["specs/{item}/design.md"] }
+      - { action: design-authoring-revise, hookPoint: end, target_review: ["specs/{item}/design.md"] }
+      - action: docs-integration-generate
+        hookPoint: end
+        target_review:
+          - docs/code-design.md
+          - docs/architecture/data-model.md
+          - docs/architecture/system-overview.md
+      - action: docs-integration-revise
+        hookPoint: end
+        target_review:
+          - docs/code-design.md
+          - docs/architecture/data-model.md
+          - docs/architecture/system-overview.md
+      - { action: tasks-authoring-generate, hookPoint: end, target_review: ["specs/{item}/tasks.md"] }
+      - { action: tasks-authoring-revise, hookPoint: end, target_review: ["specs/{item}/tasks.md"] }
+    run: { type: script, target: scripts/authoring_results.py }
+
+- gate:
+    name: snapshot
+    target_action:
+      - { action: implement-gate-run, hookPoint: start, target_review: [".aidd/implementation/**"] }
+      - { action: requirement-intake-generate, hookPoint: end, target_review: [".aidd/requirement-list.md"] }
+      - { action: requirement-intake-revise, hookPoint: end, target_review: [".aidd/requirement-list.md"] }
+      - action: steering-authoring-generate
+        hookPoint: end
+        target_review:
+          - steering/product.md
+          - steering/tech.md
+          - steering/architecture.md
+          - steering/security.md
+          - steering/non-functional.md
+          - steering/database.md
+          - steering/api-standards.md
+      - action: steering-authoring-revise
+        hookPoint: end
+        target_review:
+          - steering/product.md
+          - steering/tech.md
+          - steering/architecture.md
+          - steering/security.md
+          - steering/non-functional.md
+          - steering/database.md
+          - steering/api-standards.md
+      - { action: feature-decomposition-generate, hookPoint: end, target_review: [".aidd/feature-list.md"] }
+      - { action: feature-decomposition-revise, hookPoint: end, target_review: [".aidd/feature-list.md"] }
+      - { action: requirements-authoring-generate, hookPoint: end, target_review: ["specs/{item}/requirements.md"] }
+      - { action: requirements-authoring-revise, hookPoint: end, target_review: ["specs/{item}/requirements.md"] }
+      - { action: requirements-cross-gate, hookPoint: start, target_review: ["specs/**"] }
+      - { action: design-authoring-generate, hookPoint: end, target_review: ["specs/{item}/design.md"] }
+      - { action: design-authoring-revise, hookPoint: end, target_review: ["specs/{item}/design.md"] }
+      - { action: design-cross-gate, hookPoint: start, target_review: ["specs/**"] }
+      - action: docs-integration-generate
+        hookPoint: end
+        target_review:
+          - docs/code-design.md
+          - docs/architecture/data-model.md
+          - docs/architecture/system-overview.md
+      - action: docs-integration-revise
+        hookPoint: end
+        target_review:
+          - docs/code-design.md
+          - docs/architecture/data-model.md
+          - docs/architecture/system-overview.md
+      - { action: tasks-authoring-generate, hookPoint: end, target_review: ["specs/{item}/tasks.md"] }
+      - { action: tasks-authoring-revise, hookPoint: end, target_review: ["specs/{item}/tasks.md"] }
+      - { action: tasks-gate-run, hookPoint: start, target_review: ["specs/**"] }
+    run: { type: script, target: scripts/snapshot_artifacts.py }
+
+- gate:
+    name: id-format-check
+    target_action:
+      - { action: requirement-intake-generate, hookPoint: end, target_review: [".aidd/requirement-list.md"] }
+      - { action: requirement-intake-revise, hookPoint: end, target_review: [".aidd/requirement-list.md"] }
+      - { action: feature-decomposition-generate, hookPoint: end, target_review: [".aidd/feature-list.md"] }
+      - { action: feature-decomposition-revise, hookPoint: end, target_review: [".aidd/feature-list.md"] }
+    run: { type: script, target: scripts/gate_id_format.py }
+
+- gate:
+    name: revision-diff-check
+    target_action:
+      - { action: requirement-intake-generate, hookPoint: end, target_review: [".aidd/requirement-list.md"] }
+      - { action: requirement-intake-revise, hookPoint: end, target_review: [".aidd/requirement-list.md"] }
+    run: { type: script, target: scripts/gate_revision_diff.py }
+
+- gate:
+    name: dependency-cycle-check
+    target_action:
+      - { action: feature-decomposition-generate, hookPoint: end, target_review: [".aidd/feature-list.md"] }
+      - { action: feature-decomposition-revise, hookPoint: end, target_review: [".aidd/feature-list.md"] }
+      - { action: tasks-authoring-generate, hookPoint: end, target_review: ["specs/{item}/tasks.md"] }
+      - { action: tasks-authoring-revise, hookPoint: end, target_review: ["specs/{item}/tasks.md"] }
+    run: { type: script, target: scripts/gate_dependency_cycle.py }
+
+- gate:
+    name: sequence-consistency-check
+    target_action:
+      - { action: feature-decomposition-generate, hookPoint: end, target_review: [".aidd/feature-list.md"] }
+      - { action: feature-decomposition-revise, hookPoint: end, target_review: [".aidd/feature-list.md"] }
+      - { action: tasks-authoring-generate, hookPoint: end, target_review: ["specs/{item}/tasks.md"] }
+      - { action: tasks-authoring-revise, hookPoint: end, target_review: ["specs/{item}/tasks.md"] }
+    run: { type: script, target: scripts/gate_sequence_consistency.py }
+
+- gate:
+    name: intake-check
+    target_action:
+      - { action: requirement-intake-generate, hookPoint: end, target_review: [".aidd/requirement-list.md"] }
+      - { action: requirement-intake-revise, hookPoint: end, target_review: [".aidd/requirement-list.md"] }
+    run:
+      type: skill
+      isAgent: true
+      target: intake-check
+      calls:
+        - format-conformance
+        - traceability
+        - ssot-consistency
+        - evidence-guard
+        - internal-contradiction-detection
+        - classification-validity
+        - summarization-fidelity
+        - adhoc-entry-validity
+        - legal-compliance-identification
+        - gap-proposal
+        - gate-report
+
+- gate:
+    name: steering-check
+    target_action:
+      - action: steering-authoring-generate
+        hookPoint: end
+        target_review:
+          - steering/product.md
+          - steering/tech.md
+          - steering/architecture.md
+          - steering/security.md
+          - steering/non-functional.md
+          - steering/database.md
+          - steering/api-standards.md
+      - action: steering-authoring-revise
+        hookPoint: end
+        target_review:
+          - steering/product.md
+          - steering/tech.md
+          - steering/architecture.md
+          - steering/security.md
+          - steering/non-functional.md
+          - steering/database.md
+          - steering/api-standards.md
+    run:
+      type: skill
+      isAgent: true
+      target: steering-check
+      calls:
+        - format-conformance
+        - ssot-consistency
+        - traceability
+        - ssot-consistency
+        - steering-conformance
+        - iso25010-coverage
+        - stride-coverage
+        - slo-quantification
+        - evidence-guard
+        - gate-report
+
+- gate:
+    name: feature-check
+    target_action:
+      - { action: feature-decomposition-generate, hookPoint: end, target_review: [".aidd/feature-list.md"] }
+      - { action: feature-decomposition-revise, hookPoint: end, target_review: [".aidd/feature-list.md"] }
+    run:
+      type: skill
+      isAgent: true
+      target: feature-check
+      calls:
+        - format-conformance
+        - traceability
+        - traceability
+        - ssot-consistency
+        - ssot-consistency
+        - classification-validity
+        - platform-foundation-coverage
+        - steering-conformance
+        - evidence-guard
+        - gate-report
+
+- gate:
+    name: requirements-check
+    target_action:
+      - { action: requirements-authoring-generate, hookPoint: end, target_review: ["specs/{item}/requirements.md"] }
+      - { action: requirements-authoring-revise, hookPoint: end, target_review: ["specs/{item}/requirements.md"] }
+    run:
+      type: skill
+      isAgent: true
+      target: requirements-check
+      calls:
+        - format-conformance
+        - traceability
+        - verifiable-criteria-check
+        - ac-coverage-completeness
+        - traceability
+        - evidence-guard
+        - ssot-consistency
+        - steering-conformance
+        - ssot-consistency
+        - gate-report
+
+- gate:
+    name: design-check
+    target_action:
+      - { action: design-authoring-generate, hookPoint: end, target_review: ["specs/{item}/design.md"] }
+      - { action: design-authoring-revise, hookPoint: end, target_review: ["specs/{item}/design.md"] }
+    run:
+      type: skill
+      isAgent: true
+      target: design-check
+      calls:
+        - format-conformance
+        - traceability
+        - traceability
+        - traceability
+        - traceability
+        - steering-conformance
+        - evidence-guard
+        - external-integration-contract-explicitness
+        - dependency-boundary-conformance
+        - gate-report
+
+- gate:
+    name: docs-check
+    target_action:
+      - action: docs-integration-generate
+        hookPoint: end
+        target_review:
+          - docs/code-design.md
+          - docs/architecture/data-model.md
+          - docs/architecture/system-overview.md
+      - action: docs-integration-revise
+        hookPoint: end
+        target_review:
+          - docs/code-design.md
+          - docs/architecture/data-model.md
+          - docs/architecture/system-overview.md
+    run:
+      type: skill
+      isAgent: true
+      target: docs-check
+      calls:
+        - format-conformance
+        - traceability
+        - traceability
+        - internal-contradiction-detection
+        - ssot-consistency
+        - ssot-consistency
+        - traceability
+        - evidence-guard
+        - ssot-consistency
+        - definition-resolution-completeness
+        - design-rule-gap-detection
+        - steering-conformance
+        - gate-report
+
+- gate:
+    name: tasks-check
+    target_action:
+      - { action: tasks-authoring-generate, hookPoint: end, target_review: ["specs/{item}/tasks.md"] }
+      - { action: tasks-authoring-revise, hookPoint: end, target_review: ["specs/{item}/tasks.md"] }
+    run:
+      type: skill
+      isAgent: true
+      target: tasks-check
+      calls:
+        - format-conformance
+        - steering-conformance
+        - traceability
+        - traceability
+        - verifiable-criteria-check
+        - schema-migration-task-coverage
+        - evidence-guard
+        - evidence-guard
+        - gate-report
+
+- gate:
+    name: scope-check
+    target_action:
+      - { action: implement-gate-run, hookPoint: end, target_review: [".aidd/implementation/**"] }
+      - { action: requirement-intake-generate, hookPoint: end, target_review: [".aidd/requirement-list.md"] }
+      - { action: requirement-intake-revise, hookPoint: end, target_review: [".aidd/requirement-list.md"] }
+      - action: steering-authoring-generate
+        hookPoint: end
+        target_review:
+          - steering/product.md
+          - steering/tech.md
+          - steering/architecture.md
+          - steering/security.md
+          - steering/non-functional.md
+          - steering/database.md
+          - steering/api-standards.md
+      - action: steering-authoring-revise
+        hookPoint: end
+        target_review:
+          - steering/product.md
+          - steering/tech.md
+          - steering/architecture.md
+          - steering/security.md
+          - steering/non-functional.md
+          - steering/database.md
+          - steering/api-standards.md
+      - { action: feature-decomposition-generate, hookPoint: end, target_review: [".aidd/feature-list.md"] }
+      - { action: feature-decomposition-revise, hookPoint: end, target_review: [".aidd/feature-list.md"] }
+      - { action: requirements-authoring-generate, hookPoint: end, target_review: ["specs/{item}/requirements.md"] }
+      - { action: requirements-authoring-revise, hookPoint: end, target_review: ["specs/{item}/requirements.md"] }
+      - { action: requirements-cross-gate, hookPoint: end, target_review: ["specs/**"] }
+      - { action: design-authoring-generate, hookPoint: end, target_review: ["specs/{item}/design.md"] }
+      - { action: design-authoring-revise, hookPoint: end, target_review: ["specs/{item}/design.md"] }
+      - { action: design-cross-gate, hookPoint: end, target_review: ["specs/**"] }
+      - action: docs-integration-generate
+        hookPoint: end
+        target_review:
+          - docs/code-design.md
+          - docs/architecture/data-model.md
+          - docs/architecture/system-overview.md
+      - action: docs-integration-revise
+        hookPoint: end
+        target_review:
+          - docs/code-design.md
+          - docs/architecture/data-model.md
+          - docs/architecture/system-overview.md
+      - { action: tasks-authoring-generate, hookPoint: end, target_review: ["specs/{item}/tasks.md"] }
+      - { action: tasks-authoring-revise, hookPoint: end, target_review: ["specs/{item}/tasks.md"] }
+      - { action: tasks-gate-run, hookPoint: end, target_review: ["specs/**"] }
+    run: { type: script, target: scripts/check_gate_write_scope.py }
+
+- gate:
+    name: review
+    target_action:
+      - { action: implement-gate-run, hookPoint: end, target_review: [".aidd/implementation/**"] }
+      - { action: requirement-intake-generate, hookPoint: end, target_review: [".aidd/requirement-list.md"] }
+      - { action: requirement-intake-revise, hookPoint: end, target_review: [".aidd/requirement-list.md"] }
+      - action: steering-authoring-generate
+        hookPoint: end
+        target_review:
+          - steering/product.md
+          - steering/tech.md
+          - steering/architecture.md
+          - steering/security.md
+          - steering/non-functional.md
+          - steering/database.md
+          - steering/api-standards.md
+      - action: steering-authoring-revise
+        hookPoint: end
+        target_review:
+          - steering/product.md
+          - steering/tech.md
+          - steering/architecture.md
+          - steering/security.md
+          - steering/non-functional.md
+          - steering/database.md
+          - steering/api-standards.md
+      - { action: feature-decomposition-generate, hookPoint: end, target_review: [".aidd/feature-list.md"] }
+      - { action: feature-decomposition-revise, hookPoint: end, target_review: [".aidd/feature-list.md"] }
+      - { action: requirements-authoring-generate, hookPoint: end, target_review: ["specs/{item}/requirements.md"] }
+      - { action: requirements-authoring-revise, hookPoint: end, target_review: ["specs/{item}/requirements.md"] }
+      - { action: requirements-cross-gate, hookPoint: end, target_review: ["specs/**"] }
+      - { action: design-authoring-generate, hookPoint: end, target_review: ["specs/{item}/design.md"] }
+      - { action: design-authoring-revise, hookPoint: end, target_review: ["specs/{item}/design.md"] }
+      - { action: design-cross-gate, hookPoint: end, target_review: ["specs/**"] }
+      - action: docs-integration-generate
+        hookPoint: end
+        target_review:
+          - docs/code-design.md
+          - docs/architecture/data-model.md
+          - docs/architecture/system-overview.md
+      - action: docs-integration-revise
+        hookPoint: end
+        target_review:
+          - docs/code-design.md
+          - docs/architecture/data-model.md
+          - docs/architecture/system-overview.md
+      - { action: tasks-gate-run, hookPoint: end, target_review: ["specs/**"] }
+    run: { type: script, target: scripts/approval.py, requiresHuman: true }
+
+- gate:
+    name: decisions-check
+    target_action:
+      - { action: implement-gate-run, hookPoint: end, target_review: [".aidd/implementation/**"] }
+      - { action: requirement-intake-generate, hookPoint: end, target_review: [".aidd/requirement-list.md"] }
+      - { action: requirement-intake-revise, hookPoint: end, target_review: [".aidd/requirement-list.md"] }
+      - action: steering-authoring-generate
+        hookPoint: end
+        target_review:
+          - steering/product.md
+          - steering/tech.md
+          - steering/architecture.md
+          - steering/security.md
+          - steering/non-functional.md
+          - steering/database.md
+          - steering/api-standards.md
+      - action: steering-authoring-revise
+        hookPoint: end
+        target_review:
+          - steering/product.md
+          - steering/tech.md
+          - steering/architecture.md
+          - steering/security.md
+          - steering/non-functional.md
+          - steering/database.md
+          - steering/api-standards.md
+      - { action: feature-decomposition-generate, hookPoint: end, target_review: [".aidd/feature-list.md"] }
+      - { action: feature-decomposition-revise, hookPoint: end, target_review: [".aidd/feature-list.md"] }
+      - { action: requirements-authoring-generate, hookPoint: end, target_review: ["specs/{item}/requirements.md"] }
+      - { action: requirements-authoring-revise, hookPoint: end, target_review: ["specs/{item}/requirements.md"] }
+      - { action: requirements-cross-gate, hookPoint: end, target_review: ["specs/**"] }
+      - { action: design-authoring-generate, hookPoint: end, target_review: ["specs/{item}/design.md"] }
+      - { action: design-authoring-revise, hookPoint: end, target_review: ["specs/{item}/design.md"] }
+      - { action: design-cross-gate, hookPoint: end, target_review: ["specs/**"] }
+      - action: docs-integration-generate
+        hookPoint: end
+        target_review:
+          - docs/code-design.md
+          - docs/architecture/data-model.md
+          - docs/architecture/system-overview.md
+      - action: docs-integration-revise
+        hookPoint: end
+        target_review:
+          - docs/code-design.md
+          - docs/architecture/data-model.md
+          - docs/architecture/system-overview.md
+      - { action: tasks-gate-run, hookPoint: end, target_review: ["specs/**"] }
+    run: { type: script, target: scripts/check_decisions_complete.py }
+
+- gate:
+    name: approval-check
+    target_action:
+      - { action: implement-gate-run, hookPoint: end, target_review: [".aidd/implementation/**"] }
+      - { action: requirement-intake-generate, hookPoint: end, target_review: [".aidd/requirement-list.md"] }
+      - { action: requirement-intake-revise, hookPoint: end, target_review: [".aidd/requirement-list.md"] }
+      - action: steering-authoring-generate
+        hookPoint: end
+        target_review:
+          - steering/product.md
+          - steering/tech.md
+          - steering/architecture.md
+          - steering/security.md
+          - steering/non-functional.md
+          - steering/database.md
+          - steering/api-standards.md
+      - action: steering-authoring-revise
+        hookPoint: end
+        target_review:
+          - steering/product.md
+          - steering/tech.md
+          - steering/architecture.md
+          - steering/security.md
+          - steering/non-functional.md
+          - steering/database.md
+          - steering/api-standards.md
+      - { action: feature-decomposition-generate, hookPoint: end, target_review: [".aidd/feature-list.md"] }
+      - { action: feature-decomposition-revise, hookPoint: end, target_review: [".aidd/feature-list.md"] }
+      - { action: requirements-authoring-generate, hookPoint: end, target_review: ["specs/{item}/requirements.md"] }
+      - { action: requirements-authoring-revise, hookPoint: end, target_review: ["specs/{item}/requirements.md"] }
+      - { action: requirements-cross-gate, hookPoint: end, target_review: ["specs/**"] }
+      - { action: design-authoring-generate, hookPoint: end, target_review: ["specs/{item}/design.md"] }
+      - { action: design-authoring-revise, hookPoint: end, target_review: ["specs/{item}/design.md"] }
+      - { action: design-cross-gate, hookPoint: end, target_review: ["specs/**"] }
+      - action: docs-integration-generate
+        hookPoint: end
+        target_review:
+          - docs/code-design.md
+          - docs/architecture/data-model.md
+          - docs/architecture/system-overview.md
+      - action: docs-integration-revise
+        hookPoint: end
+        target_review:
+          - docs/code-design.md
+          - docs/architecture/data-model.md
+          - docs/architecture/system-overview.md
+      - { action: tasks-gate-run, hookPoint: end, target_review: ["specs/**"] }
+    run: { type: script, target: scripts/check_no_self_approval.py }
+
+- gate:
+    name: completion-check
+    target_action:
+      - { action: implement-gate-run, hookPoint: end, target_review: [".aidd/implementation/**"] }
+      - { action: requirement-intake-generate, hookPoint: end, target_review: [".aidd/requirement-list.md"] }
+      - action: steering-authoring-generate
+        hookPoint: end
+        target_review:
+          - steering/product.md
+          - steering/tech.md
+          - steering/architecture.md
+          - steering/security.md
+          - steering/non-functional.md
+          - steering/database.md
+          - steering/api-standards.md
+      - { action: feature-decomposition-generate, hookPoint: end, target_review: [".aidd/feature-list.md"] }
+      - { action: requirements-authoring-generate, hookPoint: end, target_review: ["specs/{item}/requirements.md"] }
+      - { action: design-authoring-generate, hookPoint: end, target_review: ["specs/{item}/design.md"] }
+      - action: docs-integration-generate
+        hookPoint: end
+        target_review:
+          - docs/code-design.md
+          - docs/architecture/data-model.md
+          - docs/architecture/system-overview.md
+      - { action: requirement-intake-revise, hookPoint: end, target_review: [".aidd/requirement-list.md"] }
+      - action: steering-authoring-revise
+        hookPoint: end
+        target_review:
+          - steering/product.md
+          - steering/tech.md
+          - steering/architecture.md
+          - steering/security.md
+          - steering/non-functional.md
+          - steering/database.md
+          - steering/api-standards.md
+      - { action: feature-decomposition-revise, hookPoint: end, target_review: [".aidd/feature-list.md"] }
+      - { action: requirements-authoring-revise, hookPoint: end, target_review: ["specs/{item}/requirements.md"] }
+      - { action: design-authoring-revise, hookPoint: end, target_review: ["specs/{item}/design.md"] }
+      - action: docs-integration-revise
+        hookPoint: end
+        target_review:
+          - docs/code-design.md
+          - docs/architecture/data-model.md
+          - docs/architecture/system-overview.md
+      - { action: requirements-cross-gate, hookPoint: end, target_review: ["specs/**"] }
+      - { action: design-cross-gate, hookPoint: end, target_review: ["specs/**"] }
+      - { action: tasks-gate-run, hookPoint: end, target_review: ["specs/**"] }
+    run: { type: script, target: scripts/check_artifacts_approved.py }
+
+- gate:
+    name: implementation-tools
+    target_action:
+      - { action: implement-gate-run, hookPoint: start, target_review: [".aidd/implementation/**"] }
+    run: { type: script, target: scripts/gate_implementation_tools.py }
+
+- gate:
+    name: task-specification-prepare
+    target_action:
+      - { action: implement-authoring-generate, hookPoint: end, target_review: ["**"] }
+      - { action: implement-authoring-revise, hookPoint: end, target_review: ["**"] }
+    run: { type: script, target: scripts/gate_task_specification.py }
+
+- gate:
+    name: task-specification-generate
+    target_action:
+      - { action: implement-authoring-generate, hookPoint: end, target_review: ["**"] }
+      - { action: implement-authoring-revise, hookPoint: end, target_review: ["**"] }
+    run: { type: skill, target: task-specification, isAgent: true }
+
+- gate:
+    name: task-code-review-prepare
+    target_action:
+      - { action: implement-authoring-generate, hookPoint: end, target_review: ["**"] }
+      - { action: implement-authoring-revise, hookPoint: end, target_review: ["**"] }
+    run: { type: script, target: scripts/gate_task_code_review.py }
+
+- gate:
+    name: task-code-review
+    target_action:
+      - { action: implement-authoring-generate, hookPoint: end, target_review: ["**"] }
+      - { action: implement-authoring-revise, hookPoint: end, target_review: ["**"] }
+    run:
+      type: skill
+      target: task-implement-check
+      isAgent: true
+      calls:
+        - implementation-traceability
+        - implementation-boundary
+        - implementation-tests
+
+- gate:
+    name: task-specification-review
+    target_action:
+      - { action: implement-authoring-generate, hookPoint: end, target_review: ["**"] }
+      - { action: implement-authoring-revise, hookPoint: end, target_review: ["**"] }
+    run: { type: script, target: scripts/gate_task_specification.py, requiresHuman: true }
+
+- gate:
+    name: task-specification-accept
+    target_action:
+      - { action: implement-authoring-generate, hookPoint: end, target_review: ["**"] }
+      - { action: implement-authoring-revise, hookPoint: end, target_review: ["**"] }
+    run: { type: script, target: scripts/gate_task_specification.py }
+
+- gate:
+    name: implementation-task-complete
+    target_action:
+      - { action: implement-authoring-generate, hookPoint: end, target_review: ["**"] }
+      - { action: implement-authoring-revise, hookPoint: end, target_review: ["**"] }
+    run: { type: script, target: scripts/implementation_gate.py }

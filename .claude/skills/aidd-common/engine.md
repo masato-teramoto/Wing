@@ -1,10 +1,59 @@
 # engine — L0 の実行プロトコル
 
-L0 は設定されたイベントを実行し、実行履歴から再開点を選ぶ。main_flow 固有の進捗・差戻し・承認規則の管理原本は L3 に置く。配布では両者を同じ aidd-common に合成する。
+L0 は L3・L4 の枠組みである。L3・L4 が L0 の設計に従って書いた定義ファイル（L3 の `command.yaml` / `flow.yaml` /
+`action.yaml`、L4 の `gate.yaml`）を読み、定義に書かれた script をコマンドラインで、Skill を host agent への emit で実行し、
+実行履歴から再開点を選ぶ。**L0 は L3・L4 を import せず、定義ファイル 4 つ以外の L3・L4 のファイルを読まない。**
+L3・L4 は L0 を import してよい（`execution_context` / `project_state` / `engine_cli` / `host`）。
+main_flow 固有の進捗・差戻し・承認規則の管理原本は L3・L4 に置く。配布では同じ aidd-common に合成する。
 
 ## 1. 実行構造
 
-Orchestrator が call と状態を管理し、Flow Executor がイベント順序を展開し、Event Executor が start ゲート → event → end ゲートを直列に処理する。ゲートも event と同じ Run を持つ。
+```text
+Command → CommandResolver → Workflow Engine → FlowExecutor → ActionExecutor → Skill / script
+                                                               └ HookPoint → GateResolver → GateExecutor → GateResult
+```
+
+| 部品（`bin/`） | 責務 |
+|---|---|
+| `definitions.py` | 定義ファイルを読み込んだ後のモデル（`CommandDefinition` / `FlowDefinition` / `StepDefinition` / `ActionDefinition` / `GateDefinition` / `HookDefinition` / `RunDefinition`） |
+| `repositories.py` | 定義ファイル `command.yaml` / `flow.yaml` / `action.yaml` / `gate.yaml` の読込み・スキーマ検査・名前による検索（Command / Flow / Action / Gate の Repository） |
+| `command_resolver.py` | CommandResolver。コマンドから呼出し先を解決する |
+| `workflow_engine.py` | Workflow Engine。呼出しの開始・状態の保存・emit / wait / fail の解釈、report・redo・migrate-flow |
+| `flow_executor.py` | FlowExecutor。flow の手順（アクション・入れ子の flow）を 1 周たどり、1 件ずつの境界を記録する |
+| `action_executor.py` | ActionExecutor。1 アクションを HookPoint start → 本体 → HookPoint end でたどる。HookPoint ごとにゲートを解決して GateExecutor に渡し、本体の Run を実行する |
+| `gate_executor.py` | GateResolver（適用するゲートを記述順に解決）・GateExecutor（1 ゲートを実行）・GateResult |
+| `run_dispatcher.py` | Run（script / skill / command）の実行、状態への記録とログ。アクション本体とゲートが共用する |
+| `aidd.py` | CLI 入口（validate / status / call / report / redo / migrate-flow）。`describe()` は `validate --json` の中身 |
+| `host.py` | host の入口 advance / submit / respond。状態ストアの排他、操作の記録（`host_operations`）、dispatch の照合、報告。規則の段は、規則の層（L3）が渡す `stage_runner` で実行する（CLI は無い） |
+| `execution_context.py` | 実行器の間で引き継ぐ文脈（今の Flow / Action / item / ゲート / 検査対象）、`target_review` による出力の選択、script の約束（終了コード・`AIDD-LOG:`）、定義の読込み `definitions()`。L3・L4 が import する |
+| `project_state.py` | 状態ストアの案件欄の読み書き（ランナー欄は書かせない）。L3・L4 が import する |
+| `engine_cli.py` | `aidd.py` を子プロセスで呼ぶ。host と L3・L4 の規則 script が使う |
+
+ゲートも action と同じ Run を持つ。action は Flow 配下の実行単位であり、計画・横断検査のように 1 アクションだけを呼ぶ場合は、その場でアクション 1 本の flow として扱う。
+
+action は任意で `inputs` / `outputs`（読む入力・書く出力のパスの配列）を持てる。L0 は形（空でない文字列の配列・重複なし）だけを検査し、`validate --json` の各アクション（受渡しの形式のためキーは `events`）に載せて返す。展開・存在・承認の確認は呼出し側の規則が行う。
+
+`command.yaml` のコマンドは、順に呼ぶ呼出し先（`steps[].flow`。flow・action の名前）を持つ。コマンドの step に無い呼出し先も今までどおり呼べる。
+
+`flow.yaml` の flow は手順 `steps` を持つ。各手順は `- action: <名前>`（ActionStep）か `- flow: <名前>`（FlowStep。入れ子の flow）。入れ子の深さは制限しない。循環は読込み時にエラー。実行記録のキーはアクションを直接持つ flow の名前（`<flow>/<action>[<item>]`）。
+
+**繰り返しは L0 に無い。** 呼ばれた呼出し先（flow・action）を、呼出しの `--item` の item で 1 周だけたどる。
+入れ子の flow は呼び出し元の item を引き継ぐ。feature ごと・修正の回の繰り返しは L3 の入口 Skill の手順が持ち、
+繰り返しの 1 回ごとに `--item` を付けて呼ぶ。修正の次の回は、`redo` で修正アクションの印を無効にしてから呼ぶ。
+L0 は 1 回ぶんの前後のゲートを実行するため、検査・人間レビューは繰り返しの 1 回ごとに行われる。
+
+**host の段。** 定義ファイルに hook は無い。`host.Host` は、規則の層（L3）の入口が段を実行する関数（`stage_runner`）を渡して使う。
+advance / submit / respond の各段（`resolve` / `guard` / `advance-before` / `advance-after` / `submit-prepare` /
+`submit-apply` / `respond-prepare` / `respond-apply` / `respond-output` / `respond-reported`）で、段の名前と材料（案件ルート・状態ストアを含む）を渡し、
+JSON object を受け取る。`stage_runner` の無い host は動かない（規則の無い実行をさせない）。
+
+**L4 の規則はゲートの中だけで動く。** L4 は hook を持たず、L0 の GateExecutor が gate.yaml から実行するゲート
+（script・Skill・人間待ち）だけが L4 を実行する。L0 も L3 も L4 の script・Skill を import しない。
+`advance-after` の段が `{complete: "ok", note}` を返せるのは、今の emit / wait がゲートの unit で、理由の `note` があるときだけである
+（ゲート自身が「該当なし」と決めたものを記録する。段が勝手に完了させる入口にはしない）。
+
+
+状態ストア・ログ・JSON 出力の項目名（`event` / `::event` / `events` / `target_event` / `event_id` など）は保存・受渡しの形式であり、アクションへの改名後も変えない。
 
 L0 は設定で渡された名前の業務上の意味を解釈しない。Spec の status、feature の順序、承認条件、差戻しの影響範囲は L3 の規則確認 script が扱う。L4 の指摘を解釈して自動修正・承認する機能を L0 に加えない。
 
@@ -12,15 +61,28 @@ L0 は設定で渡された名前の業務上の意味を解釈しない。Spec 
 
 Python 3 を使用する。子 Python は親の sys.executable で起動する。PyYAML は任意で、無ければ同梱の YAML サブセットパーサを使う。原本に正式な対応 OS / 最低 Python 版の定義はなく、今回の開発環境から正式サポート範囲を追加しない。
 
-設定は --config、案件ルートは --root、状態は --state で指定できる。同一案件を操作するランナーとホストは直列に実行する。設定に参照された script / Skill / agent が無い場合は停止する。
+設定は --config、案件ルートは --root、状態は --state で指定できる。同一案件を操作するランナーとホストは直列に実行する。設定に参照された script / Skill / agent が無い場合は停止する（ファイルがあることだけを確かめ、中身は読まない）。
 
 ## 3. 呼出しと外部実行
+
+**host agent の入口は規則の層（L3）の `scripts/aidd_entry.py` だけである。** 入口は L0 の CommandResolver（`bin/command_resolver.py`）で
+コマンドと呼出し先を解決し、advance / submit / respond を L0 の host に L3 の規則を渡して実行する。status / report / redo / migrate-flow は
+`aidd.py`、それ以外は L3 の操作へ渡す。`bin/command_resolver.py` の CLI は規則の要らない操作（validate / doctor / status / report / redo /
+migrate-flow）だけを受ける。`--call` / `--action` はそのコマンドの呼出し先に限る。案件ルート・状態・定義の置き場はファイルの場所に固定される。以下の `aidd.py` は内部の CLI である（試験と、定義・状態の直接の確認に使う）。
+
+```text
+python .claude/skills/aidd-common/bin/command_resolver.py /aidd-requirements advance --call requirements-plan
+python .claude/skills/aidd-common/bin/command_resolver.py /aidd-requirements status --call requirements-plan --json
+python .claude/skills/aidd-common/bin/command_resolver.py validate --json
+python .claude/skills/aidd-common/bin/command_resolver.py doctor [--runtime-only]
+```
 
 ```text
 python .claude/skills/aidd-common/bin/aidd.py --root <案件> validate --json
 python .claude/skills/aidd-common/bin/aidd.py --root <案件> call <設定中の名前> --json
 python .claude/skills/aidd-common/bin/aidd.py --root <案件> report --call <同じ名前> --dispatch-id <返されたdispatch.id> --result ok --json
-python .claude/skills/aidd-common/bin/aidd.py --root <案件> redo --call <名前> --event <イベント> --item <対象> --json
+python .claude/skills/aidd-common/bin/aidd.py --root <案件> redo --call <名前> --action <アクション> --item <対象> --json
+python .claude/skills/aidd-common/bin/aidd.py --root <案件> migrate-flow --from <旧 flow> --to <新 flow> --json
 ```
 
 | 戻り値 | ホストの処理 |
@@ -55,29 +117,32 @@ main_flow の通常ホストは references/host-protocol.md の L3 入口を使�
 
 検査 agent の実行仲介はこの L0 プロトコルに集約する。L3 の規則 script や生成 Skill は検査 agent を直接起動しない。現行の check-runner という名前は実行仲介の接続点であり、L0 に検査観点を持たせるものではない。
 
-gates.yaml の `target_event` の各要素は任意で `when: <script>` を持てる。その差し口では gate の実行前に
-条件 script を実行し、終了コード 0 なら gate を実行、11 なら省略して成功として記録する（detail とログに
-「条件により省略」を残す）。それ以外・起動失敗・既定600秒のタイムアウトは失敗。
-条件の実行は人間回答待ちではなく、requiresHuman のゲートでも時間制限を適用する。
-省略の判断は呼出し側の規則 script が持ち、L0 は意味を解釈しない。
-main_flow では `-revise` イベントの検査・人間レビュー等の gate に「人が修正を選んでいるときだけ適用」の条件を付ける。
-イベント単位の SKIP は持たない（イベント本体は常に実行する）。
+アクション・ゲートの定義は適用の条件（`when`）を持たない（書けば読込み時にエラー）。修正が無いときは、入口 Skill の手順が
+修正アクションを呼ばない。ゲートの中で判断が要るものはゲート script 自身が行う。
 
-`calls` は合成 Skill が順に読む Skill 名。L0 は参照実体と `## 手順` 内の参照順序との一致を確認する。品質上その観点が適切かは判断しない。ホストは実際に実行できた結果を report する。通常 script / command の成功をホストが report で代筆することはできない。
+`target_action` の各要素は任意で `target_review: [<パス>, ...]` を持てる。案件ルートからの相対パスで、ファイル・
+`<dir>/`・`<dir>/**`、単独の `**` を書ける。空の配列・絶対パス・`..`・末尾以外のワイルドカード・重複は読込み時にエラー。
+L0 は `{item}` などを展開した値を dispatch の `targetReview` と環境変数 `AIDD_TARGET_REVIEW`（JSON、省略時は空）に載せ、
+全ゲートの宣言を `AIDD_GATE_TARGETS` と `validate` の `target_review` に出す。どのファイルが出力か・省略時に何を対象にするかは
+呼出し側の規則が決め、L0 は解釈しない。
 
-検査 Skill の report ok は検査の実行完了だけを示す。指摘判断・人間承認が揃ったかは、その後の規則確認イベントの結果で制御する。ホストは工程ごとの別ループを追加せず、emit/wait/report の同じ手順に戻る。
+`calls` は合成 Skill が順に読む Skill 名。L0 は参照実体があることだけを確認する（`## 手順` 内の参照順序との一致は L4 の `scripts/check_calls.py` が確認する）。品質上その観点が適切かは判断しない。ホストは実際に実行できた結果を report する。通常 script / command の成功をホストが report で代筆することはできない。
+
+検査 Skill の report ok は検査の実行完了だけを示す。指摘判断・人間承認が揃ったかは、その後の規則確認アクションの結果で制御する。ホストは工程ごとの別ループを追加せず、emit/wait/report の同じ手順に戻る。
 
 ## 4. 状態と再実行
 
-L0 の書込み所有欄は events / trace / engine_schema / current.call / current.return_to_call / current.pending。その他の案件欄は保存直前に再読込して保持する。ランナー所有欄が外部で変わった場合は停止する。未知の案件欄を削除しない。
+L0 の書込み所有欄は events / trace / engine_schema / engine_reports / host_operations / current.call / current.return_to_call / current.pending。その他の案件欄は保存直前に再読込して保持する。ランナー所有欄が外部で変わった場合は停止する。未知の案件欄を削除しない。
 
 redo は対象 unit の無効化を履歴末尾へ追記する。過去の実行記録を削除しない。どこまで無効化するかは呼出し側の規則が指定し、L0 は対象を実行履歴へ反映する。実行中の script が別のランナーを再帰起動して同じ状態を書き換えない。
+
+migrate-flow は flow を分けた・改名したときに、旧 flow 名の実行記録を新 flow 名へ写す。`--to` の flow が直接持つアクションについて、キーが `<旧>/<アクション>[` で始まる各 unit の最後の記録を、新しいキーで履歴末尾へ追記する。旧記録は残す。最後の記録が無効化済みの unit は写さない。移行先に同じ結果があれば何もせず、別の結果があれば停止する。発行済みの emit/wait がある間は停止する。current.call / current.return_to_call が旧 flow 名を指し、旧 flow 名が設定に無ければ新 flow 名へ置き換える。どの flow をどこへ写すかは呼出し側の移行手順が決める。
 
 旧 agent / approval 設定は新方式へ明示的に移行する。旧状態の成功印を新構成に自動流用しない。main_flow の移行手順は配布の references/migration.md を参照する。
 
 ## 5. main_flow での利用
 
-フロー固有の入力・記録・人間判断・承認・差戻しは配布の references/runtime-boundary.md と L3 のホスト手順に従う。これらは L0 の内部実装から import しない。設定された script をプロセスとして呼び、終了コードと結果を受け取る。
+フロー固有の入力・記録・人間判断・承認・差戻しは配布の references/runtime-boundary.md と L3 のホスト手順に従う。L0 はこれらを import しない。設定された script をプロセスとして呼び、終了コードと結果を受け取る。
 
 ## 6. 保存とログの範囲
 
@@ -97,8 +162,8 @@ redo は対象 unit の無効化を履歴末尾へ追記する。過去の実行
 | `level` | `info` / `warn` / `error` / `debug`。**重大度であり階層ではない** |
 | `orchestrator_id` | トレース ID。`call` 1 回につき 1 つ発行し、**全ログが必ず持つ** |
 | `phase_id` | flow 単位（`call` が束ねた flow ごと） |
-| `sub_phase_id` | event 1 件（その event 本体と、そこに差さったゲート）。**`--item` を伴えば feature 1 件と同じ意味になる** |
-| `event_id` | 単発の実行単位（event 本体 1 回、またはゲート 1 本） |
+| `sub_phase_id` | アクション 1 件（その アクション本体と、そこに差さったゲート）。**`--item` を伴えば feature 1 件と同じ意味になる** |
+| `event_id` | 単発の実行単位（アクション本体 1 回、またはゲート 1 本） |
 | `detail` | 実行内容。先頭語は **開始 / 終了 / 失敗** の 3 語に固定 |
 
 4 つの ID はすべて ULID（26 桁・時刻順にソートできる）。**発行するのはその ID を書く層**であり、
@@ -116,18 +181,18 @@ redo は対象 unit の無効化を履歴末尾へ追記する。過去の実行
 
 | 書く層 | タイミング | テンプレート |
 |---|---|---|
-| Orchestrator | `call` 受理の直後 | `開始 call(<名前>) model=<model> version=<version>` |
-| Orchestrator | 呼び出しの終了 | `終了 call(<名前>) 結果=<完了\|人間待ち\|中断> 所要=<m:s>` |
-| Orchestrator | 呼び出しの失敗 | `失敗 call(<名前>) 理由=<短文>` |
-| Orchestrator | flow を渡す直前 | `開始 <flow> イベント=<n>` |
-| Orchestrator | 結果を受け取った時点 | `終了 <flow> 結果=<成功\|失敗\|人間待ち> 残り=<n>` |
-| Flow Executor | イベントに入る時 | `開始 <event> type=<type> item=<feature 名\|空> ゲート=<start 本数>+<end 本数>` |
-| Flow Executor | そのイベントが確定した時点 | `終了 <event> 結果=<…> status=<…> 指摘=<n> 回数=<n>` |
-| Event Executor | 実行の直前 | `開始 <target> type=<type> 契機=<event\|start\|end>` |
-| Event Executor | 呼び出しが返った時点 | `終了 <target> 結果=<成功\|失敗\|人間待ち> <type 固有キー>` |
-| Event Executor | 例外で落ちた時点 | `失敗 <target> 理由=<短文>` |
+| Workflow Engine | `call` 受理の直後 | `開始 call(<名前>) model=<model> version=<version>` |
+| Workflow Engine | 呼び出しの終了 | `終了 call(<名前>) 結果=<完了\|人間待ち\|中断> 所要=<m:s>` |
+| Workflow Engine | 呼び出しの失敗 | `失敗 call(<名前>) 理由=<短文>` |
+| Workflow Engine | flow を渡す直前 | `開始 <flow> アクション=<n>` |
+| Workflow Engine | 結果を受け取った時点 | `終了 <flow> 結果=<成功\|失敗\|人間待ち> 残り=<n>` |
+| FlowExecutor | アクションに入る時 | `開始 <action> type=<type> item=<feature 名\|空> ゲート=<start 本数>+<end 本数>` |
+| FlowExecutor | そのアクションが確定した時点 | `終了 <action> 結果=<…> status=<…> 指摘=<n> 回数=<n>` |
+| ActionExecutor | 実行の直前 | `開始 <target> type=<type> 契機=<event\|start\|end>` |
+| ActionExecutor | 呼び出しが返った時点 | `終了 <target> 結果=<成功\|失敗\|人間待ち> <type 固有キー>` |
+| ActionExecutor | 例外で落ちた時点 | `失敗 <target> 理由=<短文>` |
 
-`契機` は必ず書く。無いとイベント本体の実行とゲートが同じ形で並び、後から区別できない。
+`契機` は必ず書く。無いとアクション本体の実行とゲートが同じ形で並び、後から区別できない。
 
 | `type` / フラグ | `終了` に付けるキー |
 |---|---|
@@ -144,7 +209,7 @@ redo は対象 unit の無効化を履歴末尾へ追記する。過去の実行
   所要時間の算出が壊れる）。
 - **リトライは 1 回ごとに `開始` と `終了` を出す。`event_id` も毎回別。** まとめると回数が消え、
   「リトライして成功した」を warn で拾えなくなる。
-- **途中で失敗しても、そのイベントの `終了` 行は必ず出す**（終了の無い開始＝中断 の判定を保つため）。
+- **途中で失敗しても、そのアクションの `終了` 行は必ず出す**（終了の無い開始＝中断 の判定を保つため）。
 
 ### 7.2 level の使い分け
 
@@ -167,7 +232,7 @@ redo は対象 unit の無効化を履歴末尾へ追記する。過去の実行
 
 | 経路 | 使うもの |
 |---|---|
-| `scripts/*.py` | 標準出力に `AIDD-LOG: キー=値 …` を 1 行出す（`aidd_paths.log_keys()`）。ランナーは中身を解釈しない |
+| `scripts/*.py` | 標準出力に `AIDD-LOG: キー=値 …` を 1 行出す（`execution_context.log_keys()`）。ランナーは中身を解釈しない |
 | `type: skill`（`isAgent` の値に関わらず）／ `requiresHuman: true` の `script` | `report --detail "キー=値 …"`（§3） |
 
 ### 7.4 設定ファイル `.aidd/logging.yaml`

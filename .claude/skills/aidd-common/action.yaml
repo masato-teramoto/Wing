@@ -1,0 +1,406 @@
+# inputs / outputs はアクションが読む入力・書く出力（案件ルート相対）。L3 が展開する。
+#   {feature}    アクションの item（feature 名）
+#   {features}   承認済み feature ごとに 1 本
+#   {depends_on} item の依存先 feature（推移的）ごとに 1 本
+#   末尾 /       ディレクトリ配下のファイル。approved を求めない（RFP）
+# { を含むパスはフロー形式 [...] に書けない（YAML がマッピングと読む）。ブロック形式 - で書く。
+# inputs は approved を前提とする。生成か修正かは run.target の Skill の metadata.aidd-role。
+
+
+- action:
+    name: requirement-intake-generate
+    inputs: [.aidd/rfp/]
+    outputs: [.aidd/requirement-list.md]
+    run: { type: skill, target: requirement-intake }
+
+
+- action:
+    name: steering-authoring-generate
+    inputs: [.aidd/requirement-list.md]
+    outputs:
+      - steering/product.md
+      - steering/tech.md
+      - steering/architecture.md
+      - steering/security.md
+      - steering/non-functional.md
+      - steering/database.md
+      - steering/api-standards.md
+    run: { type: skill, target: steering-authoring }
+
+
+- action:
+    name: feature-decomposition-generate
+    inputs:
+      - .aidd/requirement-list.md
+      - steering/product.md
+      - steering/tech.md
+      - steering/architecture.md
+      - steering/security.md
+      - steering/non-functional.md
+      - steering/database.md
+      - steering/api-standards.md
+    outputs: [.aidd/feature-list.md]
+    run: { type: skill, target: feature-decomposition }
+
+
+- action:
+    name: requirements-plan
+    inputs:
+      - .aidd/requirement-list.md
+      - .aidd/feature-list.md
+      - steering/product.md
+      - steering/tech.md
+      - steering/architecture.md
+      - steering/security.md
+      - steering/non-functional.md
+      - steering/database.md
+      - steering/api-standards.md
+    outputs:
+      - specs/{features}/requirements.md
+    run: { type: script, target: scripts/plan.py, requiresHuman: true }
+
+- action:
+    name: requirements-authoring-generate      # feature ごとに `call`
+    inputs:
+      - .aidd/requirement-list.md
+      - .aidd/feature-list.md
+      - steering/product.md
+      - steering/tech.md
+      - steering/architecture.md
+      - steering/security.md
+      - steering/non-functional.md
+      - steering/database.md
+      - steering/api-standards.md
+    outputs:
+      - specs/{feature}/requirements.md
+    run: { type: skill, target: requirements-authoring }
+
+- action:
+    name: requirements-cross-gate     # 全 feature が揃ってからの横断検査（契約整合）。1 回だけ `call`
+    inputs:
+      - .aidd/requirement-list.md
+      - .aidd/feature-list.md
+      - steering/product.md
+      - steering/tech.md
+      - steering/architecture.md
+      - steering/security.md
+      - steering/non-functional.md
+      - steering/database.md
+      - steering/api-standards.md
+      - specs/{features}/requirements.md
+    outputs:
+      - specs/{features}/requirements.md
+    run:
+      type: skill
+      isAgent: true
+      target: requirements-cross-check
+      calls: [traceability, ssot-consistency, gate-report]
+
+
+- action:
+    name: design-plan
+    inputs:
+      - .aidd/feature-list.md
+      - steering/product.md
+      - steering/tech.md
+      - steering/architecture.md
+      - steering/security.md
+      - steering/non-functional.md
+      - steering/database.md
+      - steering/api-standards.md
+      - specs/{features}/requirements.md
+    outputs:
+      - specs/{features}/design.md
+    run: { type: script, target: scripts/plan.py, requiresHuman: true }
+
+- action:
+    name: design-authoring-generate            # feature ごとに `call`
+    inputs:
+      - .aidd/feature-list.md
+      - steering/product.md
+      - steering/tech.md
+      - steering/architecture.md
+      - steering/security.md
+      - steering/non-functional.md
+      - steering/database.md
+      - steering/api-standards.md
+      - specs/{feature}/requirements.md
+      - specs/{depends_on}/design.md
+    outputs:
+      - specs/{feature}/design.md
+    run: { type: skill, target: design-authoring }
+
+- action:
+    name: design-cross-gate           # 全 feature が揃ってからの横断検査（契約整合）。1 回だけ `call`
+    inputs:
+      - .aidd/feature-list.md
+      - steering/product.md
+      - steering/tech.md
+      - steering/architecture.md
+      - steering/security.md
+      - steering/non-functional.md
+      - steering/database.md
+      - steering/api-standards.md
+      - specs/{features}/requirements.md
+      - specs/{features}/design.md
+    outputs:
+      - specs/{features}/design.md
+    run:
+      type: skill
+      isAgent: true
+      target: design-cross-check
+      # 同名の3回は契約衝突／エラー形状／業務コード重複。引数は合成 Skill の各手順で指定する。
+      calls: [ssot-consistency, dependency-cycle-detection, ssot-consistency, ssot-consistency, steering-conformance, gate-report]
+
+
+- action:
+    name: docs-integration-generate
+    inputs:
+      - .aidd/feature-list.md
+      - steering/product.md
+      - steering/tech.md
+      - steering/architecture.md
+      - steering/security.md
+      - steering/non-functional.md
+      - steering/database.md
+      - steering/api-standards.md
+      - specs/{features}/requirements.md
+      - specs/{features}/design.md
+    outputs:
+      - docs/code-design.md
+      - docs/architecture/data-model.md
+      - docs/architecture/system-overview.md
+    run: { type: skill, target: docs-integration }
+
+
+- action:
+    name: tasks-plan
+    inputs:
+      - .aidd/feature-list.md
+      - steering/product.md
+      - steering/tech.md
+      - steering/architecture.md
+      - steering/security.md
+      - steering/non-functional.md
+      - steering/database.md
+      - steering/api-standards.md
+      - docs/code-design.md
+      - docs/architecture/data-model.md
+      - docs/architecture/system-overview.md
+      - specs/{features}/requirements.md
+      - specs/{features}/design.md
+    outputs:
+      - specs/{features}/tasks.md
+    run: { type: script, target: scripts/plan.py, requiresHuman: true }
+
+- action:
+    name: tasks-authoring-generate             # feature ごとに `call`
+    inputs:
+      - .aidd/feature-list.md
+      - steering/product.md
+      - steering/tech.md
+      - steering/architecture.md
+      - steering/security.md
+      - steering/non-functional.md
+      - steering/database.md
+      - steering/api-standards.md
+      - docs/code-design.md
+      - docs/architecture/data-model.md
+      - docs/architecture/system-overview.md
+      - specs/{feature}/requirements.md
+      - specs/{feature}/design.md
+    outputs:
+      - specs/{feature}/tasks.md
+    run: { type: skill, target: tasks-authoring }
+
+- action:
+    name: tasks-gate-run              # 全 feature ぶんの指摘を一括で人間に提示する。1 回だけ `call`
+    inputs:
+      - .aidd/feature-list.md
+      - steering/product.md
+      - steering/tech.md
+      - steering/architecture.md
+      - steering/security.md
+      - steering/non-functional.md
+      - steering/database.md
+      - steering/api-standards.md
+      - docs/code-design.md
+      - docs/architecture/data-model.md
+      - docs/architecture/system-overview.md
+      - specs/{features}/requirements.md
+      - specs/{features}/design.md
+    outputs:
+      - specs/{features}/tasks.md
+    run: { type: skill, isAgent: true, target: tasks-cross-check, calls: [dependency-cycle-detection, traceability, gate-report] }
+
+- action:
+    name: requirement-intake-revise
+    inputs: [.aidd/rfp/]
+    outputs: [.aidd/requirement-list.md]
+    run: { type: skill, target: intake-revision }
+
+- action:
+    name: steering-authoring-revise
+    inputs: [.aidd/requirement-list.md]
+    outputs:
+      - steering/product.md
+      - steering/tech.md
+      - steering/architecture.md
+      - steering/security.md
+      - steering/non-functional.md
+      - steering/database.md
+      - steering/api-standards.md
+    run: { type: skill, target: steering-revision }
+
+- action:
+    name: feature-decomposition-revise
+    inputs:
+      - .aidd/requirement-list.md
+      - steering/product.md
+      - steering/tech.md
+      - steering/architecture.md
+      - steering/security.md
+      - steering/non-functional.md
+      - steering/database.md
+      - steering/api-standards.md
+    outputs: [.aidd/feature-list.md]
+    run: { type: skill, target: feature-revision }
+
+- action:
+    name: requirements-authoring-revise
+    inputs:
+      - .aidd/requirement-list.md
+      - .aidd/feature-list.md
+      - steering/product.md
+      - steering/tech.md
+      - steering/architecture.md
+      - steering/security.md
+      - steering/non-functional.md
+      - steering/database.md
+      - steering/api-standards.md
+    outputs:
+      - specs/{feature}/requirements.md
+    run: { type: skill, target: requirements-revision }
+
+- action:
+    name: design-authoring-revise
+    inputs:
+      - .aidd/feature-list.md
+      - steering/product.md
+      - steering/tech.md
+      - steering/architecture.md
+      - steering/security.md
+      - steering/non-functional.md
+      - steering/database.md
+      - steering/api-standards.md
+      - specs/{feature}/requirements.md
+      - specs/{depends_on}/design.md
+    outputs:
+      - specs/{feature}/design.md
+    run: { type: skill, target: design-revision }
+
+- action:
+    name: docs-integration-revise
+    inputs:
+      - .aidd/feature-list.md
+      - steering/product.md
+      - steering/tech.md
+      - steering/architecture.md
+      - steering/security.md
+      - steering/non-functional.md
+      - steering/database.md
+      - steering/api-standards.md
+      - specs/{features}/requirements.md
+      - specs/{features}/design.md
+    outputs:
+      - docs/code-design.md
+      - docs/architecture/data-model.md
+      - docs/architecture/system-overview.md
+    run: { type: skill, target: docs-revision }
+
+- action:
+    name: tasks-authoring-revise
+    inputs:
+      - .aidd/feature-list.md
+      - steering/product.md
+      - steering/tech.md
+      - steering/architecture.md
+      - steering/security.md
+      - steering/non-functional.md
+      - steering/database.md
+      - steering/api-standards.md
+      - docs/code-design.md
+      - docs/architecture/data-model.md
+      - docs/architecture/system-overview.md
+      - specs/{feature}/requirements.md
+      - specs/{feature}/design.md
+    outputs:
+      - specs/{feature}/tasks.md
+    run: { type: skill, target: tasks-revision }
+
+# Phase 8 uses declared flows. item is a stable task item for task work,
+# and a feature name only for its final independent inspection/review.
+# The task events have no fixed outputs: each task's allowed paths come from tasks.md at run time.
+# {feature} of a task action is the feature of the running task, not the task item.
+- action:
+    name: implement-authoring-generate
+    inputs:
+      - .aidd/feature-list.md
+      - steering/product.md
+      - steering/tech.md
+      - steering/architecture.md
+      - steering/security.md
+      - steering/non-functional.md
+      - steering/database.md
+      - steering/api-standards.md
+      - docs/code-design.md
+      - docs/architecture/data-model.md
+      - docs/architecture/system-overview.md
+      - specs/{feature}/requirements.md
+      - specs/{feature}/design.md
+      - specs/{feature}/tasks.md
+    run: { type: skill, target: implement-authoring }
+
+- action:
+    name: implement-authoring-revise
+    inputs:
+      - .aidd/feature-list.md
+      - steering/product.md
+      - steering/tech.md
+      - steering/architecture.md
+      - steering/security.md
+      - steering/non-functional.md
+      - steering/database.md
+      - steering/api-standards.md
+      - docs/code-design.md
+      - docs/architecture/data-model.md
+      - docs/architecture/system-overview.md
+      - specs/{feature}/requirements.md
+      - specs/{feature}/design.md
+      - specs/{feature}/tasks.md
+    run: { type: skill, target: implement-revision }
+
+- action:
+    name: implement-gate-run
+    inputs:
+      - .aidd/feature-list.md
+      - steering/product.md
+      - steering/tech.md
+      - steering/architecture.md
+      - steering/security.md
+      - steering/non-functional.md
+      - steering/database.md
+      - steering/api-standards.md
+      - docs/code-design.md
+      - docs/architecture/data-model.md
+      - docs/architecture/system-overview.md
+      - specs/{feature}/requirements.md
+      - specs/{feature}/design.md
+      - specs/{feature}/tasks.md
+    outputs:
+      - .aidd/implementation/features/{feature}/review.json
+    run:
+      type: skill
+      isAgent: true
+      target: implement-check
+      calls: [implementation-traceability, implementation-boundary, implementation-tests, gate-report]

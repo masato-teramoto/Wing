@@ -4,9 +4,9 @@ import json
 from pathlib import Path
 
 import artifacts
-import aidd_paths
+import phase_rules
 import snapshot_artifacts
-import workflow_state
+import project_progress
 
 
 def digest(data):
@@ -20,9 +20,9 @@ def path(context):
 def save(context, run):
     record = Path(context.gate_record).read_bytes()
     snapshot = Path(snapshot_artifacts.snapshot_path(context)).read_bytes()
-    data = {'event':context.event,'scope':context.scope,'run':run.number,
+    data = {'event':context.action,'scope':context.scope,'run':run.number,
             'snapshot':digest(snapshot),'record_bytes':len(record),'record_hash':digest(record),
-            'targets':run.targets,'hashes':run.hashes,'inputs':workflow_state.signature(context)}
+            'targets':run.targets,'hashes':run.hashes,'inputs':project_progress.signature(context)}
     if context.process == 'implement':
         import implementation_checks
         data['implementation_tools'] = implementation_checks.tools_digest(context)
@@ -38,11 +38,11 @@ def verify(context, record):
     snapshot = Path(snapshot_artifacts.snapshot_path(context)).read_bytes()
     raw = Path(context.gate_record).read_bytes()
     run = record.latest(context.scope)
-    if (not run or value['event'] != context.event or value['scope'] != context.scope
+    if (not run or value['event'] != context.action or value['scope'] != context.scope
             or value['run'] != run.number or value['snapshot'] != digest(snapshot)
             or value['record_hash'] != digest(raw[:value['record_bytes']])):
         raise ValueError('inspection changed after scope-check; obtain a new checked review')
-    if value['inputs'] != workflow_state.signature(context):
+    if value['inputs'] != project_progress.signature(context):
         raise ValueError('inputs changed since inspection; run audit before resuming')
     if context.process == 'implement':
         import implementation_checks
@@ -54,9 +54,9 @@ def verify(context, record):
         before = snapshot_artifacts.load(context)
         if before['workspace_code'] != implementation_evidence.inventory(context, state['policy']):
             raise ValueError('implementation workspace changed since scope-check')
-    if value['targets'] != context.artifacts() or value['hashes'] != run.hashes:
+    if value['targets'] != context.review_targets() or value['hashes'] != run.hashes:
         raise ValueError('checked inspection targets differ')
-    if any(aidd_paths.inspection_digest(context, p) != v for p,v in value['hashes'].items()):
+    if any(phase_rules.inspection_digest(context, p) != v for p,v in value['hashes'].items()):
         raise ValueError('artifact changed since scope-check')
     import record_format
     prefix = record_format.parse(raw[:value['record_bytes']].decode('utf-8'))

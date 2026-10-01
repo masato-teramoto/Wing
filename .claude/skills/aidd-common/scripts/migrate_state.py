@@ -3,6 +3,7 @@
 Retain legacy evidence, invalidate active success marks, and require explicit
 record reconciliation before approval. Run only while the host is stopped.
 """
+import l0  # noqa: F401  L0 の枠組みを import できるようにする
 import argparse
 import copy
 import hashlib
@@ -10,15 +11,16 @@ import json
 from pathlib import Path
 
 import project_state
+import state as state_module
 
 
 def reconcile(context, data, actor):
-    import aidd_paths
-    import review_actions
+    import phase_rules
+    import review_decisions
     import review_contract
-    import workflow_state
-    review_actions.person(actor)
-    migration = workflow_state.workflow(context).get('migration', {})
+    import project_progress
+    review_decisions.person(actor)
+    migration = project_progress.workflow(context).get('migration', {})
     if migration.get('status') != 'review-required':
         raise ValueError('no pending migration review')
     archives = {p.name: p for p in Path(context.path('.aidd/legacy-gates')).glob('*.md')}
@@ -30,12 +32,12 @@ def reconcile(context, data, actor):
         raise ValueError('review must identify archived gate records without duplicates')
     if not data.get('state_review'):
         raise ValueError('human review of legacy questions, blockers and state is required')
-    phases = {Path(path).name: name for name, (_, path) in aidd_paths.PHASES.items()}
+    phases = {Path(path).name: name for name, (_, path) in phase_rules.PHASES.items()}
     for row in receipts:
         path = archives[row['file']]
         if row['file'] not in phases or row.get('sha256') != hashlib.sha256(path.read_bytes()).hexdigest():
             raise ValueError('archive identity/hash differs')
-        origin = aidd_paths.Context(context.root, context.state_path, aidd_paths.RULES[phases[row['file']]]['generate'])
+        origin = phase_rules.ExecutionContext(context.root, context.state_path, phase_rules.RULES[phases[row['file']]]['generate'])
         record = review_contract.read(origin)
         if not record.runs or not row.get('review_summary'):
             raise ValueError('reinspection and actual human reconciliation are required')
@@ -43,16 +45,16 @@ def reconcile(context, data, actor):
         if not isinstance(mappings, list):
             raise ValueError('carried_findings must list remaining legacy findings, or be explicitly empty')
         for finding in mappings:
-            if not finding.get('legacy_location') or review_actions.finding(record, finding['scope'], finding['run'], finding['number']) is None:
+            if not finding.get('legacy_location') or review_decisions.finding(record, finding['scope'], finding['run'], finding['number']) is None:
                 raise ValueError('carried legacy finding must reference a current finding')
     history = list(migration.get('reconciliations', []))
     history.append({'actor': actor, 'at': project_state.now(), 'data': data})
     reviewed = set(migration.get('reviewed_phases', []))
     reviewed.update(phases[row['file']] for row in receipts)
     reviewed.update(name for file, name in phases.items() if file not in archives)
-    migration.update(status='reviewed' if reviewed == set(aidd_paths.RULES) else 'review-required',
+    migration.update(status='reviewed' if reviewed == set(phase_rules.RULES) else 'review-required',
                      reconciliations=history, reviewed_phases=sorted(reviewed))
-    workflow_state.save(context, {'migration': migration})
+    project_progress.save(context, {'migration': migration})
     return migration
 
 
@@ -66,13 +68,10 @@ def migrate(source, output):
         raise ValueError('legacy state must be an object with an events array')
     new = copy.deepcopy(old)
     new['legacy_state'] = {'sha256': hashlib.sha256(raw).hexdigest(), 'data': old}
-    events = new.setdefault('events', [])
-    latest = {e['unit']: e for e in events if isinstance(e, dict) and isinstance(e.get('unit'), str)}
-    for entry in latest.values():
-        events.append({**entry, 'result': 'invalidated', 'at': project_state.now(), 'note': 'explicit schema migration'})
+    # The runner fields (events / current / trace / engine_schema) belong to L0.
+    state_module.invalidate_runner(new)
     records = {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in (source.parent / 'gates').glob('*.md')}
-    new.update(engine_schema=2, current={}, workflow={'migration': {'status': 'review-required', 'records':records}}, blockers=[])
-    new.pop('trace', None)
+    new.update(workflow={'migration': {'status': 'review-required', 'records':records}}, blockers=[])
     new.pop('feature_manifest', None)
     output.parent.mkdir(parents=True, exist_ok=True)
     with output.open('x', encoding='utf-8') as handle:

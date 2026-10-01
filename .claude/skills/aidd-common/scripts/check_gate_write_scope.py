@@ -1,8 +1,9 @@
 """Enforce immutable artifacts and exactly one undecided appended inspection."""
+import l0  # noqa: F401  L0 の枠組みを import できるようにする
 import hashlib
 from pathlib import Path
 
-import aidd_paths
+import phase_rules
 import artifacts
 import findings_stage
 import record_format
@@ -92,9 +93,15 @@ def check(context):
         if before['workspace_code'] != implementation_evidence.inventory(context, state['policy']):
             raise ValueError('inspector modified implementation workspace files')
     validate_staged(context)
+    for relative, previous in before.get("unreviewed", {}).items():
+        if snapshot_artifacts.body_digest(context.path(relative)) != previous["sha256"]:
+            raise ValueError("protected artifact changed: %s" % relative)
+        # Not inspected, so no status transition is authorized (not even to review/approved).
+        if (artifacts.fields(context.path(relative)) or {}).get("status") != previous["status"]:
+            raise ValueError("unauthorized status change of an unreviewed artifact: %s" % relative)
     for relative, previous in before["artifacts"].items():
         target = context.path(relative)
-        if aidd_paths.inspection_digest(context, relative) != previous["sha256"]:
+        if phase_rules.inspection_digest(context, relative) != previous["sha256"]:
             raise ValueError("protected artifact changed: %s" % relative)
         if context.process == "implement":
             continue
@@ -108,13 +115,13 @@ def check(context):
 
 def main():
     try:
-        context = aidd_paths.Context()
+        context = phase_rules.gate_context()
         run = check(context)
         import inspection_seal
         inspection_seal.save(context, run)
     except (ValueError, OSError) as error:
-        aidd_paths.fail(str(error))
-    aidd_paths.ok("gate write scope is intact", 回数=run.number, 指摘=run.count)
+        phase_rules.fail(str(error))
+    phase_rules.ok("gate write scope is intact", 回数=run.number, 指摘=run.count)
 
 
 if __name__ == "__main__":

@@ -7,7 +7,7 @@ disable-model-invocation: true
 ## 概要
 
 `requirements-cross-gate`（全 feature の requirements.md が揃った後に1回だけ呼ばれる）の
-event 本体として実行される。`specs/*/requirements.md` 一式を対象に、feature をまたいだ
+アクション本体として実行される。`specs/*/requirements.md` 一式を対象に、feature をまたいだ
 要求IDの全件突合と相互整合を検査する。横断スコープは承認対象の文書を持たないため、`status` を
 遷移させない（`references/status-protocol.md` §6）。
 

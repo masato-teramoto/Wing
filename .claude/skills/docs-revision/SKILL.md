@@ -8,9 +8,11 @@ disable-model-invocation: true
 
 対象: `docs/code-design.md` / `docs/architecture/data-model.md` / `docs/architecture/system-overview.md`。feature単位の対象はホストから受け取る。
 テンプレート: `Templates/docs/code-design.md` / `Templates/docs/architecture/data-model.md` / `Templates/docs/architecture/system-overview.md`。
-起動 event: `docs-integration-revise`（`docs-integration-generate` の直後に毎回実行される）。
+起動アクション: `docs-integration-revise`（`docs-integration-generate` の後、修正要求があるあいだ、入口 Skill が修正の 1 回ごとに呼ぶ）。
 
 ## 手順
+
+役割: 修正（repair）
 
 1. `.claude/skills/aidd-common/references/authoring/contract.md` の「修正 Skill」節を読み、ホストが渡した修正要求（repair）を確認する。
 2. repair が null・空、または targets が0件なら、どのファイルも編集せず `{"status":"completed","targets":[],"questions":[],"open_placeholders":0,"changed_findings":[],"return_candidates":[],"summary":"修正対象 0 件"}` を返して終了する。

@@ -3,22 +3,23 @@
 No runner state is fabricated. A certificate is issued only after the public L0
 status reports no pending units and current review evidence matches the files.
 """
+import l0  # noqa: F401  L0 の枠組みを import できるようにする
 import json
 from pathlib import Path
 import subprocess
 import sys
 
-import aidd_paths
+import phase_rules
 import artifacts
 import project_state
 import review_contract
-import workflow_state
+import project_progress
 
 
 def canonical(context):
-    rule = aidd_paths.RULES[context.process]
-    event = rule["generate"] if context.event == rule["repair"] else context.event
-    return event + '[' + context.item + ']'
+    rule = phase_rules.RULES[context.process]
+    action = rule["generate"] if context.action == rule["repair"] else context.action
+    return action + '[' + context.item + ']'
 
 
 def proof(context):
@@ -37,23 +38,23 @@ def record(context, call=None, flow_done=False):
     if context.process == 'implement':
         import implementation_flows
         call = implementation_flows.require_call(context, call)
-        if context.event != 'implement-gate-run':
+        if context.action != 'implement-gate-run':
             import implementation_requests
             return implementation_requests.record_completion(context)
-    if context.event.endswith('-plan'):
+    if context.action.endswith('-plan'):
         raise ValueError("plans are recorded by accept-plan")
-    rule = aidd_paths.RULES[context.process]
-    allowed = {context.event}
+    rule = phase_rules.RULES[context.process]
+    allowed = {context.action}
     if context.process == 'implement':
         allowed.add(call)
-    if context.event in (rule['generate'], rule['repair']):
+    if context.action in (rule['generate'], rule['repair']):
         allowed.add(rule['call'])
     if call and call not in allowed:
-        raise ValueError('call does not belong to this workflow event')
+        raise ValueError('call does not belong to this workflow action')
     common = Path(__file__).resolve().parents[1]
     command = [sys.executable, '-B', str(common / 'bin/aidd.py'), '--config', str(common),
                '--root', context.root, '--state', context.state_path, 'status',
-               '--call', call or context.event, '--json']
+               '--call', call or context.action, '--json']
     if context.item:
         command += ['--item', context.item]
     result = subprocess.run(command, capture_output=True, encoding='utf-8', check=False)
@@ -64,16 +65,16 @@ def record(context, call=None, flow_done=False):
     if pending is not None and not (flow_done and pending.get('event') not in (rule['generate'], rule['repair'])):
         raise ValueError('finish all L0 units before recording workflow completion')
     proof(context)
-    values = dict(workflow_state.workflow(context).get('completions', {}))
-    values[canonical(context)] = {'source_event': context.event, 'call': call or context.event,
-        'at': project_state.now(), 'inputs': workflow_state.signature(context),
-        'hashes': {p: aidd_paths.inspection_digest(context, p) for p in context.artifacts()}}
-    workflow_state.save(context, {'completions': values})
+    values = dict(project_progress.workflow(context).get('completions', {}))
+    values[canonical(context)] = {'source_event': context.action, 'call': call or context.action,
+        'at': project_state.now(), 'inputs': project_progress.signature(context),
+        'hashes': {p: phase_rules.inspection_digest(context, p) for p in context.artifacts()}}
+    project_progress.save(context, {'completions': values})
     return values[canonical(context)]
 
 
 def check(context):
-    if context.process == 'implement' and context.event != 'implement-gate-run':
+    if context.process == 'implement' and context.action != 'implement-gate-run':
         import implementation_store
         import implementation_requests
         import implementation_evidence
@@ -87,14 +88,14 @@ def check(context):
                  and certificate.get('execution_id') == value['execution_id']
                  and state['inputs'] == implementation_requests.input_signature(context, value['feature'])
                  and state['live_code'] == implementation_evidence.feature_inventory(context, state['policy']))
-        return {'complete': bool(valid), 'source_event': context.event}
-    value = workflow_state.workflow(context).get('completions', {}).get(canonical(context))
+        return {'complete': bool(valid), 'source_event': context.action}
+    value = project_progress.workflow(context).get('completions', {}).get(canonical(context))
     if not value:
         return {'complete': False}
     try:
         proof(context)
-        valid = value['inputs'] == workflow_state.signature(context) and value['hashes'] == {
-            p: aidd_paths.inspection_digest(context, p) for p in context.artifacts()}
+        valid = value['inputs'] == project_progress.signature(context) and value['hashes'] == {
+            p: phase_rules.inspection_digest(context, p) for p in context.artifacts()}
     except (ValueError, OSError):
         valid = False
     return {'complete': valid, 'source_event': value['source_event']}

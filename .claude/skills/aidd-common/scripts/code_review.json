@@ -1,0 +1,23 @@
+{
+  "schema": 2,
+  "endpoint": "https://code-review.kccs-ace.com/mcp",
+  "tool": "ace_review_code",
+  "timeout_seconds": 120,
+  "budget_seconds": 420,
+  "workers": 4,
+  "extensions": [
+    ".java",
+    ".js",
+    ".jsx",
+    ".ts",
+    ".tsx",
+    ".py"
+  ],
+  "classifications": {
+    "Bug Prevention": "major",
+    "Security": "major",
+    "Code Style": "minor",
+    "Format": "minor"
+  },
+  "blocking_metrics": []
+}

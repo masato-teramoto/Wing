@@ -19,7 +19,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-import aidd_paths
+import phase_rules
 
 # process id → (フェーズ名, 生成単位, ゲートの通し方)
 PLANS = {
@@ -44,7 +44,7 @@ PER_FEATURE = ("requirements", "design", "tasks")
 
 
 def main():
-    context = aidd_paths.Context()
+    context = phase_rules.gate_context()
     name, unit, gate = PLANS.get(context.process, (context.process, "一括", "一括 1 回"))
 
     lines = [
@@ -107,7 +107,7 @@ def main():
     lines += ["", "この計画で進めてよいか指示してください。"]
 
     print("\n".join(lines))
-    sys.exit(aidd_paths.EXIT_WAIT)
+    sys.exit(phase_rules.EXIT_WAIT)
 
 
 def _stops(process, features):

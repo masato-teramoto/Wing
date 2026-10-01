@@ -1,24 +1,26 @@
 #!/usr/bin/env python3
-"""汎用ランナーの CLI 入口。**`event_handler` の実体である。**
+"""汎用ランナーの CLI 入口。入口のコマンドから呼ばれ、Workflow Engine に渡す。
 
     python3 .claude/skills/aidd-common/bin/aidd.py <サブコマンド> [オプション]
 
 | サブコマンド | すること |
 |---|---|
-| `validate` | events / flows / gates をスキーマに照らして検査し、一覧する |
+| `validate` | command / flow / action / gate の定義をスキーマに照らして検査し、一覧する |
 | `status` | 再開点（次に実行する unit）を示す。**何も実行しない** |
-| `call <名前>` | その flow（または flows・event）を再開点から実行する。`type: skill` に当たったら「次にやること」を出して止まる |
+| `call <名前>` | その flow（または flows・action）を再開点から実行する。`type: skill` に当たったら「次にやること」を出して止まる |
 | `report` | `call` が出した unit の結果（`ok` / `fail` / `wait`）を書き戻す |
 | `redo` | 記録を落として、その範囲をやり直せるようにする（差戻し・再ゲート） |
+| `migrate-flow` | flow を分けた・改名したときに、旧 flow 名の実行記録を新 flow 名へ写す（追記のみ） |
 
-コマンドの SKILL.md に書く `event_handler.call(<名前>)` は、この `call` サブコマンドである。
+入口はコマンド（`command.yaml`）である。host agent は入口 Skill の手順に従い、`host.py`
+（advance / submit / respond）を通してこの `call` サブコマンドを呼ぶ。
 
-### `--item`
+### 繰り返しと `--item`
 
-feature ごとに何度も呼ぶイベント（例: `requirements-authoring`）は、**`--item <feature 名>`
-を付けて feature の数だけ呼ぶ**。ループの位置と回数は呼び出し側（コマンドの SKILL.md）が
-決める。`status` / `report` / `redo` にも同じ `--item` を渡す（無いと別の記録を指してしまう）。
-`--item` を付けずに呼べば、これまでどおり 1 回だけ走る。
+**ランナーは繰り返しを知らない。** 呼ばれた呼出し先を、`--item` の item で 1 周だけたどる。
+feature ごと・修正の繰り返しは Skill の手順が持ち、繰り返しの 1 回ごとに `--item` を付けて呼ぶ。
+修正の次の回は、`redo` で修正アクションの印を無効にしてから呼ぶ。
+`status` / `report` / `redo` には `call` と同じ `--item` を渡す。
 
 終了コード
 
@@ -30,7 +32,7 @@ feature ごとに何度も呼ぶイベント（例: `requirements-authoring`）�
 | 1 | 失敗・設定の誤り |
 
 このファイルを含め `bin/` の中に、フェーズ・feature・承認という語彙は現れない。
-それらは設定ファイル（events / flows / gates）と `scripts/` の側にある。
+それらは定義ファイル（command / flow / action / gate）と `scripts/` の側にある。
 
 ログは統一エンベロープの JSONL を追記する。出力先と閾値は **`.aidd/logging.yaml`** が持つ。
 書式と ID の持ち回りは `log.py` を見る。
@@ -52,11 +54,12 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'lib'))
 import aidd_lock
 
-import config as config_module  # noqa: E402
-import flow as flow_module  # noqa: E402
+import definitions as definitions_module  # noqa: E402
+import flow_executor as flow_module  # noqa: E402
 import log as log_module  # noqa: E402
+import repositories  # noqa: E402
 import state as state_module  # noqa: E402
-from orchestrator import Orchestrator, ReportRejected  # noqa: E402
+from workflow_engine import ReportRejected, WorkflowEngine  # noqa: E402
 
 EXIT_OK = 0
 EXIT_ERROR = 1
@@ -69,10 +72,10 @@ DEFAULT_STATE = ".aidd/phase-progress.json"
 
 def main(argv=None):
     parser = argparse.ArgumentParser(
-        prog="aidd", description="events / flows / gates を実行する汎用ランナー"
+        prog="aidd", description="command / flow / action / gate の定義を実行する汎用ランナー"
     )
     parser.add_argument(
-        "--config", default=DEFAULT_CONFIG, help="設定ファイル（events.yaml / flows.yaml / gates.yaml）の置き場"
+        "--config", default=DEFAULT_CONFIG, help="定義ファイル（command.yaml / flow.yaml / action.yaml / gate.yaml）の置き場"
     )
     parser.add_argument("--state", default=DEFAULT_STATE, help="状態ストアのパス")
     parser.add_argument("--root", default=".", help="出力ルート（相対パスの基準）")
@@ -101,8 +104,8 @@ def main(argv=None):
     child.add_argument("--call", help="呼び出し名（省略時は current.call）")
     child.add_argument("--item", default=None, help="feature 名など。ループの中の呼び出しを見るとき")
 
-    child = add("call", "flow / flows / event を再開点から実行する")
-    child.add_argument("name", nargs="?", help="flow・flows・event の名前")
+    child = add("call", "flow / flows / action を再開点から実行する")
+    child.add_argument("name", nargs="?", help="flow・flows・action の名前")
     child.add_argument("--item", default=None, help="feature 名など。ループの中を呼ぶとき")
 
     child = add("report", "unit の結果を書き戻す")
@@ -121,14 +124,18 @@ def main(argv=None):
     child = add("redo", "記録を落としてやり直せるようにする")
     child.add_argument("--call")
     child.add_argument("--flow", default=None)
-    child.add_argument("--event", default=None)
+    child.add_argument("--action", default=None)
     child.add_argument("--item", default=None, help="この feature だけ落とす（省略時は全 item）")
+
+    child = add("migrate-flow", "旧 flow 名の実行記録を新 flow 名へ写す（追記のみ）")
+    child.add_argument("--from", dest="from_flow", required=True, help="旧 flow 名")
+    child.add_argument("--to", dest="to_flow", required=True, help="現在の設定にある新 flow 名")
 
     args = parser.parse_args(argv)
     try:
         return _dispatch(args)
     except (
-        config_module.ConfigError,
+        definitions_module.DefinitionError,
         state_module.StateError,
         log_module.LogError,
         ReportRejected,
@@ -139,30 +146,35 @@ def main(argv=None):
 
 
 def _dispatch(args):
+    if args.subcommand == "validate":
+        # validate reads only the configuration, never the state: it takes no state lock,
+        # so a script running inside a call may read the configuration it runs under.
+        definitions = repositories.load(args.config)
+        # The log settings are part of the configuration a run depends on (doctor uses validate).
+        log_module.Settings.load(os.path.abspath(args.root), getattr(args, "log_config", None) or os.environ.get("AIDD_LOG_CONFIG"))
+        return _validate(args, definitions)
     state_path = args.state if os.path.isabs(args.state) else os.path.join(os.path.abspath(args.root), args.state)
     with aidd_lock.hold(state_path):
         return _dispatch_locked(args)
 
 
 def _dispatch_locked(args):
-    config = config_module.load(args.config)
+    definitions = repositories.load(args.config)
     root = os.path.abspath(args.root)
     state_path = args.state if os.path.isabs(args.state) else os.path.join(root, args.state)
     state = state_module.State.load(state_path)
     state.path = state_path
 
-    if args.subcommand == "validate":
-        # The log settings are part of the configuration a run depends on (doctor uses validate).
-        log_module.Settings.load(root, getattr(args, "log_config", None) or os.environ.get("AIDD_LOG_CONFIG"))
-        return _validate(args, config)
-
-    if state.events and state.data.get("engine_schema") != 2 and args.subcommand != "status":
+    if state.records and state.data.get("engine_schema") != 2 and args.subcommand != "status":
         raise state_module.StateError(
             "旧実行記録の移行が必要。references/migration.md を参照する。"
             "過去の成功印を新しいゲート構成へ流用せず、状態・証跡を保持する。"
         )
     if args.subcommand != "status":
         state.data["engine_schema"] = 2
+
+    if args.subcommand == "migrate-flow":
+        return _migrate_flow(args, definitions, state)
 
     # `status` / `redo` は実行しないため、ログを汚さない。
     logger = None
@@ -177,20 +189,20 @@ def _dispatch_locked(args):
             echo=getattr(args, "log_echo", False),
         )
 
-    orchestrator = Orchestrator(config, state, root, logger)
+    engine = WorkflowEngine(definitions, state, root, logger)
     requested = getattr(args, "name", None) or getattr(args, "call", None)
-    call = orchestrator.select(requested)
+    call = engine.select(requested)
     item = getattr(args, "item", None)
 
     if args.subcommand == "status":
-        return _status(args, orchestrator, call, item)
+        return _status(args, engine, call, item)
     if args.subcommand == "call":
-        return _call(args, orchestrator, call, item)
+        return _call(args, engine, call, item)
     if args.subcommand == "report":
-        return _report(args, orchestrator, call, item)
+        return _report(args, engine, call, item)
     if args.subcommand == "redo":
-        return _redo(args, orchestrator, call, item)
-    raise config_module.ConfigError("不明なサブコマンド: %s" % args.subcommand)
+        return _redo(args, engine, call, item)
+    raise definitions_module.DefinitionError("不明なサブコマンド: %s" % args.subcommand)
 
 
 # --- サブコマンド ---------------------------------------------------------
@@ -214,41 +226,62 @@ def _run_label(run):
     return "%s: %s%s%s" % (run.type, run.target, flags, calls)
 
 
-def _validate(args, config):
+def describe(definitions):
+    """`validate --json` の中身。L3・L4 はこれを import して定義を読んでよい（L0 は L3・L4 を import しない）。
+
+    受渡しの形式（JSON のキー）は変えない。`events` / `target_event` の中身はアクションである。
+    """
     flows = []
-    for name, entry in config.flows.items():
-        if entry.kind == "flow":
-            flows.append({"name": name, "kind": "flow", "order": list(entry.event_order)})
-        else:
-            flows.append({"name": name, "kind": "flows", "order": list(entry.flow_order)})
+    for entry in definitions.flows.all():
+        flows.append({"name": entry.name, "kind": "flow",
+                      "steps": [{step.kind: step.name} for step in entry.steps],
+                      "order": [step.name for step in entry.steps]})
     gates = [
         {
             "name": gate.name,
-            "target_event": gate.target_event,
+            "target_event": gate.target_action,
             "hookPoint": gate.hook_point,
             "run": _run_payload(gate.run),
+            "target_review": list(gate.target_review) if gate.target_review is not None else None,
         }
-        for gate in config.gates
+        for gate in definitions.gates.all()
     ]
-    payload = {
-        "config": config.path,
+    return {
+        "config": definitions.path,
+        "config_sha256": repositories.config_hash(definitions.path),
+        "commands": [
+            {"id": command.id, "command": command.command,
+             "steps": [{"flow": step.flow} for step in command.steps]}
+            for command in definitions.commands.all()
+        ],
         "events": [
-            {"name": name, "run": _run_payload(event.run)}
-            for name, event in config.events.items()
+            {"name": action.name, "run": _run_payload(action.run),
+             "inputs": list(action.inputs), "outputs": list(action.outputs)}
+            for action in definitions.actions.all()
         ],
         "flows": flows,
         "gates": gates,
     }
+
+
+def _validate(args, definitions):
+    payload = describe(definitions)
+    flows, gates = payload["flows"], payload["gates"]
     if args.json:
         _emit_json(payload)
         return EXIT_OK
-    print("設定ファイル: %s — 検査に通った（calls整合を含む）" % config.path)
-    print("events: %d 件" % len(payload["events"]))
-    for name, event in config.events.items():
-        print("  %s（%s）" % (name, _run_label(event.run)))
+    print("定義ファイル: %s — 検査に通った" % definitions.path)
+    print("commands: %d 件" % len(payload["commands"]))
+    for command in definitions.commands.all():
+        print("  %s（%s）: %s" % (command.id, command.command, " → ".join(
+            step.flow for step in command.steps)))
+    print("actions: %d 件" % len(payload["events"]))
+    for action in definitions.actions.all():
+        print("  %s（%s）" % (action.name, _run_label(action.run)))
         for hook_point in ("start", "end"):
-            for gate in config.gates_for(name, hook_point):
-                print("    %-5s %s（%s）" % (hook_point, gate.name, _run_label(gate.run)))
+            for gate in definitions.gates.find(action.name, hook_point):
+                review = " target_review=%s" % ",".join(gate.target_review) if gate.target_review else ""
+                print("    %-5s %s（%s%s）" % (hook_point, gate.name, _run_label(gate.run), review))
     print("flows: %d 件" % len(flows))
     for entry in flows:
         print("  %s（%s）: %s" % (entry["name"], entry["kind"], " → ".join(entry["order"])))
@@ -256,28 +289,28 @@ def _validate(args, config):
     return EXIT_OK
 
 
-def _status(args, orchestrator, call, item):
-    event_unit, outcome = orchestrator.pending(call, item)
-    total = len(flow_module.plan(orchestrator.config, call, item))
-    remaining = len(flow_module.pending(orchestrator.config, call, orchestrator.state, item))
+def _status(args, engine, call, item):
+    step, outcome = engine.pending(call, item)
+    total = len(flow_module.plan(engine.definitions, call, item))
+    remaining = len(flow_module.pending(engine.definitions, call, engine.state, item))
     payload = {
         "call": call,
         "item": item,
-        "release": orchestrator.state.release,
-        "return_to_call": orchestrator.state.return_to_call,
+        "release": engine.state.release,
+        "return_to_call": engine.state.return_to_call,
         "events_total": total,
         "events_remaining": remaining,
-        "pending": outcome.unit.describe() if event_unit is not None else None,
-        "dispatch": orchestrator.dispatch_for(call, item),
+        "pending": outcome.unit.describe() if outcome is not None else None,
+        "dispatch": engine.dispatch_for(call, item),
     }
     if args.json:
         _emit_json(payload)
         return EXIT_OK
     print("call: %s（イベント %d / %d 残り）" % (call, remaining, total))
-    if event_unit is None:
+    if outcome is None:
         print("この呼び出しに残りは無い。")
         return EXIT_OK
-    print("再開点: %s" % event_unit.label())
+    print("再開点: %s" % (step.label() if step is not None else outcome.unit.key))
     print("  unit  : %s" % outcome.unit.key)
     print(
         "  実行  : %s（type: %s / target: %s）"
@@ -288,8 +321,8 @@ def _status(args, orchestrator, call, item):
     return EXIT_OK
 
 
-def _call(args, orchestrator, call, item):
-    result = orchestrator.run(call, item)
+def _call(args, engine, call, item):
+    result = engine.run(call, item)
 
     if result.status == "done":
         payload = {"status": "done", "call": call, "item": item}
@@ -300,8 +333,8 @@ def _call(args, orchestrator, call, item):
     payload = dict(unit.describe())
     payload["status"] = result.status
     payload["call"] = call
-    payload["dispatch"] = orchestrator.dispatch_for(call, item)
-    payload["label"] = result.event_unit.label()
+    payload["dispatch"] = engine.dispatch_for(call, item)
+    payload["label"] = result.step.label() if result.step is not None else result.outcome.unit.key
     if result.outcome.detail:
         payload["detail"] = result.outcome.detail
 
@@ -315,8 +348,8 @@ def _call(args, orchestrator, call, item):
     return EXIT_ERROR
 
 
-def _report(args, orchestrator, call, item):
-    unit = orchestrator.report(call, args.result, args.note, args.detail, item, args.dispatch_id)
+def _report(args, engine, call, item):
+    unit = engine.report(call, args.result, args.note, args.detail, item, args.dispatch_id)
     if unit is None:
         _report_out(args, {"status": "done", "call": call, "item": item}, "書き戻す unit が無い。")
         return EXIT_OK
@@ -327,17 +360,43 @@ def _report(args, orchestrator, call, item):
     return EXIT_OK
 
 
-def _redo(args, orchestrator, call, item):
-    removed = orchestrator.redo(call, args.flow, args.event, item)
+def _redo(args, engine, call, item):
+    removed = engine.redo(call, args.flow, args.action, item)
     payload = {
         "status": "redo",
         "call": call,
         "flow": args.flow,
-        "event": args.event,
+        "event": args.action,
         "item": item,
         "removed": removed,
     }
     _report_out(args, payload, "%d unit の成功印を無効化した。履歴は保持した（call %s）。" % (removed, call))
+    return EXIT_OK
+
+
+def _migrate_flow(args, definitions, state):
+    old, new = args.from_flow.strip(), args.to_flow.strip()
+    if old == new:
+        raise definitions_module.DefinitionError("--from と --to が同じ: %s" % old)
+    target = definitions.flows.find(new)
+    if target is None or target.kind != "flow":
+        raise definitions_module.DefinitionError("--to `%s` は現在の定義の flow（kind: flow）でなければならない" % new)
+    if (state.data.get("current") or {}).get("pending"):
+        raise state_module.StateError("発行済みの emit / wait がある。旧配布物で終えてから移行する")
+    known = set(definitions.flows.names()) | set(definitions.actions.names())
+    renamed = []
+    for field, setter in (("call", state.set_call), ("return_to_call", state.set_return_to_call)):
+        value = getattr(state, field)
+        if value == old and old not in known:
+            setter(new)
+            renamed.append(field)
+        elif value is not None and value not in known:
+            raise definitions_module.DefinitionError("current.%s `%s` が現在の定義に無い" % (field, value))
+    moved = state.migrate_flow(old, new, target.action_names)
+    state.save()
+    payload = {"status": "migrated", "from": old, "to": new, "moved": len(moved),
+               "units": [{"from": a, "to": b} for a, b in moved], "renamed_current": renamed}
+    _report_out(args, payload, "%d unit を %s から %s へ写した。旧記録は保持した。" % (len(moved), old, new))
     return EXIT_OK
 
 

@@ -8,9 +8,11 @@ disable-model-invocation: true
 
 対象: `steering/product.md` / `steering/tech.md` / `steering/architecture.md` / `steering/security.md` / `steering/non-functional.md` / `steering/database.md` / `steering/api-standards.md`。feature単位の対象はホストから受け取る。
 テンプレート: `Templates/steering/product.md` / `Templates/steering/tech.md` / `Templates/steering/architecture.md` / `Templates/steering/security.md` / `Templates/steering/non-functional.md` / `Templates/steering/database.md` / `Templates/steering/api-standards.md`。
-起動 event: `steering-authoring-revise`（`steering-authoring-generate` の直後に毎回実行される）。
+起動アクション: `steering-authoring-revise`（`steering-authoring-generate` の後、修正要求があるあいだ、入口 Skill が修正の 1 回ごとに呼ぶ）。
 
 ## 手順
+
+役割: 修正（repair）
 
 1. `.claude/skills/aidd-common/references/authoring/contract.md` の「修正 Skill」節を読み、ホストが渡した修正要求（repair）を確認する。
 2. repair が null・空、または targets が0件なら、どのファイルも編集せず `{"status":"completed","targets":[],"questions":[],"open_placeholders":0,"changed_findings":[],"return_candidates":[],"summary":"修正対象 0 件"}` を返して終了する。

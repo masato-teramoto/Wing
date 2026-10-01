@@ -1,9 +1,9 @@
-import aidd_paths
+import phase_rules
 import prerequisites
 
 if __name__ == "__main__":
     try:
-        prerequisites.blockers(aidd_paths.Context())
+        prerequisites.blockers(phase_rules.gate_context())
     except (ValueError, OSError) as error:
-        aidd_paths.fail(str(error))
-    aidd_paths.ok("no unresolved rollback blocks this event")
+        phase_rules.fail(str(error))
+    phase_rules.ok("no unresolved rollback blocks this action")

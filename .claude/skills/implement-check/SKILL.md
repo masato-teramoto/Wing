@@ -7,7 +7,9 @@ disable-model-invocation: true
 ## 入力
 
 profile=implementation-code-v1。snapshot、implementation（review.jsonの内容）、tool_results_path、
-tool_results_sha256、report_summary、required_aspects、上流一覧、gate_record_path。implementation.codeに列挙された実コードを読む。
+tool_results_sha256、report_summary、required_aspects、上流一覧、unreviewed_inputs、gate_record_path。implementation.codeに列挙された実コードを読む。
+上流は承認済みを前提とするが、unreviewed_inputsに挙げた入力（上流工程のtarget_reviewから外れたdraft）はapprovedでなくてよく、
+それだけを理由に指摘しない。
 作成Skillのsummaryだけで検査しない。manifestと全ツール実績の版一致を確認する。
 
 ## 今回の開発補助レポーティングの扱い
@@ -25,6 +27,8 @@ implementation-toolsによる実行成否、必須出力、実ケース数、証
 機械検査の不合格を無視せず、過去の指摘・人間の判断・解消・承認を変更しない。
 
 ## 手順
+
+繰り返し: feature ごと（per-feature）
 
 1. `.claude/skills/implementation-traceability/SKILL.md` をReadし、要求・設計・タスクと実コードを照合する。
 2. `.claude/skills/implementation-boundary/SKILL.md` をReadし、公開契約・Boundary・依存方向を検査する。

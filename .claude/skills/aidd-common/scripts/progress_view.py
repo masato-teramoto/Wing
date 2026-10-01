@@ -1,13 +1,15 @@
 """Rebuild a display from L3 facts; never approve, synchronize or dispatch work."""
+import l0  # noqa: F401  L0 の枠組みを import できるようにする
 from pathlib import Path
 
-import aidd_paths
+import phase_rules
 import artifacts
 import feature_manifest
 import project_state
 
 
 ERRORS = (ValueError, OSError, KeyError, TypeError, UnicodeError)
+RELEASE = "alpha3"
 
 
 def document_status(context, relative):
@@ -45,7 +47,7 @@ def calculate(context):
         names = None
 
     values = {}
-    for name, rule in aidd_paths.RULES.items():
+    for name, rule in phase_rules.RULES.items():
         if name == 'implement':
             import implementation_repair
             values[name] = implementation_repair.progress(context, names)
@@ -70,7 +72,7 @@ def refresh(context):
     metadata = {key: value for key, value in view.items() if key != "documents"}
     try:
         project_state.update(context.state_path, {
-            "release": aidd_paths.CONTRACT["release"],
+            "release": RELEASE,
             "progress": view["documents"],
             "progress_view": {**metadata, "refreshed_at": project_state.now()},
         })

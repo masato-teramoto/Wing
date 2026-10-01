@@ -5,6 +5,7 @@ itemはemit.itemを保持し、execution_idから作り直さない。
 
 1. 渡された1件の完了条件、Requirements / Design / Boundary / Dependsを読む。
    承認済み要件・設計・steering・docsと依存契約を照合する。指定外タスクを始めない。
+   contextの`unreviewed_inputs`に挙げた上流は検査・承認されないdraftだが、approvedでなくても読む。
 2. 既存コード・テスト・案件の実行設定を読み、要求に必要な変更と検証を決める。
    不明な仕様や設計矛盾はquestions/return_candidatesとして返し、推測で承認済み計画を変えない。
    準備タスクでは必要ツールの版・機能を変更なしで確認し、不足時だけ承認済みの導入を実行する。

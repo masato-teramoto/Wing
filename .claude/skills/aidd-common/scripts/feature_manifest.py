@@ -1,8 +1,9 @@
 """One strict reader for feature definitions; consumers use the checked snapshot.
 
-Only the rollback reopening of the finder (repair_actions._discovering) reads it
+Only the rollback reopening of the finder (repair_requests._discovering) reads it
 with approved=False; every other reader requires the approved source."""
 
+import l0  # noqa: F401  L0 の枠組みを import できるようにする
 import hashlib
 import json
 from pathlib import Path

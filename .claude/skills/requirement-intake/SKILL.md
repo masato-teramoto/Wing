@@ -8,9 +8,11 @@ disable-model-invocation: true
 
 対象: `.aidd/requirement-list.md`。feature単位の対象はホストから受け取る。
 テンプレート: `Templates/Flow/requirement-list.md`。
-起動 event: `requirement-intake-generate`（直後に `requirement-intake-revise` が毎回実行される）。
+起動アクション: `requirement-intake-generate`（修正要求があるときだけ、入口 Skill が続けて `requirement-intake-revise` を呼ぶ）。
 
 ## 手順
+
+役割: 生成（generate）
 
 1. `.claude/skills/aidd-common/references/authoring/contract.md` を読み、受け取った対象・承認済み入力・質問回答を確認する。
 2. `.claude/skills/aidd-common/references/authoring/intake.md` と上記の実行時テンプレートを読む。

@@ -1,7 +1,0 @@
-{
-  "phase": "steering",
-  "event": "steering-authoring-revise",
-  "scope": "phase",
-  "run": 2,
-  "findings": []
-}

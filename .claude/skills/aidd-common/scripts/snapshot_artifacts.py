@@ -1,18 +1,19 @@
 """Capture a single inspection's inputs and immutable record prefix."""
+import l0  # noqa: F401  L0 の枠組みを import できるようにする
 import hashlib
 import json
 from pathlib import Path
 
-import aidd_paths
+import phase_rules
 import artifacts
 import project_state
 import record_format
 
 
 def snapshot_path(context):
-    # One serial host; an event/item has the same inspection identity whether
+    # One serial host; an action/item has the same inspection identity whether
     # called directly or through a flow. Do not require callers to decode L0 keys.
-    key = context.event + "[" + context.item + "]"
+    key = context.action + "[" + context.item + "]"
     name = hashlib.sha256(key.encode("utf-8")).hexdigest()
     return context.path(".aidd/.engine/%s.snapshot.json" % name)
 
@@ -28,15 +29,21 @@ def body_digest(path):
 
 def load(context):
     data = json.loads(Path(snapshot_path(context)).read_text(encoding="utf-8"))
-    if data.get("event") != context.event or data.get("scope") != context.scope or data.get("phase") != context.process:
+    if data.get("event") != context.action or data.get("scope") != context.scope or data.get("phase") != context.process:
         raise ValueError("snapshot belongs to another inspection")
     return data
 
 
 def capture(context):
-    targets = context.artifacts()
-    entry = {"schema": 2, "phase": context.process, "event": context.event,
+    targets = context.review_targets()
+    entry = {"schema": 2, "phase": context.process, "event": context.action,
              "scope": context.scope, "at": project_state.now(), "artifacts": {}, "record": {}}
+    # Outputs left out of target_review are not inspected, but the inspector must not edit them
+    # either: neither the body nor the status (the body digest ignores status/updated_at).
+    unreviewed = [p for p in context.artifacts() if p not in targets]
+    if unreviewed:
+        entry["unreviewed"] = {p: {"status": (artifacts.fields(context.path(p)) or {}).get("status"),
+                                   "sha256": body_digest(context.path(p))} for p in unreviewed}
     if context.process == 'implement':
         import implementation_evidence
         import implementation_requests
@@ -45,7 +52,7 @@ def capture(context):
     for relative in targets:
         if context.process == 'implement':
             entry['profile'] = 'implementation-code-v1'
-            entry['artifacts'][relative] = {'status': 'readonly', 'sha256': aidd_paths.inspection_digest(context, relative)}
+            entry['artifacts'][relative] = {'status': 'readonly', 'sha256': phase_rules.inspection_digest(context, relative)}
             continue
         target = context.path(relative)
         fields = artifacts.fields(target)
@@ -82,10 +89,10 @@ def capture(context):
 
 def main():
     try:
-        entry = capture(aidd_paths.Context())
+        entry = capture(phase_rules.gate_context())
     except (ValueError, OSError) as error:
-        aidd_paths.fail(str(error))
-    aidd_paths.ok("inspection snapshot captured", 回数=entry["run"])
+        phase_rules.fail(str(error))
+    phase_rules.ok("inspection snapshot captured", 回数=entry["run"])
 
 
 if __name__ == "__main__":

@@ -3,6 +3,7 @@
 The journal and record replacements are atomic individual writes. A retry applies
 only missing effects, including an interrupted multi-artifact approval.
 """
+import l0  # noqa: F401  L0 の枠組みを import できるようにする
 import hashlib
 from pathlib import Path
 import re
@@ -11,7 +12,7 @@ import artifacts
 import project_state
 import record_format
 import review_gate
-import workflow_state
+import project_progress
 
 
 def digest(data):
@@ -46,8 +47,8 @@ def status_effect(context, target, status, at):
 
 def apply_effect(context, effect):
     if effect['kind'] == 'cross':
-        value = workflow_state.workflow(context)
-        workflow_state.save(context, {'invalidated_cross':[p for p in value.get('invalidated_cross', [])
+        value = project_progress.workflow(context)
+        project_progress.save(context, {'invalidated_cross':[p for p in value.get('invalidated_cross', [])
                                                          if p != context.process]})
         return
     path = Path(context.path(effect['path']))
@@ -66,9 +67,9 @@ def apply_effect(context, effect):
 
 
 def ensure_idle(context, operation_id=None):
-    state = workflow_state.workflow(context)
+    state = project_progress.workflow(context)
     operations = state.get('review_operations', {})
-    parent = state.get('host_operations', {}).get(operation_id, {})
+    parent = context.state().get('host_operations', {}).get(operation_id, {})  # L0 host の記録
     request = parent.get('request', {})
     batch = request.get('kind') == 'respond' and request.get('payload', {}).get('action') == 'decisions'
     def owned(key):
@@ -77,14 +78,14 @@ def ensure_idle(context, operation_id=None):
         raise ValueError('a review write is incomplete; retry its original operation ID and payload first')
 
 
-def execute(context, action, data, actor, expected, operation_id, prepare):
+def execute(context, operation, data, actor, expected, operation_id, prepare):
     with context.locked():
         if not isinstance(operation_id,str) or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}',operation_id):
-            raise review_gate.ActionRejected('a stable operation_id is required for review writes')
-        request = {'action':action,'data':data,'actor':actor,'expected':expected,
+            raise review_gate.OperationRejected('a stable operation_id is required for review writes')
+        request = {'action':operation,'data':data,'actor':actor,'expected':expected,
                    'root':str(Path(context.root).resolve()),'state':str(Path(context.state_path).resolve()),
-                   'event':context.event,'item':context.item}
-        operations = dict(workflow_state.workflow(context).get('review_operations', {}))
+                   'event':context.action,'item':context.item}
+        operations = dict(project_progress.workflow(context).get('review_operations', {}))
         previous = operations.get(operation_id)
         if previous:
             if previous['request'] != request:
@@ -95,7 +96,7 @@ def execute(context, action, data, actor, expected, operation_id, prepare):
         import host_session
         host_session.ensure_idle(context, operation_id)
         review_gate.require(context, expected, resuming=bool(previous))
-        if previous and action == 'approve':
+        if previous and operation == 'approve':
             # A prepared operation may predate the current approval policy.
             # Revalidate without rebuilding effects already partially applied.
             import review_contract
@@ -105,9 +106,9 @@ def execute(context, action, data, actor, expected, operation_id, prepare):
             # Recheck after constructing and validating every effect, before writing.
             review_gate.require(context, expected)
             previous = {'status':'prepared','request':request,'effects':effects,
-                        'result':{'event':context.event,'item':context.item,'operation_id':operation_id,'operation_applied':True}}
+                        'result':{'event':context.action,'item':context.item,'operation_id':operation_id,'operation_applied':True}}
             operations[operation_id] = previous
-            workflow_state.save(context, {'review_operations':operations})
+            project_progress.save(context, {'review_operations':operations})
         # Inspect all files before applying any remaining effect.
         allowed = {}
         for effect in previous['effects']:
@@ -132,5 +133,5 @@ def execute(context, action, data, actor, expected, operation_id, prepare):
                 apply_effect(context, effect)
         previous['status'] = 'applied'
         operations[operation_id] = previous
-        workflow_state.save(context, {'review_operations':operations})
+        project_progress.save(context, {'review_operations':operations})
         return previous['result']

@@ -19,7 +19,13 @@ def freeze(context, task_policy):
     if value.get('schema') != 1 or value.get('feature') != context.item:
         raise ValueError('reporting plan must identify its feature (schema 1)')
     specifications = value.get('specifications')
-    if (not isinstance(specifications, list) or not specifications
+    import implementation_requests
+    # Generated suite specifications are recorded in the feature state by the L4 start gate
+    # `task-quality-feature` (L3 does not import L4). The list is carried as data.
+    generated = (list(implementation_requests.feature_state(context, context.item)
+                      .get('report_extensions', {}).get('generated_specifications', []))
+                 if task_policy.get('task_quality') else [])
+    if (not isinstance(specifications, list) or (not specifications and not generated)
             or any(not isinstance(p, str) for p in specifications) or len(specifications) != len(set(specifications))):
         raise ValueError('reporting specifications must identify readable test/verification specifications')
     for name in specifications:
@@ -75,4 +81,5 @@ def freeze(context, task_policy):
         raise ValueError('test/coverage exemption requires a planned non-code feature')
     if not reason and not any(c.get('test_results') for c in checks):
         raise ValueError('final reporting requires unit-test results and coverage')
-    return {'policy': value, 'sha256': store.digest(Path(context.path(location)).read_bytes()), 'inputs': inputs}
+    return {'policy': value, 'sha256': store.digest(Path(context.path(location)).read_bytes()), 'inputs': inputs,
+            'generated_specifications': generated}

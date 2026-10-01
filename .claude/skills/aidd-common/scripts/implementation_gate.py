@@ -1,18 +1,18 @@
 """Phase 8 start/end guards. Never dispatch another L0 invocation here."""
-import aidd_paths
+import phase_rules
 import implementation_requests as requests
 import implementation_flows
 
 if __name__ == '__main__':
     try:
-        context = aidd_paths.Context()
+        context = phase_rules.gate_context()
         implementation_flows.guard(context)
-        if context.event == requests.FINAL:
+        if context.action == requests.FINAL:
             requests.prepare_review(context)
         elif context.hook_point == 'start':
             requests.preflight(context)
         else:
             requests.finish_task(context)
     except (ValueError, OSError, KeyError) as error:
-        aidd_paths.fail(str(error))
-    aidd_paths.ok('implementation boundary checked')
+        phase_rules.fail(str(error))
+    phase_rules.ok('implementation boundary checked')

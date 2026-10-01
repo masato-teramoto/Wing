@@ -4,7 +4,7 @@
 
 ## event と Skill
 
-Phase 1–7 は生成 event `<base>-generate` と修正 event `<base>-revise` を持つ。修正 event は毎回、生成 event の直後に実行される。
+Phase 1–7 は生成アクション `<base>-generate` と修正アクション `<base>-revise` を持つ。修正アクション は毎回、生成アクション の直後に実行される。
 Phase 8 は [実装契約](../implementation/contract.md) に従い、タスク1件ごとの生成と、選択されたタスクの修正を実行する。
 
 | base | 生成 Skill（`<base>-generate`） | 修正 Skill（`<base>-revise`） |
@@ -19,7 +19,7 @@ Phase 8 は [実装契約](../implementation/contract.md) に従い、タスク1
 
 ## 共通規則
 
-- ホストが解決した event / item / targets / authoring_inputs / 質問回答 / 修正要求（repair）を受け取る。入力・対象が欠ける、別の所有物を指す、必要入力がapprovedでない場合はfailedで返す。RFPだけは自由形式でstatusを要求しない。
+- ホストが解決した event / item / targets / authoring_inputs / 質問回答 / 修正要求（repair）を受け取る。入力・対象が欠ける、別の所有物を指す、必要入力がapprovedでない場合はfailedで返す。RFPだけは自由形式でstatusを要求しない。context の `unreviewed_inputs` に挙げた入力（上流工程の `target_review` から外れ、検査・承認されない draft）も、approvedでなくてよい入力として読む。targets は作成・修正する自分の出力すべて（検査対象 `review_targets` とは別）。
 - 実行時に対象のL1テンプレートと該当する作成規則を読む。steering は全工程で一式（全文）を読み、該当章だけを選んで読まない。入力は `paths.md` §6 と解決後の一覧に従い、ゲート記録・phase-progress・docs（Phase 7）を生成の根拠にしない。
 - 生成は未作成または同じ作業のdraftへの再入。review/approvedの既存文書を生成Skillで変更しない。
 - ファイルの存在や質問0件だけを完了条件にしない。必要な対象・項目が揃い、受け取った回答を反映し、根拠のない必須値が残っていないことを確認する。
@@ -38,7 +38,7 @@ Phase 8 は [実装契約](../implementation/contract.md) に従い、タスク1
 
 次に当たれば作業を進めず、編集で吸収せずにホストへ返す。
 
-- 上流が approved でない、入力・対象が欠ける → failed。
+- 上流が approved でない（`unreviewed_inputs` に挙げた入力を除く）、入力・対象が欠ける → failed。
 - テンプレートを埋める根拠が上流・回答に無い → questions を付けて waiting。
 - テンプレートと実成果物（既存の自成果物・上流成果物）のあいだで前提が矛盾している → 推測でどちらかへ寄せず、両方の位置と矛盾点を questions または return_candidates に示して waiting。
 - 不備の所在の判断が必要 → 当該工程内の修正を既定とする。上流を疑う前に、自成果物の記述と自工程の質問で解消できないかを先に確認し、解消できない場合だけ return_candidates を返す。
@@ -65,7 +65,7 @@ Phase 8 は [実装契約](../implementation/contract.md) に従い、タスク1
 
 ## 修正 Skill（`<base>-revise`）
 
-修正 event は修正対象が無くても毎回実行される。修正要求（repair）は次のいずれか。
+修正アクションは、修正要求があるあいだ入口 Skill が修正の 1 回ごとに呼ぶ（修正要求が無ければ呼ばれない）。修正要求（repair）は次のいずれか。
 
 | 種別 | 内容 | changed_findings |
 |---|---|---|
@@ -104,3 +104,23 @@ null は failed の場合だけ許され、未確認を0件の完成扱いにし
 位置情報から辿れるようにする。`completed` には0が必要だが、0だけで完成とは判断しない。
 回答を受け取っただけで減算せず、成果物へ反映した後に数え直す。
 保存・待機管理は L3 ホストが行い、Skill が状態ストアを直接更新しない。
+
+## 役割と繰り返しの宣言
+
+生成・修正 Skill は `## 手順` の冒頭に、自分の役割と、feature ごとかを決まった形で書く。
+
+```markdown
+## 手順
+
+役割: 修正（repair）
+繰り返し: feature ごと（per-feature）
+```
+
+| 宣言 | 値 | 使われ方 |
+|---|---|---|
+| `役割:` | `生成（generate）` / `修正（repair）` | 工程の flow の生成・修正のアクションの判定（L3 の工程の規則）。修正要求の送り先 |
+| `繰り返し:` | `feature ごと（per-feature）`。繰り返さない Skill は書かない | 工程が feature ごとか（進捗の展開・修正先の item） |
+
+- 繰り返しそのもの（どの feature をどの順に扱うか、修正の回を続けるか）は入口 Skill の手順が持ち、
+  繰り返しの 1 回ごとに L0 を呼ぶ（host-protocol.md §1.1）。生成・修正 Skill は呼ばれた 1 件・1 回だけを扱う。
+- L0 は宣言を読まない。

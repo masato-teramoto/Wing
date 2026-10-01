@@ -95,7 +95,7 @@
 
 ## 6. 参照してよい成果物
 
-**`status: approved` でないドキュメントを下流フェーズの入力にしない。** 各フェーズの Input は次のとおり。
+**`status: approved` でないドキュメントを下流フェーズの入力にしない。** ただし、検査ゲートの `target_review` から外した出力は検査も承認もされない（draft のまま）。ホストが context の `unreviewed_inputs` に挙げた入力だけは、approved でなくても読む。各フェーズの Input は次のとおり。
 
 | Phase | 読む成果物 |
 |---|---|
@@ -113,9 +113,16 @@
 
 ## 実行時入力の解決
 
-`contracts/main_flow.json` の各工程の `upstream` は固定入力の一覧。
-`scripts/aidd_paths.py` の `Context.upstream()` が、event / item と承認済み feature 集合から
-次の入力を追加する。`scripts/prerequisites.py` は解決後の全入力の存在・approved を検査する。
+各アクションの入力・出力は `action.yaml` の `inputs` / `outputs` に書く。
+`scripts/phase_rules.py` の `ExecutionContext.upstream()` / `artifacts()` が、event / item と承認済み feature 集合から
+次のように展開する。`scripts/prerequisites.py` は解決後の全入力の存在・approved を検査する。
+
+| 書き方 | 展開 |
+|---|---|
+| `{feature}` | アクションの item（feature 名）。Phase 8 のタスクアクションでは実行中タスクの feature |
+| `{features}` | 承認済み feature ごとに 1 本（計画・横断アクション） |
+| `{depends_on}` | item の依存先 feature（推移的）ごとに 1 本 |
+| 末尾 `/` | ディレクトリ配下のファイル。approved を求めない（`.aidd/rfp/`） |
 
 - design の feature 単位: 対象 feature の requirements と依存先の design。
 - design-plan: 全 feature の requirements。requirements の横断確認も前提とする。
@@ -123,5 +130,5 @@
 - docs: 全 feature の requirements と design。
 - tasks の feature 単位: 対象 feature の requirements と design。docs は開始前提として検査するが、作成 Skill の根拠入力から除く。
 
-feature 用のパスを未展開の `{feature}` のまま JSON の固定入力へ足すと、item を持たない
-計画・横断イベントの意味が変わる。入力の有無は JSON 配列だけでなく解決後の一覧で確認する。
+`{feature}` を含むアクションは item を必要とし、含まないアクションに item を付けるとエラーになる。
+feature ごとに呼ぶかは入口 Skill（`aidd-*`）が決める。

@@ -4,9 +4,10 @@
 L0のitemにはtask_itemを使い、同じタスクの生成・修正で固定する。初回生成のexecution_idを
 そのtask_itemとして採用し、修正ごとに新しいexecution_idを発行する。最終検査のitemはfeature。
 
-既定の `implement-task` は `[implement-authoring-generate, implement-authoring-revise]`、
-`implement-review` は `[implement-gate-run]`。`contracts/main_flow.json` の
-`phases.implement.flows` はgenerate/repairを同じflow、reviewを別flowへ対応づける。
+工程の flow `implement` は `[implement-authoring-generate, implement-authoring-revise]`、
+`implement-review` は `[implement-gate-run]`。generate/repairは生成・修正の Skill
+（手順の宣言 `役割:`）を含む flow `implement`、reviewは `implement-gate-run` を含む flow に対応づける。
+`implement` は工程名のため改名できない。レビュー flow の名前は flow.yaml だけで変えられる。
 L3が対象と正規flowを選び、L0が順序と前後ゲートを実行する。定義欠落・順序違い・別flowへの
 重複所属は開始前に拒否し、直接event呼び出しへ切り替えない。Phase 1〜7の直接event入口は維持する。
 
@@ -20,38 +21,13 @@ completed、空のquestions/return_candidates/changed_findingsを返す。追加
 
 ## 案件の検証計画
 
-`.aidd/implementation/config/<feature>.json` を作成前に確定する。以下は形の例であり、
-コマンド・許可範囲・観点は当該案件の実在する仕様とテストへ置き換える。
-
-```json
-{
-  "schema": 1, "feature": "booking",
-  "tasks": {
-    "1": {"allowed_paths": ["src/booking/", "tests/booking/"], "check_ids": ["tests"], "tdd": true}
-  },
-  "checks": [{"id": "tests", "argv": ["{python}", "-B", "-m", "unittest", "discover", "-s", "tests/booking"], "cwd": ".", "timeout_seconds": 120}],
-  "feature_checks": ["tests"],
-  "verification_paths": ["pyproject.toml"],
-  "generated_paths": ["coverage/"]
-}
-```
-
-taskキーはtasks.mdの全タスクID。チェックは全て必須、最終feature_checksはchecksの順序付き全ID。
-allowed_pathsはファイルまたは末尾 `/` のディレクトリで、Boundaryから解決する。
-verification_pathsには対象外に置かれたテストハーネス・設定・提供側コード等の読取依存も明示する。
-生成物除外は実ソース範囲に重ねない。`.git/.venv/node_modules/__pycache__/.pytest_cache` は実行証跡の対象外。
-ソース・検証設定・新規・削除はハッシュ照合する。L4コマンドが実ソースを変更した場合は成功にしない。
-
-チェックのtimeout合計は480秒以内。L0既定600秒のunitとL3外側720秒の間に終了処理の余裕を置く。
-それ以上が必要なら構成・L0設定拡張を明示して判断する。timeoutを無視した成功や検査削除で通さない。
-argvはshellを介さない。`{python}` は現在のPython。必要な実行環境は案件の承認済み準備タスク、または既存環境で用意する。
-coverage等はcheckの `metric: {path, keys: ["total", "percent_covered"], minimum: 80}` として指定できる。
-当該コマンドで更新されていない値・欠落・基準未達を成功にしない。完全なstdout/stderrとreceiptを残す。
-
-可読レポートは別ファイル`.aidd/implementation/reporting/<feature>.json`で設定する。
-[レポート契約](reporting.md)を参照。タスク内のcheck_idsにはレポート用処理を追加しない。
-レポート設定はfeature最終検査の開始時に固定し、タスクのTDD・VERIFY証跡とは分離する。
-上記480秒には最終検査のレポート実行・後処理も含める。
+`.aidd/implementation/config/<feature>.json`をタスク選択前に確定する。
+新規作成・変更時に[検証計画の記入ルール](verification-plan.md)を読む。項目定義と基本の完全例の正本である。
+既存設定で再開する時は設定と対象版を照合し、変更が必要な項目の定義を参照する。
+新規コードタスクでは実テストからの仕様書生成とタスク末尾確認を有効にする。
+生成emit・人間待機時の操作は[タスク確認手順](task-specification.md)をその時点で参照する。
+可読レポートは最終検査前に別設定を用意し、[レポート契約](reporting.md)を参照する。
+必要な検証対象・対象版の確認は省略しない。設定変更後の再開は本書の「修正・再開」に従う。
 
 ## タスク内の操作
 
@@ -81,8 +57,8 @@ dev/test依存やmanifest/lockfileの共有は許容する。追跡する依存�
 
 ### 既存の補助操作
 
-配布ルートの `python -X utf8 -B aidd-run.py workflow --event <emit.event> --item <emit.item>
---payload <JSON> <action>` を使う。生成Skillが行える更新は次の補助操作だけである。
+配布ルートの `python -X utf8 -B .claude/skills/aidd-common/scripts/aidd_entry.py /aidd-implement
+--action <emit.event> --item <emit.item> --payload <JSON> <action>` を使う。生成Skillが行える更新は次の補助操作だけである。
 
 - `implement-note`: `{execution_id, operation_id, section, text}`。sectionは「決定ログ」「既知の制約 / 残課題」「後続への申し送り」。判断時に1行を追記する。送り先もtextに記す。
   制約の解消は元の記述を特定し、決定・確認結果を添えて同じ制約欄へ追記する。履歴の削除や新しい状態機構は不要。
@@ -90,6 +66,9 @@ dev/test依存やmanifest/lockfileの共有は許容する。追跡する依存�
 
 tasks.mdを直接書き換えない。末尾ゲートで証跡を確認し、flow全体のL0完了後にL3がチェックを確定する。
 計画本文の修正は上流へ返す。コード・テスト・設定の編集はallowed_paths内だけ。
+上流（context の `upstream`）は approved を前提とする。ただし context の `unreviewed_inputs` に挙げた入力
+（上流工程の `target_review` から外れ、検査・承認されない draft）は、approved でなくても読む。これを理由に
+failed・waiting・差戻し候補にしない。タスク実装・修正と最終検査の context の両方に同じ規則で渡る。
 
 ```json
 {
@@ -108,7 +87,7 @@ completedは作業結果だけを表す。L3が実差分・証跡・task更新�
 featureレビューの実回答で修正を記録した後、event=implement-gate-run/item=featureで
 `implement-repair` に `{request_id, expected: <review_context>, findings: [{phase: "implement",
 scope: "feature:booking", run: 1, number: 1, instruction: "実際の指示", task_ids: ["1"]}]}` と実actorを渡す。
-同じ指摘の複数task_idsは別イベントへ分割し、全件の完了と全体再検査まで解消しない。
+同じ指摘の複数task_idsは別アクションへ分割し、全件の完了と全体再検査まで解消しない。
 上流への差戻しは既存のrepair/upstream-approved/resolve-rollbackを用いる。
 
 単なる応答喪失は同じsubmit/操作IDで再送する。末尾確認だけ未了ならSkillを再実行しない。
@@ -122,7 +101,7 @@ scope: "feature:booking", run: 1, number: 1, instruction: "実際の指示", tas
 markerを退避してから再試行する。プロセス不明のままmarkerを削除してはいけない。
 
 親要求・子実行・feature状態・最終検査manifestには `flow_contract` を保存する。
-callの対応、events/flows/gatesのハッシュ、L3契約のハッシュが一致する場合だけ再開する。
+callの対応、command/flow/action/gateのハッシュが一致する場合だけ再開する。
 submit/respondは実dispatchまたはreview_contextのcall/event/itemを保持する。
 retry/rebase/上流変更によるredoも正規flowを使用する。
 
@@ -143,5 +122,8 @@ L0の履歴キーにはflow名が含まれるため、名前だけを置換し�
 
 コードprofile `implementation-code-v1` のreview.jsonは対象コードの在庫（追加・削除を含む）、
 上流、計画、tasks完了証跡、検証計画、flow契約の機械manifest。既存v2表の承認ハッシュはmanifestのSHA256である。
+検査対象（review_targets）と `unreviewed_inputs` は、Phase 1〜7 と同じ規則で決まる（Phase 8 の例外は無い）。
+最終検査はアクション本体（implement-gate-run）が行い、`tasks-gate-run` と同じく検査ゲートの `target_review` を持たないため、
+検査対象は feature の出力すべてになる。上流の `unreviewed_inputs` は入力の例外であり、検査対象ではない。
 manifestだけの変更検査ではなく、毎回その中身と実ファイルを再照合する。実コードにstatusを書かない。
 全ツール実施・成功と全意味観点の最新実績が必要。承認は実review waitへの実回答のみで保存する。

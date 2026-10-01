@@ -2,7 +2,7 @@
 from pathlib import Path
 
 import artifacts
-import aidd_paths
+import phase_rules
 import record_format
 
 
@@ -14,19 +14,23 @@ def read(context):
 
 
 def scopes(context):
-    if context.event == "tasks-gate-run":
+    if context.action == "tasks-gate-run":
         return ["feature:" + f["name"] for f in context.features()] + ["phase"]
     return [context.scope]
 
 
 def targets_for(context, scope):
     if context.process == 'implement':
-        if context.event != 'implement-gate-run' or scope != context.scope:
+        if context.action != 'implement-gate-run' or scope != context.scope:
             raise ValueError('implementation approval is only available for the whole feature')
-        return context.artifacts()
+        return context.review_targets()
     if scope.startswith("feature:"):
-        return ["specs/%s/%s.md" % (scope[len("feature:"):], context.process)]
-    return context.artifacts()
+        item = scope[len("feature:"):]
+        if scope == context.scope:
+            return context.review_targets()
+        rule = phase_rules.RULES[context.process]
+        return phase_rules.ExecutionContext(context.root, context.state_path, rule["generate"], item).review_targets()
+    return context.review_targets()
 
 
 def inspection(context, record, scope):
@@ -35,14 +39,14 @@ def inspection(context, record, scope):
     if run is None or run.targets != targets:
         raise ValueError("required inspection missing or targets changed: %s" % scope)
     for target in targets:
-        if run.hashes[target] != aidd_paths.inspection_digest(context, target):
+        if run.hashes[target] != phase_rules.inspection_digest(context, target):
             raise ValueError("artifact changed since inspection: %s" % target)
     return run
 
 
 def required_layers(context, scope):
     """L3 coverage policy; tasks' aggregate does not replace feature checks."""
-    if scope == "cross" or (context.event == "tasks-gate-run" and scope == "phase"):
+    if scope == "cross" or (context.action == "tasks-gate-run" and scope == "phase"):
         return "②"
     return "①②"
 
@@ -64,9 +68,9 @@ def complete_inspection(context, record, scope):
 
 def repair_covers(context, finding):
     """A pending human-selected repair (same phase) or rollback covers this open finding."""
-    import workflow_state
+    import project_progress
     key = {"scope": finding.scope, "run": finding.run, "number": finding.number}
-    for request in workflow_state.workflow(context).get("repairs", {}).values():
+    for request in project_progress.workflow(context).get("repairs", {}).values():
         if isinstance(request, dict) and not request.get("consumed") and any(
                 all(row.get(k) == v for k, v in key.items()) and row.get("phase") == context.process
                 for row in request.get("findings", [])):
@@ -110,16 +114,16 @@ def check_approved(context, require_all=True, allow_repair=False):
     if context.is_cross:
         record = ready(context, allow_repair=allow_repair)
         if require_all:
-            import review_actions
-            review_actions.check_cross(context, context.process)
+            import review_decisions
+            review_decisions.check_cross(context, context.process)
         return record
     record = ready(context, allow_repair=allow_repair)
     run = inspection(context, record, context.scope)
     if context.process == 'implement':
-        if require_all and any(approval_for(record, run, target) is None for target in context.artifacts()):
+        if require_all and any(approval_for(record, run, target) is None for target in context.review_targets()):
             raise ValueError('feature implementation needs current human approval evidence')
         return record
-    for target in context.artifacts():
+    for target in context.review_targets():
         status = (artifacts.fields(context.path(target)) or {}).get("status")
         if require_all and status != "approved":
             raise ValueError("artifact is not approved: %s" % target)

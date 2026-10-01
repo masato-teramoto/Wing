@@ -1,35 +1,69 @@
-"""Workflow-specific prerequisites, invoked as L0 script events."""
+"""Workflow-specific prerequisites, invoked as L0 script actions."""
 from pathlib import Path
 
-import aidd_paths
+import phase_rules
 import artifacts
-import review_actions
+import review_decisions
 import review_contract
 
 
 def approved(context, paths):
     import os
-    import workflow_state
+    import project_progress
     for path in dict.fromkeys(paths):
+        owner = project_progress.owner_of(context, path)
+        if owner is not None and unreviewed(owner, path):
+            # Left out of its inspection gate's target_review: neither inspected nor approved (D6).
+            # Its status field is not evidence either way, so an edited `approved` proves nothing.
+            if not Path(context.path(path)).is_file():
+                raise ValueError("required upstream artifact is missing: " + path)
+            continue
         if (artifacts.fields(context.path(path)) or {}).get("status") != "approved":
             raise ValueError("required upstream artifact is missing or not approved: " + path)
         # status: approved alone is not evidence: the approval record must match the content.
-        owner = workflow_state.owner_of(context, path)
-        if owner is not None and not workflow_state.evidence_ok(owner):
+        if owner is not None and not project_progress.evidence_ok(owner):
             if os.environ.get("AIDD_UNIT"):
                 raise ValueError("承認の証跡が内容と一致しません: %s（再検査・再承認が必要）" % path)
-            raise ValueError(workflow_state.reopen_edited(context, owner, path))
+            raise ValueError(project_progress.reopen_edited(context, owner, path))
+
+
+def unreviewed(owner, path):
+    """True when the owner's inspection gate leaves this output out of its target_review."""
+    try:
+        return path not in owner.review_targets()
+    except ValueError:
+        return False  # e.g. a feature outside the approved manifest: keep the not-approved refusal
+
+
+def unreviewed_inputs(context, paths=None):
+    """Upstream files this action may read although they are not approved (D6), for the host
+    to hand to authoring and inspection Skills. Empty unless some target_review is narrowed.
+
+    Phase 8 included: its own inspection covers every output, but its upstream (steering,
+    specs) may still hold files left out of their inspection. `paths` defaults to the upstream.
+    """
+    import project_progress
+    if paths is None:
+        if context.process not in phase_rules.RULES:
+            return []
+        paths = context.upstream()
+    found = []
+    for path in paths:
+        owner = project_progress.owner_of(context, path)
+        if owner is not None and unreviewed(owner, path):
+            found.append(path)
+    return found
 
 
 def check(context):
-    if context.process not in aidd_paths.RULES:
-        raise ValueError("unknown workflow event")
-    rule = aidd_paths.RULES[context.process]
-    per_item_event = context.event in (rule["generate"], rule["repair"]) and rule["per_feature"]
-    if per_item_event and not context.item:
-        raise ValueError("this event requires --item")
-    if not per_item_event and context.item:
-        raise ValueError("this event does not take --item")
+    if context.process not in phase_rules.RULES:
+        raise ValueError("unknown workflow action")
+    rule = phase_rules.RULES[context.process]
+    per_item_action = context.action in (rule["generate"], rule["repair"]) and rule["per_feature"]
+    if per_item_action and not context.item:
+        raise ValueError("this action requires --item")
+    if not per_item_action and context.item:
+        raise ValueError("this action does not take --item")
     inputs = context.upstream()
     if context.process == "intake":
         root = Path(context.path(".aidd/rfp"))
@@ -37,13 +71,13 @@ def check(context):
             raise ValueError("RFP input files are missing")
     approved(context, inputs)
     if context.process in ("design", "docs", "tasks"):
-        review_actions.check_cross(context, "requirements")
+        review_decisions.check_cross(context, "requirements")
     if context.process in ("docs", "tasks"):
-        review_actions.check_cross(context, "design")
+        review_decisions.check_cross(context, "design")
     if context.process in ("requirements", "design") and context.item:
         names = [f["name"] for f in context.features()]
         approved(context, ["specs/%s/%s.md" % (name, context.process) for name in names[:names.index(context.item)]])
-    if context.event == "tasks-gate-run":
+    if context.action == "tasks-gate-run":
         record = review_contract.read(context)
         for feature in context.features():
             review_contract.inspection(context, record, "feature:" + feature["name"])
@@ -59,15 +93,15 @@ def blockers(context):
         if entry["status"] == "resolved":
             continue
         # The discovering artifact waits for its own upstream fix (also within one phase).
-        if entry["status"] == "open" and entry.get("resume_event") == context.event and (entry.get("resume_item") or "") == context.item:
-            raise ValueError("open rollback blocks this event until the upstream is reapproved: " + str(entry.get("id", "unknown")))
+        if entry["status"] == "open" and entry.get("resume_event") == context.action and (entry.get("resume_item") or "") == context.item:
+            raise ValueError("open rollback blocks this action until the upstream is reapproved: " + str(entry.get("id", "unknown")))
         phase = entry.get("return_to_phase")
         if not isinstance(phase, int) or not 1 <= phase <= 7:
             raise ValueError("invalid blocker return phase")
         if context.phase <= phase:
             continue
         if entry["status"] == "upstream-approved":
-            origin = aidd_paths.RULES.get((entry.get("finding") or {}).get("phase"), {}).get("number")
+            origin = phase_rules.RULES.get((entry.get("finding") or {}).get("phase"), {}).get("number")
             if origin and context.phase <= origin:
                 continue  # Rebuild invalidated prerequisites before reinspecting the origin.
-        raise ValueError("open rollback blocks this downstream event: " + str(entry.get("id", "unknown")))
+        raise ValueError("open rollback blocks this downstream action: " + str(entry.get("id", "unknown")))

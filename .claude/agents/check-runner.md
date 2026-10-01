@@ -1,6 +1,6 @@
 ---
 name: check-runner
-description: L0 の isAgent イベントとして、指定された合成 Skill の観点を順次検査する。指摘と当該実行の記録だけを返し、進行・承認を判断しない。
+description: L0 の isAgent アクションとして、指定された合成 Skill の観点を順次検査する。指摘と当該実行の記録だけを返し、進行・承認を判断しない。
 tools: Read, Grep, Glob, Write
 model: inherit
 ---
@@ -10,11 +10,22 @@ L0 の emit を受けたホストから起動される検査実行体。L3 の�
 ## 入力
 
 - L0 の unit にある target（合成 Skill 名）と calls（順序・重複を保持した観点 Skill 名）。
-- 検査対象と上流の明示的なパス一覧。RFP を除く上流は approved。一覧に無いファイルを Glob で検査対象へ追加しない。
+- 検査対象（context の `review_targets`。snapshot の対象と同じ）と上流の明示的なパス一覧。検査対象はゲートの `target_review`（省略時はアクションの出力すべて）。RFP と、`unreviewed_inputs` に挙げた入力（上流工程の `target_review` から外れた draft）を除く上流は approved。一覧に無いファイルを Glob で検査対象へ追加しない。
 - snapshot_path と findings_path、gate_record_path（読むだけ）、inspection_path（今回の1実行ブロックの書き出し先）。当該実行の phase / event / scope / run / at と対象・ハッシュが snapshot に含まれる。
 - scope は phase / feature:<name> / cross。feature 名は item と一致する。実行回数や日時を自分で推測・採番しない。
 
 ## 手順
+
+profileが`task-specification-v1`の場合は、指定された`task-specification`のSkillを読み、
+その資料生成手順と返却契約だけを使う。実テストから人の確認資料を作り、JSONで返す。
+仕様書内容の独立レビュー、MCP呼出し、gate-report、ファイル書込みは行わない。
+このprofileでは以下の検査記録用手順を適用しない。
+
+profileが`implementation-task-review-v1`の場合は、`task-implement-check`のSkillを読み、
+指定された3観点を1回の呼出しで順に実施する。タスク範囲と返却JSONはそのSkillに従う。
+request.mcpの固定参照・全ACE指摘と実ファイル・保存済み検証実績を読み、ACE指摘への根拠付き対応、実施観点・未確認範囲・指摘・前回指摘の解消根拠を返す。
+実行コマンド、追加モデル起動、gate-report、ファイル書込みは行わない。
+このprofileでは以下の検査記録用手順を適用しない。
 
 profileが `implementation-code-v1` の場合はコード検査として扱う。対象manifestのcode一覧と
 明示されたupstream/verification_pathsを読み、tool_results_pathの全必須コマンドの実績を確認する。

@@ -11,19 +11,19 @@ disable-model-invocation: true
 
 ## 入力の範囲
 
-以下の `*` / `<feature>` はホストが渡した明示的な対象・上流一覧への表記であり、Globで対象を発見して分母を決める指示ではない。必要なファイルが一覧に無ければfailedで返す。機械指摘は指定された findings_path だけから受け取り、snapshot と実行IDが一致するものを使う。
+「渡された検査対象」は、ホストが渡した検査対象の明示的な一覧（context の `review_targets`。snapshot の対象と同じ。gate.yaml の `target_review`、省略時はアクションの出力すべて）を指す。一覧のファイルだけを検査対象とし、一覧に無い出力は検査しない。特定のファイル名を書いた行は、そのファイルが検査対象に無ければfailedで返す。以下の `*` / `<feature>` はホストが渡した明示的な対象・上流一覧への表記であり、Globで対象を発見して分母を決める指示ではない。必要なファイルが一覧に無ければfailedで返す。機械指摘は指定された findings_path だけから受け取り、snapshot と実行IDが一致するものを使う。
 
 ## 手順
 
 1. `.claude/skills/format-conformance/SKILL.md` を Read し、次を指定して実行する。
 
-   | 対象パス | `specs/<feature>/requirements.md` | テンプレパス | `Templates/specs/_template/requirements.md` | ID書式 | 要件ID = 数値のみ（`1`, `1.1`）。当該ファイル内で重複しない | 追加検証 | 各要件に US と AC が存在する・フロントマターの `feature` が `.aidd/feature-list.md` の feature 名と一致する | 報告単位 | 要件ID |
+   | 対象パス | 渡された検査対象 | テンプレパス | `Templates/specs/_template/requirements.md` | ID書式 | 要件ID = 数値のみ（`1`, `1.1`）。当該ファイル内で重複しない | 追加検証 | 各要件に US と AC が存在する・フロントマターの `feature` が `.aidd/feature-list.md` の feature 名と一致する | 報告単位 | 要件ID |
 
    プレースホルダーは、不要理由が明記された箇所を指摘せず、理由の無いまま残る箇所を指摘する。
 
 2. `.claude/skills/traceability/SKILL.md` を Read し、次を指定して実行する（当該feature行の対応要求IDだけを分母とする要求ID突合）。
 
-   | 上流 | `.aidd/feature-list.md`・`.aidd/requirement-list.md` | 下流 | `specs/<feature>/requirements.md` | 突合方向 | 双方向 | 対応の単位 | 要求ID | 分母の絞り込み | 当該 feature 行の対応要求IDのみ | 報告単位 | 未反映の要求ID／要求IDに紐づかない要件 |
+   | 上流 | `.aidd/feature-list.md`・`.aidd/requirement-list.md` | 下流 | 渡された検査対象 | 突合方向 | 双方向 | 対応の単位 | 要求ID | 分母の絞り込み | 当該 feature 行の対応要求IDのみ | 報告単位 | 未反映の要求ID／要求IDに紐づかない要件 |
 
    下流→上流では、各要件（`### 要件 N`）がいずれかの対応要求IDに紐づくかを見る。テンプレートに要求ID欄が
    無いため、ID の記載有無ではなく要件の内容で紐づけを判定し、紐づけ先を示せない要件を指摘する。上流→下流では
@@ -31,23 +31,23 @@ disable-model-invocation: true
 
 3. `.claude/skills/verifiable-criteria-check/SKILL.md` を Read し、次を指定して実行する。
 
-   | 対象 | `specs/<feature>/requirements.md` の各要件AC |
+   | 対象 | 渡された検査対象の各要件AC |
 
 4. `.claude/skills/ac-coverage-completeness/SKILL.md` を Read し、次を指定して実行する。
 
-   | 対象 | `specs/<feature>/requirements.md` の各要件AC |
+   | 対象 | 渡された検査対象の各要件AC |
 
 5. `.claude/skills/traceability/SKILL.md` を Read し、次を指定して実行する（非機能誤配置検出）。
 
-   | 上流 | `steering/non-functional.md`・`steering/security.md` | 下流 | `specs/<feature>/requirements.md` | 突合方向 | 下流→上流 | 対応の単位 | 非機能/制約項目 | 分母の絞り込み | なし | 報告単位 | 誤配置の要件・AC |
+   | 上流 | `steering/non-functional.md`・`steering/security.md` | 下流 | 渡された検査対象 | 突合方向 | 下流→上流 | 対応の単位 | 非機能/制約項目 | 分母の絞り込み | なし | 報告単位 | 誤配置の要件・AC |
 
 6. `.claude/skills/evidence-guard/SKILL.md` を Read し、次を指定して実行する。
 
-   | 対象 | `specs/<feature>/requirements.md` | 根拠 | `.aidd/feature-list.md`・`.aidd/requirement-list.md`・`steering/*.md` |
+   | 対象 | 渡された検査対象 | 根拠 | `.aidd/feature-list.md`・`.aidd/requirement-list.md`・`steering/*.md` |
 
 7. `.claude/skills/ssot-consistency/SKILL.md` を Read し、次を指定して実行する（重複要件検出）。
 
-   | 対象成果物 | `specs/<feature>/requirements.md` | 検査する事実の種類 | 要件が定義する振る舞い | SSoTの所在 | 先に記載された要件ID | 検査の型 | 二重定義 | 報告単位 | 重複と判定した要件IDの対 |
+   | 対象成果物 | 渡された検査対象 | 検査する事実の種類 | 要件が定義する振る舞い | SSoTの所在 | 先に記載された要件ID | 検査の型 | 二重定義 | 報告単位 | 重複と判定した要件IDの対 |
 
    文言ではなく振る舞いの同一性で判定する。加えて、ある要件が他の要件の受け入れ基準の部分集合になっている
    （独立した要件として存在する必要が無い）場合も INVEST の Independent 違反として指摘する。手順3・4で
@@ -55,11 +55,11 @@ disable-model-invocation: true
 
 8. `.claude/skills/steering-conformance/SKILL.md` を Read し、次を指定して実行する。
 
-   | 対象 | `specs/<feature>/requirements.md` | 参照する steering | `steering/*.md` 一式 | 検証観点 | steering への違反・矛盾・逸脱 | 報告単位 | 要件ID |
+   | 対象 | 渡された検査対象 | 参照する steering | `steering/*.md` 一式 | 検証観点 | steering への違反・矛盾・逸脱 | 報告単位 | 要件ID |
 
 9. `.claude/skills/ssot-consistency/SKILL.md` を Read し、次を指定して実行する（Dependencies整合検証）。
 
-   | 対象成果物 | `specs/<feature>/requirements.md`・`.aidd/feature-list.md` | 検査する事実の種類 | Dependencies記載 | 検査の型 | 参照切れ |
+   | 対象成果物 | 渡された検査対象・`.aidd/feature-list.md` | 検査する事実の種類 | Dependencies記載 | 検査の型 | 参照切れ |
 
 10. `.claude/skills/gate-report/SKILL.md` を Read し、蓄積した指摘を書き込む。
 

@@ -29,7 +29,7 @@ import json
 import os
 import sys
 
-import config as config_module
+import repositories as repositories_module
 import ulid
 
 INFO = "info"
@@ -89,7 +89,7 @@ class Settings:
         values = dict(cls.DEFAULTS)
         if os.path.exists(source):
             with open(source, encoding="utf-8") as handle:
-                data = config_module.parse_yaml(handle.read())
+                data = repositories_module.parse_yaml(handle.read())
             if not isinstance(data, dict):
                 raise LogError("%s のルートはマッピングでなければならない" % source)
             output = data.get("output") or {}

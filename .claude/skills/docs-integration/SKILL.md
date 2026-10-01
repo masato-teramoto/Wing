@@ -8,9 +8,11 @@ disable-model-invocation: true
 
 対象: `docs/code-design.md` / `docs/architecture/data-model.md` / `docs/architecture/system-overview.md`。feature単位の対象はホストから受け取る。
 テンプレート: `Templates/docs/code-design.md` / `Templates/docs/architecture/data-model.md` / `Templates/docs/architecture/system-overview.md`。
-起動 event: `docs-integration-generate`（直後に `docs-integration-revise` が毎回実行される）。
+起動アクション: `docs-integration-generate`（修正要求があるときだけ、入口 Skill が続けて `docs-integration-revise` を呼ぶ）。
 
 ## 手順
+
+役割: 生成（generate）
 
 1. `.claude/skills/aidd-common/references/authoring/contract.md` を読み、受け取った対象・承認済み入力・質問回答を確認する。
 2. `.claude/skills/aidd-common/references/authoring/docs.md` と上記の実行時テンプレートを読む。steering は一式（全文）を読む。

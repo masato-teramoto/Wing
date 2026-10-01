@@ -27,7 +27,9 @@ class YamlError(ValueError):
 def load(text):
     lines = _strip(text)
     if not lines:
-        return {}
+        return None
+    if len(lines) == 1 and lines[0][1] == '[]':
+        return []
     value, index = _parse_block(lines, 0, lines[0][0])
     if index != len(lines):
         raise YamlError("行 %d: インデントが揃っていない" % (lines[index][2],))

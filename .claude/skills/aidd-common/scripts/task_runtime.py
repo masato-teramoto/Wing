@@ -159,9 +159,9 @@ def freeze(context, feature):
     if (root / location).exists():
         project(path, path.read_bytes())
         return store.read(root, location)
-    import aidd_paths
+    import phase_rules
     import review_contract
-    approved = aidd_paths.Context(context.root, context.state_path, 'tasks-gate-run')
+    approved = phase_rules.ExecutionContext(context.root, context.state_path, 'tasks-gate-run')
     record = review_contract.check_approved(approved)
     approval_bytes = Path(approved.gate_record).read_bytes()
     data = path.read_bytes()

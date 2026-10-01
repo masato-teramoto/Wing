@@ -75,22 +75,22 @@ def current_execution(context):
 
 
 def empty_revision(context, execution):
-    return context.event == 'implement-authoring-revise' and execution['event'] == 'implement-authoring-generate'
+    return context.action == 'implement-authoring-revise' and execution['event'] == 'implement-authoring-generate'
 
 
 def read_execution(context):
     value = current_execution(context)
-    if value['event'] != context.event and not empty_revision(context, value):
-        raise ValueError('execution belongs to another event/item')
+    if value['event'] != context.action and not empty_revision(context, value):
+        raise ValueError('execution belongs to another action/item')
     return value
 
 
 def require_execution(context, payload, allow_finished=False):
     value = read_execution(context)
-    if payload.get('execution_id') != value['execution_id'] or context.event != value['event']:
-        raise ValueError('action needs the current execution_id and work event')
+    if payload.get('execution_id') != value['execution_id'] or context.action != value['event']:
+        raise ValueError('operation needs the current execution_id and work action')
     if not value.get('activated'):
         raise ValueError('resume implementation request activation first')
     if value.get('end_checked') and not allow_finished:
-        raise ValueError('work event already checked; use explicit retry for further edits')
+        raise ValueError('work action already checked; use explicit retry for further edits')
     return value

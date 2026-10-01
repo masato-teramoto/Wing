@@ -12,17 +12,17 @@ disable-model-invocation: true
 
 ## 入力の範囲
 
-以下の `*` / `<feature>` はホストが渡した明示的な対象・上流一覧への表記であり、Globで対象を発見して分母を決める指示ではない。必要なファイルが一覧に無ければfailedで返す。機械指摘は指定された findings_path だけから受け取り、snapshot と実行IDが一致するものを使う。
+「渡された検査対象」は、ホストが渡した検査対象の明示的な一覧（context の `review_targets`。snapshot の対象と同じ。gate.yaml の `target_review`、省略時はアクションの出力すべて）を指す。一覧のファイルだけを検査対象とし、一覧に無い出力は検査しない。特定のファイル名を書いた行は、そのファイルが検査対象に無ければfailedで返す。以下の `*` / `<feature>` はホストが渡した明示的な対象・上流一覧への表記であり、Globで対象を発見して分母を決める指示ではない。必要なファイルが一覧に無ければfailedで返す。機械指摘は指定された findings_path だけから受け取り、snapshot と実行IDが一致するものを使う。
 
 ## 手順
 
 1. `.claude/skills/format-conformance/SKILL.md` を Read し、次を指定して実行する。
 
-   | 対象パス | `docs/*` | テンプレパス | `Templates/docs/<同名ファイル>` | ID書式 | なし | 追加検証 | なし | 報告単位 | ファイル × セクション |
+   | 対象パス | 渡された検査対象 | テンプレパス | `Templates/docs/<同名ファイル>` | ID書式 | なし | 追加検証 | なし | 報告単位 | ファイル × セクション |
 
 2. `.claude/skills/traceability/SKILL.md` を Read し、次を指定して実行する（design→docs網羅性検証）。
 
-   | 上流 | `specs/*/design.md`・`specs/*/requirements.md`（独立抽出） | 下流 | `docs/*` | 突合方向 | 上流→下流 | 対応の単位 | エンティティ / 属性 / 関連、業務コード・区分値・採番対象、主要フロー、コンポーネントと接続 | 分母の絞り込み | なし | 報告単位 | docs 未反映の design 要素 |
+   | 上流 | `specs/*/design.md`・`specs/*/requirements.md`（独立抽出） | 下流 | 渡された検査対象 | 突合方向 | 上流→下流 | 対応の単位 | エンティティ / 属性 / 関連、業務コード・区分値・採番対象、主要フロー、コンポーネントと接続 | 分母の絞り込み | なし | 報告単位 | docs 未反映の design 要素 |
 
    - 抽出は feature 単位で独立に行い、全 feature の spec を一度に読み込まない。抽出を書き留めてから初めて
      `docs/` を読む。作成時の抽出結果を引き継がない。
@@ -31,7 +31,7 @@ disable-model-invocation: true
 
 3. `.claude/skills/traceability/SKILL.md` を Read し、次を指定して実行する（docs補完混入検出）。
 
-   | 上流 | `specs/*/design.md` | 下流 | `docs/*` | 突合方向 | 下流→上流 | 対応の単位 | 手順2と同じ | 分母の絞り込み | なし | 報告単位 | design に存在しない docs の要素 |
+   | 上流 | `specs/*/design.md` | 下流 | 渡された検査対象 | 突合方向 | 下流→上流 | 対応の単位 | 手順2と同じ | 分母の絞り込み | なし | 報告単位 | design に存在しない docs の要素 |
 
 4. `.claude/skills/internal-contradiction-detection/SKILL.md` を Read し、次を指定して実行する。
 
@@ -39,7 +39,7 @@ disable-model-invocation: true
 
 5. `.claude/skills/ssot-consistency/SKILL.md` を Read し、次を指定して実行する（用語命名一貫性検証）。
 
-   | 対象成果物 | `docs/*`・`specs/*/design.md` | 検査する事実の種類 | ユビキタス言語（用語・命名） | 検査の型 | 二重定義 |
+   | 対象成果物 | 渡された検査対象・`specs/*/design.md` | 検査する事実の種類 | ユビキタス言語（用語・命名） | 検査の型 | 二重定義 |
 
 6. `.claude/skills/ssot-consistency/SKILL.md` を Read し、次を指定して実行する（データモデル参照整合性検証）。
 
@@ -51,18 +51,18 @@ disable-model-invocation: true
 
 8. `.claude/skills/evidence-guard/SKILL.md` を Read し、次を指定して実行する。
 
-   | 対象 | `docs/*` | 根拠 | `specs/*/design.md`・`steering/*.md` |
+   | 対象 | 渡された検査対象 | 根拠 | `specs/*/design.md`・`steering/*.md` |
 
 9. `.claude/skills/ssot-consistency/SKILL.md` を Read し、次を指定して実行する（steering二重定義検証）。
 
-   | 対象成果物 | `docs/*`・`steering/*.md` | 検査する事実の種類 | 業務コード・DB の方針（steering）と実態（docs）の重複・矛盾 | SSoTの所在 | 方針は `steering/`、実態は `docs/` | 検査の型 | 二重定義 | 報告単位 | 重複している記述の対 |
+   | 対象成果物 | 渡された検査対象・`steering/*.md` | 検査する事実の種類 | 業務コード・DB の方針（steering）と実態（docs）の重複・矛盾 | SSoTの所在 | 方針は `steering/`、実態は `docs/` | 検査の型 | 二重定義 | 報告単位 | 重複している記述の対 |
 
    docs が steering のルールを「準拠」として引用するのは二重定義ではない。あわせて `code-design.md` のコードが
    steering のコード設計ルールに従っているかを、ルール側を正として突き合わせる。
 
 10. `.claude/skills/definition-resolution-completeness/SKILL.md` を Read し、次を指定して実行する。
 
-    | 対象 | `docs/*` | 突合元 | `specs/*/design.md` |
+    | 対象 | 渡された検査対象 | 突合元 | `specs/*/design.md` |
 
 11. `.claude/skills/design-rule-gap-detection/SKILL.md` を Read し、次を指定して実行する。
 

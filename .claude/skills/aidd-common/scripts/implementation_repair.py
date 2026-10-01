@@ -1,22 +1,22 @@
 """L3 repair fan-out, upstream invalidation and explicit evidence recovery."""
 from pathlib import Path
 
-import aidd_paths
+import phase_rules
 import implementation_evidence as evidence
 import implementation_flows as flows
 import implementation_requests as requests
 import implementation_store as store
-import review_actions
+import review_decisions
 import review_contract
 import review_gate
 import task_runtime
-import workflow_state
+import project_progress
 
 
 def request(context, payload, actor):
-    review_actions.person(actor)
+    review_decisions.person(actor)
     flows.configuration(context, validate=True)
-    if context.event != requests.FINAL:
+    if context.action != requests.FINAL:
         raise ValueError('select implementation repairs from the feature review')
     request_id = store.identifier(payload.get('request_id'))
     path = store.request_path(request_id)
@@ -40,7 +40,7 @@ def request(context, payload, actor):
             identity = (row.get('scope'), row.get('run'), row.get('number'))
             if row.get('phase') != 'implement' or row.get('scope') != context.scope or identity in keys:
                 raise ValueError('repair has duplicated or wrong-scope findings')
-            finding = review_actions.finding(record, *identity)
+            finding = review_decisions.finding(record, *identity)
             ids = row.get('task_ids')
             if (finding is None or finding.resolved or finding.decision != '修正'
                     or not isinstance(row.get('instruction'), str) or not row['instruction'].strip()
@@ -65,7 +65,7 @@ def request(context, payload, actor):
         state['completed'].pop(key, None)
     state['active_request'] = request_id
     store.write(context.root, requests.feature_path(context.item), state)
-    workflow_state.redo(context, requests.FINAL, context.item)
+    project_progress.redo(context, requests.FINAL, context.item)
     value['status'] = 'active'
     store.write(context.root, path, value)
     return value
@@ -73,7 +73,7 @@ def request(context, payload, actor):
 
 def resolution_ready(context, scope, run, number):
     record = review_contract.read(context)
-    finding = review_actions.finding(record, scope, run, number)
+    finding = review_decisions.finding(record, scope, run, number)
     if finding is not None and finding.decision == '差戻し':
         # Upstream repairs use the rollback ledger, then rebase/reverify every
         # task. They do not create an implementation-only correction request.
@@ -94,7 +94,7 @@ def resolution_ready(context, scope, run, number):
         if any((row['scope'], row['run'], row['number']) == (scope, run, number) for row in value['findings']):
             matched.append(value)
     if not matched or any(value['status'] != 'completed' for value in matched):
-        raise ValueError('all mapped repair task events must complete before finding resolution')
+        raise ValueError('all mapped repair task actions must complete before finding resolution')
     requests.check_feature_ready(context, context.item)
     import implementation_checks
     implementation_checks.complete_inspection(context)
@@ -109,7 +109,7 @@ def invalidate_feature(context, feature, retire_plan=False):
     if not state.get('invalidated'):
         state['invalidated'] = True
         store.write(context.root, path, state)
-        workflow_state.redo(context, requests.FINAL, feature)
+        project_progress.redo(context, requests.FINAL, feature)
     if retire_plan:
         task_runtime.retire(context, feature)
 
@@ -123,14 +123,14 @@ def invalidate(context, from_phase, item=None):
         state = requests.feature_state(context, feature)
         state['invalidated'] = True
         store.write(context.root, requests.feature_path(feature), state)
-        workflow_state.redo(context, requests.FINAL, feature)
+        project_progress.redo(context, requests.FINAL, feature)
         if from_phase <= 7:
             task_runtime.retire(context, feature)
 
 
 def rebase(context, payload, actor):
     """Retain old evidence; reverify after an explicitly diagnosed external edit."""
-    review_actions.person(actor)
+    review_decisions.person(actor)
     if not payload.get('reason'):
         raise ValueError('rebase requires the actual reason for input/code changes')
     route = flows.configuration(context, validate=True)
@@ -163,28 +163,38 @@ def rebase(context, payload, actor):
     state.update(inputs=requests.input_signature(context, context.item), plan_ref=plan['plan_ref'], policy=policy,
                  flow_contract=route,
                  completed={}, active_request=None, invalidated=False, live_code=evidence.feature_inventory(context, policy))
-    workflow_state.redo(context, requests.FINAL, context.item)
+    project_progress.redo(context, requests.FINAL, context.item)
     store.write(context.root, requests.feature_path(context.item), state)
     return state
 
 
-def retry(context, payload):
+def retry(context, payload, instructions=None):
     """Explicitly redo only this task's event after code needs further editing."""
     execution = store.require_execution(context, payload, allow_finished=True)
     flows.require_saved(context, execution)
+    operation_id = payload.get('operation_id')
+    retry_request = {'payload': payload, 'instructions': instructions}
+    if operation_id and operation_id in execution.get('retry_operations', {}):
+        if execution['retry_operations'][operation_id] != retry_request:
+            raise ValueError('retry operation ID reused with a different instruction')
+        return {'execution_id': execution['execution_id'], 'event': context.action}
     if execution.get('event_complete'):
         raise ValueError('completed task edits require an explicit repair or rebase')
     if not payload.get('reason'):
         raise ValueError('retry requires a diagnosis')
     requests.preflight(context)
-    workflow_state.redo(context, context.event, context.item)
-    if context.event == 'implement-authoring-generate':
-        workflow_state.redo(context, 'implement-authoring-revise', context.item)
+    project_progress.redo(context, context.action, context.item)
+    if context.action == 'implement-authoring-generate':
+        project_progress.redo(context, 'implement-authoring-revise', context.item)
         execution['empty_revision_checked'] = False
     execution['end_checked'] = False
     execution.setdefault('retries', []).append(payload['reason'])
+    if instructions is not None:
+        execution['quality_instructions'] = {**instructions, 'attempt': len(execution['retries'])}
+    if operation_id:
+        execution.setdefault('retry_operations', {})[operation_id] = retry_request
     store.write(context.root, store.execution_path(execution['execution_id']), execution)
-    return {'execution_id': execution['execution_id'], 'event': context.event}
+    return {'execution_id': execution['execution_id'], 'event': context.action}
 
 
 def progress(context, names):
@@ -199,7 +209,7 @@ def progress(context, names):
         state = requests.feature_state(context, name)
         status = 'needs_revalidation' if state.get('invalidated') else 'partial'
         try:
-            review_contract.check_approved(aidd_paths.Context(context.root, context.state_path, requests.FINAL, name))
+            review_contract.check_approved(phase_rules.ExecutionContext(context.root, context.state_path, requests.FINAL, name))
             status = 'approved'
         except (ValueError, OSError, KeyError):
             pass

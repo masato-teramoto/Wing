@@ -8,7 +8,7 @@ import implementation_store as store
 
 GENERATED = {'.git', '__pycache__', '.pytest_cache', '.venv', 'node_modules'}
 CONTROL = {'.aidd', '.claude', 'Templates', 'specs', 'steering', 'docs'}
-CONTROL_FILES = {'.main-flow-assets.json', 'CLAUDE.md', 'aidd-run.py'}
+CONTROL_FILES = {'.main-flow-assets.json', 'CLAUDE.md'}
 ASPECTS = ['implementation-traceability', 'implementation-boundary', 'implementation-tests']
 
 
@@ -77,6 +77,8 @@ def policy(context, feature, tasks):
         if path.split('/')[0] in CONTROL or path.rstrip('/') in CONTROL_FILES or any(matches(path.rstrip('/'), scope) or matches(scope.rstrip('/'), path)
                                               for task in value['tasks'].values() for scope in task['allowed_paths']):
             raise ValueError('generated exclusions overlap protected or editable source paths')
+    # The task-quality sections (`task_quality` / `task_review`) are L4's: the L4 start gate
+    # `task-quality-policy` validates them (L3 does not import L4).
     return value
 
 
@@ -151,23 +153,8 @@ def check_scope(context, execution):
 
 
 def receipts(context, execution, stage='verify', current=True):
-    path = store.BASE + '/runs/' + execution['execution_id'] + '/' + stage + '.json'
-    result = store.read(context.root, path)
-    expected = execution['policy']['tasks'][execution['task_id']]['check_ids']
-    if (result.get('source_changed') or result.get('stage') != stage
-            or result.get('execution_id') != execution['execution_id'] or result.get('task_id') != execution['task_id']
-            or result.get('policy_hash') != store.fingerprint(execution['policy'])
-            or (current and result.get('code') != inventory(context, execution['policy']))
-            or [r['check_id'] for r in result.get('receipts', [])] != expected):
-        raise ValueError('verification receipt identity, coverage or version mismatch')
-    if any(r['status'] != 'passed' for r in result['receipts']):
-        raise ValueError('required verification did not pass')
-    for receipt in result['receipts']:
-        for key in ('stdout', 'stderr'):
-            log = receipt[key]
-            if store.digest(Path(context.path(log['path'])).read_bytes()) != log['sha256']:
-                raise ValueError('verification log changed or missing')
-    return result
+    import task_verification
+    return task_verification.receipts(context, execution, stage, current)
 
 
 def review_path(feature):

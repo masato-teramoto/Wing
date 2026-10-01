@@ -1,0 +1,45 @@
+# Harness が管理する入口のコマンド。CommandResolver がコマンドから呼出し先を解決する。
+#   id       入口 Skill の名前（.claude/skills/<id>/SKILL.md）。4 ファイル横断で一意
+#   command  利用者が入力するコマンド
+#   steps    入口 Skill がたどる呼出し先（flow・action の名前）の順
+# 繰り返し（feature ごと・修正の回）はランナーではなく入口 Skill の手順が持ち、1 回ごとに L0 を呼ぶ。
+# feature ごとか（per_feature）は Skill の手順の宣言（繰り返し: feature ごと（per-feature））が持つ。
+# host の規則は hook ではなく、L3 の入口（scripts/aidd_entry.py）が L0 の host に渡す。
+
+- command:
+    id: aidd-requirements-init
+    command: /aidd-requirements-init
+    steps:
+      - { flow: requirements-init }             # Phase 1〜3（flow intake / steering / feature を入れ子に持つ）
+
+- command:
+    id: aidd-requirements
+    command: /aidd-requirements
+    steps:
+      - { flow: requirements-plan }             # Phase 4 の実行計画
+      - { flow: requirements }                  # 入口 Skill が feature ごとに生成・修正のアクションを呼ぶ
+      - { flow: requirements-cross-gate }       # 全 feature の横断検査
+
+- command:
+    id: aidd-design
+    command: /aidd-design
+    steps:
+      - { flow: design-plan }                   # Phase 5 の実行計画
+      - { flow: design }                        # 入口 Skill が feature ごとに生成・修正のアクションを呼ぶ
+      - { flow: design-cross-gate }             # 全 feature の横断検査
+      - { flow: docs }                          # Phase 6
+
+- command:
+    id: aidd-tasks
+    command: /aidd-tasks
+    steps:
+      - { flow: tasks-plan }                    # Phase 7 の実行計画
+      - { flow: tasks }                         # 入口 Skill が feature ごとに生成・修正のアクションを呼ぶ
+      - { flow: tasks-gate-run }                # 全体の依存・トレース確認と全件の承認
+
+- command:
+    id: aidd-implement
+    command: /aidd-implement
+    steps:
+      - { flow: implement }                     # タスクごと。item はタスクの task_item（SKILL と L3 が扱う）
+      - { flow: implement-review }              # feature の最終検査・承認（feature を item にして呼ぶ）

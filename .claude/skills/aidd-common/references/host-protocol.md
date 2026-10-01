@@ -5,30 +5,58 @@
 に従う。L3 policy script は検査 agent を起動せず、ランナーの Python クラスも import しない。
 `.claude/skills/aidd-common/engine.md` の公開 CLI と併読する。
 
-配布環境のコマンドは `python3 -X utf8 -B aidd-run.py workflow ...`（Windows は `py -3`）。
-以下では `W` と略す。root / state はプロジェクトに固定される。
+入口は `aidd_entry.py` だけである（CommandResolver でコマンドと呼出し先を解決し、L0 の host に L3 の規則を渡して実行する）。配布環境のコマンドは
+`python3 -X utf8 -B .claude/skills/aidd-common/scripts/aidd_entry.py <実行中のコマンド> ...`（例：`/aidd-requirements`。Windows は `py -3`）。
+以下では `W` と略す（`W` はコマンドまでを含む）。root / state はプロジェクトに固定される。
+`--call` / `--action` は実行中のコマンドの呼出し先に限る。別のコマンドの呼出し先（差戻し先など）は、
+そのコマンドで呼ぶ（拒否の返却に、呼べるコマンドが示される）。
 
-## 1. 流れの単位：flow と単独イベント
+Phase 8のtask-specification-v1は資料生成用profile。task-specification-reviewのwaitは
+タスク単位の確認であり、既存のfeature最終reviewとは対象が異なる。
+task_review設定時はimplementation-task-review-v1で実コードの3観点を一度に検査し、
+そのJSONをsubmitする。生成・タスクレビューprofileはinspection_pathへ書かず、返却contextの契約を使う。
+同じsubmit/respondを使う（host は結果・回答を解釈せずに保存し、L4 の後のゲートが検査する。文脈は準備のゲートが公開する）。
+タスク単位のゲートは適用の条件（when）を持たず、該当しないタスクでは自分で省く（Skill の emit は、準備のゲートが公開した理由で host が省く）。
+設定の新規作成・変更時は
+[検証計画の記入ルール](implementation/verification-plan.md)、生成・確認時の実回答payloadは
+[単体テスト仕様書とタスク末尾確認](implementation/task-specification.md)を参照する。
 
-`flows.yaml` は Phase 1–7 を **生成（`<base>-generate`）→ 修正（`<base>-revise`）** の順に並べる。
-修正イベントは**毎回走る**。人が修正を選んでいなければ修正 Skill は何も編集せず、
-修正イベントの検査・人間レビュー・承認のゲートは省略される（停止は増えない）。
+## 1. 流れの単位：flow と単独アクション
 
-| コマンド | 進める単位（`--call`） |
+`flow.yaml` は Phase 1–7 を **生成（`<base>-generate`）→ 修正（`<base>-revise`）** の順に並べる（工程の定義）。
+コマンドと、たどる呼出し先の正は `command.yaml`（CommandResolver が解決する）。
+
+### 1.1 繰り返しは入口 Skill の手順が持つ
+
+**L0 は繰り返しを知らない。** 呼ばれた呼出し先（flow・アクション）を、`--item` の item で 1 回ぶんだけ実行する。
+feature ごと・修正の回の繰り返しは入口 Skill（`aidd-*`）の手順が持ち、繰り返しの 1 回ごとに L0 を呼ぶ。
+L0 はその 1 回ぶんの前後のゲート（検査・人間レビュー・承認）を実行するため、検査と承認は feature ごと・修正の回ごとに行われる。
+
+| 繰り返し | 入口 Skill がすること |
 |---|---|
-| `/aidd-requirements-init` | `requirements-init`（Phase 1–3 の 6 イベント） |
-| `/aidd-requirements` | `requirements-plan` → feature ごとに `requirements --item <名>` → `requirements-cross-gate` |
-| `/aidd-design` | `design-plan` → feature ごとに `design --item <名>` → `design-cross-gate` → `docs` |
-| `/aidd-tasks` | `tasks-plan` → feature ごとに `tasks --item <名>` → `tasks-gate-run` |
-| `/aidd-implement` | `implement-task`（生成・修正）をタスクの固定 task_item ごとに実行 → `implement-review --item <feature>`。実際のcallはL3がflows.yamlから解決する。詳細は [実装契約](implementation/contract.md) |
+| feature ごと | 了承した計画の順に、feature ごとに生成のアクションを `--item <feature>` で呼ぶ。承認されてから次の feature へ進む |
+| 修正の回 | 人間レビューで修正が選ばれ、返却が `status: repair`（`repair.event` / `repair.item`）なら、その修正のアクションを呼ぶ。修正の回の人間レビューでまた修正が選ばれれば、同じ呼出しで次の回が続く |
+| 修正要求が無いとき | 修正のアクションは呼ばない（その検査・人間レビュー・承認のゲートも走らない） |
+| Phase 8 のタスク | L3 の `implement-next` が依存順に 1 件を選び、そのタスクの flow を呼ぶ（[実装契約](implementation/contract.md)） |
+
+アクション Skill（生成・修正）は呼ばれた 1 件・1 回だけを扱い、L0 を呼ばない。
+Skill の手順の冒頭の宣言（`役割:` / `繰り返し:`）は、Skill の役割と feature ごとかを表す（L0 は読まない。L3 の工程の規則が使う）。
+
+| コマンド | 進める単位（`--call`。`command.yaml` の steps の順） |
+|---|---|
+| `/aidd-requirements-init` | 工程ごとに `requirement-intake-generate` / `steering-authoring-generate` / `feature-decomposition-generate`（修正要求があるあいだ各 `-revise`） |
+| `/aidd-requirements` | `requirements-plan` → feature ごとに `requirements-authoring-generate --item <名>`（修正要求があるあいだ `-revise`）→ `requirements-cross-gate` |
+| `/aidd-design` | `design-plan` → feature ごとに `design-authoring-generate --item <名>`（同上）→ `design-cross-gate` → `docs-integration-generate`（同上） |
+| `/aidd-tasks` | `tasks-plan` → feature ごとに `tasks-authoring-generate --item <名>` → `tasks-gate-run`（修正は `tasks-authoring-revise --item <名>`） |
+| `/aidd-implement` | `implement`（生成・修正）をタスクの固定 task_item ごとに実行 → `implement-review --item <feature>`。実際のcallはL3がflow.yamlから解決する。詳細は [実装契約](implementation/contract.md) |
 
 feature の順序は `advance` の結果（計画の `対象 feature と順序`）に従う。完了した単位を
 もう一度 `advance` しても、L0 が済んだ unit を飛ばして `done` を返す（再開は同じ入口で行う）。
 
 ```text
-W --call <flow|event> [--item <feature>] advance
-W --event <返された event> [--item <返された item>] --payload <保存したJSON> submit
-W --event <返された event> [--item <返された item>] --payload <保存したJSON> --actor <実回答者> respond
+W --call <flow|action> [--item <feature>] advance
+W --action <返された event（アクション名）> [--item <返された item>] --payload <保存したJSON> submit
+W --action <返された event（アクション名）> [--item <返された item>] --payload <保存したJSON> --actor <実回答者> respond
 ```
 
 返却の `result.status` と `allowed_actions`、`next_action`（次に人がすべきことの 1 行）に従う。
@@ -36,12 +64,12 @@ W --event <返された event> [--item <返された item>] --payload <保存し
 
 | result.status | ホストの処理 |
 |---|---|
-| emit、通常 Skill | 指定 SKILL.md を Read し、context の authoring_inputs・対象・回答・修正依頼（repair）を渡して実行し、結果を submit |
-| emit、isAgent: true | check-runner を別コンテキストで起動し、target/calls、snapshot_path / findings_path / inspection_path を渡す。完了を待って submit |
+| emit、通常 Skill | 指定 SKILL.md を Read し、context の authoring_inputs・対象（`targets`）・`unreviewed_inputs`・回答・修正依頼（repair）を渡して実行し、結果を submit |
+| emit、isAgent: true | check-runner を別コンテキストで起動し、target/calls、検査対象（`review_targets`）・上流（`upstream`）・`unreviewed_inputs`、snapshot_path / findings_path / inspection_path を渡す。完了を待って submit |
 | wait、計画 | detail の計画を**そのまま**人へ提示し、了承（accept-plan）か変更指示（change-plan）を待つ |
 | wait、review | detail の提示文を**そのまま**人へ提示し、判断・解消確認・承認を待つ（§3） |
 | waiting | 生成途中の質問・差戻し候補を提示し、回答（answer）または差戻し（repair）を待つ |
-| blocked | 差戻しが未解消。`blockers` の target_event / target_item の flow を先に進める（§4） |
+| blocked | 差戻しが未解消。`blockers` の target_action / target_item の flow を先に進める（§4） |
 | done | 次の単位へ進む |
 | fail | 理由を人へ示して停止する。機械ゲートへ外部から成功を記録しない |
 
@@ -49,7 +77,7 @@ workflow CLI 自体の終了コードは成功0／失敗1。`fail` でも `opera
 
 ### 進捗の提示
 
-進捗を人に提示する直前に `W --event <event> progress` を実行し、返された一覧を示す。
+進捗を人に提示する直前に `W --action <event> progress` を実行し、返された一覧を示す。
 保存済みの `phase-progress.json` をそのまま最新値として提示しない。
 
 ## 2. emit の実行と結果受領
@@ -126,13 +154,19 @@ actor は実回答者。架空の回答・承認・理由を作成しない。
 応答が不明な場合は**同じ ID・payload・actor**で再実行する。ID を変えたり expected を取り直して再送しない。
 同じ ID の内容変更は拒否される。
 
+タスク末尾の生成・レビュー結果や回答が後続gateで不正として拒否された場合は、消費済みdispatchへ訂正を再送しない。
+拒否理由を確認し、既存の`implement-retry`で新しいdispatchを取得して訂正する。旧提出・回答とTDD/VERIFY証跡は保持する。
+保存途中の中断は`advance`で同じgateを再開する。同じ操作IDの再送が返す保存済みfailと、現在のgateの再開結果を区別する。
+
 ## 4. 修正・差戻し
 
 判断 A（修正）/ B（差戻し）を記録したら、人が決めた修正指示と対象で `repair` を respond する。
 
 - **同じ工程の修正**（A）：`event` は当該工程の `<base>-generate`、`item` は当該 feature。生成レビューでの
-  repair は、そのレビューへの回答として記録され、flow はそのまま修正イベントへ進む（修正 Skill → 再検査 → 再レビュー）。
-  再レビューで旧指摘を `resolve` し、新しい指摘に判断してから承認する。何度でも繰り返せる。
+  repair は、そのレビューへの回答として記録され、返却は `status: repair`（`repair.event` が修正のアクション）。
+  入口 Skill は `W --call <repair.event> [--item <repair.item>] advance` で修正の回を進める（修正 Skill → 再検査 → 再レビュー）。
+  修正の回のレビューでまた repair を選ぶと、同じ修正のアクションが次の回として続けて実行される。
+  再レビューで旧指摘を `resolve` し、新しい指摘に判断してから承認する。何度でも繰り返せる（§1.1）。
 - **上流への差戻し**（B）：`event` / `item` は戻し先（所有工程）の `<base>-generate` と feature。
   戻し先の成果物と、指摘を出した成果物が開き直される（Phase 7 からの design 差戻しでは docs も対象）。
   修正後に入力内容が変わった場合は、その入力を実際に使う下流成果物も再検査へ戻す。
@@ -145,12 +179,12 @@ actor は実回答者。架空の回答・承認・理由を作成しない。
 - **横断検査・tasks 全体確認での修正**：`event` / `item` に対象 feature の `<base>-generate` を指定する。
   その feature の flow を進めて修正・再検査・承認した後、横断検査（または `tasks-gate-run`）を再実行する。
 - **作成中に判明した差戻し**（waiting の return_candidates）：人が差戻しを選んだら、戻し先の event / item で
-  `W --event <戻し先の generate> [--item <feature>] --payload <JSON> --actor <人> repair` を実行する。
+  `W --action <戻し先の generate> [--item <feature>] --payload <JSON> --actor <人> repair` を実行する。
   payload は `{"origin":"authoring-candidate","candidate":{"event":"<作成中の event>","item":"<feature>","index":0},"targets":[...],"instruction":"実際の指示"}`。
   戻し先を修正・承認すると、作成中の工程が続きから再開する（Phase 7 から design へ戻した場合は docs も見直す）。
 - **新しい上流要求**（下流の壁打ちで判明）：要求一覧は Phase 1 だけが更新する。Phase 1 への差戻しとして扱う。
-- **承認済み成果物をもう一度確認したい**：`W --event <generate> [--item] --payload '{"instruction":"実際の指示"}' --actor <人> reopen`。
+- **承認済み成果物をもう一度確認したい**：`W --action <generate> [--item] --payload '{"instruction":"実際の指示"}' --actor <人> reopen`。
 - フロー外で承認済み成果物や RFP を変えた場合は、次の advance がそれを検知し、その成果物（RFP なら要求一覧）だけを
-  修正イベントで見直す手順に戻す。承認を手で付け直さない。
+  修正アクションで見直す手順に戻す。承認を手で付け直さない。
 
 同一 state へのホスト処理は直列にする。検査 agent に本文や進捗を修正させない。
