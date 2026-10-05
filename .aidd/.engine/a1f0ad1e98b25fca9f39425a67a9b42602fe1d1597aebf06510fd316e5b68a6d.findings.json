@@ -1,0 +1,7 @@
+{
+  "phase": "requirements",
+  "event": "requirements-authoring-generate",
+  "scope": "feature:property-basic-info",
+  "run": 1,
+  "findings": []
+}

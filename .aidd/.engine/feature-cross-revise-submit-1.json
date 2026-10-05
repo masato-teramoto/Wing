@@ -1,0 +1,31 @@
+{
+  "operation_id": "a7ebcd357ae14e96a035327fc8e88935",
+  "dispatch": {
+    "call": "feature-decomposition-revise",
+    "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::run",
+    "event": "feature-decomposition-revise",
+    "item": null,
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "445c2692ba6644bd9296f23c199afaf8"
+  },
+  "result": {
+    "status": "completed",
+    "targets": [
+      ".aidd/feature-list.md"
+    ],
+    "questions": [],
+    "open_placeholders": 0,
+    "changed_findings": [
+      {
+        "phase": "requirements",
+        "scope": "cross",
+        "run": 1,
+        "number": 2
+      }
+    ],
+    "return_candidates": [],
+    "summary": "Phase 4 横断検査 1 回目 指摘2 の差戻し指示 F1・F2 を反映した。注記 2点目を、property-basic-info が TWTGM100 について申請の削除での物理削除と修正稟議・再製本での複製の 2 つの操作をすること、項目の登録・更新と複製の引き継ぎの決まりは issue-request が持つこと、依存の向きは issue-request → property-basic-info のままとすることに置き換えた（F1）。注記 1点目の「同じ操作を 2 つの feature が持つことは無い」を画面での操作のことと書き直し、契約情報取込は申請No ごとに契約局情報を洗替することに置き換えた（F2）。feature の表と依存列は変えていない。"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "operation_id": "b343da81ac9e4186af9f3c044d1abb8b",
+  "action": "decision",
+  "dispatch": {
+    "call": "requirements-authoring-generate",
+    "unit": "requirements-authoring-generate/requirements-authoring-generate[application-status-search]::end.review",
+    "event": "requirements-authoring-generate",
+    "item": "application-status-search",
+    "status": "wait",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"requirements-authoring-generate/requirements-authoring-generate[application-status-search]::end.review\", \"snapshot\": \"f76dfaf24b9f2c63335c63774df66183c53d0f96c0ecdb820d776d351f57c771\", \"run\": 1, \"inspection_hash\": \"2aead10c2a672c3bb99301e9fca91235a0247f126479676763a5c033c4e76969\"}\n**Phase 4（requirements 作成）の品質ゲートを実行しました。** 指摘ごとに判断を選んでください。\n\n**対象**: `specs/application-status-search/requirements.md`（スコープ: 成果物単位（application-status-search） / 1 回目）\n**実行した層**: ① / ②\n\n**指摘**（ゲート記録 `.aidd/gates/phase-4-requirements.md` の当該実行分）\n\n| # | 層 | 対象箇所 | 指摘内容 |\n|---|---|---|---|\n| 1 | ② | specs/application-status-search/requirements.md 受け入れ基準 1.1／.aidd/requirement-list.md REQ-006 | ID対応あり・内容に差異（意味判定）: REQ-006 は「検索項目20項目程度を想定」としているが、1.1 は検索条件を「約 38 項目」とし（Q-RQ-AS-002）、上流の想定のほぼ倍になっている。作成中の回答による詳細化として requirements 側で確定してよいか、REQ-006 の想定を見直すべきかは人間による確認が必要。 |\n| 2 | ② | specs/application-status-search/requirements.md 受け入れ基準 1.1 | 1.1 は検索条件の数を「約 38 項目」と概数で書き、括弧書きで「項目の全部は design の画面設計で定める」としている。表示された検索条件の数と種類が正しいかを、AC の記述だけでは YES / NO で判定できない（1.2〜1.5 に挙がる項目の合計も 38 に満たない）。 |\n| 3 | ② | specs/application-status-search/requirements.md 受け入れ基準 1.5 | 1.5 は進捗の日数を「営業日で数えなければならない」とするが、何を営業日とするか（休日の判定に使うカレンダー）が本文書にも承認済みの上流にも無い（steering/non-functional.md の「休日判定」は本プロジェクトでは定めないとしている）。ある日数の申請が検索に該当するべきかを判定できない。 |\n| 4 | ② | specs/application-status-search/requirements.md 受け入れ基準 1.6／1.1 | 1.6 は社外ユーザーのとき検索条件の起案会社と所属を「変更させず」とするが、どの値で固定するか（自社の会社コード・ログインユーザーの所属など）を示していない。1.1 は全検索条件の初期値を空にするとしており、社外ユーザーの起案会社・所属が空のまま変更不可になるのか、値が入って変更不可になるのかを判定できない。 |\n| 5 | ② | specs/application-status-search/requirements.md 受け入れ基準 2.3 | 2.3 は複数局の申請の基地局名を「〜他n局」と表示するとするが、「〜」にどの局の基地局名を出すか（代表局か等）と、n が全局数か代表局を除いた数かを示していない。表示された文字列が正しいかを判定できない。 |\n| 6 | ② | specs/application-status-search/requirements.md 受け入れ基準 3.3 | 3.3 は CSV に出す範囲を「画面の検索と同じ条件」とするが、CSV 出力を押した時点で画面に入力されている条件か、直前に実行した検索の条件かを示していない。検索後に条件を書き換えてから CSV 出力した場合に、どちらの条件の結果が出れば満たすのかを判定できない。 |\n| 7 | ② | specs/application-status-search/requirements.md 受け入れ基準 4.1 | 4.1 は「桁数・形式の条件を満たさない項目」でエラーにするとし、括弧書きで「項目ごとの条件は design の画面設計で定める」としている。どの項目でどの入力がエラーになるべきかを AC の記述だけでは判定できない。 |\n| 8 | ② | specs/application-status-search/requirements.md 「要件 1」受け入れ基準 1.1・1.5 | 範囲で比べる検索条件（起案日時・稟議承認日・初回支払日・申請日時・発送希望日・確認日時・進捗の日数）について、範囲の端の値を含むかどうか（境界値）と、開始が終了より後の範囲を入れた場合（異常系）の AC が無い。片方だけ入力した場合の扱いも無い。1.1 の時刻の初期値 00:00〜23:59 についても、23:59 台の秒を含むかを判定する基準が無い。 |\n| 9 | ② | specs/application-status-search/requirements.md 「要件 1」利用者ストーリー・受け入れ基準 1.7 | 検索の対象範囲は 1.7 で社外ユーザーの場合だけ定めており、社内ユーザーの場合に何が検索の対象になるか（全申請か）の AC が無い。利用者ストーリーは「自分の関わる申請を探す」としているが、関わる申請に絞るのか、条件で探せる範囲が全申請なのかを定める AC も無い。 |\n| 10 | ② | specs/application-status-search/requirements.md 「要件 3」受け入れ基準 3.3・3.4／「要件 4」受け入れ基準 4.1 | 4.1 は検索条件が桁数・形式を満たさないとき検索を止めるとするが、同じ状態で CSV 出力を押した場合（入力チェックを行うか、エラーメッセージを出して出力を止めるか）の AC が無い。3.4 は 0 件と上限超過の場合だけを定めている。 |\n| 11 | ② | specs/application-status-search/requirements.md 「非機能要件」プライバシー行／steering/security.md 「機密データ」 | 逸脱（無断の拡張）: プライバシー行は個人情報として起案担当者と更新者の氏名を扱い「steering/security.md の ## 機密データ に従って扱う」とするが、同節の種別はパスワード・担当者の連絡先（メールアドレス・電話番号）・契約者の個人情報（氏名・住所・連絡先）で、担当者（起案担当者・更新者）の氏名の扱い（閲覧範囲・CSV への出力・保持期間）の記述が無い。2.1・3.1 では起案担当者を一覧と CSV に出す。steering に追記すべきか本文書で定めるべきかは人間による確認が必要。 |\n| 12 | ② | specs/application-status-search/requirements.md 受け入れ基準 2.8／「スコープの境界」隣接する仕組みへの期待（Adjacent）・「前提と依存」依存／.aidd/feature-list.md application-status-search 行の依存列 | Dependencies 記載の確認: 依存は property-basic-info で feature 一覧の依存列と一致している。一方、2.8 は申請の状態「取込中」を前提にしているが、この状態をどの feature が設定するかが Adjacent・依存のどちらにも記されていない。feature 一覧で取込を扱うのは contract-info-import（優先度 6、本 feature より後）であり、その働きを前提とするなら Adjacent に記すべきか、依存列の見直しが要るかは人間による確認が必要（受け手の requirements は本検査の入力に無いため受け手側の責務は判定不能）。 |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- #1: 人間による確認（Phase 1 .aidd/requirement-list.md REQ-006、または本文書）（承認済み要求の想定（20項目程度）と作成中の回答（約 38 項目）が食い違っている）\n- #11: 人間による確認（Phase 2 steering/security.md、または本文書）（準拠先とした steering に担当者の氏名の扱いが無い）\n- #12: 人間による確認（Phase 3 .aidd/feature-list.md の依存列、または本文書の Adjacent）（2.8 が前提とする状態「取込中」を設定する feature が依存・Adjacent のどちらにも記されていない）\n\n**判断の選択肢**（指摘ごとに 1 つ選ぶ）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n\n回答例: `1:A / 2:C 既存システムの制約で変更できない / 3:D 次回レビューまで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。",
+    "id": "859b3b9774844b5281f2bfb1bbcda45a"
+  },
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "requirements-authoring-generate",
+    "event": "requirements-authoring-generate",
+    "item": "application-status-search",
+    "dispatch_id": "859b3b9774844b5281f2bfb1bbcda45a",
+    "unit": "requirements-authoring-generate/requirements-authoring-generate[application-status-search]::end.review",
+    "scope": "feature:application-status-search",
+    "run": 1,
+    "snapshot": "f76dfaf24b9f2c63335c63774df66183c53d0f96c0ecdb820d776d351f57c771",
+    "record_hash": "aa75384431994943100cfead3638bfff4cfe0e81b573bf05f9718d2aff3aed82"
+  },
+  "data": {
+    "scope": "feature:application-status-search",
+    "run": 1,
+    "number": 12,
+    "decision": "対応せず進める",
+    "reason": "取込中は、契約情報取込が取込を始めるときに付ける状態。この画面はその状態を見てリンクを出さないだけなので、依存は増やさない。Adjacent への書き方は Phase 4 の application-status-search の design で扱う。今回は差し戻さない。"
+  }
+}

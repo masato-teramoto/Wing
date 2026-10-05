@@ -1,0 +1,19 @@
+{
+  "schema": 2,
+  "phase": "requirements",
+  "event": "requirements-authoring-generate",
+  "scope": "feature:print-report",
+  "at": "2026-10-02T15:38:58+09:00",
+  "artifacts": {
+    "specs/print-report/requirements.md": {
+      "status": "draft",
+      "sha256": "7d7de30b0895cdabc937b9cce759067c8c0732a2f344d03ae09c469e45743cd8"
+    }
+  },
+  "record": {
+    "bytes": 134206,
+    "sha256": "054baac29d4b5e458dbc4c39aa9445fa6a26dd9eadc424293b4441e9cbb7e8f8",
+    "blocks": 162
+  },
+  "run": 1
+}

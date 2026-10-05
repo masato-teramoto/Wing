@@ -1,0 +1,39 @@
+{
+  "operation_id": "fcdd584ccb5f42ef9bbd55475951abda",
+  "dispatch": {
+    "call": "requirements-authoring-generate",
+    "unit": "requirements-authoring-generate/requirements-authoring-generate[property-basic-info]::run",
+    "event": "requirements-authoring-generate",
+    "item": "property-basic-info",
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "9f495e14783344118b9ade89ce39bb48"
+  },
+  "result": {
+    "status": "waiting",
+    "targets": [
+      "specs/property-basic-info/requirements.md"
+    ],
+    "questions": [
+      {
+        "id": "Q-RQ-PBI-010",
+        "target": "specs/property-basic-info/requirements.md",
+        "location": "要件 9 の前後（契約局情報の登録・変更と契約局取込）",
+        "question": "Phase 3 への差戻しの回答で、契約局情報（TWTGM140）は本画面で登録・更新・削除し、契約局取込のボタンも本画面にあるとされました。契約局情報の登録・変更のしかた（行の追加・削除など）と、契約局取込の内容（取込ファイルの形式、取り込み方（追加か洗替か）、エラー時の扱い、使える人と状態）を教えてください。あわせて、これを REQ-008（物件基本情報の登録・変更）の詳細として扱ってよいか、要求一覧に無い新しい要求として Phase 1 に戻すかを教えてください。",
+        "reason_unanswered": "承認済み入力と回答からは決まらないため"
+      },
+      {
+        "id": "Q-RQ-PBI-011",
+        "target": "specs/property-basic-info/requirements.md",
+        "location": "要件 6（6.5 社外ユーザーの対象）",
+        "question": "社外ユーザーの対象は「契約稟議起案会社が自社の申請」で、その値は発行依頼書の会社名です。発行依頼書がまだ登録されていない申請（起案直後など）を、社外ユーザーに表示・操作させるかを教えてください（例：起案した会社のユーザーには見せる、など）。",
+        "reason_unanswered": "承認済み入力と回答からは決まらないため"
+      }
+    ],
+    "open_placeholders": 0,
+    "changed_findings": [],
+    "return_candidates": [],
+    "summary": "Q-RQ-PBI-001〜009 の回答と Phase 3 の再承認（TWTGM140 は本 feature の所有、TWTGM100 は読むだけ、TWTGA120 は使わない）を反映し、未記入欄 0。8.2 を回答どおり「確定済みがあれば警告して置き換える」に訂正。要件 3（再製本）・4（差戻し・取下げ）・11（文書バーコード）に AC を追加。残る質問 2 件：契約局情報の登録と契約局取込の内容（Q-RQ-PBI-010）、発行依頼書が未登録の申請の社外ユーザーへの扱い（Q-RQ-PBI-011）。"
+  }
+}

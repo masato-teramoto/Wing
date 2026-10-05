@@ -1,0 +1,57 @@
+{
+  "operation_id": "8c82a90f5c3c41f4bb328ec31526987f",
+  "dispatch": {
+    "call": "requirements-authoring-generate",
+    "unit": "requirements-authoring-generate/requirements-authoring-generate[issue-request]::run",
+    "event": "requirements-authoring-generate",
+    "item": "issue-request",
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "fa497d80e4ca4913aa0adfb141aad84c"
+  },
+  "result": {
+    "status": "waiting",
+    "targets": [
+      "specs/issue-request/requirements.md"
+    ],
+    "questions": [
+      {
+        "id": "Q-RQ-IR-011",
+        "target": "specs/issue-request/requirements.md",
+        "location": "要件 2（権限による画面の制御）2.3／要件 3（契約書の発番）3.7",
+        "question": "Q-RQ-IR-007 は「発番の後は、担当エリアと契約区分も変えさせない」とし、Q-RQ-IR-003 は「発番の後に担当エリアを変えたときは、受付No を採番し直す」としています。発番の後に担当エリアを変えられるのはどの場合か（たとえば、基地局番号リンクから入ったときだけ変えさせないのか）を教えてください。",
+        "reason_unanswered": "2 つの回答が、発番後の担当エリアの変更について逆の結果を定めているため"
+      }
+    ],
+    "open_placeholders": 0,
+    "changed_findings": [],
+    "return_candidates": [
+      {
+        "owner": "feature",
+        "target": ".aidd/feature-list.md",
+        "location": "issue-request 行の対応要求ID（REQ-023）",
+        "reason": "REQ-023 は「発行依頼書登録・変更画面で、単独局／複数局の切替を行う」で issue-request に割り当てられている。一方、Q-RQ-IR-005 の回答は「この画面は単独局と複数局を切り替えない」とし、切替は property-basic-info の 14.1（REQ-008 に紐付け）が行う。REQ-023 を property-basic-info に割り当て直すか、REQ-023 をこの画面の何で満たすと読むかの確認が必要"
+      },
+      {
+        "owner": "feature",
+        "target": ".aidd/feature-list.md",
+        "location": "注記「契約局情報（TWTGM140）は property-basic-info が登録・更新・削除する」",
+        "reason": "Q-RQ-IR-002・Q-RQ-IR-005 の回答では、発行依頼書登録変更画面が契約局ごとに TWTGM140 の 1 行を登録・更新する（契約局情報追加ボタンからの追加を含む）。feature 一覧の注記は TWTGM140 の登録・更新・削除を property-basic-info だけとしており、両立しない"
+      },
+      {
+        "owner": "steering",
+        "target": "steering/database.md・steering/product.md",
+        "location": "database.md「## 設計思想」3点目／product.md「## ビジネスルール / ポリシー」申請・承認の履歴",
+        "reason": "steering は項目の変更履歴を持つのを発行依頼書の TWTGA130 だけとしている。Q-RQ-IR-009 の回答では、契約局情報も TWTGA150 に変更履歴を登録する"
+      },
+      {
+        "owner": "requirements",
+        "target": "specs/property-basic-info/requirements.md",
+        "location": "「スコープの境界」扱う範囲・受け入れ基準 14.7／受け入れ基準 5.2",
+        "reason": "Q-RQ-IR-002 の回答では、物件基本情報登録変更画面の発行依頼書編集ボタン・基地局番号リンクからも本画面へ遷移し、複数局モードでは契約局を登録するまで発行依頼書編集を使わせない。property-basic-info の requirements には発行依頼書編集ボタン・基地局番号リンクとこの制限が無い。また Q-RQ-IR-003 の回答では発番で承認履歴（TWTGM180）に判定 11 の行を登録するが、property-basic-info の 5.2 は申請依頼・申請・確認・承認・差戻し・取下げ以外の操作で承認履歴に登録してはならないとしている"
+      }
+    ],
+    "summary": "Q-RQ-IR-001〜010 の回答を反映し、業務フロー・スコープ・Adjacent・前提と、要件 1〜9 の受け入れ基準を作成した。対応要求ID 11 件はすべて要件に紐付けた。回答どうしの食い違い 1 件を質問 Q-RQ-IR-011 に、上流（feature 一覧 2 件、steering 1 件、property-basic-info の requirements 1 件）との食い違いを差戻し候補として返す。"
+  }
+}

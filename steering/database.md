@@ -1,6 +1,6 @@
 ---
 status: approved
-updated_at: 2026-10-01T18:11:49+09:00
+updated_at: 2026-10-05T18:25:03+09:00
 ---
 
 # データベース標準
@@ -20,7 +20,7 @@ updated_at: 2026-10-01T18:11:49+09:00
 
 - 区分値はコードマスタ `TWTZM040` で管理し、採番は採番マスタ `TWTZM050` を使う（既存 WiNG の方式。計画了承時の人間確定事項）。画面は `wing/src/main/resources/jp/co/kccs/wt/common/mapper/NumberingMapper.xml`、バッチは `DSNumberingUtils`・`DSDaoTWTZM040`（`WTX_Common/ds/`）で扱う。個別のコード値と採番対象は `docs/code-design.md` が持つ
 - 既存のテーブルとマスタ構造を維持し、新しいテーブルは既存の命名と共通カラムに合わせる（REQ-004）
-- 申請・承認の対象データは、変更履歴を履歴テーブル（種別 `A`）に残す（REQ-012・REQ-027。既存例 `TWTGA010`〜`TWTGA070`）
+- 申請・承認の対象データの履歴は、`product.md` の `## ビジネスルール / ポリシー`（申請・承認の履歴）に従う。項目の変更履歴を残す表は種別 `A` の履歴テーブルとし（既存例 `TWTGA010`〜`TWTGA070`）、本案件では発行依頼書の `TWTGA130` と契約局情報の `TWTGA150` の 2 つが該当する（Phase 4 property-basic-info ゲート 1 回目 指摘15〜18 の差戻し指示、回答者 Junichi Noumi。Phase 4 issue-request 作成中の差戻し指示、回答者 Junichi Noumi）
 
 ## 命名規則
 
@@ -87,7 +87,7 @@ updated_at: 2026-10-01T18:11:49+09:00
 | 検索・更新（バッチ） | VE の検索パラメータで位置を指定してバインドし、`findList` / `findRecord`、`insert` / `update` / `delete` を使う（`WTX_Batch/src/jp/co/kccs/wt/wtg/wtg030/PWTGB030Job.java`） |
 | 件数の取得（バッチ） | VE の `getListCount` を使う |
 | まとめての更新（バッチ） | `DSBatchInsertStatement` / `DSBatchUpdateStatement` / `DSBatchDeleteStatement` を使う（`WTX_Common/ds/jp/co/kccs/ds/core/db/`） |
-| 洗替 | 対象行を履歴テーブルへ退避してから削除し、入れ直す（`PWTGB030Job` の `deleteTWTGM040`・`insertTWTGM040`） |
+| 洗替 | 対象行を履歴テーブルへ退避してから削除し、入れ直す（`PWTGB030Job` の `deleteTWTGM040`・`insertTWTGM040`）。このやり方は既存のバッチ（`PWTGB030Job`）の例で、すべての洗替の決まりではない。契約情報取込では、洗替の前の内容をトランに写し、洗替の後と比べて、変わった行だけを変更履歴に登録する（Phase 4 横断検査 1 回目の差戻しにあわせた開き直しの指示、回答者 Junichi Noumi） |
 
 - **インデックス方針**: 主キーと検索条件に使う列に付ける。個々のインデックスは DB レイアウト設計書で定義する（回答 Q-STR-114b）
 
@@ -101,7 +101,7 @@ updated_at: 2026-10-01T18:11:49+09:00
 | --- | --- |
 | 接続の取得（画面） | Tomcat の JNDI データソース `jdbc/wingDB`（最大接続数 150。`wing/src/main/webapp/META-INF/context.xml`） |
 | トランザクション（画面） | Service 単位。クラスは `@Transactional(readOnly = true)`、更新メソッドは `@Transactional`（`tech.md` の `## コード規約`） |
-| トランザクション（バッチ） | ジョブ全体で 1 つ。`beginTransaction` → 全件処理 → `commitTransaction`、エラー時は全件ロールバック（`PWTGB030Job`） |
+| トランザクション（バッチ） | ジョブ全体で 1 つ。`beginTransaction` → 全件処理 → `commitTransaction`、エラー時は全件ロールバック（`PWTGB030Job`）。例外として、契約情報取込で物件申請情報の状態を取込中にする更新と、元の状態に戻す更新は、取込の本体とは別に確定させる。取込がエラーで全件取り消しになったときも、元の状態に戻す（Phase 4 横断検査 1 回目の差戻しにあわせた開き直しの指示、回答者 Junichi Noumi） |
 | 採番のトランザクション | 業務のトランザクションとは別の接続で、採番だけを確定させる（`DSNumberingUtils`） |
 | 行ロック | 更新前に `SELECT … FOR UPDATE` で行をロックする。取得できないとき（ORA-54）は設定した回数だけ待って再試行する（`DSDBUtils.findRecordForUpdate`） |
 | SQL のタイムアウト | 画面の MyBatis は 1800 秒（`wing/src/main/resources/mybatis-config.xml`）、バッチの geframe は 20 秒（`WTX_Batch/config/ge-framework.properties`） |

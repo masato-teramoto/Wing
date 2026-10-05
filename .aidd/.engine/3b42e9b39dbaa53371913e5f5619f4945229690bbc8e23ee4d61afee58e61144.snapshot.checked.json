@@ -1,0 +1,25 @@
+{
+  "event": "requirements-authoring-generate",
+  "scope": "feature:application-status-search",
+  "run": 1,
+  "snapshot": "f76dfaf24b9f2c63335c63774df66183c53d0f96c0ecdb820d776d351f57c771",
+  "record_bytes": 155104,
+  "record_hash": "2aead10c2a672c3bb99301e9fca91235a0247f126479676763a5c033c4e76969",
+  "targets": [
+    "specs/application-status-search/requirements.md"
+  ],
+  "hashes": {
+    "specs/application-status-search/requirements.md": "55d9ff1879cc34261f13d0a12fab45b26b91a0783b22e3136a1edc72f808ce82"
+  },
+  "inputs": {
+    ".aidd/requirement-list.md": "bdf3027f78209be11ea79d4b3026928aaa5959c4f6fbebb20c35357626604947",
+    ".aidd/feature-list.md": "24ee88ef24c82686acd706708035a837f59326a21421b27c4ac80bb861a5ecdd",
+    "steering/product.md": "1efed322f96e4244b36b57ef6b9090ca82fe8aaa7c10d9ff51589d30dbe4b397",
+    "steering/tech.md": "58cc32eb0ad29d7b7185bb02e710ce8d882e374f93eb0a609ae293e3903a4966",
+    "steering/architecture.md": "98be0c57ba256c0aeaf1a66d69682e63b47d20ec0f91ab776589a54e5eb8c33d",
+    "steering/security.md": "c46d9d175156e139f61c19d58e4b7fb3d7bc5e3c1e3c4395802c2bef449f6b8b",
+    "steering/non-functional.md": "831016b1f41e7f6c4597559be5395ff3358283f3e2416f64e98a4d3f0902c314",
+    "steering/database.md": "8eac00445a5e85e7b58e9659a0f4bad94bdbf8581846fcf56a693883a12ec681",
+    "steering/api-standards.md": "70eca8d2facbf08bfa22cf1ae1e781219ecab2066bb8129bf4a3414b0fdeddc1"
+  }
+}

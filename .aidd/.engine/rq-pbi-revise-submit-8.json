@@ -1,0 +1,43 @@
+{
+  "operation_id": "f59b04afd25e443a9ad0e941a0c8832b",
+  "dispatch": {
+    "call": "requirements-authoring-revise",
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::run",
+    "event": "requirements-authoring-revise",
+    "item": "property-basic-info",
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "5e8b1c66c27c4c959e43fc8caa1c4d0e"
+  },
+  "result": {
+    "status": "completed",
+    "targets": [
+      "specs/property-basic-info/requirements.md"
+    ],
+    "questions": [],
+    "open_placeholders": 0,
+    "changed_findings": [
+      {
+        "phase": "requirements",
+        "scope": "feature:property-basic-info",
+        "run": 8,
+        "number": 1
+      },
+      {
+        "phase": "requirements",
+        "scope": "feature:property-basic-info",
+        "run": 8,
+        "number": 2
+      },
+      {
+        "phase": "requirements",
+        "scope": "feature:property-basic-info",
+        "run": 8,
+        "number": 3
+      }
+    ],
+    "return_candidates": [],
+    "summary": "8 回目の指摘 1〜3 の修正指示を反映した。前提 1点目を、TWTGM170 には申請者・確認者・承認者の権限（P82 の 02〜04）が登録され、起案者の権限は全員が持ち TWTGM170 では管理しないことに直し、対象ユーザーの括弧書きを申請者・確認者・承認者にだけ係るよう書き直した（8-1。6.1・6.2 は変えていない）。6.9 を、組織がプロセス管理4G で、いまの番の権限が稟議依頼・修正稟議依頼では申請者・確認者・承認者、再製本依頼では起案者・申請者・承認者のどれかで、契約局情報と発行依頼書が登録済みで発番済みの場合に表示し、それ以外（稟議依頼・修正稟議依頼の起案者の番を含む）は表示しないことに直した（8-2。番号は変えていない）。プライバシーの行に担当者の氏名を足した（8-3）。出典の表記に「ゲート8-N」を加えた。"
+  }
+}

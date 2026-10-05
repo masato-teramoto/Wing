@@ -1,0 +1,34 @@
+{
+  "operation_id": "668351c126a0470b8d19fd1ca6ff32af",
+  "action": "decision",
+  "dispatch": {
+    "call": "requirements-authoring-generate",
+    "unit": "requirements-authoring-generate/requirements-authoring-generate[print-report]::end.review",
+    "event": "requirements-authoring-generate",
+    "item": "print-report",
+    "status": "wait",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"requirements-authoring-generate/requirements-authoring-generate[print-report]::end.review\", \"snapshot\": \"54847e98cc0f972e167368086c03b959dcef99ef86de6139a4a4bfd7874457e5\", \"run\": 1, \"inspection_hash\": \"cbae1ae8f4f3ef35fb4ce298433eb25d4a974a510b4e1ed63913fa1588d01c65\"}\n**Phase 4（requirements 作成）の品質ゲートを実行しました。** 指摘ごとに判断を選んでください。\n\n**対象**: `specs/print-report/requirements.md`（スコープ: 成果物単位（print-report） / 1 回目）\n**実行した層**: ① / ②\n\n**指摘**（ゲート記録 `.aidd/gates/phase-4-requirements.md` の当該実行分）\n\n| # | 層 | 対象箇所 | 指摘内容 |\n|---|---|---|---|\n| 1 | ② | specs/print-report/requirements.md 「要件 1」受け入れ基準 1.9・1.10 | 1.9・1.10 は出力する項目を挙げたうえで、括弧書きで「項目の全部と配置は design の帳票設計で定める」としている。挙げた項目のうち 1.10 の「契約の内容」「支払の内容」「製本の情報」、1.9 の「支払の内容」「製本と押印の種別」「申請者と確認者と決裁者の印」は個々の項目ではなく分類の名前であり、AC に書かれた項目が全部でもない。出力された表紙・発行依頼書のページが AC を満たすかを、この AC の記述だけでは YES / NO で判定できない。 |\n| 2 | ② | specs/print-report/requirements.md 「要件 3」受け入れ基準 3.3 | 3.3「ファイル名を「稟議バーコードNo.pdf」にしなければならない」は、どの稟議バーコードNo を使うかを示していない。複数局の申請では契約局ごとに稟議バーコードNo があり得る（2.1 は QR コードに代表局（契約局情報の 1 行目）の番号を使うと明示している）が、ファイル名に代表局の番号を使うのかを AC から判定できない。 |\n| 3 | ② | specs/print-report/requirements.md 「要件 3」受け入れ基準 3.4 | 3.4 の条件「申請が発番の後で」は、どの審査フェーズ・状態、またはどのデータ（稟議バーコードNo の採番の有無など）で「発番の後」と判定するかが書かれていない。ある申請に対して帳票を出力すべきか拒否すべきかを、この AC の記述だけでは判定できない。 |\n| 4 | ② | specs/print-report/requirements.md 「要件 4」受け入れ基準 4.2 | 4.2 の条件「一時ファイルを置く場所が無い場合」は、置き場所のディレクトリが存在しない場合か、容量が足りない場合か、書き込めない場合かが特定されていない。どの状態を作れば 4.2 の確認になるかを判定できない。 |\n| 5 | ② | specs/print-report/requirements.md 「要件 2」受け入れ基準 2.2／「要件 3」受け入れ基準 3.3 | 2.2 は代表局の稟議バーコードNo が空の場合があることを前提にしているが、そのときのファイル名（3.3 は「稟議バーコードNo.pdf」とする）をどうするか、または出力を拒否するかの AC が無い。値が空という境界のパターンが 3.3 について欠けている。 |\n| 6 | ② | specs/print-report/requirements.md 「要件 4」受け入れ基準 4.1 | 4.1 は PDF への変換に失敗した場合にログ出力と出力の停止だけを定めており、利用者に何を示すか（エラーメッセージの表示の有無、閲覧で開いた別ウインドウの扱い）の AC が無い。同じ要件の 4.2 と要件 1 の 1.2 では失敗時にエラーメッセージを表示するとしており、4.1 の異常系だけ利用者への応答が判定できない。 |\n| 7 | ② | specs/print-report/requirements.md 「要件 3」受け入れ基準 3.6／「要件 4」受け入れ基準 4.1・4.2／「要件 1」受け入れ基準 1.2 | 3.6 は「帳票を出力した後」に作った Excel と PDF をサーバーから消すとしているが、出力に至らなかった場合（4.1 の変換失敗、4.2・1.2 で作成を止めた場合）に、それまでに作った一時ファイルを消すかどうかの AC が無い。正常系の後始末だけで、異常系の後始末のパターンが欠けている。 |\n| 8 | ② | specs/print-report/requirements.md 「要件 4」受け入れ基準 4.3／「非機能要件」監査の行／「対象外」2点目 | 誤配置: 4.3「帳票を出力したとき、システムは出力したことを記録してはならない」は、出力の記録（監査）を扱わないというスコープの宣言であり、同じ文書の非機能要件の「監査」の行（不要：帳票を出したことは記録しない — Q-RQ-PR-005）と「対象外」2点目に同じ内容がある。非機能（監査）の項目が、機能要件「出力の失敗」の受け入れ基準として番号付きで置かれており、要件 4 の利用者ストーリー（出力に失敗したときにやり直す）とも対応しない。 |\n| 9 | ② | specs/print-report/requirements.md 「概要」対象ユーザー／「要件 3」受け入れ基準 3.5／steering/product.md 「主要ユースケース」4 | 矛盾: steering/product.md の「主要ユースケース」4 は「発行依頼を行う利用者が、登録した物件基本情報の帳票（表紙情報・発行依頼書・契約局情報）を PDF で閲覧・印刷する」とし、同ファイルのユースケース 1・2 では発行依頼を行う利用者を物件基本情報・発行依頼書を登録して申請する者としている。一方、対象では帳票を出せる利用者を「組織がプロセス管理4G の申請者・確認者・承認者（再製本依頼では起案者も）」に限り（3.5）、それ以外の受付を禁じている。steering/security.md 「チェックの適用箇所」の画面の表示の行は閲覧と印刷のボタンを組織がプロセス管理4G のときだけ表示するとしており対象と整合するが、product.md のユースケースの主要な利用者とは両立しない。steering/product.md と対象のどちらを直すべきかの確認が必要。 |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- #9: 人間による確認（steering/product.md の「主要ユースケース」4 の利用者の記述（Phase 2）と、対象の対象ユーザー・3.5 のどちらを正とするかを本検査では確定できないため）\n\n**判断の選択肢**（指摘ごとに 1 つ選ぶ）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n\n回答例: `1:A / 2:C 既存システムの制約で変更できない / 3:D 次回レビューまで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。",
+    "id": "2c706df23c2546388a0340233623fd9a"
+  },
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "requirements-authoring-generate",
+    "event": "requirements-authoring-generate",
+    "item": "print-report",
+    "dispatch_id": "2c706df23c2546388a0340233623fd9a",
+    "unit": "requirements-authoring-generate/requirements-authoring-generate[print-report]::end.review",
+    "scope": "feature:print-report",
+    "run": 1,
+    "snapshot": "54847e98cc0f972e167368086c03b959dcef99ef86de6139a4a4bfd7874457e5",
+    "record_hash": "cbae1ae8f4f3ef35fb4ce298433eb25d4a974a510b4e1ed63913fa1588d01c65"
+  },
+  "data": {
+    "scope": "feature:print-report",
+    "run": 1,
+    "number": 1,
+    "decision": "対応せず進める",
+    "reason": "表紙と発行依頼書に出す項目と配置は、Phase 4 の print-report の design の帳票設計で決める。requirements は分類の名前のままでよい。"
+  }
+}

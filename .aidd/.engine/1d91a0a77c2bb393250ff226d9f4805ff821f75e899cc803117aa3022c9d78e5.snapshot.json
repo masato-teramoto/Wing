@@ -3,11 +3,11 @@
   "phase": "steering",
   "event": "steering-authoring-revise",
   "scope": "phase",
-  "at": "2026-10-01T18:01:56+09:00",
+  "at": "2026-10-05T15:44:21+09:00",
   "artifacts": {
     "steering/product.md": {
       "status": "draft",
-      "sha256": "e2019e35953898d251801920d5c4d36bc5c8418ba8d3e2ac95cf2b0808169367"
+      "sha256": "cde5dd8a1007c53f93a270de63e01d294d38f47695e96027d52b6b4862bc149b"
     },
     "steering/tech.md": {
       "status": "draft",
@@ -19,15 +19,15 @@
     },
     "steering/security.md": {
       "status": "draft",
-      "sha256": "45a1baa66763e451328062e1c98c15291fa49a28701ef28b7fc8d96834531063"
+      "sha256": "34061564b8c5b8c28e5ca2f4a9b744b06d9d58417ddbbff7ab150c9ef1027bbf"
     },
     "steering/non-functional.md": {
       "status": "draft",
-      "sha256": "1c144434d7acefb1db259340ce3eb9c6a66ea45489c2cc89fd098b94bd1027e6"
+      "sha256": "ae87c72271e4f3d8593e2f666edc7bb0931cf4d0ca78dafbb21ab7264303f0ac"
     },
     "steering/database.md": {
       "status": "draft",
-      "sha256": "52256e748a53199269dc75629e4ab3c747100c3ac2485bacf89f762cdfb96b56"
+      "sha256": "832d98b289c53f8c8adc9a7dfb25bf0f8b1f54b9c1cc473c6480fa9927a20e21"
     },
     "steering/api-standards.md": {
       "status": "draft",
@@ -35,9 +35,9 @@
     }
   },
   "record": {
-    "bytes": 22519,
-    "sha256": "07156a50c7c5b8c549b4a6ba0cf706c448f800dd6f8675950cd9617f88b00bd3",
-    "blocks": 26
+    "bytes": 53597,
+    "sha256": "97871ea1b2b63a88cbfe212ef658f2be72f32f01b22758bdcb28020ba8b93ac7",
+    "blocks": 58
   },
-  "run": 3
+  "run": 6
 }

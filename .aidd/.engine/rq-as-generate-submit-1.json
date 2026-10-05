@@ -1,0 +1,67 @@
+{
+  "operation_id": "280c1c8345d645ff956ff4f5e28520ae",
+  "dispatch": {
+    "call": "requirements-authoring-generate",
+    "unit": "requirements-authoring-generate/requirements-authoring-generate[application-status-search]::run",
+    "event": "requirements-authoring-generate",
+    "item": "application-status-search",
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "ee3a5ebe82da4db1aa6429a1786d6b6f"
+  },
+  "result": {
+    "status": "waiting",
+    "targets": [
+      "specs/application-status-search/requirements.md"
+    ],
+    "questions": [
+      {
+        "id": "Q-RQ-AS-001",
+        "target": "specs/application-status-search/requirements.md",
+        "location": "業務フロー",
+        "question": "今の手順はほかの feature と同じでよいですか。この画面を誰が、何のために使うかを教えてください。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-AS-002",
+        "target": "specs/application-status-search/requirements.md",
+        "location": "検索条件。REQ-006",
+        "question": "検索項目（20 項目程度）の一覧と、項目ごとの一致のしかた（完全一致・部分一致・範囲）、初期値、必須の有無を教えてください。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-AS-003",
+        "target": "specs/application-status-search/requirements.md",
+        "location": "一覧",
+        "question": "一覧に出す項目、並び順、1 ページの件数、検索結果の上限件数、0 件のときの表示を教えてください。一覧から物件基本情報登録変更画面へ移る方法（申請No のリンクなど）と、新規登録のボタンがあるかも教えてください。物件基本情報登録変更の 10.3・15.4 は、戻るときに「申請状況一覧の画面」へ戻るとしています。このとき検索条件を残すかも教えてください。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-AS-004",
+        "target": "specs/application-status-search/requirements.md",
+        "location": "CSV 出力。REQ-007",
+        "question": "CSV の列と順番、文字コード・区切り文字・見出し行の有無、ファイル名、出力の上限件数、出力できる人を教えてください。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-AS-005",
+        "target": "specs/application-status-search/requirements.md",
+        "location": "権限",
+        "question": "社外ユーザーの絞り込みは、物件基本情報登録変更の 6.5 と同じ（契約稟議起案会社が自社の申請と、本人が登録した申請だけ）でよいですか。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-AS-006",
+        "target": "specs/application-status-search/requirements.md",
+        "location": "前提・未確定事項・非機能",
+        "question": "この feature に固有の前提と、design の前に決めておく事項を教えてください。非機能と扱う個人情報も教えてください。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      }
+    ],
+    "open_placeholders": 27,
+    "changed_findings": [],
+    "return_candidates": [],
+    "summary": "要求文と feature 一覧から書ける範囲で下書きを作成した。未確定は質問 6 件（_handoff/questions-phase4-remaining.md と同じ）。"
+  }
+}

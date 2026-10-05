@@ -1,0 +1,19 @@
+{
+  "schema": 2,
+  "phase": "requirements",
+  "event": "requirements-authoring-revise",
+  "scope": "feature:print-report",
+  "at": "2026-10-05T19:35:20+09:00",
+  "artifacts": {
+    "specs/print-report/requirements.md": {
+      "status": "draft",
+      "sha256": "7d7de30b0895cdabc937b9cce759067c8c0732a2f344d03ae09c469e45743cd8"
+    }
+  },
+  "record": {
+    "bytes": 230976,
+    "sha256": "aff92a7469509c6c7c9dbe23eb74f4c6168dabbbc5a8f172c4288dc8db255f86",
+    "blocks": 263
+  },
+  "run": 2
+}

@@ -1,0 +1,53 @@
+{
+  "operation_id": "e477997be3a74631b64c194f8f40f731",
+  "dispatch": {
+    "call": "requirements-authoring-generate",
+    "unit": "requirements-authoring-generate/requirements-authoring-generate[issue-request-tutorial]::run",
+    "event": "requirements-authoring-generate",
+    "item": "issue-request-tutorial",
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "4e434b7ddc4c4d058d77a399b885e6ab"
+  },
+  "result": {
+    "status": "waiting",
+    "targets": [
+      "specs/issue-request-tutorial/requirements.md"
+    ],
+    "questions": [
+      {
+        "id": "Q-RQ-TU-001",
+        "target": "specs/issue-request-tutorial/requirements.md",
+        "location": "## 業務フロー — 現状の業務手順（Before）・システム導入後（After）・人が介在するステップ",
+        "question": "今の手順は property-basic-info・issue-request と同じ（Excel マクロで作成し、紙で回覧・製本）でよいかを教えてください。チュートリアルを使うときの流れ（誰が、どの時点で開き、何を答え、どう終えるか）も教えてください。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-TU-002",
+        "target": "specs/issue-request-tutorial/requirements.md",
+        "location": "要件 1（チュートリアル画面の表示と切替）1.2",
+        "question": "26 のフォーム（画面）の一覧と、どの選択肢を選ぶとどのフォームへ進むか（分かれ方と順番）を教えてください。各フォームに出す入力欄と例、戻る・中止などの操作、チュートリアルを開ける人と申請の状態（発行依頼書を登録・変更できるときと同じか）も教えてください。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-TU-003",
+        "target": "specs/issue-request-tutorial/requirements.md",
+        "location": "要件 2（発行依頼書の項目への設定）2.1",
+        "question": "選んだ値と入力した値を、発行依頼書のどの項目へ設定するかを教えてください（転貸借の欄と KDDI転貸借契約書の項目のそれぞれ）。設定するきっかけ（最後のフォームで確定したとき等）、すでに値がある項目を上書きするか、設定した値を発行依頼書登録変更画面の更新まで保存しないのかも教えてください。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-TU-004",
+        "target": "specs/issue-request-tutorial/requirements.md",
+        "location": "## 前提と依存 — 前提・未確定事項／## 非機能要件 — 可用性・運用監視の検証方法、アクセシビリティ、多言語・地域対応、プライバシー、監査",
+        "question": "本 feature に固有の前提と、design に進む前に決めておく事項があれば教えてください。非機能は property-basic-info・issue-request と同じ扱いでよいか、扱う個人情報（契約者の氏名・住所など）があるか、監査として記録するものがあるかも教えてください。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      }
+    ],
+    "open_placeholders": 19,
+    "changed_findings": [],
+    "return_candidates": [],
+    "summary": "要求文・feature 一覧・issue-request の requirements から書ける範囲で、概要・スコープ・依存と要件 1〜3 を作成した。根拠のある受け入れ基準は 1.1（ポップアップの表示）と 3.1（入力チェック）。対応要求ID 3 件（REQ-028・029・063）はすべて要件に紐付けた。依存は issue-request だけで feature 一覧と一致する。未確定は質問 4 件。"
+  }
+}

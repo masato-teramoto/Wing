@@ -1,6 +1,6 @@
 ---
 status: approved
-updated_at: 2026-10-01T18:11:49+09:00
+updated_at: 2026-10-05T18:25:03+09:00
 ---
 
 # API 設計標準

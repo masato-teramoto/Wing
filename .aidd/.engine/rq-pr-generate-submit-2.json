@@ -1,0 +1,24 @@
+{
+  "operation_id": "7d08af908e044983845546e53b36be58",
+  "dispatch": {
+    "call": "requirements-authoring-generate",
+    "unit": "requirements-authoring-generate/requirements-authoring-generate[print-report]::run",
+    "event": "requirements-authoring-generate",
+    "item": "print-report",
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "eae688a2d457448abca6da1c72bcc4fa"
+  },
+  "result": {
+    "status": "completed",
+    "targets": [
+      "specs/print-report/requirements.md"
+    ],
+    "questions": [],
+    "open_placeholders": 0,
+    "changed_findings": [],
+    "return_candidates": [],
+    "summary": "Q-RQ-PR-001〜006 の回答を反映し、業務フロー・スコープ・前提と、要件 1〜4 の受け入れ基準を作成した。対応要求ID 3 件（REQ-016・017・018）はすべて要件に紐付けた。各ページの項目の全部と配置は回答のとおり design の帳票設計で定める。出せる人と申請の状態（3.4・3.5）は回答に従って本文書に書いた。property-basic-info の 6.9 はボタンの表示を組織の条件だけで定めている。"
+  }
+}

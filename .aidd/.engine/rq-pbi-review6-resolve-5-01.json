@@ -1,0 +1,32 @@
+{
+  "operation_id": "42817ace47684059af638fb4880e168f",
+  "action": "resolve",
+  "dispatch": {
+    "call": "requirements-authoring-revise",
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::end.review",
+    "event": "requirements-authoring-revise",
+    "item": "property-basic-info",
+    "status": "wait",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::end.review\", \"snapshot\": \"0767445c0cd24f70ac76cce97ef1cd744df1aa6178261ad5c1f43ca719eb5dc2\", \"run\": 6, \"inspection_hash\": \"529500fde1aced3fb7faf58a61bf14c4aa128128bc5e3497bc2b07f096ff2778\"}\n**Phase 4（requirements 作成）の品質ゲートを実行しました。** 指摘ごとに判断を選んでください。\n\n**対象**: `specs/property-basic-info/requirements.md`（スコープ: 成果物単位（property-basic-info） / 6 回目）\n**実行した層**: ① / ②\n\n**指摘**（ゲート記録 `.aidd/gates/phase-4-requirements.md` の当該実行分）\n\n| # | 層 | 対象箇所 | 指摘内容 |\n|---|---|---|---|\n| 1 | ② | specs/property-basic-info/requirements.md 「要件 14」受け入れ基準 14.10・14.11／14.13／「要件 12」受け入れ基準 12.3 | 14.11 は、稟議依頼・修正稟議依頼の申請で起案者・申請者・確認者が自分の番の場合、複数局の申請で契約局情報が登録されていない場合を除き、発行依頼書編集ボタンを使えるようにするとする。単独局の申請については、契約局情報や発行依頼書が登録されているかどうかで条件を分けていない。一方、14.10 は単独局の申請では「その 1 局の発行依頼書を開かなければならない」とし、開く発行依頼書が登録済みであることを前提にしている（14.13 により発行依頼書は契約局ごとにある）。12.3 は発行依頼書が登録されていない申請があることを定めており、本文書には、単独局の申請で契約局情報・発行依頼書が未登録の状態を除く記述が無い。単独局の申請で発行依頼書が未登録のときに発行依頼書編集ボタンを押した場合、発行依頼書登録変更画面（GWTG080）をどの状態で開くか（新規の登録として開くか等）を定める AC が無い。 |\n\n**前回までの指摘**（今回件数に含めない）\n- #5-1 14.10「発行依頼書編集ボタンを押したとき、システムは発行依頼書登録変更画面（GWTG080）へ遷移しなければならない」は、どの発行依頼書（どの契約局）の画面へ遷移するかを定めていない。14.13 は基地局番号リンクについて「その契約局の発行依頼書登録変更画面（GWTG080）」とし、遷移先の画面が契約局ごとであることを示している。また 14.12 により、契約局情報が登録されている複数局の申請でも発行依頼書編集ボタンは使える。契約局情報が 2 行以上ある複数局の申請で発行依頼書編集ボタンを押したときに、どの契約局の発行依頼書が開けば正しいか（単独局の申請の場合も含む）を、この AC の記述だけでは YES / NO で判定できない。 [specs/property-basic-info/requirements.md 「要件 14」受け入れ基準 14.10／14.12・14.13] — 修正 → 再検査の結果を見て解消を確認してください\n- #5-2 二重定義（食い違い）: 14.11 は、稟議依頼・修正稟議依頼の申請で起案者・申請者・確認者が自分の番の場合、システムは発行依頼書編集ボタンを使えるようにしなければならないとし、単独局か複数局か、契約局情報の有無で条件を分けていない。一方、14.12 は、複数局の申請で契約局情報が登録されていない場合、システムは発行依頼書編集ボタンを使わせてはならないとする。稟議依頼・修正稟議依頼の複数局の申請で、契約局情報が未登録のまま自分の番の起案者・申請者・確認者が画面を開いた場合、14.11 は使えることを、14.12 は使わせないことを定めることになる。どちらも開き直しの指示を出典とし、SSoT の所在の指定が無いため、どちらを正とするか（14.11 を 14.12 の条件を除いた範囲に限ると読むかを含む）は人間による確認が必要。 [specs/property-basic-info/requirements.md 受け入れ基準 14.11／14.12] — 修正 → 再検査の結果を見て解消を確認してください\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n**判断の選択肢**（指摘ごとに 1 つ選ぶ）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n\n回答例: `1:A / 2:C 既存システムの制約で変更できない / 3:D 次回レビューまで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。",
+    "id": "04a7e34ae3264b07ab73f37b779749ca"
+  },
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "requirements-authoring-revise",
+    "event": "requirements-authoring-revise",
+    "item": "property-basic-info",
+    "dispatch_id": "04a7e34ae3264b07ab73f37b779749ca",
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::end.review",
+    "scope": "feature:property-basic-info",
+    "run": 6,
+    "snapshot": "0767445c0cd24f70ac76cce97ef1cd744df1aa6178261ad5c1f43ca719eb5dc2",
+    "record_hash": "3086fce8c9b9634800570422aafc8e3a079bb78935abe29f40418cd8289d4169"
+  },
+  "data": {
+    "scope": "feature:property-basic-info",
+    "run": 5,
+    "number": 1
+  }
+}

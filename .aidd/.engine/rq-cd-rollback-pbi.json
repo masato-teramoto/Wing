@@ -1,0 +1,13 @@
+{
+  "operation_id": "3f6c2a9e8b1d4e57a0c9d2f4b6e8a1c3",
+  "origin": "authoring-candidate",
+  "candidate": {
+    "event": "requirements-authoring-generate",
+    "item": "contract-info-download",
+    "index": 0
+  },
+  "targets": [
+    "specs/property-basic-info/requirements.md"
+  ],
+  "instruction": "差し戻す。物件基本情報登録変更の requirements に契約局DL ボタンが漏れている。業務では、物件基本情報登録変更画面に契約局DL ボタンがある。\n\n修正の指示（specs/property-basic-info/requirements.md）:\n\n1. 「スコープの境界」扱う範囲の遷移ボタン・リンクの点に、契約局DL ボタンを足す。このボタンは契約情報ダウンロード画面（GWTG100）をポップアップで開く。\n\n2. 14.5 の受け付ける操作に、契約局DL を足す。条件は今の 14.5 と同じ。稟議依頼・修正稟議依頼の申請で、起案者・申請者・確認者が自分の番の場合に受け付ける。再製本依頼を含むそれ以外の場合は受け付けない。\n\n3. 受け入れ基準を 1 つ足す（番号は今の最後の続き）。契約局DL ボタンを押したとき、システムは画面の申請No を渡して、契約情報ダウンロード画面（GWTG100）を別ウインドウで開かなければならない。ダウンロードする契約情報は、開いた画面で条件を入れて探す。渡すのは申請No だけで、検索条件の初期値には使わない。\n\n4. 「隣接する仕組みへの期待（Adjacent）」に contract-info-download を足す。契約情報ダウンロード画面（GWTG100）を持つ。\n\n14.6 は契約局取込ボタンのことなので変えない。"
+}

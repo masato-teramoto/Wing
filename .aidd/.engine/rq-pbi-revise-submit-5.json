@@ -1,0 +1,37 @@
+{
+  "operation_id": "72999ca386634d4ab23e200420580807",
+  "dispatch": {
+    "call": "requirements-authoring-revise",
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::run",
+    "event": "requirements-authoring-revise",
+    "item": "property-basic-info",
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "17143aeb4a1c4b9c82c06439af29cc57"
+  },
+  "result": {
+    "status": "completed",
+    "targets": [
+      "specs/property-basic-info/requirements.md"
+    ],
+    "questions": [],
+    "open_placeholders": 0,
+    "changed_findings": [
+      {
+        "phase": "requirements",
+        "scope": "feature:property-basic-info",
+        "run": 5,
+        "number": 1
+      },
+      {
+        "phase": "requirements",
+        "scope": "feature:property-basic-info",
+        "run": 5,
+        "number": 2
+      }
+    ],
+    "return_candidates": [],
+    "summary": "5 回目の指摘 1・2 の修正指示を反映した。14.10 に遷移先（申請No の発行依頼書、複数局は代表局、単独局はその 1 局）を書き、14.11 を 14.12 の条件を除いた範囲に絞った。出典の表記の「計画前提」の括弧書きを直し、「ゲート5-N」を加えた。"
+  }
+}

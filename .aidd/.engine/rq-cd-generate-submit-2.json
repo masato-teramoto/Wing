@@ -1,0 +1,24 @@
+{
+  "operation_id": "1d1941a14c454a2cb96df5472f356425",
+  "dispatch": {
+    "call": "requirements-authoring-generate",
+    "unit": "requirements-authoring-generate/requirements-authoring-generate[contract-info-download]::run",
+    "event": "requirements-authoring-generate",
+    "item": "contract-info-download",
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "b198d056be9a46569ebc713a5ddc478c"
+  },
+  "result": {
+    "status": "completed",
+    "targets": [
+      "specs/contract-info-download/requirements.md"
+    ],
+    "questions": [],
+    "open_placeholders": 0,
+    "changed_findings": [],
+    "return_candidates": [],
+    "summary": "Q-RQ-CD-001〜005 の回答を反映し、業務フロー・スコープ・Adjacent と、要件 1〜4 の受け入れ基準を作成した。対応要求ID 5 件（REQ-036〜039・063）はすべて要件に紐付けた。REQ-037 の「同一の検索条件・表示項目」は、回答のとおり GWTG004 と同じ項目の定義と検索のしかたを使う意味として 1.3 に書いた。TWTBM080 による絞り込みは、回答のとおり既存の WTG のデータへの適用として書いた。差戻しで再承認された property-basic-info の 14.14 に合わせ、渡された申請No の受け取り（1.1）、検索条件の初期値に使わないこと（1.6）、並び順の先頭にする申請（3.5）を書いた。扱わない範囲は対象外と重ねず、対象外にだけ書いた。"
+  }
+}

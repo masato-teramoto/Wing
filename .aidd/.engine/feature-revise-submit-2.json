@@ -1,0 +1,24 @@
+{
+  "operation_id": "babf3d76a0c7456981c1dfb7321a71bb",
+  "dispatch": {
+    "call": "feature-decomposition-revise",
+    "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::run",
+    "event": "feature-decomposition-revise",
+    "item": null,
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "2fe073b3c0fd4494a1009a1c734f140d"
+  },
+  "result": {
+    "status": "completed",
+    "targets": [
+      ".aidd/feature-list.md"
+    ],
+    "questions": [],
+    "open_placeholders": 0,
+    "changed_findings": [],
+    "return_candidates": [],
+    "summary": "上流 steering の変更（product.md・database.md の履歴の持ち方、security.md の社外ユーザーの範囲・権限モデル・機密データ・サービス拒否、non-functional.md のログに出さない項目）の影響を確認した。feature の分割・種別・依存・優先度・想定規模・対応要求ID はいずれもこれらに依存しないため変更しない。注記の「変更履歴（TWTGA120）はどの feature も使わない」は、steering の「物件基本情報は項目の変更履歴を持たず、変更履歴を持つのは発行依頼書の TWTGA130 だけ」と整合する。feature-list.md は編集していない。"
+  }
+}

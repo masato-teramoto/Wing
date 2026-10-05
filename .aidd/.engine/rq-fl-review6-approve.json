@@ -1,0 +1,28 @@
+{
+  "operation_id": "63ef332c9dfa4dc1b7e83767460cac65",
+  "action": "approve",
+  "dispatch": {
+    "call": "feature-decomposition-revise",
+    "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::end.review",
+    "event": "feature-decomposition-revise",
+    "item": null,
+    "status": "wait",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"feature-decomposition-revise/feature-decomposition-revise[-]::end.review\", \"snapshot\": \"210df960cd4626e9dc19163c8336c4152d6caa64a63af255bd16c24003ce5be2\", \"run\": 6, \"inspection_hash\": \"8383e449e2524935402f654b53fffe3fbe111e7176ab0ec88dda511d50a32ddf\"}\n**Phase 3（Feature 分割）の品質ゲートを実行しました。** 指摘ごとに判断を選んでください。\n\n**対象**: `.aidd/feature-list.md`（スコープ: 成果物単位 / 6 回目）\n**実行した層**: ① / ②\n\n**指摘**（ゲート記録 `.aidd/gates/phase-3-feature.md` の当該実行分）\n\n| # | 層 | 対象箇所 | 指摘内容 |\n|---|---|---|---|\n| 1 | ② | .aidd/feature-list.md 「フィーチャー一覧」表の直後の注記 1点目（「contract-info-import は、取込のとき申請No ごとに契約局情報の行を全部消して、ファイルの内容で入れ直す（洗替）」）／同ファイル冒頭の注記（「スコープ・完了条件はここに書きません。それらは specs/<feature>/requirements.md（Boundary Context / Acceptance Criteria）が正です」） | 二重定義（SSoT の所在の確認）: 注記 1点目は、今回 contract-info-import が TWTGM140 を洗替で扱うことを、「この注記を SSoT とする」とした役割分担に加えた。ゲート記録の phase 5 回目 指摘1 の判断では、冒頭の定めを正とし、「contract-info-import で決まった分は、注記に戻さない。その requirements の Boundary Context に書く」としている。今回の記載で、contract-info-import が TWTGM140 をどう扱うかが、この注記と contract-info-import の requirements の Boundary Context の 2 か所に書かれる形になる。requirements.md は今回の検査対象に無いため、両者が同じ内容か食い違うかは判定できない。今回の差戻し指示で前回の判断の扱いを変えたのか、どちらを正とするかは、人間による確認が必要。 |\n| 2 | ② | .aidd/feature-list.md 「フィーチャー一覧」表の直後の注記 2点目（TWTGM100 の削除と複製、「複製で引き継ぐ項目と空にする項目の決まりは issue-request が持つ（specs/issue-request/requirements.md の 7.5・7.6）」「そのため依存の向きは issue-request → property-basic-info のままとする」）／同注記 1点目（TWTGM140 のテーブル定義の所有と「同じ操作を 2 つの feature が持つことは無い」）／「フィーチャー一覧」property-basic-info 行の依存列（なし）・優先度列（1） | 責務の分割（判定不能）: 注記 2点目は、発行依頼書情報 TWTGM100 の複製について、操作を property-basic-info に置き、引き継ぐ項目と空にする項目の決まりを issue-request に置いている。このため、1 つの複製の責務が 2 つの feature に分かれている。TWTGM140 については、注記 1点目でテーブル定義の所有と、画面での同じ操作を 2 つの feature が持たないことを定めている。一方、TWTGM100 については、テーブル定義をどの feature が持つかが書かれていない。property-basic-info は依存なし・優先度 1 である。そのため、優先度 2 の issue-request が持つ決まり（とテーブル）に従って削除と複製を行う形になる。注記が依存の向きの根拠として挙げる「TWTGM100 が無くても物件基本情報登録変更画面は動き、削除と複製は行があるときだけ行う」は、実行時の条件である。作る順で前にある property-basic-info が、後にある issue-request の定めを前提とすることと両立するかは、本ファイルからは判定できない。TWTGM100 のテーブル定義の所有と依存の向きについて、人間による確認が必要。 |\n| 3 | ② | .aidd/feature-list.md 「フィーチャー一覧」表の直後の注記 2点目（「発行依頼書の項目の登録と更新は issue-request が持つ」）／steering/product.md 「ビジネスルール / ポリシー」申請・承認の履歴（「契約情報取込（contract-info-import）も、洗替のときに TWTGA150・TWTGA130 に変更履歴を登録する。登録するのは内容が変わった行の取込前の内容だけとする」）／steering/database.md 「クエリパターン」洗替 | 矛盾（成立するかは判定不能）: 再承認された product.md は、contract-info-import が洗替のときに、発行依頼書の変更履歴 TWTGA130 にも、内容が変わった行の取込前の内容を登録するとしている。database.md も TWTGA130 を発行依頼書の項目の変更履歴の表としている。これは、contract-info-import が取込で発行依頼書の内容を変えることを前提にしていると読める。一方、注記 2点目は、発行依頼書の項目の登録と更新は issue-request が持つとしている。注記 1点目で contract-info-import に加えたのは、TWTGM140（契約局情報）の洗替だけである。contract-info-import による発行依頼書の更新が「issue-request が持つ」と両立するのか、注記の範囲が画面での操作に限られるのかは、本ファイルと steering からは判定できない。人間による確認が必要。 |\n| 4 | ② | .aidd/feature-list.md 「フィーチャー一覧」表の直後の注記 2点目（「発行依頼書情報（TWTGM100）」「申請の削除で行を物理削除する」「修正稟議と再製本で行を新しい申請No に複製する」） | 出典不明: 注記 2点目のテーブルID TWTGM100（発行依頼書情報）、申請の削除で行を物理削除すること、修正稟議で行を複製することに対応する記述が、.aidd/requirement-list.md・steering/*.md のどこにも無い。steering にあるのは、再製本（security.md 「チェックの適用箇所」の再製本ボタン、product.md 主要ユースケース4）と、物件基本情報の引用による複製（REQ-010）だけである。注記は出典を「Phase 4 横断検査 1 回目 指摘2 の差戻し指示、回答者 Junichi Noumi、2026-10-05」としているが、根拠として指定された上流成果物の中では追跡できない。 |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- #3: 人間による確認（直すべきなのが本ファイルの注記（Phase 3）か steering/product.md の申請・承認の履歴（Phase 2）かを、上流からは決められないため）\n\n**判断の選択肢**（指摘ごとに 1 つ選ぶ）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n\n回答例: `1:A / 2:C 既存システムの制約で変更できない / 3:D 次回レビューまで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。",
+    "id": "2a16627ef76649ca9b35ba6ae08e5262"
+  },
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "feature-decomposition-revise",
+    "event": "feature-decomposition-revise",
+    "item": "",
+    "dispatch_id": "2a16627ef76649ca9b35ba6ae08e5262",
+    "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::end.review",
+    "scope": "phase",
+    "run": 6,
+    "snapshot": "210df960cd4626e9dc19163c8336c4152d6caa64a63af255bd16c24003ce5be2",
+    "record_hash": "1ff85da660c2b6c03dee7a7efd093b2b3e38f0ff089d4516a20d8b0c5044639a"
+  },
+  "data": {}
+}

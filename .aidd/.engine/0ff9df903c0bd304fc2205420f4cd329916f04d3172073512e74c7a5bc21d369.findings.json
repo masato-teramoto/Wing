@@ -1,0 +1,7 @@
+{
+  "phase": "requirements",
+  "event": "requirements-cross-gate",
+  "scope": "cross",
+  "run": 2,
+  "findings": []
+}

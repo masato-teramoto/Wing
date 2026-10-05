@@ -1,0 +1,74 @@
+{
+  "operation_id": "b73b998ed79049c2af9762b9654dea73",
+  "dispatch": {
+    "call": "requirements-authoring-generate",
+    "unit": "requirements-authoring-generate/requirements-authoring-generate[contract-info-import]::run",
+    "event": "requirements-authoring-generate",
+    "item": "contract-info-import",
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "d62dadce332a4405b7c19120a9f2e7e1"
+  },
+  "result": {
+    "status": "waiting",
+    "targets": [
+      "specs/contract-info-import/requirements.md"
+    ],
+    "questions": [
+      {
+        "id": "Q-RQ-CI-001",
+        "target": "specs/contract-info-import/requirements.md",
+        "location": "業務フロー",
+        "question": "今の手順はほかの feature と同じでよいですか。取込を誰が、何のために、どの時点で行うかを教えてください。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-CI-002",
+        "target": "specs/contract-info-import/requirements.md",
+        "location": "画面 GWTG090。REQ-033",
+        "question": "画面の項目（取込ファイルの選択、取込の区分など）とボタンを教えてください。物件基本情報登録変更の 14.6 から渡される値（申請No・受付No・契約区分・担当エリア・申請者・契約稟議起案者の会社コードと所属名①②と氏名）を、この画面で何に使うかも教えてください。実行の結果を、バッチ処理状況一覧（/zzz010/）で確かめる形でよいですか。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-CI-003",
+        "target": "specs/contract-info-import/requirements.md",
+        "location": "取込ファイルの形式",
+        "question": "CSV の列と順番、文字コード、見出し行の有無、1 行が何に当たるか（契約局情報 1 局など）を教えてください。物件基本情報登録変更の 9.1 の出力 CSV と、契約情報ダウンロードの CSV は、この取込と同じ形式ですか。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-CI-004",
+        "target": "specs/contract-info-import/requirements.md",
+        "location": "新規・変更・削除。REQ-034",
+        "question": "行ごとに新規・変更・削除をどう見分けるか、行を特定するキー、更新するテーブル（TWTGM100・TWTGM140 など）を教えてください。feature 一覧の注記で、契約情報取込が TWTGM140 を更新するかはこの feature で扱うとしています。更新するかどうかを教えてください。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-CI-005",
+        "target": "specs/contract-info-import/requirements.md",
+        "location": "洗替。REQ-035",
+        "question": "洗替の単位（申請No ごとなど）と対象のテーブルを教えてください。洗替の前の内容を変更履歴（TWTGA130・TWTGA150）に残すかも教えてください。steering の既定では、洗替は履歴テーブルへ退避してから削除し、入れ直します。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-CI-006",
+        "target": "specs/contract-info-import/requirements.md",
+        "location": "チェックとエラー",
+        "question": "行のチェック内容（発行依頼書登録変更画面のチェックに合わせる、と Q-RQ-IR-010 で回答済み）のほかに、取込に固有のチェックがあれば教えてください。1 行でもエラーがあれば全件を取り消すか（steering の既定）、エラーの内容をどこに出すか、取込を実行できる人と申請の状態も教えてください。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-CI-007",
+        "target": "specs/contract-info-import/requirements.md",
+        "location": "前提・未確定事項・非機能",
+        "question": "この feature に固有の前提と、design の前に決めておく事項を教えてください。非機能と扱う個人情報も教えてください。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      }
+    ],
+    "open_placeholders": 27,
+    "changed_findings": [],
+    "return_candidates": [],
+    "summary": "要求文と feature 一覧から書ける範囲で下書きを作成した。未確定は質問 7 件（_handoff/questions-phase4-remaining.md と同じ）。"
+  }
+}

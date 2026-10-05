@@ -1,0 +1,30 @@
+{
+  "operation_id": "ddb00ca79e704f398414621f527e9436",
+  "dispatch": {
+    "call": "steering-authoring-revise",
+    "unit": "steering-authoring-revise/steering-authoring-revise[-]::run",
+    "event": "steering-authoring-revise",
+    "item": null,
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "a8749d5a02f84cadab1067341c9cdd85"
+  },
+  "result": {
+    "status": "completed",
+    "targets": [
+      "steering/product.md",
+      "steering/tech.md",
+      "steering/architecture.md",
+      "steering/security.md",
+      "steering/non-functional.md",
+      "steering/database.md",
+      "steering/api-standards.md"
+    ],
+    "questions": [],
+    "open_placeholders": 0,
+    "changed_findings": [],
+    "return_candidates": [],
+    "summary": "開き直しの指示 S1〜S9 を反映した。product.md：主要ユースケース 4・7 の利用者を直し（S1・S2）、申請・承認の履歴に契約情報取込の変更履歴の登録を足した（S3）。database.md：洗替のパターンが既存バッチの例であることと契約情報取込のやり方（S4）、バッチのトランザクションの例外（S5）を足した。security.md：機密データに担当者の氏名（S6）とマイナンバーを受け取った日（S7）の行を足し、所有権・エンティティ境界のパターンに既存の契約情報への計画マスタの方式の適用を足した（S8）。non-functional.md：休日判定の行に申請状況検索の営業日の数え方を足した（S9）。tech.md・architecture.md・api-standards.md は変えていない。出典は「Phase 4 横断検査 1 回目の差戻しにあわせた開き直しの指示、回答者 Junichi Noumi」とした。"
+  }
+}

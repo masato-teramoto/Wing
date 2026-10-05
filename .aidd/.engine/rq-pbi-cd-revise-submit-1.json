@@ -1,0 +1,24 @@
+{
+  "operation_id": "b48cb2dc4d5c401f818a801976e44d76",
+  "dispatch": {
+    "call": "requirements-authoring-revise",
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::run",
+    "event": "requirements-authoring-revise",
+    "item": "property-basic-info",
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "05b037324d4140508e087ee6e6975729"
+  },
+  "result": {
+    "status": "completed",
+    "targets": [
+      "specs/property-basic-info/requirements.md"
+    ],
+    "questions": [],
+    "open_placeholders": 0,
+    "changed_findings": [],
+    "return_candidates": [],
+    "summary": "契約情報ダウンロードからの差戻しの指示 1〜4 を反映した。扱う範囲の遷移ボタン・リンクの点に契約局DL ボタン（GWTG100 をポップアップで開く）を足し、14.5 の受け付ける操作に契約局DL を足し、14.14（申請No だけを渡して GWTG100 を別ウインドウで開く。検索条件の初期値には使わない）を追加し、Adjacent に contract-info-download を足した。14.6 は変えていない。出典の表記に「差戻しの指示」を加えた。"
+  }
+}

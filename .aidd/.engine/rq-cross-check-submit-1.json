@@ -1,0 +1,16 @@
+{
+  "operation_id": "553d6f48ce5a4901934534d2e9604d26",
+  "dispatch": {
+    "call": "requirements-cross-gate",
+    "unit": "requirements-cross-gate/requirements-cross-gate[-]::run",
+    "event": "requirements-cross-gate",
+    "item": null,
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "88f0a289f01b4b748905267901b685b7"
+  },
+  "result": {
+    "status": "completed"
+  }
+}

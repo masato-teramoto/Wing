@@ -1,0 +1,24 @@
+{
+  "operation_id": "36abb72ea9d2435b87fda02383e195b4",
+  "dispatch": {
+    "call": "requirements-authoring-revise",
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::run",
+    "event": "requirements-authoring-revise",
+    "item": "property-basic-info",
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "7f10a0b510e34999bcaf21f90373107a"
+  },
+  "result": {
+    "status": "completed",
+    "targets": [
+      "specs/property-basic-info/requirements.md"
+    ],
+    "questions": [],
+    "open_placeholders": 0,
+    "changed_findings": [],
+    "return_candidates": [],
+    "summary": "開き直しの指示どおり、扱う範囲に発行依頼書編集ボタン・基地局番号リンクを加え、14.10〜14.13 を足した。5.2 をこの画面の操作の決まりに限り、Adjacent の issue-request に発番の承認履歴（判定 11）の登録を書いた。steering と feature 一覧の再承認による変更（起案者の権限は全員、組織によるボタンの出し分け、TWTGM140 の役割分担）は、本文書の既存の記述（6.2・6.9・7.1・注記の範囲）と矛盾しないことを確認した。"
+  }
+}

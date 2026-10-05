@@ -1,0 +1,34 @@
+{
+  "operation_id": "b4fa2b7fade449ebab614ab74f138599",
+  "action": "decision",
+  "dispatch": {
+    "call": "steering-authoring-revise",
+    "unit": "steering-authoring-revise/steering-authoring-revise[-]::end.review",
+    "event": "steering-authoring-revise",
+    "item": null,
+    "status": "wait",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"steering-authoring-revise/steering-authoring-revise[-]::end.review\", \"snapshot\": \"f4414a2d631388207ff0d8f7cc1b116135a476695394eb6ae08580b1c362c713\", \"run\": 4, \"inspection_hash\": \"7f1fc26ae295eeeedb87cd00778db2ea9c3642e7be7ea6d1e6ab595c64797e23\"}\n**Phase 2（Steering 作成）の品質ゲートを実行しました。** 指摘ごとに判断を選んでください。\n\n**対象**: `steering/product.md` / `steering/tech.md` / `steering/architecture.md` / `steering/security.md` / `steering/non-functional.md` / `steering/database.md` / `steering/api-standards.md`（スコープ: 成果物単位 / 4 回目）\n**実行した層**: ① / ②\n\n**指摘**（ゲート記録 `.aidd/gates/phase-2-steering.md` の当該実行分）\n\n| # | 層 | 対象箇所 | 指摘内容 |\n|---|---|---|---|\n| 1 | ② | steering/security.md `## 基本方針` 5点目・`### 認証・認可の設計思想` 1点目・`#### 権限モデル`（採用理由）／ steering/security.md `#### 権限モデル`（モデル・定義の置き場・禁止） | 二重定義（食い違いの可能性）: 認可の方式。基本方針 5点目は「新しい認証・認可の仕組みを作らず、既存 wing の仕組みに乗せる（REQ-043・REQ-045）」、設計思想 1点目は「本プロジェクトで別の方式を作らない（REQ-043）」、採用理由は「既存 WTB と同様の権限制御方式に合わせる（REQ-043）」としている。一方、今回直した権限モデルは、承認フローで誰の番かを審査権限マスタ `TWTGM170` とコードマスタ `P82` で判定する段を加えている。`TWTGM170` は既存の wing・WTX・WTX_Batch・WTX_Common のソースに記述が見当たらず（WTX_Batch で見つかるのは `TWTGA130` だけ）、既存の仕組みでも WTB の方式でもない判定の段にあたる。7ファイルの分担では認可の方式は security.md が持ち、同じファイルの中で両立しない。Phase 2 3 回目 残件 1 の判断（「WTB と同様」は社外ユーザーを自社のデータに絞る考え方を指す）はデータ範囲についてのもので、承認フローの番の判定には及ばない。基本方針・設計思想・採用理由を権限モデルに合わせて直すかは人間の確認が要る |\n| 2 | ② | steering/security.md `#### チェックの適用箇所`（データ取得の行）／ steering/security.md `#### 所有権・エンティティ境界`（パターン） | 二重定義（食い違い）: 社外ユーザーのデータ範囲。データ取得の行は「社外ユーザーのとき、自社が関係するデータだけを検索条件で絞り込む」とし、今回直したパターンは「契約稟議起案会社が自社のデータと、その社外ユーザー本人が登録したデータだけ」とする。データ取得の行は参照先として `#### 所有権・エンティティ境界` を挙げているが、本文の「自社が関係するデータだけ」は本人が登録したデータ（契約稟議起案会社が未設定のものを含みうる）を含むかが読み取れず、引用（準拠）の形になっていない。7ファイルの分担では範囲の判定方法はパターンが持つ |\n| 3 | ② | steering/database.md `## 設計思想` 3点目 ／ steering/product.md `## ビジネスルール / ポリシー`（申請・承認の履歴） | 二重定義（同一内容）: 項目の変更履歴を持つ対象。product.md は「項目の変更履歴を持つのは発行依頼書（`TWTGA130`）だけとする」とし、database.md は product.md に「従う」と引用したうえで、「本案件では発行依頼書の `TWTGA130` だけが該当する」と同じ事実をもう一度書いている。内容は同じで食い違いは無い。7ファイルの分担ではシステム全体の業務上の決まりは product.md、表の種別（種別 `A` の履歴テーブル）は database.md が持つ。database.md 側の対象の列挙を引用だけにするかは人間の確認が要る |\n| 4 | ② | steering/security.md `## 機密データ`（担当者の連絡先・契約者の個人情報の行）／ steering/security.md `#### 権限モデル`・`#### チェックの適用箇所`（画面の表示の行） | 粒度の不足（steering と design.md のどちらで補うかの確認）: 2 行とも「権限のある利用者にだけ表示し」とするが、どの権限を指すかが無い。権限モデルは画面を使える権限（`Kengen_Kbn`・`AccessControlInterceptor`）、承認フローの番（`TWTGM170`・`P82`）、社外ユーザーのデータ範囲、項目の出し分け（`TWTZM120`）を持ち、どれに当たれば表示してよいのかを各 design.md はこの記述を参照するだけでは決められない。feature ごとに独自解釈が生じうる（根拠: security.md `#### チェックの適用箇所` の画面の表示の行は、社外ユーザーに見せない項目を各 feature で定めるとしている） |\n| 5 | ② | steering/product.md `## ビジネスルール / ポリシー`（申請・承認の履歴）／ steering/database.md `## 設計思想` 3点目 | 実体の混入（判断材料）: 物件基本情報の履歴は承認履歴 `TWTGM180` だけ、項目の変更履歴を持つのは発行依頼書の `TWTGA130` だけ、という個々のデータごとの履歴の持ち方と、その表名が書かれている。物件基本情報と発行依頼書で扱いが異なり、全 feature に等しく適用されるルールではないため、判定基準（steering は方針、spec は実体）に照らすと design.md 側の実体にあたる。記述は Phase 4 property-basic-info ゲート 1 回目 指摘15〜18 の差戻し指示に基づくもので、steering に置くかは人間の確認が要る |\n| 6 | ② | steering/security.md `#### 所有権・エンティティ境界`（パターン） | 根拠の飛躍: パターンは社外ユーザーが見て操作できる範囲を「契約稟議起案会社が自社（P71 の文字項目2）のデータと、その社外ユーザー本人が登録したデータだけ」としているが、根拠とした差戻し指示（Phase 4 property-basic-info ゲート 1 回目 指摘15〜18）は「契約稟議起案会社が自社の申請と、本人が登録した申請とする」としており、対象は「申請」である。「データ」へ広げると、申請以外の WTG のデータ（取込・ダウンロードで扱う契約情報など）にも同じ範囲が当てはまる読み方になるが、その根拠は示されていない |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n**判断の選択肢**（指摘ごとに 1 つ選ぶ）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n\n回答例: `1:A / 2:C 既存システムの制約で変更できない / 3:D 次回レビューまで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。",
+    "id": "1f64065db2a74c5b87bfc0712ac3e882"
+  },
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "steering-authoring-revise",
+    "event": "steering-authoring-revise",
+    "item": "",
+    "dispatch_id": "1f64065db2a74c5b87bfc0712ac3e882",
+    "unit": "steering-authoring-revise/steering-authoring-revise[-]::end.review",
+    "scope": "phase",
+    "run": 4,
+    "snapshot": "f4414a2d631388207ff0d8f7cc1b116135a476695394eb6ae08580b1c362c713",
+    "record_hash": "f1fa9a24f7301132a2c5c13b2c581d54f8370bde82722790c00d72860c5e094a"
+  },
+  "data": {
+    "scope": "phase",
+    "run": 4,
+    "number": 3,
+    "decision": "対応せず進める",
+    "reason": "同じ内容で食い違いは無い。product.md を正とする"
+  }
+}

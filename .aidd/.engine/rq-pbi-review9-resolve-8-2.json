@@ -1,0 +1,32 @@
+{
+  "operation_id": "b5b8590103404d37b5f77738841c070e",
+  "action": "resolve",
+  "dispatch": {
+    "call": "requirements-authoring-revise",
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::end.review",
+    "event": "requirements-authoring-revise",
+    "item": "property-basic-info",
+    "status": "wait",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::end.review\", \"snapshot\": \"e353be94a38a0e70ca3cb234bfa11f852fde2200679db52fbb31d833bbfd09d9\", \"run\": 9, \"inspection_hash\": \"e7b221fae67f43291ec7a8bcd634ab25708f4e258a02d9473f91be4b98e00592\"}\n**Phase 4（requirements 作成）の品質ゲートを実行しました。** 指摘ごとに判断を選んでください。\n\n**対象**: `specs/property-basic-info/requirements.md`（スコープ: 成果物単位（property-basic-info） / 9 回目）\n**実行した層**: ① / ②\n\n**指摘**（ゲート記録 `.aidd/gates/phase-4-requirements.md` の当該実行分）: なし（0 件。検査は実行済み）\n\n**前回までの指摘**（今回件数に含めない）\n- #8-1 矛盾の可能性: steering/security.md の権限モデルは「起案者の権限は全員が持ち、`TWTGM170` では管理しない」とし、`TWTGM170` と `P82` で判定するのは申請者・確認者・承認者の番だとしている。本文書の前提は「審査権限マスタ `TWTGM170` に、会社コードとユーザーID ごとの権限（`P82`：01 起案者・02 申請者・03 確認者・04 承認者）が登録されている」とし、対象ユーザーも起案者を含む 4 者を「審査権限マスタ `TWTGM170` の権限」としている。6.2（未登録でも起案者の権限を与える）とは両立するが、前提と対象ユーザーの書き方は、起案者も `TWTGM170` で管理すると読める。前提の書き方を steering に合わせるべきかは人間による確認が必要 [specs/property-basic-info/requirements.md 「前提と依存」前提 1 点目・「概要」対象ユーザー／steering/security.md 「権限モデル」モデル・禁止] — 修正 → 再検査の結果を見て解消を確認してください\n- #8-2 矛盾の可能性: 再承認された steering/product.md のユースケース 4 は、帳票を閲覧・印刷するのを「組織がプロセス管理4G の申請者・確認者・承認者（再製本依頼では起案者も）」とし、役割で限定している。本文書の 6.9 は、ログインユーザーの組織がプロセス管理4G（`P71` の G6）なら役割・番・依頼内容を問わず閲覧ボタンと印刷ボタンを表示するとしており、稟議依頼・修正稟議依頼の起案者や承認フローの権限を持たない 4G の利用者にもボタンを表示する。steering/security.md の画面の表示の行は組織の条件だけを持ち、6.9 と一致する。steering の 2 つの記述のどちらに 6.9 を合わせるかは人間による確認が必要（steering の Phase 2 6 回目 指摘1 と同じ食い違いに関わる） [specs/property-basic-info/requirements.md 「要件 6」受け入れ基準 6.9／steering/product.md 「主要ユースケース」4／steering/security.md 「チェックの適用箇所」画面の表示] — 修正 → 再検査の結果を見て解消を確認してください\n- #8-3 逸脱（反映漏れの可能性）: 再承認された steering/security.md の機密データは、担当者の氏名（起案担当者・申請者・確認者・承認者・更新者）を担当者の連絡先と同じに扱うとしている。本文書のプライバシーの行は、扱う個人情報を「担当者の連絡先メールアドレスと電話番号」とだけ書き、担当者の氏名を挙げていない。一方、本文書は 14.6 で申請者・契約稟議起案者の氏名を契約情報取込画面へ渡すとしており、担当者の氏名を扱う。プライバシーの行に担当者の氏名を加えるべきか、steering の準拠の宣言で足りるとするかは人間による確認が必要 [specs/property-basic-info/requirements.md 「非機能要件」プライバシーの行／「要件 14」14.6／steering/security.md 「機密データ」担当者の氏名の行] — 修正 → 再検査の結果を見て解消を確認してください\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n承認を問う前に必要なこと: 未解消: feature:property-basic-info / run 8 / #1 / 未解消: feature:property-basic-info / run 8 / #2 / 未解消: feature:property-basic-info / run 8 / #3",
+    "id": "500b09ffca984746ad3d309e825b27da"
+  },
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "requirements-authoring-revise",
+    "event": "requirements-authoring-revise",
+    "item": "property-basic-info",
+    "dispatch_id": "500b09ffca984746ad3d309e825b27da",
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::end.review",
+    "scope": "feature:property-basic-info",
+    "run": 9,
+    "snapshot": "e353be94a38a0e70ca3cb234bfa11f852fde2200679db52fbb31d833bbfd09d9",
+    "record_hash": "4bd14c64bc52d955e437f767e599a0678e3177050231b9f81c836a8628a77ab9"
+  },
+  "data": {
+    "scope": "feature:property-basic-info",
+    "run": 8,
+    "number": 2
+  }
+}

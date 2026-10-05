@@ -1,0 +1,26 @@
+{
+  "operation_id": "ae9ac21cd82648e59e1af78b08c1c084",
+  "dispatch": {
+    "call": "steering-authoring-revise",
+    "unit": "steering-authoring-revise/steering-authoring-revise[-]::run",
+    "event": "steering-authoring-revise",
+    "item": null,
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "1922d716d5c148a5a1e6b2a6e1e7b1e7"
+  },
+  "result": {
+    "status": "completed",
+    "targets": [
+      "steering/database.md",
+      "steering/product.md",
+      "steering/security.md"
+    ],
+    "questions": [],
+    "open_placeholders": 0,
+    "changed_findings": [],
+    "return_candidates": [],
+    "summary": "発行依頼書登録変更の作成中の差戻し指示を反映した。database.md と product.md に契約局情報の変更履歴 TWTGA150 を加え、登録する feature と契機を書いた。security.md の権限モデル・定義の置き場・禁止を申請者・確認者・承認者の番に限り、起案者の権限は全員が持つとした。チェックの適用箇所の画面の表示に、組織によるボタンの出し分け（閲覧・印刷、再製本）を加えた。"
+  }
+}

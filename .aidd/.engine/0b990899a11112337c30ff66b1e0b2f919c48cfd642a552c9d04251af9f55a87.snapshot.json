@@ -1,0 +1,19 @@
+{
+  "schema": 2,
+  "phase": "requirements",
+  "event": "requirements-authoring-revise",
+  "scope": "feature:issue-request",
+  "at": "2026-10-05T19:16:17+09:00",
+  "artifacts": {
+    "specs/issue-request/requirements.md": {
+      "status": "draft",
+      "sha256": "a6bfa87614a5044a2ee05f06eea80f9f9e83e431030c7f9fa6a85e54542d807f"
+    }
+  },
+  "record": {
+    "bytes": 224706,
+    "sha256": "1a9bf505148865a8da21b78f637a4044bc3e5c3ac87701e588225ee8fdb6280b",
+    "blocks": 254
+  },
+  "run": 3
+}

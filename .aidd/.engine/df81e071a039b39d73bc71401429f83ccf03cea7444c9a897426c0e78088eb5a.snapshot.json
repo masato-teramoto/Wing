@@ -1,0 +1,19 @@
+{
+  "schema": 2,
+  "phase": "requirements",
+  "event": "requirements-authoring-revise",
+  "scope": "feature:property-basic-info",
+  "at": "2026-10-05T19:00:34+09:00",
+  "artifacts": {
+    "specs/property-basic-info/requirements.md": {
+      "status": "draft",
+      "sha256": "b849cadc770e4cf091f0a7ce4f84d11892da5b988ff5184d257c3526989e4081"
+    }
+  },
+  "record": {
+    "bytes": 223107,
+    "sha256": "22b0e40e0b9eca5a3ff40a8cada486729c0eb8704c5678fb43340972088045d1",
+    "blocks": 248
+  },
+  "run": 9
+}

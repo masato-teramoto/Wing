@@ -1,0 +1,28 @@
+{
+  "operation_id": "1d1bda44f1304b3db3b9a75e924ec3e8",
+  "action": "approve",
+  "dispatch": {
+    "call": "requirements-authoring-revise",
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+    "event": "requirements-authoring-revise",
+    "item": "issue-request-tutorial",
+    "status": "wait",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review\", \"snapshot\": \"356c5ace9efc5f4d6c32307f97dd01e3169184f36f07441bd76144f20dd6b4a5\", \"run\": 4, \"inspection_hash\": \"a2cd5ed753d5a39d13b42ac11ae4197a63e4ef16c5a86f282a5e09ab46616d6d\"}\n**Phase 4（requirements 作成）の品質ゲートを実行しました。** 指摘ごとに判断を選んでください。\n\n**対象**: `specs/issue-request-tutorial/requirements.md`（スコープ: 成果物単位（issue-request-tutorial） / 4 回目）\n**実行した層**: ① / ②\n\n**指摘**（ゲート記録 `.aidd/gates/phase-4-requirements.md` の当該実行分）: なし（0 件。検査は実行済み）\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n判断が揃いました。承認の可否を回答してください（承認する場合は承認者名）。",
+    "id": "6fdeea888f3e4dd491f2fb23c1aa6031"
+  },
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "requirements-authoring-revise",
+    "event": "requirements-authoring-revise",
+    "item": "issue-request-tutorial",
+    "dispatch_id": "6fdeea888f3e4dd491f2fb23c1aa6031",
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.review",
+    "scope": "feature:issue-request-tutorial",
+    "run": 4,
+    "snapshot": "356c5ace9efc5f4d6c32307f97dd01e3169184f36f07441bd76144f20dd6b4a5",
+    "record_hash": "a2cd5ed753d5a39d13b42ac11ae4197a63e4ef16c5a86f282a5e09ab46616d6d"
+  },
+  "data": {}
+}

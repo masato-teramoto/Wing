@@ -1,6 +1,6 @@
 ---
 status: approved
-updated_at: 2026-10-01T18:44:04+09:00
+updated_at: 2026-10-05T18:36:30+09:00
 ---
 
 # フィーチャー一覧
@@ -24,6 +24,11 @@ updated_at: 2026-10-01T18:44:04+09:00
 | application-status-search | User | 物件契約情報申請状況検索一覧（GWTG060）。物件契約情報の申請状況を検索・一覧表示し、CSV に出力する | property-basic-info | 5 | 小 | REQ-006, REQ-007, REQ-063 |
 | contract-info-import | User | 契約情報取込（GWTG090・バッチ PWTGB090）。契約情報を取込バッチで新規・変更・削除し、洗替更新する | property-basic-info, issue-request | 6 | 中 | REQ-033, REQ-034, REQ-035, REQ-063 |
 | contract-info-download | User | 契約情報ダウンロード（GWTG100）。契約情報を検索し、取込で使える形式の CSV でダウンロードする | contract-info-import | 7 | 小 | REQ-036, REQ-037, REQ-038, REQ-039, REQ-063 |
+
+> **注記**（Phase 4 からの差戻しによる修正。回答者 Junichi Noumi、2026-10-01）:
+> - 契約局情報（TWTGM140）の役割分担は、この注記を SSoT とする。テーブルの定義は property-basic-info が持つ。property-basic-info は、物件基本情報登録変更画面で行の登録・更新・削除・並替えをする。issue-request は、発行依頼書登録変更画面の更新で、その画面の契約局の行を登録・更新する（削除はしない）。画面での操作について、同じ操作を 2 つの feature が持つことは無い（Phase 4 issue-request 作成中の差戻しへの人間の回答、回答者 Junichi Noumi、2026-10-02）。contract-info-import は、取込のとき申請No ごとに契約局情報の行を全部消して、ファイルの内容で入れ直す（洗替）（Phase 4 横断検査 1 回目 指摘2 の差戻し指示、回答者 Junichi Noumi、2026-10-05）。
+> - property-basic-info は、物件基本情報登録変更画面で、発行依頼書情報（TWTGM100）について 2 つの操作をする。1 つは、申請の削除で行を物理削除すること。もう 1 つは、修正稟議と再製本で行を新しい申請No に複製すること。発行依頼書の項目の登録と更新は issue-request が持つ。複製で引き継ぐ項目と空にする項目の決まりは issue-request が持つ（`specs/issue-request/requirements.md` の 7.5・7.6）。TWTGM100 が無くても物件基本情報登録変更画面は動き、削除と複製は行があるときだけ行う。そのため依存の向きは issue-request → property-basic-info のままとする（Phase 4 横断検査 1 回目 指摘2 の差戻し指示、回答者 Junichi Noumi、2026-10-05）。
+> - 変更履歴（TWTGA120）はどの feature も使わない。
 
 ### 項目の定義
 

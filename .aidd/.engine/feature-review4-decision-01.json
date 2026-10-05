@@ -1,0 +1,34 @@
+{
+  "operation_id": "4cfd3091ce5445f4a84fca9adf00684c",
+  "action": "decision",
+  "dispatch": {
+    "call": "feature-decomposition-revise",
+    "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::end.review",
+    "event": "feature-decomposition-revise",
+    "item": null,
+    "status": "wait",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"feature-decomposition-revise/feature-decomposition-revise[-]::end.review\", \"snapshot\": \"2a02f25964e728661163eb135213d5a1d4fe4c7b8f8d735aa4b71842de450357\", \"run\": 4, \"inspection_hash\": \"ea09f5e437d5b2ca39a6ee4198c76b73061d2d672f58c8be690f162c28990992\"}\n**Phase 3（Feature 分割）の品質ゲートを実行しました。** 指摘ごとに判断を選んでください。\n\n**対象**: `.aidd/feature-list.md`（スコープ: 成果物単位 / 4 回目）\n**実行した層**: ① / ②\n\n**指摘**（ゲート記録 `.aidd/gates/phase-3-feature.md` の当該実行分）\n\n| # | 層 | 対象箇所 | 指摘内容 |\n|---|---|---|---|\n| 1 | ② | .aidd/feature-list.md 「フィーチャー一覧」表の直後の注記 1点目・2点目 | 二重定義（食い違いあり）: 契約局情報 TWTGM140 を更新する責務が2か所に書かれている。1点目は「契約局情報（TWTGM140）は property-basic-info が登録・更新・削除する」とし、property-basic-info だけを挙げている。2点目は property-basic-info の操作に「並替え」を加え、さらに「issue-request も、発行依頼書登録変更画面の更新で TWTGM140 の行を登録・更新する（削除はしない）」としている。このため、同じテーブルの行の登録・更新を2つの feature が受け持つことになる。1点目は、2点目と比べて並替えと issue-request の分が無く、内容が一致していない。どちらの記述を正とするか、また2つの feature が同じ行を登録・更新する形でよいかについて、SSoT の所在が示されていないため人間による確認が必要。 |\n| 2 | ② | .aidd/feature-list.md 「フィーチャー一覧」表の直後の注記 2点目（「正解の CRUD 図では、物件申請情報登録・編集が TWTGM140 を SIUD、発行依頼書登録・変更が SIU である」） | 出典不明: 注記が根拠として挙げる「正解の CRUD 図」と、その中の名前「物件申請情報登録・編集」「発行依頼書登録・変更」は、.aidd/requirement-list.md・steering/*.md のどこにも無い。issue-request が TWTGM140 を登録・更新するという点は、steering/product.md 「ビジネスルール / ポリシー」の申請・承認の履歴と一部が合う（契約局情報の変更履歴 TWTGA150 は、issue-request が発行依頼書登録変更画面の更新と発番のときに登録する）。一方、TWTGM140 そのものを誰が SIUD または SIU で扱うかは、根拠に指定された上流には書かれていない。注記の出典は「Phase 4 issue-request 作成中の差戻し指示、回答者 Junichi Noumi、2026-10-02」とされているが、指定された上流の中では追跡できない。 |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n**判断の選択肢**（指摘ごとに 1 つ選ぶ）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n\n回答例: `1:A / 2:C 既存システムの制約で変更できない / 3:D 次回レビューまで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。",
+    "id": "f654c94350294c1c9a82d689b5400190"
+  },
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "feature-decomposition-revise",
+    "event": "feature-decomposition-revise",
+    "item": "",
+    "dispatch_id": "f654c94350294c1c9a82d689b5400190",
+    "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::end.review",
+    "scope": "phase",
+    "run": 4,
+    "snapshot": "2a02f25964e728661163eb135213d5a1d4fe4c7b8f8d735aa4b71842de450357",
+    "record_hash": "ea09f5e437d5b2ca39a6ee4198c76b73061d2d672f58c8be690f162c28990992"
+  },
+  "data": {
+    "scope": "phase",
+    "run": 4,
+    "number": 1,
+    "decision": "修正",
+    "reason": "注記の1点目を消し、2点目だけを残す。\n2点目を正とする。\nTWTGM140 の行は2つの feature が扱う形でよい。役割は次のとおりで、同じ操作を2つが持つことは無い。\n・テーブルの定義は property-basic-info が持つ。\n・property-basic-info は、物件基本情報登録変更画面で行の登録・更新・削除・並替えをする。\n・issue-request は、発行依頼書登録変更画面の更新で、その画面の契約局の行を登録・更新する。削除はしない。\nこの役割分担を注記の中で「SSoT はこの注記」と明記する。"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "operation_id": "d8e701b948b0424e92675e1638ad1745",
+  "dispatch": {
+    "call": "requirements-authoring-revise",
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::run",
+    "event": "requirements-authoring-revise",
+    "item": "property-basic-info",
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "01143b5661364b8dbe43bc6c17487009"
+  },
+  "result": {
+    "status": "completed",
+    "targets": [
+      "specs/property-basic-info/requirements.md"
+    ],
+    "questions": [],
+    "open_placeholders": 0,
+    "changed_findings": [],
+    "return_candidates": [],
+    "summary": "開き直しの指示 P1 を反映した。7.3 の「契約局情報の全行（稟議バーコードNo を含む）」を「契約局情報の全行」に直し、受付No と稟議バーコードNo は再製本では引き継ぎ、修正稟議では空にすること（specs/issue-request/requirements.md の 7.6）を足した。受け入れ基準の番号は変えていない。出典の表記に「横断1-N」を加えた。"
+  }
+}

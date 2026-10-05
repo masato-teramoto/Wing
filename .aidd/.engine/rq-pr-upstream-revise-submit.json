@@ -1,0 +1,24 @@
+{
+  "operation_id": "95d1dcb2c92140c292250c6be23ad70d",
+  "dispatch": {
+    "call": "requirements-authoring-revise",
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[print-report]::run",
+    "event": "requirements-authoring-revise",
+    "item": "print-report",
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "e47a15f7606741ecb2cc41d64222901b"
+  },
+  "result": {
+    "status": "completed",
+    "targets": [
+      "specs/print-report/requirements.md"
+    ],
+    "questions": [],
+    "open_placeholders": 0,
+    "changed_findings": [],
+    "return_candidates": [],
+    "summary": "上流（.aidd/feature-list.md, steering/database.md, steering/non-functional.md, steering/product.md, steering/security.md）の変更の影響を確認した。Phase 4 横断検査 1 回目への回答者（Junichi Noumi）の指示「各 feature の requirements で、steering に合わせて読み替えると答えた点は、上の修正で steering と合う。requirements の本文は、P1 のほかは直さない」に従い、本文は変更していない。"
+  }
+}

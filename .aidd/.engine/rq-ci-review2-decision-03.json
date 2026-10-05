@@ -1,0 +1,34 @@
+{
+  "operation_id": "b8162bcec96b485d80c00b9653a43613",
+  "action": "decision",
+  "dispatch": {
+    "call": "requirements-authoring-revise",
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[contract-info-import]::end.review",
+    "event": "requirements-authoring-revise",
+    "item": "contract-info-import",
+    "status": "wait",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"requirements-authoring-revise/requirements-authoring-revise[contract-info-import]::end.review\", \"snapshot\": \"46d1248563fbb8cc8dc087723d2c504f5ca7f3cb42dc8f8698bde952e12edd46\", \"run\": 2, \"inspection_hash\": \"108e91ba53cd94fc3c627a688fd49222481ffa96f01d876bf1d9351e3f024fb2\"}\n**Phase 4（requirements 作成）の品質ゲートを実行しました。** 指摘ごとに判断を選んでください。\n\n**対象**: `specs/contract-info-import/requirements.md`（スコープ: 成果物単位（contract-info-import） / 2 回目）\n**実行した層**: ① / ②\n\n**指摘**（ゲート記録 `.aidd/gates/phase-4-requirements.md` の当該実行分）\n\n| # | 層 | 対象箇所 | 指摘内容 |\n|---|---|---|---|\n| 1 | ② | specs/contract-info-import/requirements.md 「要件 2」受け入れ基準 2.5 | 2.5「物件基本情報登録変更画面から渡された申請者・受付No などの値で登録しなければならない」は、渡された値のうち発行依頼書に登録する値が「など」で終わっていて特定されていない。property-basic-info の 14.6 が渡す値（申請No・受付No・契約区分・担当エリア・申請者・契約稟議起案者の会社コードと所属名①②と氏名）のうち、どれを登録すれば満たすのかを判定できない。また「ファイルの最初のデータ行の内容」と重なる項目をどちらの値で登録するかも判定できない（1 回目 指摘2 と同じ箇所。本文は変わっていない）。 |\n| 2 | ② | specs/contract-info-import/requirements.md 「要件 2」受け入れ基準 2.6・2.9 | 2.6「受付No と契約区分で、契約局ごとに稟議バーコードNo を付けなければならない」は、受付No と契約区分から番号をどう組み立てるかも、取込の前の番号を引き継ぐか付け直すかも示していない。2.9 は「契約局情報に無くなった稟議バーコードNo」の契約文書情報を消すとしているが、番号の決まりが本文に無いため、取込の後にどの番号が「無くなった」ことになり、どの契約文書情報の行が消えるべきかを判定できない（1 回目 指摘3 と同じ箇所。本文は変わっていない）。 |\n| 3 | ② | specs/contract-info-import/requirements.md 「要件 2」受け入れ基準 2.10 | 2.10「既存の契約情報のテーブルを更新してはならない」は、どのテーブルが「既存の契約情報のテーブル」に当たるかをテーブルID・名称で特定していない。どのテーブルが更新されていないことを確かめれば満たすのかを判定できない（1 回目 指摘4 と同じ箇所。本文は変わっていない）。 |\n| 4 | ② | specs/contract-info-import/requirements.md 「要件 3」受け入れ基準 3.1・3.2 | 3.1・3.2 は洗替の前後を比べて「変わった行」だけを変更履歴に登録するとするが、前後の行をどの項目で対応づけるか（連番・稟議バーコードNo・計画基地局番号または基地局番号など）を定めていない。2.3 で全部消して入れ直し、2.4 で連番をファイルの中の順にするため、対応づけの項目によって「変わった行」が変わり、ある行について変更履歴が登録されたこと・されなかったことが正しいかを判定できない（1 回目 指摘5 と同じ箇所。本文は変わっていない）。 |\n| 5 | ② | specs/contract-info-import/requirements.md 「要件 4」受け入れ基準 4.4 | 4.4 は「KDDI転貸借契約書と契約種別の組合せ」「組で入れる項目」を検査するとするが、どの組合せが正しく、どの項目が組なのかを示さず「検査の全部は design で定める」としている。AC の記述だけでは、ある行の値がエラーになるべきかを YES / NO で判定できない（1 回目 指摘6 と同じ箇所。本文は変わっていない）。 |\n| 6 | ② | specs/contract-info-import/requirements.md 「要件 4」受け入れ基準 4.6 | 4.6「郵便番号と住所が合わない場合」は、何と照らして合う・合わないを判定するか（参照する郵便番号のデータ、住所のどの部分までを比べるか）を示していない。ある行が警告になるべきかを判定できない（1 回目 指摘7 と同じ箇所。本文は変わっていない）。 |\n| 7 | ② | specs/contract-info-import/requirements.md 「要件 1」受け入れ基準 1.3 | 1.3 は参照・実行・クリア・処理状況・戻るの 5 つのボタンを表示するとするが、押したときの振る舞いの AC があるのは実行（1.5・4.1）と処理状況（1.6）だけである。参照、クリア、戻るを押したときの正常系の AC が無い（1 回目 指摘8 と同じ箇所。本文は変わっていない）。 |\n| 8 | ② | specs/contract-info-import/requirements.md 「要件 2」受け入れ基準 2.7／「要件 4」4.5 | 2.7 は「取込が終わったら」物件申請情報の状態を元に戻すとするが、4.5 のエラーで全件を取り消した場合と、ジョブが異常終了した場合に状態をどうするかの AC が無い。再承認された steering/database.md の「トランザクション（バッチ）」は、エラーで全件を取り消したときも元の状態に戻すとしているが、本文書にその場合の AC は無い。property-basic-info の 6.4 は取込中（06）の申請の操作を受け付けないため、異常時の状態は利用者の操作に直接影響する（1 回目 指摘9 と同じ箇所。本文は変わっていない）。 |\n| 9 | ② | specs/contract-info-import/requirements.md 「要件 2」受け入れ基準 2.1・2.3・2.8／「要件 4」4.1 | 境界値の AC が不足している。4.1 は 0 バイトのファイルを拒否するが、見出し行だけでデータ行が 0 行のファイルの扱い（エラーにするか、2.3 により申請の契約局情報と発行依頼書を全部消すか）を定める AC が無い。2.8 もデータ行が 1 行と 2 行以上の場合だけを定めている（1 回目 指摘10 と同じ箇所。本文は変わっていない）。 |\n| 10 | ② | specs/contract-info-import/requirements.md 「要件 1」1.2／「要件 2」受け入れ基準 2.2〜2.5 | ファイルの種類（リバースデータ・発行依頼書データ）による処理の違いは 2.2 の列の数と 4.3 の重複の比較項目だけで、それぞれの種類のファイルで契約局情報（TWTGM140）と発行依頼書（TWTGM100）の両方を洗替するのか、一方だけかを定める正常系の AC が無い（1 回目 指摘11 と同じ箇所。本文は変わっていない）。 |\n| 11 | ② | specs/contract-info-import/requirements.md 「要件 3」受け入れ基準 3.1・3.2 | 3.1・3.2 は前後で内容が変わった行と変わらなかった行だけを扱っている。取込で無くなった行（洗替の前だけに有る行）と、新たに加わった行（洗替の後だけに有る行）について、変更履歴に登録するかどうかの AC が無い（1 回目 指摘12 と同じ箇所。本文は変わっていない）。 |\n| 12 | ② | specs/contract-info-import/requirements.md 「非機能要件」プライバシー行・受け入れ基準 1.4・2.5・「スコープの境界」隣接する仕組みへの期待 1 点目／steering/security.md 「機密データ」担当者の氏名（起案担当者・申請者・確認者・承認者・更新者） | 矛盾: 再承認された steering/security.md の「機密データ」は、担当者の氏名（起案担当者・申請者・確認者・承認者・更新者）を担当者の連絡先と同じに扱う（権限のある利用者にだけ表示し、ログに出さない）としている。本文書は物件基本情報登録変更画面から申請者と契約稟議起案者の氏名を受け取り（隣接する仕組みへの期待 1 点目・1.4）、発行依頼書に申請者などを登録する（2.5）が、プライバシー行が扱う個人情報として挙げるのは契約者の氏名・住所・電話番号・メールアドレスとマイナンバーを受け取った日だけで、担当者の氏名を含めていない。本文書の列挙を steering の分類に合わせるべきか、steering の適用範囲を見直すべきかは人間による確認が必要。 |\n| 13 | ② | specs/contract-info-import/requirements.md 「前提と依存」依存・「スコープの境界」扱う範囲 2 点目・受け入れ基準 2.3・2.5／.aidd/feature-list.md 注記 2 点目（発行依頼書情報 TWTGM100） | Dependencies 記載の不整合: 依存（property-basic-info・issue-request）は .aidd/feature-list.md の依存列と一致し、参照する specs/property-basic-info/requirements.md の 6.4・14.5・14.6 と specs/issue-request/requirements.md の要件 9 は実在する。一方、依存の出典とした .aidd/feature-list.md の注記 2 点目は TWTGM100 について、property-basic-info の操作（物理削除と複製）を挙げ「発行依頼書の項目の登録と更新は issue-request が持つ」としており、contract-info-import の操作を挙げていない（注記 1 点目の TWTGM140 では contract-info-import の洗替を挙げている）。本文書は申請No ごとに発行依頼書を全部消して入れ直す（2.3・2.5、扱う範囲 2 点目）としており、注記が issue-request に置く登録の操作と、property-basic-info に置く削除の操作を本 feature も持つことになる。注記の更新が要るか、本文書の見直しが要るかは人間による確認が必要。 |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- #12: 人間による確認（Phase 2 steering/security.md、または本文書）（steering が機密データとした担当者の氏名を、本 feature は受け取って登録するが、プライバシー行の列挙に含まれていない）\n- #13: 人間による確認（Phase 3 .aidd/feature-list.md の注記、または本文書）（TWTGM100 の役割分担を記す注記に、本 feature の洗替（全部消して入れ直す）が挙がっていない）\n\n**判断の選択肢**（指摘ごとに 1 つ選ぶ）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n\n回答例: `1:A / 2:C 既存システムの制約で変更できない / 3:D 次回レビューまで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。",
+    "id": "1e5965e44e614071bf5b42d75c3564ce"
+  },
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "requirements-authoring-revise",
+    "event": "requirements-authoring-revise",
+    "item": "contract-info-import",
+    "dispatch_id": "1e5965e44e614071bf5b42d75c3564ce",
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[contract-info-import]::end.review",
+    "scope": "feature:contract-info-import",
+    "run": 2,
+    "snapshot": "46d1248563fbb8cc8dc087723d2c504f5ca7f3cb42dc8f8698bde952e12edd46",
+    "record_hash": "6963961cfaa6eb199fe8548b344cf27c236ed6656eba347805281ebfa5d04c15"
+  },
+  "data": {
+    "scope": "feature:contract-info-import",
+    "run": 2,
+    "number": 3,
+    "decision": "対応せず進める",
+    "reason": "1 回目の指摘 2〜12 と同じ箇所で、本文も変わっていない。判断と理由は 1 回目と同じ。それぞれの中身は Phase 4 の contract-info-import の design で書く（1 回目に答えた向きのとおり）。"
+  }
+}

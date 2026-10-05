@@ -1,0 +1,43 @@
+{
+  "operation_id": "218b32aae2e049efbeab607c604ed547",
+  "dispatch": {
+    "call": "requirements-authoring-revise",
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request]::run",
+    "event": "requirements-authoring-revise",
+    "item": "issue-request",
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "846cd46dbcea490986d1caee47b8fe1d"
+  },
+  "result": {
+    "status": "completed",
+    "targets": [
+      "specs/issue-request/requirements.md"
+    ],
+    "questions": [],
+    "open_placeholders": 0,
+    "changed_findings": [
+      {
+        "phase": "requirements",
+        "scope": "feature:issue-request",
+        "run": 1,
+        "number": 2
+      },
+      {
+        "phase": "requirements",
+        "scope": "feature:issue-request",
+        "run": 1,
+        "number": 11
+      },
+      {
+        "phase": "requirements",
+        "scope": "feature:issue-request",
+        "run": 1,
+        "number": 15
+      }
+    ],
+    "return_candidates": [],
+    "summary": "1 回目の指摘 2・11・15 の修正指示を反映した。2.5 を社外ユーザーの表示のしかたに直し、9.3 に発番を加え、2.1 の社外ユーザーの判定を 8.1 への参照に置き換えた。出典の表記に「ゲート1-N」を加えた。"
+  }
+}

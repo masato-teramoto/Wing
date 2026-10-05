@@ -1,0 +1,37 @@
+{
+  "operation_id": "aa8c83ee1c2841edbd9a813fcff28fdd",
+  "dispatch": {
+    "call": "feature-decomposition-revise",
+    "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::run",
+    "event": "feature-decomposition-revise",
+    "item": null,
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "ff0f3e8b8cea4162b4b66c5550b3b99b"
+  },
+  "result": {
+    "status": "completed",
+    "targets": [
+      ".aidd/feature-list.md"
+    ],
+    "questions": [],
+    "open_placeholders": 0,
+    "changed_findings": [
+      {
+        "phase": "feature",
+        "scope": "phase",
+        "run": 4,
+        "number": 1
+      },
+      {
+        "phase": "feature",
+        "scope": "phase",
+        "run": 4,
+        "number": 2
+      }
+    ],
+    "return_candidates": [],
+    "summary": "4 回目の指摘 1・2 の修正指示を反映した。注記の旧 1点目を消し、TWTGM140 の役割分担を 1 点にまとめて SSoT と明記した。「正解の CRUD 図」の一文を消し、出典を人間の回答とした。"
+  }
+}

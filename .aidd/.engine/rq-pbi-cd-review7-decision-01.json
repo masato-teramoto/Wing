@@ -1,0 +1,34 @@
+{
+  "operation_id": "f1b9ca46a70449e0b3ad05da2ed43eaf",
+  "action": "decision",
+  "dispatch": {
+    "call": "requirements-authoring-revise",
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::end.review",
+    "event": "requirements-authoring-revise",
+    "item": "property-basic-info",
+    "status": "wait",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::end.review\", \"snapshot\": \"c137998d67fc8c74039845ec7b04d4757fb059e72a97d82c07d9163439bed0eb\", \"run\": 7, \"inspection_hash\": \"79d49d0f396988c51427d2c0f4d6f7a6b213b5718bc4524eeea8a5edc4f0b2ae\"}\n**Phase 4（requirements 作成）の品質ゲートを実行しました。** 指摘ごとに判断を選んでください。\n\n**対象**: `specs/property-basic-info/requirements.md`（スコープ: 成果物単位（property-basic-info） / 7 回目）\n**実行した層**: ① / ②\n\n**指摘**（ゲート記録 `.aidd/gates/phase-4-requirements.md` の当該実行分）\n\n| # | 層 | 対象箇所 | 指摘内容 |\n|---|---|---|---|\n| 1 | ② | specs/property-basic-info/requirements.md 「要件 14」受け入れ基準 14.14／「スコープの境界」隣接する仕組みへの期待（Adjacent）の contract-info-download／.aidd/feature-list.md contract-info-download 行／.aidd/requirement-list.md REQ-037 | 下流→上流（意味判定。要件 14 は REQ-008 に紐づくが、14.14 の一部の内容が当該 feature 行の対応要求IDに紐づかない）: 14.14 の後段「渡すのは申請No だけで、システムはそれを検索条件の初期値に使ってはならない」は、遷移先である契約情報ダウンロード画面（GWTG100）の検索条件の振る舞いを定めている。GWTG100 の検索条件は REQ-037（既存 GWTG004 と同一の検索条件・表示項目）が定めており、feature-list で REQ-037 は contract-info-download に割り当てられ、property-basic-info の対応要求ID（REQ-008〜REQ-015、REQ-030〜REQ-032、REQ-063、REQ-065、REQ-066）には含まれない。本文書の Adjacent も contract-info-download については「契約情報ダウンロード画面（GWTG100）を持つ」とだけ書き、GWTG100 が受け取った申請No を検索条件の初期値に使わないことを相手への期待として示していない。GWTG100 の初期表示の振る舞いを本 feature の受け入れ基準として持つか、contract-info-download 側の要件（または本文書の Adjacent の期待）として置くかは、人間による確認が必要。 |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n**判断の選択肢**（指摘ごとに 1 つ選ぶ）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n\n回答例: `1:A / 2:C 既存システムの制約で変更できない / 3:D 次回レビューまで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。",
+    "id": "287254cd8864461f965d9dd80b23a344"
+  },
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "requirements-authoring-revise",
+    "event": "requirements-authoring-revise",
+    "item": "property-basic-info",
+    "dispatch_id": "287254cd8864461f965d9dd80b23a344",
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::end.review",
+    "scope": "feature:property-basic-info",
+    "run": 7,
+    "snapshot": "c137998d67fc8c74039845ec7b04d4757fb059e72a97d82c07d9163439bed0eb",
+    "record_hash": "79d49d0f396988c51427d2c0f4d6f7a6b213b5718bc4524eeea8a5edc4f0b2ae"
+  },
+  "data": {
+    "scope": "feature:property-basic-info",
+    "run": 7,
+    "number": 1,
+    "decision": "対応せず進める",
+    "reason": "14.14 の後段は、受け取った側の振る舞いを念のため書いたもの。契約情報ダウンロード画面が申請No を何に使うか（並び順で今の申請の基地局を先頭にする。検索条件の初期値には使わない）は、契約情報ダウンロードの requirements で定める。本文書は直さない。"
+  }
+}

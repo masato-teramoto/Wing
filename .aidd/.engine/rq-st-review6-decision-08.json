@@ -1,0 +1,34 @@
+{
+  "operation_id": "9d79b76551c6466394404ad0a71373ca",
+  "action": "decision",
+  "dispatch": {
+    "call": "steering-authoring-revise",
+    "unit": "steering-authoring-revise/steering-authoring-revise[-]::end.review",
+    "event": "steering-authoring-revise",
+    "item": null,
+    "status": "wait",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"steering-authoring-revise/steering-authoring-revise[-]::end.review\", \"snapshot\": \"cc3e9d1e71eb70e5d68762f02c34a982aa5b7494a91d985646372c9782238ad4\", \"run\": 6, \"inspection_hash\": \"d74b9e661b634457dc4527790b764e64ca95809bb9a5d716c663650a1e3b3ce4\"}\n**Phase 2（Steering 作成）の品質ゲートを実行しました。** 指摘ごとに判断を選んでください。\n\n**対象**: `steering/product.md` / `steering/tech.md` / `steering/architecture.md` / `steering/security.md` / `steering/non-functional.md` / `steering/database.md` / `steering/api-standards.md`（スコープ: 成果物単位 / 6 回目）\n**実行した層**: ① / ②\n\n**指摘**（ゲート記録 `.aidd/gates/phase-2-steering.md` の当該実行分）\n\n| # | 層 | 対象箇所 | 指摘内容 |\n|---|---|---|---|\n| 1 | ② | steering/product.md `## 主要ユースケース` 4 ／ steering/security.md `#### チェックの適用箇所`（画面の表示の行） | 二重定義（食い違いの可能性）: 帳票の閲覧・印刷ができる利用者。今回直したユースケース 4 は「組織がプロセス管理4G の申請者・確認者・承認者（再製本依頼では起案者も）」が閲覧・印刷するとし、役割（申請者・確認者・承認者）による限定と、再製本依頼のときに起案者を加える条件を持つ。一方 security.md の画面の表示の行は「閲覧と印刷のボタンは組織がプロセス管理4G（`P71` の G6）のときだけ」「再製本ボタンは所属組織が KDDI か K-ENG のときだけ」表示するとし、閲覧・印刷に役割の限定は無く、再製本は組織（KDDI・K-ENG）で出し分ける。7ファイルの分担では画面と操作の権限は security.md が持つ（Phase 2 5 回目 残件 2 の判断も security.md を正とする）。ユースケース 4 の役割の限定と起案者の条件は security.md に無く、引用（準拠）の形にもなっていない。security.md に足すか、ユースケース 4 の記述を代表例に戻すかは人間の確認が要る |\n| 2 | ② | steering/security.md `#### 所有権・エンティティ境界`（パターン）／ steering/security.md `#### チェックの適用箇所`（データ取得の行） | 二重定義（食い違いの可能性）: 社外ユーザーとして絞り込む対象の判定方法。パターンの冒頭は「WTG の社内と社外の判定は、コードマスタ（`TWTZM040`）の識別 WTG・PARAM・P71 で行う」と WTG 全体の判定として書く。一方、今回足した既存の契約情報（`TWTGM010`〜`TWTGM070`）の絞り込みは「ログインユーザーのベンダー区分か施工会社区分に値があるときだけ当てはめ、両方とも空の利用者には絞り込みをしない」とし、P71 ではなく AuthContext のベンダー区分・施工会社区分で対象者を決めている。データ取得の行は「社外ユーザーのとき」に絞り込むとしている。P71 で社外と判定されるがベンダー区分・施工会社区分が空の利用者（またはその逆）を、契約情報で絞り込むかが読み分けられない。7ファイルの分担では範囲の判定方法はこのパターンが持つ（Phase 2 4 回目 残件 2）。契約情報だけ別の判定とする意図かを、パターン冒頭の「WTG の社内と社外の判定」の書き方とあわせて人間の確認が要る |\n| 3 | ② | steering/product.md `## ビジネスルール / ポリシー`（申請・承認の履歴）／ steering/database.md `## クエリパターン`（洗替の行） | 二重定義（同一内容。一部は片側にだけある）: 契約情報取込の洗替で変更履歴に登録する行。product.md は「契約情報取込（contract-info-import）も、洗替のときに `TWTGA150`・`TWTGA130` に変更履歴を登録する。登録するのは内容が変わった行の取込前の内容だけとする」とし、database.md の洗替の行は「契約情報取込では、洗替の前の内容をトランに写し、洗替の後と比べて、変わった行だけを変更履歴に登録する」としている。変わった行だけを登録するという同じ事実が両方にあり、database.md 側は product.md への引用（準拠）の形になっていない。登録するのが取込前の内容であることは product.md にだけあり、database.md の記述からは読み取れない。7ファイルの分担では業務上の決まりは product.md、DB 側の実装方針は database.md が持つ。database.md 側を引用に置き換えるかは人間の確認が要る |\n| 4 | ② | steering/security.md `## 機密データ`（マイナンバーを受け取った日の行） | 実体の混入（判断材料）: 今回足した行は、特定の取込ファイルの 1 列（マイナンバーを受け取った日）について「テーブルには保存しない。ログへの出し方は contract-info-import の design で定める」とし、特定の feature を名指ししている。この列を扱うのは契約情報取込だけで、全 feature に等しく適用されるルールではなく、判定基準（steering は方針、spec は実体）に照らすと contract-info-import の design.md 側の実体にあたる（根拠: security.md 冒頭の書き方「全機能に共通する方針だけを書く。特定の機能にしか当てはまらない判断は書かない」）。記述は人間の開き直しの指示に基づくもので、steering に置くかは人間の確認が要る |\n| 5 | ② | steering/security.md `#### 所有権・エンティティ境界`（パターン。既存の WTG の契約情報の絞り込み） | 実体の混入（判断材料）: 今回足した記述は、既存の契約情報の表（`TWTGM010`〜`TWTGM070`）を名指しして WTB の計画マスタの方式で絞り込むこと、その適用条件（ベンダー区分か施工会社区分に値があるとき）を定め、「contract-info-download で使う」と特定の feature の利用に限っている。全 feature に等しく適用されるルールとして書かれておらず、判定基準に照らすと contract-info-download の design.md 側の実体にあたる。一方、他の feature（申請状況検索など）が既存の契約情報を引く場合にも同じ方式を当てはめる趣旨であれば、「contract-info-download で使う」の限定と両立しない。全体のルールとするか、feature の実体とするかは人間の確認が要る（根拠: security.md 冒頭の書き方、Phase 2 4 回目 残件 6 の判断「申請以外のデータ（契約情報）の範囲は Phase 4 と Phase 5 で定める」） |\n| 6 | ② | steering/database.md `## クエリパターン`（洗替の行） | 実体の混入（判断材料）: 洗替の行は、既存の `PWTGB030Job` の退避・削除・入れ直しのやり方を「すべての洗替の決まりではない」としたうえで、契約情報取込に限った手順（洗替の前の内容をトランに写し、洗替の後と比べて変わった行だけを変更履歴に登録する）を書いている。全 feature に等しく適用される洗替のルールが示されず、特定の feature の処理手順だけが書かれており、判定基準に照らすと contract-info-import の design.md 側の実体にあたる（根拠: database.md 冒頭の書き方「全フィーチャーに共通するルールだけを書く。特定のテーブルにしか当てはまらない内容は書かない」）。各 design.md がこの行を参照しても、契約情報取込以外の洗替をどう書くかは決められない。steering に置くかは人間の確認が要る |\n| 7 | ② | steering/database.md `## 接続 / トランザクション`（トランザクション（バッチ）の行） | 実体の混入（判断材料）: 今回足した例外は「契約情報取込で物件申請情報の状態を取込中にする更新と、元の状態に戻す更新は、取込の本体とは別に確定させる。取込がエラーで全件取り消しになったときも、元の状態に戻す」とし、特定の feature の特定のデータの更新に限った扱いになっている。全バッチに等しく適用されるルール（ジョブ全体で 1 つのトランザクション）の例外として、どの条件なら別に確定させてよいかの一般的な基準は書かれておらず、判定基準に照らすと contract-info-import の design.md 側の実体にあたる（根拠: database.md 冒頭の書き方）。steering に置くかは人間の確認が要る |\n| 8 | ② | steering/non-functional.md `### サービス提供時間`（休日判定の行） | 実体の混入と記述の矛盾（判断材料）: 休日判定の行は、プレースホルダー `<SERVICE_HOURS_HOLIDAY_CALENDAR>` を「保守運用は既存 WiNG の運用に従い、本プロジェクトでは定めない」として不要としたうえで、同じ行に「申請状況検索の進捗の日数（営業日）は、既存 WiNG のコードマスタにある休日の登録（会社ごと）を使って数える」と足している。この節はサービスを提供する曜日・時間帯の判定基準を定める節で、足した記述は特定の feature（申請状況検索）の業務上の日数計算のルールにあたり、全サービスに共通する内容ではない（根拠: non-functional.md 冒頭の書き方「特定のフィーチャーにしか当てはまらない内容は書かない」）。また「本プロジェクトでは定めない」とした行に本プロジェクトの規則が書かれ、不要理由と記述が両立しない読み方になる。feature の requirements・design に置くか、全体の営業日の数え方として別の場所に置くかは人間の確認が要る |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n**判断の選択肢**（指摘ごとに 1 つ選ぶ）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n\n回答例: `1:A / 2:C 既存システムの制約で変更できない / 3:D 次回レビューまで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。",
+    "id": "2126254ad76f4bec9ba12b8520e1a819"
+  },
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "steering-authoring-revise",
+    "event": "steering-authoring-revise",
+    "item": "",
+    "dispatch_id": "2126254ad76f4bec9ba12b8520e1a819",
+    "unit": "steering-authoring-revise/steering-authoring-revise[-]::end.review",
+    "scope": "phase",
+    "run": 6,
+    "snapshot": "cc3e9d1e71eb70e5d68762f02c34a982aa5b7494a91d985646372c9782238ad4",
+    "record_hash": "bb42c7c6c2c2d3206d8dd7508ef208f8cede710f1e37e360fc560730818df30c"
+  },
+  "data": {
+    "scope": "phase",
+    "run": 6,
+    "number": 8,
+    "decision": "対応せず進める",
+    "reason": "「本プロジェクトでは定めない」は保守運用のサービス提供の休日のことで、営業日の数え方は別の話と読む。営業日を数えるときに既存の休日の登録を使うことは、全体の決まりとして残す。今は申請状況検索だけが当たる。"
+  }
+}

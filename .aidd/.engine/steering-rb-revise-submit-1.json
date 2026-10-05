@@ -1,0 +1,52 @@
+{
+  "operation_id": "fc7fc61bedc9402d8972861d0dbffc69",
+  "dispatch": {
+    "call": "steering-authoring-revise",
+    "unit": "steering-authoring-revise/steering-authoring-revise[-]::run",
+    "event": "steering-authoring-revise",
+    "item": null,
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "94f6b9c081a54eca8b98847e41cab5e4"
+  },
+  "result": {
+    "status": "completed",
+    "targets": [
+      "steering/database.md",
+      "steering/product.md",
+      "steering/security.md",
+      "steering/non-functional.md"
+    ],
+    "questions": [],
+    "open_placeholders": 0,
+    "changed_findings": [
+      {
+        "phase": "requirements",
+        "scope": "feature:property-basic-info",
+        "run": 1,
+        "number": 15
+      },
+      {
+        "phase": "requirements",
+        "scope": "feature:property-basic-info",
+        "run": 1,
+        "number": 16
+      },
+      {
+        "phase": "requirements",
+        "scope": "feature:property-basic-info",
+        "run": 1,
+        "number": 17
+      },
+      {
+        "phase": "requirements",
+        "scope": "feature:property-basic-info",
+        "run": 1,
+        "number": 18
+      }
+    ],
+    "return_candidates": [],
+    "summary": "Phase 4 property-basic-info の指摘15〜18 の差戻し指示どおり修正。product.md と database.md：物件基本情報の履歴は承認履歴 TWTGM180 だけで項目の変更履歴は持たず、変更履歴を持つのは発行依頼書の TWTGA130 だけとした（database.md は product.md への準拠に置換）。security.md：社外ユーザーの範囲に本人が登録したデータを追加、権限モデルを AccessControlInterceptor と TWTGM170・P82 の2段とし定義の置き場と禁止を合わせて修正、機密データに担当者の連絡先と契約者の個人情報を追加（権限のある利用者にだけ表示しログに出さない、保持期間・削除は既存運用、越境移転なし）、攻撃対策にサービス拒否（既存基盤に従う）を追加。non-functional.md：出力しない項目に担当者の連絡先を追加。tech.md・architecture.md・api-standards.md は編集していない。下流への影響候補：specs/property-basic-info/requirements.md（差戻し元。再入時に 6.1〜6.5・プライバシー行・対象外の TWTGA120 の記述を steering に合わせて確認）。"
+  }
+}

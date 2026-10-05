@@ -1,0 +1,13 @@
+{
+  "operation_id": "f3b67d08703f43a79ff43ec687e08013",
+  "origin": "authoring-candidate",
+  "candidate": {
+    "event": "requirements-authoring-generate",
+    "item": "property-basic-info",
+    "index": 0
+  },
+  "targets": [
+    ".aidd/feature-list.md"
+  ],
+  "instruction": "・TWTGM140（契約局情報）の所有を property-basic-info に変える。\n・理由：正解の CRUD 図で物件基本情報が登録、更新、削除を行い、契約局取込のボタンもこの画面にあるため。\n・依存の向きは変えない（issue-request が property-basic-info に依存する）。\n・property-basic-info は TWTGM100 を、登録されていれば読むだけとする。\n・TWTGM100 が無くても画面は動くので、依存には数えない。feature 一覧にこの旨を注記する。\n・TWTGA120 はどの feature も使わない（正解の CRUD 図に無い）。Phase 3 の所有の回答を訂正する。"
+}

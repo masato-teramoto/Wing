@@ -1,0 +1,24 @@
+{
+  "operation_id": "9b050359136c4695a18192c4f7ac4837",
+  "dispatch": {
+    "call": "requirements-authoring-generate",
+    "unit": "requirements-authoring-generate/requirements-authoring-generate[issue-request]::run",
+    "event": "requirements-authoring-generate",
+    "item": "issue-request",
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "90f57b4932cf4acd9d1dc45649a04e67"
+  },
+  "result": {
+    "status": "completed",
+    "targets": [
+      "specs/issue-request/requirements.md"
+    ],
+    "questions": [],
+    "open_placeholders": 0,
+    "changed_findings": [],
+    "return_candidates": [],
+    "summary": "Q-RQ-IR-011 の回答で 2.3 をどこから入っても変更させないとし、3.7 を削除した。REQ-023 は差し戻さず、表示と計算の切替で満たすと読む回答を扱う範囲と出典に書いた。差戻しで再承認された上流（steering の TWTGA150・権限モデル、feature 一覧の TWTGM140 の分担、property-basic-info の 14.10〜14.13・5.2・Adjacent）と照らし、要件 1・3・7 と Adjacent が一致することを確認した。property-basic-info ゲート 6 回目の判断に合わせ、発行依頼書が未登録のときの開き方を 1.9 に加えた。対応要求ID 11 件はすべて要件に紐付けている。"
+  }
+}

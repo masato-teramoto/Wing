@@ -1,0 +1,24 @@
+{
+  "operation_id": "af355dfe892a442c87a7631a8ea27dda",
+  "dispatch": {
+    "call": "requirements-authoring-generate",
+    "unit": "requirements-authoring-generate/requirements-authoring-generate[property-basic-info]::run",
+    "event": "requirements-authoring-generate",
+    "item": "property-basic-info",
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "129cf5be7e3f47ff8ed4f34836230896"
+  },
+  "result": {
+    "status": "completed",
+    "targets": [
+      "specs/property-basic-info/requirements.md"
+    ],
+    "questions": [],
+    "open_placeholders": 0,
+    "changed_findings": [],
+    "return_candidates": [],
+    "summary": "計画前提、Q-RQ-PBI-001〜011 の回答、Phase 3 の再承認内容から要件1〜14を作成し、未記入欄 0。feature-list の対応要求ID 14件（REQ-008〜015、030〜032、063、065、066）はすべて要件に紐付けた（契約局情報の操作は Q-RQ-PBI-010 により REQ-008 の詳細として要件14）。依存は feature-list どおりなし（TWTGM100 は読むだけで依存に数えない注記に従う）。申し送り：Q-RQ-PBI-010 で契約局情報の行の追加は issue-request（GWTG080）が行うとされ、feature-list の注記「TWTGM140 は property-basic-info が登録・更新・削除する」と食い違う。要件14.6・14.7 は依存先でない contract-info-import・issue-request の画面へ遷移する。"
+  }
+}

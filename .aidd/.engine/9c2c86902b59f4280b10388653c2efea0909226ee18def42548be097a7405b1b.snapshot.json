@@ -1,0 +1,19 @@
+{
+  "schema": 2,
+  "phase": "requirements",
+  "event": "requirements-authoring-generate",
+  "scope": "feature:contract-info-import",
+  "at": "2026-10-05T11:33:19+09:00",
+  "artifacts": {
+    "specs/contract-info-import/requirements.md": {
+      "status": "draft",
+      "sha256": "23cf03a7c36f258901fd28108f2a3c41132bd2639f5475ed681ec077a1e57677"
+    }
+  },
+  "record": {
+    "bytes": 163914,
+    "sha256": "5e818781eb47840778d132eca655b5002c0306b9e9b4393a6af88c126d346982",
+    "blocks": 193
+  },
+  "run": 1
+}

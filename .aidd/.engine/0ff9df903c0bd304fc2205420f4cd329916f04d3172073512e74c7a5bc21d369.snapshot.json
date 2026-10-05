@@ -1,0 +1,43 @@
+{
+  "schema": 2,
+  "phase": "requirements",
+  "event": "requirements-cross-gate",
+  "scope": "cross",
+  "at": "2026-10-05T20:50:43+09:00",
+  "artifacts": {
+    "specs/property-basic-info/requirements.md": {
+      "status": "approved",
+      "sha256": "b849cadc770e4cf091f0a7ce4f84d11892da5b988ff5184d257c3526989e4081"
+    },
+    "specs/issue-request/requirements.md": {
+      "status": "approved",
+      "sha256": "a6bfa87614a5044a2ee05f06eea80f9f9e83e431030c7f9fa6a85e54542d807f"
+    },
+    "specs/issue-request-tutorial/requirements.md": {
+      "status": "approved",
+      "sha256": "3e1042329d04e128a1c95e89adc17075768e5744202d85de60d5704eedf1923e"
+    },
+    "specs/print-report/requirements.md": {
+      "status": "approved",
+      "sha256": "7d7de30b0895cdabc937b9cce759067c8c0732a2f344d03ae09c469e45743cd8"
+    },
+    "specs/application-status-search/requirements.md": {
+      "status": "approved",
+      "sha256": "55d9ff1879cc34261f13d0a12fab45b26b91a0783b22e3136a1edc72f808ce82"
+    },
+    "specs/contract-info-import/requirements.md": {
+      "status": "approved",
+      "sha256": "23cf03a7c36f258901fd28108f2a3c41132bd2639f5475ed681ec077a1e57677"
+    },
+    "specs/contract-info-download/requirements.md": {
+      "status": "approved",
+      "sha256": "db81769c1f58c458a0583a47ed5daf3a2ffdf8fdee34bd1aa3514a04dcf4a898"
+    }
+  },
+  "record": {
+    "bytes": 283655,
+    "sha256": "9e6c3792648ed495fd4481e21e244bb5dfea9f4f80b887b551d935c3b078b41f",
+    "blocks": 315
+  },
+  "run": 2
+}

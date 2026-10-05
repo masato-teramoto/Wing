@@ -1,0 +1,34 @@
+{
+  "operation_id": "60bc153bccee4c0ba10c18e24becdf32",
+  "action": "decision",
+  "dispatch": {
+    "call": "requirements-authoring-revise",
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request]::end.review",
+    "event": "requirements-authoring-revise",
+    "item": "issue-request",
+    "status": "wait",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"requirements-authoring-revise/requirements-authoring-revise[issue-request]::end.review\", \"snapshot\": \"f5d7e16c08e272a7fecf67a7eae646723d3b2ab2eb5036bd8525dcf57a4e2879\", \"run\": 3, \"inspection_hash\": \"78937b1d724d7e22f457b88ed7256d9dc135176a05a4183a322a99dcad769e5f\"}\n**Phase 4（requirements 作成）の品質ゲートを実行しました。** 指摘ごとに判断を選んでください。\n\n**対象**: `specs/issue-request/requirements.md`（スコープ: 成果物単位（issue-request） / 3 回目）\n**実行した層**: ① / ②\n\n**指摘**（ゲート記録 `.aidd/gates/phase-4-requirements.md` の当該実行分）\n\n| # | 層 | 対象箇所 | 指摘内容 |\n|---|---|---|---|\n| 1 | ② | specs/issue-request/requirements.md 「スコープの境界」扱う範囲 9点目（「修正稟議・再製本で複製する発行依頼書の作成」）・隣接する仕組みへの期待 property-basic-info の行・「要件 7」7.5／.aidd/feature-list.md 注記 2点目 | 上流の担当の定めと本文書の範囲の書き方が一致しない可能性（意味判定）: 再承認された .aidd/feature-list.md の注記 2点目は、発行依頼書情報（TWTGM100）について、申請の削除での物理削除と、修正稟議・再製本での新しい申請No への行の複製を property-basic-info の操作とし、issue-request が持つのは項目の登録・更新と、複製で引き継ぐ項目・空にする項目の決まり（7.5・7.6）だとしている。本文書の扱う範囲 9点目は「複製する発行依頼書の作成」を本 feature の範囲として挙げており、複製の操作そのもの（行を作ること）も本 feature が持つと読める。また、隣接する仕組みへの期待の property-basic-info の行には、注記が property-basic-info に割り当てた発行依頼書の削除と複製の操作が書かれていない。扱う範囲 9点目と隣接の行を注記の分担に合わせて書き直すべきか、今の書き方を注記の「決まりは issue-request が持つ」の意味と読むかは人間による確認が必要 |\n| 2 | ② | specs/issue-request/requirements.md 「非機能要件」プライバシーの行／「要件 9」9.2（起案者の会社名と氏名）・「要件 7」7.5（申請者をログインユーザーにする）／steering/security.md 「機密データ」担当者の氏名の行 | 逸脱（反映漏れの可能性）: 再承認された steering/security.md の機密データは、担当者の氏名（起案担当者・申請者・確認者・承認者・更新者）を担当者の連絡先と同じに扱うとしている。本文書のプライバシーの行は、扱う個人情報を「担当者の連絡先と、契約者（関係者）の氏名・住所・連絡先」とだけ書き、担当者の氏名を挙げていない。一方、本文書は 9.2 で起案者の氏名を入力項目とし、7.5 で複製した発行依頼書の申請者をログインユーザーにするとしており、担当者の氏名を扱う。プライバシーの行に担当者の氏名を加えるべきか、steering/security.md への準拠の宣言で足りるとするかは人間による確認が必要 |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n**判断の選択肢**（指摘ごとに 1 つ選ぶ）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n\n回答例: `1:A / 2:C 既存システムの制約で変更できない / 3:D 次回レビューまで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。",
+    "id": "d8289fcff97c410d9361616dcb69106f"
+  },
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "requirements-authoring-revise",
+    "event": "requirements-authoring-revise",
+    "item": "issue-request",
+    "dispatch_id": "d8289fcff97c410d9361616dcb69106f",
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request]::end.review",
+    "scope": "feature:issue-request",
+    "run": 3,
+    "snapshot": "f5d7e16c08e272a7fecf67a7eae646723d3b2ab2eb5036bd8525dcf57a4e2879",
+    "record_hash": "78937b1d724d7e22f457b88ed7256d9dc135176a05a4183a322a99dcad769e5f"
+  },
+  "data": {
+    "scope": "feature:issue-request",
+    "run": 3,
+    "number": 1,
+    "decision": "対応せず進める",
+    "reason": "扱う範囲 9点目の「複製する発行依頼書の作成」は、複製で引き継ぐ項目と空にする項目の決まり（7.5・7.6）を持つという意味と読む。行を消す操作と写す操作は、feature 一覧の注記 2点目のとおり property-basic-info が持つ。食い違ったときは注記を正とする。本文書は直さない。"
+  }
+}

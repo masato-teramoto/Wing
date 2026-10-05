@@ -1,0 +1,74 @@
+{
+ "qprefix": "Q-RQ-AS",
+ "nfr_q": "006",
+ "biz_target": "物件契約情報の申請状況の検索と一覧",
+ "dependency": [
+  "property-basic-info（`.aidd/feature-list.md` の依存列）"
+ ],
+ "security_note": "（社外ユーザーの絞り込みは要件 1）",
+ "privacy": "個人情報として起案担当者と更新者の氏名を扱い、`steering/security.md` の `## 機密データ` に従って扱う（Q-RQ-AS-006）",
+ "audit": "| <REQ_NFR_AUDIT>（不要：検索と出力は記録しない。既存 WiNG のログに従う — Q-RQ-AS-006。property-basic-info と同じ） | <REQ_NFR_AUDIT_VERIFY>（不要：検索と出力は記録しない — Q-RQ-AS-006） |",
+ "draft": {
+  "background": "物件契約情報の申請状況を検索して一覧で表示し、CSV に出力する（REQ-006・REQ-007、`.aidd/feature-list.md`）",
+  "target_user": "<REQ_INTRO_TARGET_USER>",
+  "change": "<REQ_INTRO_EXPECTED_CHANGE>",
+  "in": [
+   "物件契約情報申請状況検索一覧画面（GWTG060）での検索と一覧（REQ-006）",
+   "検索結果の CSV 出力（REQ-007）",
+   "入力チェック（REQ-063）"
+  ],
+  "out": [
+   "申請の登録・変更"
+  ],
+  "adjacent": [
+   "property-basic-info：検索する申請を持ち、物件基本情報登録変更画面から申請状況一覧の画面へ戻る（`specs/property-basic-info/requirements.md` の 10.3・15.4）"
+  ],
+  "outscope": [
+   "申請の登録・変更 / 物件基本情報登録変更画面が持つため / `specs/property-basic-info/requirements.md`"
+  ]
+ },
+ "full": {
+  "background": "承認フローの担当者と起案者が、自分の関わる申請を探して物件基本情報登録変更画面を開くために、物件契約情報の申請状況を検索して一覧で表示し、CSV に出力する（REQ-006・REQ-007、Q-RQ-AS-001）",
+  "target_user": "承認フローの担当者（申請者・確認者・承認者）と起案者。社外ユーザーを含む（Q-RQ-AS-001・Q-RQ-AS-005）",
+  "change": "自分の関わる申請を条件で探し、そこから物件基本情報登録変更画面を開けるようになる（Q-RQ-AS-001）",
+  "before": [
+   "契約書は Excel マクロツールで作成している（Q-RQ-AS-001。ほかの feature と同じ）",
+   "稟議資料は紙に印刷して回覧し、製本している（Q-RQ-AS-001。ほかの feature と同じ）"
+  ],
+  "after": [
+   "利用者がメニューから物件契約情報申請状況検索一覧画面を開く。メニューから最初に開く画面である（Q-RQ-AS-001）",
+   "利用者が条件を入れて検索し、一覧の申請No のリンクから物件基本情報登録変更画面を開く（Q-RQ-AS-001・Q-RQ-AS-003）",
+   "物件基本情報登録変更画面から戻ると、前の検索条件でもう一度検索される（Q-RQ-AS-003）",
+   "必要なときは、検索結果を CSV に出力する（Q-RQ-AS-004）"
+  ],
+  "human": [
+   "検索条件の入力と検索",
+   "申請No のリンクの選択",
+   "CSV 出力"
+  ],
+  "in": [
+   "物件契約情報申請状況検索一覧画面（GWTG060）での検索（REQ-006、Q-RQ-AS-002）",
+   "検索結果の一覧と、物件基本情報登録変更画面への遷移（REQ-006、Q-RQ-AS-003）",
+   "検索結果の CSV 出力（REQ-007、Q-RQ-AS-004）",
+   "社外ユーザーの絞り込み（Q-RQ-AS-005）",
+   "入力チェック（REQ-063）"
+  ],
+  "out": [
+   "申請の登録・変更",
+   "新規登録のボタン（新規の登録はメニューから物件基本情報登録変更画面を開いて行う）"
+  ],
+  "adjacent": [
+   "property-basic-info：検索する申請を持ち、物件基本情報登録変更画面から申請状況一覧の画面へ戻る（`specs/property-basic-info/requirements.md` の 10.3・15.4）。社外ユーザーの範囲の決まりを持つ（同 6.5）"
+  ],
+  "outscope": [
+   "申請の登録・変更と新規登録 / 物件基本情報登録変更画面が持つため（Q-RQ-AS-003） / `specs/property-basic-info/requirements.md`"
+  ],
+  "assumption": [
+   "なし（Q-RQ-AS-006）"
+  ],
+  "open": [
+   "なし（Q-RQ-AS-006）"
+  ]
+ },
+ "summary": "Q-RQ-AS-001〜006 の回答を反映し、業務フロー・スコープ・Adjacent と、要件 1〜4 の受け入れ基準を作成した。対応要求ID 3 件（REQ-006・007・063）はすべて要件に紐付けた。REQ-006 の「検索項目20項目程度」は、回答のとおり約 38 項目とした。項目の全部は design の画面設計で定める。"
+}

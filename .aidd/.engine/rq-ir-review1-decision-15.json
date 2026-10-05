@@ -1,0 +1,34 @@
+{
+  "operation_id": "b03a86c8f9634c77b358a47acb49c978",
+  "action": "decision",
+  "dispatch": {
+    "call": "requirements-authoring-generate",
+    "unit": "requirements-authoring-generate/requirements-authoring-generate[issue-request]::end.review",
+    "event": "requirements-authoring-generate",
+    "item": "issue-request",
+    "status": "wait",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"requirements-authoring-generate/requirements-authoring-generate[issue-request]::end.review\", \"snapshot\": \"cebe59932a3f4300573c0e6a4f2ee13827b4ecf5944ebc0c825aee020c10cc85\", \"run\": 1, \"inspection_hash\": \"ae4bcd60271dc1abfeaa99fc261dfe92fb76876f82979e6c48f49dacc6023f93\"}\n**Phase 4（requirements 作成）の品質ゲートを実行しました。** 指摘ごとに判断を選んでください。\n\n**対象**: `specs/issue-request/requirements.md`（スコープ: 成果物単位（issue-request） / 1 回目）\n**実行した層**: ① / ②\n\n**指摘**（ゲート記録 `.aidd/gates/phase-4-requirements.md` の当該実行分）\n\n| # | 層 | 対象箇所 | 指摘内容 |\n|---|---|---|---|\n| 1 | ② | specs/issue-request/requirements.md 「要件 7」受け入れ基準 7.5・7.6／「スコープの境界」扱う範囲 9点目／.aidd/feature-list.md issue-request 行の対応要求ID | 要求IDに紐づかない要件（内容で判定）: 7.5・7.6 は修正稟議・再製本で申請を複製するときの発行依頼書の複製と、受付No・稟議バーコードNo の引継ぎを定めている。これらは「要件 7: 変更履歴の登録と複製（REQ-027）」の下にあるが、REQ-027 の要求文は「発行依頼書の履歴管理を行う（各申請・承認時に項目に変更があれば履歴テーブルへ登録する）」で、複製の内容を含まない。扱う範囲 9点目「修正稟議・再製本で複製する発行依頼書の作成」にも要求ID が付いていない。当該 feature の対応要求ID（REQ-019〜REQ-027・REQ-063・REQ-064）のいずれにも、複製の振る舞いの紐づけ先を示せない。 |\n| 2 | ② | specs/issue-request/requirements.md 「要件 2」受け入れ基準 2.5／「要件 8」8.3・8.4 | 2.5「社外ユーザーの場合でも、システムは作成組織の会社名と所属①②以外の項目を隠してはならない」は、会社名と所属①②を社外ユーザーに対して隠すのか表示するのかを定めていない。8.3（会社名を自動で設定し変更させない）・8.4（所属①②を入力させない）と合わせても、社外ユーザーの画面にこれらの項目が表示されているべきかを YES / NO で判定できない。 |\n| 3 | ② | specs/issue-request/requirements.md 「要件 4」受け入れ基準 4.4・4.5 | 4.4・4.5「コードマスタの P73・P74・P75（P76・P77）の値を関係者欄に入れなければならない」は、5 行固定の関係者欄（5.5）のどの行に、どの項目（区分・地位・法人個人・契約者番号・氏名など）へどの値を入れるかを示していない。入った結果が正しいかを判定できない。 |\n| 4 | ② | specs/issue-request/requirements.md 「要件 5」受け入れ基準 5.3／「要件 6」6.1 | 5.3「発行依頼書の金額を、この画面の値とほかの契約局の金額の合計にしなければならない」は、合計の対象となる「金額」がどの項目か（6.1 が挙げる支払内容・初回支払内容1〜4 の金額のどれか、またはそれらの総額か）と、合計した値をどの項目に入れるかを示していない。 |\n| 5 | ② | specs/issue-request/requirements.md 「要件 5」受け入れ基準 5.4 | 5.4「基地局名を「〜他n局」と表示しなければならない」は、「〜」に入る基地局名がどの契約局のもの（代表局か等）か、n が契約局の数か代表局を除いた数かを定めていない。表示された文字列が正しいかを判定できない。 |\n| 6 | ② | specs/issue-request/requirements.md 「要件 6」受け入れ基準 6.3 | 6.3「初回支払内容に対象期間がある場合、システムは月ごとの税率を使い、日割りをしてはならない」は、対象期間の各月の税率を金額にどう適用するか（月ごとの金額の出し方、期間の途中で税率が変わる場合の計算）を示していない。計算された税額が正しいかを判定できない。 |\n| 7 | ② | specs/issue-request/requirements.md 「要件 6」受け入れ基準 6.9 | 6.9「計算した値と入力された税額に差がある場合、システムはその差を調整額に入れなければならない」は、差の向き（計算した値−入力された税額か、その逆か）を定めていない。調整額の符号が正しいかを判定できない。 |\n| 8 | ② | specs/issue-request/requirements.md 「要件 7」受け入れ基準 7.1・7.2 | 7.1「発行依頼書の契約区分以降の項目」・7.2「契約局情報の申請No 以降の項目」は、比べる項目の範囲を項目の並び（テーブルの列順と思われる）で示しているが、その並びは本文書にも根拠に指定された上流にも無い。どの項目に違いがあれば変更履歴を登録すべきかを判定できない。 |\n| 9 | ② | specs/issue-request/requirements.md 「要件 9」受け入れ基準 9.1 | 9.1「必須・桁数・形式の条件を満たさない項目がある場合、システムはエラーメッセージを表示し、処理を止めなければならない」は、対象の項目と各項目の桁数・形式の条件を示していない（必須は 9.2〜9.7、桁数は 8.4 の所属①②だけが具体的）。それ以外の項目について、入力が条件を満たすかを判定できない。 |\n| 10 | ② | specs/issue-request/requirements.md 「要件 3」受け入れ基準 3.1 | 3.1 は受付No を担当エリアごとに採番し 6 桁の 0 埋めにするとしているが、採番が 6 桁の上限（999999）を超える場合の境界の AC が無い。 |\n| 11 | ② | specs/issue-request/requirements.md 「要件 3」受け入れ基準 3.1・3.2・3.5／「要件 9」9.3 | 発番は担当エリア（3.1 の採番単位）と基地局番号・契約区分（3.2 の稟議バーコードNo）を使うが、発番の時点でこれらが空の場合に発番を拒否するかの AC が無い。9.3 は起案済の申請の「更新」で担当エリア・契約区分が空の場合を定めるだけで、発番の操作を対象にしていない。 |\n| 12 | ② | specs/issue-request/requirements.md 「要件 4」受け入れ基準 4.4・4.5／「要件 5」5.5 | 関係者欄は 5 行固定（5.5）だが、KDDI契約者情報挿入・OCT契約者情報挿入を押したときに関係者欄の行がすべて入力済み、または入れる先の行に既に値がある場合（上書きか拒否か）の AC が無い。 |\n| 13 | ② | specs/issue-request/requirements.md 「要件 6」受け入れ基準 6.1・6.5・6.6 | 税額の計算は税区分が消費税別（6.5）と消費税込（6.6）の場合だけを定めている。税区分がそのどちらでもない場合（未選択を含む）と、金額が空の場合に税額・調整額をどうするかの AC が無い。 |\n| 14 | ② | specs/issue-request/requirements.md 「要件 7」受け入れ基準 7.5・7.6／「要件 1」1.1 | 7.5 は修正稟議・再製本で元の発行依頼書を新しい申請No で複製するとしているが、発行依頼書にひもづく契約局情報（TWTGM140。1.1 で契約局ごとに 1 行）を複製するかどうかの AC が無い。複数局の申請を複製した場合の結果を判定できない。 |\n| 15 | ② | specs/issue-request/requirements.md 受け入れ基準 2.1／8.1 | 二重定義（同一内容）: 2.1 は括弧書きで社外ユーザーを「P71 の文字項目1 が \"1\"」と定め、8.1 は「コードマスタの P71 で、キー3 がログインユーザーのグループである行の文字項目1 が \"1\" の場合、社外ユーザーとして扱わなければならない」と同じ判定を定めている。内容は食い違っていないが、社外ユーザーの判定という同じ振る舞いが 2 か所にある。先に記載された 2.1 を正とする場合、8.1 の前半が重複する（8.1 が判定の詳細を持つため、どちらを残すかは人間による確認）。 |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- #1: 人間による確認（Phase 1 .aidd/requirement-list.md・Phase 3 .aidd/feature-list.md の対応要求ID、または本文書）（修正稟議・再製本での複製の振る舞いが、当該 feature の対応要求IDのいずれの内容にも含まれず、上流に紐づけ先が無い可能性がある）\n\n**判断の選択肢**（指摘ごとに 1 つ選ぶ）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n\n回答例: `1:A / 2:C 既存システムの制約で変更できない / 3:D 次回レビューまで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。",
+    "id": "73fed3a1ca9640a0bc044d7a2f9745b3"
+  },
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "requirements-authoring-generate",
+    "event": "requirements-authoring-generate",
+    "item": "issue-request",
+    "dispatch_id": "73fed3a1ca9640a0bc044d7a2f9745b3",
+    "unit": "requirements-authoring-generate/requirements-authoring-generate[issue-request]::end.review",
+    "scope": "feature:issue-request",
+    "run": 1,
+    "snapshot": "cebe59932a3f4300573c0e6a4f2ee13827b4ecf5944ebc0c825aee020c10cc85",
+    "record_hash": "aa557ba8754d79dab363f94a120e10242088982c3a8043533ac1a0d63a148260"
+  },
+  "data": {
+    "scope": "feature:issue-request",
+    "run": 1,
+    "number": 15,
+    "decision": "修正",
+    "reason": "社外ユーザーの判定の定めは 8.1 に置く。\n2.1 の括弧書きは「社外ユーザーの判定は 8.1 による」に置き換える。"
+  }
+}

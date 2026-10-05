@@ -1,0 +1,24 @@
+{
+  "operation_id": "17b6580702c84befb1dfd0a440a2476d",
+  "dispatch": {
+    "call": "requirements-authoring-generate",
+    "unit": "requirements-authoring-generate/requirements-authoring-generate[application-status-search]::run",
+    "event": "requirements-authoring-generate",
+    "item": "application-status-search",
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "e4c2d48257a646b6ace93b0d393f6fe0"
+  },
+  "result": {
+    "status": "completed",
+    "targets": [
+      "specs/application-status-search/requirements.md"
+    ],
+    "questions": [],
+    "open_placeholders": 0,
+    "changed_findings": [],
+    "return_candidates": [],
+    "summary": "Q-RQ-AS-001〜006 の回答を反映し、業務フロー・スコープ・Adjacent と、要件 1〜4 の受け入れ基準を作成した。対応要求ID 3 件（REQ-006・007・063）はすべて要件に紐付けた。REQ-006 の「検索項目20項目程度」は、回答のとおり約 38 項目とした。項目の全部は design の画面設計で定める。"
+  }
+}

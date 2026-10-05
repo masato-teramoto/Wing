@@ -1,0 +1,34 @@
+{
+  "operation_id": "91fe47b9a6034b20a0019a8cbb248823",
+  "action": "decision",
+  "dispatch": {
+    "call": "requirements-authoring-generate",
+    "unit": "requirements-authoring-generate/requirements-authoring-generate[issue-request-tutorial]::end.review",
+    "event": "requirements-authoring-generate",
+    "item": "issue-request-tutorial",
+    "status": "wait",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"requirements-authoring-generate/requirements-authoring-generate[issue-request-tutorial]::end.review\", \"snapshot\": \"811f5ce5a38007e895dff6aa46f907aee54e836777575a0d739204282d755f80\", \"run\": 1, \"inspection_hash\": \"67b0fa031712cf57076f871bbcb898138feff540e74779b6d1456645fd7cf8f6\"}\n**Phase 4（requirements 作成）の品質ゲートを実行しました。** 指摘ごとに判断を選んでください。\n\n**対象**: `specs/issue-request-tutorial/requirements.md`（スコープ: 成果物単位（issue-request-tutorial） / 1 回目）\n**実行した層**: ① / ②\n\n**指摘**（ゲート記録 `.aidd/gates/phase-4-requirements.md` の当該実行分）\n\n| # | 層 | 対象箇所 | 指摘内容 |\n|---|---|---|---|\n| 1 | ② | specs/issue-request-tutorial/requirements.md 「要件 1」受け入れ基準 1.3〜1.9・「スコープの境界」扱う範囲 2点目／.aidd/requirement-list.md REQ-028 | ID対応あり・内容未充足: REQ-028 は「選択肢により順番に入力欄と例が表示される」としている。扱う範囲 2点目にも「入力欄と例の順番の表示」とある。しかし受け入れ基準は画面の切替（1.3〜1.9）と入力欄（3.2〜3.4）だけを定めていて、どの画面にどんな例を表示するのか、または例を表示することを求める基準がどこにも無い。要求の「例が表示される」が要件で満たされているかを判定できない。 |\n| 2 | ② | specs/issue-request-tutorial/requirements.md 「要件 1」受け入れ基準 1.3／.aidd/requirement-list.md REQ-029 | ID対応あり・内容の食い違い: 承認済みの要求一覧の REQ-029 は「チュートリアルの設定用のウインドウは26フォーム（画面）存在している」としている。1.3 は 14 の画面を切り替えるとし、括弧書きで「REQ-029 の 26 フォームは古い数」としている。上流の要求文は 26 のまま変わっておらず、要件の内容は上流の要求と両立しない。要求一覧の更新が要るのか、要件側の記述を直すのかは人間による確認が必要。 |\n| 3 | ② | specs/issue-request-tutorial/requirements.md 受け入れ基準 1.4・1.5・1.11・「前提と依存」前提 | 1.5 は「屋外の契約種別の画面」とするが、どの契約区分の値で屋外の画面になるのかは、どの基準にも書かれていない。1.4 は屋内の場合だけを定めている。1.11 は有効な契約区分を鉄道・オープン・屋内の 3 つとしているが、鉄道とオープンが屋外に当たるのかは書かれていない。また前提では「発行依頼書の契約区分が入力されている」としている一方、1.11 は契約区分がどれでもない場合（未入力を含む）の応答を定めていて、前提と受け入れ基準のどちらが成り立つのかを判定できない。 |\n| 4 | ② | specs/issue-request-tutorial/requirements.md 受け入れ基準 2.1 | 2.1 は「その画面に当たる項目へ値を入れなければならない」とするが、1.3 の 14 の画面と、2.1 に挙げた 7 つの項目（契約種別・転貸借の契約形態・局種別・設置設備・電気料【月額】・賃料【月額】・着工予定日）の対応が書かれていない。たとえば料金種別・設置設備のSystem数・設置設備のRRH数・設置設備のSystem構成・受電方法・UPS工事の画面は、どの項目にどの値を入れるのかが分からない。また「入力した値を反映するボタン」がどの画面のどのボタンかも特定されていない。ある画面で押した結果、正しい項目に正しい値が入ったかを YES / NO で判定できない。 |\n| 5 | ② | specs/issue-request-tutorial/requirements.md 受け入れ基準 3.1・3.5 | 3.1 は「必須・桁数・形式の条件を満たさない項目がある場合」にエラーを表示して処理を止めるとしているが、どの項目にどの条件があるのかを示していない。さらに「必須」の条件は、3.5「システムはチュートリアルの入力欄を必須として検査してはならない」と両立しない。3.1 が 3.2〜3.4 以外の項目と条件を対象にしているのかを判定できない。 |\n| 6 | ② | specs/issue-request-tutorial/requirements.md 「要件 1」受け入れ基準 1.3〜1.9 | 正常系の不足: 1.3 は 14 の画面を挙げる。ところが画面の進み方の基準は、最初の画面（1.4）、屋内で契約種別の次（1.6）、解約のとき（1.7）、UPS工事の選択後（1.9）しかない。選べる値の基準も、契約種別（1.5・1.6）、局種別の一部（1.8）、UPS工事（1.9）、賃料増額の有無（2.3）にしかない。料金種別・設置設備・設置設備のSystem数・設置設備のRRH数・設置設備のSystem構成・受電方法などの画面で何を選ばせるのか、各画面で選んだ後にどの画面へ進むのかを定める基準が無い。このため、要件の中心である「選択肢に応じて順に表示する」振る舞いの大半に、受け入れ基準が無い。 |\n| 7 | ② | specs/issue-request-tutorial/requirements.md 「要件 2」受け入れ基準 2.1〜2.4／.aidd/requirement-list.md REQ-020・REQ-025 | 異常系の不足: 値を入れる先は発行依頼書登録変更画面の項目で、その画面には権限による画面制御（REQ-020）と複数局モードの項目制御（REQ-025）がある。しかし、入れる先の項目が入力不可や非表示になっている場合に、値を入れるのか、入れずに止めるのかを定める基準が無い。2.2 は値がある場合と空の場合だけを定めている。 |\n| 8 | ② | specs/issue-request-tutorial/requirements.md 「要件 3」受け入れ基準 3.4 | 境界値の不足: 3.4 は着工予定日の形（YYYY/MM/DD）だけを検査している。形は合っていても実在しない日付（例 2026/02/30）の場合に、エラーにするのか値を入れるのかを定める基準が無い。 |\n| 9 | ② | specs/issue-request-tutorial/requirements.md 受け入れ基準 1.3 の括弧書き | 出典不明: 「REQ-029 の 26 フォームは古い数で、Phase 1 の 3 回目の指摘2 で画面構成は本 feature で確定するとした」としている。しかし根拠とする .aidd/requirement-list.md の REQ-029 には 26 フォームとだけ書かれており、古い数であることや、画面構成を本 feature で確定することの記述は無い。feature-list.md と steering/*.md にも該当する記述が無い。引用している Phase 1 の指摘は根拠の範囲に無く、追跡できない。 |\n| 10 | ② | specs/issue-request-tutorial/requirements.md 「概要」期待する変化・受け入れ基準 1.2 | 出典不明: 期待する変化の「転貸借の欄と KDDI転貸借契約書の項目」と、1.2 の「チュートリアルを開かせる利用者と申請の状態」は、どちらも出典を specs/issue-request/requirements.md（Adjacent、1.2〜1.5）としている。指定された根拠（.aidd/feature-list.md・.aidd/requirement-list.md・steering/*.md）には、これらに当たる記述が無く、追跡できない。feature-list.md の本 feature の行は、発行依頼書登録変更画面のボタンから開くことまでしか述べていない。 |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- #2: 人間による確認（Phase 1 .aidd/requirement-list.md の REQ-029、または本文書）（承認済み要求一覧の REQ-029（26 フォーム）と、本文書の 14 画面が食い違ったまま残っている）\n\n**判断の選択肢**（指摘ごとに 1 つ選ぶ）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n\n回答例: `1:A / 2:C 既存システムの制約で変更できない / 3:D 次回レビューまで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。",
+    "id": "ba1fb846b96340f28c735b41972fae4d"
+  },
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "requirements-authoring-generate",
+    "event": "requirements-authoring-generate",
+    "item": "issue-request-tutorial",
+    "dispatch_id": "ba1fb846b96340f28c735b41972fae4d",
+    "unit": "requirements-authoring-generate/requirements-authoring-generate[issue-request-tutorial]::end.review",
+    "scope": "feature:issue-request-tutorial",
+    "run": 1,
+    "snapshot": "811f5ce5a38007e895dff6aa46f907aee54e836777575a0d739204282d755f80",
+    "record_hash": "67b0fa031712cf57076f871bbcb898138feff540e74779b6d1456645fd7cf8f6"
+  },
+  "data": {
+    "scope": "feature:issue-request-tutorial",
+    "run": 1,
+    "number": 1,
+    "decision": "修正",
+    "reason": "要件1に次の基準を加える。\n各画面を表示するとき、システムはその画面の選択肢またはボタンとあわせて、選び方の説明と例を表示しなければならない。\n画面ごとの例の内容は、design の画面設計で定める。"
+  }
+}

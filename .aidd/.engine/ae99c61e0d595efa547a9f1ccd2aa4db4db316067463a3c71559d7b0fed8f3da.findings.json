@@ -1,0 +1,7 @@
+{
+  "phase": "requirements",
+  "event": "requirements-authoring-revise",
+  "scope": "feature:contract-info-import",
+  "run": 2,
+  "findings": []
+}

@@ -1,0 +1,37 @@
+{
+  "operation_id": "4b65ab16c7824d4bbc6c8bebffe22f72",
+  "dispatch": {
+    "call": "requirements-authoring-revise",
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::run",
+    "event": "requirements-authoring-revise",
+    "item": "issue-request-tutorial",
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "e81c336da4b940cba0adc81c453c4a7e"
+  },
+  "result": {
+    "status": "completed",
+    "targets": [
+      "specs/issue-request-tutorial/requirements.md"
+    ],
+    "questions": [],
+    "open_placeholders": 0,
+    "changed_findings": [
+      {
+        "phase": "requirements",
+        "scope": "feature:issue-request-tutorial",
+        "run": 2,
+        "number": 1
+      },
+      {
+        "phase": "requirements",
+        "scope": "feature:issue-request-tutorial",
+        "run": 2,
+        "number": 2
+      }
+    ],
+    "return_candidates": [],
+    "summary": "2 回目の指摘 1・2 の修正指示を反映した。1.1・1.10・1.11 に契約区分を確かめる時点と表示先、閉じ方の例外を書いた。3.1 を消し、3.2〜3.4 の応答を「エラーを表示し、値を入れず、次の画面へ進ませない」にそろえ、REQ-063 を紐付けた。"
+  }
+}

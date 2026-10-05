@@ -1,0 +1,19 @@
+{
+  "schema": 2,
+  "phase": "requirements",
+  "event": "requirements-authoring-revise",
+  "scope": "feature:contract-info-download",
+  "at": "2026-10-05T20:36:45+09:00",
+  "artifacts": {
+    "specs/contract-info-download/requirements.md": {
+      "status": "draft",
+      "sha256": "db81769c1f58c458a0583a47ed5daf3a2ffdf8fdee34bd1aa3514a04dcf4a898"
+    }
+  },
+  "record": {
+    "bytes": 268790,
+    "sha256": "b29f3783095b2ec60e89915bf5d73256421a3294df91245e0e138e50ab42fec9",
+    "blocks": 300
+  },
+  "run": 3
+}

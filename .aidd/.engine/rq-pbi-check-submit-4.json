@@ -1,0 +1,16 @@
+{
+  "operation_id": "7b87f819d5ea415c9ae3a26274bd423b",
+  "dispatch": {
+    "call": "requirements-authoring-revise",
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::end.requirements-check",
+    "event": "requirements-authoring-revise",
+    "item": "property-basic-info",
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "8629216ad28d4f53bab537f91b38b9ec"
+  },
+  "result": {
+    "status": "completed"
+  }
+}

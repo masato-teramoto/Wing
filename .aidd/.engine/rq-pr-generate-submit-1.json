@@ -1,0 +1,67 @@
+{
+  "operation_id": "0233dbce4252440fb659db5cde55d4aa",
+  "dispatch": {
+    "call": "requirements-authoring-generate",
+    "unit": "requirements-authoring-generate/requirements-authoring-generate[print-report]::run",
+    "event": "requirements-authoring-generate",
+    "item": "print-report",
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "b6cd86a116b14c2b8a898da8abad624b"
+  },
+  "result": {
+    "status": "waiting",
+    "targets": [
+      "specs/print-report/requirements.md"
+    ],
+    "questions": [
+      {
+        "id": "Q-RQ-PR-001",
+        "target": "specs/print-report/requirements.md",
+        "location": "業務フロー",
+        "question": "今の手順は、ほかの feature と同じ（Excel マクロで作成し、紙で回覧・製本）でよいですか。帳票を誰が、どの時点で閲覧・印刷するかを教えてください。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-PR-002",
+        "target": "specs/print-report/requirements.md",
+        "location": "帳票の構成と出力項目。REQ-016",
+        "question": "表紙情報・発行依頼書・契約局情報のそれぞれに出す項目を教えてください。ページの構成（複数局のとき、契約局情報は局ごとに 1 ページかなど）と、原本の Excel テンプレートがあるかも教えてください。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-PR-003",
+        "target": "specs/print-report/requirements.md",
+        "location": "QR コード。REQ-017",
+        "question": "QR コードに入れる値（申請No、稟議バーコードNo など）を教えてください。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-PR-004",
+        "target": "specs/print-report/requirements.md",
+        "location": "閲覧と印刷。REQ-018",
+        "question": "閲覧は別ウインドウの PDF 表示です。印刷は何をするか（PDF のダウンロード、ブラウザの印刷など）を教えてください。出力できる申請の審査フェーズ・状態、出力できる人（物件基本情報登録変更の 6.9 のプロセス管理4G だけか）、ファイル名も教えてください。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-PR-005",
+        "target": "specs/print-report/requirements.md",
+        "location": "異常時と記録",
+        "question": "PDF への変換に失敗したとき（OpenOffice が動いていないなど）の扱いと、出力したことを記録するかを教えてください。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-PR-006",
+        "target": "specs/print-report/requirements.md",
+        "location": "前提・未確定事項・非機能",
+        "question": "この feature に固有の前提と、design の前に決めておく事項を教えてください。非機能はほかの feature と同じ扱いでよいか、帳票に載る個人情報（契約者の氏名・住所・連絡先、担当者の連絡先）があるかも教えてください。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      }
+    ],
+    "open_placeholders": 32,
+    "changed_findings": [],
+    "return_candidates": [],
+    "summary": "要求文と feature 一覧から書ける範囲で下書きを作成した。未確定は質問 6 件（_handoff/questions-phase4-remaining.md と同じ）。"
+  }
+}

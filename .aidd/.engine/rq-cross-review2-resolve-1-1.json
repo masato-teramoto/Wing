@@ -1,0 +1,32 @@
+{
+  "operation_id": "5201599f53e34669be52d404857cc495",
+  "action": "resolve",
+  "dispatch": {
+    "call": "requirements-cross-gate",
+    "unit": "requirements-cross-gate/requirements-cross-gate[-]::end.review",
+    "event": "requirements-cross-gate",
+    "item": null,
+    "status": "wait",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"requirements-cross-gate/requirements-cross-gate[-]::end.review\", \"snapshot\": \"3019540a2bbd9971f48d1b0354dce5b3d21284a521ed3e4dbd6fbd804984f807\", \"run\": 2, \"inspection_hash\": \"a8a233cdf25e37af3ddf7ceb207bc376fdf5ff1aef3183f842814abaadf26a5d\"}\n**Phase 4（requirements 作成）の品質ゲートを実行しました。** 指摘ごとに判断を選んでください。\n\n**対象**: `specs/property-basic-info/requirements.md` / `specs/issue-request/requirements.md` / `specs/issue-request-tutorial/requirements.md` / `specs/print-report/requirements.md` / `specs/application-status-search/requirements.md` / `specs/contract-info-import/requirements.md` / `specs/contract-info-download/requirements.md`（スコープ: 横断 / 2 回目）\n**実行した層**: ②（形式検査を持たない横断スコープのため ② のみ）\n\n**指摘**（ゲート記録 `.aidd/gates/phase-4-requirements.md` の当該実行分）\n\n| # | 層 | 対象箇所 | 指摘内容 |\n|---|---|---|---|\n| 1 | ② | specs/property-basic-info/requirements.md 「要件 12」受け入れ基準 12.1 の括弧書き（「発行依頼書情報 `TWTGM100` は読むだけ。`.aidd/feature-list.md` の注記」）／同 7.3・15.1・15.2／.aidd/feature-list.md 注記 2点目 | 連携前提の出典が SSoT と食い違っている（横断 1 回目 指摘2 に関わる残り）: 12.1 は TWTGM100 を「読むだけ」とし、その出典を .aidd/feature-list.md の注記としている。一方、直した後の注記 2点目は、property-basic-info が物件基本情報登録変更画面で TWTGM100 の行を、申請の削除で物理削除し、修正稟議と再製本で新しい申請No に複製するとしている。「読むだけ」の記述はもう注記に無い。本文書の 7.3・15.1・15.2 も注記と同じく削除・複製を本 feature の操作としており、12.1 の括弧書きだけが前の注記の分担のまま残っている。括弧書きを作成組織の表示（読み取り）に限った説明と読むか、12.1 の括弧書きを注記に合わせて直すかは人間による確認が必要 |\n\n**前回までの指摘**（今回件数に含めない）\n- #1-1 受け手の責務が送り手の連携前提と食い違っている。property-basic-info は複製する発行依頼書の行の作り方を issue-request に期待し、受け手の issue-request 7.6 は「修正稟議で複製したとき、受付No と稟議バーコードNo を空にしなければならない」とする。一方、property-basic-info 7.3 は修正稟議ボタン・再製本ボタンのどちらでも「契約局情報の全行（稟議バーコードNo を含む）と発行依頼書を複製元から引き継ぎ」とし、修正稟議でも稟議バーコードNo を引き継ぐ。issue-request 3.2 により稟議バーコードNo は契約局ごとに付く値であり、修正稟議で複製した申請の稟議バーコードNo が引き継がれるのか空になるのかを、両文書からは一つに決められない。 [specs/property-basic-info/requirements.md 「スコープの境界」Adjacent の issue-request（「修正稟議・再製本で複製する発行依頼書の行の作り方を持つ」）・「要件 7」7.3／specs/issue-request/requirements.md 「要件 7」7.5・7.6] — 差戻し → 再検査の結果を見て解消を確認してください\n- #1-2 発行依頼書（TWTGM100）の削除の受け手が SSoT と合わない。.aidd/feature-list.md の注記は「property-basic-info は発行依頼書情報（TWTGM100）を、登録されていれば読むだけとする」とするが、property-basic-info 15.1（15.2 も同じ）は申請の削除で「発行依頼書を物理削除しなければならない」とする。issue-request の扱う範囲には発行依頼書の削除が無く、注記に従えば申請削除時の発行依頼書の削除を担う feature が無い。property-basic-info 7.3 の「発行依頼書は新しい申請No で複製する」も、注記の「読むだけ」と同じ食い違いを含む。 [specs/property-basic-info/requirements.md 「要件 15」15.1・15.2／.aidd/feature-list.md 注記 2点目／specs/issue-request/requirements.md 「スコープの境界」] — 差戻し → 再検査の結果を見て解消を確認してください\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n**判断の選択肢**（指摘ごとに 1 つ選ぶ）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n\n回答例: `1:A / 2:C 既存システムの制約で変更できない / 3:D 次回レビューまで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。",
+    "id": "c21b8e56e54a48b395293985a45b002e"
+  },
+  "expected": {
+    "root": "C:\\project\\Wing",
+    "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+    "call": "requirements-cross-gate",
+    "event": "requirements-cross-gate",
+    "item": "",
+    "dispatch_id": "c21b8e56e54a48b395293985a45b002e",
+    "unit": "requirements-cross-gate/requirements-cross-gate[-]::end.review",
+    "scope": "cross",
+    "run": 2,
+    "snapshot": "3019540a2bbd9971f48d1b0354dce5b3d21284a521ed3e4dbd6fbd804984f807",
+    "record_hash": "7e8596fe19e1527e32596ced247fea69fe2fe41bfdd7ca64bb379c7f8a849676"
+  },
+  "data": {
+    "scope": "cross",
+    "run": 1,
+    "number": 1
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "schema": 2,
+  "phase": "feature",
+  "event": "feature-decomposition-revise",
+  "scope": "phase",
+  "at": "2026-10-05T18:25:55+09:00",
+  "artifacts": {
+    ".aidd/feature-list.md": {
+      "status": "draft",
+      "sha256": "71a64dc3cbf71bc6ddb02a4dc6f8247344064ca63e8a291e5881763ef59256ae"
+    }
+  },
+  "record": {
+    "bytes": 28697,
+    "sha256": "d2727d9fa10a2345896f0e2b746d7e5272a24e450fa92b4f70d5d40a384265a6",
+    "blocks": 34
+  },
+  "run": 6
+}

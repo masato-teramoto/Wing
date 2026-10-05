@@ -1,0 +1,16 @@
+{
+  "operation_id": "f2ae89f6f86d455bb309b97f70680e99",
+  "dispatch": {
+    "call": "requirements-authoring-generate",
+    "unit": "requirements-authoring-generate/requirements-authoring-generate[contract-info-download]::end.requirements-check",
+    "event": "requirements-authoring-generate",
+    "item": "contract-info-download",
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "4327d854a4ff4e528772e281e939bfa2"
+  },
+  "result": {
+    "status": "completed"
+  }
+}

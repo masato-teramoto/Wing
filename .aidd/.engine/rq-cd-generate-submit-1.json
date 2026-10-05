@@ -1,0 +1,60 @@
+{
+  "operation_id": "f539950ad92a422e895a71ccf75e1857",
+  "dispatch": {
+    "call": "requirements-authoring-generate",
+    "unit": "requirements-authoring-generate/requirements-authoring-generate[contract-info-download]::run",
+    "event": "requirements-authoring-generate",
+    "item": "contract-info-download",
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "398d42a3c4d04c00b3356f9b273db01a"
+  },
+  "result": {
+    "status": "waiting",
+    "targets": [
+      "specs/contract-info-download/requirements.md"
+    ],
+    "questions": [
+      {
+        "id": "Q-RQ-CD-001",
+        "target": "specs/contract-info-download/requirements.md",
+        "location": "業務フロー",
+        "question": "今の手順はほかの feature と同じでよいですか。ダウンロードを誰が、何のために行うかを教えてください。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-CD-002",
+        "target": "specs/contract-info-download/requirements.md",
+        "location": "検索画面。REQ-037",
+        "question": "検索条件と表示項目は既存の GWTG004（契約情報検索／一覧）と同一とあります。既存の GWTG004 のコードを正として写す形でよいか、違う点があるかを教えてください。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-CD-003",
+        "target": "specs/contract-info-download/requirements.md",
+        "location": "CSV。REQ-039",
+        "question": "CSV は契約情報取込の形式と同じでよいですか。ファイル名、出力の上限件数、検索結果の一部だけを選んで出せるかも教えてください。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-CD-004",
+        "target": "specs/contract-info-download/requirements.md",
+        "location": "権限。REQ-038",
+        "question": "WTB と同様のベンダー／施工会社の権限制御の、具体的な絞り込みの条件を教えてください。steering は、WTB の計画マスタ（TWTBM080）による方式を WTG の新しいデータには使わないとしています。契約情報（既存の WTG のデータ）には WTB の方式を使うのかも教えてください。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-CD-005",
+        "target": "specs/contract-info-download/requirements.md",
+        "location": "前提・未確定事項・非機能",
+        "question": "この feature に固有の前提と、design の前に決めておく事項を教えてください。非機能と扱う個人情報も教えてください。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      }
+    ],
+    "open_placeholders": 32,
+    "changed_findings": [],
+    "return_candidates": [],
+    "summary": "要求文と feature 一覧から書ける範囲で下書きを作成した。未確定は質問 5 件（_handoff/questions-phase4-remaining.md と同じ）。"
+  }
+}

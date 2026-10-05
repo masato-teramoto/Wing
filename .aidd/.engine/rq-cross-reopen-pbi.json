@@ -1,0 +1,4 @@
+{
+  "operation_id": "9b84e17dded14cb6ae551e199a5c257b",
+  "instruction": "2 の差戻しで開き直す property-basic-info の requirements の中で、一緒に直す。issue-request の 7.6 を正とする。property-basic-info の 7.3 は、修正稟議でも稟議バーコードNo を引き継ぐと読めるのが誤り。\n\n■ specs/property-basic-info/requirements.md\n\nP1. 7.3 の「契約局情報の全行（稟議バーコードNo を含む）と発行依頼書を複製元から引き継ぎ」を直す。契約局情報の全行と発行依頼書を複製元から引き継ぐ。ただし受付No と稟議バーコードNo は、再製本では引き継ぎ、修正稟議では空にする（specs/issue-request/requirements.md の 7.6）。受け入れ基準の番号は変えない。"
+}

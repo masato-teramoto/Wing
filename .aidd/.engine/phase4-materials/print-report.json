@@ -1,0 +1,75 @@
+{
+ "qprefix": "Q-RQ-PR",
+ "nfr_q": "006",
+ "biz_target": "印刷・閲覧用帳票の閲覧と印刷",
+ "dependency": [
+  "property-basic-info（`.aidd/feature-list.md` の依存列）",
+  "issue-request（`.aidd/feature-list.md` の依存列）"
+ ],
+ "security_note": "",
+ "privacy": "個人情報として、関係者①〜⑤の氏名・住所・電話番号・メールアドレス・FAX、起案者の氏名、申請者・確認者・決裁者の氏名を帳票に載せ、`steering/security.md` の `## 機密データ` に従って扱う（Q-RQ-PR-006）",
+ "audit": "| <REQ_NFR_AUDIT>（不要：帳票を出したことは記録しない — Q-RQ-PR-005） | <REQ_NFR_AUDIT_VERIFY>（不要：帳票を出したことは記録しない — Q-RQ-PR-005） |",
+ "draft": {
+  "background": "物件基本情報の印刷・閲覧用帳票（表紙情報・発行依頼書・契約局情報）を出力し、表紙情報に QR コードを印字し、閲覧では別ウインドウで PDF を表示する（REQ-016・REQ-017・REQ-018、`.aidd/feature-list.md`）",
+  "target_user": "<REQ_INTRO_TARGET_USER>",
+  "change": "<REQ_INTRO_EXPECTED_CHANGE>",
+  "in": [
+   "表紙情報・発行依頼書・契約局情報の帳票の出力（REQ-016）",
+   "表紙情報への QR コードの印字（REQ-017）",
+   "閲覧での別ウインドウの PDF 表示（REQ-018）"
+  ],
+  "out": [
+   "閲覧ボタン・印刷ボタンの表示"
+  ],
+  "adjacent": [
+   "property-basic-info：閲覧ボタン・印刷ボタンを持ち、表示する条件を定める（`specs/property-basic-info/requirements.md` の 6.9）"
+  ],
+  "outscope": [
+   "閲覧ボタン・印刷ボタンの表示 / 物件基本情報登録変更画面が持つため / `specs/property-basic-info/requirements.md`"
+  ]
+ },
+ "full": {
+  "background": "物件基本情報の印刷・閲覧用帳票（表紙情報・発行依頼書・契約局情報）を出力し、表紙情報に QR コードを印字し、閲覧では別ウインドウで PDF を表示する（REQ-016・REQ-017・REQ-018）。決裁に回す前の確認と、製本のための印刷に使う（Q-RQ-PR-001）",
+  "target_user": "発番の後の申請者・確認者・承認者（再製本依頼では起案者も）で、組織がプロセス管理4G の利用者（Q-RQ-PR-001）",
+  "change": "決裁前の確認資料と製本用の資料を、物件基本情報登録変更画面から PDF で出せるようになる（Q-RQ-PR-001）",
+  "before": [
+   "契約書は Excel マクロツールで作成している（Q-RQ-PR-001。ほかの feature と同じ）",
+   "稟議資料は紙に印刷して回覧し、製本している（Q-RQ-PR-001。ほかの feature と同じ）"
+  ],
+  "after": [
+   "利用者が物件基本情報登録変更画面の閲覧ボタンを押すと、帳票の PDF が別ウインドウで表示される（Q-RQ-PR-001・Q-RQ-PR-004）",
+   "利用者が印刷ボタンを押すと、帳票の PDF がダウンロードされる（Q-RQ-PR-004）",
+   "利用者は、決裁に回す前の確認と、製本のための印刷に使う（Q-RQ-PR-001）"
+  ],
+  "human": [
+   "閲覧ボタン・印刷ボタンを押す",
+   "出力した帳票の確認と、製本のための印刷"
+  ],
+  "in": [
+   "表紙情報・発行依頼書・契約局情報の帳票の作成と PDF への変換（REQ-016、Q-RQ-PR-002）",
+   "表紙情報への QR コードの印字（REQ-017、Q-RQ-PR-003）",
+   "閲覧での別ウインドウの PDF 表示と、印刷での PDF のダウンロード（REQ-018、Q-RQ-PR-004）",
+   "出力した後の一時ファイルの削除（Q-RQ-PR-004）"
+  ],
+  "out": [
+   "閲覧ボタン・印刷ボタンの表示",
+   "帳票を出したことの記録"
+  ],
+  "adjacent": [
+   "property-basic-info：閲覧ボタン・印刷ボタンを持ち、表示する条件を定める（`specs/property-basic-info/requirements.md` の 6.9）。帳票に出す申請と契約局情報を持つ",
+   "issue-request：帳票に出す発行依頼書と、稟議バーコードNo（発番）を持つ（`specs/issue-request/requirements.md` の要件 1・要件 3）"
+  ],
+  "outscope": [
+   "閲覧ボタン・印刷ボタンの表示 / 物件基本情報登録変更画面が持つため / `specs/property-basic-info/requirements.md`",
+   "帳票を出したことの記録 / 記録しないと決めたため（Q-RQ-PR-005） / どの feature でも扱わない"
+  ],
+  "assumption": [
+   "申請に発行依頼書と、契約局情報の 1 行目がある（Q-RQ-PR-006）",
+   "帳票の PDF 変換は、サーバー上の OpenOffice を使う（`steering/tech.md` の `## 主要ライブラリ`）"
+  ],
+  "open": [
+   "なし（Q-RQ-PR-006）"
+  ]
+ },
+ "summary": "Q-RQ-PR-001〜006 の回答を反映し、業務フロー・スコープ・前提と、要件 1〜4 の受け入れ基準を作成した。対応要求ID 3 件（REQ-016・017・018）はすべて要件に紐付けた。各ページの項目の全部と配置は回答のとおり design の帳票設計で定める。出せる人と申請の状態（3.4・3.5）は回答に従って本文書に書いた。property-basic-info の 6.9 はボタンの表示を組織の条件だけで定めている。"
+}

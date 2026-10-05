@@ -1,0 +1,16 @@
+{
+  "operation_id": "3ec0637994c84973815c2140d73fb2c6",
+  "dispatch": {
+    "call": "feature-decomposition-revise",
+    "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::end.feature-check",
+    "event": "feature-decomposition-revise",
+    "item": null,
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "a90be3fe87be413c84283cbba4731900"
+  },
+  "result": {
+    "status": "completed"
+  }
+}

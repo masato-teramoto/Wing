@@ -1,0 +1,6 @@
+{"timestamp": "2026-10-01T19:01:41+09:00", "level": "info", "orchestrator_id": "01M3VEK86CE5P5XWM48KXDPGFJ", "detail": "開始 call(requirements-plan)"}
+{"timestamp": "2026-10-01T19:01:41+09:00", "level": "info", "orchestrator_id": "01M3VEK86CE5P5XWM48KXDPGFJ", "phase_id": "01M3VEK86CJR116JZ1K191J4GG", "detail": "開始 requirements-plan イベント=1"}
+{"timestamp": "2026-10-01T19:01:41+09:00", "level": "info", "orchestrator_id": "01M3VEK86CE5P5XWM48KXDPGFJ", "phase_id": "01M3VEK86CJR116JZ1K191J4GG", "sub_phase_id": "01M3VEK86DEZZ10TW64B6972EC", "detail": "開始 requirements-plan type=script ゲート=3+0"}
+{"timestamp": "2026-10-01T19:01:41+09:00", "level": "info", "orchestrator_id": "01M3VEK86CE5P5XWM48KXDPGFJ", "phase_id": "01M3VEK86CJR116JZ1K191J4GG", "sub_phase_id": "01M3VEK86DEZZ10TW64B6972EC", "detail": "終了 requirements-plan 結果=成功"}
+{"timestamp": "2026-10-01T19:01:41+09:00", "level": "info", "orchestrator_id": "01M3VEK86CE5P5XWM48KXDPGFJ", "phase_id": "01M3VEK86CJR116JZ1K191J4GG", "detail": "終了 requirements-plan 結果=成功 残り=0"}
+{"timestamp": "2026-10-01T19:01:41+09:00", "level": "info", "orchestrator_id": "01M3VEK86CE5P5XWM48KXDPGFJ", "detail": "終了 call(requirements-plan) 結果=完了 所要=0m00s"}

@@ -1,0 +1,7 @@
+{
+  "phase": "requirements",
+  "event": "requirements-authoring-generate",
+  "scope": "feature:application-status-search",
+  "run": 1,
+  "findings": []
+}

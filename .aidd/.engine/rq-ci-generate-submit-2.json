@@ -1,0 +1,24 @@
+{
+  "operation_id": "73cf1d4fd1f34d0b92f7d07ab03173ad",
+  "dispatch": {
+    "call": "requirements-authoring-generate",
+    "unit": "requirements-authoring-generate/requirements-authoring-generate[contract-info-import]::run",
+    "event": "requirements-authoring-generate",
+    "item": "contract-info-import",
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "4bd4f39ce85c49579ef8747803744031"
+  },
+  "result": {
+    "status": "completed",
+    "targets": [
+      "specs/contract-info-import/requirements.md"
+    ],
+    "questions": [],
+    "open_placeholders": 0,
+    "changed_findings": [],
+    "return_candidates": [],
+    "summary": "Q-RQ-CI-001〜007 の回答を反映し、業務フロー・スコープ・Adjacent と、要件 1〜4 の受け入れ基準を作成した。対応要求ID 4 件（REQ-033・034・035・063）はすべて要件に紐付けた。REQ-034 の新規・変更・削除は、回答のとおり申請No 単位の洗替で満たす（2.3）。TWTGM140 を洗替で更新することは、回答のとおり本文書の扱う範囲に書き、feature 一覧の注記は直していない。取込も変更履歴を残すきっかけとすることは、steering/product.md の「履歴に残す項目と契機は各 feature で決める」による回答に従った。列の全部と順番は design で定める。"
+  }
+}

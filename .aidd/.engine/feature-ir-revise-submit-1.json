@@ -1,0 +1,24 @@
+{
+  "operation_id": "52e20094d7de4dc791b56d1a2a8befc4",
+  "dispatch": {
+    "call": "feature-decomposition-revise",
+    "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::run",
+    "event": "feature-decomposition-revise",
+    "item": null,
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "1e84faa717a443e39034823f58550222"
+  },
+  "result": {
+    "status": "completed",
+    "targets": [
+      ".aidd/feature-list.md"
+    ],
+    "questions": [],
+    "open_placeholders": 0,
+    "changed_findings": [],
+    "return_candidates": [],
+    "summary": "開き直しの指示どおり、注記に TWTGM140 の定義と行の操作の分担（property-basic-info が SIUD、issue-request が SIU）を加えた。依存列と対応要求ID は変えていない。steering の変更（変更履歴 TWTGA150 の追加、権限モデル）は feature の分割・依存・優先度に影響しない。"
+  }
+}

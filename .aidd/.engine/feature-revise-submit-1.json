@@ -1,0 +1,24 @@
+{
+  "operation_id": "b6fdc6ea079c4882b9187e543fafb315",
+  "dispatch": {
+    "call": "feature-decomposition-revise",
+    "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::run",
+    "event": "feature-decomposition-revise",
+    "item": null,
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "3b8cb28feaf3478da496a5fe59b8ec47"
+  },
+  "result": {
+    "status": "completed",
+    "targets": [
+      ".aidd/feature-list.md"
+    ],
+    "questions": [],
+    "open_placeholders": 0,
+    "changed_findings": [],
+    "return_candidates": [],
+    "summary": "Phase 4（property-basic-info の作成中の差戻し候補）からの差戻しの指示どおり、フィーチャー一覧の表の直後に注記を追加：TWTGM140 は property-basic-info が登録・更新・削除する、TWTGM100 は登録されていれば読むだけで依存に数えない（依存の向きは issue-request → property-basic-info のまま）、TWTGA120 はどの feature も使わない。表の行（依存・優先度・対応要求ID）は変更していない。下流への影響候補：specs/property-basic-info/requirements.md（作成中の draft。REQ-014・REQ-065 を property-basic-info に残したまま再入）。"
+  }
+}

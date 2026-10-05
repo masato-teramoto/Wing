@@ -1,0 +1,31 @@
+{
+  "operation_id": "2e9ec4e7fd294175895f041228b9479c",
+  "dispatch": {
+    "call": "requirements-authoring-revise",
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::run",
+    "event": "requirements-authoring-revise",
+    "item": "property-basic-info",
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "7d30ce6b22fc4fc880f0484acbe32aa9"
+  },
+  "result": {
+    "status": "completed",
+    "targets": [
+      "specs/property-basic-info/requirements.md"
+    ],
+    "questions": [],
+    "open_placeholders": 0,
+    "changed_findings": [
+      {
+        "phase": "requirements",
+        "scope": "feature:property-basic-info",
+        "run": 1,
+        "number": 18
+      }
+    ],
+    "return_candidates": [],
+    "summary": "差戻し（指摘15〜18）による steering の再承認後に、本文書を見直した。6.1〜6.3（TWTGM170・P82 による番の判定）は security.md の権限モデル（2段の使い分け）と、6.5（社外ユーザーの対象は契約稟議起案会社が自社の申請と本人が登録した申請）は所有権・エンティティ境界のパターンと、対象外の TWTGA120（項目の変更履歴は持たない）は product.md・database.md と、プライバシー行（担当者の連絡先）は security.md の機密データと、それぞれ整合しているため編集していない。指摘1・2・4〜14・19 の修正（判断 A）は本回の修正要求に含まれておらず、未反映。"
+  }
+}

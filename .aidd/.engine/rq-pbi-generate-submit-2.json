@@ -1,0 +1,31 @@
+{
+  "operation_id": "e47436f9e2674870a2d51684409b73b5",
+  "dispatch": {
+    "call": "requirements-authoring-generate",
+    "unit": "requirements-authoring-generate/requirements-authoring-generate[property-basic-info]::run",
+    "event": "requirements-authoring-generate",
+    "item": "property-basic-info",
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "e52af0e5c8774cda8c79d06a467af8a2"
+  },
+  "result": {
+    "status": "waiting",
+    "targets": [
+      "specs/property-basic-info/requirements.md"
+    ],
+    "questions": [],
+    "open_placeholders": 26,
+    "changed_findings": [],
+    "return_candidates": [
+      {
+        "owner": "feature",
+        "target": ".aidd/feature-list.md",
+        "location": "property-basic-info 行の依存列・対応要求ID列（REQ-014・REQ-065）と issue-request 行の依存列",
+        "reason": "計画前提では、進捗管理DB用 CSV（REQ-014）は契約局情報（issue-request が所有する TWTGM140）を出力し、作成組織（REQ-065）は発行依頼書の会社名（TWTGM100）を表示し、社外ユーザーの絞り込みは契約稟議起案会社で行う。いずれも issue-request のデータを property-basic-info が読むため property-basic-info → issue-request の依存が必要だが、feature-list では issue-request → property-basic-info であり、追加すると循環になる。REQ-014・REQ-065 の割当先の変更か、依存の見直しが必要。回答者（Junichi Noumi）は Phase 3 への差戻しを選択（TWTGM140 の所有を property-basic-info に変更、TWTGM100 は読むだけで依存に数えない旨を feature 一覧に注記、TWTGA120 はどの feature も使わない）"
+      }
+    ],
+    "summary": "作成中の質問 Q-RQ-PBI-001〜009 は回答済み（反映は差戻し解消後の再入で行う）。依存の循環（REQ-014・REQ-065 が issue-request のデータを読む）は未解消のため、Phase 3 への差戻し候補を再提示する。"
+  }
+}

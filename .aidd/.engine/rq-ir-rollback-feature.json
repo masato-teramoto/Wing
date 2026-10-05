@@ -1,0 +1,13 @@
+{
+  "operation_id": "b7f876fba7f243f09c8042bb3e89cfee",
+  "origin": "authoring-candidate",
+  "candidate": {
+    "event": "requirements-authoring-generate",
+    "item": "issue-request",
+    "index": 1
+  },
+  "targets": [
+    ".aidd/feature-list.md"
+  ],
+  "instruction": "・TWTGM140 のテーブルの定義は property-basic-info が持つ。\n・TWTGM140 の行は、property-basic-info が登録・更新・削除・並替えをする。\n・issue-request も、この画面の更新で TWTGM140 の行を登録・更新する。削除はしない。\n・契約情報取込で TWTGM140 を更新するかは、Phase 4 の contract-info-import で扱う。\n・正解の CRUD 図は、物件申請情報登録・編集が TWTGM140 を SIUD、発行依頼書登録・変更が SIU である。"
+}

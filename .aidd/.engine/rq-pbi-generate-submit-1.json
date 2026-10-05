@@ -1,0 +1,95 @@
+{
+  "operation_id": "d8f4ecc300d347b0ae5c19d1a076fdcc",
+  "dispatch": {
+    "call": "requirements-authoring-generate",
+    "unit": "requirements-authoring-generate/requirements-authoring-generate[property-basic-info]::run",
+    "event": "requirements-authoring-generate",
+    "item": "property-basic-info",
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "50db284fdfe446549e857f3434203cf3"
+  },
+  "result": {
+    "status": "waiting",
+    "targets": [
+      "specs/property-basic-info/requirements.md"
+    ],
+    "questions": [
+      {
+        "id": "Q-RQ-PBI-001",
+        "target": "specs/property-basic-info/requirements.md",
+        "location": "## 業務フロー — 現状の業務手順（Before）",
+        "question": "契約書の発行依頼を、現在どのような手順で行っているかを教えてください（例：Excel マクロで作成し、紙で回覧している、など）。",
+        "reason_unanswered": "承認済み入力と計画前提に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-PBI-002",
+        "target": "specs/property-basic-info/requirements.md",
+        "location": "要件 3（再製本依頼の承認フロー）3.2",
+        "question": "再製本依頼の遷移を、操作ごとに教えてください（起案者の申請依頼・発番の有無・申請者の確認と申請・承認者の承認のそれぞれで、前後の審査フェーズと状態）。",
+        "reason_unanswered": "承認済み入力と計画前提に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-PBI-003",
+        "target": "specs/property-basic-info/requirements.md",
+        "location": "要件 4（差戻しと取下げ）4.3",
+        "question": "差戻しと取下げを、誰が（起案者・申請者・確認者・承認者）、どの審査フェーズ・状態のときにできるかを教えてください。取下げた申請を再開できるかも教えてください。",
+        "reason_unanswered": "承認済み入力と計画前提に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-PBI-004",
+        "target": "specs/property-basic-info/requirements.md",
+        "location": "要件 1（登録）1.3・要件 6（権限と状態による制御）6.6",
+        "question": "起案者が物件基本情報を変更（更新）できる審査フェーズ・状態（未起案・下書きのほか、差戻しのときなど）と、申請者・確認者・承認者が項目を編集できるかを教えてください。権限ごとに表示・操作できるボタン（更新、申請依頼、確認、申請、承認、差戻し、取下げ、ファイル登録、出力、バーコード）に決まりがあれば教えてください。",
+        "reason_unanswered": "承認済み入力と計画前提に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-PBI-005",
+        "target": "specs/property-basic-info/requirements.md",
+        "location": "要件 8（契約稟議ファイル）8.3",
+        "question": "契約稟議ファイルの「確定」とは何か（複数を登録してそのうち 1 件を確定するのか）、登録・削除・確定ができる人と状態、ファイルの形式の制限を教えてください。",
+        "reason_unanswered": "承認済み入力と計画前提に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-PBI-006",
+        "target": "specs/property-basic-info/requirements.md",
+        "location": "要件 11（文書バーコード）利用者ストーリー・11.3",
+        "question": "バーコードを生成する対象の文書、バーコードに入れる値と形式、生成と削除ができる人と状態、「画面には表示し編集を制御する」の具体（削除済みのバーコードはどの操作ができなくなるか）を教えてください。",
+        "reason_unanswered": "承認済み入力と計画前提に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-PBI-007",
+        "target": "specs/property-basic-info/requirements.md",
+        "location": "## 対象外 — 変更履歴 TWTGA120 の引き継ぎ先",
+        "question": "TWTGA120（変更履歴）をどの feature が登録するか（issue-request など）を教えてください。",
+        "reason_unanswered": "承認済み入力と計画前提に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-PBI-008",
+        "target": "specs/property-basic-info/requirements.md",
+        "location": "## 前提と依存 — 未確定事項",
+        "question": "design に進む前に確認が要る未確定事項があれば教えてください。無ければ不要理由として「なし」と書きます。",
+        "reason_unanswered": "承認済み入力と計画前提に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-PBI-009",
+        "target": "specs/property-basic-info/requirements.md",
+        "location": "## 非機能要件 — 可用性・運用監視の検証方法、アクセシビリティ、多言語・地域対応、プライバシー",
+        "question": "可用性と運用・監視の検証方法、アクセシビリティと多言語対応の要否（不要なら理由）、本 feature が個人情報を扱うか（扱う場合はその項目と保持期間、扱わない場合はその旨）を教えてください。",
+        "reason_unanswered": "承認済み入力と計画前提に具体的な値が無く、推測で書けないため"
+      }
+    ],
+    "open_placeholders": 26,
+    "changed_findings": [],
+    "return_candidates": [
+      {
+        "owner": "feature",
+        "target": ".aidd/feature-list.md",
+        "location": "property-basic-info 行の依存列・対応要求ID列（REQ-014・REQ-065）と issue-request 行の依存列",
+        "reason": "計画前提では、進捗管理DB用 CSV（REQ-014）は契約局情報（issue-request が所有する TWTGM140）を出力し、作成組織（REQ-065）は発行依頼書の会社名（TWTGM100）を表示し、社外ユーザーの絞り込みは契約稟議起案会社で行う。いずれも issue-request のデータを property-basic-info が読むため property-basic-info → issue-request の依存が必要だが、feature-list では issue-request → property-basic-info であり、追加すると循環になる。REQ-014・REQ-065 の割当先の変更か、依存の見直しが必要"
+      }
+    ],
+    "summary": "計画前提（承認フロー・ステータス・遷移・複製・その他）から要件1〜13を作成。feature-list の対応要求ID 14件（REQ-008〜015、030〜032、063、065、066）はすべて要件に紐付けた。閲覧・印刷ボタンは print-report、発番は issue-request の範囲として対象外にした。未確定は質問9件。REQ-014・REQ-065 と社外ユーザーの絞り込みが issue-request のデータを読むため、依存の循環を Phase 3 への差戻し候補として返す。"
+  }
+}

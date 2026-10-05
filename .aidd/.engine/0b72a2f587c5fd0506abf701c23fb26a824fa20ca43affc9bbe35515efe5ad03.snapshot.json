@@ -1,0 +1,19 @@
+{
+  "schema": 2,
+  "phase": "requirements",
+  "event": "requirements-authoring-revise",
+  "scope": "feature:application-status-search",
+  "at": "2026-10-05T20:07:22+09:00",
+  "artifacts": {
+    "specs/application-status-search/requirements.md": {
+      "status": "draft",
+      "sha256": "55d9ff1879cc34261f13d0a12fab45b26b91a0783b22e3136a1edc72f808ce82"
+    }
+  },
+  "record": {
+    "bytes": 231748,
+    "sha256": "543f9381f26e279a5653b33439c29e1042b3e36a754fa18d46feabe1bab2a6d9",
+    "blocks": 266
+  },
+  "run": 2
+}

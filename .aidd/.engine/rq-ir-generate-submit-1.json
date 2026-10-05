@@ -1,0 +1,95 @@
+{
+  "operation_id": "41a0305a01b141f58fc044f219ab7d52",
+  "dispatch": {
+    "call": "requirements-authoring-generate",
+    "unit": "requirements-authoring-generate/requirements-authoring-generate[issue-request]::run",
+    "event": "requirements-authoring-generate",
+    "item": "issue-request",
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "800dd7d5855b4d6eb7da522cdc988991"
+  },
+  "result": {
+    "status": "waiting",
+    "targets": [
+      "specs/issue-request/requirements.md"
+    ],
+    "questions": [
+      {
+        "id": "Q-RQ-IR-001",
+        "target": "specs/issue-request/requirements.md",
+        "location": "## 業務フロー — 現状の業務手順（Before）・システム導入後（After）・人が介在するステップ",
+        "question": "発行依頼書を作ってから発番を受けるまでの手順を、誰が・どの順に行うかで教えてください。現状の手順（Before）が property-basic-info と同じ（Excel マクロで作成し、紙で回覧・製本）でよいかも教えてください。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-IR-002",
+        "target": "specs/issue-request/requirements.md",
+        "location": "要件 1（発行依頼書の登録・変更）利用者ストーリー・1.1",
+        "question": "発行依頼書の主な項目と必須の項目、1 件の申請（申請No）に付く発行依頼書の件数を教えてください。登録・変更できる人（起案者・申請者・確認者など）と、申請の審査フェーズ・状態の条件、画面へ入る経路（物件基本情報登録変更画面の契約局情報追加ボタンのほかにあるか）も教えてください。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-IR-003",
+        "target": "specs/issue-request/requirements.md",
+        "location": "要件 3（契約書の発番）利用者ストーリー・3.1",
+        "question": "発番を行う人と、行える申請の審査フェーズ・状態を教えてください。発番で付ける番号（受付No・稟議バーコードNo など）とその形式・採番、発番後の申請の状態（property-basic-info では受付済・回覧中にするとしています）、発番の取消しの有無も教えてください。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-IR-004",
+        "target": "specs/issue-request/requirements.md",
+        "location": "要件 4（サンプルからの入力）4.1",
+        "question": "サンプルから入力するボタンの一覧と、各ボタンが設定する項目と値、すでに入力がある項目を上書きするかを教えてください。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-IR-005",
+        "target": "specs/issue-request/requirements.md",
+        "location": "要件 5（単独局・複数局の切替と複数局モード）5.1",
+        "question": "単独局・複数局の切替は property-basic-info の切替（14.1）と同じ値を切り替えるのかを教えてください。複数局モードで制御する項目とその制御（入力不可・非表示など）、複数局欄と関係者欄でできる操作（行の追加・削除・並替え）と行数の上限、複数局欄と契約局情報（TWTGM140。property-basic-info が登録・更新・削除する）の関係も教えてください。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-IR-006",
+        "target": "specs/issue-request/requirements.md",
+        "location": "要件 6（金額の自動計算）6.1",
+        "question": "自動計算する金額の項目と計算式、端数の処理、計算するきっかけ（入力したとき・ボタンを押したときなど）を教えてください。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-IR-007",
+        "target": "specs/issue-request/requirements.md",
+        "location": "要件 2（権限による画面の制御）2.2",
+        "question": "権限と申請の状態ごとに入力できる項目と使えるボタン、社外ユーザーに表示しない・入力させない項目を教えてください。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-IR-008",
+        "target": "specs/issue-request/requirements.md",
+        "location": "要件 8（作成組織の入力）8.3",
+        "question": "作成組織の会社名のプルダウンの選択肢をどこから取るか（コードマスタなど）と、社外ユーザーのときに自動で設定する会社名の出所（P71 の文字項目2 など）を教えてください。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-IR-009",
+        "target": "specs/issue-request/requirements.md",
+        "location": "要件 7（変更履歴の登録）7.1〜7.3",
+        "question": "REQ-027 の「各申請・承認時」が承認フローのどの操作（申請依頼・確認・申請・承認・差戻し・取下げ・発番など）に当たるかと、変更を比べる項目、変更履歴（TWTGA130）に残す内容を教えてください。修正稟議・再製本で複製するときの発行依頼書の行の作り方（property-basic-info の Adjacent で本 feature の担当としています）も教えてください。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      },
+      {
+        "id": "Q-RQ-IR-010",
+        "target": "specs/issue-request/requirements.md",
+        "location": "## 前提と依存 — 前提・未確定事項／## 非機能要件 — 可用性・運用監視の検証方法、アクセシビリティ、多言語・地域対応、プライバシー",
+        "question": "本 feature に固有の前提と、design に進む前に確認が要る未確定事項があれば教えてください。非機能（可用性・運用監視の検証、アクセシビリティ、多言語対応、扱う個人情報）は property-basic-info と同じ扱いでよいかを教えてください。異なる場合はその内容を教えてください。",
+        "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+      }
+    ],
+    "open_placeholders": 33,
+    "changed_findings": [],
+    "return_candidates": [],
+    "summary": "要求文と steering から書ける範囲で、概要・スコープ・対象外・依存と、要件 1〜9 の見出しを作成した。根拠のある受け入れ基準は 2.1（社外ユーザーのデータ範囲）、7.1・7.2（変更履歴）、8.1・8.2（作成組織）、9.1（入力チェック）。feature-list の対応要求ID 11 件（REQ-019〜027、063、064）はすべて要件に紐付けた。依存は property-basic-info だけで、feature-list と一致する。未確定は質問 10 件。"
+  }
+}

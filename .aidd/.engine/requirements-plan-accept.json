@@ -1,0 +1,17 @@
+{
+  "operation_id": "d9c2c689ebcf45728bea83c3971bc6d2",
+  "action": "accept-plan",
+  "dispatch": {
+    "call": "requirements-plan",
+    "unit": "requirements-plan/requirements-plan[-]::run",
+    "event": "requirements-plan",
+    "item": null,
+    "status": "wait",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": "**Phase 4（requirements 作成）に入ります。** 開始前に実行計画を確認してください。\n\n**生成単位**: 1 feature ずつ（優先度順）。ゲートは feature ごとに 1 回 ＋ 全 feature が approved になった後に横断 1 回 通します。\n\n**対象 feature と順序**（`.aidd/feature-list.md` の優先度順）\n1. `property-basic-info`（User / 依存: なし）\n2. `issue-request`（User / 依存: `property-basic-info`）\n3. `issue-request-tutorial`（User / 依存: `issue-request`）\n4. `print-report`（User / 依存: `property-basic-info`、`issue-request`）\n5. `application-status-search`（User / 依存: `property-basic-info`）\n6. `contract-info-import`（User / 依存: `property-basic-info`、`issue-request`）\n7. `contract-info-download`（User / 依存: `contract-info-import`）\n\n**入力として読むもの**（すべて `approved`）\n- `.aidd/requirement-list.md`\n- `.aidd/feature-list.md`\n- `steering/product.md`\n- `steering/tech.md`\n- `steering/architecture.md`\n- `steering/security.md`\n- `steering/non-functional.md`\n- `steering/database.md`\n- `steering/api-standards.md`\n\n**出力先**: `specs/property-basic-info/requirements.md` / `specs/issue-request/requirements.md` / `specs/issue-request-tutorial/requirements.md` / `specs/print-report/requirements.md` / `specs/application-status-search/requirements.md` / `specs/contract-info-import/requirements.md` / `specs/contract-info-download/requirements.md`（7 ファイル）\n\n**想定される停止回数**: feature 数 + 1 回（8 回）。作成中に根拠が足りない箇所があれば、その都度質問して停止します。\n\n**対象 feature や順序を変える場合は `.aidd/feature-list.md` の変更になるため、Phase 3 への差戻しとして扱います。**\n（変更する場合は、その内容を指示してください。今回は一部だけ作る等の進め方の指示は計画に記録し、フェーズの完了条件は全 feature の完了のままです。）\n\nこの計画で進めてよいか指示してください。",
+    "id": "69bd675bea94410696aa2a62024908d6"
+  },
+  "data": {
+    "note": "この計画で了承します。.aidd/rfp/RFP.md もコミットに入れてよい。改行コードの警告は対応しない。\nproperty-basic-info の前提（人間確定。正解の機能定義書と画面設計による）\n【承認フロー】\n・稟議依頼と修正稟議依頼は、起案者、申請者、確認者、承認者の順に回す。\n・再製本依頼は、起案者、申請者、承認者の順に回す（確認者を飛ばす）。\n・系統は依頼内容で分ける（コードマスタ P29。1 稟議依頼、2 再製本依頼）。\n・修正稟議は、依頼内容が稟議依頼で元申請No があるもの。\n・権限は審査権限マスタ TWTGM170 を会社コードとユーザーID で引く。\n・権限コードは P82（01 起案者、02 申請者、03 確認者、04 承認者）。\n・起案者の権限は全員が持つ。\n・誰の番かは、申請のステータスと状態で決める。\n【ステータス】\n・審査フェーズ P28：00 未起案、01 起案済、02 受付済、03 申請済、04 確認済、05 承認済。\n・状態 P27：01 下書き、02 回覧中、03 差戻し、04 取下げ、05 確認中、06 取込中、07 完了。\n・RFP の5段階と3段階は、この審査フェーズの進み方の数に当たる。\n・取下げは審査フェーズを変えず、状態だけを取下げにする。\n・承認で承認済と完了にし、決裁日時を入れる。\n・申請依頼のたびに申請回数を1増やす。これを審査回とする。\n・取込中の申請には、どの操作もできない。\n【稟議と修正稟議の遷移】\n・起案者の更新：新規で未起案と下書きにし、申請No を採番する。\n・起案者の申請依頼：未起案と下書きから起案済と回覧中へ。受付済と差戻しから受付済と回覧中へ。\n・発番は発行依頼書の画面で行い、起案済と回覧中から受付済と回覧中へ。\n・申請者の確認：受付済と確認中へ。申請者の申請：申請済と回覧中へ。\n・確認者の確認：確認済と回覧中へ。承認者の承認：承認済と完了へ。\n・差戻しは、今の審査フェーズのまま状態を差戻しにする。\n【複製】\n・RFP の引用ボタンは、修正稟議ボタンと再製本ボタンとする。\n・どちらも承認済と完了のときに、起案者だけに表示する。\n・申請No は \"B\" と年月日6桁と連番4桁。新規、修正稟議、再製本で共通。\n・引き継ぐのは基地局の項目、エリア、施策、単独局か複数局か。元申請No に複製元を入れる。\n・修正稟議は審査の情報と契約稟議ファイルを引き継がず、起案者からやり直す。\n【その他】\n・RFP の進捗管理DB用 CSV は出力ボタンとする。契約局情報を契約局取込の形式で出す。複数局のときだけ使える。\n・契約稟議ファイルは上限 3500MB（P80）。確定できるのは1件だけ。\n・閲覧と印刷のボタンは、組織がプロセス管理4G（P71 の G6）のときだけ表示する。\n・編集中データの処理は、戻るボタンで「編集中の内容を破棄して戻ります。よろしいですか？」と確認する。\n・作成組織は契約稟議起案会社名のラベル表示だけ。値は発行依頼書の会社名。\n・履歴は承認履歴 TWTGM180 に、申請依頼、申請、確認、承認、差戻、取下のたびに1件登録する。\n・Phase 3 の回答を訂正する。TWTGA120 は property-basic-info では登録しない。\n回答者 Junichi Noumi"
+  }
+}

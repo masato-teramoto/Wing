@@ -1,0 +1,31 @@
+{
+  "operation_id": "d6e0baea3542426f92c0b813fe3f951f",
+  "dispatch": {
+    "call": "requirements-authoring-revise",
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[contract-info-download]::run",
+    "event": "requirements-authoring-revise",
+    "item": "contract-info-download",
+    "status": "emit",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": null,
+    "id": "a30d52e42e4848ce8c943ab7831cc1ab"
+  },
+  "result": {
+    "status": "completed",
+    "targets": [
+      "specs/contract-info-download/requirements.md"
+    ],
+    "questions": [],
+    "open_placeholders": 0,
+    "changed_findings": [
+      {
+        "phase": "requirements",
+        "scope": "feature:contract-info-download",
+        "run": 2,
+        "number": 10
+      }
+    ],
+    "return_candidates": [],
+    "summary": "2 回目 指摘10 の修正指示を反映した。2.2 を、ログインユーザーのベンダー区分か施工会社区分に値がある場合は値のある区分で絞り込み、両方とも空の場合は絞り込まずに出す形に直した（番号は変えていない）。出典に steering/security.md の所有権・エンティティ境界、ゲート1-9、ゲート2-10 を足し、出典の表記に「ゲート1-N」「ゲート2-N」を加えた。"
+  }
+}

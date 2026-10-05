@@ -1,0 +1,15 @@
+{
+  "operation_id": "98f4bc2dc6f84670abb8cad13f9643be",
+  "origin": "authoring-candidate",
+  "candidate": {
+    "event": "requirements-authoring-generate",
+    "item": "issue-request",
+    "index": 2
+  },
+  "targets": [
+    "steering/database.md",
+    "steering/product.md",
+    "steering/security.md"
+  ],
+  "instruction": "・項目の変更履歴を持つのは、発行依頼書（TWTGA130）と契約局情報（TWTGA150）の2つとする。\n・どちらも issue-request が登録する。\n・登録するのは、発行依頼書登録変更画面の更新と発番のときとする。承認フローの操作では登録しない。\n・物件基本情報の履歴は、これまでどおり承認履歴 TWTGM180 だけとする。\nsteering を開き直すので、約束していた 3-10・3-11・4-3 もあわせて security.md に入れる。\n・起案者の権限は全員が持ち、審査権限マスタ TWTGM170 では管理しない。\n・TWTGM170 と P82 で判定するのは、申請者・確認者・承認者の番である。\n・画面のボタンを、ログインユーザーの組織で出し分けるものがある。\n・閲覧と印刷のボタンは、組織がプロセス管理4G（P71 の G6）のときだけ表示する。\n・再製本ボタンは、所属組織が KDDI か K-ENG のときだけ表示する。\n・組織の判定のしかたは、property-basic-info の design で定める。"
+}
