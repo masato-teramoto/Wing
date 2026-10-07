@@ -3,17 +3,17 @@
   "phase": "requirements",
   "event": "requirements-authoring-revise",
   "scope": "feature:property-basic-info",
-  "at": "2026-10-05T19:00:34+09:00",
+  "at": "2026-10-07T16:31:01+09:00",
   "artifacts": {
     "specs/property-basic-info/requirements.md": {
       "status": "draft",
-      "sha256": "b849cadc770e4cf091f0a7ce4f84d11892da5b988ff5184d257c3526989e4081"
+      "sha256": "5f172c4890f034214da64d63ee9eddbb59f2ea979f258073b31cb99122bfa6bc"
     }
   },
   "record": {
-    "bytes": 223107,
-    "sha256": "22b0e40e0b9eca5a3ff40a8cada486729c0eb8704c5678fb43340972088045d1",
-    "blocks": 248
+    "bytes": 296462,
+    "sha256": "30a6c6e5210bd61af628b649f8ddd2abcfab71e59dad679431e31ddc79d9b2ac",
+    "blocks": 332
   },
-  "run": 9
+  "run": 13
 }

@@ -24,17 +24,30 @@ disable-model-invocation: true
 3. 「〜と連携する」とだけ書かれ、契約の詳細（何を送り何を受け取るか、失敗時にどうするか）が
    書かれていない箇所を指摘する。
 
+## この工程で指摘しない事項
+
+- `.claude/skills/finding-rules/SKILL.md` の工程の境界の表・`confirmed_answers`・`learned` に当たる事項
+- `TBD（<工程> で確定）` と書いてある値
+
+当たるものは指摘にせず、除外として返す（除外の出典を付ける。書き方は finding-rules）。
+
 ## 出力の形
 
+指摘ごとに次を返す。書き方は `.claude/skills/finding-rules/SKILL.md`（検査の最初に読む）に従う。重大度は出さない（L3 が `kind` から決める）。
+
 ```
-{ id, location, finding, is_rollback_candidate }
+{ location, subject, kind, summary, evidence, suggestion, recommendation, is_rollback_candidate }
 ```
 
 | フィールド | 内容 |
 |---|---|
-| `id` | この Skill 内で一意な通し番号 |
-| `location` | 契約が不明瞭な外部連携記述の箇所 |
-| `finding` | 不明瞭さの事実（例: 「決済代行サービスとの連携について、タイムアウト時の挙動が記述されていない」） |
+| `location` | 契約が不明瞭な外部連携記述の箇所。`<案件相対パス> § <節見出し> / <ID>` の形。複数箇所なら代表 1 か所＋「ほか n か所」（全件は `evidence`） |
+| `subject` | 対象の語（例: `決済代行サービス`） |
+| `kind` | `.claude/skills/finding-rules/SKILL.md` の種類から 1 つ選ぶ。迷ったら上の行。通常 `業務のあいまい・不足` |
+| `summary` | 60 字以内。結論を先に、何が・どこで（例: 「決済代行サービス連携のタイムアウト時の挙動が書かれていない」） |
+| `evidence` | 該当の連携記述の引用と、明示されていない `必須項目` |
+| `suggestion` | 追記する契約項目の文案。外部サービスの仕様や業務の新しい事実が要るときは「何を決めればよいか」と選べる案 |
+| `recommendation` | `修正：理由` / `差戻し：理由` / `対応せず進める：理由` / `質問：理由` のどれか。業務の新しい事実が要るときは `質問：…` |
 | `is_rollback_candidate` | 通常 `false`（同一フェーズ内での記述追記で解消できるため） |
 
 ## 禁止

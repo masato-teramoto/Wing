@@ -1,0 +1,140 @@
+{
+  "status": "ok",
+  "action": "submit",
+  "result": {
+    "unit": "design-authoring-revise/design-authoring-revise[property-basic-info]::end.design-check",
+    "flow": "design-authoring-revise",
+    "event": "design-authoring-revise",
+    "item": "property-basic-info",
+    "gate": "design-check",
+    "hookPoint": "end",
+    "name": "design-check",
+    "type": "skill",
+    "target": "design-check",
+    "isAgent": true,
+    "requiresHuman": false,
+    "calls": [
+      "format-conformance",
+      "traceability",
+      "traceability",
+      "traceability",
+      "traceability",
+      "steering-conformance",
+      "evidence-guard",
+      "external-integration-contract-explicitness",
+      "dependency-boundary-conformance",
+      "gate-report"
+    ],
+    "targetReview": [
+      "specs/property-basic-info/design.md"
+    ],
+    "status": "emit",
+    "call": "design-authoring-revise",
+    "dispatch": {
+      "call": "design-authoring-revise",
+      "unit": "design-authoring-revise/design-authoring-revise[property-basic-info]::end.design-check",
+      "event": "design-authoring-revise",
+      "item": "property-basic-info",
+      "status": "emit",
+      "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+      "detail": null,
+      "id": "ef42d4cfc2e646fd9327270b18d38b3c"
+    },
+    "label": "design-authoring-revise / design-authoring-revise [property-basic-info]",
+    "allowed_actions": [
+      "submit"
+    ],
+    "context": {
+      "event": "design-authoring-revise",
+      "item": "property-basic-info",
+      "scope": "feature:property-basic-info",
+      "targets": [
+        "specs/property-basic-info/design.md"
+      ],
+      "review_targets": [
+        "specs/property-basic-info/design.md"
+      ],
+      "upstream": [
+        ".aidd/feature-list.md",
+        "steering/product.md",
+        "steering/tech.md",
+        "steering/architecture.md",
+        "steering/security.md",
+        "steering/non-functional.md",
+        "steering/database.md",
+        "steering/api-standards.md",
+        "specs/property-basic-info/requirements.md"
+      ],
+      "unreviewed_inputs": [],
+      "gate_record_path": "C:\\project\\Wing\\.aidd\\gates\\phase-5-design.md",
+      "authoring_inputs": [
+        ".aidd/feature-list.md",
+        "steering/product.md",
+        "steering/tech.md",
+        "steering/architecture.md",
+        "steering/security.md",
+        "steering/non-functional.md",
+        "steering/database.md",
+        "steering/api-standards.md",
+        "specs/property-basic-info/requirements.md"
+      ],
+      "snapshot_path": "C:\\project\\Wing\\.aidd\\.engine\\f5157258f5e2fcec040d4777af2a8b542d1c0d49608f43e2159ddb3d429bc881.snapshot.json",
+      "snapshot": {
+        "schema": 2,
+        "phase": "design",
+        "event": "design-authoring-revise",
+        "scope": "feature:property-basic-info",
+        "at": "2026-10-07T18:50:42+09:00",
+        "artifacts": {
+          "specs/property-basic-info/design.md": {
+            "status": "draft",
+            "sha256": "0829e28f5d3a4e0db44e191b174e2518eb0af483f10814026003e86d90d8c7df"
+          }
+        },
+        "record": {
+          "bytes": 33718,
+          "sha256": "2038fd3b54a6a85599dd205c435fc7eb9273cae9533af89ad4e5667bf8f4677f",
+          "blocks": 34
+        },
+        "run": 5
+      },
+      "findings_path": "C:\\project\\Wing\\.aidd\\.engine\\f5157258f5e2fcec040d4777af2a8b542d1c0d49608f43e2159ddb3d429bc881.findings.json",
+      "findings": [],
+      "questions": null,
+      "repair": {
+        "event": "design-authoring-revise",
+        "item": "property-basic-info",
+        "targets": [
+          "specs/property-basic-info/design.md"
+        ],
+        "findings": [
+          {
+            "phase": "design",
+            "scope": "feature:property-basic-info",
+            "run": 4,
+            "number": 1,
+            "instruction": "「発番済」（6.9）と「発番後」（11.2）の判定を、依頼内容で分けて書いてください。\n・稟議依頼・修正稟議依頼：審査フェーズが受付済（02）以降（受付済・申請済・確認済・承認済）なら発番済。\n・再製本依頼：常に発番済として扱う。再製本は元の申請の受付No と稟議バーコードNo を引き継いで作るので、作った時点で発番済み。発行依頼書登録変更で再製本を発番しないことと合う。\n「受付No が NULL でないこと と 受付済（02）以降 は、どちらで見ても結果は同じ」という文は消してください。11.2 の文書バーコードの「発番後」も同じ判定にそろえてください。"
+          },
+          {
+            "phase": "design",
+            "scope": "feature:property-basic-info",
+            "run": 4,
+            "number": 2,
+            "instruction": "基地局番号リンクは、canOperate の条件に入れないでください（14.13 に番や依頼内容の制限はありません）。\n・複数局モードではリンク、単独局モードではラベルで表示する（画面の表示の違いだけ）。\n・リンクを押した人が発行依頼書の項目を変えられるかは、発行依頼書登録変更の画面の側で番を見て決める。\n・/wtg070/hakkoLink の Errors から WTG-100030 を外してください。\nあわせて、発行依頼書編集（14.11）の条件に、申請者の番の 稟議・修正稟議 起案済・回覧中 を足してください。この状態は申請者の番で、申請者は発行依頼書登録変更の画面へ行って発番します。単独局モードでは、基地局番号がラベルなので、発行依頼書編集ボタンが唯一の入口です。行495 の説明は「発行依頼書編集ボタン（複数局モードでは基地局番号リンクも）から発行依頼書登録変更画面へ行って発番する」に直してください。"
+          }
+        ],
+        "instruction": "",
+        "origin": "finding",
+        "actor": "Junichi Noumi",
+        "at": "2026-10-07T18:48:45+09:00",
+        "scheduled": "2026-10-07T18:48:45+09:00",
+        "id": "022809ab637cbb14066c4bbb31e22b6b0fbe0d22c0ba1ca93eab67ed9a8bf154"
+      },
+      "inspection_path": "C:\\project\\Wing\\.aidd\\.engine\\f5157258f5e2fcec040d4777af2a8b542d1c0d49608f43e2159ddb3d429bc881.inspection.md"
+    },
+    "next_action": "作業中（AI が 検査 を実行します）。人の操作は不要です。",
+    "operation_id": "9d15ad3eb7d94e8791caa31225f0de7e",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

@@ -1,0 +1,17 @@
+{
+  "operation_id": "4984e09e19b24ab5a7c8f2a6846cc02c",
+  "action": "accept-plan",
+  "dispatch": {
+    "call": "design-plan",
+    "unit": "design-plan/design-plan[-]::run",
+    "event": "design-plan",
+    "item": null,
+    "status": "wait",
+    "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+    "detail": "**Phase 5（design 作成）に入ります。** 開始前に実行計画を確認してください。\n\n**生成単位**: 1 feature ずつ（優先度順）。ゲートは feature ごとに 1 回 ＋ 全 feature が approved になった後に横断 1 回（契約整合） 通します。\n\n**対象 feature と順序**（`.aidd/feature-list.md` の優先度順）\n1. `property-basic-info`（User / 依存: なし）\n2. `issue-request`（User / 依存: `property-basic-info`）\n3. `issue-request-tutorial`（User / 依存: `issue-request`）\n4. `print-report`（User / 依存: `property-basic-info`、`issue-request`）\n5. `application-status-search`（User / 依存: `property-basic-info`）\n6. `contract-info-import`（User / 依存: `property-basic-info`、`issue-request`）\n7. `contract-info-download`（User / 依存: `contract-info-import`）\n\n**入力として読むもの**（すべて `approved`）\n- `.aidd/feature-list.md`\n- `steering/product.md`\n- `steering/tech.md`\n- `steering/architecture.md`\n- `steering/security.md`\n- `steering/non-functional.md`\n- `steering/database.md`\n- `steering/api-standards.md`\n- `specs/property-basic-info/requirements.md`\n- `specs/issue-request/requirements.md`\n- `specs/issue-request-tutorial/requirements.md`\n- `specs/print-report/requirements.md`\n- `specs/application-status-search/requirements.md`\n- `specs/contract-info-import/requirements.md`\n- `specs/contract-info-download/requirements.md`\n\n**出力先**: `specs/property-basic-info/design.md` / `specs/issue-request/design.md` / `specs/issue-request-tutorial/design.md` / `specs/print-report/design.md` / `specs/application-status-search/design.md` / `specs/contract-info-import/design.md` / `specs/contract-info-download/design.md`（7 ファイル）\n\n**想定される停止回数**: feature 数 + 1 回（8 回）。作成中に根拠が足りない箇所があれば、その都度質問して停止します。\n\n**対象 feature や順序を変える場合は `.aidd/feature-list.md` の変更になるため、Phase 3 への差戻しとして扱います。**\n（変更する場合は、その内容を指示してください。今回は一部だけ作る等の進め方の指示は計画に記録し、フェーズの完了条件は全 feature の完了のままです。）\nfeature ごとに要件トレーサビリティの自己診断結果を報告します。\n\nこの計画で進めてよいか指示してください。",
+    "id": "35d0e03b72664f53975c6a45e6af14b1"
+  },
+  "data": {
+    "note": "この計画で進めてOK。対象・順序の変更はありません。\nただし、property-basic-info の design を変える指摘・差戻し候補が出たときは止めてください。\n回答者 Junichi Noumi"
+  }
+}

@@ -57,7 +57,7 @@ host の「操作」（advance / submit / respond / approve など）は operati
 - `requiresHuman` は待機の機構だけを表す。実行計画か承認かは L3 が決め、script の target は必ず設定に明記する。L0 は既定の承認処理を注入しない。
 - `isAgent` は別コンテキストでの実行要求。現行 L0 の実行仲介が `.claude/agents/check-runner.md` へ結び付ける。ホストは L0 の emit に従って起動し、結果を report する。L3 には agent 名の解決や起動処理を追加しない。L3 のフロー設定から検査 Skill 名・calls を参照することは許す（管理資料 `l3_generate/docs/main-flow-control-dependencies-2026-09-23.md` の採用案 A）。
 - L0 が script に渡す `AIDD_ROOT` / `AIDD_STATE` / `AIDD_ACTION` / `AIDD_ITEM` / `AIDD_ACTION_UNIT` 等は実行コンテキスト。L3 がそれを工程・対象パス・スコープへ解釈する。
-- 生成／修正 Skill には解決済みの対象・承認済み入力・質問回答・人間が選んだ指摘キーを渡す。L4 には検査対象、公開された上流、当該実行のスナップショット・指摘ステージだけを渡す。
+- 生成／修正 Skill には解決済みの対象・承認済み入力・質問回答・人間が選んだ指摘キーを渡す。L4 には検査対象、公開された上流、当該実行のスナップショット（節ごとのハッシュ・前回からの変わった節を含む）・指摘ステージと、検査の前提（`review_premises.py`：指摘の共通ルールのパス・人が確定した回答・却下から学んだ扱い・このスコープの前回までの指摘）を渡す。前提は人が宣言・回答・選択したものだけで、AI が推測した前提は入れない。
 
 emit/wait には発行済みの dispatch ID を付け、report はその ID と同じ call/item のみ受け付ける。
 同じ結果の再送は保存結果を返し、次の unit に結果を付け替えない。L0 は一般的な相関管理だけを担当する。

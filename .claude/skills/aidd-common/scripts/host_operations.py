@@ -38,7 +38,7 @@ def main(argv=None):
     parser.add_argument("--payload", help="UTF-8 JSON with the actual response or selected repair")
     parser.add_argument("--actor", default="")
     parser.add_argument("--call", help="Actual flow/action call, if different from --action")
-    parser.add_argument("operation", choices=("implement-select", "implement-next", "implement-note", "implement-check", "implement-repair", "implement-rebase", "implement-retry", "advance", "submit", "respond", "review-context", "migration-review", "audit", "preflight", "context", "progress", "result", "complete", "completion", "decision", "resolve", "approve", "accept-plan", "wait", "answer", "repair", "reopen", "upstream-approved", "resolve-rollback"))
+    parser.add_argument("operation", choices=("implement-select", "implement-next", "implement-note", "implement-check", "implement-repair", "implement-rebase", "implement-retry", "advance", "submit", "respond", "review-context", "migration-review", "audit", "preflight", "context", "progress", "metrics", "result", "complete", "completion", "decision", "resolve", "approve", "accept-plan", "wait", "answer", "repair", "reopen", "upstream-approved", "resolve-rollback"))
     args = parser.parse_args(argv)
     try:
         action = args.action
@@ -128,6 +128,9 @@ def dispatch(context, operation, data, actor):
         return project_progress.preflight(context)
     if operation == "progress":
         return project_progress.progress(context)
+    if operation == "metrics":
+        import review_metrics
+        return {"metrics": review_metrics.collect(context.root)}
     if operation == "result":
         import authoring_results
         return authoring_results.save(context, data)
@@ -157,6 +160,15 @@ def dispatch(context, operation, data, actor):
             result.update(snapshot_path=str(path), snapshot=snapshot_artifacts.load(context),
                           findings_path=findings_stage.stage_path(context), findings=findings_stage.read(context))
         result["questions"] = project_progress.workflow(context).get("waiting", {}).get(project_progress.key(context))
+        if context.process != 'implement':
+            # 検査の前提（指摘の共通ルール・人が確定した回答・却下から学んだ扱い・前回までの指摘）。
+            import review_premises
+            import reevaluation
+            result.update(review_premises.collect(context))
+            legacy = reevaluation.inspector_input(context)
+            if legacy:
+                # この修正の回は再評価：検査役は旧形式の指摘だけを finding-reevaluation の手順で見直す
+                result["reevaluation"] = legacy
         if context.action == phase_rules.RULES[context.process]["repair"]:
             # The entry Skill calls the revise action for a pending repair: null means nothing was selected.
             result["repair"] = repair_requests.pending(context)
@@ -167,12 +179,15 @@ def dispatch(context, operation, data, actor):
         review_decisions.person(actor)
     if operation == "decision":
         return review_decisions.decision(context, data["scope"], data["run"], data["number"], data["decision"], data.get("reason", ""), actor,
-                                       expected=data.get('expected'),operation_id=data.get('operation_id'))
+                                       expected=data.get('expected'),operation_id=data.get('operation_id'),
+                                       category=data.get('category', ''), learn=data.get('learn', False), adopted=data.get('adopted', ''))
     elif operation == "resolve":
         # A rollback cannot be resolved until its upstream was reapproved.
         for blocker in context.blockers():
             selected = blocker.get("finding") or {}
-            if all(selected.get(k) == data.get(k) for k in ("scope", "run", "number")) and blocker.get("status") == "open":
+            if (selected.get("phase") == context.process
+                    and all(selected.get(k) == data.get(k) for k in ("scope", "run", "number"))
+                    and blocker.get("status") == "open"):
                 raise ValueError("rollback needs upstream reapproval before resolution")
         return review_decisions.resolve(context, data["scope"], data["run"], data["number"], actor,
                                       expected=data.get('expected'),operation_id=data.get('operation_id'))

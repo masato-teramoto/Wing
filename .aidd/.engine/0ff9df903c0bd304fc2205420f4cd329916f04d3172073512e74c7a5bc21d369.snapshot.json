@@ -3,11 +3,11 @@
   "phase": "requirements",
   "event": "requirements-cross-gate",
   "scope": "cross",
-  "at": "2026-10-05T20:50:43+09:00",
+  "at": "2026-10-07T16:40:50+09:00",
   "artifacts": {
     "specs/property-basic-info/requirements.md": {
       "status": "approved",
-      "sha256": "b849cadc770e4cf091f0a7ce4f84d11892da5b988ff5184d257c3526989e4081"
+      "sha256": "5f172c4890f034214da64d63ee9eddbb59f2ea979f258073b31cb99122bfa6bc"
     },
     "specs/issue-request/requirements.md": {
       "status": "approved",
@@ -35,9 +35,9 @@
     }
   },
   "record": {
-    "bytes": 283655,
-    "sha256": "9e6c3792648ed495fd4481e21e244bb5dfea9f4f80b887b551d935c3b078b41f",
-    "blocks": 315
+    "bytes": 298335,
+    "sha256": "6e2e0a7ece6734560cf37fa10be363f477ca5bd04bf3430f6eab2e986faefd2c",
+    "blocks": 339
   },
-  "run": 2
+  "run": 3
 }

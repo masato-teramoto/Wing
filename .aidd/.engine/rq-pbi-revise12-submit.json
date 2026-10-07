@@ -1,0 +1,31 @@
+{
+ "operation_id": "fb43c2034b2e40cbb03cba24763fece8",
+ "dispatch": {
+  "call": "requirements-authoring-revise",
+  "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::run",
+  "event": "requirements-authoring-revise",
+  "item": "property-basic-info",
+  "status": "emit",
+  "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+  "detail": null,
+  "id": "2eedf9feddc04ae6802a8b63fc025a2c"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/property-basic-info/requirements.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "requirements",
+    "scope": "feature:property-basic-info",
+    "run": 12,
+    "number": 1
+   }
+  ],
+  "return_candidates": [],
+  "summary": "検査 12 回目の指摘 1 を回答者 Junichi Noumi の指示どおり修正した。6.6 の前段を「番が回っている承認者の場合、システムは 1.3 の変更を受け付けてはならず、コメントの入力と自分の番の回覧の操作（6.7 の操作ボタン）を受け付けなければならない。閲覧・印刷（6.9）と出力（9.3）は、それぞれの受け入れ基準に従う。」に書き換えた。後段（申請者・確認者）は変えていない。出典の表記に「ゲート12-N」を足した。"
+ }
+}

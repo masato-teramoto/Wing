@@ -14,5 +14,12 @@ profileが`implementation-task-review-v1`の場合は、task-implement-checkの�
 タスクのBoundary/Dependsと承認済み設計・steeringを読み、実際のimport、呼出し、API、
 スキーマ、エラー処理、認可・入力検証、先行featureの公開契約を照合する。
 ファイルパスが許可範囲内であることだけで責務整合を判断しない。
-不一致はgate=implementation-boundaryとして実コードの箇所と設計根拠を返す。
+不一致はgate=implementation-boundaryとして返す。指摘ごとに location（実ファイルと箇所）・subject・kind・summary（60 字以内）・evidence（実コードの箇所と設計根拠）・suggestion・recommendation・is_rollback_candidate を返す。書き方と kind は `.claude/skills/finding-rules/SKILL.md` に従い、重大度は出さない。
 上流仕様の修正が必要なら差戻し候補を提案するが、宛先や修正内容を確定しない。
+
+## この工程で指摘しない事項
+
+- `.claude/skills/finding-rules/SKILL.md` の工程の境界の表・`confirmed_answers`・`learned` に当たる事項
+- `TBD（<工程> で確定）` と書いてある値
+
+当たるものは指摘にせず、除外として返す（除外の出典を付ける。書き方は finding-rules）。

@@ -1,0 +1,114 @@
+﻿時刻,Phase,機能,回数,区分,備考
+2026-10-06 08:12:21,5,-,-,レビュー提示,design-plan の実行計画を提示
+2026-10-06 13:48:50,5,-,-,回答受領,計画の了承（property-basic-info の design を変える指摘・差戻し候補では止める指示あり）
+2026-10-06 13:49:07,5,-,-,AI記録完了,accept-plan を記録
+2026-10-06 13:49:16,5,property-basic-info,1,AI作成開始,design-authoring-generate を advance
+2026-10-06 13:51:02,5,property-basic-info,1,相談,既存 PWTGB090 を根拠にしてよいかをユーザーへ確認
+2026-10-06 14:07:30,5,property-basic-info,1,回答受領,PWTGB090 を根拠にしない（B）。列名等は質問で
+2026-10-06 14:17:43,5,property-basic-info,1,AI提出,下書きと質問15件を waiting で提出
+2026-10-06 14:59:52,5,property-basic-info,1,回答受領,Q-DS-PBI-001 の回答（1件ずつ受領開始）
+2026-10-06 15:02:52,5,property-basic-info,1,AI記録完了,Q-DS-PBI-001 を design 下書きへ反映（エンジンへの記録は全件そろってから）
+2026-10-06 15:07:28,5,property-basic-info,1,回答受領,Q-DS-PBI-001 追加回答（遷移先 URL の規則）を反映
+2026-10-06 15:21:59,5,property-basic-info,1,回答受領,Q-DS-PBI-002 その1（TWTGM080 のユニークキー）
+2026-10-06 15:31:51,5,property-basic-info,1,回答受領,Q-DS-PBI-002 その2（TWTGM080 のレイアウト）
+2026-10-06 15:40:03,5,property-basic-info,1,回答受領,Q-DS-PBI-002 その3 と Q-DS-PBI-010
+2026-10-06 15:41:12,5,property-basic-info,1,回答受領,Q-DS-PBI-002 補足（登録者の用途の書き方）
+2026-10-06 21:12:29,5,property-basic-info,1,中断,ユーザーの指示で中断（画面配置の扱い A/B/C の回答待ち）
+2026-10-07 11:09:14,5,property-basic-info,1,再開,ユーザーの指示で再開（画面配置 A/B/C を再提示）
+2026-10-07 11:11:37,5,property-basic-info,1,回答受領,画面配置の扱い（案C：design に書かず後で ds_mock で決める）
+2026-10-07 11:18:53,5,property-basic-info,1,回答受領,Q-DS-PBI-002 その5（画面項目・申請情報欄）
+2026-10-07 11:20:37,5,property-basic-info,1,回答受領,Q-DS-PBI-002 その6（サーバー設定列・条件付き必須・単独複数）
+2026-10-07 11:21:49,5,property-basic-info,1,回答受領,Q-DS-PBI-002 その7（担当者氏名・チェックの時期）
+2026-10-07 11:26:29,5,property-basic-info,1,回答受領,Q-DS-PBI-002 その8（エラーキー・Zoom・社外判定）。002 完了
+2026-10-07 11:41:30,5,property-basic-info,1,回答受領,Q-DS-PBI-002 その9（エラーキー）
+2026-10-07 11:45:00,5,property-basic-info,1,回答受領,Q-DS-PBI-003（TWTGM140）
+2026-10-07 13:00:09,5,property-basic-info,1,回答受領,Q-DS-PBI-003 補足（契約者）と 002 その10（文字種キー）。002・003 完了
+2026-10-07 13:39:10,5,property-basic-info,1,回答受領,Q-DS-PBI-004 その1（TWTGM090 の列）
+2026-10-07 13:42:14,5,property-basic-info,1,回答受領,Q-DS-PBI-004 その2（保存先）
+2026-10-07 13:44:33,5,property-basic-info,1,回答受領,Q-DS-PBI-004 その3（3500MB）
+2026-10-07 13:46:53,5,property-basic-info,1,回答受領,Q-DS-PBI-004 その3 補足（WTG-100009 追加）
+2026-10-07 13:47:51,5,property-basic-info,1,回答受領,Q-DS-PBI-004 その4（権限と状態）
+2026-10-07 13:54:06,5,property-basic-info,1,回答受領,Q-DS-PBI-004 補足（新規 WTG キー一覧）
+2026-10-07 13:56:51,5,property-basic-info,1,回答受領,Q-DS-PBI-004 補足2（キーの整理）
+2026-10-07 13:57:45,5,property-basic-info,1,回答受領,Q-DS-PBI-004 その5・6。004 完了
+2026-10-07 14:01:59,5,property-basic-info,1,回答受領,Q-DS-PBI-005 その1（TWTGM180 の列）
+2026-10-07 14:02:36,5,property-basic-info,1,回答受領,Q-DS-PBI-005 その2（判定のコード値）
+2026-10-07 14:03:40,5,property-basic-info,1,回答受領,Q-DS-PBI-005 その3（コメント）。005 完了
+2026-10-07 14:06:26,5,property-basic-info,1,回答受領,Q-DS-PBI-006（TWTGM170）
+2026-10-07 14:21:57,5,property-basic-info,1,回答受領,Q-DS-PBI-007（TWTGM110・文書バーコード）
+2026-10-07 14:29:49,5,property-basic-info,1,回答受領,Q-DS-PBI-008（採番）。承認済みの上流と食い違うため扱いを確認中
+2026-10-07 14:37:34,5,property-basic-info,1,回答受領,Q-DS-PBI-008 その2（B：TWTZM050 で採番。前回答は取消）。008 完了
+2026-10-07 14:42:41,5,property-basic-info,1,回答受領,Q-DS-PBI-009（組織の判定）。steering と食い違うため扱いを確認中
+2026-10-07 14:52:34,5,property-basic-info,1,回答受領,Q-DS-PBI-009 その2（D：グループ＝権限区分と読む。steering 文言は持ち越し）。009 完了
+2026-10-07 15:00:36,5,property-basic-info,1,回答受領,Q-DS-PBI-011 その1（起案済・回覧中）
+2026-10-07 15:02:11,5,property-basic-info,1,回答受領,Q-DS-PBI-011 その2（状態遷移表）。requirements と食い違うため扱いを確認中
+2026-10-07 15:10:58,5,property-basic-info,1,回答受領,Q-DS-PBI-011 その3（食い違いの扱い。A は requirements への差戻し候補 1 件）
+2026-10-07 15:19:56,5,property-basic-info,1,回答受領,Q-DS-PBI-012（下流の定義）。012 完了
+2026-10-07 15:30:40,5,property-basic-info,1,回答受領,Q-DS-PBI-011 その4（3.9 も差戻し候補へ）・012 その2・013（CSV）。011・013 完了
+2026-10-07 15:34:28,5,property-basic-info,1,回答受領,Q-DS-PBI-013 その2・014・015。質問 15 件すべて回答済み
+2026-10-07 15:37:38,5,property-basic-info,1,AI記録完了,15 件の回答を answer で記録
+2026-10-07 15:38:56,5,property-basic-info,1,相談,残りの記入欄 3 種（担当/レビュアー・技術的負債・後のフェーズの作業）を質問
+2026-10-07 15:43:20,5,property-basic-info,1,回答受領,残りの記入欄 3 種
+2026-10-07 15:44:13,5,property-basic-info,1,AI提出,差戻し候補 1 件つきで waiting を提出（open_placeholders 0）
+2026-10-07 15:44:13,5,property-basic-info,1,レビュー提示,差戻し候補（requirements）の判断を依頼
+2026-10-07 15:46:00,5,property-basic-info,1,回答受領,差戻し候補をまとめて差し戻すと決定
+2026-10-07 15:46:20,4,property-basic-info,差戻し,AI記録完了,requirements への差戻しを記録（design 作成中の候補）
+2026-10-07 15:48:21,4,property-basic-info,設計差戻し1,AI検査開始,requirements-check（check-runner）
+2026-10-07 15:50:21,4,property-basic-info,設計差戻し1,AI検査終了,指摘 2 件
+2026-10-07 15:50:42,4,property-basic-info,設計差戻し1,レビュー提示,検査 10 回目の指摘 2 件の判断を依頼
+2026-10-07 16:02:00,4,property-basic-info,設計差戻し1,回答受領,検査 10 回目：全件 A（修正指示つき）
+2026-10-07 16:03:31,4,property-basic-info,設計差戻し2,AI検査開始,requirements-check 11 回目
+2026-10-07 16:05:41,4,property-basic-info,設計差戻し2,AI検査終了,指摘 1 件
+2026-10-07 16:06:04,4,property-basic-info,設計差戻し2,レビュー提示,検査 11 回目の指摘 1 件と前回 2 件の解消確認を依頼
+2026-10-07 16:16:02,4,property-basic-info,設計差戻し2,回答受領,11 回目：1:A、10-1・10-2 解消確認
+2026-10-07 16:16:57,4,property-basic-info,設計差戻し3,AI検査開始,requirements-check 12 回目
+2026-10-07 16:18:48,4,property-basic-info,設計差戻し3,AI検査終了,指摘 1 件
+2026-10-07 16:19:11,4,property-basic-info,設計差戻し3,レビュー提示,検査 12 回目の指摘 1 件と前回 3 件の解消確認を依頼
+2026-10-07 16:30:12,4,property-basic-info,設計差戻し3,回答受領,12 回目：1:A、11-1 解消確認
+2026-10-07 16:31:03,4,property-basic-info,設計差戻し4,AI検査開始,requirements-check 13 回目
+2026-10-07 16:32:29,4,property-basic-info,設計差戻し4,AI検査終了,指摘 0 件
+2026-10-07 16:33:15,4,property-basic-info,設計差戻し4,レビュー提示,検査 13 回目（指摘 0）。10-1・10-2・11-1 の解消を記録、12-1 の解消確認と承認を依頼
+2026-10-07 16:39:58,4,property-basic-info,設計差戻し4,回答受領,12-1 解消確認・承認
+2026-10-07 16:40:29,4,property-basic-info,設計差戻し4,AI記録完了,requirements 承認を記録
+2026-10-07 16:40:55,4,全体,横断3,AI検査開始,requirements 横断検査 3 回目
+2026-10-07 16:42:49,4,全体,横断3,AI検査終了,指摘 0 件
+2026-10-07 16:43:15,4,全体,横断3,レビュー提示,横断 3 回目（指摘 0）の確認を依頼
+2026-10-07 16:52:23,4,全体,横断3,回答受領,横断確認
+2026-10-07 16:53:33,5,property-basic-info,1,AI提出,design を completed で提出
+2026-10-07 16:53:37,5,property-basic-info,1,AI検査開始,design-check 1 回目
+2026-10-07 16:55:31,5,property-basic-info,1,AI検査終了,形式で停止 指摘 4 件
+2026-10-07 16:56:17,5,property-basic-info,1,レビュー提示,design-check 1 回目（形式 4 件）の判断を依頼
+2026-10-07 17:00:05,5,property-basic-info,1,回答受領,design-check 1 回目：全件 A
+2026-10-07 17:02:31,5,property-basic-info,修正1,AI提出,形式 4 件の修正を提出
+2026-10-07 17:02:49,5,property-basic-info,修正1,AI検査開始,design-check 2 回目
+2026-10-07 17:08:03,5,property-basic-info,修正1,AI検査終了,指摘 14 件
+2026-10-07 17:08:37,5,property-basic-info,修正1,レビュー提示,design-check 2 回目（14 件）の判断と前回 4 件の解消確認を依頼
+2026-10-07 17:43:48,5,property-basic-info,修正1,回答受領,design-check 2 回目の判断（A 10・C 4）と 1-1〜1-4 解消確認
+2026-10-07 18:05:45,5,property-basic-info,修正2,回答受領,#9 URL 一覧と CSRF は B、#14 の一覧ファイル
+2026-10-07 18:11:18,5,property-basic-info,修正2,回答受領,処理状況・発送希望日の既定値・項目定義の置き場所
+2026-10-07 18:12:08,5,property-basic-info,修正2,AI提出,10 件の修正を提出
+2026-10-07 18:12:30,5,property-basic-info,修正2,AI検査開始,design-check 3 回目
+2026-10-07 18:16:38,5,property-basic-info,修正2,AI検査終了,指摘 4 件
+2026-10-07 18:17:06,5,property-basic-info,修正2,レビュー提示,design-check 3 回目（4 件）の判断と前回の解消確認を依頼
+2026-10-07 18:39:15,5,property-basic-info,修正2,回答受領,検査 3 回目：A3・C1、2-x 解消確認
+2026-10-07 18:41:09,5,property-basic-info,修正3,AI提出,3 件の修正を提出
+2026-10-07 18:41:28,5,property-basic-info,修正3,AI検査開始,design-check 4 回目
+2026-10-07 18:44:41,5,property-basic-info,修正3,AI検査終了,指摘 2 件
+2026-10-07 18:45:11,5,property-basic-info,修正3,レビュー提示,design-check 4 回目（2 件）の判断と 3-x の解消確認を依頼
+2026-10-07 18:48:33,5,property-basic-info,修正3,回答受領,検査 4 回目：全件 A、3-x 解消確認
+2026-10-07 18:50:44,5,property-basic-info,修正4,AI提出,2 件の修正を提出
+2026-10-07 18:51:02,5,property-basic-info,修正4,AI検査開始,design-check 5 回目
+2026-10-07 18:54:31,5,property-basic-info,修正4,AI検査終了,指摘 3 件
+2026-10-07 18:55:18,5,property-basic-info,修正4,レビュー提示,design-check 5 回目（3 件）の判断と 4-x の解消確認を依頼
+2026-10-07 19:04:51,5,property-basic-info,修正4,回答受領,検査 5 回目：全件 C、4-x 解消確認
+2026-10-07 19:07:32,5,property-basic-info,修正4,AI記録完了,C 3 件と解消確認 19 件を記録。承認待ち
+2026-10-07 19:13:11,5,property-basic-info,修正4,回答受領,design 承認
+2026-10-07 19:13:38,5,property-basic-info,修正4,AI記録完了,design 承認を記録
+2026-10-07 19:15:22,5,残り6機能,1,AI作成開始,6 機能の質問の下調べを並行で開始
+2026-10-07 19:24:46,5,残り6機能,1,AI提出,6 機能の質問ファイルがそろった（73 件）
+2026-10-07 19:55:47,5,issue-request,1,回答受領,Q-DS-IR-001〜015（別ファイルの DB レイアウト・項目規則つき）
+2026-10-07 19:59:19,5,issue-request,1,回答受領,Q-DS-IR 回答を再受領（ユーザー用メモを除いた版）
+2026-10-07 20:02:02,5,issue-request,1,AI記録完了,質問 15 件を提出し回答を answer で記録
+2026-10-07 20:02:46,5,issue-request,1,AI作成開始,design 本体の書き起こし
+2026-10-07 20:17:15,5,issue-request,1,AI提出,design を書き起こし。追加の質問 8 件
+2026-10-07 20:21:13,5,issue-request,1,中断,ユーザーの指示で中断（追加の質問 8 件と残り 5 機能の質問の回答待ち）

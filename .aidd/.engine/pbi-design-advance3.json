@@ -1,0 +1,13 @@
+{
+  "status": "fail",
+  "action": "advance",
+  "result": {
+    "status": "fail",
+    "event": "design-authoring-generate",
+    "item": "property-basic-info",
+    "detail": "cross inspection was invalidated and must be repeated: requirements",
+    "allowed_actions": [],
+    "blockers": [],
+    "next_action": "停止しました。理由を確認し、表示された対処（上流の修正・再実行など）を行ってください。"
+  }
+}

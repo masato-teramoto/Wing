@@ -1,0 +1,42 @@
+回答者 Junichi Noumi
+Q-DS-PBI-002 その2
+
+主キーは無し。
+
+テーブル物理名：TWTGM080
+テーブル論理名：TWTGM080物件申請情報ﾏｽﾀ
+レイアウト：以下参照
+| No | 表示名 | 項目名 | 型 | 桁数 | 必須 | 許可値 | 備考 |
+|---|---|---|---|---|---|---|---|
+| 1 | 会社ｺｰﾄﾞ | CompanyCD | 1:String | 5 | ○ | | Java-Kit共通 |
+| 2 | 登録者 | RegisteredPerson | 1:String | 20 | | | Java-Kit共通 |
+| 3 | 登録日時 | RegisteredDT | 3:DateTime | － | | | Java-Kit共通 |
+| 4 | 更新者 | UpdatedPerson | 1:String | 20 | | | Java-Kit共通 |
+| 5 | 更新日時 | UpdatedDT | 3:DateTime | － | | | Java-Kit共通 |
+| 6 | 排他ﾌﾗｸﾞ | ExclusiveFG | 1:String | 32 | | | Java-Kit共通 |
+| 7 | 申請No | Application_No | 1:String | 11 | ○ | | |
+| 8 | 計画基地局番号 | Keikaku_Kichikyoku_No | 1:String | 9 | | | |
+| 9 | 計画基地局名 | Keikaku_Kichikyoku_Name | 1:String | 120 | | | |
+| 10 | 基地局番号 | Kichikyoku_No | 1:String | 9 | | | |
+| 11 | 基地局名 | Kichikyoku_Name | 1:String | 120 | | | |
+| 12 | 基地局名(ｶﾅ) | Kichikyoku_Name_Kana | 2:String | 120 | | | |
+| 13 | ｴﾘｱｺｰﾄﾞ | Area_Cd | 1:String | 20 | | | |
+| 14 | 施策ｺｰﾄﾞ | SHISAKU_CD | 1:String | 10 | | | |
+| 15 | 発送希望日 | Hasso_Kibo_Date | 1:String | 8 | | | |
+| 16 | ｽﾃｰﾀｽ | Status | 1:String | 20 | | | |
+| 17 | 状態区分 | JOTAI_KBN | 1:String | 20 | | | |
+| 18 | 依頼内容 | Irai_Naiyo | 1:String | 256 | | | |
+| 19 | 申請依頼日時 | Application_Req_DateTime | 3:DateTime | － | | | 最新の申請依頼時のシステム日時を登録。 |
+| 20 | 初回申請依頼日時 | First_Application_Req_DateTime | 3:DateTime | － | | | 初回申請依頼時のシステム日時を登録。 |
+| 21 | 決裁日時 | Kessai_DateTime_From | 3:DateTime | － | | | 最新の決裁時のシステム日時を登録。 |
+| 22 | 確認日時 | Check_DateTime_From | 3:DateTime | － | | | 最新の確認時のシステム日時を登録。 |
+| 23 | 申請日時 | Application_Date | 3:DateTime | － | | | 最新の申請時のシステム日時を登録。 |
+| 24 | 申請回数 | Application_Count | 0:Int | 2 | | | |
+| 25 | 元申請No | Moto_Application_No | 1:String | 11 | | | |
+| 26 | 申送り事項 | Moshiokuri_Jiko | 1:String | 1000 | | | |
+| 27 | 発送書類有無ﾌﾗｸﾞ | Hasso_Shorui_Umu_Flg | 1:String | 1 | | 0:なし / 1:あり | |
+| 28 | 単独複数局ﾌﾗｸﾞ | Tandoku_Fukusu_Flg | 1:String | 1 | | 0:単独局 / 1:複数局 | |
+| 29 | 連絡先ﾒｰﾙｱﾄﾞﾚｽ | Mail | 1:String | 150 | | | |
+| 30 | 電話番号 | Tel | 1:String | 11 | | | |
+| 31 | 発番日時 | Hatsuban_Uketsuke_DateTime | 3:DateTime | － | | | 発番時のシステム日時を登録 |
+| 32 | 更新者名 | UpdatedPerson_Name | 1:String | 20 | | | |

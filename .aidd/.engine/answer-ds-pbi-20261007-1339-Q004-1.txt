@@ -1,0 +1,13 @@
+回答者 Junichi Noumi
+Q-DS-PBI-004 その1（契約稟議ファイル TWTGM090 の列）
+
+1. 列は TWTGM050 と同じ形に、確定の印と登録者名を足します。
+| 論理名 | 列名 | 型 | 桁 |
+|---|---|---|---|
+| 申請No | Application_No | String | 11（必須） |
+| ファイルパス | File_Path | String | 256 |
+| ファイル名 | File_Name | String | 256 |
+| SEQ | Seq | Int | 3（必須） |
+| 確定フラグ | Kakute_Flg | String | 2（0:未確定 1:確定） |
+| 登録者名 | RegisteredPerson_Name | String | 20 |
+ほかに共通列（会社コード・登録者・登録日時・更新者・更新日時・排他フラグ）。一意キーは 会社コード＋申請No＋Seq。登録者名には、登録したときのログインユーザー名を入れます（ZM010 とは結合しない。承認履歴と同じ考え方）。

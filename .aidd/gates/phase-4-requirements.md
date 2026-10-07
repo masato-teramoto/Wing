@@ -2179,3 +2179,122 @@ created_at: 2026-10-01T19:25:49+09:00
 | スコープ | 回数 | 指摘番号 | 判断 | 理由 | 承認スコープ | 承認回数 |
 |---|---|---|---|---|---|---|
 | cross | 2 | 1 | 対応せず進める | 12.1 の括弧書き「発行依頼書情報 TWTGM100 は読むだけ」は、作成組織の表示で発行依頼書の会社名を読むだけで、この表示のために発行依頼書を書き換えない、という意味と読む。発行依頼書の削除と複製は 7.3・15.1・15.2 と feature 一覧の注記 2点目のとおりで、食い違ったときはそちらを正とする。括弧書きは、次に property-basic-info の requirements を開き直すときに注記に合わせて直す。今回は直さない。 | cross | 2 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:property-basic-info | 10 | 2026-10-07T15:48:03+09:00 | ①② | ["specs/property-basic-info/requirements.md"] | {"specs/property-basic-info/requirements.md": "fc1e7cf6b9f78bb63561107d5b7591d4b81441c22a36423b553568f7ac08b29b"} | 2 |
+
+### 指摘
+
+| # | 観点 | 対象箇所 | 指摘内容 | 判断 | 理由 |
+|---|---|---|---|---|---|
+| 1 | ssot-consistency | specs/property-basic-info/requirements.md 「要件 4」受け入れ基準 4.5／「要件 6」受け入れ基準 6.7 | 二重定義（食い違い）: 4.5 は今回の修正で「承認者は取下げを持たない」とした。一方 6.7 は「承認者の番では承認・差戻・取下の操作ボタンを表示しなければならない」のままで、番が回っている承認者に取下のボタンを表示することを求めている。番が回っている承認者が取下げを行えるか（取下のボタンを表示するか）について、2 つの受け入れ基準が両立しない。先に記載された要件ID は 4.5 だが、4.5 は承認者の取下げを「持たない」と事実の形で書いており、システムが受け付けてはならないのか、ボタンを表示してはならないのかを義務の形で示していない。どちらに合わせるかは人間による確認が必要 |  |  |
+| 2 | ssot-consistency | specs/property-basic-info/requirements.md 「要件 3」受け入れ基準 3.3・3.9／「要件 6」受け入れ基準 6.7 | 二重定義（食い違い）: 3.9 は今回の修正で再製本依頼の申請済・差戻しからの操作を確認から申請に改め、「再製本依頼の申請者に確認の操作は無い」とした。一方 6.7 は依頼内容を区別せず「申請者の番では更新・確認・申請・差戻・取下」の操作ボタンを表示しなければならないとしており、再製本依頼の申請者の番（3.3 の起案済・回覧中、3.9 の申請済・差戻し）でも確認のボタンの表示を求める。再製本依頼の申請者の番に確認のボタンを表示するかについて両立しない。再製本依頼の申請者の確認を受け付けてはならないとする受け入れ基準も無い。先に記載された要件ID は 3.9。どちらに合わせるかは人間による確認が必要 |  |  |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:property-basic-info | 10 | 1 | 修正 |  | Junichi Noumi | 2026-10-07T16:02:04+09:00 |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:property-basic-info | 10 | 2 | 修正 |  | Junichi Noumi | 2026-10-07T16:02:06+09:00 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:property-basic-info | 11 | 2026-10-07T16:03:25+09:00 | ①② | ["specs/property-basic-info/requirements.md"] | {"specs/property-basic-info/requirements.md": "6bb7439d2df016bdf3eda90e185c1246bcefa2ad97d3340228638ec8fe439107"} | 1 |
+
+### 指摘
+
+| # | 観点 | 対象箇所 | 指摘内容 | 判断 | 理由 |
+|---|---|---|---|---|---|
+| 1 | ssot-consistency | specs/property-basic-info/requirements.md 「要件 4」受け入れ基準 4.5 の後段（「承認者の操作は承認と差戻だけとする（稟議依頼・修正稟議依頼・再製本依頼とも）」）／「要件 6」受け入れ基準 6.6・6.7・6.9／「要件 9」受け入れ基準 9.3 | 二重定義（範囲の食い違いの可能性）: 今回の修正で 4.5 に「承認者の操作は承認と差戻だけとする」が加わった。承認者が行える操作は 6.6（番が回っている承認者はコメントの入力と自分の番の操作を受け付ける）と 6.7（承認者の番の操作ボタンは承認・差戻）でも定めている。4.5 の文は「操作」の範囲を限っておらず、字義どおりに読むと、6.6 が承認者に受け付けを求めるコメントの入力、9.3 が承認者を含むすべての利用者に求める出力ボタンの使用、6.9 が承認者の番に表示を求める閲覧ボタン・印刷ボタンと両立しない。また、この文は「とする」で締めており、システムの義務・禁止の形（しなければならない／してはならない）になっていない。先に記載された要件ID は 4.5。4.5 の文を回覧の操作（6.7 の操作ボタン）に限った説明と読むか、範囲を書き分けるかは人間による確認が必要 |  |  |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:property-basic-info | 11 | 1 | 修正 |  | Junichi Noumi | 2026-10-07T16:16:06+09:00 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:property-basic-info | 12 | 2026-10-07T16:16:51+09:00 | ①② | ["specs/property-basic-info/requirements.md"] | {"specs/property-basic-info/requirements.md": "986d14b070d1e11ef2e947f1c169a158b4c5e62c5611e01d09c3e85af7be7e05"} | 1 |
+
+### 指摘
+
+| # | 観点 | 対象箇所 | 指摘内容 | 判断 | 理由 |
+|---|---|---|---|---|---|
+| 1 | ssot-consistency | specs/property-basic-info/requirements.md 「要件 6」受け入れ基準 6.6 の前段（「番が回っている承認者の場合、システムはコメントの入力と自分の番の操作だけを受け付けなければならない」）／「要件 4」受け入れ基準 4.5 の後段の括弧書き（「コメントの入力（6.6）、閲覧・印刷（6.9）、出力（9.3）は回覧の操作ではなく、承認者も使える」）／「要件 6」受け入れ基準 6.9／「要件 9」受け入れ基準 9.3 | 二重定義（範囲の食い違いの可能性）: 今回の修正で 4.5 は、承認者の番の「回覧の操作」を 6.7 の操作ボタン（承認・差戻）と定め、閲覧・印刷（6.9）と出力（9.3）は回覧の操作ではなく承認者も使えるとした。一方 6.6 は、番が回っている承認者に受け付ける操作を「コメントの入力と自分の番の操作だけ」に限っている。「自分の番の操作」を 4.5 のいう回覧の操作（6.7 の操作ボタン）と読むと、6.6 は承認者の閲覧・印刷（6.9）と出力（9.3）を受け付けの範囲から外すことになり、4.5 の括弧書き・6.9・9.3 と字義どおりには両立しない。4.5 では食い違いが解けたが、同じ範囲を限る文が 6.6 に残っている。先に記載された要件ID は 4.5。6.6 の「自分の番の操作」を閲覧・印刷・出力も含むものと読むか、6.6 の範囲を書き分けるかは人間による確認が必要 |  |  |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:property-basic-info | 12 | 1 | 修正 |  | Junichi Noumi | 2026-10-07T16:30:15+09:00 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:property-basic-info | 13 | 2026-10-07T16:31:01+09:00 | ①② | ["specs/property-basic-info/requirements.md"] | {"specs/property-basic-info/requirements.md": "5f172c4890f034214da64d63ee9eddbb59f2ea979f258073b31cb99122bfa6bc"} | 0 |
+
+### 指摘
+
+| # | 観点 | 対象箇所 | 指摘内容 | 判断 | 理由 |
+|---|---|---|---|---|---|
+
+## 解消
+
+| スコープ | 回数 | 指摘番号 | 再検査スコープ | 再検査回数 | 確認者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:property-basic-info | 10 | 1 | feature:property-basic-info | 13 | Junichi Noumi | 2026-10-07T16:32:58+09:00 |
+
+## 解消
+
+| スコープ | 回数 | 指摘番号 | 再検査スコープ | 再検査回数 | 確認者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:property-basic-info | 10 | 2 | feature:property-basic-info | 13 | Junichi Noumi | 2026-10-07T16:33:03+09:00 |
+
+## 解消
+
+| スコープ | 回数 | 指摘番号 | 再検査スコープ | 再検査回数 | 確認者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:property-basic-info | 11 | 1 | feature:property-basic-info | 13 | Junichi Noumi | 2026-10-07T16:33:08+09:00 |
+
+## 解消
+
+| スコープ | 回数 | 指摘番号 | 再検査スコープ | 再検査回数 | 確認者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:property-basic-info | 12 | 1 | feature:property-basic-info | 13 | Junichi Noumi | 2026-10-07T16:40:01+09:00 |
+
+## 承認
+
+| スコープ | 回数 | 対象成果物 | 承認者 | 承認日時 | 原本SHA256 |
+|---|---|---|---|---|---|
+| feature:property-basic-info | 13 | specs/property-basic-info/requirements.md | Junichi Noumi | 2026-10-07T16:40:06+09:00 | 5f172c4890f034214da64d63ee9eddbb59f2ea979f258073b31cb99122bfa6bc |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| cross | 3 | 2026-10-07T16:40:50+09:00 | ② | ["specs/property-basic-info/requirements.md","specs/issue-request/requirements.md","specs/issue-request-tutorial/requirements.md","specs/print-report/requirements.md","specs/application-status-search/requirements.md","specs/contract-info-import/requirements.md","specs/contract-info-download/requirements.md"] | {"specs/property-basic-info/requirements.md":"5f172c4890f034214da64d63ee9eddbb59f2ea979f258073b31cb99122bfa6bc","specs/issue-request/requirements.md":"a6bfa87614a5044a2ee05f06eea80f9f9e83e431030c7f9fa6a85e54542d807f","specs/issue-request-tutorial/requirements.md":"3e1042329d04e128a1c95e89adc17075768e5744202d85de60d5704eedf1923e","specs/print-report/requirements.md":"7d7de30b0895cdabc937b9cce759067c8c0732a2f344d03ae09c469e45743cd8","specs/application-status-search/requirements.md":"55d9ff1879cc34261f13d0a12fab45b26b91a0783b22e3136a1edc72f808ce82","specs/contract-info-import/requirements.md":"23cf03a7c36f258901fd28108f2a3c41132bd2639f5475ed681ec077a1e57677","specs/contract-info-download/requirements.md":"db81769c1f58c458a0583a47ed5daf3a2ffdf8fdee34bd1aa3514a04dcf4a898"} | 0 |
+
+### 指摘
+
+| # | 観点 | 対象箇所 | 指摘内容 | 判断 | 理由 |
+|---|---|---|---|---|---|
+
+## 確認
+
+| スコープ | 回数 | 確認者 | 日時 | 原本SHA256 |
+|---|---|---|---|---|
+| cross | 3 | Junichi Noumi | 2026-10-07T16:52:26+09:00 | {"specs/property-basic-info/requirements.md": "5f172c4890f034214da64d63ee9eddbb59f2ea979f258073b31cb99122bfa6bc", "specs/issue-request/requirements.md": "a6bfa87614a5044a2ee05f06eea80f9f9e83e431030c7f9fa6a85e54542d807f", "specs/issue-request-tutorial/requirements.md": "3e1042329d04e128a1c95e89adc17075768e5744202d85de60d5704eedf1923e", "specs/print-report/requirements.md": "7d7de30b0895cdabc937b9cce759067c8c0732a2f344d03ae09c469e45743cd8", "specs/application-status-search/requirements.md": "55d9ff1879cc34261f13d0a12fab45b26b91a0783b22e3136a1edc72f808ce82", "specs/contract-info-import/requirements.md": "23cf03a7c36f258901fd28108f2a3c41132bd2639f5475ed681ec077a1e57677", "specs/contract-info-download/requirements.md": "db81769c1f58c458a0583a47ed5daf3a2ffdf8fdee34bd1aa3514a04dcf4a898"} |

@@ -1,0 +1,19 @@
+{
+  "schema": 2,
+  "phase": "design",
+  "event": "design-authoring-revise",
+  "scope": "feature:property-basic-info",
+  "at": "2026-10-07T18:50:42+09:00",
+  "artifacts": {
+    "specs/property-basic-info/design.md": {
+      "status": "draft",
+      "sha256": "0829e28f5d3a4e0db44e191b174e2518eb0af483f10814026003e86d90d8c7df"
+    }
+  },
+  "record": {
+    "bytes": 33718,
+    "sha256": "2038fd3b54a6a85599dd205c435fc7eb9273cae9533af89ad4e5667bf8f4677f",
+    "blocks": 34
+  },
+  "run": 5
+}

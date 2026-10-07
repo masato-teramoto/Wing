@@ -94,7 +94,7 @@
       type: skill
       isAgent: true
       target: requirements-cross-check
-      calls: [traceability, ssot-consistency, gate-report]
+      calls: [traceability, ssot-consistency, finding-verification, gate-report]
 
 
 - action:
@@ -150,7 +150,7 @@
       isAgent: true
       target: design-cross-check
       # 同名の3回は契約衝突／エラー形状／業務コード重複。引数は合成 Skill の各手順で指定する。
-      calls: [ssot-consistency, dependency-cycle-detection, ssot-consistency, ssot-consistency, steering-conformance, gate-report]
+      calls: [ssot-consistency, dependency-cycle-detection, ssot-consistency, ssot-consistency, steering-conformance, finding-verification, gate-report]
 
 
 - action:
@@ -231,7 +231,7 @@
       - specs/{features}/design.md
     outputs:
       - specs/{features}/tasks.md
-    run: { type: skill, isAgent: true, target: tasks-cross-check, calls: [dependency-cycle-detection, traceability, gate-report] }
+    run: { type: skill, isAgent: true, target: tasks-cross-check, calls: [dependency-cycle-detection, traceability, finding-verification, gate-report] }
 
 - action:
     name: requirement-intake-revise
@@ -403,4 +403,4 @@
       type: skill
       isAgent: true
       target: implement-check
-      calls: [implementation-traceability, implementation-boundary, implementation-tests, gate-report]
+      calls: [implementation-traceability, implementation-boundary, implementation-tests, finding-verification, gate-report]

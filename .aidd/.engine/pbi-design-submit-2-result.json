@@ -1,0 +1,33 @@
+{
+  "status": "ok",
+  "action": "submit",
+  "result": {
+    "status": "waiting",
+    "allowed_actions": [
+      "answer",
+      "repair"
+    ],
+    "result": {
+      "status": "waiting",
+      "targets": [
+        "specs/property-basic-info/design.md"
+      ],
+      "questions": [],
+      "open_placeholders": 0,
+      "changed_findings": [],
+      "return_candidates": [
+        {
+          "owner": "requirements",
+          "target": "specs/property-basic-info/requirements.md",
+          "location": "受け入れ基準 2.5・3.9・4.3・4.5・12.1、要件 2（受付済・確認中での確認）",
+          "reason": "design 作成中の回答（Q-DS-PBI-011 その3・その4、回答者 Junichi Noumi、2026-10-07）で、承認済み requirements の遷移・取下げ・差戻しの規定と食い違う点が判明し、回答者が requirements を直すと決めたもの。あわせて Phase 4 横断 2 回目で C とし pbi を次に開き直すときに直すとしていた 12.1 の括弧書きを直す（回答者の指示）。直す内容（回答者の文言どおり）：(1) 2.5 を「申請者は、受付済・回覧中、受付済・確認中、申請済・差戻し から申請できる」に直す（受付済・確認中は申請者が確認作業中である印で担当者の段階ではない。確認者・承認者は飛ばさないので 3.8 の段階を飛ばす操作にはあたらない）。(2) 受付済・確認中 で申請者が「確認」を押してもステータス・状態区分は変わらない（承認履歴に判定 03 の行を残すだけ）、を足す。(3) 3.9 の再製本の申請者の操作「確認」を「申請」に直す（3.3 と同じ。再製本の申請者に「確認」ボタンは無い）。(4) 4.5 を「番が回っている起案者・申請者・確認者は取下げを受け付ける。承認者は取下げを持たない」に直す。(5) 4.3 と 4.5 に「ただし、稟議・修正稟議の 起案済・回覧中（発番前）は除く」を足す。(6) 12.1 の括弧書き「発行依頼書情報 TWTGM100 は読むだけ」を feature 一覧の注記に合わせて直す（物件基本情報登録変更は TWTGM100 を、申請の削除では削除し、再製本・修正稟議では複製する）。design（specs/property-basic-info/design.md の ドメインモデルの遷移表）は回答どおりに書いてあり、requirements の修正・再承認後に照合し直す。"
+        }
+      ],
+      "summary": "15 件の質問への実回答（回答者 Junichi Noumi）をすべて design に反映し、未記入欄は回答または人間の不要理由で埋めた（open_placeholders 0）。回答の過程で承認済みの上流と食い違う点が 3 件出た：採番（回答者が回答を取り消し上流どおり TWTZM050 とした）、組織の判定（steering の「グループ」は権限区分を指すと読む。steering の文言は次に開き直すときに直す）、承認フローの遷移・取下げ・差戻し（requirements への差戻し候補 1 件。12.1 の括弧書きを含む）。要件トレーサビリティ自己診断（property-basic-info）：抽出 93 件、design 内の対応位置あり 93 件、未対応 0 件。PWTGB090（今回の案件の成果物）は根拠にしていない。"
+    },
+    "next_action": "作成中の質問に回答してください（差戻し候補がある場合は差戻しも選べます）。",
+    "operation_id": "0fd4fded5acc4c258d18090c0de4a607",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

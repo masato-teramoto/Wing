@@ -1,0 +1,4 @@
+回答者 Junichi Noumi
+Q-DS-PBI-004 その2（保存先）
+
+2. 出力管理（TZZZM027）は使いません。保存先は wing-web.properties の swf.upload.directory.root（/remote_nfs）＋ swf.upload.directory.wtg070.ringi（/wtg/wtg070/ringi）＋ /{申請No} です。保存には既存の FileUploadService を使います。

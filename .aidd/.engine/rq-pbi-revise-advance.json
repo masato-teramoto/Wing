@@ -1,0 +1,109 @@
+{
+  "status": "ok",
+  "action": "advance",
+  "result": {
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::run",
+    "flow": "requirements-authoring-revise",
+    "event": "requirements-authoring-revise",
+    "item": "property-basic-info",
+    "gate": null,
+    "hookPoint": null,
+    "name": "requirements-authoring-revise",
+    "type": "skill",
+    "target": "requirements-revision",
+    "isAgent": false,
+    "requiresHuman": false,
+    "calls": [],
+    "targetReview": null,
+    "status": "emit",
+    "call": "requirements-authoring-revise",
+    "dispatch": {
+      "call": "requirements-authoring-revise",
+      "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::run",
+      "event": "requirements-authoring-revise",
+      "item": "property-basic-info",
+      "status": "emit",
+      "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+      "detail": null,
+      "id": "b39435a4eff743e48ca09c21c64294b5"
+    },
+    "label": "requirements-authoring-revise / requirements-authoring-revise [property-basic-info]",
+    "allowed_actions": [
+      "submit"
+    ],
+    "context": {
+      "event": "requirements-authoring-revise",
+      "item": "property-basic-info",
+      "scope": "feature:property-basic-info",
+      "targets": [
+        "specs/property-basic-info/requirements.md"
+      ],
+      "review_targets": [
+        "specs/property-basic-info/requirements.md"
+      ],
+      "upstream": [
+        ".aidd/requirement-list.md",
+        ".aidd/feature-list.md",
+        "steering/product.md",
+        "steering/tech.md",
+        "steering/architecture.md",
+        "steering/security.md",
+        "steering/non-functional.md",
+        "steering/database.md",
+        "steering/api-standards.md"
+      ],
+      "unreviewed_inputs": [],
+      "gate_record_path": "C:\\project\\Wing\\.aidd\\gates\\phase-4-requirements.md",
+      "authoring_inputs": [
+        ".aidd/requirement-list.md",
+        ".aidd/feature-list.md",
+        "steering/product.md",
+        "steering/tech.md",
+        "steering/architecture.md",
+        "steering/security.md",
+        "steering/non-functional.md",
+        "steering/database.md",
+        "steering/api-standards.md"
+      ],
+      "snapshot_path": "C:\\project\\Wing\\.aidd\\.engine\\df81e071a039b39d73bc71401429f83ccf03cea7444c9a897426c0e78088eb5a.snapshot.json",
+      "snapshot": {
+        "schema": 2,
+        "phase": "requirements",
+        "event": "requirements-authoring-revise",
+        "scope": "feature:property-basic-info",
+        "at": "2026-10-05T19:00:34+09:00",
+        "artifacts": {
+          "specs/property-basic-info/requirements.md": {
+            "status": "draft",
+            "sha256": "b849cadc770e4cf091f0a7ce4f84d11892da5b988ff5184d257c3526989e4081"
+          }
+        },
+        "record": {
+          "bytes": 223107,
+          "sha256": "22b0e40e0b9eca5a3ff40a8cada486729c0eb8704c5678fb43340972088045d1",
+          "blocks": 248
+        },
+        "run": 9
+      },
+      "findings_path": "C:\\project\\Wing\\.aidd\\.engine\\df81e071a039b39d73bc71401429f83ccf03cea7444c9a897426c0e78088eb5a.findings.json",
+      "findings": [],
+      "questions": null,
+      "repair": {
+        "event": "requirements-authoring-revise",
+        "item": "property-basic-info",
+        "targets": [
+          "specs/property-basic-info/requirements.md"
+        ],
+        "findings": [],
+        "instruction": "次のとおり直す（回答者 Junichi Noumi、2026-10-07 の Q-DS-PBI-011 その3・その4 と指示による）。(1) 2.5 を「申請者は、受付済・回覧中、受付済・確認中、申請済・差戻し から申請できる」に直す（受付済・確認中は申請者が確認作業中である印で担当者の段階ではない。確認者・承認者は飛ばさないので 3.8 の段階を飛ばす操作にはあたらない）。(2) 受付済・確認中 で申請者が「確認」を押してもステータス・状態区分は変わらない（承認履歴に判定 03 の行を残すだけ）、を足す。(3) 3.9 の再製本の申請者の操作「確認」を「申請」に直す（3.3 と同じ。再製本の申請者に「確認」ボタンは無い）。(4) 4.5 を「番が回っている起案者・申請者・確認者は取下げを受け付ける。承認者は取下げを持たない」に直す。(5) 4.3 と 4.5 に「ただし、稟議・修正稟議の 起案済・回覧中（発番前）は除く」を足す。(6) 12.1 の括弧書き「発行依頼書情報 TWTGM100 は読むだけ」を feature 一覧の注記に合わせて直す（物件基本情報登録変更は TWTGM100 を、申請の削除では削除し、再製本・修正稟議では複製する）。",
+        "origin": "authoring-candidate",
+        "actor": "Junichi Noumi",
+        "at": "2026-10-07T15:46:07+09:00",
+        "scheduled": "2026-10-07T15:46:08+09:00",
+        "id": "647bf55c916def2debbe43ccbdf0c5e0f2676f3d129b83c6e4802f9603b3ceac"
+      },
+      "inspection_path": "C:\\project\\Wing\\.aidd\\.engine\\df81e071a039b39d73bc71401429f83ccf03cea7444c9a897426c0e78088eb5a.inspection.md"
+    },
+    "next_action": "作業中（AI が 作成・修正 を実行します）。人の操作は不要です。"
+  }
+}

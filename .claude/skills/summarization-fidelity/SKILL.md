@@ -29,17 +29,31 @@ disable-model-invocation: true
 5. RFP 改版時は、改版後の RFP に照らして各行の差分判定（維持 / 変更 / 新規 / 廃止）が妥当かも見る
    （文言が変わったのに維持、削除されたのに廃止扱いでない等）。ID の増減の機械検査はスクリプトが担う。
 
+## この工程で指摘しない事項
+
+- `.claude/skills/finding-rules/SKILL.md` の工程の境界の表・`confirmed_answers`・`learned` に当たる事項
+- `TBD（<工程> で確定）` と書いてある値
+- 意味を変えない言い回しの違い
+
+当たるものは指摘にせず、除外として返す（除外の出典を付ける。書き方は finding-rules）。
+
 ## 出力の形
 
+指摘ごとに次を返す。書き方は `.claude/skills/finding-rules/SKILL.md`（検査の最初に読む）に従う。重大度は出さない（L3 が `kind` から決める）。
+
 ```
-{ id, location, finding, is_rollback_candidate }
+{ location, subject, kind, summary, evidence, suggestion, recommendation, is_rollback_candidate }
 ```
 
 | フィールド | 内容 |
 |---|---|
-| `id` | この Skill 内で一意な通し番号 |
-| `location` | 意味変化が疑われる要求一覧の行と、対応する RFP の箇所 |
-| `finding` | 意味変化の事実（例: 「`REQ-007` は RFP の『管理者ロールのみ』という制約が要約で欠落している」） |
+| `location` | 意味変化が疑われる要求一覧の行（RFP 側の箇所は `evidence`）。`<案件相対パス> § <節見出し> / <ID>` の形。複数箇所なら代表 1 か所＋「ほか n か所」（全件は `evidence`） |
+| `subject` | 対象の語（例: `REQ-007`） |
+| `kind` | `.claude/skills/finding-rules/SKILL.md` の種類から 1 つ選ぶ。迷ったら上の行。制約・条件・範囲の変化と差分判定の誤りは `業務の欠落・矛盾` |
+| `summary` | 60 字以内。結論を先に、何が・どこで（例: 「`REQ-007` で RFP の『管理者ロールのみ』の制約が欠落」） |
+| `evidence` | RFP の該当箇所の引用と、要約後の記述（変化した制約・条件・範囲） |
+| `suggestion` | RFP の制約を保った要約の書き換え文 |
+| `recommendation` | `修正：理由` / `差戻し：理由` / `対応せず進める：理由` / `質問：理由` のどれか。業務の新しい事実が要るときは `質問：…` |
 | `is_rollback_candidate` | 通常 `false`（同一フェーズ内での要約修正で解消できるため） |
 
 ## 禁止

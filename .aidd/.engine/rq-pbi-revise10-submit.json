@@ -1,0 +1,37 @@
+{
+ "operation_id": "5cf917daf2de4d4db77e4ca039f48baf",
+ "dispatch": {
+  "call": "requirements-authoring-revise",
+  "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::run",
+  "event": "requirements-authoring-revise",
+  "item": "property-basic-info",
+  "status": "emit",
+  "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+  "detail": null,
+  "id": "7a7660895da34cb9a8031a21c1b5f145"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/property-basic-info/requirements.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "requirements",
+    "scope": "feature:property-basic-info",
+    "run": 10,
+    "number": 1
+   },
+   {
+    "phase": "requirements",
+    "scope": "feature:property-basic-info",
+    "run": 10,
+    "number": 2
+   }
+  ],
+  "return_candidates": [],
+  "summary": "検査 10 回目の指摘 1・2 を回答者 Junichi Noumi の指示どおり修正した。指摘 1：4.5 に「承認者の番では取下げを受け付けてはならない（取下のボタンを表示しない）。承認者の操作は承認と差戻だけ（稟議依頼・修正稟議依頼・再製本依頼とも）」を義務の形で書き、6.7 の承認者の番を承認・差戻に直した。指摘 2：6.7 の申請者の番を依頼内容で分け（稟議依頼・修正稟議依頼は更新・確認・申請・差戻・取下、再製本依頼は更新・申請・差戻・取下で確認のボタンは表示しない）、3.9 に「再製本依頼の申請者からの確認は受け付けてはならない」を足した。6.7 の起案者・確認者の番は変えていない。出典の表記に「ゲート10-N」を足した。"
+ }
+}

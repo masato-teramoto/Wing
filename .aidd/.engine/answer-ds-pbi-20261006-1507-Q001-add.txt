@@ -1,0 +1,4 @@
+回答者 Junichi Noumi
+Q-DS-PBI-001 追加（遷移先の URL は /wtg060・/wtg080・/wtg090・/wtg100 でよいか）
+
+他の機能も今回と同じ規則。

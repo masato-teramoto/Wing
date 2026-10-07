@@ -1,0 +1,149 @@
+{
+  "status": "ok",
+  "action": "advance",
+  "result": {
+    "unit": "requirements-cross-gate/requirements-cross-gate[-]::run",
+    "flow": "requirements-cross-gate",
+    "event": "requirements-cross-gate",
+    "item": null,
+    "gate": null,
+    "hookPoint": null,
+    "name": "requirements-cross-gate",
+    "type": "skill",
+    "target": "requirements-cross-check",
+    "isAgent": true,
+    "requiresHuman": false,
+    "calls": [
+      "traceability",
+      "ssot-consistency",
+      "gate-report"
+    ],
+    "targetReview": null,
+    "status": "emit",
+    "call": "requirements-cross-gate",
+    "dispatch": {
+      "call": "requirements-cross-gate",
+      "unit": "requirements-cross-gate/requirements-cross-gate[-]::run",
+      "event": "requirements-cross-gate",
+      "item": null,
+      "status": "emit",
+      "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+      "detail": null,
+      "id": "b7e369e7e7fa4373980aff31ad4f91f0"
+    },
+    "label": "requirements-cross-gate / requirements-cross-gate",
+    "allowed_actions": [
+      "submit"
+    ],
+    "context": {
+      "event": "requirements-cross-gate",
+      "item": "",
+      "scope": "cross",
+      "targets": [
+        "specs/property-basic-info/requirements.md",
+        "specs/issue-request/requirements.md",
+        "specs/issue-request-tutorial/requirements.md",
+        "specs/print-report/requirements.md",
+        "specs/application-status-search/requirements.md",
+        "specs/contract-info-import/requirements.md",
+        "specs/contract-info-download/requirements.md"
+      ],
+      "review_targets": [
+        "specs/property-basic-info/requirements.md",
+        "specs/issue-request/requirements.md",
+        "specs/issue-request-tutorial/requirements.md",
+        "specs/print-report/requirements.md",
+        "specs/application-status-search/requirements.md",
+        "specs/contract-info-import/requirements.md",
+        "specs/contract-info-download/requirements.md"
+      ],
+      "upstream": [
+        ".aidd/requirement-list.md",
+        ".aidd/feature-list.md",
+        "steering/product.md",
+        "steering/tech.md",
+        "steering/architecture.md",
+        "steering/security.md",
+        "steering/non-functional.md",
+        "steering/database.md",
+        "steering/api-standards.md",
+        "specs/property-basic-info/requirements.md",
+        "specs/issue-request/requirements.md",
+        "specs/issue-request-tutorial/requirements.md",
+        "specs/print-report/requirements.md",
+        "specs/application-status-search/requirements.md",
+        "specs/contract-info-import/requirements.md",
+        "specs/contract-info-download/requirements.md"
+      ],
+      "unreviewed_inputs": [],
+      "gate_record_path": "C:\\project\\Wing\\.aidd\\gates\\phase-4-requirements.md",
+      "authoring_inputs": [
+        ".aidd/requirement-list.md",
+        ".aidd/feature-list.md",
+        "steering/product.md",
+        "steering/tech.md",
+        "steering/architecture.md",
+        "steering/security.md",
+        "steering/non-functional.md",
+        "steering/database.md",
+        "steering/api-standards.md",
+        "specs/property-basic-info/requirements.md",
+        "specs/issue-request/requirements.md",
+        "specs/issue-request-tutorial/requirements.md",
+        "specs/print-report/requirements.md",
+        "specs/application-status-search/requirements.md",
+        "specs/contract-info-import/requirements.md",
+        "specs/contract-info-download/requirements.md"
+      ],
+      "snapshot_path": "C:\\project\\Wing\\.aidd\\.engine\\0ff9df903c0bd304fc2205420f4cd329916f04d3172073512e74c7a5bc21d369.snapshot.json",
+      "snapshot": {
+        "schema": 2,
+        "phase": "requirements",
+        "event": "requirements-cross-gate",
+        "scope": "cross",
+        "at": "2026-10-07T16:40:50+09:00",
+        "artifacts": {
+          "specs/property-basic-info/requirements.md": {
+            "status": "approved",
+            "sha256": "5f172c4890f034214da64d63ee9eddbb59f2ea979f258073b31cb99122bfa6bc"
+          },
+          "specs/issue-request/requirements.md": {
+            "status": "approved",
+            "sha256": "a6bfa87614a5044a2ee05f06eea80f9f9e83e431030c7f9fa6a85e54542d807f"
+          },
+          "specs/issue-request-tutorial/requirements.md": {
+            "status": "approved",
+            "sha256": "3e1042329d04e128a1c95e89adc17075768e5744202d85de60d5704eedf1923e"
+          },
+          "specs/print-report/requirements.md": {
+            "status": "approved",
+            "sha256": "7d7de30b0895cdabc937b9cce759067c8c0732a2f344d03ae09c469e45743cd8"
+          },
+          "specs/application-status-search/requirements.md": {
+            "status": "approved",
+            "sha256": "55d9ff1879cc34261f13d0a12fab45b26b91a0783b22e3136a1edc72f808ce82"
+          },
+          "specs/contract-info-import/requirements.md": {
+            "status": "approved",
+            "sha256": "23cf03a7c36f258901fd28108f2a3c41132bd2639f5475ed681ec077a1e57677"
+          },
+          "specs/contract-info-download/requirements.md": {
+            "status": "approved",
+            "sha256": "db81769c1f58c458a0583a47ed5daf3a2ffdf8fdee34bd1aa3514a04dcf4a898"
+          }
+        },
+        "record": {
+          "bytes": 298335,
+          "sha256": "6e2e0a7ece6734560cf37fa10be363f477ca5bd04bf3430f6eab2e986faefd2c",
+          "blocks": 339
+        },
+        "run": 3
+      },
+      "findings_path": "C:\\project\\Wing\\.aidd\\.engine\\0ff9df903c0bd304fc2205420f4cd329916f04d3172073512e74c7a5bc21d369.findings.json",
+      "findings": [],
+      "questions": null,
+      "inspection_path": "C:\\project\\Wing\\.aidd\\.engine\\0ff9df903c0bd304fc2205420f4cd329916f04d3172073512e74c7a5bc21d369.inspection.md"
+    },
+    "next_action": "作業中（AI が 検査 を実行します）。人の操作は不要です。"
+  }
+}

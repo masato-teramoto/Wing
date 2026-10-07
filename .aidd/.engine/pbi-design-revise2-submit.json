@@ -1,0 +1,85 @@
+{
+ "operation_id": "1108ac3cbb554fea9907f0cd823b8616",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[property-basic-info]::run",
+  "event": "design-authoring-revise",
+  "item": "property-basic-info",
+  "status": "emit",
+  "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+  "detail": null,
+  "id": "4a3f6b6b967f4ac89ec4bc9114ea35ff"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/property-basic-info/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "design",
+    "scope": "feature:property-basic-info",
+    "run": 2,
+    "number": 1
+   },
+   {
+    "phase": "design",
+    "scope": "feature:property-basic-info",
+    "run": 2,
+    "number": 2
+   },
+   {
+    "phase": "design",
+    "scope": "feature:property-basic-info",
+    "run": 2,
+    "number": 3
+   },
+   {
+    "phase": "design",
+    "scope": "feature:property-basic-info",
+    "run": 2,
+    "number": 4
+   },
+   {
+    "phase": "design",
+    "scope": "feature:property-basic-info",
+    "run": 2,
+    "number": 5
+   },
+   {
+    "phase": "design",
+    "scope": "feature:property-basic-info",
+    "run": 2,
+    "number": 6
+   },
+   {
+    "phase": "design",
+    "scope": "feature:property-basic-info",
+    "run": 2,
+    "number": 8
+   },
+   {
+    "phase": "design",
+    "scope": "feature:property-basic-info",
+    "run": 2,
+    "number": 9
+   },
+   {
+    "phase": "design",
+    "scope": "feature:property-basic-info",
+    "run": 2,
+    "number": 10
+   },
+   {
+    "phase": "design",
+    "scope": "feature:property-basic-info",
+    "run": 2,
+    "number": 14
+   }
+  ],
+  "return_candidates": [],
+  "summary": "design 検査 2 回目の指摘 1〜6・8〜10・14 を回答者 Junichi Noumi の指示どおり修正した（7・11・12・13 は C）。#1 削除ボタンを起案者の番の未起案・下書き（条件なし。15.1）と再製本依頼の起案済・差戻し（文書バーコード 0 件のとき。15.2）にし、受付No の条件を外した。#2 複製で TWTGM140 の全行と TWTGM100 の行を新しい申請No で登録する内容（稟議バーコードNo・受付No は再製本で引き継ぎ修正稟議で NULL、一時保存フラグ \"0\"）と 3.7 の実現手段を足した。#3・#4 canOperate に単独局と複数局の切替・契約局取込・契約局DL・処理状況・契約局情報追加・並替え・削除と条件を足し、条件外は WTG-100030 で止めるとした。#5・#6 固有のログ項目・監視項目は無く既存に任せると書いた。#8 CsvUtils と orangesignal-csv を複数の feature で使う共通部品とした。#9 URL を /wtg070/<アクション>・/wtg073/<アクション> の 1 段にし（処理状況 /wtg070/taskList と戻り /wtg070/return、発送希望日の既定値 /wtg070/inputHassoKiboDate を含む）、CSRF の照合は既存の設定のままで steering の security と食い違うことを API の注記と設計判断 4 に書いた。#10 業務エラー・排他エラーは例外を投げず BindingResult に積む（WTG-100030、GEF-000027）とした。#14 進捗管理DB インポート用 CSV の項目定義（416 行）を回答者の指示で specs/property-basic-info/csv-layout-wtg070.md に置き、補足資料から参照し、本書を項目定義の正とした。要件トレーサビリティ自己診断：抽出 94 件、対応あり 94 件、未対応 0 件。"
+ }
+}

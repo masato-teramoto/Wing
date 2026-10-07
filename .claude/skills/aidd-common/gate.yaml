@@ -376,6 +376,7 @@
         - adhoc-entry-validity
         - legal-compliance-identification
         - gap-proposal
+        - finding-verification
         - gate-report
 
 - gate:
@@ -415,6 +416,7 @@
         - stride-coverage
         - slo-quantification
         - evidence-guard
+        - finding-verification
         - gate-report
 
 - gate:
@@ -436,6 +438,7 @@
         - platform-foundation-coverage
         - steering-conformance
         - evidence-guard
+        - finding-verification
         - gate-report
 
 - gate:
@@ -457,6 +460,7 @@
         - ssot-consistency
         - steering-conformance
         - ssot-consistency
+        - finding-verification
         - gate-report
 
 - gate:
@@ -472,12 +476,11 @@
         - format-conformance
         - traceability
         - traceability
-        - traceability
-        - traceability
         - steering-conformance
         - evidence-guard
         - external-integration-contract-explicitness
         - dependency-boundary-conformance
+        - finding-verification
         - gate-report
 
 - gate:
@@ -502,16 +505,15 @@
       calls:
         - format-conformance
         - traceability
-        - traceability
         - internal-contradiction-detection
         - ssot-consistency
         - ssot-consistency
-        - traceability
         - evidence-guard
         - ssot-consistency
         - definition-resolution-completeness
         - design-rule-gap-detection
         - steering-conformance
+        - finding-verification
         - gate-report
 
 - gate:
@@ -532,6 +534,7 @@
         - schema-migration-task-coverage
         - evidence-guard
         - evidence-guard
+        - finding-verification
         - gate-report
 
 - gate:

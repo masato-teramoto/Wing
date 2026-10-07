@@ -1,0 +1,32 @@
+{
+ "operation_id": "867591e07ac1410783134fe85b8e4ca3",
+ "action": "resolve",
+ "dispatch": {
+  "call": "requirements-authoring-revise",
+  "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::end.review",
+  "event": "requirements-authoring-revise",
+  "item": "property-basic-info",
+  "status": "wait",
+  "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::end.review\", \"snapshot\": \"2da6e633e57b20c081d4932ee39b545d498f01fb6b3d422e1312830111e89762\", \"run\": 13, \"inspection_hash\": \"c5d30b5d3ba71378194d6b189f5ae1f5744d587dcf39a90405218e713392b3b9\"}\n**Phase 4（requirements 作成）の品質ゲートを実行しました。** 指摘ごとに判断を選んでください。\n\n**対象**: `specs/property-basic-info/requirements.md`（スコープ: 成果物単位（property-basic-info） / 13 回目）\n**実行した層**: ① / ②\n\n**指摘**（ゲート記録 `.aidd/gates/phase-4-requirements.md` の当該実行分）: なし（0 件。検査は実行済み）\n\n**前回までの指摘**（今回件数に含めない）\n- #10-1 二重定義（食い違い）: 4.5 は今回の修正で「承認者は取下げを持たない」とした。一方 6.7 は「承認者の番では承認・差戻・取下の操作ボタンを表示しなければならない」のままで、番が回っている承認者に取下のボタンを表示することを求めている。番が回っている承認者が取下げを行えるか（取下のボタンを表示するか）について、2 つの受け入れ基準が両立しない。先に記載された要件ID は 4.5 だが、4.5 は承認者の取下げを「持たない」と事実の形で書いており、システムが受け付けてはならないのか、ボタンを表示してはならないのかを義務の形で示していない。どちらに合わせるかは人間による確認が必要 [specs/property-basic-info/requirements.md 「要件 4」受け入れ基準 4.5／「要件 6」受け入れ基準 6.7] — 修正 → 再検査の結果を見て解消を確認してください\n- #10-2 二重定義（食い違い）: 3.9 は今回の修正で再製本依頼の申請済・差戻しからの操作を確認から申請に改め、「再製本依頼の申請者に確認の操作は無い」とした。一方 6.7 は依頼内容を区別せず「申請者の番では更新・確認・申請・差戻・取下」の操作ボタンを表示しなければならないとしており、再製本依頼の申請者の番（3.3 の起案済・回覧中、3.9 の申請済・差戻し）でも確認のボタンの表示を求める。再製本依頼の申請者の番に確認のボタンを表示するかについて両立しない。再製本依頼の申請者の確認を受け付けてはならないとする受け入れ基準も無い。先に記載された要件ID は 3.9。どちらに合わせるかは人間による確認が必要 [specs/property-basic-info/requirements.md 「要件 3」受け入れ基準 3.3・3.9／「要件 6」受け入れ基準 6.7] — 修正 → 再検査の結果を見て解消を確認してください\n- #11-1 二重定義（範囲の食い違いの可能性）: 今回の修正で 4.5 に「承認者の操作は承認と差戻だけとする」が加わった。承認者が行える操作は 6.6（番が回っている承認者はコメントの入力と自分の番の操作を受け付ける）と 6.7（承認者の番の操作ボタンは承認・差戻）でも定めている。4.5 の文は「操作」の範囲を限っておらず、字義どおりに読むと、6.6 が承認者に受け付けを求めるコメントの入力、9.3 が承認者を含むすべての利用者に求める出力ボタンの使用、6.9 が承認者の番に表示を求める閲覧ボタン・印刷ボタンと両立しない。また、この文は「とする」で締めており、システムの義務・禁止の形（しなければならない／してはならない）になっていない。先に記載された要件ID は 4.5。4.5 の文を回覧の操作（6.7 の操作ボタン）に限った説明と読むか、範囲を書き分けるかは人間による確認が必要 [specs/property-basic-info/requirements.md 「要件 4」受け入れ基準 4.5 の後段（「承認者の操作は承認と差戻だけとする（稟議依頼・修正稟議依頼・再製本依頼とも）」）／「要件 6」受け入れ基準 6.6・6.7・6.9／「要件 9」受け入れ基準 9.3] — 修正 → 再検査の結果を見て解消を確認してください\n- #12-1 二重定義（範囲の食い違いの可能性）: 今回の修正で 4.5 は、承認者の番の「回覧の操作」を 6.7 の操作ボタン（承認・差戻）と定め、閲覧・印刷（6.9）と出力（9.3）は回覧の操作ではなく承認者も使えるとした。一方 6.6 は、番が回っている承認者に受け付ける操作を「コメントの入力と自分の番の操作だけ」に限っている。「自分の番の操作」を 4.5 のいう回覧の操作（6.7 の操作ボタン）と読むと、6.6 は承認者の閲覧・印刷（6.9）と出力（9.3）を受け付けの範囲から外すことになり、4.5 の括弧書き・6.9・9.3 と字義どおりには両立しない。4.5 では食い違いが解けたが、同じ範囲を限る文が 6.6 に残っている。先に記載された要件ID は 4.5。6.6 の「自分の番の操作」を閲覧・印刷・出力も含むものと読むか、6.6 の範囲を書き分けるかは人間による確認が必要 [specs/property-basic-info/requirements.md 「要件 6」受け入れ基準 6.6 の前段（「番が回っている承認者の場合、システムはコメントの入力と自分の番の操作だけを受け付けなければならない」）／「要件 4」受け入れ基準 4.5 の後段の括弧書き（「コメントの入力（6.6）、閲覧・印刷（6.9）、出力（9.3）は回覧の操作ではなく、承認者も使える」）／「要件 6」受け入れ基準 6.9／「要件 9」受け入れ基準 9.3] — 修正 → 再検査の結果を見て解消を確認してください\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n承認を問う前に必要なこと: 未解消: feature:property-basic-info / run 10 / #1 / 未解消: feature:property-basic-info / run 10 / #2 / 未解消: feature:property-basic-info / run 11 / #1 / 未解消: feature:property-basic-info / run 12 / #1",
+  "id": "f920745473264ad68e6734ddb26df7d4"
+ },
+ "expected": {
+  "root": "C:\\project\\Wing",
+  "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+  "call": "requirements-authoring-revise",
+  "event": "requirements-authoring-revise",
+  "item": "property-basic-info",
+  "dispatch_id": "f920745473264ad68e6734ddb26df7d4",
+  "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::end.review",
+  "scope": "feature:property-basic-info",
+  "run": 13,
+  "snapshot": "2da6e633e57b20c081d4932ee39b545d498f01fb6b3d422e1312830111e89762",
+  "record_hash": "b30476bffa4d5c0de7daee913ad4f9fd1ab7745e04da21f78b7a962f1cad9b32"
+ },
+ "data": {
+  "scope": "feature:property-basic-info",
+  "run": 12,
+  "number": 1
+ }
+}

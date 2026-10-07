@@ -1,0 +1,14 @@
+{
+  "status": "ok",
+  "action": "respond",
+  "result": {
+    "status": "done",
+    "call": "requirements-authoring-revise",
+    "item": "property-basic-info",
+    "allowed_actions": [],
+    "next_action": "完了しました。入口 Skill の手順の次（次の feature・修正の回・次の呼出し）へ進んでください。",
+    "operation_id": "eff6a35ce76a414f90251a99116aee50",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

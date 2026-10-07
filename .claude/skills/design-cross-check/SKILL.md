@@ -15,6 +15,10 @@ disable-model-invocation: true
 
 以下の `*` / `<feature>` はホストが渡した明示的な対象・上流一覧への表記であり、Globで対象を発見して分母を決める指示ではない。必要なファイルが一覧に無ければfailedで返す。機械指摘は指定された findings_path だけから受け取り、snapshot と実行IDが一致するものを使う。
 
+## 共通ルール
+
+指摘は `.claude/skills/finding-rules/SKILL.md`（検査役が手順の前に読む）に従って出す。書き方・種類・出さない事項（除外）・重ねない決まり・差分の検査・形式不備の扱いはそこに従い、重大度は出さない。どの手順でも、ほかの手順で指摘済みの箇所・同じ原因は重ねない。
+
 ## 手順
 
 1. `.claude/skills/ssot-consistency/SKILL.md` を Read し、次を指定して実行する（契約衝突検出）。
@@ -41,10 +45,10 @@ disable-model-invocation: true
 
 4. `.claude/skills/ssot-consistency/SKILL.md` を Read し、次を指定して実行する（業務コード重複検出）。
 
-   | 対象成果物 | `specs/*/design.md` 一式・`steering/*.md`（設計ルールの参照用） | 検査する事実の種類 | 業務コード・業務エラーコード・区分値・エンティティの定義 | SSoTの所在 | 規則は steering の設計ルール、実体は最初に定義した feature の design | 検査の型 | 二重定義 | 報告単位 | 別形状に定義されている要素1件 |
+   | 対象成果物 | `specs/*/design.md` 一式 | 検査する事実の種類 | 業務コード・業務エラーコード・区分値・エンティティの定義 | SSoTの所在 | 最初に定義した feature の design | 検査の型 | 二重定義 | 報告単位 | 別形状に定義されている要素1件 |
 
-   同じ要素が feature ごとに別形状で定義されていないかに加え、定義が steering の設計ルール（採番・区分値・
-   エンティティ設計の規則）に沿っているかを、規則側を正として突き合わせる。Phase 6 の集約時に衝突させないことが目的である。
+   同じ要素が feature ごとに別形状で定義されていないかを見る。Phase 6 の集約時に衝突させないことが目的である。
+   定義が steering の設計ルール（採番・区分値・エンティティ設計の規則）に沿っているかは手順5が出す。
 
 5. `.claude/skills/steering-conformance/SKILL.md` を Read し、次を指定して実行する（feature 横断の設計ルール準拠）。
 
@@ -52,11 +56,13 @@ disable-model-invocation: true
 
    steering 自体の妥当性は評価しない。feature ごとに別解釈している箇所は、どちらを直すかを人に問う形で書く。
 
-6. `.claude/skills/gate-report/SKILL.md` を Read し、蓄積した指摘を書き込む。
+6. `.claude/skills/finding-verification/SKILL.md` を Read し、蓄積した指摘を確かめる。
+
+7. `.claude/skills/gate-report/SKILL.md` を Read し、蓄積した指摘を書き込む。
 
 ## 集約
 
-snapshot の scope / run / at / artifacts をそのまま使う。指摘には呼んだ観点 Skill 名を gate として付け、最後の gate-report で1回だけ記録する。feature 別見出しへ挿入せず、実行ごとのブロックをファイル末尾に追加する。今回件数へ過去の持越しを含めない。
+snapshot の scope / run / at / artifacts をそのまま使う。指摘には呼んだ観点 Skill 名を gate として付け、最後の gate-report で1回だけ記録する。feature 別見出しへ挿入せず、実行ごとのブロックをファイル末尾に追加する。今回件数へ過去の持越しを含めない。変わっていない節の前回の指摘は L3 が引き継ぐので、出し直さない。
 
 ## 禁止
 
@@ -64,5 +70,5 @@ snapshot の scope / run / at / artifacts をそのまま使う。指摘には�
 - 判断・理由欄を埋めない
 - ゲート記録を追記以外の形で変更しない
 - 指示された観点 Skill 以外を勝手に実行しない
-- 合否・重大度を自分で判断しない
+- 合否を自分で判断しない。重大度は書かない（L3 が種類から決める）
 - `status` を遷移させない

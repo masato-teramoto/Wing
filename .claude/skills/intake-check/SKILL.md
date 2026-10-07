@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 `.aidd/requirement-list.md` を対象に、観点 Skill を順に実行し、指摘を蓄積してから
 `gate-report` へ渡す。対象は成果物単位（Phase 1 はドキュメント1件のため feature 分割は無い）。
-① 形式検証で不備が見つかった場合、② 以降には進まない（`references/status-protocol.md` §6）。
+① 形式検証で不備があっても ② を省略せず、不備のある節だけを ② から外す。
 要求ID書式・欠番の再利用禁止は `type: script` のゲート（`id-format-check` /
 `revision-diff-check`。`gate.yaml` を見る）が決定的に検証し、その指摘は check-runner の
 手順0（`.claude/agents/check-runner.md`）で自動的に合流する。
@@ -16,6 +16,10 @@ disable-model-invocation: true
 ## 入力の範囲
 
 「渡された検査対象」は、ホストが渡した検査対象の明示的な一覧（context の `review_targets`。snapshot の対象と同じ。gate.yaml の `target_review`、省略時はアクションの出力すべて）を指す。一覧のファイルだけを検査対象とし、一覧に無い出力は検査しない。特定のファイル名を書いた行は、そのファイルが検査対象に無ければfailedで返す。以下の `*` / `<feature>` はホストが渡した明示的な対象・上流一覧への表記であり、Globで対象を発見して分母を決める指示ではない。必要なファイルが一覧に無ければfailedで返す。機械指摘は指定された findings_path だけから受け取り、snapshot と実行IDが一致するものを使う。
+
+## 共通ルール
+
+指摘は `.claude/skills/finding-rules/SKILL.md`（検査役が手順の前に読む）に従って出す。書き方・種類・出さない事項（除外）・重ねない決まり・差分の検査・形式不備の扱いはそこに従い、重大度は出さない。どの手順でも、ほかの手順で指摘済みの箇所・同じ原因は重ねない。
 
 ## 手順
 
@@ -75,12 +79,14 @@ disable-model-invocation: true
 
     | 対象 | `.aidd/rfp/**` 全体 | 突合先 | 渡された検査対象 |
 
-11. `.claude/skills/gate-report/SKILL.md` を Read し、蓄積した指摘（check-runner の手順0で
+11. `.claude/skills/finding-verification/SKILL.md` を Read し、蓄積した指摘を確かめる。
+
+12. `.claude/skills/gate-report/SKILL.md` を Read し、蓄積した指摘（check-runner の手順0で
     合流させた `id-format-check` / `revision-diff-check` の分を含む）を書き込む。
 
 ## 集約
 
-snapshot の scope / run / at / artifacts をそのまま使う。指摘には呼んだ観点 Skill 名を gate として付け、最後の gate-report で1回だけ記録する。feature 別見出しへ挿入せず、実行ごとのブロックをファイル末尾に追加する。今回件数へ過去の持越しを含めない。
+snapshot の scope / run / at / artifacts をそのまま使う。指摘には呼んだ観点 Skill 名を gate として付け、最後の gate-report で1回だけ記録する。feature 別見出しへ挿入せず、実行ごとのブロックをファイル末尾に追加する。今回件数へ過去の持越しを含めない。変わっていない節の前回の指摘は L3 が引き継ぐので、出し直さない。
 
 ## 禁止
 
@@ -88,4 +94,4 @@ snapshot の scope / run / at / artifacts をそのまま使う。指摘には�
 - 判断（修正/差戻し/対応せず進める/未対応）・理由欄を埋めない
 - ゲート記録を追記以外の形で変更しない（上書き・削除禁止）
 - 指示された観点 Skill 以外を勝手に実行しない
-- 合否・重大度を自分で判断しない
+- 合否を自分で判断しない。重大度は書かない（L3 が種類から決める）

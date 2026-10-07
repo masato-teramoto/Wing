@@ -1,0 +1,31 @@
+{
+ "operation_id": "5d782703432046be8db5feb3315f8060",
+ "dispatch": {
+  "call": "requirements-authoring-revise",
+  "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::run",
+  "event": "requirements-authoring-revise",
+  "item": "property-basic-info",
+  "status": "emit",
+  "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+  "detail": null,
+  "id": "ee383d3c0a2142ddab1d4130e7c8799f"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/property-basic-info/requirements.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "requirements",
+    "scope": "feature:property-basic-info",
+    "run": 11,
+    "number": 1
+   }
+  ],
+  "return_candidates": [],
+  "summary": "検査 11 回目の指摘 1 を回答者 Junichi Noumi の指示どおり修正した。4.5 の後段を「承認者の番の回覧の操作（6.7 の操作ボタン）は承認と差戻だけとし、承認者からの取下げを受け付けてはならない（稟議依頼・修正稟議依頼・再製本依頼とも）」の義務の形に書き換え、コメントの入力（6.6）、閲覧・印刷（6.9）、出力（9.3）は回覧の操作ではなく承認者も使える旨を添えた。出典の表記に「ゲート11-N」を足した。"
+ }
+}

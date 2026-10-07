@@ -1,0 +1,49 @@
+{
+ "operation_id": "1984a1f30422416f999a1918ad36761e",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[property-basic-info]::run",
+  "event": "design-authoring-revise",
+  "item": "property-basic-info",
+  "status": "emit",
+  "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+  "detail": null,
+  "id": "5df3b516eb0a45a68099662dd60ab2dd"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/property-basic-info/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "design",
+    "scope": "feature:property-basic-info",
+    "run": 1,
+    "number": 1
+   },
+   {
+    "phase": "design",
+    "scope": "feature:property-basic-info",
+    "run": 1,
+    "number": 2
+   },
+   {
+    "phase": "design",
+    "scope": "feature:property-basic-info",
+    "run": 1,
+    "number": 3
+   },
+   {
+    "phase": "design",
+    "scope": "feature:property-basic-info",
+    "run": 1,
+    "number": 4
+   }
+  ],
+  "return_candidates": [],
+  "summary": "design 検査 1 回目の指摘 1〜4 を回答者 Junichi Noumi の指示どおり修正した。指摘 1：「## 設計判断」の分担注記をテンプレートの文に戻し、注記に紛れていた「### 判断 4」を見出しに戻して判断 3 の後に置いた。テンプレートに無い見出し「## 補足資料（Supporting References）`。ここには…」を消し、判断 1〜4 が「## 設計判断」の下に並び「## 補足資料」が 1 回だけ現れる形にした。判断の中身は変えていない。指摘 2・3：移行方針の <DSN_MIGRATION_ROLLBACK>・<DSN_MIGRATION_CHECKPOINT> と、テスト体制の <DSN_TEST_OWNER>・<DSN_TEST_ENVIRONMENT>・<DSN_TEST_PERIOD>・<DSN_TEST_ESCALATION>・<DSN_TEST_SPEC_LINK> を残し、ほかの不要欄と同じ書き方で不要理由（Q-DS-PBI-015）を添えた。指摘 4：コンポーネント一覧の文書バーコードのドメインを「物件基本情報登録変更」にそろえた（詳細の位置は変えていない）。"
+ }
+}

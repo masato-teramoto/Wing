@@ -1,0 +1,24 @@
+{
+ "operation_id": "1051f9f90dc841f5b02aca65731ea58f",
+ "dispatch": {
+  "call": "design-authoring-generate",
+  "unit": "design-authoring-generate/design-authoring-generate[property-basic-info]::run",
+  "event": "design-authoring-generate",
+  "item": "property-basic-info",
+  "status": "emit",
+  "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+  "detail": null,
+  "id": "820c5e3fb56648ca8c224cfd87853b86"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/property-basic-info/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [],
+  "return_candidates": [],
+  "summary": "requirements の差戻し（2.5・2.9 追加・3.9・4.3・4.5・6.6・6.7・12.1）の修正・再承認と Phase 4 横断の再確認を受け、design を照合し直した。遷移表の根拠を差戻し候補から承認済みの受け入れ基準（2.5・2.9・3.9・4.3・4.5）に置き換え、WTG 申請状態サービスとテスト戦略の受け入れ基準の範囲を 2.1〜2.9 に広げた。design の内容は 15 件の質問への実回答（回答者 Junichi Noumi）どおりで、未記入欄は回答または人間の不要理由で埋めた（open_placeholders 0）。回答の過程で出た上流との食い違い 3 件のうち、採番は回答者が回答を取り消して上流どおり TWTZM050 とし、組織の判定は steering の「グループ」を権限区分と読み（steering の文言は次に開き直すときに直す）、承認フローは requirements の差戻しで解消した。要件トレーサビリティ自己診断（property-basic-info）：抽出 94 件、design 内の対応位置あり 94 件、未対応 0 件。PWTGB090（今回の案件の成果物）は根拠にしていない。"
+ }
+}

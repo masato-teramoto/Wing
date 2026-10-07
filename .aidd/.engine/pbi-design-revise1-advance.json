@@ -1,0 +1,115 @@
+{
+  "status": "ok",
+  "action": "advance",
+  "result": {
+    "unit": "design-authoring-revise/design-authoring-revise[property-basic-info]::run",
+    "flow": "design-authoring-revise",
+    "event": "design-authoring-revise",
+    "item": "property-basic-info",
+    "gate": null,
+    "hookPoint": null,
+    "name": "design-authoring-revise",
+    "type": "skill",
+    "target": "design-revision",
+    "isAgent": false,
+    "requiresHuman": false,
+    "calls": [],
+    "targetReview": null,
+    "status": "emit",
+    "call": "design-authoring-revise",
+    "dispatch": {
+      "call": "design-authoring-revise",
+      "unit": "design-authoring-revise/design-authoring-revise[property-basic-info]::run",
+      "event": "design-authoring-revise",
+      "item": "property-basic-info",
+      "status": "emit",
+      "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+      "detail": null,
+      "id": "5df3b516eb0a45a68099662dd60ab2dd"
+    },
+    "label": "design-authoring-revise / design-authoring-revise [property-basic-info]",
+    "allowed_actions": [
+      "submit"
+    ],
+    "context": {
+      "event": "design-authoring-revise",
+      "item": "property-basic-info",
+      "scope": "feature:property-basic-info",
+      "targets": [
+        "specs/property-basic-info/design.md"
+      ],
+      "review_targets": [
+        "specs/property-basic-info/design.md"
+      ],
+      "upstream": [
+        ".aidd/feature-list.md",
+        "steering/product.md",
+        "steering/tech.md",
+        "steering/architecture.md",
+        "steering/security.md",
+        "steering/non-functional.md",
+        "steering/database.md",
+        "steering/api-standards.md",
+        "specs/property-basic-info/requirements.md"
+      ],
+      "unreviewed_inputs": [],
+      "gate_record_path": "C:\\project\\Wing\\.aidd\\gates\\phase-5-design.md",
+      "authoring_inputs": [
+        ".aidd/feature-list.md",
+        "steering/product.md",
+        "steering/tech.md",
+        "steering/architecture.md",
+        "steering/security.md",
+        "steering/non-functional.md",
+        "steering/database.md",
+        "steering/api-standards.md",
+        "specs/property-basic-info/requirements.md"
+      ],
+      "questions": null,
+      "repair": {
+        "event": "design-authoring-revise",
+        "item": "property-basic-info",
+        "targets": [
+          "specs/property-basic-info/design.md"
+        ],
+        "findings": [
+          {
+            "phase": "design",
+            "scope": "feature:property-basic-info",
+            "run": 1,
+            "number": 1,
+            "instruction": "テンプレートの「## 設計判断」の 分担 注記と、「### 判断 4」の見出しを元に戻してください。判断 1〜4 が「## 設計判断」の下に並び、「## 補足資料」がテンプレートどおり1回だけ現れる形にしてください。判断の中身は変えないでください。"
+          },
+          {
+            "phase": "design",
+            "scope": "feature:property-basic-info",
+            "run": 1,
+            "number": 2,
+            "instruction": "プレースホルダーを残し、不要の理由を添える形にしてください（同じ文書のほかの不要欄と同じ書き方）。"
+          },
+          {
+            "phase": "design",
+            "scope": "feature:property-basic-info",
+            "run": 1,
+            "number": 3,
+            "instruction": "プレースホルダーを残し、不要の理由を添える形にしてください（同じ文書のほかの不要欄と同じ書き方）。"
+          },
+          {
+            "phase": "design",
+            "scope": "feature:property-basic-info",
+            "run": 1,
+            "number": 4,
+            "instruction": "一覧のドメインを「物件基本情報登録変更」にそろえてください。文書バーコードのポップアップは、物件基本情報登録変更の一部です（プログラムID PWTGO073 は wtg070 パッケージに置き、画面IDは持たず GWTG070 と同じ扱い。Q-DS-PBI-001 で回答済み）。詳細は今の位置（### 物件基本情報登録変更 の下）のままでかまいません。"
+          }
+        ],
+        "instruction": "",
+        "origin": "finding",
+        "actor": "Junichi Noumi",
+        "at": "2026-10-07T17:00:33+09:00",
+        "scheduled": "2026-10-07T17:00:34+09:00",
+        "id": "7d59fb81025ea7ea4aedf5b56195789b3ca68ddc54aedd70921fcf86b12af079"
+      }
+    },
+    "next_action": "作業中（AI が 作成・修正 を実行します）。人の操作は不要です。"
+  }
+}

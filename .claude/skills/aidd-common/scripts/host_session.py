@@ -22,7 +22,7 @@ import review_operations
 import engine_client
 import project_progress
 
-RESPONSES = ('decision', 'decisions', 'resolve', 'approve', 'accept-plan', 'change-plan', 'repair')
+RESPONSES = ('decision', 'decisions', 'resolve', 'approve', 'accept-plan', 'change-plan', 'repair', 'reevaluate')
 LETTERS = {'A': '修正', 'B': '差戻し', 'C': '対応せず進める', 'D': '未対応'}
 
 
@@ -240,6 +240,9 @@ def stage_submit_apply(data):
         return {}
     output = {'status': 'waiting' if data['report'] == 'wait' else 'fail',
               'allowed_actions': ['answer', 'repair'] if data['report'] == 'wait' else [], 'result': result}
+    if data['report'] == 'wait':
+        import human_choices
+        output['choices'] = human_choices.questions(result.get('questions'))
     output['next_action'] = ('作成中の質問に回答してください（差戻し候補がある場合は差戻しも選べます）。'
                              if data['report'] == 'wait' else _next_action({'status': 'fail'}, context))
     return {'output': output}
@@ -271,20 +274,24 @@ def stage_respond_prepare(data):
         review_gate.require(context, expected)
         answer = payload.get('data') or {}
         if operation == 'decisions':
-            for scope, run, number, decided, reason in parse_answer(context, answer.get('answer', '')):
+            for scope, run, number, decided, reason, category, learn, adopted in parse_answer(context, answer.get('answer', '')):
                 review_decisions.prepare_response(context, 'decision', {'scope': scope, 'run': run, 'number': number,
-                                                                        'decision': decided, 'reason': reason}, actor)
+                                                                        'decision': decided, 'reason': reason, 'category': category,
+                                                                        'learn': learn, 'adopted': adopted}, actor)
             # Freeze 全件 before any child decision changes the live set.
             value['decisions'] = parse_answer(context, answer.get('answer', ''))
         elif operation == 'repair':
-            repair_requests.request(_owner(context, answer), answer, actor, apply=False)
+            repair_requests.request(_owner(context, answer), answer, actor, apply=False, operation_id=data.get('operation_id'))
+        elif operation == 'reevaluate':
+            import reevaluation
+            reevaluation.prepare(context, actor)
         else:
             review_decisions.prepare_response(context, operation, answer, actor)
         receipt = engine_client.invoke(context, 'status', expected['call'])['dispatch']
     value['receipt'] = receipt
     # The human's repair selection answers this -generate review; report it
     # before the repair's runtime invalidations discard the pending dispatch.
-    value['report_first'] = operation == 'repair' and repair_requests.is_generate(context)
+    value['report_first'] = operation in ('repair', 'reevaluate') and repair_requests.is_generate(context)
     return value
 
 
@@ -307,14 +314,20 @@ def stage_respond_apply(data):
         repair_requests.reopen(feature, ['.aidd/feature-list.md'], answer['instruction'], 'plan-change', actor,
                                resume_action=context.action, resume_item=context.item)
     elif operation == 'repair':
-        repair_requests.request(_owner(context, answer), answer, actor)
+        repair_requests.request(_owner(context, answer), answer, actor, operation_id=opid)
+    elif operation == 'reevaluate':
+        import reevaluation
+        reevaluation.request(context, actor, expected=payload['expected'], operation_id=opid)
     elif operation == 'decisions':
-        for index, (scope, run, number, decided, reason) in enumerate(data.get('decisions') or []):
+        for index, entry in enumerate(data.get('decisions') or []):
+            # 旧配布物で準備した回答は 5 項目（却下区分などを持たない）。
+            scope, run, number, decided, reason, category, learn, adopted = (list(entry) + ['', False, ''])[:8]
             child_id = '%s.%d' % (opid, index)
             previous = project_progress.workflow(context).get('review_operations', {}).get(child_id)
             expected = previous['request']['expected'] if previous else review_gate.current(context, receipt['call'])
             review_decisions.decision(context, scope, run, number, decided, reason, actor,
-                                      expected=expected, operation_id=child_id)
+                                      expected=expected, operation_id=child_id,
+                                      category=category, learn=learn, adopted=adopted)
     else:
         answer.update(expected=payload['expected'], operation_id=opid)
         host_operations.dispatch(context, operation, answer, actor)
@@ -329,6 +342,8 @@ def respond_then(context, operation, report_first, answer=None):
     """回答の後に L0 がすること：`report`（報告して advance）/ `advance` / `output`（提示だけ）。"""
     if operation in ('decision', 'decisions', 'resolve', 'change-plan'):
         return 'output'
+    if operation == 'reevaluate':
+        return 'advance' if not report_first and repair_requests.is_revise(context) else 'output'
     if operation == 'repair':
         # At a revise review the repair reruns the same revise action (the next round);
         # elsewhere the entry Skill calls the returned revise action (status: repair) or the rollback.
@@ -345,16 +360,17 @@ def stage_respond_output(data):
     payload, receipt = data['payload'], data['receipt']
     operation = payload.get('action')
     if operation in ('decision', 'decisions', 'resolve'):
+        import human_choices
         output = {'status': 'wait', 'allowed_actions': review_options(context),
                   'review_context': review_gate.current(context, receipt['call']),
-                  'review': review_summary(context)}
+                  'review': review_summary(context), 'choices': human_choices.review(context)}
         output['next_action'] = _next_action({'status': 'wait', 'gate': 'review'}, context)
         return {'output': output}
     output = {'status': 'rollback', 'allowed_actions': [],
               'blockers': [b for b in context.blockers() if b.get('status') != 'resolved'],
               'next_action': '差戻し先の工程（blockers の target_event / target_item）を実行し、再承認後に upstream-approved を記録してから元の工程へ戻ってください。'}
-    if operation == 'repair':
-        owner = repair_requests.revise_context(_owner(context, payload.get('data') or {}))
+    if operation in ('repair', 'reevaluate'):
+        owner = repair_requests.revise_context(_owner(context, payload.get('data') or {}) if operation == 'repair' else context)
         output['repair'] = {'event': owner.action, 'item': owner.item, 'call': owner.action}
         if not output['blockers']:
             output['status'] = 'repair'
@@ -530,7 +546,9 @@ def _next_action(outcome, active):
     if status == 'emit':
         return '作業中（AI が %s を実行します）。人の操作は不要です。' % ('検査' if outcome.get('isAgent') else '作成・修正')
     if status == 'wait' and outcome.get('gate') == 'review':
-        return '検査結果を確認し、指摘ごとに A〜D で判断を回答してください（判断が揃い修正が無ければ承認者名を回答）。'
+        return ('提示文をそのまま示し、choices の選択肢を選択式の質問で出して、人に選んでもらってください。'
+                '検査結果を確認し、重大と要判断の指摘に A〜D か「推奨」で答えてください（束・範囲でまとめて答えられます）。'
+                '修正（A）と AI が直す軽微があれば repair（findings: "all-fixes"）で修正に回し、判断が揃い修正が無ければ承認者名を回答してください。')
     if status == 'wait':
         return '実行計画を確認し、了承するか、対象・順序の変更を指示してください。'
     if status == 'done':
@@ -549,14 +567,17 @@ def _present(context, outcome):
         import host_operations
         result.update(allowed_actions=['submit'], context=host_operations.dispatch(active, 'context', {}, ''))
     elif outcome['status'] == 'wait' and outcome.get('gate') == 'review':
+        import human_choices
         result.update(allowed_actions=review_options(active),
                       review_context=review_gate.current(active, outcome['call']),
-                      review=review_summary(active))
+                      review=review_summary(active), choices=human_choices.review(active))
         if active.process == 'implement':
             import implementation_checks
             result['report_summary'] = implementation_checks.validate_final(active)['summary']['path']
     elif outcome['status'] == 'wait':
+        import human_choices
         result['allowed_actions'] = ['accept-plan'] + (['change-plan'] if active.process in ('requirements', 'design', 'tasks') else [])
+        result['choices'] = human_choices.plan(active)
     else:
         result['allowed_actions'] = []
     result['next_action'] = _next_action(outcome, active)
@@ -572,7 +593,9 @@ def review_summary(context):
         for f in record.relevant(scope):
             rows.append({'scope': f.scope, 'run': f.run, 'number': f.number, 'current': f.run == latest,
                          'decision': f.decision, 'reason': f.reason, 'open': f.is_open, 'resolved': f.resolved,
-                         'description': f.description, 'location': f.location})
+                         'description': f.description, 'location': f.location,
+                         'kind': f.kind, 'severity': f.level, 'summary': f.short, 'suggestion': f.suggestion,
+                         'recommendation': f.recommendation, 'decided_by': f.decided_by})
     return rows
 
 
@@ -637,34 +660,79 @@ def record_completions(context, call):
 
 # --- 回答の読み取り ------------------------------------------------------
 
+_TARGET = r'(全件|束\d+|(?:(feature:[a-z0-9][a-z0-9_-]*|phase|cross)\s+)?(?:(\d+)\s*[〜~]\s*(\d+)|(?:(\d+)-)?(\d+)))'
+_CHOICE = r'([A-DＡ-Ｄ]|推奨)(?:\s*[\[［]\s*([^\]］+＋]*?)\s*([+＋])?\s*[\]］])?'
+_ANSWER = re.compile(_TARGET + r'\s*[:：]\s*' + _CHOICE + r'\s*(.*)')
+
+
 def parse_answer(context, text):
-    """alpha2 Step 4 answer form: `1:A / 2:C 理由 / 1-3:D 理由`, or `全件:A`."""
+    """回答の読み取り。返り値は (scope, run, number, 判断, 理由, 却下区分, 今後も同じ扱い, 推奨の採用) の並び。
+
+    書き方（`/` か改行で区切る。後に書いたものが前のものより優先する）:
+    `1:A`、`2:C 理由`、`2-1:D 理由`（2 回目の #1）、`3〜8:C 理由`（範囲）、`束1:C 理由`（束）、`全件:A`、
+    `1:推奨`（AI の推奨を採用）、`2:C[後で決める+] 理由`（却下区分。`+` は今後も同じ扱い）。
+    """
+    import finding_rules
+    import review_view
     record = review_contract.read(context)
     scopes = review_contract.scopes(context)
     relevant = [f for scope in scopes for f in record.relevant(scope)]
     latest = {scope: record.latest(scope).number for scope in scopes}
     undecided = [f for f in relevant if not f.has_decision]
+    named = review_view.bundles(context, record)
     parts = [p.strip() for p in re.split(r'[／/\n]', text or '') if p.strip()]
     if not parts:
         raise ValueError('answer is empty')
-    decisions = []
+    chosen = {}
     for part in parts:
-        m = re.fullmatch(r'(全件|(?:(feature:[a-z0-9][a-z0-9_-]*|phase|cross)\s+)?(?:(\d+)-)?(\d+))\s*[:：]\s*([A-DＡ-Ｄ])\s*(.*)', part)
+        m = _ANSWER.fullmatch(part)
         if not m:
-            raise ValueError('answer must look like `1:A` / `2:C 理由` / `全件:A`: %s' % part)
-        letter = m.group(5).translate(str.maketrans('ＡＢＣＤ', 'ABCD'))
-        value, reason = LETTERS[letter], m.group(6).strip()
-        if m.group(1) == '全件':
+            raise ValueError('answer must look like `1:A` / `2:C 理由` / `束1:C 理由` / `3〜5:A` / `1:推奨` / `全件:A`: %s' % part)
+        target, scope_name, low, high, run_text, number_text, choice, category, learn, reason = m.groups()
+        reason = reason.strip()
+        if target == '全件':
             if not undecided:
                 raise ValueError('no undecided findings for 全件')
-            decisions += [(f.scope, f.run, f.number, value, reason) for f in undecided]
-            continue
-        scope = m.group(2) or (scopes[-1] if len(scopes) == 1 else None)
-        if scope is None:
-            raise ValueError('several scopes are reviewed together; prefix the scope (e.g. `feature:x 1:A`)')
-        run = int(m.group(3)) if m.group(3) else latest[scope]
-        decisions.append((scope, run, int(m.group(4)), value, reason))
-    for scope, run, number, value, reason in decisions:
+            findings = undecided
+        elif target.startswith('束'):
+            if target not in named:
+                raise ValueError('unknown bundle: %s' % target)
+            findings = named[target].findings
+        else:
+            scope = scope_name or (scopes[-1] if len(scopes) == 1 else None)
+            if scope is None:
+                raise ValueError('several scopes are reviewed together; prefix the scope (e.g. `feature:x 1:A`)')
+            run = int(run_text) if run_text else latest[scope]
+            numbers = range(int(low), int(high) + 1) if low else [int(number_text)]
+            findings = []
+            for number in numbers:
+                found = next((f for f in relevant if f.key == (scope, run, number)), None)
+                if found is None:
+                    raise ValueError('finding does not exist in the current review: %s %s #%s' % (scope, run, number))
+                findings.append(found)
+        if choice == '推奨' and target.startswith('束'):
+            import human_choices
+            if not human_choices.uniform_recommendation(findings)[0]:
+                raise ValueError('束の中で AI の推奨がそろっていません。束の判断を A〜D で選ぶか、番号ごとに答えてください: %s' % target)
+        for finding in findings:
+            recommended, why = finding_rules.recommendation(finding.recommendation)
+            if choice == '推奨':
+                if recommended in ('', '質問'):
+                    raise ValueError('AI の推奨が無い指摘です（A〜D で答えてください）: %s' % finding.label())
+                value, adopted = recommended, '採用'
+                text_reason = reason or 'AI 推奨を採用: ' + why
+            else:
+                value = LETTERS[choice.translate(str.maketrans('ＡＢＣＤ', 'ABCD'))]
+                adopted = ('採用' if value == recommended else '不採用') if recommended not in ('', '質問') else ''
+                text_reason = reason
+            kind = finding_rules.rejection((category or '').strip())
+            if kind and value != '対応せず進める':
+                raise ValueError('却下区分は C（対応せず進める）にだけ付ける: %s' % part)
+            if learn and kind not in finding_rules.LEARNABLE:
+                raise ValueError('「今後も同じ扱い（+）」は 対象外 か 後で決める にだけ付ける: %s' % part)
+            chosen[finding.key] = (finding.scope, finding.run, finding.number, value, text_reason, kind, bool(learn), adopted)
+    decisions = list(chosen.values())
+    for scope, run, number, value, reason, *_ in decisions:
         if value in ('対応せず進める', '未対応') and not reason:
             raise ValueError('理由が必要です: %s run %s #%s' % (scope, run, number))
     return decisions

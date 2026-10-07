@@ -11,11 +11,14 @@ import json
 import re
 
 import artifacts
+import finding_rules
 
 HEADERS = {
     "実行": ["スコープ", "回数", "実行日時", "実行した層", "対象成果物", "原本SHA256", "指摘件数"],
     "指摘": ["#", "観点", "対象箇所", "指摘内容", "判断", "理由"],
     "差戻し先候補": ["指摘番号", "宛先", "理由"],
+    # 前提（工程の境界・人が確定した回答・却下から学んだ扱い）に当たるため、検査役が出さなかった指摘。
+    "除外": ["観点", "対象箇所", "要約", "除外の出典"],
     "判断": ["スコープ", "回数", "指摘番号", "判断", "理由", "判断者", "日時"],
     "解消": ["スコープ", "回数", "指摘番号", "再検査スコープ", "再検査回数", "確認者", "日時"],
     "承認": ["スコープ", "回数", "対象成果物", "承認者", "承認日時", "原本SHA256"],
@@ -23,7 +26,25 @@ HEADERS = {
     # 承認・確認の時点で残っていた指摘（未対応・対応せず進める）。alpha2 の「承認時の残件」。
     "残件": ["スコープ", "回数", "指摘番号", "判断", "理由", "承認スコープ", "承認回数"],
 }
+# 種類・重大度・同一性キーを持つ形。重大度・同一性キー・節ハッシュは L3 が scope-check で計算して埋める。
+EXTENDED = {
+    "指摘": ["#", "観点", "種類", "重大度", "同一性キー", "節ハッシュ", "対象箇所", "対象の語", "要約", "指摘内容",
+           "修正案", "推奨", "確かめ役", "判断", "理由"],
+    "判断": ["スコープ", "回数", "指摘番号", "判断", "理由", "判断者", "日時", "却下区分", "今後も同じ扱い", "推奨の採用"],
+}
+# 検査役（gate-report）が inspection_path に書く形。L3 が EXTENDED["指摘"] へ変換してから記録に追記する。
+STAGED = {"指摘": ["#", "観点", "種類", "対象箇所", "対象の語", "要約", "指摘内容", "修正案", "推奨", "確かめ役", "判断", "理由"]}
 DECISIONS = ("修正", "差戻し", "対応せず進める", "未対応")
+
+
+def headers(section, staged=False):
+    """この節で受け付ける列の並び（旧形式を含む）。"""
+    result = [HEADERS[section]]
+    if section in EXTENDED:
+        result.append(EXTENDED[section])
+    if staged and section in STAGED:
+        result.append(STAGED[section])
+    return result
 
 
 def timestamp(value):
@@ -84,6 +105,21 @@ class Finding:
     decision: str = ""
     reason: str = ""
     resolved: bool = False
+    kind: str = ""
+    severity: str = ""
+    identity: str = ""
+    section: str = ""
+    subject: str = ""
+    summary: str = ""
+    suggestion: str = ""
+    recommendation: str = ""
+    verification: str = ""
+    decided_by: str = ""
+    category: str = ""
+    learn: bool = False
+    adopted: str = ""
+    resolved_by: str = ""
+    resolved_run: int = 0
 
     @property
     def key(self):
@@ -95,6 +131,20 @@ class Finding:
     @property
     def has_decision(self):
         return self.decision in DECISIONS
+
+    @property
+    def level(self):
+        """重大度。旧形式（種類を持たない）の指摘は区別がつかないため人に出す（要判断）。"""
+        return self.severity or "要判断"
+
+    @property
+    def short(self):
+        """提示に使う要約。旧形式は本文。"""
+        return self.summary or self.description
+
+    @property
+    def by_system(self):
+        return self.decided_by == finding_rules.SYSTEM_ACTOR
 
     @property
     def needs_reason(self):
@@ -120,6 +170,7 @@ class Run:
     count: int
     findings: list = field(default_factory=list)
     returns: list = field(default_factory=list)
+    excluded: list = field(default_factory=list)
 
 
 @dataclass
@@ -144,7 +195,7 @@ class Record:
                 or (finding.needs_reason and not filled_text(finding.reason))]
 
 
-def table_blocks(text):
+def table_blocks(text, staged=False):
     section, rows, header, separator = None, [], None, False
     result = []
     for line in text.splitlines():
@@ -163,7 +214,7 @@ def table_blocks(text):
                 raise ValueError("unexpected content in %s" % section)
             values = cells(line)
             if header is None:
-                if values != HEADERS[section]:
+                if values not in headers(section, staged):
                     raise ValueError("invalid columns in %s" % section)
                 header = values
             elif not separator:
@@ -179,6 +230,40 @@ def table_blocks(text):
             raise ValueError("missing table: %s" % section)
         result.append((section, rows))
     return result
+
+
+def _extended_finding(row, finding):
+    """種類・重大度・同一性キーを持つ指摘の検査。重大度は種類から L3 が決めた値と一致しなければならない。"""
+    kind = row["種類"]
+    if kind not in finding_rules.KINDS and kind != finding_rules.UNCLASSIFIED:
+        raise ValueError("unknown finding kind: %s" % kind)
+    if not finding_rules.kind_allowed(row["観点"], kind):
+        raise ValueError("machine finding kind differs from its check: %s" % row["観点"])
+    if row["重大度"] != finding_rules.severity(kind):
+        raise ValueError("finding severity must follow its kind")
+    if not re.fullmatch(r"[a-f0-9]{16}", row["同一性キー"]) or not re.fullmatch(r"[a-f0-9]{16}|-", row["節ハッシュ"]):
+        raise ValueError("finding identity or section hash missing")
+    if row["同一性キー"] != finding_rules.identity_key(kind, row["対象箇所"], row["対象の語"]):
+        raise ValueError("finding identity does not match its kind/location/subject")
+    if not filled_text(row["要約"]) or len(row["要約"]) > finding_rules.SUMMARY_LIMIT:
+        raise ValueError("finding summary must be 1-%d characters" % finding_rules.SUMMARY_LIMIT)
+    finding_rules.recommendation(row["推奨"])
+    finding.kind, finding.severity, finding.identity, finding.section = kind, row["重大度"], row["同一性キー"], row["節ハッシュ"]
+    finding.subject, finding.summary, finding.suggestion = row["対象の語"], row["要約"], row["修正案"]
+    finding.recommendation, finding.verification = row["推奨"], row["確かめ役"]
+
+
+def _decision_extras(row, finding):
+    category = finding_rules.rejection(row.get("却下区分", ""))
+    learn = row.get("今後も同じ扱い", "")
+    adopted = row.get("推奨の採用", "")
+    if category and row["判断"] != "対応せず進める":
+        raise ValueError("rejection category belongs to 対応せず進める")
+    if learn not in ("", "はい") or (learn and category not in finding_rules.LEARNABLE):
+        raise ValueError("今後も同じ扱い needs 対象外 or 後で決める")
+    if adopted not in ("", "採用", "不採用"):
+        raise ValueError("推奨の採用 must be 採用 or 不採用")
+    finding.category, finding.learn, finding.adopted = category, learn == "はい", adopted
 
 
 def parse(text):
@@ -234,6 +319,8 @@ def parse(text):
                 if not all(filled_text(row[k]) for k in ("観点", "対象箇所", "指摘内容")):
                     raise ValueError("incomplete finding")
                 finding = Finding(active.scope, active.number, number, row["観点"], row["対象箇所"], row["指摘内容"])
+                if "種類" in row:
+                    _extended_finding(row, finding)
                 findings[finding.key] = finding
                 active.findings.append(finding)
             stage = "指摘"
@@ -245,6 +332,13 @@ def parse(text):
                     raise ValueError("invalid return candidate")
             active.returns = rows
             stage = "差戻し先候補"
+        elif section == "除外":
+            if active is None or stage not in ("指摘", "差戻し先候補"):
+                raise ValueError("excluded findings must follow findings")
+            if any(not all(filled_text(row[k]) for k in HEADERS["除外"]) for row in rows):
+                raise ValueError("excluded findings need aspect, location, summary and premise")
+            active.excluded = rows
+            stage = "除外"
         elif section in ("判断", "解消"):
             active, stage = None, None
             for row in rows:
@@ -259,6 +353,8 @@ def parse(text):
                     if row["判断"] in ("対応せず進める", "未対応") and not filled_text(row["理由"]):
                         raise ValueError("decision requires a reason")
                     finding.decision, finding.reason, finding.resolved = row["判断"], row["理由"], False
+                    finding.decided_by = row["判断者"]
+                    _decision_extras(row, finding)
                 else:
                     new_key = scope_key(row["再検査スコープ"]), positive(row["再検査回数"])
                     if new_key not in runs or new_key[0] != key[0] or new_key[1] <= key[1] or not filled(row["確認者"]) or finding.decision not in ("修正", "差戻し"):
@@ -266,6 +362,7 @@ def parse(text):
                     if record.runs.index(runs[new_key]) <= record.runs.index(runs[key[:2]]):
                         raise ValueError("resolution inspection predates the finding")
                     finding.resolved = True
+                    finding.resolved_by, finding.resolved_run = row["確認者"], new_key[1]
         elif section == "確認":
             active, stage = None, None
             for row in rows:
@@ -304,8 +401,17 @@ def parse(text):
     return record
 
 
-def render_table(section, rows, heading=2):
-    header = HEADERS[section]
+def header_for(section, rows):
+    """行の項目を持てる最も短い列の並び（旧形式で足りれば旧形式）。"""
+    keys = set().union(*(row.keys() for row in rows)) if rows else set()
+    for header in headers(section, staged=True):
+        if keys <= set(header):
+            return header
+    raise ValueError("rows do not fit the %s table" % section)
+
+
+def render_table(section, rows, heading=2, header=None):
+    header = header or header_for(section, rows)
     def cell(value):
         return html.escape(str(value), quote=False).replace("|", "&#124;").replace("\n", "&#10;").replace("\r", "&#13;")
     lines = ["#" * heading + " " + section, "", "| " + " | ".join(header) + " |", "|" + "|".join("---" for _ in header) + "|"]

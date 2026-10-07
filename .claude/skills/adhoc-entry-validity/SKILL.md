@@ -26,19 +26,33 @@ disable-model-invocation: true
 3. 出典種別が「壁打ち」でありながら、実際には RFP に対応する記述がある（つまり本来は
    RFP由来として扱うべき）ものを指摘する。
 4. 既存要求の詳細化にすぎないものが新規の要求IDとして追加されていないかを確認する。該当すれば、
-   寄せるべき既存の要求IDを示して指摘する（詳細化は requirements.md の要件として既存IDに紐づける）。
+   寄せるべき既存の要求IDを `suggestion` に書いて指摘する（詳細化は requirements.md の要件として既存IDに紐づける）。
+
+## この工程で指摘しない事項
+
+- `.claude/skills/finding-rules/SKILL.md` の工程の境界の表・`confirmed_answers`・`learned` に当たる事項
+- `TBD（<工程> で確定）` と書いてある値
+- 壁打ち由来の要求そのものの是非
+
+当たるものは指摘にせず、除外として返す（除外の出典を付ける。書き方は finding-rules）。
 
 ## 出力の形
 
+指摘ごとに次を返す。書き方は `.claude/skills/finding-rules/SKILL.md`（検査の最初に読む）に従う。重大度は出さない（L3 が `kind` から決める）。
+
 ```
-{ id, location, finding, is_rollback_candidate }
+{ location, subject, kind, summary, evidence, suggestion, recommendation, is_rollback_candidate }
 ```
 
 | フィールド | 内容 |
 |---|---|
-| `id` | この Skill 内で一意な通し番号 |
-| `location` | 該当する要求一覧の行 |
-| `finding` | 手続き違反の事実（例: 「`REQ-030` は壁打ち由来とされているが出典種別の記載が無い」） |
+| `location` | 該当する要求一覧の行。`<案件相対パス> § <節見出し> / <ID>` の形。複数箇所なら代表 1 か所＋「ほか n か所」（全件は `evidence`） |
+| `subject` | 対象の語（例: `REQ-030`） |
+| `kind` | `.claude/skills/finding-rules/SKILL.md` の種類から 1 つ選ぶ。迷ったら上の行。出典種別の記載の不備・RFP に対応がある壁打ち行は `出典・根拠`。他フェーズによる直接の書き換え・既存要求の詳細化の新規ID化は `工程・文書の分担` |
+| `summary` | 60 字以内。結論を先に、何が・どこで（例: 「`REQ-030` は壁打ち由来とされているが出典種別の記載がない」） |
+| `evidence` | 手続き違反の事実と、確認した入力文書の箇所（確認不能ならその旨） |
+| `suggestion` | 修正案（差分・書き換え文）。業務の新しい事実が要るときは、修正案ではなく「何を決めればよいか」と選べる案 |
+| `recommendation` | `修正：理由` / `差戻し：理由` / `対応せず進める：理由` / `質問：理由` のどれか。業務の新しい事実が要るときは `質問：…` |
 | `is_rollback_candidate` | 通常 `false`（同一フェーズ内での記載修正で解消できるため） |
 
 ## 禁止

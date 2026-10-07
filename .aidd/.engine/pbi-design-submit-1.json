@@ -1,0 +1,130 @@
+{
+ "operation_id": "2cb6846696d147d0850f977d88951009",
+ "dispatch": {
+  "call": "design-authoring-generate",
+  "unit": "design-authoring-generate/design-authoring-generate[property-basic-info]::run",
+  "event": "design-authoring-generate",
+  "item": "property-basic-info",
+  "status": "emit",
+  "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+  "detail": null,
+  "id": "df6eae1742e243b081a92e6c0362c743"
+ },
+ "result": {
+  "status": "waiting",
+  "targets": [
+   "specs/property-basic-info/design.md"
+  ],
+  "questions": [
+   {
+    "id": "Q-DS-PBI-001",
+    "target": "specs/property-basic-info/design.md",
+    "location": "ファイル配置計画、API 契約（Controller）、要件 10・14・15",
+    "question": "プログラムID・機能ID・URL と、画面を開く経路。1. 物件基本情報登録変更（GWTG070）のプログラムID と機能ID（パッケージ `function/wtg/<機能ID>/`・URL `/<機能ID>`） - 下書きの案：プログラムID `PWTGO070`、機能ID `wtg070` 2. 文書バーコードのポップアップのプログラムID（同じ機能ID に入れるか） 3. 遷移先の URL と、渡し方（POST の項目／セッション） - 戻る・削除後の申請状況一覧（GWTG060） - 契約局取込（GWTG090）：14.6 の項目を渡す - 契約局情報追加・発行依頼書編集・基地局番号リンク（GWTG080）：何を渡すか（申請No と契約局の行？） - 契約局DL（GWTG100、別ウインドウ）：申請No だけ 4. 物件基本情報登録変更画面を開く経路 - 新規登録はどこから開くか（メニュー／申請状況一覧の新規ボタン など） - 既存の申請は申請状況一覧から申請No を渡して開く、でよいか",
+    "reason_unanswered": "承認済み入力（requirements・steering・feature 一覧）と手本の既存コードに値が無く、推測で書けないため"
+   },
+   {
+    "id": "Q-DS-PBI-002",
+    "target": "specs/property-basic-info/design.md",
+    "location": "データモデル（論理・物理）、バリデーション設計、要件 1・7・12・13",
+    "question": "物件申請情報（TWTGM080）の列と画面項目。画面の項目ごとに、次を教えてください。表で返していただけると助かります。 | 画面の項目名 | 列名 | 型 | 桁数 | 必須か（更新時／申請依頼時） | 形式（半角数字・日付など） | 入力できる人（番の担当） | 社外ユーザーに見せるか | 特に、requirements に名前だけ出ている次の項目の中身が必要です。 - 「基地局の項目」「エリア」「施策」（7.3 で複製するもの） - 「日時の各項目」「申送り事項」「発送の項目」「連絡先メールアドレス」「電話番号」（7.7 で空にするもの） - 単独局か複数局かの印（14.1・14.8） - 依頼内容（`P29`）・審査フェーズ（`P28`）・状態（`P27`）・申請回数・元申請No・決裁日時（2.3・2.7・7.3） - 担当者の氏名（起案者・申請者・確認者・承認者）を物件申請情報に持つか。持つなら、いつ誰の名前を入れるか（例：申請者が確認したときにその人） あわせて、必須・桁数・形式のチェックをいつ行うか（更新のたび／申請依頼のときだけ など）も教えてください（13.1）。",
+    "reason_unanswered": "承認済み入力（requirements・steering・feature 一覧）と手本の既存コードに値が無く、推測で書けないため"
+   },
+   {
+    "id": "Q-DS-PBI-003",
+    "target": "specs/property-basic-info/design.md",
+    "location": "データモデル、要件 9・14",
+    "question": "契約局情報（TWTGM140）の列。テーブルの定義は物件基本情報登録変更が持つ（feature 一覧の注記）ので、列の一覧が必要です。 - 列名・型・桁数（Q-DS-PBI-002 と同じ形の表） - 行の順番（表示順・代表局が 1 行目）を持つ列 - 基地局番号リンク（14.13）で開く「その契約局の発行依頼書」と、どの列で結びつくか - 物件基本情報登録変更画面で表示する列",
+    "reason_unanswered": "承認済み入力（requirements・steering・feature 一覧）と手本の既存コードに値が無く、推測で書けないため"
+   },
+   {
+    "id": "Q-DS-PBI-004",
+    "target": "specs/property-basic-info/design.md",
+    "location": "データモデル、セキュリティ、変更する既存ファイル、要件 8・15",
+    "question": "契約稟議ファイル（TWTGM090）。1. 列（既存の `TWTGM050` 契約ファイルと同じ形：連番・ファイルパス・ファイル名 に「確定」の印を足す、でよいか） 2. サーバーでの保存先（既存の `FileUploadService` と出力コード（`TZZZM027` の出力管理）を使うか。使うなら出力コード） 3. 3500MB への対応：wing の `servlet-context.xml` の `maxUploadSize` は今 1,048,576,000（約 1000MB）です。上げてよいか。上げると wing の全画面の上限が変わります。前段の Apache の上限も変える必要があるかもしれません 4. 登録・削除・確定ができる人と状態（8.4 で design に回されたもの） - 例：番が回っている起案者・申請者・確認者だけ／承認者も など 5. ダウンロード（ファイル名のリンク）ができる人 6. 申請の削除（15.1）で、サーバー上のファイルの実体も消すか",
+    "reason_unanswered": "承認済み入力（requirements・steering・feature 一覧）と手本の既存コードに値が無く、推測で書けないため"
+   },
+   {
+    "id": "Q-DS-PBI-005",
+    "target": "specs/property-basic-info/design.md",
+    "location": "データモデル、WTG 申請状態サービス、要件 5・6.6",
+    "question": "承認履歴（TWTGM180）とコメント。1. 列（連番・判定・操作者・操作日時・コメント・審査フェーズと状態（操作後？）など） 2. 「判定」のコード値：申請依頼・申請・確認・承認・差戻し・取下げ と 発番（11、issue-request が登録）。コードマスタの識別も教えてください 3. コメント（6.6 の「コメントの入力」）はどこに保存するか - 承認履歴の行ごと（操作のときに入力）／物件申請情報に担当ごとの欄 など - 画面には過去のコメントをどう見せるか（承認履歴の一覧を表示する？）",
+    "reason_unanswered": "承認済み入力（requirements・steering・feature 一覧）と手本の既存コードに値が無く、推測で書けないため"
+   },
+   {
+    "id": "Q-DS-PBI-006",
+    "target": "specs/property-basic-info/design.md",
+    "location": "データモデル、責務境界、要件 6.1・6.2",
+    "question": "審査権限マスタ（TWTGM170）。1. 列（会社コード・ユーザーID・権限（`P82`）…）。1 人が複数の権限（例：申請者と確認者）を持てるか（行を分けるか） 2. テーブルの定義はどの feature が持つか（下書きでは、最初に使う物件基本情報登録変更が持つ形にしています）。値の登録は発注者でよいか 3. 承認者・確認者などは「権限を持つ人なら誰でも」その番の操作ができる、でよいか（申請ごとに担当者を指名しない）",
+    "reason_unanswered": "承認済み入力（requirements・steering・feature 一覧）と手本の既存コードに値が無く、推測で書けないため"
+   },
+   {
+    "id": "Q-DS-PBI-007",
+    "target": "specs/property-basic-info/design.md",
+    "location": "データモデル、文書バーコードのコンポーネント、要件 11",
+    "question": "文書バーコード（TWTGM110）とポップアップ。1. 列（文書バーコードの値・稟議バーコードNo・書類種別（`P33`）・連番・有効／無効・コメント…） 2. 値「基地局番号-エリア接頭語と受付No-契約区分と書類種別と連番」の各部品の出どころ - 基地局番号：物件申請情報か、契約局情報の 1 行目か - エリア接頭語：どのコードマスタか - 受付No・契約区分：発行依頼書（`TWTGM100`）のどの列か 3. 生成の操作：書類種別を選んで 1 件ずつか、複数まとめてか 4. 11.8「元の稟議に追加した書類種別だけを選ばせる」の意味（元の稟議で生成済みの書類種別だけ、という意味か） 5. 申請の削除（15.1）のとき、文書バーコードの行も消すか（15.2 は未生成のときだけ削除できる） 6. 「発番後」（11.2）・「発番済み」（6.9）をどの値で判定するか（例：受付No があること）",
+    "reason_unanswered": "承認済み入力（requirements・steering・feature 一覧）と手本の既存コードに値が無く、推測で書けないため"
+   },
+   {
+    "id": "Q-DS-PBI-008",
+    "target": "specs/property-basic-info/design.md",
+    "location": "WTG 申請状態サービス／物件基本情報登録変更 Service、要件 1.2・1.5",
+    "question": "申請No の採番。採番マスタ（`TWTZM050`）の行の値を教えてください。 - 識別コード（`Shikibetsu_Cd`）・グループID（`Grp_Id`） - 接頭語 \"B\" を採番マスタの `Prefix` に持つか、プログラムで付けるか - 採番区分は 02（日付ごとにリセット）、最大値 9999、MAX区分は 0（上限を超えたらエラー）でよいか",
+    "reason_unanswered": "承認済み入力（requirements・steering・feature 一覧）と手本の既存コードに値が無く、推測で書けないため"
+   },
+   {
+    "id": "Q-DS-PBI-009",
+    "target": "specs/property-basic-info/design.md",
+    "location": "セキュリティ、要件 6.5・6.9・7.1・7.2（steering で「判定のしかたは property-basic-info の design で定める」とされたもの）",
+    "question": "組織の判定。1. 所属組織が KDDI か K-ENG かの判定：どの値を見るか（会社コード／グループ／コードマスタの行 など） 2. 組織がプロセス管理4G（`P71` の G6）かの判定：`P71` のどのキー・文字項目を見るか 3. 社外ユーザーの判定（`P71` のキー3 がログインユーザーのグループ）で使うグループは、既定のグループ（既定区分 1）だけか、所属するすべてのグループか",
+    "reason_unanswered": "承認済み入力（requirements・steering・feature 一覧）と手本の既存コードに値が無く、推測で書けないため"
+   },
+   {
+    "id": "Q-DS-PBI-010",
+    "target": "specs/property-basic-info/design.md",
+    "location": "WTG 申請状態サービス、要件 1.3・7.1・15.1",
+    "question": "「起案者」とは誰か。起案者の権限は全員が持ちます（6.2）。そのうえで、次の「起案者」は誰を指しますか。 - 1.3・6.7「起案者の番」で更新・申請依頼・取下・削除ができる人：その申請を登録した本人だけか、ログインできる人なら誰でもか（社外ユーザーは 6.5 の範囲内） - 7.1「ログインユーザーが起案者の場合」に修正稟議・再製本ボタンを出す人：同上",
+    "reason_unanswered": "承認済み入力（requirements・steering・feature 一覧）と手本の既存コードに値が無く、推測で書けないため"
+   },
+   {
+    "id": "Q-DS-PBI-011",
+    "target": "specs/property-basic-info/design.md",
+    "location": "WTG 申請状態サービスの番の表（下書きで空けている行）、要件 6.7（Phase 4 からの持ち越し）",
+    "question": "稟議・修正稟議の「起案済・回覧中」と、定義の無いボタン。1. 稟議・修正稟議の申請依頼の直後（起案済 01・回覧中 02、発番の前）は誰の番で、物件基本情報登録変更画面で何ができるか - 持ち越しのメモでは「申請者の番で、行える操作は発番だけ（発行依頼書の画面）」です。物件基本情報登録変更画面では更新・差戻・取下を出すか、何も出さないか 2. 6.7 は番ごとに出すボタン（申請者なら更新・確認・申請・差戻・取下）を決めています。いまの状態で遷移の定義が無いボタン（例：受付済・回覧中の「申請」、再製本の起案済・回覧中の「確認」）は、出したうえで押すとエラーにするか、出さないか",
+    "reason_unanswered": "承認済み入力（requirements・steering・feature 一覧）と手本の既存コードに値が無く、推測で書けないため"
+   },
+   {
+    "id": "Q-DS-PBI-012",
+    "target": "specs/property-basic-info/design.md",
+    "location": "責務境界、依存してよい対象、要件 6.5・6.9・7.3・9.1・12.1・14.6",
+    "question": "下流の feature が持つ定義を使うところ。物件基本情報登録変更は依存なし（最初に作る）ですが、次は下流の feature が持つものを使います。 1. 発行依頼書（`TWTGM100`。定義は issue-request）の列 - 12.1 の会社名、6.5 の契約稟議起案会社、7.3 の受付No・稟議バーコードNo、14.6 で渡す受付No・契約区分・担当エリア・申請者・契約稟議起案者の会社コードと所属名①②と氏名 - 申請No と発行依頼書は 1 対多（契約局ごと）か 2. 9.1 の CSV の形式（「契約局取込の形式」。requirements では contract-info-import が持つ） 決め方を選んでください。 - A：列名と CSV の形式の値をいま回答し、物件基本情報登録変更の design に「この形で読む・出す」と書く。下流の design はそれに合わせる（再確認の条件に入れる） - B：上流（feature 一覧の依存、または requirements の持ち主の書き方）を直す差戻しにする - C：その他",
+    "reason_unanswered": "承認済み入力（requirements・steering・feature 一覧）と手本の既存コードに値が無く、推測で書けないため"
+   },
+   {
+    "id": "Q-DS-PBI-013",
+    "target": "specs/property-basic-info/design.md",
+    "location": "物件基本情報登録変更 Service、要件 9",
+    "question": "進捗管理DB 用 CSV のファイル。ファイル名、文字コード（Windows-31J か）、見出し行の有無、改行コード、項目の囲み（\"）を教えてください（Q-DS-PBI-012 で A の場合）。",
+    "reason_unanswered": "承認済み入力（requirements・steering・feature 一覧）と手本の既存コードに値が無く、推測で書けないため"
+   },
+   {
+    "id": "Q-DS-PBI-014",
+    "target": "specs/property-basic-info/design.md",
+    "location": "技術スタック、テスト戦略",
+    "question": "自動テストと検証の道具（Phase 8 で使う）。steering は「自動テストは必須にしない。書く場合は JUnit 4.12 と spring-test」です。Phase 8 ではタスクごとにテストを先に書いて実行します。 1. Mapper（DB）の代わりに使う偽物：Mockito をテスト用の依存として `wing/pom.xml` に足すか、手書きの代替クラスにするか 2. テストを動かす JDK：steering どおり 1.7 系（無償の Zulu 7 など）を入れるか、1.8 で `-source/-target 1.7` のまま動かすか 3. Oracle を使う確認（Mapper XML の SQL）は、この端末では動かせません。総合テスト（試験仕様書）に回す、でよいか 4. レポート：Maven Surefire の結果（XML と HTML）を使う。カバレッジ（JaCoCo）も足すか",
+    "reason_unanswered": "承認済み入力（requirements・steering・feature 一覧）と手本の既存コードに値が無く、推測で書けないため"
+   },
+   {
+    "id": "Q-DS-PBI-015",
+    "target": "specs/property-basic-info/design.md",
+    "location": "移行方針、テスト体制 / テスト仕様",
+    "question": "移行とテスト体制の欄。1. 新しいテーブルは DB レイアウト設計書から DDL を作り、導入手順書で発注者が適用する（steering）。既存データの移行は無い、でよいか 2. 「テスト体制 / テスト仕様」の欄（責任者・環境・期間・連絡先・詳細仕様書）は、この design では不要としてよいか（不要なら理由）",
+    "reason_unanswered": "承認済み入力（requirements・steering・feature 一覧）と手本の既存コードに値が無く、推測で書けないため"
+   }
+  ],
+  "open_placeholders": 66,
+  "changed_findings": [],
+  "return_candidates": [],
+  "summary": "承認済み入力と手本の既存 wing から書ける範囲で下書きを作成した（遷移表・番の表・WTG 申請状態サービス・排他・エラーコード・設計判断 3 件）。列定義・ID・組織判定・下流が持つ定義の扱いなど未確定は質問 15 件（_handoff/questions-phase5-pbi.md と同じ）。PWTGB090（今回の案件の成果物）は根拠にしていない。要件トレーサビリティ自己診断（property-basic-info）：抽出 93 件、design 内の対応位置あり 93 件、未対応 0 件（列定義など値の未確定は質問で扱う）。"
+ }
+}

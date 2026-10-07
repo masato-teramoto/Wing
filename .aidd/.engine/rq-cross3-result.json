@@ -1,0 +1,56 @@
+{
+  "status": "ok",
+  "action": "submit",
+  "result": {
+    "unit": "requirements-cross-gate/requirements-cross-gate[-]::end.review",
+    "flow": "requirements-cross-gate",
+    "event": "requirements-cross-gate",
+    "item": null,
+    "gate": "review",
+    "hookPoint": "end",
+    "name": "review",
+    "type": "script",
+    "target": "scripts/approval.py",
+    "isAgent": false,
+    "requiresHuman": true,
+    "calls": [],
+    "targetReview": [
+      "specs/**"
+    ],
+    "status": "wait",
+    "call": "requirements-cross-gate",
+    "dispatch": {
+      "call": "requirements-cross-gate",
+      "unit": "requirements-cross-gate/requirements-cross-gate[-]::end.review",
+      "event": "requirements-cross-gate",
+      "item": null,
+      "status": "wait",
+      "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+      "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"requirements-cross-gate/requirements-cross-gate[-]::end.review\", \"snapshot\": \"b9c01e619c0e7c795f8effa9642a03a8e830c5da89e7e41e65041074aa33f638\", \"run\": 3, \"inspection_hash\": \"013c38661e3036ac23e8f400d15dd787773276739a063926c57550de3820b232\"}\n**Phase 4（requirements 作成）の品質ゲートを実行しました。** 指摘ごとに判断を選んでください。\n\n**対象**: `specs/property-basic-info/requirements.md` / `specs/issue-request/requirements.md` / `specs/issue-request-tutorial/requirements.md` / `specs/print-report/requirements.md` / `specs/application-status-search/requirements.md` / `specs/contract-info-import/requirements.md` / `specs/contract-info-download/requirements.md`（スコープ: 横断 / 3 回目）\n**実行した層**: ②（形式検査を持たない横断スコープのため ② のみ）\n\n**指摘**（ゲート記録 `.aidd/gates/phase-4-requirements.md` の当該実行分）: なし（0 件。検査は実行済み）\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n横断スコープは承認対象の文書を持たないため、承認ではなく確認を記録します。確認する場合は確認者名を回答してください。",
+      "id": "b5cdfbcc1d4e49c8b5591b1359b98616"
+    },
+    "label": "requirements-cross-gate / requirements-cross-gate",
+    "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"requirements-cross-gate/requirements-cross-gate[-]::end.review\", \"snapshot\": \"b9c01e619c0e7c795f8effa9642a03a8e830c5da89e7e41e65041074aa33f638\", \"run\": 3, \"inspection_hash\": \"013c38661e3036ac23e8f400d15dd787773276739a063926c57550de3820b232\"}\n**Phase 4（requirements 作成）の品質ゲートを実行しました。** 指摘ごとに判断を選んでください。\n\n**対象**: `specs/property-basic-info/requirements.md` / `specs/issue-request/requirements.md` / `specs/issue-request-tutorial/requirements.md` / `specs/print-report/requirements.md` / `specs/application-status-search/requirements.md` / `specs/contract-info-import/requirements.md` / `specs/contract-info-download/requirements.md`（スコープ: 横断 / 3 回目）\n**実行した層**: ②（形式検査を持たない横断スコープのため ② のみ）\n\n**指摘**（ゲート記録 `.aidd/gates/phase-4-requirements.md` の当該実行分）: なし（0 件。検査は実行済み）\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n横断スコープは承認対象の文書を持たないため、承認ではなく確認を記録します。確認する場合は確認者名を回答してください。",
+    "allowed_actions": [
+      "approve"
+    ],
+    "review_context": {
+      "root": "C:\\project\\Wing",
+      "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+      "call": "requirements-cross-gate",
+      "event": "requirements-cross-gate",
+      "item": "",
+      "dispatch_id": "b5cdfbcc1d4e49c8b5591b1359b98616",
+      "unit": "requirements-cross-gate/requirements-cross-gate[-]::end.review",
+      "scope": "cross",
+      "run": 3,
+      "snapshot": "b9c01e619c0e7c795f8effa9642a03a8e830c5da89e7e41e65041074aa33f638",
+      "record_hash": "013c38661e3036ac23e8f400d15dd787773276739a063926c57550de3820b232"
+    },
+    "review": [],
+    "next_action": "検査結果を確認し、指摘ごとに A〜D で判断を回答してください（判断が揃い修正が無ければ承認者名を回答）。",
+    "operation_id": "c679e281a3f14e78b8ebff33f28f994c",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

@@ -19,7 +19,8 @@ import review_decisions
 import review_contract
 import project_progress
 
-ORIGINS = ("finding", "plan-change", "reopen", "authoring-candidate", "rollback", "rollback-derived", "rfp-change", "edited-outside-flow", "upstream-change")
+ORIGINS = ("finding", "plan-change", "reopen", "authoring-candidate", "rollback", "rollback-derived", "rfp-change", "edited-outside-flow", "upstream-change",
+           "reevaluation")
 
 
 def rule_of(context):
@@ -63,6 +64,38 @@ def consume(context):
         project_progress.save(context, {"repairs": repairs, "repair_history": history})
 
 
+def executed(data):
+    """修正の回で実行済み（その回の検査を封印した）依頼か。承認（consumed）より前に、実行済みかを区別する。"""
+    return isinstance(data, dict) and bool(data.get("executed_run"))
+
+
+def waiting(context):
+    """予約済みで、まだ修正の回で実行していない依頼（無ければ None）。"""
+    data = pending(context)
+    return None if executed(data) else data
+
+
+def mark_executed(context, run_number):
+    """修正の回の検査を封印したとき、その回で実行した依頼に印を付ける（次の依頼は追記せず新しく作る）。"""
+    data = pending(context)
+    if data and not executed(data) and not unscheduled(data):
+        _record(context, dict(data, executed_run=run_number, executed_at=project_state.now()))
+
+
+def requests_with_history(context):
+    """今の依頼と、承認・置き換えで履歴に移した依頼。"""
+    workflow = project_progress.workflow(context)
+    return [r for r in list(workflow.get("repairs", {}).values()) + list(workflow.get("repair_history", []))
+            if isinstance(r, dict)]
+
+
+def _supersede(owner, existing):
+    """実行済みの依頼を履歴に移す（記録は消さない）。"""
+    history = list(project_progress.workflow(owner).get("repair_history", []))
+    history.append(dict(existing, superseded=project_state.now()))
+    project_progress.save(owner, {"repair_history": history})
+
+
 def _set_draft(context, targets):
     for target in targets:
         path = Path(context.path(target))
@@ -86,15 +119,51 @@ def _new_request(owner, targets, findings, actor, origin, instruction, extra):
     return data
 
 
+def _finding_key(row):
+    return tuple(row.get(k) for k in ("phase", "scope", "run", "number"))
+
+
+def _merged(owner, existing, targets, findings, instruction):
+    """未消費の依頼に、新しい指摘・対象・指示を追記した依頼（置き換えない）。足すものが無ければ None。"""
+    known = {_finding_key(row) for row in existing.get("findings", [])}
+    added = [row for row in findings if _finding_key(row) not in known]
+    order = owner.artifacts()
+    merged_targets = [t for t in order if t in set(existing["targets"]) | set(targets)]
+    notes = [n for n in (existing.get("instruction") or "").split("\n") if n]
+    if instruction and instruction not in notes:
+        notes.append(instruction)
+    if not added and merged_targets == existing["targets"] and "\n".join(notes) == (existing.get("instruction") or ""):
+        return None
+    return dict(existing, targets=merged_targets, findings=list(existing.get("findings", [])) + added,
+                instruction="\n".join(notes), scheduled=None)
+
+
 def _open(owner, targets, findings, actor, origin, instruction="", extra=None):
-    """Record the -revise request for owner (a -revise context) and reopen its targets."""
+    """Record the -revise request for owner (a -revise context) and reopen its targets.
+
+    A pending (unconsumed) request is extended, not replaced: a repair and a rollback chosen in
+    the same review both reach the -revise Skill, with every finding and instruction kept.
+    """
     if set(targets) - set(owner.artifacts()):
         raise ValueError("repair may change only the selected owner's artifacts")
     existing = pending(owner)
+    if executed(existing):
+        # 修正の回で実行済みの依頼には追記しない（実行済みの指示を、次の修正の回にもう一度渡さない）。
+        _supersede(owner, existing)
+        existing = None
+    if existing and (origin == "reevaluation") != (existing.get("origin") == "reevaluation") and not existing.get("consumed"):
+        # 再評価の回は本文を変えない。修正の依頼と同じ回にはまとめない（先に再評価し、そのあと修正を選ぶ）。
+        raise ValueError("修正の依頼と再評価は同じ修正の回にできません。先に再評価を終えてから修正を選んでください")
     if existing and all(existing.get(k) == v for k, v in (
             ("targets", list(targets)), ("findings", list(findings)), ("actor", actor),
             ("instruction", instruction), ("origin", origin))):
         data = existing  # a resent request keeps its id, time and instruction
+    elif existing:
+        data = _merged(owner, existing, targets, findings, instruction) or existing
+        if extra and extra.get("operation_id"):
+            data = dict(data, operation_id=extra["operation_id"])  # 再送は最後に追記した操作に結び付ける
+        if data is not existing:
+            _record(owner, data)
     else:
         data = _new_request(owner, targets, findings, actor, origin, instruction, extra)
         _record(owner, data)
@@ -199,7 +268,7 @@ def discovering_key(row):
     return rule["repair"], scope[len("feature:"):] if scope.startswith("feature:") else ""
 
 
-def request(context, payload, actor, apply=True):
+def request(context, payload, actor, apply=True, operation_id=None):
     """Human-selected repair. context names the owner (its -generate or -revise action and item).
 
     apply=False validates everything without writing (used before a review wait is answered).
@@ -219,13 +288,35 @@ def request(context, payload, actor, apply=True):
                       resume_action=payload.get("resume_event", ""), resume_item=payload.get("resume_item", ""))
     selected = payload.get("findings")
     targets = payload.get("targets")
+    if selected == "all-fixes":
+        # 人が「修正」を選んだ指摘と、system が「修正」と判断した軽微を、まとめて修正に回す。
+        # 保存済みで未消費の依頼に入っている修正も対象に含める。依頼を保存した後のやり直しの予約で中断しても、
+        # 同じ操作を再送すれば保存済みの依頼をそのまま使って予約から再開できる（対象が 0 件にならない）。
+        saved = waiting(revise_context(context)) or {}
+        same = bool(operation_id) and saved.get("operation_id") == operation_id
+        # 同じ操作の再送（予約の後、host が結果を保存する前に中断した場合を含む）は、保存済みの依頼の行で、
+        # 予約以降の処理をもう一度通す（どれも何度行っても同じ結果）。予約前に中断した別の操作の依頼も引き継ぐ。
+        # 実行済みの依頼の行は、解消済みや実行済みの指示を含むので使わない（waiting が返さない）。
+        resumed = []
+        if same or unscheduled(saved):
+            record = review_contract.read(context)
+            for row in saved.get("findings", []):
+                found = review_decisions.finding(record, row.get("scope"), row.get("run"), row.get("number"))
+                if (row.get("phase") == context.process and row.get("scope") in review_contract.scopes(context)
+                        and found is not None and not found.resolved and found.decision in ("修正", "差戻し")):
+                    resumed.append(row)
+        selected = resumed + [row for row in fix_rows(context) if _finding_key(row) not in {_finding_key(r) for r in resumed}]
+        if not selected:
+            raise ValueError("no open 修正 findings to repair")
+        targets = targets or [t for t in context.artifacts() if Path(context.path(t)).exists()]
     if not isinstance(selected, list) or not selected or not isinstance(targets, list) or not targets:
         raise ValueError("repair requires human-selected findings and targets before changing status")
     if len(targets) != len(set(targets)) or not set(targets).issubset(context.artifacts()):
         raise ValueError("repair may change only the selected owner's artifacts")
     rows = []
+    missing = []
     for row in selected:
-        if not isinstance(row, dict) or not row.get("instruction"):
+        if not isinstance(row, dict):
             raise ValueError("each selected finding needs the human repair instruction")
         phase = row.get("phase")
         if phase not in phase_rules.RULES:
@@ -237,15 +328,24 @@ def request(context, payload, actor, apply=True):
         found = review_decisions.finding(record, row["scope"], row["run"], row["number"])
         if found is None or found.resolved or found.decision not in ("修正", "差戻し"):
             raise ValueError("repair requires a recorded, unresolved human decision")
+        if not row.get("instruction"):
+            instruction = default_instruction(found)
+            if not instruction:
+                missing.append("%s %s 回目 #%s" % (row["scope"], row["run"], row["number"]))
+                continue
+            # 人が書いていない指示であることを残す（判断負荷の集計で、人が書いた修正指示と分ける）。
+            row = dict(row, instruction=instruction, instruction_source="判断の理由" if instruction == found.reason.strip() else "AI の修正案")
         if phase != context.process and found.decision != "差戻し":
             raise ValueError("cross-phase repair requires the human rollback decision")
         if phase == context.process and row["scope"] not in (context.scope, "cross", "phase") and found.decision != "差戻し":
             raise ValueError("repairing another feature's artifact requires the human rollback decision")
         rows.append(row)
+    if missing:
+        raise ValueError("each selected finding needs the human repair instruction（修正指示が必要: %s）" % " / ".join(missing))
     if not apply:
         return None
     owner = revise_context(context)
-    data = _open(owner, targets, rows, actor, "finding")
+    data = _open(owner, targets, rows, actor, "finding", extra={"operation_id": operation_id} if operation_id else None)
     blockers = list(context.blockers())
     for row in rows:
         other_feature = row["phase"] == context.process and row["scope"] not in (context.scope, "cross", "phase")
@@ -265,9 +365,37 @@ def request(context, payload, actor, apply=True):
         if row["phase"] != context.process or row["scope"] != context.scope:
             _discovering(context, row, context.process, actor)
             _derived(context, context.process, row, actor)
-    if context.process in ("requirements", "design", "tasks"):
-        _redo_cross(context, context.process)
+    # requirements / design の横断検査は、修正を頼んだだけでは無効にしない。修正で成果物が実際に変わり、
+    # 承認された後に、入力の変更として audit が横断検査をやり直す（project_progress.reopen_consumer）。
+    # tasks-gate-run は横断検査ではなく tasks 全体の承認であり、修正した tasks はそこで承認し直すので、今までどおりやり直す。
+    if context.process == "tasks":
+        _redo_cross(context, "tasks")
     return data
+
+
+def default_instruction(found):
+    """人が書かなくてよい修正指示。修正（A）に人が添えた文（質問への回答・自分の指示）、AI の修正案（人が推奨を
+    採用したか、system が軽微と判断したもの）、差戻しは判断の理由（同じ文面を二度入力させない）。決まらなければ空。"""
+    proposal = found.suggestion if found.suggestion not in ("", "-") else ""
+    if found.decision == "修正" and proposal and (found.by_system or found.adopted == "採用"):
+        return proposal
+    if found.decision == "修正" and found.reason.strip() and not found.by_system:
+        return found.reason.strip()
+    if found.decision == "差戻し":
+        return proposal if found.adopted == "採用" and proposal else found.reason
+    return ""
+
+
+def fix_rows(context):
+    """この工程・項目のレビューで、修正（A）を選んだ未解消の指摘（修正の依頼にまだ入っていないもの）。"""
+    record = review_contract.read(context)
+    rows = []
+    for scope in review_contract.scopes(context):
+        for f in record.relevant(scope):
+            if (f.decision == "修正" and f.is_open and not review_contract.repair_covers(context, f)
+                    and not review_contract.repair_executed(context, f)):
+                rows.append({"phase": context.process, "scope": f.scope, "run": f.run, "number": f.number})
+    return rows
 
 
 def reopen(context, targets, instruction, origin, actor, resume_action="", resume_item=""):

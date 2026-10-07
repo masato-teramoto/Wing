@@ -1,0 +1,21 @@
+{
+ "operation_id": "c679e281a3f14e78b8ebff33f28f994c",
+ "dispatch": {
+  "call": "requirements-cross-gate",
+  "unit": "requirements-cross-gate/requirements-cross-gate[-]::run",
+  "event": "requirements-cross-gate",
+  "item": null,
+  "status": "emit",
+  "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+  "detail": null,
+  "id": "b7e369e7e7fa4373980aff31ad4f91f0"
+ },
+ "result": {
+  "status": "completed",
+  "scope": "cross",
+  "run": 3,
+  "findings_count": 0,
+  "layers": "②",
+  "gate_record_path": "C:\\project\\Wing\\.aidd\\gates\\phase-4-requirements.md"
+ }
+}

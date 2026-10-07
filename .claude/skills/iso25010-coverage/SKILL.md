@@ -41,17 +41,32 @@ disable-model-invocation: true
    `non-functional.md` 側は参照で足りるとみなす（実体があれば網羅とみなす）。
 5. 非機能反映突合（traceability）で既に未反映と指摘された要求IDは、同じ記述箇所を理由に重ねて指摘しない。
 
+## この工程で指摘しない事項
+
+- `.claude/skills/finding-rules/SKILL.md` の工程の境界の表・`confirmed_answers`・`learned` に当たる事項
+- `TBD（<工程> で確定）` と書いてある値
+- 「不要」とその理由が明記された特性
+- 非機能反映突合（traceability）で既に指摘された要求IDと同じ記述箇所
+
+当たるものは指摘にせず、除外として返す（除外の出典を付ける。書き方は finding-rules）。
+
 ## 出力の形
 
+指摘ごとに次を返す。書き方は `.claude/skills/finding-rules/SKILL.md`（検査の最初に読む）に従う。重大度は出さない（L3 が `kind` から決める）。
+
 ```
-{ id, location, finding, is_rollback_candidate }
+{ location, subject, kind, summary, evidence, suggestion, recommendation, is_rollback_candidate }
 ```
 
 | フィールド | 内容 |
 |---|---|
-| `id` | この Skill 内で一意な通し番号 |
-| `location` | 記述が欠落している特性名 |
-| `finding` | 欠落の事実（例: 「ISO/IEC 25010の『移植性』に対応する方針が `non-functional.md` に無い」） |
+| `location` | 記述が欠落している特性名（対象ファイルの箇所）。`<案件相対パス> § <節見出し> / <ID>` の形。複数箇所なら代表 1 か所＋「ほか n か所」（全件は `evidence`） |
+| `subject` | 対象の語（例: `移植性`） |
+| `kind` | `.claude/skills/finding-rules/SKILL.md` の種類から 1 つ選ぶ。迷ったら上の行。通常 `業務のあいまい・不足`。セキュリティ方針の欠落は `業務の欠落・矛盾` |
+| `summary` | 60 字以内。結論を先に、何が・どこで（例: 「『移植性』に対応する方針が non-functional.md に無い」） |
+| `evidence` | 欠落の事実と、確認した対象の範囲（使用した観点一覧） |
+| `suggestion` | 追記する方針の文案、または「不要」とその理由の記載。方針の中身が業務の新しい事実なら「何を決めればよいか」と選べる案 |
+| `recommendation` | `修正：理由` / `差戻し：理由` / `対応せず進める：理由` / `質問：理由` のどれか。業務の新しい事実が要るときは `質問：…` |
 | `is_rollback_candidate` | 通常 `false`（同一フェーズ内での追記で解消できるため） |
 
 ## 禁止

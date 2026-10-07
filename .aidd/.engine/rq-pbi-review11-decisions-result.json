@@ -1,0 +1,68 @@
+{
+  "status": "ok",
+  "action": "respond",
+  "result": {
+    "status": "wait",
+    "allowed_actions": [
+      "decision",
+      "decisions",
+      "resolve",
+      "repair"
+    ],
+    "review_context": {
+      "root": "C:\\project\\Wing",
+      "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+      "call": "requirements-authoring-revise",
+      "event": "requirements-authoring-revise",
+      "item": "property-basic-info",
+      "dispatch_id": "f5fd920459c84b74801527956e934808",
+      "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::end.review",
+      "scope": "feature:property-basic-info",
+      "run": 11,
+      "snapshot": "5b1ba49ee329d6488deded3a2cd31e76e67148fa6c51a8cbfbc18758aef6a781",
+      "record_hash": "040e551aed5fe066d39d175ac683a351adfe5ae3dccb8a117eeb313b2d87ed58"
+    },
+    "review": [
+      {
+        "scope": "feature:property-basic-info",
+        "run": 10,
+        "number": 1,
+        "current": false,
+        "decision": "修正",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "二重定義（食い違い）: 4.5 は今回の修正で「承認者は取下げを持たない」とした。一方 6.7 は「承認者の番では承認・差戻・取下の操作ボタンを表示しなければならない」のままで、番が回っている承認者に取下のボタンを表示することを求めている。番が回っている承認者が取下げを行えるか（取下のボタンを表示するか）について、2 つの受け入れ基準が両立しない。先に記載された要件ID は 4.5 だが、4.5 は承認者の取下げを「持たない」と事実の形で書いており、システムが受け付けてはならないのか、ボタンを表示してはならないのかを義務の形で示していない。どちらに合わせるかは人間による確認が必要",
+        "location": "specs/property-basic-info/requirements.md 「要件 4」受け入れ基準 4.5／「要件 6」受け入れ基準 6.7"
+      },
+      {
+        "scope": "feature:property-basic-info",
+        "run": 10,
+        "number": 2,
+        "current": false,
+        "decision": "修正",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "二重定義（食い違い）: 3.9 は今回の修正で再製本依頼の申請済・差戻しからの操作を確認から申請に改め、「再製本依頼の申請者に確認の操作は無い」とした。一方 6.7 は依頼内容を区別せず「申請者の番では更新・確認・申請・差戻・取下」の操作ボタンを表示しなければならないとしており、再製本依頼の申請者の番（3.3 の起案済・回覧中、3.9 の申請済・差戻し）でも確認のボタンの表示を求める。再製本依頼の申請者の番に確認のボタンを表示するかについて両立しない。再製本依頼の申請者の確認を受け付けてはならないとする受け入れ基準も無い。先に記載された要件ID は 3.9。どちらに合わせるかは人間による確認が必要",
+        "location": "specs/property-basic-info/requirements.md 「要件 3」受け入れ基準 3.3・3.9／「要件 6」受け入れ基準 6.7"
+      },
+      {
+        "scope": "feature:property-basic-info",
+        "run": 11,
+        "number": 1,
+        "current": true,
+        "decision": "修正",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "二重定義（範囲の食い違いの可能性）: 今回の修正で 4.5 に「承認者の操作は承認と差戻だけとする」が加わった。承認者が行える操作は 6.6（番が回っている承認者はコメントの入力と自分の番の操作を受け付ける）と 6.7（承認者の番の操作ボタンは承認・差戻）でも定めている。4.5 の文は「操作」の範囲を限っておらず、字義どおりに読むと、6.6 が承認者に受け付けを求めるコメントの入力、9.3 が承認者を含むすべての利用者に求める出力ボタンの使用、6.9 が承認者の番に表示を求める閲覧ボタン・印刷ボタンと両立しない。また、この文は「とする」で締めており、システムの義務・禁止の形（しなければならない／してはならない）になっていない。先に記載された要件ID は 4.5。4.5 の文を回覧の操作（6.7 の操作ボタン）に限った説明と読むか、範囲を書き分けるかは人間による確認が必要",
+        "location": "specs/property-basic-info/requirements.md 「要件 4」受け入れ基準 4.5 の後段（「承認者の操作は承認と差戻だけとする（稟議依頼・修正稟議依頼・再製本依頼とも）」）／「要件 6」受け入れ基準 6.6・6.7・6.9／「要件 9」受け入れ基準 9.3"
+      }
+    ],
+    "next_action": "検査結果を確認し、指摘ごとに A〜D で判断を回答してください（判断が揃い修正が無ければ承認者名を回答）。",
+    "operation_id": "75732260ee5b41d9a92f765ef016205a",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

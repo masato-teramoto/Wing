@@ -1,0 +1,22 @@
+回答者 Junichi Noumi
+Q-DS-PBI-013 その2（CsvUtils は新規）・Q-DS-PBI-014（テストの道具）・Q-DS-PBI-015（移行とテスト体制）
+
+■ CsvUtils について
+こちらの誤りです。CsvUtils は既存の部品ではありません。この feature で新しく作ってください。
+- CSV のライブラリとして orangesignal-csv 2.2.1（groupId com.orangesignal、artifactId orangesignal-csv。Maven Central、Apache License 2.0）を wing/pom.xml の依存に足します。この feature だけで使うライブラリなので、design の「技術スタック」に書いてください。
+- 共通部品として jp.co.kccs.wt.common.utils.CsvUtils を新しく作ります。
+  - defaultCsvConfig()：区切り「,」、囲み「"」、エスケープ「"」、全項目を囲む（QuotePolicy.ALL）、空行は無視、NULL は空文字。
+  - save(出力するリスト, 出力ストリーム, 文字コード, CsvConfig, ハンドラ)：指定の文字コード（ここでは MS932）で書き出す。
+- 出力する1行目（発行依頼書）と2行目以降（契約局）は項目の形が違うので、それぞれの行の項目を順に並べて書き出します（見出し行は出さない）。
+- design の「既存の CsvUtils で作る」は「新しく作る CsvUtils（orangesignal-csv を使う）で作る」に直してください。
+
+■ Q-DS-PBI-014
+1. 依存は足しません。Mapper の代わりは手書きの代替クラスにします（テスト用の依存も足さない）。
+2. 開発端末は JDK 1.8 で、-source/-target 1.7 のまま動かします（本番は JDK 1.7）。1.7 系の JDK は入れません。
+3. それでよいです。Oracle を使う確認（Mapper XML の SQL）は、総合テスト（試験仕様書）に回します。
+4. Surefire の結果（XML・HTML）を使います。JaCoCo は足しません。
+
+■ Q-DS-PBI-015
+1. それでよいです。新しいテーブルは DB レイアウトから DDL を作り、導入手順書に沿って発注者が適用します。既存データの移行はありません（この feature のテーブルはどれも新しいため）。
+   ただし、既存のテーブルに足すデータはあります。コードマスタ（TWTZM040）の WTG/PARAM の行（P27〜P30・P33・P34・P71・P78〜P80・P82 など、この feature が使うもの）と、採番マスタ（TWTZM050）の WTG070 の行です。これも導入手順書で発注者が投入します。審査権限マスタ（TWTGM170）の値も同じく発注者が投入します。
+2. 不要です。体制・環境・期間・連絡先は案件の計画書で管理し、テストの詳細は試験仕様書に書くためです。design には「試験仕様書と計画書で扱う」とだけ書いてください。

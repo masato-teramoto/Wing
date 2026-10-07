@@ -1,0 +1,80 @@
+{
+  "status": "ok",
+  "action": "respond",
+  "result": {
+    "status": "wait",
+    "allowed_actions": [
+      "decision",
+      "decisions",
+      "resolve",
+      "repair"
+    ],
+    "review_context": {
+      "root": "C:\\project\\Wing",
+      "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+      "call": "design-authoring-generate",
+      "event": "design-authoring-generate",
+      "item": "property-basic-info",
+      "dispatch_id": "3357ec041bc44614b8faacb3603ed56a",
+      "unit": "design-authoring-generate/design-authoring-generate[property-basic-info]::end.review",
+      "scope": "feature:property-basic-info",
+      "run": 1,
+      "snapshot": "a40eabbcd2d472517ff45630cb5717579e5ee6e7f5102ffc06923c972706b7fb",
+      "record_hash": "2dbbe90d672a995f97e0afca49cf21c14f3a2cc4c0df6808a47389421a37a827"
+    },
+    "review": [
+      {
+        "scope": "feature:property-basic-info",
+        "run": 1,
+        "number": 1,
+        "current": true,
+        "decision": "修正",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "見出し構造がテンプレートと一致しない。`## 設計判断` の `_分担_` 注記（行881）が「比較表や調査資料そのものは `」の位置で途切れ、その続きに `### 判断 4: 更新系の要求の URL を CSRF の照合に乗る末尾にそろえる` が注記の文として入っているため、判断 4 は見出しになっていない（行883〜887 の本文は見出しを持たない）。行889 にテンプレートに無い見出し「## 補足資料（Supporting References）`。ここには選択肢を比べて選んだことだけを書く。」があり、`## 補足資料（Supporting References）` 相当の見出しが2回（行889・行917）現れる。その結果、`### 判断 1`〜`### 判断 3`（行893・901・909）とテンプレートの `_書き方_` 注記（行891）が `## 設計判断` ではなく行889 の見出しの下に位置している",
+        "location": "specs/property-basic-info/design.md `## 設計判断（Design Decisions）`〜`## 補足資料（Supporting References）`（行878〜917）"
+      },
+      {
+        "scope": "feature:property-basic-info",
+        "run": 1,
+        "number": 2,
+        "current": true,
+        "decision": "修正",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "プレースホルダー削除: テンプレートの `<DSN_MIGRATION_ROLLBACK>`・`<DSN_MIGRATION_CHECKPOINT>` が残置されず、「不要：…」の文だけに置き換わっている。不要理由は書かれているが、プレースホルダーを不要理由付きで残す規約（status-protocol §7「どちらの系統も削除しない」）を満たしていない（同書の行143・441・510・598・876 はプレースホルダーを残して不要理由を併記している）",
+        "location": "specs/property-basic-info/design.md `### 移行方針（Migration Strategy）`（行831・832）"
+      },
+      {
+        "scope": "feature:property-basic-info",
+        "run": 1,
+        "number": 3,
+        "current": true,
+        "decision": "修正",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "プレースホルダー削除: テンプレートの `<DSN_TEST_OWNER>`・`<DSN_TEST_ENVIRONMENT>`・`<DSN_TEST_PERIOD>`・`<DSN_TEST_ESCALATION>`・`<DSN_TEST_SPEC_LINK>` が残置されず、「不要：試験仕様書と計画書で扱う（Q-DS-PBI-015）」の文だけに置き換わっている。不要理由付きでプレースホルダーを残す規約（status-protocol §7）を満たしていない",
+        "location": "specs/property-basic-info/design.md `### テスト体制 / テスト仕様`（行852〜856）"
+      },
+      {
+        "scope": "feature:property-basic-info",
+        "run": 1,
+        "number": 4,
+        "current": true,
+        "decision": "修正",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "一覧ではドメイン / レイヤを「文書バーコード / Controller・Service・Mapper」としているが、詳細は `### 物件基本情報登録変更` の見出しの下に置かれ、`### 文書バーコード` のドメイン見出しが無い。テンプレートの「各行は下の詳細と対応し、コンポーネント名・ドメイン / レイヤ・目的・受け入れ基準ID は同じ値を書く」と、一覧と詳細の見出し構造が対応していない",
+        "location": "specs/property-basic-info/design.md `### コンポーネント一覧（Summary）` の「文書バーコード Controller・Service・Mapper」行（行430）と `### 物件基本情報登録変更` 配下の `#### 文書バーコード Controller・Service・Mapper`（行502・592）"
+      }
+    ],
+    "next_action": "検査結果を確認し、指摘ごとに A〜D で判断を回答してください（判断が揃い修正が無ければ承認者名を回答）。",
+    "operation_id": "5debb849594043279cf15db0f1dbc5b4",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

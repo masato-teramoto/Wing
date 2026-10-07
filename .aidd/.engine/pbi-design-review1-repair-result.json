@@ -1,0 +1,18 @@
+{
+  "status": "ok",
+  "action": "respond",
+  "result": {
+    "status": "repair",
+    "allowed_actions": [],
+    "blockers": [],
+    "next_action": "修正の工程（design-authoring-revise --item property-basic-info）を実行し、再検査後に元の検査をやり直してください。",
+    "repair": {
+      "event": "design-authoring-revise",
+      "item": "property-basic-info",
+      "call": "design-authoring-revise"
+    },
+    "operation_id": "277997847800464282932609931490f1",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

@@ -1,0 +1,20 @@
+回答者 Junichi Noumi
+Q-DS-PBI-003（契約局情報 TWTGM140）
+
+■ Q-DS-PBI-003（契約局情報 TWTGM140）
+- 列（主なもの。全345列。残りは発行依頼書の契約局ごとの項目で、定義は契約局取込の形式と同じ並び）
+| 論理名 | 列名 | 型 | 桁 |
+|---|---|---|---|
+| 申請No | Application_No | String | 11（必須） |
+| 稟議バーコードNo | Ringi_Barcode_No | String | 25 |
+| 連番 | Renban | Int | 4（必須） |
+| 代表局番号／枝番 | Represent_SIteID_No／Represent_SiteID_Branch | String | 9／5 |
+| 基地局番号／基地局番号_枝番 | Kichikyoku_No／Kichikyoku_No_Branch | String | 9／5 |
+| 基地局名／基地局名(ｶﾅ) | Kichikyoku_Name／Kichikyoku_Name_Kana | String | 120／120 |
+| 計画基地局番号／計画基地局名 | Keikaku_Kichikyoku_No／Keikaku_Kichikyoku_Name | String | 9（必須）／120 |
+| 物件名 | Bukken_Name | String | 100 |
+| 一時保存フラグ | Draft_Flg | String | 1（0:更新済 1:一時保存中） |
+- 一意キー：会社コード＋申請No＋連番＋計画基地局番号。
+- 行の順番は「連番」で持つ。連番1が代表局で、並替え・削除はできない。
+- 基地局番号リンクは、その行の申請No＋連番を発行依頼書の画面へ渡す。発行依頼書（TWTGM100）は申請No で結ぶ（1申請に1行）。契約局は申請No＋連番で読む。
+- 画面に出す列：No（連番）、稟議バーコードNo、基地局番号、枝番、基地局名、物件名、契約者（発行依頼書の関係者1〜5 から作る）。

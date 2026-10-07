@@ -1,0 +1,30 @@
+{
+ "operation_id": "0e519cfa975e4ea49689511a4929ecbb",
+ "action": "decisions",
+ "dispatch": {
+  "call": "requirements-authoring-revise",
+  "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::end.review",
+  "event": "requirements-authoring-revise",
+  "item": "property-basic-info",
+  "status": "wait",
+  "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::end.review\", \"snapshot\": \"ad7bed903e5252b9a896b415162bf4e470e3e016b4311cc8c2a30d3f63e1e983\", \"run\": 10, \"inspection_hash\": \"46cfc54992fd708fa3faed2e8f8065059c8aacad3cd17190019063d8cd9778ae\"}\n**Phase 4（requirements 作成）の品質ゲートを実行しました。** 指摘ごとに判断を選んでください。\n\n**対象**: `specs/property-basic-info/requirements.md`（スコープ: 成果物単位（property-basic-info） / 10 回目）\n**実行した層**: ① / ②\n\n**指摘**（ゲート記録 `.aidd/gates/phase-4-requirements.md` の当該実行分）\n\n| # | 層 | 対象箇所 | 指摘内容 |\n|---|---|---|---|\n| 1 | ② | specs/property-basic-info/requirements.md 「要件 4」受け入れ基準 4.5／「要件 6」受け入れ基準 6.7 | 二重定義（食い違い）: 4.5 は今回の修正で「承認者は取下げを持たない」とした。一方 6.7 は「承認者の番では承認・差戻・取下の操作ボタンを表示しなければならない」のままで、番が回っている承認者に取下のボタンを表示することを求めている。番が回っている承認者が取下げを行えるか（取下のボタンを表示するか）について、2 つの受け入れ基準が両立しない。先に記載された要件ID は 4.5 だが、4.5 は承認者の取下げを「持たない」と事実の形で書いており、システムが受け付けてはならないのか、ボタンを表示してはならないのかを義務の形で示していない。どちらに合わせるかは人間による確認が必要 |\n| 2 | ② | specs/property-basic-info/requirements.md 「要件 3」受け入れ基準 3.3・3.9／「要件 6」受け入れ基準 6.7 | 二重定義（食い違い）: 3.9 は今回の修正で再製本依頼の申請済・差戻しからの操作を確認から申請に改め、「再製本依頼の申請者に確認の操作は無い」とした。一方 6.7 は依頼内容を区別せず「申請者の番では更新・確認・申請・差戻・取下」の操作ボタンを表示しなければならないとしており、再製本依頼の申請者の番（3.3 の起案済・回覧中、3.9 の申請済・差戻し）でも確認のボタンの表示を求める。再製本依頼の申請者の番に確認のボタンを表示するかについて両立しない。再製本依頼の申請者の確認を受け付けてはならないとする受け入れ基準も無い。先に記載された要件ID は 3.9。どちらに合わせるかは人間による確認が必要 |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n**判断の選択肢**（指摘ごとに 1 つ選ぶ）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n\n回答例: `1:A / 2:C 既存システムの制約で変更できない / 3:D 次回レビューまで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。",
+  "id": "6149a8703b864942a73f316b4e1ff5b2"
+ },
+ "expected": {
+  "root": "C:\\project\\Wing",
+  "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+  "call": "requirements-authoring-revise",
+  "event": "requirements-authoring-revise",
+  "item": "property-basic-info",
+  "dispatch_id": "6149a8703b864942a73f316b4e1ff5b2",
+  "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::end.review",
+  "scope": "feature:property-basic-info",
+  "run": 10,
+  "snapshot": "ad7bed903e5252b9a896b415162bf4e470e3e016b4311cc8c2a30d3f63e1e983",
+  "record_hash": "46cfc54992fd708fa3faed2e8f8065059c8aacad3cd17190019063d8cd9778ae"
+ },
+ "data": {
+  "answer": "全件:A"
+ }
+}

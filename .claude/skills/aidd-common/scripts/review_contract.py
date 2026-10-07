@@ -63,15 +63,34 @@ def complete_inspection(context, record, scope):
     if missing:
         raise ValueError("必要な検査が未完了: %s / 回数 %s / 必須 %s / 実行 %s / 未実施 %s"
                          % (scope, run.number, required, run.layers, missing))
+    import finding_rules
+    unchecked = finding_rules.unchecked_targets(run)
+    if unchecked:
+        # 形式不備の節は意味検査から外れている。指摘を受容しても未検査は埋まらない（旧版の ① だけの回と同じ扱い）。
+        raise ValueError("必要な検査が未完了: %s / 回数 %s / 形式不備で意味検査から外した対象 %s（形式を直して再検査する）"
+                         % (scope, run.number, ", ".join(sorted(unchecked))))
     return run
 
 
+def _lists(request, finding, context):
+    key = {"scope": finding.scope, "run": finding.run, "number": finding.number}
+    return any(all(row.get(k) == v for k, v in key.items()) and row.get("phase") == context.process
+               for row in request.get("findings", []))
+
+
+def repair_executed(context, finding):
+    """この指摘を含む修正の依頼が、修正の回で実行済み（その回の検査を封印した）か。承認済みの依頼も含む。"""
+    import repair_requests
+    return any((request.get("executed_run") or request.get("consumed")) and _lists(request, finding, context)
+               for request in repair_requests.requests_with_history(context))
+
+
 def repair_covers(context, finding):
-    """A pending human-selected repair (same phase) or rollback covers this open finding."""
+    """A pending human-selected repair (same phase, not yet run) or rollback covers this open finding."""
     import project_progress
     key = {"scope": finding.scope, "run": finding.run, "number": finding.number}
     for request in project_progress.workflow(context).get("repairs", {}).values():
-        if isinstance(request, dict) and not request.get("consumed") and any(
+        if isinstance(request, dict) and not request.get("consumed") and not request.get("executed_run") and any(
                 all(row.get(k) == v for k, v in key.items()) and row.get("phase") == context.process
                 for row in request.get("findings", [])):
             return True

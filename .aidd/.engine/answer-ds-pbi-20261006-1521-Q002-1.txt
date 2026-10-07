@@ -1,0 +1,9 @@
+回答者 Junichi Noumi
+Q-DS-PBI-002
+
+先にDBレイアウトから回答
+
+まずは、ユニークキー。
+
+キー名：AK_TWTGM080_1
+項目：会社コード（CompanyCD）、申請No（Application_No）

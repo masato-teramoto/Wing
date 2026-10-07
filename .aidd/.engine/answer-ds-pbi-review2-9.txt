@@ -1,0 +1,24 @@
+回答者 Junichi Noumi（design 検査 2 回目 #9 の続き：CSRF は B、URL の一覧、#14 の項目一覧の置き場所）
+B でお願いします。servlet-context.xml の CSRF の照合の設定は変えません。照合の対象は、URL の末尾が update・approved などに一致するもの（既存の規約どおり）で、ほかの更新系の URL は照合なしで進めます。steering の security と食い違うことは、design に書いてください。既存の WiNG の画面も同じ扱い（末尾一致の対象だけを照合）であり、servlet-context.xml は wing 全体の設定なので、この feature では変えない、という理由です。
+
+URL は次のとおりにしてください（/wtg070/ ＋ アクション）。
+| 操作 | URL |
+|---|---|
+| 表示 | /wtg070（アクションなし）、申請状況一覧からの表示 /wtg070/pushApplicationNo、再表示 /wtg070/search |
+| 戻る | /wtg070/returnList |
+| 更新 | /wtg070/update |
+| 削除（申請） | /wtg070/deleteShinse |
+| 申請依頼・確認・承認・申請・差戻し・取下げ | /wtg070/shinseIrai・/check・/approved・/shinse・/sashimodoshi・/cancel |
+| 再製本・修正稟議 | /wtg070/Saisehon・/Shusei |
+| 単独局・複数局の切替 | /wtg070/tandokuFukusu |
+| ファイル登録・削除・確定 | /wtg070/insertFile・/deleteFile・/commitFile |
+| ファイルのダウンロード | /wtg070/downLoad（→ /wtg070/executeDownLoad） |
+| 契約局情報追加・発行依頼書編集・基地局番号リンク | /wtg070/addKeyaku・/henshu・/hakkoLink |
+| 処理状況・契約局取込・契約局DL | /wtg070/taskList・/keyakuTorikomi・/keyakuDl |
+| 並替え・契約局情報の削除・出力 | /wtg070/sort・/deleteContract・/output |
+| 発送書類有無を「あり」にしたときの発送希望日 | /wtg070/inputHassoKiboDate |
+| 印刷・閲覧帳票 | /wtg072/search |
+| 文書バーコード 表示・生成・更新 | /wtg073（アクションなし）・/wtg073/create・/wtg073/update |
+CSRF の照合に乗るのは /wtg070/update・/wtg070/approved・/wtg073/update です。設計判断 4 は「URL は既存の規約（/機能ID/アクション）にそろえ、CSRF の照合の設定は変えない」に書き直してください。
+
+#14 の項目一覧は C:\project\Wing\_handoff\csv-layout-wtg070.md に置いてあります。そこから読んで、design の補足資料として付けてください。

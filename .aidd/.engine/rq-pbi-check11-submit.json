@@ -1,0 +1,21 @@
+{
+ "operation_id": "b58b9a508bf44d1baf48513822a8ed34",
+ "dispatch": {
+  "call": "requirements-authoring-revise",
+  "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::end.requirements-check",
+  "event": "requirements-authoring-revise",
+  "item": "property-basic-info",
+  "status": "emit",
+  "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+  "detail": null,
+  "id": "b911dbffc0cd4fe193f1f820b7a9bedc"
+ },
+ "result": {
+  "status": "completed",
+  "scope": "feature:property-basic-info",
+  "run": 11,
+  "findings_count": 1,
+  "layers": "①②",
+  "gate_record_path": "C:\\project\\Wing\\.aidd\\gates\\phase-4-requirements.md"
+ }
+}

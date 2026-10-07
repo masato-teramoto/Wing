@@ -25,21 +25,35 @@ disable-model-invocation: true
    かかわらず、正常系のACしか無い場合を指摘する。
 4. 性質上、異常系や境界値が意味を持たない要件（純粋な表示のみ等）は対象外とする。
 
+## この工程で指摘しない事項
+
+- `.claude/skills/finding-rules/SKILL.md` の工程の境界の表・`confirmed_answers`・`learned` に当たる事項
+- `TBD（<工程> で確定）` と書いてある値
+- 境界値の値そのものが後の工程で決まる場合に、「後で決める」（`TBD（<工程> で確定）` など）と書いてあるもの（例: 桁数は design で決める）
+
+当たるものは指摘にせず、除外として返す（除外の出典を付ける。書き方は finding-rules）。
+
 ## 出力の形
 
+指摘ごとに次を返す。書き方は `.claude/skills/finding-rules/SKILL.md`（検査の最初に読む）に従う。重大度は出さない（L3 が `kind` から決める）。
+
 ```
-{ id, location, finding, is_rollback_candidate }
+{ location, subject, kind, summary, evidence, suggestion, recommendation, is_rollback_candidate }
 ```
 
 | フィールド | 内容 |
 |---|---|
-| `id` | この Skill 内で一意な通し番号 |
-| `location` | 網羅が不足している要件 |
-| `finding` | 不足の事実（例: 「要件1.3は入力必須項目を持つが、未入力時のACが無い」） |
+| `location` | 網羅が不足している要件。`<案件相対パス> § <節見出し> / <ID>` の形。複数箇所なら代表 1 か所＋「ほか n か所」（全件は `evidence`） |
+| `subject` | 対象の語（例: `要件1.3`） |
+| `kind` | `.claude/skills/finding-rules/SKILL.md` の種類から 1 つ選ぶ。迷ったら上の行。通常 `業務のあいまい・不足` |
+| `summary` | 60 字以内。結論を先に、何が・どこで（例: 「要件1.3 に入力必須項目の未入力時の AC がない」） |
+| `evidence` | 不足しているカテゴリ（異常系・境界値）と、それが想定される理由（入力・状態変更など） |
+| `suggestion` | 追加する AC の文案。挙動・値が業務の新しい事実なら「何を決めればよいか」と選べる案 |
+| `recommendation` | `修正：理由` / `差戻し：理由` / `対応せず進める：理由` / `質問：理由` のどれか。業務の新しい事実が要るときは `質問：…` |
 | `is_rollback_candidate` | 通常 `false`（同一フェーズ内でのAC追記で解消できるため） |
 
 ## 禁止
 
 - 対象成果物を書き換えない（ACを自動で追記しない）
 - 合否を出さない
-- 追加すべき具体的なACの文面までは提案しない（不足カテゴリの指摘に留める）
+- 業務の新しい事実が要る値を自分で決めない。`suggestion` に「何を決めればよいか」と選べる案を書き、`recommendation` を `質問：…` にする

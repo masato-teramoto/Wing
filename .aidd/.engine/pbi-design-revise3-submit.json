@@ -1,0 +1,43 @@
+{
+ "operation_id": "441c92a280694567a78746154a1acd8d",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[property-basic-info]::run",
+  "event": "design-authoring-revise",
+  "item": "property-basic-info",
+  "status": "emit",
+  "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+  "detail": null,
+  "id": "da379482d52142619bce2e223a5b3471"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/property-basic-info/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "design",
+    "scope": "feature:property-basic-info",
+    "run": 3,
+    "number": 1
+   },
+   {
+    "phase": "design",
+    "scope": "feature:property-basic-info",
+    "run": 3,
+    "number": 2
+   },
+   {
+    "phase": "design",
+    "scope": "feature:property-basic-info",
+    "run": 3,
+    "number": 3
+   }
+  ],
+  "return_candidates": [],
+  "summary": "design 検査 3 回目の指摘 1〜3 を回答者 Junichi Noumi の指示どおり修正した（4 は C）。#1 canOperate に発行依頼書編集を足し、14.5 と同じ条件（稟議依頼・修正稟議依頼で起案者・申請者・確認者が自分の番）で判定し、WTG-100022（14.12）は合わせて判定するとした。/wtg070/henshu ほかの Errors に WTG-100030 の条件を書いた。#2 業務エラー・排他を BindingResult に積むことを steering/tech.md の方式としていた引用を直し、steering から意図して外れることと理由（例外だとエラー画面へ移り入力が消える。既存の wtg005 Pwtgo010Service も同じ作り）を書いた。#3 セキュリティの節の CSRF の文を判断 4・API の注記と同じ内容に直した。#4（C）の指示に合わせ、canOperate の処理状況の根拠を「14.5 の契約局取込に付随する遷移（requirements に受け入れ基準なし）」と書いた。要件トレーサビリティ自己診断：抽出 94 件、対応あり 94 件、未対応 0 件。"
+ }
+}

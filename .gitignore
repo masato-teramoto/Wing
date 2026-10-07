@@ -1,8 +1,21 @@
-# Python（Rimay-JP MCP の実行時に生成される）
+# 生成時の一時物
+node_modules/
+.DS_Store
+Thumbs.db
+
+# engine の作業領域（.aidd/.engine/）は無視しない。検査の控え・封印・回答 payload は
+# レビュー待ちの再開と監査に必要で、git で共有・引継ぎしても続きから実行できる。
+# 一時ファイルだけ除外する。
+.aidd/.engine/*.tmp
+.aidd/**/*.operation.tmp
+
+# ログ（.aidd/logs/*.log — 中身は JSONL）は監査の記録なので**無視しない**。
+# 出力先は .aidd/logging.yaml が決める。追跡したくない場合だけ次の行を有効にする。
+# .aidd/logs/
+
+# Python のキャッシュ
 __pycache__/
 *.py[cod]
 .venv/
-venv/
-
-.DS_Store
-Thumbs.db
+.claude/settings.local.json
+CLAUDE.local.md

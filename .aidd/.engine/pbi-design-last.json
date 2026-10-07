@@ -1,0 +1,67 @@
+{
+  "status": "ok",
+  "action": "respond",
+  "result": {
+    "status": "wait",
+    "allowed_actions": [
+      "decision",
+      "decisions",
+      "approve"
+    ],
+    "review_context": {
+      "root": "C:\\project\\Wing",
+      "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+      "call": "design-authoring-revise",
+      "event": "design-authoring-revise",
+      "item": "property-basic-info",
+      "dispatch_id": "d5af8c3532c54709a088fecaaa987333",
+      "unit": "design-authoring-revise/design-authoring-revise[property-basic-info]::end.review",
+      "scope": "feature:property-basic-info",
+      "run": 5,
+      "snapshot": "3a8e9966cb6da5e8939b7235d89f7f1fb4defd22eade17785cd44eddbf7520d6",
+      "record_hash": "2429f97c491084c04bc0a83f870ec318108c9cf3857d47e48973d2f66df2edd6"
+    },
+    "review": [
+      {
+        "scope": "feature:property-basic-info",
+        "run": 5,
+        "number": 1,
+        "current": true,
+        "decision": "対応せず進める",
+        "reason": "requirements 1.3・6.7・14.5 の「自分の番」は、状態遷移表でその担当の操作が定義されている状態を指す、と読みます。稟議依頼・修正稟議依頼の 起案済・回覧中 は申請者の番ですが、定義されている操作は発行依頼書登録変更の画面での発番だけです。本画面の更新・切替・契約局取込・契約局DL・契約局情報追加は、定義されていないので受け付けません（4.3・4.5 の除外と同じ考え方）。requirements の文言（1.3・6.7・14.5 に「稟議依頼・修正稟議依頼の起案済・回覧中を除く」を足す）は、次に物件基本情報登録変更の requirements を開き直すときにまとめて直します。",
+        "open": false,
+        "resolved": false,
+        "description": "ID対応あり・内容不整合（意味判定）。design は、稟議依頼・修正稟議依頼の起案済・回覧中を申請者の番としている。そのうえで、この状態では本画面に更新ボタンを出さないとしている（行495）。また `canOperate` の単独局と複数局の切替・契約局取込・契約局DL・契約局情報追加の条件でも、申請者の番を受付済・回覧中、受付済・確認中、申請済・差戻しだけとし、この状態を外している（行476）。一方 requirements は次のことを求めている。1.3 は、起案者・申請者・確認者が自分の番なら物件基本情報の項目と契約局情報の変更を許すこと。6.7 は、申請者の番（稟議依頼・修正稟議依頼）で更新ボタンを表示すること。14.5 は、申請者が自分の番なら切替・契約局取込・契約局DL・契約局情報追加を受け付けること。どれにも起案済・回覧中を除く記述は無く、この状態を除外しているのは 4.3・4.5（差戻し・取下げ）だけである。design の扱いは Q-DS-PBI-011 の回答（起案済・回覧中ではどの担当にも更新などのボタンを出さない）と設計検査 2 回目の指示に基づくが、承認済みの requirements とは両立しない",
+        "location": "specs/property-basic-info/design.md `##### 状態管理（State Management）` の番の表の「稟議・修正稟議 起案済 01・回覧中 02」の行（行495）・`#### WTG 申請状態サービス` の `canOperate`（行476）・`##### API 契約` の `/wtg070/update`・`/wtg070/tandokuFukusu`・`/wtg070/addKeyaku`・`/wtg070/keyakuTorikomi`・`/wtg070/keyakuDl`（行545・555・563・565・566）／ specs/property-basic-info/requirements.md 1.3・6.7・14.5"
+      },
+      {
+        "scope": "feature:property-basic-info",
+        "run": 5,
+        "number": 2,
+        "current": true,
+        "decision": "対応せず進める",
+        "reason": "契約局情報追加は、契約局を複数持つ申請に行を足す操作です。単独局モードでは、契約局は1行だけで、発行依頼書編集から登録します。そのため、ボタンは複数局モードのときだけ出します。requirements 14.5 に「契約局情報追加は複数局のときだけ」を足すのは、次に開き直すときにまとめて行います。",
+        "open": false,
+        "resolved": false,
+        "description": "ID対応あり・内容不整合（意味判定）。14.5 は、稟議依頼・修正稟議依頼で起案者・申請者・確認者が自分の番なら契約局情報追加を受け付けることを求めており、単独局か複数局かの条件を付けていない（複数局に限るのは 14.2 の並替え・削除だけ）。一方 design は、契約局情報追加を複数局のときだけ可とし、単独局では拒否する（ボタンを出さず、要求が来たら `WTG-100030`）。この扱いは設計検査 2 回目の指示（「契約局情報追加は、さらに複数局モードのときだけ」）に基づくが、requirements 14.5 とは両立しない",
+        "location": "specs/property-basic-info/design.md `#### WTG 申請状態サービス` の `canOperate`（行476「契約局情報追加・並替え・削除は、さらに複数局のときだけ可」）・契約局情報の操作の条件（行599）・`##### API 契約` の `/wtg070/addKeyaku`（行563）／ specs/property-basic-info/requirements.md 14.5・14.7"
+      },
+      {
+        "scope": "feature:property-basic-info",
+        "run": 5,
+        "number": 3,
+        "current": true,
+        "decision": "対応せず進める",
+        "reason": "TWTGM170 の権限ID は、DB レイアウトで定めた、このテーブル専用の値（1:稟議依頼-申請者〜5:再製本-承認者）です。稟議依頼と再製本依頼で権限を分けて持つ必要があり、P82（01〜04）では表せないためです。番の判定は TWTGM170 で行い、P82 は承認履歴の審査権限に使う、という役割分担は変えません。steering/security.md の権限モデルと、requirements の前提（P82 の 02〜04）の書き換えは、次に開き直すときにまとめて行います。",
+        "open": false,
+        "resolved": false,
+        "description": "矛盾。steering/security.md の権限モデルは、承認フローの申請者・確認者・承認者の権限の定義の置き場を「`TWTGM170`（審査権限マスタ）とその権限コード `P82`」とし、番の判定を `TWTGM170` と `P82` 以外の仕組みで作らないと定めている。requirements の前提も、`TWTGM170` に申請者・確認者・承認者の権限（`P82` の 02〜04）が登録されているとしている。一方 design は、`TWTGM170` の権限ID を `P82` とは別の、このテーブル専用の値（1:稟議依頼-申請者〜5:再製本-承認者）とし、番の判定はこの値で行うとしている。`P82` は承認履歴の審査権限にだけ使う（Q-DS-PBI-006）。2 回目の指摘 12 が扱ったのは、権限ID のコードマスタを作らない点（steering/database.md）である。`P82` を権限コードとする security.md と requirements の前提との食い違いは扱っていない。steering・requirements と design のどちらを直すかの確認が要る",
+        "location": "specs/property-basic-info/design.md `### 物理データモデル（Physical Data Model）` の `TWTGM170` の権限ID（行351）・`#### WTG 申請状態サービス` の `getAuthorities`（行475）・`### セキュリティ上の考慮（Security Considerations）` の認証・認可（行824）／ steering/security.md `#### 権限モデル`（定義の置き場・禁止）、specs/property-basic-info/requirements.md `## 前提と依存（Dependencies / Assumptions）` の前提 1"
+      }
+    ],
+    "next_action": "検査結果を確認し、指摘ごとに A〜D で判断を回答してください（判断が揃い修正が無ければ承認者名を回答）。",
+    "operation_id": "c14e22a968c541d88315e4567faa1cf2",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

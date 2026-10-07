@@ -7,7 +7,7 @@ disable-model-invocation: true
 ## 概要
 
 `.aidd/feature-list.md` を対象に、観点 Skill を順に実行し、指摘を蓄積してから `gate-report` へ
-渡す。① 形式検証で不備が見つかった場合、② 以降には進まない。依存循環・優先度と依存の整合は
+渡す。① 形式検証で不備があっても ② を省略せず、不備のある節だけを ② から外す。依存循環・優先度と依存の整合は
 `type: script` のゲート（`dependency-cycle-check` / `sequence-consistency-check`。
 `gate.yaml` を見る）が決定的に検証し、その指摘は check-runner の手順0
 （`.claude/agents/check-runner.md`）で自動的に合流する。
@@ -15,6 +15,10 @@ disable-model-invocation: true
 ## 入力の範囲
 
 「渡された検査対象」は、ホストが渡した検査対象の明示的な一覧（context の `review_targets`。snapshot の対象と同じ。gate.yaml の `target_review`、省略時はアクションの出力すべて）を指す。一覧のファイルだけを検査対象とし、一覧に無い出力は検査しない。特定のファイル名を書いた行は、そのファイルが検査対象に無ければfailedで返す。以下の `*` / `<feature>` はホストが渡した明示的な対象・上流一覧への表記であり、Globで対象を発見して分母を決める指示ではない。必要なファイルが一覧に無ければfailedで返す。機械指摘は指定された findings_path だけから受け取り、snapshot と実行IDが一致するものを使う。
+
+## 共通ルール
+
+指摘は `.claude/skills/finding-rules/SKILL.md`（検査役が手順の前に読む）に従って出す。書き方・種類・出さない事項（除外）・重ねない決まり・差分の検査・形式不備の扱いはそこに従い、重大度は出さない。どの手順でも、ほかの手順で指摘済みの箇所・同じ原因は重ねない。
 
 ## 手順
 
@@ -51,7 +55,7 @@ disable-model-invocation: true
 
 8. `.claude/skills/steering-conformance/SKILL.md` を Read し、次を指定して実行する（分割のsteering整合）。
 
-   | 対象 | 渡された検査対象 | 参照する steering | `steering/*.md` 一式 | 検証観点 | 分割方針（対象範囲・やらないこと・アーキテクチャ境界）の逸脱。`product.md` で対象外の範囲が feature 化されていないか | 報告単位 | feature |
+   | 対象 | 渡された検査対象 | 参照する steering | `steering/*.md` 一式 | 検証観点 | 分割方針（対象範囲・やらないこと・アーキテクチャ境界）への違反・矛盾。`product.md` で対象外の範囲が feature 化されていないか | 報告単位 | feature |
 
 9. `.claude/skills/evidence-guard/SKILL.md` を Read し、次を指定して実行する。
 
@@ -60,12 +64,14 @@ disable-model-invocation: true
    優先度が、依存の必須先行・`steering/product.md` の主要ユースケースと提供価値・要求一覧から導けるかを見て、
    導けない順序を「根拠が示せない」として指摘する。優先度の妥当性そのものは評価しない（異議は③が出す）。
 
-10. `.claude/skills/gate-report/SKILL.md` を Read し、蓄積した指摘（check-runner の手順0で
+10. `.claude/skills/finding-verification/SKILL.md` を Read し、蓄積した指摘を確かめる。
+
+11. `.claude/skills/gate-report/SKILL.md` を Read し、蓄積した指摘（check-runner の手順0で
     合流させた `dependency-cycle-check` / `sequence-consistency-check` の分を含む）を書き込む。
 
 ## 集約
 
-snapshot の scope / run / at / artifacts をそのまま使う。指摘には呼んだ観点 Skill 名を gate として付け、最後の gate-report で1回だけ記録する。feature 別見出しへ挿入せず、実行ごとのブロックをファイル末尾に追加する。今回件数へ過去の持越しを含めない。
+snapshot の scope / run / at / artifacts をそのまま使う。指摘には呼んだ観点 Skill 名を gate として付け、最後の gate-report で1回だけ記録する。feature 別見出しへ挿入せず、実行ごとのブロックをファイル末尾に追加する。今回件数へ過去の持越しを含めない。変わっていない節の前回の指摘は L3 が引き継ぐので、出し直さない。
 
 ## 禁止
 
@@ -73,4 +79,4 @@ snapshot の scope / run / at / artifacts をそのまま使う。指摘には�
 - 判断・理由欄を埋めない
 - ゲート記録を追記以外の形で変更しない
 - 指示された観点 Skill 以外を勝手に実行しない
-- 合否・重大度を自分で判断しない
+- 合否を自分で判断しない。重大度は書かない（L3 が種類から決める）

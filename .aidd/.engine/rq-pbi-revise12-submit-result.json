@@ -1,0 +1,133 @@
+{
+  "status": "ok",
+  "action": "submit",
+  "result": {
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::end.requirements-check",
+    "flow": "requirements-authoring-revise",
+    "event": "requirements-authoring-revise",
+    "item": "property-basic-info",
+    "gate": "requirements-check",
+    "hookPoint": "end",
+    "name": "requirements-check",
+    "type": "skill",
+    "target": "requirements-check",
+    "isAgent": true,
+    "requiresHuman": false,
+    "calls": [
+      "format-conformance",
+      "traceability",
+      "verifiable-criteria-check",
+      "ac-coverage-completeness",
+      "traceability",
+      "evidence-guard",
+      "ssot-consistency",
+      "steering-conformance",
+      "ssot-consistency",
+      "gate-report"
+    ],
+    "targetReview": [
+      "specs/property-basic-info/requirements.md"
+    ],
+    "status": "emit",
+    "call": "requirements-authoring-revise",
+    "dispatch": {
+      "call": "requirements-authoring-revise",
+      "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::end.requirements-check",
+      "event": "requirements-authoring-revise",
+      "item": "property-basic-info",
+      "status": "emit",
+      "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+      "detail": null,
+      "id": "a5654347a12349dfa8066a687f1a1bdb"
+    },
+    "label": "requirements-authoring-revise / requirements-authoring-revise [property-basic-info]",
+    "allowed_actions": [
+      "submit"
+    ],
+    "context": {
+      "event": "requirements-authoring-revise",
+      "item": "property-basic-info",
+      "scope": "feature:property-basic-info",
+      "targets": [
+        "specs/property-basic-info/requirements.md"
+      ],
+      "review_targets": [
+        "specs/property-basic-info/requirements.md"
+      ],
+      "upstream": [
+        ".aidd/requirement-list.md",
+        ".aidd/feature-list.md",
+        "steering/product.md",
+        "steering/tech.md",
+        "steering/architecture.md",
+        "steering/security.md",
+        "steering/non-functional.md",
+        "steering/database.md",
+        "steering/api-standards.md"
+      ],
+      "unreviewed_inputs": [],
+      "gate_record_path": "C:\\project\\Wing\\.aidd\\gates\\phase-4-requirements.md",
+      "authoring_inputs": [
+        ".aidd/requirement-list.md",
+        ".aidd/feature-list.md",
+        "steering/product.md",
+        "steering/tech.md",
+        "steering/architecture.md",
+        "steering/security.md",
+        "steering/non-functional.md",
+        "steering/database.md",
+        "steering/api-standards.md"
+      ],
+      "snapshot_path": "C:\\project\\Wing\\.aidd\\.engine\\df81e071a039b39d73bc71401429f83ccf03cea7444c9a897426c0e78088eb5a.snapshot.json",
+      "snapshot": {
+        "schema": 2,
+        "phase": "requirements",
+        "event": "requirements-authoring-revise",
+        "scope": "feature:property-basic-info",
+        "at": "2026-10-07T16:31:01+09:00",
+        "artifacts": {
+          "specs/property-basic-info/requirements.md": {
+            "status": "draft",
+            "sha256": "5f172c4890f034214da64d63ee9eddbb59f2ea979f258073b31cb99122bfa6bc"
+          }
+        },
+        "record": {
+          "bytes": 296462,
+          "sha256": "30a6c6e5210bd61af628b649f8ddd2abcfab71e59dad679431e31ddc79d9b2ac",
+          "blocks": 332
+        },
+        "run": 13
+      },
+      "findings_path": "C:\\project\\Wing\\.aidd\\.engine\\df81e071a039b39d73bc71401429f83ccf03cea7444c9a897426c0e78088eb5a.findings.json",
+      "findings": [],
+      "questions": null,
+      "repair": {
+        "event": "requirements-authoring-revise",
+        "item": "property-basic-info",
+        "targets": [
+          "specs/property-basic-info/requirements.md"
+        ],
+        "findings": [
+          {
+            "phase": "requirements",
+            "scope": "feature:property-basic-info",
+            "run": 12,
+            "number": 1,
+            "instruction": "6.6 の前段を次のように書き換えてください。後段（申請者・確認者）はそのままです。\n「番が回っている承認者の場合、システムは 1.3 の変更を受け付けてはならず、コメントの入力と自分の番の回覧の操作（6.7 の操作ボタン）を受け付けなければならない。閲覧・印刷（6.9）と出力（9.3）は、それぞれの受け入れ基準に従う。」"
+          }
+        ],
+        "instruction": "",
+        "origin": "finding",
+        "actor": "Junichi Noumi",
+        "at": "2026-10-07T16:30:20+09:00",
+        "scheduled": "2026-10-07T16:30:21+09:00",
+        "id": "6566c8fb49df8a321d45cc69803b13dc8026968c16f0530fa268da51c124fa41"
+      },
+      "inspection_path": "C:\\project\\Wing\\.aidd\\.engine\\df81e071a039b39d73bc71401429f83ccf03cea7444c9a897426c0e78088eb5a.inspection.md"
+    },
+    "next_action": "作業中（AI が 検査 を実行します）。人の操作は不要です。",
+    "operation_id": "fb43c2034b2e40cbb03cba24763fece8",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

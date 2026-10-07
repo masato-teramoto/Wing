@@ -39,7 +39,9 @@ Phase 8 は [実装契約](../implementation/contract.md) に従い、タスク1
 次に当たれば作業を進めず、編集で吸収せずにホストへ返す。
 
 - 上流が approved でない（`unreviewed_inputs` に挙げた入力を除く）、入力・対象が欠ける → failed。
-- テンプレートを埋める根拠が上流・回答に無い → questions を付けて waiting。
+- テンプレートを埋める根拠が上流・回答に無い → questions を付けて waiting。人が選んで答えられるように、各質問は
+  `{"question": "...", "options": [{"label": "...", "description": "...", "answer": "..."}]}` の形で、上流・RFP から考えられる回答の候補を 2〜4 個付ける
+  （候補を推測で 1 つに決めない。RFP に無い値は「該当なし（RFP に記載なし）として不要理由を併記」を候補に含める）。ホストが選択式の質問で出す。
 - テンプレートと実成果物（既存の自成果物・上流成果物）のあいだで前提が矛盾している → 推測でどちらかへ寄せず、両方の位置と矛盾点を questions または return_candidates に示して waiting。
 - 不備の所在の判断が必要 → 当該工程内の修正を既定とする。上流を疑う前に、自成果物の記述と自工程の質問で解消できないかを先に確認し、解消できない場合だけ return_candidates を返す。
 - 新規要求と思われる内容（どの既存要求の詳細化でもないもの）が下流で出た → 要求一覧を編集せず、所有工程 intake（`.aidd/requirement-list.md`）への return_candidates として waiting。Phase 1 で確定・追記・再承認されるまで自成果物に採用しない。
@@ -91,6 +93,7 @@ Phase 8 は [実装契約](../implementation/contract.md) に従い、タスク1
 {"status":"completed","targets":[],"questions":[],"open_placeholders":0,"changed_findings":[],"return_candidates":[],"summary":""}
 ```
 
+修正の依頼の origin が `reevaluation`（切り替え前の指摘の再評価）のときは、本文を変えずに completed（targets は依頼のとおり、changed_findings は `[]`）を返す。
 statusはcompleted / waiting / failed。targetsには実際に扱った自分の対象、questionsには未回答質問、changed_findingsには修正した指摘キー（phase / scope / run / number。生成と指摘なしの修正では `[]`）、return_candidatesには上流の不足と根拠を記す。completed時は全対象がdraftで、未回答の必須質問と差戻し候補が無いこと。修正済みの報告は指摘の解消・承認を意味しない。ホストが再検査と人間確認を行う。summaryには工程固有の自己診断結果（design の要件トレーサビリティ等）も記す。
 
 `open_placeholders` は今回の対象に残る `<UPPER_SNAKE>` の未記入欄のうち、

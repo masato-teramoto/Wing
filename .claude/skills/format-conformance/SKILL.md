@@ -44,26 +44,38 @@ disable-model-invocation: true
 5. `追加検証` が指定されていれば、それに従って個別の書式・存在検証を行う（依存先実在・US/AC存在・
    完了条件記述の存在など）。
 6. 指摘は `報告単位` でまとめる。
-7. ① で形式の不備を検出した場合、呼び出し元の合成 Skill はこれ以降の観点（②）に進まない
-   （`references/status-protocol.md` §6）。この判断は合成 Skill 側が行うため、本 Skill は
-   検出した不備をすべて列挙して返すだけでよい。
+7. ① で形式の不備を検出しても、呼び出し元の合成 Skill は意味検査（②）を省略しない。不備のある節だけを
+   ② から外す。この判断は合成 Skill 側が行うため、本 Skill は検出した不備をすべて列挙して返すだけでよい。
+
+## この工程で指摘しない事項
+
+- `.claude/skills/finding-rules/SKILL.md` の工程の境界の表・`confirmed_answers`・`learned` に当たる事項
+- `TBD（<工程> で確定）` と書いてある値
+
+当たるものは指摘にせず、除外として返す（除外の出典を付ける。書き方は finding-rules）。
 
 ## 出力の形
 
+指摘ごとに次を返す。書き方は `.claude/skills/finding-rules/SKILL.md`（検査の最初に読む）に従う。重大度は出さない（L3 が `kind` から決める）。
+
 ```
-{ id, location, finding, is_rollback_candidate }
+{ location, subject, kind, summary, evidence, suggestion, recommendation, is_rollback_candidate }
 ```
 
 | フィールド | 内容 |
 |---|---|
-| `id` | この Skill 内で一意な通し番号 |
-| `location` | ファイルパス・セクション見出し・行 |
-| `finding` | 欠落/書式違反の事実（例: 「フロントマターに `status` が無い」「要求ID `REQ-12` が3桁未満」） |
+| `location` | ファイルパス・セクション見出し・行。`<案件相対パス> § <節見出し> / <ID>` の形。複数箇所なら代表 1 か所＋「ほか n か所」（全件は `evidence`） |
+| `subject` | 対象の語（例: `status`） |
+| `kind` | `.claude/skills/finding-rules/SKILL.md` の種類から 1 つ選ぶ。迷ったら上の行。通常 `書式`。参照リンク切れは `文書間の参照` |
+| `summary` | 60 字以内。結論を先に、何が・どこで（例: 「フロントマターに `status` がない」） |
+| `evidence` | 欠落/書式違反の事実と、テンプレート・ID書式側の正 |
+| `suggestion` | 修正案（差分） |
+| `recommendation` | `修正：理由` / `差戻し：理由` / `対応せず進める：理由` / `質問：理由` のどれか。業務の新しい事実が要るときは `質問：…` |
 | `is_rollback_candidate` | 通常 `false`（形式不備は同一フェーズ内で直せるため） |
 
 ## 禁止
 
 - 対象成果物・テンプレートを書き換えない
-- 合否を出さない（②以降に進めるかどうかは呼び出し元が判断する）
+- 合否を出さない
 - 意味的な妥当性（内容の正しさ）を判断しない（それは他の観点 Skill の役割）
 - 自由形式の文書（RFP）に適用しない。テンプレートに無いセクションを「あるべき」として指摘しない

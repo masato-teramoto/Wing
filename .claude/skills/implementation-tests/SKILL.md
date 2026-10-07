@@ -34,5 +34,13 @@ coverage 100%だけでは期待値の検証済みとしない。
 準備タスクでは、既存環境の利用確認と、新規環境を作れることの証跡を区別する。
 新規作成も提供する契約なら専用の新規配置先での実績を確認し、手動復旧後のcheck成功だけで代用しない。
 「既知の制約 / 残課題」の判断待ちと決定ログの解決が矛盾していないか、後続の解消記録を含めて読む。
-コマンド成功を業務的正しさと同一視しない。gate=implementation-testsとして根拠と実ファイル箇所を返す。
+コマンド成功を業務的正しさと同一視しない。gate=implementation-testsとして返す。指摘ごとに location（実ファイルと箇所）・subject・kind・summary（60 字以内）・evidence（根拠と実ファイル箇所）・suggestion・recommendation・is_rollback_candidate を返す。書き方と kind は `.claude/skills/finding-rules/SKILL.md` に従い、重大度は出さない。
 不足する検証をその場で追加実行・コード修正せず、指摘としてホストへ返す。
+
+## この工程で指摘しない事項
+
+- `.claude/skills/finding-rules/SKILL.md` の工程の境界の表・`confirmed_answers`・`learned` に当たる事項
+- `TBD（<工程> で確定）` と書いてある値
+- 仕様にない複数違反の優先順・メッセージの完全一致
+
+当たるものは指摘にせず、除外として返す（除外の出典を付ける。書き方は finding-rules）。

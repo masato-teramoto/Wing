@@ -1,0 +1,56 @@
+{
+  "status": "ok",
+  "action": "respond",
+  "result": {
+    "status": "wait",
+    "allowed_actions": [
+      "decision",
+      "decisions",
+      "resolve",
+      "repair"
+    ],
+    "review_context": {
+      "root": "C:\\project\\Wing",
+      "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+      "call": "requirements-authoring-revise",
+      "event": "requirements-authoring-revise",
+      "item": "property-basic-info",
+      "dispatch_id": "f920745473264ad68e6734ddb26df7d4",
+      "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::end.review",
+      "scope": "feature:property-basic-info",
+      "run": 13,
+      "snapshot": "2da6e633e57b20c081d4932ee39b545d498f01fb6b3d422e1312830111e89762",
+      "record_hash": "aafaf8f8d22bee495e1b4f616647c6ff4f9353b578bbaa5ecefc9163d7ccbeea"
+    },
+    "review": [
+      {
+        "scope": "feature:property-basic-info",
+        "run": 11,
+        "number": 1,
+        "current": false,
+        "decision": "修正",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "二重定義（範囲の食い違いの可能性）: 今回の修正で 4.5 に「承認者の操作は承認と差戻だけとする」が加わった。承認者が行える操作は 6.6（番が回っている承認者はコメントの入力と自分の番の操作を受け付ける）と 6.7（承認者の番の操作ボタンは承認・差戻）でも定めている。4.5 の文は「操作」の範囲を限っておらず、字義どおりに読むと、6.6 が承認者に受け付けを求めるコメントの入力、9.3 が承認者を含むすべての利用者に求める出力ボタンの使用、6.9 が承認者の番に表示を求める閲覧ボタン・印刷ボタンと両立しない。また、この文は「とする」で締めており、システムの義務・禁止の形（しなければならない／してはならない）になっていない。先に記載された要件ID は 4.5。4.5 の文を回覧の操作（6.7 の操作ボタン）に限った説明と読むか、範囲を書き分けるかは人間による確認が必要",
+        "location": "specs/property-basic-info/requirements.md 「要件 4」受け入れ基準 4.5 の後段（「承認者の操作は承認と差戻だけとする（稟議依頼・修正稟議依頼・再製本依頼とも）」）／「要件 6」受け入れ基準 6.6・6.7・6.9／「要件 9」受け入れ基準 9.3"
+      },
+      {
+        "scope": "feature:property-basic-info",
+        "run": 12,
+        "number": 1,
+        "current": false,
+        "decision": "修正",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "二重定義（範囲の食い違いの可能性）: 今回の修正で 4.5 は、承認者の番の「回覧の操作」を 6.7 の操作ボタン（承認・差戻）と定め、閲覧・印刷（6.9）と出力（9.3）は回覧の操作ではなく承認者も使えるとした。一方 6.6 は、番が回っている承認者に受け付ける操作を「コメントの入力と自分の番の操作だけ」に限っている。「自分の番の操作」を 4.5 のいう回覧の操作（6.7 の操作ボタン）と読むと、6.6 は承認者の閲覧・印刷（6.9）と出力（9.3）を受け付けの範囲から外すことになり、4.5 の括弧書き・6.9・9.3 と字義どおりには両立しない。4.5 では食い違いが解けたが、同じ範囲を限る文が 6.6 に残っている。先に記載された要件ID は 4.5。6.6 の「自分の番の操作」を閲覧・印刷・出力も含むものと読むか、6.6 の範囲を書き分けるかは人間による確認が必要",
+        "location": "specs/property-basic-info/requirements.md 「要件 6」受け入れ基準 6.6 の前段（「番が回っている承認者の場合、システムはコメントの入力と自分の番の操作だけを受け付けなければならない」）／「要件 4」受け入れ基準 4.5 の後段の括弧書き（「コメントの入力（6.6）、閲覧・印刷（6.9）、出力（9.3）は回覧の操作ではなく、承認者も使える」）／「要件 6」受け入れ基準 6.9／「要件 9」受け入れ基準 9.3"
+      }
+    ],
+    "next_action": "検査結果を確認し、指摘ごとに A〜D で判断を回答してください（判断が揃い修正が無ければ承認者名を回答）。",
+    "operation_id": "77f7b412cc2248228364c8d5af9c91f2",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

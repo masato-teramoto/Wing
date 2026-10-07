@@ -1,0 +1,21 @@
+{
+ "operation_id": "f56be8598bfb4a64b48de7c67e9e3d7c",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[property-basic-info]::end.design-check",
+  "event": "design-authoring-revise",
+  "item": "property-basic-info",
+  "status": "emit",
+  "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+  "detail": null,
+  "id": "ef42d4cfc2e646fd9327270b18d38b3c"
+ },
+ "result": {
+  "status": "completed",
+  "scope": "feature:property-basic-info",
+  "run": 5,
+  "findings_count": 3,
+  "layers": "①②",
+  "gate_record_path": "C:\\project\\Wing\\.aidd\\gates\\phase-5-design.md"
+ }
+}

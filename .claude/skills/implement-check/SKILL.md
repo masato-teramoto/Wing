@@ -26,6 +26,10 @@ summary.pathとreport_receipts[].reportの生成物で識別する。ディレ�
 implementation-toolsによる実行成否、必須出力、実ケース数、証跡の整合性・鮮度の確認は維持する。
 機械検査の不合格を無視せず、過去の指摘・人間の判断・解消・承認を変更しない。
 
+## 共通ルール
+
+指摘は `.claude/skills/finding-rules/SKILL.md`（検査役が手順の前に読む）に従って出す。書き方・種類・出さない事項（除外）・重ねない決まり・差分の検査・形式不備の扱いはそこに従い、重大度は出さない。どの手順でも、ほかの手順で指摘済みの箇所・同じ原因は重ねない。
+
 ## 手順
 
 繰り返し: feature ごと（per-feature）
@@ -33,10 +37,11 @@ implementation-toolsによる実行成否、必須出力、実ケース数、証
 1. `.claude/skills/implementation-traceability/SKILL.md` をReadし、要求・設計・タスクと実コードを照合する。
 2. `.claude/skills/implementation-boundary/SKILL.md` をReadし、公開契約・Boundary・依存方向を検査する。
 3. `.claude/skills/implementation-tests/SKILL.md` をReadし、完了条件に対するテストと実検証の十分性を検査する。
-4. `.claude/skills/gate-report/SKILL.md` をReadし、snapshotに対応する今回の検査を追記する。
+4. `.claude/skills/finding-verification/SKILL.md` を Read し、蓄積した指摘を確かめる。
+5. `.claude/skills/gate-report/SKILL.md` をReadし、snapshotに対応する今回の検査を追記する。
 
 全観点を実施した場合だけlayers=①②とaspectsの全IDを返す。読み込み不能・未実施を
 「指摘なし」としない。コードprofileでは本文・status・tasks・manifestは全て読取り専用。
-指摘はgate名とコード上の対象箇所を持たせ、判断・解消・承認を記入しない。
+指摘はfinding-rulesの項目で書き、gate名とコード上の対象箇所を持たせ、判断・解消・承認を記入しない。
 結果には、読んだtool_results_pathのSHA256を`tool_results_sha256`として返す。
 入力のハッシュと一致することを確認し、検査中に別試行へ変わった結果を混用しない。

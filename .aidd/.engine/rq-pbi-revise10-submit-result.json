@@ -1,0 +1,140 @@
+{
+  "status": "ok",
+  "action": "submit",
+  "result": {
+    "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::end.requirements-check",
+    "flow": "requirements-authoring-revise",
+    "event": "requirements-authoring-revise",
+    "item": "property-basic-info",
+    "gate": "requirements-check",
+    "hookPoint": "end",
+    "name": "requirements-check",
+    "type": "skill",
+    "target": "requirements-check",
+    "isAgent": true,
+    "requiresHuman": false,
+    "calls": [
+      "format-conformance",
+      "traceability",
+      "verifiable-criteria-check",
+      "ac-coverage-completeness",
+      "traceability",
+      "evidence-guard",
+      "ssot-consistency",
+      "steering-conformance",
+      "ssot-consistency",
+      "gate-report"
+    ],
+    "targetReview": [
+      "specs/property-basic-info/requirements.md"
+    ],
+    "status": "emit",
+    "call": "requirements-authoring-revise",
+    "dispatch": {
+      "call": "requirements-authoring-revise",
+      "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::end.requirements-check",
+      "event": "requirements-authoring-revise",
+      "item": "property-basic-info",
+      "status": "emit",
+      "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+      "detail": null,
+      "id": "b911dbffc0cd4fe193f1f820b7a9bedc"
+    },
+    "label": "requirements-authoring-revise / requirements-authoring-revise [property-basic-info]",
+    "allowed_actions": [
+      "submit"
+    ],
+    "context": {
+      "event": "requirements-authoring-revise",
+      "item": "property-basic-info",
+      "scope": "feature:property-basic-info",
+      "targets": [
+        "specs/property-basic-info/requirements.md"
+      ],
+      "review_targets": [
+        "specs/property-basic-info/requirements.md"
+      ],
+      "upstream": [
+        ".aidd/requirement-list.md",
+        ".aidd/feature-list.md",
+        "steering/product.md",
+        "steering/tech.md",
+        "steering/architecture.md",
+        "steering/security.md",
+        "steering/non-functional.md",
+        "steering/database.md",
+        "steering/api-standards.md"
+      ],
+      "unreviewed_inputs": [],
+      "gate_record_path": "C:\\project\\Wing\\.aidd\\gates\\phase-4-requirements.md",
+      "authoring_inputs": [
+        ".aidd/requirement-list.md",
+        ".aidd/feature-list.md",
+        "steering/product.md",
+        "steering/tech.md",
+        "steering/architecture.md",
+        "steering/security.md",
+        "steering/non-functional.md",
+        "steering/database.md",
+        "steering/api-standards.md"
+      ],
+      "snapshot_path": "C:\\project\\Wing\\.aidd\\.engine\\df81e071a039b39d73bc71401429f83ccf03cea7444c9a897426c0e78088eb5a.snapshot.json",
+      "snapshot": {
+        "schema": 2,
+        "phase": "requirements",
+        "event": "requirements-authoring-revise",
+        "scope": "feature:property-basic-info",
+        "at": "2026-10-07T16:03:25+09:00",
+        "artifacts": {
+          "specs/property-basic-info/requirements.md": {
+            "status": "draft",
+            "sha256": "6bb7439d2df016bdf3eda90e185c1246bcefa2ad97d3340228638ec8fe439107"
+          }
+        },
+        "record": {
+          "bytes": 292033,
+          "sha256": "6a2d0f79e160b0d561f235d2795026b78780e4af61208b1f1c4298bf9556b372",
+          "blocks": 326
+        },
+        "run": 11
+      },
+      "findings_path": "C:\\project\\Wing\\.aidd\\.engine\\df81e071a039b39d73bc71401429f83ccf03cea7444c9a897426c0e78088eb5a.findings.json",
+      "findings": [],
+      "questions": null,
+      "repair": {
+        "event": "requirements-authoring-revise",
+        "item": "property-basic-info",
+        "targets": [
+          "specs/property-basic-info/requirements.md"
+        ],
+        "findings": [
+          {
+            "phase": "requirements",
+            "scope": "feature:property-basic-info",
+            "run": 10,
+            "number": 1,
+            "instruction": "4.5 を義務の形にしてください。「承認者の番では、取下げを受け付けてはならない（取下のボタンを表示しない）。承認者の操作は承認と差戻だけとする」。6.7 の承認者の番は「承認・差戻」の操作ボタンを表示する、に直してください。稟議・修正稟議・再製本とも同じです。"
+          },
+          {
+            "phase": "requirements",
+            "scope": "feature:property-basic-info",
+            "run": 10,
+            "number": 2,
+            "instruction": "6.7 の申請者の番を、依頼内容で分けてください。\n・稟議・修正稟議の申請者の番：更新・確認・申請・差戻・取下\n・再製本依頼の申請者の番：更新・申請・差戻・取下（確認のボタンは表示しない）\nあわせて 3.9 に「再製本依頼の申請者からの確認は受け付けてはならない」を足してください。\n6.7 のほかの番（起案者・確認者）は今のままにしてください。"
+          }
+        ],
+        "instruction": "",
+        "origin": "finding",
+        "actor": "Junichi Noumi",
+        "at": "2026-10-07T16:02:31+09:00",
+        "scheduled": "2026-10-07T16:02:32+09:00",
+        "id": "55358ba6ffd8c106cf22dfa1ce98acf083e533856a7fd2155815a2dd60c1ea2d"
+      },
+      "inspection_path": "C:\\project\\Wing\\.aidd\\.engine\\df81e071a039b39d73bc71401429f83ccf03cea7444c9a897426c0e78088eb5a.inspection.md"
+    },
+    "next_action": "作業中（AI が 検査 を実行します）。人の操作は不要です。",
+    "operation_id": "5cf917daf2de4d4db77e4ca039f48baf",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

@@ -1,0 +1,24 @@
+{
+ "operation_id": "32910bc25f364f269c25125f2fbf59c0",
+ "dispatch": {
+  "call": "requirements-authoring-revise",
+  "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::run",
+  "event": "requirements-authoring-revise",
+  "item": "property-basic-info",
+  "status": "emit",
+  "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+  "detail": null,
+  "id": "b39435a4eff743e48ca09c21c64294b5"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/property-basic-info/requirements.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [],
+  "return_candidates": [],
+  "summary": "design 作成中の差戻し（origin authoring-candidate、回答者 Junichi Noumi、2026-10-07）の指示どおり修正した。2.5 に受付済・回覧中と申請済・差戻しからの申請を足した。2.9（受付済・確認中での確認は審査フェーズと状態を変えず、承認履歴に確認の行を残す）を追加した。3.9 の操作を確認から申請に直した。4.3・4.5 に稟議依頼・修正稟議依頼の起案済・回覧中（発番前）を除く旨を足し、4.5 の取下げを起案者・申請者・確認者に限り、承認者は取下げを持たないとした。12.1 の括弧書きを feature 一覧の注記どおり（TWTGM100 は申請の削除で削除、修正稟議・再製本で複製）に直した。出典の表記に「設計差戻し」を足した。指示に関係しない箇所は変えていない。"
+ }
+}

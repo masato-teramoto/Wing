@@ -1,0 +1,11 @@
+回答者 Junichi Noumi
+Q-DS-PBI-009 その2（進め方 D：steering は直さず、「グループ」を権限区分と読む）
+
+D で。
+steering は直さず、回答どおり design に書いてください。
+食い違いではなく、steering の「グループ」の読み方の問題として扱います。
+
+- steering security.md 285 行目の「ログインユーザーのグループ」は、ユーザー管理マスタ（TWTZM010）の権限区分（Kengen_Kbn）のことです。グループ所属（TWTZM020 の Grp_Id・Default_Kbn）のことではありません。
+- 権限区分のコード値（コードマスタ WTZ/CODE/C05）は、「屋外建設G」「エリア設計G」のように組織のグループ単位で付いています。P71 のキー3（K1・G6・F8 など）も、この権限区分のコードです。steering が「グループ」と呼んでいるのはこの値です。
+- design には、判定のキーが権限区分（LoginUserUtils.getAuthority()）であることと、「steering security.md の『グループ』は権限区分を指す」という読み方を一言書いてください。
+- steering の文言（「グループ」→「権限区分」）は、次に steering を開き直すときにまとめて直す項目として記録してください。今は開き直しません。

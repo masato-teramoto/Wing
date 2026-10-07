@@ -1,0 +1,183 @@
+{
+  "status": "ok",
+  "action": "respond",
+  "result": {
+    "unit": "design-authoring-revise/design-authoring-revise[property-basic-info]::run",
+    "flow": "design-authoring-revise",
+    "event": "design-authoring-revise",
+    "item": "property-basic-info",
+    "gate": null,
+    "hookPoint": null,
+    "name": "design-authoring-revise",
+    "type": "skill",
+    "target": "design-revision",
+    "isAgent": false,
+    "requiresHuman": false,
+    "calls": [],
+    "targetReview": null,
+    "status": "emit",
+    "call": "design-authoring-revise",
+    "dispatch": {
+      "call": "design-authoring-revise",
+      "unit": "design-authoring-revise/design-authoring-revise[property-basic-info]::run",
+      "event": "design-authoring-revise",
+      "item": "property-basic-info",
+      "status": "emit",
+      "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+      "detail": null,
+      "id": "4a3f6b6b967f4ac89ec4bc9114ea35ff"
+    },
+    "label": "design-authoring-revise / design-authoring-revise [property-basic-info]",
+    "allowed_actions": [
+      "submit"
+    ],
+    "context": {
+      "event": "design-authoring-revise",
+      "item": "property-basic-info",
+      "scope": "feature:property-basic-info",
+      "targets": [
+        "specs/property-basic-info/design.md"
+      ],
+      "review_targets": [
+        "specs/property-basic-info/design.md"
+      ],
+      "upstream": [
+        ".aidd/feature-list.md",
+        "steering/product.md",
+        "steering/tech.md",
+        "steering/architecture.md",
+        "steering/security.md",
+        "steering/non-functional.md",
+        "steering/database.md",
+        "steering/api-standards.md",
+        "specs/property-basic-info/requirements.md"
+      ],
+      "unreviewed_inputs": [],
+      "gate_record_path": "C:\\project\\Wing\\.aidd\\gates\\phase-5-design.md",
+      "authoring_inputs": [
+        ".aidd/feature-list.md",
+        "steering/product.md",
+        "steering/tech.md",
+        "steering/architecture.md",
+        "steering/security.md",
+        "steering/non-functional.md",
+        "steering/database.md",
+        "steering/api-standards.md",
+        "specs/property-basic-info/requirements.md"
+      ],
+      "snapshot_path": "C:\\project\\Wing\\.aidd\\.engine\\f5157258f5e2fcec040d4777af2a8b542d1c0d49608f43e2159ddb3d429bc881.snapshot.json",
+      "snapshot": {
+        "schema": 2,
+        "phase": "design",
+        "event": "design-authoring-revise",
+        "scope": "feature:property-basic-info",
+        "at": "2026-10-07T17:02:28+09:00",
+        "artifacts": {
+          "specs/property-basic-info/design.md": {
+            "status": "draft",
+            "sha256": "8baf4038930aff546bc3e25c728487f1d47a5ef18e3e2d4de77a4b7d2c317951"
+          }
+        },
+        "record": {
+          "bytes": 4589,
+          "sha256": "2dbbe90d672a995f97e0afca49cf21c14f3a2cc4c0df6808a47389421a37a827",
+          "blocks": 6
+        },
+        "run": 2
+      },
+      "findings_path": "C:\\project\\Wing\\.aidd\\.engine\\f5157258f5e2fcec040d4777af2a8b542d1c0d49608f43e2159ddb3d429bc881.findings.json",
+      "findings": [],
+      "questions": null,
+      "repair": {
+        "event": "design-authoring-revise",
+        "item": "property-basic-info",
+        "targets": [
+          "specs/property-basic-info/design.md"
+        ],
+        "findings": [
+          {
+            "phase": "design",
+            "scope": "feature:property-basic-info",
+            "run": 2,
+            "number": 1,
+            "instruction": "Q-DS-PBI-011 の遷移表のほうに合わせてください（007 の「未起案・下書きのときだけ」は取り消し）。\n- 削除ボタンは、起案者の番の 未起案・下書き（稟議依頼・修正稟議依頼・再製本依頼とも）と、再製本依頼の 起案済・差戻し で出す。\n- 未起案・下書き の削除には条件を付けない（15.1）。\n- 再製本依頼の 起案済・差戻し は、その申請No の文書バーコード（TWTGM110）が0件のときだけ削除できる（15.2）。\n- 「受付No が NULL のときだけ」の条件は design から外す（未起案・下書きでは受付No は常に NULL のため）。"
+          },
+          {
+            "phase": "design",
+            "scope": "feature:property-basic-info",
+            "run": 2,
+            "number": 2,
+            "instruction": "複製の内容に次を足してください。\n- 契約局情報（TWTGM140）：元の申請の全行を、新しい申請No で登録する。連番・計画基地局番号ほかの列は元の値のまま。一時保存フラグは \"0\"。稟議バーコードNo は、再製本では元の値を引き継ぎ、修正稟議では NULL にする。\n- 発行依頼書（TWTGM100）：元の申請の行を、新しい申請No で登録する。一時保存フラグは \"0\"。受付No は、再製本では元の値を引き継ぎ、修正稟議では NULL にする。\n- 再製本が元の稟議の稟議バーコードNo を使う（3.7）のは、この TWTGM140 の稟議バーコードNo の引き継ぎで実現する、と書いてください。"
+          },
+          {
+            "phase": "design",
+            "scope": "feature:property-basic-info",
+            "run": 2,
+            "number": 3,
+            "instruction": "canOperate の操作に「単独局・複数局の切替」「契約局取込」「契約局DL」「契約局情報追加」を足し、次の条件で判定してください。\n- 稟議依頼・修正稟議依頼で、起案者（未起案・下書き、受付済・差戻し）、申請者（受付済・回覧中、受付済・確認中、申請済・差戻し）、確認者（申請済・回覧中、確認済・差戻し）が自分の番のとき。\n- 契約局情報追加は、さらに複数局モードのときだけ。\n- それ以外（再製本依頼、承認者、番でない人）はボタンを出さず、要求が来たら WTG-100030 で止める。"
+          },
+          {
+            "phase": "design",
+            "scope": "feature:property-basic-info",
+            "run": 2,
+            "number": 4,
+            "instruction": "並替え・削除（契約局情報）も 3 と同じ条件に、「複数局モードのとき」を加えて判定してください。canOperate の操作に足し、API の Errors にも書いてください。1行目を並べ替え・削除できない（14.3）はそのまま残します。\n（参考：出力ボタンは、複数局モードなら依頼内容・番・状態を問わず全員が使えます）"
+          },
+          {
+            "phase": "design",
+            "scope": "feature:property-basic-info",
+            "run": 2,
+            "number": 5,
+            "instruction": "この feature 固有のログ項目はありません。ERROR は既存の ExceptionResolver、INFO は既存の LoggingInterceptor に任せる、と Components と Error Handling に書いてください。担当者の氏名と連絡先をログに出さないことは今のままです。"
+          },
+          {
+            "phase": "design",
+            "scope": "feature:property-basic-info",
+            "run": 2,
+            "number": 6,
+            "instruction": "この feature 固有の監視項目はありません（既存の WiNG の監視に任せる）、と Components and Interfaces に書いてください。"
+          },
+          {
+            "phase": "design",
+            "scope": "feature:property-basic-info",
+            "run": 2,
+            "number": 8,
+            "instruction": "CsvUtils は、物件基本情報登録変更だけでなく、申請状況一覧（application-status-search）と契約情報ダウンロード（contract-info-download）の CSV 出力でも使う共通部品です。共通基盤（jp.co.kccs.wt.common.utils）に置くのは steering どおりです。design の「本 feature だけで使う」を「複数の feature で使う共通部品。最初に使う本 feature で作る」に直してください。orangesignal-csv も同じ書き方にしてください。"
+          },
+          {
+            "phase": "design",
+            "scope": "feature:property-basic-info",
+            "run": 2,
+            "number": 9,
+            "instruction": "URL は steering どおり「/wtg070/<アクション>」の1段にしてください（例：/wtg070/update、/wtg070/shinseIrai、/wtg070/sort、/wtg070/output）。機能ID の後に2段のパスは置きません。文書バーコードのポップアップは、URL 用の機能ID を WTG073 として「/wtg073/<アクション>」にします（steering の規約どおり）。設計判断 4 も、これに合わせて直してください。"
+          },
+          {
+            "phase": "design",
+            "scope": "feature:property-basic-info",
+            "run": 2,
+            "number": 10,
+            "instruction": "業務エラーと排他エラーは、例外を投げずに BindingResult に積んで同じ画面に戻してください（steering の「Service の checkXxx で BindingResult.rejectValue にエラーを積む」方式）。\n- 状態と操作の組合せ不正：result.reject(\"WTG-100030\", …)\n- 排他：既存のキー GEF-000027 を rejectValue で積む\n- ApplicationException・ExclusiveException は使わない。予期しない例外だけを ExceptionResolver に任せる。"
+          },
+          {
+            "phase": "design",
+            "scope": "feature:property-basic-info",
+            "run": 2,
+            "number": 14,
+            "instruction": "項目定義の正は、本 design（物件基本情報登録変更）とします。項目の一覧（1行目 188 項目・2行目以降 228 項目の並びと出し方）を別に渡すので、design の補足資料として付けてください。契約情報取込の design は、これに合わせます。「Phase 8 で受け取る」は消してください。\nレイアウトは情報量が多いのでこの後に貼り付ける。"
+          }
+        ],
+        "instruction": "",
+        "origin": "finding",
+        "actor": "Junichi Noumi",
+        "at": "2026-10-07T17:45:01+09:00",
+        "scheduled": "2026-10-07T17:45:02+09:00",
+        "id": "0b082494a1bad93c5755c5eed8a9e1bfa063e01fab4b95fe8b5e5f11164310c0"
+      },
+      "inspection_path": "C:\\project\\Wing\\.aidd\\.engine\\f5157258f5e2fcec040d4777af2a8b542d1c0d49608f43e2159ddb3d429bc881.inspection.md"
+    },
+    "next_action": "作業中（AI が 作成・修正 を実行します）。人の操作は不要です。",
+    "operation_id": "27ad8ab9ece74401890eedfd87b74821",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

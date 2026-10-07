@@ -1,0 +1,56 @@
+{
+  "status": "ok",
+  "action": "respond",
+  "result": {
+    "status": "wait",
+    "allowed_actions": [
+      "decision",
+      "decisions",
+      "resolve",
+      "repair"
+    ],
+    "review_context": {
+      "root": "C:\\project\\Wing",
+      "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+      "call": "requirements-authoring-revise",
+      "event": "requirements-authoring-revise",
+      "item": "property-basic-info",
+      "dispatch_id": "6149a8703b864942a73f316b4e1ff5b2",
+      "unit": "requirements-authoring-revise/requirements-authoring-revise[property-basic-info]::end.review",
+      "scope": "feature:property-basic-info",
+      "run": 10,
+      "snapshot": "ad7bed903e5252b9a896b415162bf4e470e3e016b4311cc8c2a30d3f63e1e983",
+      "record_hash": "6a2d0f79e160b0d561f235d2795026b78780e4af61208b1f1c4298bf9556b372"
+    },
+    "review": [
+      {
+        "scope": "feature:property-basic-info",
+        "run": 10,
+        "number": 1,
+        "current": true,
+        "decision": "修正",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "二重定義（食い違い）: 4.5 は今回の修正で「承認者は取下げを持たない」とした。一方 6.7 は「承認者の番では承認・差戻・取下の操作ボタンを表示しなければならない」のままで、番が回っている承認者に取下のボタンを表示することを求めている。番が回っている承認者が取下げを行えるか（取下のボタンを表示するか）について、2 つの受け入れ基準が両立しない。先に記載された要件ID は 4.5 だが、4.5 は承認者の取下げを「持たない」と事実の形で書いており、システムが受け付けてはならないのか、ボタンを表示してはならないのかを義務の形で示していない。どちらに合わせるかは人間による確認が必要",
+        "location": "specs/property-basic-info/requirements.md 「要件 4」受け入れ基準 4.5／「要件 6」受け入れ基準 6.7"
+      },
+      {
+        "scope": "feature:property-basic-info",
+        "run": 10,
+        "number": 2,
+        "current": true,
+        "decision": "修正",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "二重定義（食い違い）: 3.9 は今回の修正で再製本依頼の申請済・差戻しからの操作を確認から申請に改め、「再製本依頼の申請者に確認の操作は無い」とした。一方 6.7 は依頼内容を区別せず「申請者の番では更新・確認・申請・差戻・取下」の操作ボタンを表示しなければならないとしており、再製本依頼の申請者の番（3.3 の起案済・回覧中、3.9 の申請済・差戻し）でも確認のボタンの表示を求める。再製本依頼の申請者の番に確認のボタンを表示するかについて両立しない。再製本依頼の申請者の確認を受け付けてはならないとする受け入れ基準も無い。先に記載された要件ID は 3.9。どちらに合わせるかは人間による確認が必要",
+        "location": "specs/property-basic-info/requirements.md 「要件 3」受け入れ基準 3.3・3.9／「要件 6」受け入れ基準 6.7"
+      }
+    ],
+    "next_action": "検査結果を確認し、指摘ごとに A〜D で判断を回答してください（判断が揃い修正が無ければ承認者名を回答）。",
+    "operation_id": "0e519cfa975e4ea49689511a4929ecbb",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

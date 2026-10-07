@@ -27,23 +27,37 @@ disable-model-invocation: true
    場合を指摘する（暗黙のルールの明文化漏れ）。
 4. 既存ルールがあっても、同種の要素が feature ごとに別の規則で作られている（steering のルールを独自解釈
    している）痕跡を指摘する。件数の下限は設けない。ルールの粒度不足が原因になりうるため、影響する
-   design の洗い出しが必要な旨を添える。
+   design の洗い出しが必要な旨を `evidence` に書く。
+
+## この工程で指摘しない事項
+
+- `.claude/skills/finding-rules/SKILL.md` の工程の境界の表・`confirmed_answers`・`learned` に当たる事項
+- `TBD（<工程> で確定）` と書いてある値
+- 繰り返しが 3 件未満のパターンの明文化漏れ（独自解釈は件数によらず見る）
+
+当たるものは指摘にせず、除外として返す（除外の出典を付ける。書き方は finding-rules）。
 
 ## 出力の形
 
+指摘ごとに次を返す。書き方は `.claude/skills/finding-rules/SKILL.md`（検査の最初に読む）に従う。重大度は出さない（L3 が `kind` から決める）。
+
 ```
-{ id, location, finding, is_rollback_candidate }
+{ location, subject, kind, summary, evidence, suggestion, recommendation, is_rollback_candidate }
 ```
 
 | フィールド | 内容 |
 |---|---|
-| `id` | この Skill 内で一意な通し番号 |
-| `location` | パターンが繰り返されている design.md の箇所一覧 |
-| `finding` | 明文化漏れ・独自解釈の事実（例: 「3つのfeatureで同じページネーション形式が使われているが、`steering/` にルールとして書かれていない」「`database.md` の採番ルールを `order` と `invoice` が別の桁構成で解釈している」） |
+| `location` | パターンが繰り返されている design.md の代表箇所。`<案件相対パス> § <節見出し> / <ID>` の形。複数箇所なら代表 1 か所＋「ほか n か所」（全件は `evidence`） |
+| `subject` | 対象の語（例: `ページネーション形式`） |
+| `kind` | `.claude/skills/finding-rules/SKILL.md` の種類から 1 つ選ぶ。迷ったら上の行。明文化漏れは `業務のあいまい・不足`。feature ごとの独自解釈（食い違い）は `業務の欠落・矛盾` |
+| `summary` | 60 字以内。結論を先に、何が・どこで（例: 「3 つの feature で同じページネーション形式だが steering にルールがない」） |
+| `evidence` | パターンが繰り返されている design.md の箇所（全件）と、`既存ルールの所在` に無いこと。独自解釈は影響する design の洗い出しが必要な旨 |
+| `suggestion` | 修正案（差分・書き換え文）。業務の新しい事実が要るときは、修正案ではなく「何を決めればよいか」と選べる案 |
+| `recommendation` | `修正：理由` / `差戻し：理由` / `対応せず進める：理由` / `質問：理由` のどれか。業務の新しい事実が要るときは `質問：…` |
 | `is_rollback_candidate` | `true`（ルールを所有するPhase 2への差戻し候補。docsにルールを新設しない） |
 
 ## 禁止
 
 - 対象成果物を書き換えない（ルールを自動で追記しない）
 - 合否を出さない
-- ルールの具体的な内容を新たに決めない（繰り返しパターンを事実として指摘するに留める）
+- ルールの具体的な内容を自分で確定しない。`suggestion` には繰り返しパターンから読めるルールの案と「何を決めればよいか」を書き、`recommendation` を `質問：…` または `差戻し：…` にする

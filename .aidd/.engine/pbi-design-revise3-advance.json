@@ -1,0 +1,131 @@
+{
+  "status": "ok",
+  "action": "advance",
+  "result": {
+    "unit": "design-authoring-revise/design-authoring-revise[property-basic-info]::run",
+    "flow": "design-authoring-revise",
+    "event": "design-authoring-revise",
+    "item": "property-basic-info",
+    "gate": null,
+    "hookPoint": null,
+    "name": "design-authoring-revise",
+    "type": "skill",
+    "target": "design-revision",
+    "isAgent": false,
+    "requiresHuman": false,
+    "calls": [],
+    "targetReview": null,
+    "status": "emit",
+    "call": "design-authoring-revise",
+    "dispatch": {
+      "call": "design-authoring-revise",
+      "unit": "design-authoring-revise/design-authoring-revise[property-basic-info]::run",
+      "event": "design-authoring-revise",
+      "item": "property-basic-info",
+      "status": "emit",
+      "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+      "detail": null,
+      "id": "da379482d52142619bce2e223a5b3471"
+    },
+    "label": "design-authoring-revise / design-authoring-revise [property-basic-info]",
+    "allowed_actions": [
+      "submit"
+    ],
+    "context": {
+      "event": "design-authoring-revise",
+      "item": "property-basic-info",
+      "scope": "feature:property-basic-info",
+      "targets": [
+        "specs/property-basic-info/design.md"
+      ],
+      "review_targets": [
+        "specs/property-basic-info/design.md"
+      ],
+      "upstream": [
+        ".aidd/feature-list.md",
+        "steering/product.md",
+        "steering/tech.md",
+        "steering/architecture.md",
+        "steering/security.md",
+        "steering/non-functional.md",
+        "steering/database.md",
+        "steering/api-standards.md",
+        "specs/property-basic-info/requirements.md"
+      ],
+      "unreviewed_inputs": [],
+      "gate_record_path": "C:\\project\\Wing\\.aidd\\gates\\phase-5-design.md",
+      "authoring_inputs": [
+        ".aidd/feature-list.md",
+        "steering/product.md",
+        "steering/tech.md",
+        "steering/architecture.md",
+        "steering/security.md",
+        "steering/non-functional.md",
+        "steering/database.md",
+        "steering/api-standards.md",
+        "specs/property-basic-info/requirements.md"
+      ],
+      "snapshot_path": "C:\\project\\Wing\\.aidd\\.engine\\f5157258f5e2fcec040d4777af2a8b542d1c0d49608f43e2159ddb3d429bc881.snapshot.json",
+      "snapshot": {
+        "schema": 2,
+        "phase": "design",
+        "event": "design-authoring-revise",
+        "scope": "feature:property-basic-info",
+        "at": "2026-10-07T18:12:06+09:00",
+        "artifacts": {
+          "specs/property-basic-info/design.md": {
+            "status": "draft",
+            "sha256": "e37fe9423d910cf5c3dfedad5bc83a7907f25111f5e381e6c7ca0b7c59b4a9a8"
+          }
+        },
+        "record": {
+          "bytes": 22209,
+          "sha256": "6d8463b416e1444794eca452624add717db6a7ec4a819ae6423d68822e59cb1e",
+          "blocks": 23
+        },
+        "run": 3
+      },
+      "findings_path": "C:\\project\\Wing\\.aidd\\.engine\\f5157258f5e2fcec040d4777af2a8b542d1c0d49608f43e2159ddb3d429bc881.findings.json",
+      "findings": [],
+      "questions": null,
+      "repair": {
+        "event": "design-authoring-revise",
+        "item": "property-basic-info",
+        "targets": [
+          "specs/property-basic-info/design.md"
+        ],
+        "findings": [
+          {
+            "phase": "design",
+            "scope": "feature:property-basic-info",
+            "run": 3,
+            "number": 1,
+            "instruction": "canOperate の操作に「発行依頼書編集」を足してください。条件は 14.5 と同じです。稟議依頼・修正稟議依頼で、起案者（未起案・下書き、受付済・差戻し）・申請者（受付済・回覧中、受付済・確認中、申請済・差戻し）・確認者（申請済・回覧中、確認済・差戻し）が自分の番のときだけ使えます。それ以外（再製本依頼、承認者、番でない人）はボタンを出さず、要求が来たら WTG-100030 で止めます。複数局で契約局情報が無いときの WTG-100022（14.12）はそのままです。/wtg070/henshu の Errors にもこの条件を書いてください。"
+          },
+          {
+            "phase": "design",
+            "scope": "feature:property-basic-info",
+            "run": 3,
+            "number": 2,
+            "instruction": "引用を直してください。業務エラー（WTG-100030）と排他（GEF-000027）を BindingResult に積んで同じ画面に戻すのは、steering/tech.md の方式ではありません。steering の「業務エラーは ApplicationException、排他は ExclusiveException を投げる」から意図して外れる、と書いてください。\n理由は次のとおりです。例外を投げると ExceptionResolver からエラー画面へ移り、入力中の内容が画面から消えます。この画面では、回覧の操作の失敗や排他の失敗を同じ画面にメッセージで出し、入力を残す必要があります。\nsteering の追記（画面の業務エラー・排他を BindingResult で返してよい場合）は、次に steering を開き直すときにまとめて行います。"
+          },
+          {
+            "phase": "design",
+            "scope": "feature:property-basic-info",
+            "run": 3,
+            "number": 3,
+            "instruction": "セキュリティの節の古い文（「更新系はすべて照合する URL 名に置く」）を、判断 4・API の注記と同じ内容に直してください。「CSRF の照合は既存の設定のままで、照合に乗るのは /wtg070/update・/wtg070/approved・/wtg073/update だけ。ほかの更新系は照合なしで、steering/security.md から意図して外れる（理由は判断 4）」。steering の追記は、次に開き直すときにまとめて行います。"
+          }
+        ],
+        "instruction": "",
+        "origin": "finding",
+        "actor": "Junichi Noumi",
+        "at": "2026-10-07T18:39:33+09:00",
+        "scheduled": "2026-10-07T18:39:34+09:00",
+        "id": "b693e38fe5db72cb5999c3917c83f0d8de6fd48a8262ea87b5b9ecaba7479330"
+      },
+      "inspection_path": "C:\\project\\Wing\\.aidd\\.engine\\f5157258f5e2fcec040d4777af2a8b542d1c0d49608f43e2159ddb3d429bc881.inspection.md"
+    },
+    "next_action": "作業中（AI が 作成・修正 を実行します）。人の操作は不要です。"
+  }
+}

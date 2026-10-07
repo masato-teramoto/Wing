@@ -1,0 +1,37 @@
+{
+ "operation_id": "9d15ad3eb7d94e8791caa31225f0de7e",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[property-basic-info]::run",
+  "event": "design-authoring-revise",
+  "item": "property-basic-info",
+  "status": "emit",
+  "config_sha256": "52801b83d67d17040d158e66ce1efbdc04d926f97357ef6b7f9a148fc2be4815",
+  "detail": null,
+  "id": "9f7cfb9070314111ae628355bb739f53"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/property-basic-info/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "design",
+    "scope": "feature:property-basic-info",
+    "run": 4,
+    "number": 1
+   },
+   {
+    "phase": "design",
+    "scope": "feature:property-basic-info",
+    "run": 4,
+    "number": 2
+   }
+  ],
+  "return_candidates": [],
+  "summary": "design 検査 4 回目の指摘 1・2 を回答者 Junichi Noumi の指示どおり修正した。#1「発番済」（6.9）と「発番後」（11.2）を依頼内容で分け、稟議依頼・修正稟議依頼は審査フェーズが受付済（02）以降、再製本依頼は常に発番済（元の受付No と稟議バーコードNo を引き継ぐため）とした。「どちらで見ても結果は同じ」の文を消し、文書バーコードの事前条件もこの判定にそろえた。#2 基地局番号リンクを canOperate の条件から外し（14.13）、/wtg070/hakkoLink の行を分けて WTG-100030 を外した。複数局ではリンク、単独局ではラベルで表示すると書いた。発行依頼書編集の条件に申請者の番の稟議依頼・修正稟議依頼の起案済・回覧中を足し、番の表の説明を「発行依頼書編集ボタン（複数局では基地局番号リンクも）から発行依頼書登録変更画面へ行って発番する」に直した。要件トレーサビリティ自己診断：抽出 94 件、対応あり 94 件、未対応 0 件。"
+ }
+}
