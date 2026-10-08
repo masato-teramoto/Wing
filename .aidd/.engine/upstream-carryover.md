@@ -62,3 +62,12 @@
 - 3.1：CSV の 13 列目の見出しは「発注希望日」（画面の列見出しは「発送希望日」のまま。Q-DS-AS-010）
 - pbi design：「既存の WTG-100018」を「application-status-search で新規追加する WTG-100018」に直す（Q-DS-AS-009）
 - pbi design：/wtg070/returnList の戻り先を /wtg060 から /wtg060/return に直す（/wtg060 は検索条件のセッションを消す初期表示。application-status-search design-check 1 回目 #1、2026-10-08）
+
+## contract-info-import の design で意図して外れたもの（2026-10-08、回答 answer-ds-ci-20261008-1551.txt による）
+- pbi design（391 行目付近）：「契約情報取込で読める形」を「2 行目以降の 228 列が取込の 228 列と同じ並び（1 行目の 188 列は見出し行に置き換える必要がある）」と直す。取込の側は requirements 2.1 のとおり（Q-DS-CI-002）
+- pbi design：「契約文書情報（TWTGM110）の行は物理削除しない」に、契約情報取込は例外（稟議バーコードNo が TWTGM140 に無くなった行を物理削除する）と並べて書く（Q-DS-CI-009）
+- steering non-functional.md（ログに住所を出さない）：取込の警告 WTG-200009・WTG-000072 は行番号と郵便番号・都道府県・市区町村・字、番地の値をバッチ処理状況の詳細に出す（Q-DS-CI-012）
+- steering security.md（担当者の氏名は機密）：取込のタスクのパラメータに申請者と起案者の氏名を入れ、バッチ処理状況一覧に出る（Q-DS-CI-015 の 6）
+- requirements（contract-info-import）2.6：受付No が空のときとリバースデータのときは稟議バーコードNo を付けない（Q-DS-CI-004、design-check 1 回目 #1）
+- steering non-functional.md・security.md（契約者の連絡先をログに出さない）：取込の WTG-200011 は行番号と電話番号の値をバッチ処理状況の詳細に出す（Q-DS-CI-012 の 3、design-check 1 回目 #5）
+- 回答 Q-DS-CI-012 の 5 の「警告だけのときは正常終了」は「警告終了を受け入れる」に変わった（design-check 1 回目 #7。上流の文書の直しは無いが、記録として）

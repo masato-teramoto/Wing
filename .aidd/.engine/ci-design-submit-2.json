@@ -1,0 +1,24 @@
+{
+ "operation_id": "23a2dc9be76d42208aca2d16c2a9590f",
+ "dispatch": {
+  "call": "design-authoring-generate",
+  "unit": "design-authoring-generate/design-authoring-generate[contract-info-import]::run",
+  "event": "design-authoring-generate",
+  "item": "contract-info-import",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "b8b235f3e59247aa8ca05bf13dc5c0cf"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/contract-info-import/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [],
+  "return_candidates": [],
+  "summary": "回答 Q-DS-CI-001〜015 と、回答者が正とした資料（リバース 381 列・対応表・検査表）、既存の取込（PWTGO040・PWTGB040・PWTGB050）で design を書き起こした（open_placeholders 0）。取込画面（/wtg090 の 6 つの口、canOperate と STaskList の確認、アップロード、タスクのパラメータ）、取込バッチ（取込中にする・本体・戻すの 3 つのトランザクション、区分 1〜3 の検査と警告、洗替と変更履歴の順、TWTGM110 の削除、TWTGM080 の更新と排他用の値）、WTG-200008〜200012（JAVA-KIT のみ）、投入物の分担を書いた。chkKichikyoku を WTX_Batch から使えないときは同じ判定をバッチ側に置く（tasks で決める）と書いた。pbi design の 391 行目・TWTGM110 の扱い、steering の住所のログ・氏名のパラメータから意図して外れる点は design に明記し upstream-carryover に積んだ。要件トレーサビリティ自己診断（contract-info-import）：抽出 29 件、対応あり 29 件、未対応 0 件。今回の案件の正解コードは根拠にしていない。"
+ }
+}

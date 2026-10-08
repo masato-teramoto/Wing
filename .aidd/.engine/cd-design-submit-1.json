@@ -1,0 +1,95 @@
+{
+ "operation_id": "6904287945e5429f805d823089b17714",
+ "dispatch": {
+  "call": "design-authoring-generate",
+  "unit": "design-authoring-generate/design-authoring-generate[contract-info-download]::run",
+  "event": "design-authoring-generate",
+  "item": "contract-info-download",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "a1bc71df07054eb28d68a4eaf5ecdc81"
+ },
+ "result": {
+  "status": "waiting",
+  "targets": [
+   "specs/contract-info-download/design.md"
+  ],
+  "questions": [
+   {
+    "id": "Q-DS-CD-001",
+    "target": "specs/contract-info-download/design.md",
+    "location": "データモデル（CSV の形）、補足資料、要件 3.1",
+    "question": "CSV の 381 列の項目定義（リバースデータ）。381 列の項目の並びと、各列の取得元が必要です。 物件基本情報登録変更のときの `csv-layout-wtg070.md` と同じ形の表をいただけますか。 | No | 見出し（項目名） | 取得元（`TWTGM010`〜`TWTGM070` の列、コードマスタの名称、空 など） | あわせて次を教えてください。 1. CSV の 1 行は、契約基本情報（`TWTGM010`）の「計画基地局番号＋枝番」の 1 件でよいですか。 - 下書きの案：はい。GWTG004 の一覧の 1 行と同じ単位です（コードで確かめたこと 2）。 2. 1 件の契約に複数ある行（契約者情報 `TWTGM020`、契約支払情報 `TWTGM030`、支払金額 `TWTGM040`、契約書 `TWTGM050`）を、381 列のどの枠にどの順で入れますか。 - 例：契約者・関係者①〜⑤に `TWTGM020` を契約者番号の昇順で入れる、など。 3. `TWTGM060` は使いますか。使うなら何の表で、どの列に出しますか（コードで確かめたこと 3）。 4. 見出し行の文字は、表の「見出し（項目名）」のとおりでよいですか。 5. 書き方は物件基本情報登録変更の CSV と同じでよいですか。 - 下書きの案：`CsvUtils.defaultCsvConfig()` のとおり、カンマ区切り、改行 CRLF、全項目をダブルクォートで囲む、NULL は空文字、日付は yyyy/MM/dd（`specs/property-basic-info/design.md:394`）。 6. この定義の置き場所はどこにしますか。 - 下書きの案：契約情報取込が読む形なので、`specs/contract-info-import/csv-layout-reverse.md` に置き、契約情報取込の design が正として持ちます。本 feature の design はそれを参照し、取得元（既存の契約情報の列）の対応だけを本 feature の補足資料に置きます。",
+    "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-contract-info-download.md）"
+   },
+   {
+    "id": "Q-DS-CD-002",
+    "target": "specs/contract-info-download/design.md",
+    "location": "データモデル（論理・物理）、ファイル配置計画、要件 3.6",
+    "question": "作業用テーブル。Phase 4 の判断（指摘 6）で、作業用テーブルとその中身は design で書くことになっています。 既存に使える表は無いので（コードで確かめたこと 22）、新しく作る前提で次を教えてください。 1. テーブル名 - 下書きの案：`TWTGF100`（契約情報ダウンロード作業。`F`＝トラン。`steering/database.md` の命名） 2. 持つ列 - 下書きの案：共通列（会社コード・登録者・登録日時・更新者・更新日時・排他フラグ）、ユーザーID、出力順（Int）、計画基地局番号、枝番。一意キーは会社コード＋ユーザーID＋出力順。 - 別の案：381 列の値をそのまま持つ。 3. 使い方 - 下書きの案：ダウンロードのたびに、ログインユーザーの行を全部消す。選んだ行のキーを、並び順（コードで確かめたこと 15）の順で入れる。この表と `TWTGM010`〜`TWTGM070` を結合して CSV を作る。出力の後も行は残し、次のダウンロードで消す。 4. 同じ人が 2 つのウインドウで同時にダウンロードした場合の扱い - 下書きの案：特に防がない（後から実行した方が行を消して作り直す）。 5. DDL を作る元の DB レイアウトは、どなたが用意しますか（`steering/database.md` の「DDL の作成」）。",
+    "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-contract-info-download.md）"
+   },
+   {
+    "id": "Q-DS-CD-003",
+    "target": "specs/contract-info-download/design.md",
+    "location": "画面設計、要件 1.4",
+    "question": "一覧の 19 項目と一覧の並び順。GWTG004 の一覧は、No. とチェックボックス（対象）を除いて 45 項目あります（`pwtgo004.html:331-408`）。 このうちのどの 19 項目を出すか教えてください。 19 項目に No. とチェックボックスを含むかも教えてください。 下書きの案（No. とチェックボックスは数えない）： | 順 | 項目 | 取得元 | |---|---|---| | 1 | 基地局番号 | `TWTGM010.Kichikyoku_No` | | 2 | 枝番 | `TWTGM010.Plan_SiteID_Branch` | | 3 | 登録状態 | `P21` の名称 | | 4 | 計画基地局番号 | `TWTGM010.Keikaku_Kichikyoku_No` | | 5 | 計画基地局名 | `TWTGM010.Keikaku_Kichikyoku_Name` | | 6 | 基地局名 | `TWTGM010.Kichikyoku_Name` | | 7 | ロケーションID | `TWTBM010.LOCATION_ID` | | 8 | 代表契約局番 | `TWTGM010.Represent_Contract_No` | | 9 | 代表契約枝番 | `TWTGM010.Represent_Contract_Branch_No` | | 10 | 転貸借 | `C39` の名称 | | 11 | 都道府県 | `M05` の名称 | | 12 | 市区町村 | `M04` の名称 | | 13 | 字、番地 | `TWTGM010.ADDRESS3` | | 14 | 建物、ビル | `TWTGM010.ADDRESS4` | | 15 | 住所(ｶﾅ) | `TWTGM010.KANA` | | 16 | 契約先名/法人名 | `TWTGM020.Name` | | 17 | 契約先名/法人名(ｶﾅ) | `TWTGM020.Name_Kana` | | 18 | 契約終了日 | `TWTGM010.Contract_Finish_Date` | | 19 | 更新形態 | `P07` の名称 | あわせて次を教えてください。 1. 一覧の並び順は、GWTG004 と同じ（基地局番号・枝番の昇順。コードで確かめたこと 7）ですか。CSV と同じ（今の申請の基地局番号が先頭、枝番の降順）ですか。 - 下書きの案：CSV と同じ並び。選ぶ行と出る行の順がそろうため。 2. GWTG004 の基地局番号のリンク（変更／参照画面へ移る）は付けますか。 - 下書きの案：付けない。ラベルで表示する。",
+    "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-contract-info-download.md）"
+   },
+   {
+    "id": "Q-DS-CD-004",
+    "target": "specs/contract-info-download/design.md",
+    "location": "画面設計、要件 1.2・1.3",
+    "question": "検索条件「転貸借契約書名」の定義。「転貸借契約書名」は GWTG004 の検索条件にありません（コードで確かめたこと 5）。 1.3 の「GWTG004 と同じ定義」が使えないため、入力の形と検索のしかたを教えてください。 - 下書きの案：プルダウン（コードマスタ `WTG/PARAM/P15`。先頭は空）で、`TWTGM010.MOVE_LEASE_CONTRACT` と一致するものを出す。GWTG004 が一覧の名称に `P15` を使っているため（`Pwtgo004Mapper.xml:326-330`）。",
+    "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-contract-info-download.md）"
+   },
+   {
+    "id": "Q-DS-CD-005",
+    "target": "specs/contract-info-download/design.md",
+    "location": "バリデーション設計、要件 4.1",
+    "question": "検索条件の桁数・形式のチェック。GWTG004 はサーバーで桁も形式も見ていません（コードで確かめたこと 6）。 4.1 のため、項目ごとの条件を決める必要があります。 必須の項目はありません（Phase 4 の判断 指摘 2）。 下書きの案（桁は GWTG004 の画面の最大桁。キーは物件基本情報登録変更の design と同じ既存のもの）： | 項目 | 最大桁 | 形式 | エラーのキー | |---|---|---|---| | 計画基地局番号 | 9 | 半角英数 | 桁 `GEF-000003`・形式 `WTX-100012` | | 計画基地局名 | 120 | なし | `GEF-000003` | | 枝番 | 5 | 半角英数 | `GEF-000003`・`WTX-100012` | | 契約者番号 | 20 | 半角英数 | `GEF-000003`・`WTX-100012` | | ロケーションID | 20 | 半角英数 | `GEF-000003`・`WTX-100012` | | 代表契約局番号 | 9 | 半角英数 | `GEF-000003`・`WTX-100012` | | 代表契約枝番 | 5 | 半角英数 | `GEF-000003`・`WTX-100012` | | 建物ビル | 100 | なし | `GEF-000003` | | 基地局番号 | 9 | 半角英数 | `GEF-000003`・`WTX-100012` | | 基地局名 | 120 | なし | `GEF-000003` | | 法人名または個人名 | 60 | なし | `GEF-000003` | | 法人名または個人名（カナ） | 80 | なし（全角・半角を問わない） | `GEF-000003` | | 登録状態・転貸借・転貸借契約書名 | ― | プルダウンの値だけ（チェックしない） | ― | 1. 各項目の最大桁と形式はこれでよいですか。 2. 桁は文字数で数えますか、バイト数で数えますか。 - 下書きの案：物件基本情報登録変更の design が使う共通の桁数チェックに合わせる。 3. 注意：物件基本情報登録変更の design は `WTX-100012`（半角英数字で入力してください）と `WTCheckUtils` を既存として挙げています。ただし wing の `messages.properties` に `WTX-100012` の行は無く、`WTCheckUtils` は WTX 側（`WTX/WEB-INF/src/jp/co/kccs/wt/util/WTCheckUtils.java`）にあります。形式の誤りのキーと文言をどうするか教えてください。 - 下書きの案：物件基本情報登録変更で足すキーと同じものを使う（重ねて足さない）。",
+    "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-contract-info-download.md）"
+   },
+   {
+    "id": "Q-DS-CD-006",
+    "target": "specs/contract-info-download/design.md",
+    "location": "画面設計、状態管理、要件 1.4・1.5・3.1",
+    "question": "ページをまたいだ選択と、全選択・全解除。Phase 4 の判断（指摘 10）で、design で決めることになっています。 既存の GWTG004 は、表示中のページの選択だけを送ります（コードで確かめたこと 10）。 1. ページを移ったときに、前のページで選んだ行を覚えておきますか。 - A：覚えておく（セッションに選んだ行のキーを持ち、全ページの選んだ行を出力する） - B：覚えない（ダウンロードで出すのは表示中のページの選んだ行だけ） - 下書きの案：A。3.4 で件数の上限を設けないため。 2. 全選択・全解除のボタンは置きますか。置くなら、範囲は表示中のページだけですか、検索結果の全件ですか。 - 下書きの案：GWTG004 と同じ全選択(X)・全解除(Y) を置き、範囲は表示中のページだけ。 3. 検索し直したとき、それまでの選択は消してよいですか。 - 下書きの案：消す。",
+    "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-contract-info-download.md）"
+   },
+   {
+    "id": "Q-DS-CD-007",
+    "target": "specs/contract-info-download/design.md",
+    "location": "画面設計、性能とスケーラビリティ、要件 1.5・3.4",
+    "question": "1 ページ 100 件と、検索件数の上限。1 ページの件数と検索の上限は、コードマスタ `WTZ/PARAM/P01`・`P02` から取る作りです（コードで確かめたこと 8）。 1. 1 ページ 100 件はどう実現しますか。 - 下書きの案：`P01` にキー3＝`PWTGO100`、数値1＝100 の行を足す。既存の `selectListSize` をそのまま使う。 - 別の案：画面の中で 100 に固定し、`P01` を見ない。 2. 検索件数の上限と警告（`P02`。`DS-100024`・`DS-100025`）は、この画面の検索にも掛けますか。 - 下書きの案：GWTG004 と同じに掛ける。`P02` には本画面の行を足さず、ALL の行を使う。CSV の出力件数（3.4）には掛けない。 3. コードマスタに行を足す場合、データの登録はどなたが行いますか（DDL・データの移行の手順に入れるか）。",
+    "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-contract-info-download.md）"
+   },
+   {
+    "id": "Q-DS-CD-008",
+    "target": "specs/contract-info-download/design.md",
+    "location": "ファイル配置計画、API 契約（Controller）、セキュリティ、要件 1.1・3.1",
+    "question": "画面のボタン、プログラムID、URL、画面を使える人。1. プログラムID・機能ID・パッケージ・URL - 下書きの案：プログラムID `PWTGO100`、機能ID `WTG100`、パッケージ `function/wtg/wtg100`、URL `/wtg100`（初期表示）・`/wtg100/search`・`/wtg100/page`・`/wtg100/clear`・`/wtg100/download`。物件基本情報登録変更（`PWTGO070`・`/wtg070`）の決め方に合わせました。 2. 画面のボタン - 下書きの案：検索(F)・ｸﾘｱ(R)・全選択(X)・全解除(Y)・ﾀﾞｳﾝﾛｰﾄﾞ・閉じる。閉じるはウインドウを閉じるだけ。 3. ダウンロードした後、画面はどうしますか。 - 下書きの案：画面はそのまま（検索結果と選択を残す）。ファイルだけを受け取る。 4. 画面を使えるかの判定（`ZMENUAUTH`） - この画面は物件基本情報登録変更から別ウインドウで開くので、セッションのメニューID は物件基本情報登録変更のものになります（コードで確かめたこと 20）。 - 下書きの案：物件基本情報登録変更のメニューID ＋ `PWTGO100` の行を、物件基本情報登録変更を使える権限区分と同じだけ `ZMENUAUTH` に足す。 - この行の登録はどなたが行いますか。",
+    "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-contract-info-download.md）"
+   },
+   {
+    "id": "Q-DS-CD-009",
+    "target": "specs/contract-info-download/design.md",
+    "location": "コンポーネントとインターフェース、セキュリティ、要件 1.1・1.6・3.5",
+    "question": "受け取った申請No の扱い。1. 「今の申請の基地局番号」は、物件申請情報（`TWTGM080`）の `Kichikyoku_No` でよいですか。契約情報（`TWTGM010`）の `Kichikyoku_No` と比べます。 - 複数局の申請でも、物件申請情報の基地局番号（代表局）の 1 つだけを見る、でよいですか。契約局情報（`TWTGM140`）の全部の基地局番号は見ない、でよいですか。 - 下書きの案：どちらも、はい。 2. 開いたとき・ダウンロードのときに、その申請で契約局DL を使えるか（物件基本情報登録変更の `canOperate`。番・依頼内容・状態）を確かめ直しますか。 - 下書きの案：確かめ直さない。ボタンの出し分けと `/wtg070/keyakuDl` の判定は物件基本情報登録変更が持つため。 3. 申請No が無い、または物件申請情報に無い場合はどうしますか。 - 下書きの案：エラーにせず画面を開く。先頭にする行が無いものとして、基地局番号の順に並べる（Phase 4 の判断 指摘 5）。 4. 社外ユーザーの範囲（物件基本情報登録変更の `getExternalScope`。自社の契約稟議起案会社か本人の登録）を、受け取った申請No にも当てますか。 - 下書きの案：当てない。申請No は並び順に使うだけで、申請の内容を画面にも CSV にも出さないため。 5. 申請No は画面の隠し項目で持ちますか、セッションで持ちますか。 - 下書きの案：セッション（別ウインドウを開いたときに受け取り、検索・ページ・ダウンロードで使う）。",
+    "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-contract-info-download.md）"
+   },
+   {
+    "id": "Q-DS-CD-010",
+    "target": "specs/contract-info-download/design.md",
+    "location": "エラー処理、機能固有エラーコード、要件 3.3・4.1",
+    "question": "メッセージキーと文言。1. 1 行も選ばずにダウンロードした場合（3.3）のメッセージ - 下書きの案：既存の `GEF-000057`（{0}:対象を選択してください）を使い、{0} は「出力対象」にする。GWTG004 と同じキーです（コードで確かめたこと 11）。 - 別の案：新しいキーを `WTG-1000xx` の帯に足す。その場合は番号と文言を指定してください。 2. 入力チェックのメッセージは Q-DS-CD-005 のキーでよいですか。 3. 本画面で新しく足すメッセージキーはありませんか。 - 下書きの案：無い（0 件は共通の「該当するデータはありません」。コードで確かめたこと 9）。 ## 他の feature に関わる点 - **契約情報取込（contract-info-import）**：381 列の定義（Q-DS-CD-001）は取込の requirements 2.2 が「design で定める」としています。本 feature の design は、取込の design より先に書くことになります。定義の正を取込側に置くなら、取込の design はその表を引き継ぐ必要があります。 - **契約情報取込と物件基本情報登録変更**：取込の requirements 2.1 は「1 行目を見出し行」とします。物件基本情報登録変更の出力 CSV は見出し行が無く、1 行目が発行依頼書（188 項目）です（`specs/property-basic-info/design.md:394`）。取込の 2.2 は発行依頼書データを 228 列としています。物件基本情報登録変更の CSV が取込でそのまま読めるかは、取込の design で確かめる必要があります。本 feature の CSV には見出し行を付けます（Phase 4 の判断 指摘 8）。 - **共通部品 `CsvUtils`（物件基本情報登録変更が作る）**：物件基本情報登録変更の CSV は見出し行が無いため、見出し行を書く使い方を `save` が持つか確かめる必要があります。持たなければ、本 feature で見出し行を先頭の要素として渡すか、部品に引数を足します。 - **メッセージキーの帯**：新しいキーを `WTG-1000xx` に足す場合、物件基本情報登録変更の design の判断 3 のとおり、docs の統合で番号の重なりを確かめます。 - **`ZMENUAUTH` の登録**：別ウインドウの画面（本画面の `PWTGO100`、物件基本情報登録変更の `PWTGO073`・`PWTGO072`）は、物件基本情報登録変更のメニューID で権限を引きます。どの行を足すかを、案件全体でそろえる必要があります。 - **物件基本情報登録変更の既存キーの記載**：pbi design が既存とする `WTX-100012`・`WTX-100011`・`WTX-100005` は wing の `messages.properties` にありません（`WTX-1000xx` は `WTX-100013` の 1 行だけ。`messages.properties:401`）（`grep \"WTX-100012\"` は WTX の画面だけに該当）。pbi の実装で確かめる必要があります（Q-DS-CD-005 の 3）。 - **steering/security.md の書き方**：285 行目は既存の契約情報の絞り込みを「既存の WTB と同じ計…（全文は _handoff/questions-phase5-contract-info-download.md）",
+    "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-contract-info-download.md）"
+   }
+  ],
+  "open_placeholders": 0,
+  "changed_findings": [],
+  "return_candidates": [],
+  "summary": "テンプレートから下書きを用意し、承認済み入力と既存のコードで決められない値を質問 10 件にまとめた（_handoff/questions-phase5-contract-info-download.md と同じ）。今回の案件の成果物（正解）にあたるコードは作業ツリーに無く、根拠にしていない。"
+ }
+}

@@ -1,0 +1,43 @@
+{
+ "operation_id": "abcabede596344288c9ab64190c73237",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[contract-info-import]::run",
+  "event": "design-authoring-revise",
+  "item": "contract-info-import",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "489a6570d9ef49ba808c9650c91fa473"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/contract-info-import/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "design",
+    "scope": "feature:contract-info-import",
+    "run": 2,
+    "number": 1
+   },
+   {
+    "phase": "design",
+    "scope": "feature:contract-info-import",
+    "run": 2,
+    "number": 2
+   },
+   {
+    "phase": "design",
+    "scope": "feature:contract-info-import",
+    "run": 2,
+    "number": 3
+   }
+  ],
+  "return_candidates": [],
+  "summary": "2 回目 #1：STaskList の比べ方を「タブ＋parameter が タブ＋g_ApplicationNo=申請No＋タブ を含む」と書いた。#2：範囲の判定の会社コードは取込画面 Mapper で TWTGM100 から引き、セッションの値は使わず、登録者は getApplication の RegisteredPerson と比べると書いた（Mapper の説明も）。#3：WTG-100030 を JAVA-KIT のメッセージに足し、移行方針・移行対象を 6 行にした。要件トレーサビリティ自己診断（contract-info-import）：抽出 29 件、対応あり 29 件、未対応 0 件。"
+ }
+}

@@ -208,3 +208,27 @@
 2026-10-08 15:33:07,5,application-status-search,2,レビュー提示,design-check 2 回目（承認の可否）
 2026-10-08 15:44:45,5,application-status-search,2,回答受領,承認（Junichi Noumi）
 2026-10-08 15:45:08,5,application-status-search,2,AI記録完了,design 承認を記録（approved）
+2026-10-08 15:51:33,5,contract-info-import,1,回答受領,Q-DS-CI-001〜015（別ファイルのリバース 381 列・対応表・検査表つき）
+2026-10-08 15:54:07,5,contract-info-import,1,AI記録完了,質問 15 件を提出し回答を answer で記録
+2026-10-08 15:54:07,5,contract-info-import,1,AI作成開始,design 本体の書き起こし
+2026-10-08 15:59:20,5,contract-info-import,1,AI提出,design を書き起こし completed で提出
+2026-10-08 16:00:07,5,contract-info-import,1,AI検査開始,design-check（1 回目）
+2026-10-08 16:08:43,5,contract-info-import,1,AI検査終了,design-check（1 回目）指摘 10 件
+2026-10-08 16:09:32,5,contract-info-import,1,レビュー提示,design-check 1 回目
+2026-10-08 16:16:28,5,contract-info-import,1,回答受領,design-check 1 回目の判断 8 件
+2026-10-08 16:30:11,5,contract-info-import,2,AI作成開始,修正の回（10 件）
+2026-10-08 16:31:27,5,contract-info-import,2,AI提出,修正の回（10 件）を提出
+2026-10-08 16:32:16,5,contract-info-import,2,AI検査開始,design-check（2 回目）
+2026-10-08 16:36:02,5,contract-info-import,2,AI検査終了,design-check（2 回目）指摘 3 件
+2026-10-08 16:36:51,5,contract-info-import,2,レビュー提示,design-check 2 回目
+2026-10-08 16:49:44,5,contract-info-import,2,回答受領,design-check 2 回目の判断 3 件
+2026-10-08 16:51:12,5,contract-info-import,3,AI作成開始,修正の回（2 回目 3 件）
+2026-10-08 16:51:39,5,contract-info-import,3,AI提出,修正の回（2 回目 3 件）を提出
+2026-10-08 16:52:33,5,contract-info-import,3,AI検査開始,design-check（3 回目）
+2026-10-08 16:55:48,5,contract-info-import,3,AI検査終了,design-check（3 回目）指摘 2 件
+2026-10-08 16:56:41,5,contract-info-import,3,レビュー提示,design-check 3 回目
+2026-10-08 18:18:00,5,contract-info-import,3,判断記録,design-check 3 回目
+2026-10-08 18:27:16,5,contract-info-import,4,修正提出・AI検査開始,design-check 4 回目
+2026-10-08 18:29:45,5,contract-info-import,4,AI検査終了・レビュー提示,design-check 4 回目 指摘 0 件
+2026-10-08 18:34:03,5,contract-info-import,4,承認,design 承認
+2026-10-08 18:35:54,5,contract-info-download,0,質問登録,design 質問 10 件 回答待ち

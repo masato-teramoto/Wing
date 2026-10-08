@@ -1,0 +1,85 @@
+{
+ "operation_id": "44a8861d36794463a16804be21de1128",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[contract-info-import]::run",
+  "event": "design-authoring-revise",
+  "item": "contract-info-import",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "4f9b6dd986844d8c9ac91ce75392bce2"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/contract-info-import/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "design",
+    "scope": "feature:contract-info-import",
+    "run": 1,
+    "number": 1
+   },
+   {
+    "phase": "design",
+    "scope": "feature:contract-info-import",
+    "run": 1,
+    "number": 2
+   },
+   {
+    "phase": "design",
+    "scope": "feature:contract-info-import",
+    "run": 1,
+    "number": 3
+   },
+   {
+    "phase": "design",
+    "scope": "feature:contract-info-import",
+    "run": 1,
+    "number": 4
+   },
+   {
+    "phase": "design",
+    "scope": "feature:contract-info-import",
+    "run": 1,
+    "number": 5
+   },
+   {
+    "phase": "design",
+    "scope": "feature:contract-info-import",
+    "run": 1,
+    "number": 6
+   },
+   {
+    "phase": "design",
+    "scope": "feature:contract-info-import",
+    "run": 1,
+    "number": 7
+   },
+   {
+    "phase": "design",
+    "scope": "feature:contract-info-import",
+    "run": 1,
+    "number": 8
+   },
+   {
+    "phase": "design",
+    "scope": "feature:contract-info-import",
+    "run": 1,
+    "number": 9
+   },
+   {
+    "phase": "design",
+    "scope": "feature:contract-info-import",
+    "run": 1,
+    "number": 10
+   }
+  ],
+  "return_candidates": [],
+  "summary": "#1：受付No 空・リバースデータで稟議バーコードNo を付けないのは 2.6 から意図して外れる旨と upstream-carryover を書いた。#2：開始時にすでに取込中なら WTG-100030 を logError、件数は出さない。#3：エラーで取り消したときも警告を出し、{0}・{1}＝0、{2}＝警告の件数、{3}＝エラー行数。#4：洗替の前に発行依頼書が無ければ担当エリア・担当エリア名は NULL。#5：WTG-200011 の電話番号の値は steering から意図して外れる旨と upstream-carryover を書いた。#6：Pwtgo090Mapper を足し、STaskList の確認（タスクID・状態 0 と 1・g_ApplicationNo）を書いた。#7：警告は logWarn で出し、警告だけなら警告終了（WTActiveTask.java:351）。#8：CSRF の出典を servlet-context.xml:121〜130 に直した。#9：WTX_Batch の WTKeikakuJudgeUtils.chkKichikyoku(String) を使うと直した。#10：実行の手順 2 に getExternalScope の範囲の判定を足した。要件トレーサビリティ自己診断（contract-info-import）：抽出 29 件、対応あり 29 件、未対応 0 件。"
+ }
+}

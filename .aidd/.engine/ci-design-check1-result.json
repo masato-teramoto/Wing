@@ -1,0 +1,360 @@
+{
+  "status": "ok",
+  "action": "submit",
+  "result": {
+    "unit": "design-authoring-generate/design-authoring-generate[contract-info-import]::end.review",
+    "flow": "design-authoring-generate",
+    "event": "design-authoring-generate",
+    "item": "contract-info-import",
+    "gate": "review",
+    "hookPoint": "end",
+    "name": "review",
+    "type": "script",
+    "target": "scripts/approval.py",
+    "isAgent": false,
+    "requiresHuman": true,
+    "calls": [],
+    "targetReview": [
+      "specs/contract-info-import/design.md"
+    ],
+    "status": "wait",
+    "call": "design-authoring-generate",
+    "dispatch": {
+      "call": "design-authoring-generate",
+      "unit": "design-authoring-generate/design-authoring-generate[contract-info-import]::end.review",
+      "event": "design-authoring-generate",
+      "item": "contract-info-import",
+      "status": "wait",
+      "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+      "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-generate/design-authoring-generate[contract-info-import]::end.review\", \"snapshot\": \"53ebd6c74e66942caa5b73e718479d2d03fd0973e4300aad203161a857cb2676\", \"run\": 1, \"inspection_hash\": \"b1f177d6b7e559fe3199ad7483219ae39241e7cc691742f2edecd9eb891aa9a2\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 9 件\n  - 洗替の前にだけある行・後にだけある行を変更履歴に入れない扱い（answer:design-authoring-generate[contract-info-import]）\n  - 渡された 9 項目をセッションの値のままタスクのパラメータにし、DB から引き直さない扱い（answer:design-authoring-generate[contract-info-import]）\n  - バッチが動き出したときに審査フェーズ・状態（14.5）を確かめ直さない扱い（answer:design-authoring-generate[contract-info-import]）\n  - WTG-200009・警告の WTG-000072 に住所の値を出す（steering/non-functional.md からの逸脱として明記済み）（answer:design-authoring-generate[contract-info-import]）\n  - タスクのパラメータに申請者・起案者の氏名を入れ一覧に出す（steering/security.md からの逸脱として明記済み）（answer:design-authoring-generate[contract-info-import]）\n  - pbi design の出力 CSV が「契約情報取込で読める形」でない食い違い（upstream-carryover として明記済み）（answer:design-authoring-generate[contract-info-import]）\n  - TWTGM110 の物理削除と pbi design の「行は物理削除しない」の食い違い（例外として明記済み）（answer:design-authoring-generate[contract-info-import]）\n  - 対応表 2 の No.8 の値（341・241・141、X-11 の返り値 \"1\"）と design の値（003・001・002、\"S\"・\"D\"）の違い。回答が P78 のキー3 と S・D を指定（answer:design-authoring-generate[contract-info-import]）\n  - 同じ申請No のタスクがあるときも WTG-100030 を使い、新しいキーを作らない扱い（answer:design-authoring-generate[contract-info-import]）\n\n### 判断が必要な指摘\n\n**対象**: `specs/contract-info-import/design.md`（スコープ: 成果物単位（contract-info-import） / 1 回目）\n**実行した層**: ① / ②\n\n**重大**（3 件。1 件ずつ判断してください）\n\n| # | 種類 | 対象箇所 | 要約 | AI の推奨 | 判断 |\n|---|---|---|---|---|---|\n| 1 | 業務の欠落・矛盾 | specs/contract-info-import/design.md § ドメインモデル（Domain Model） / 2.6 | 2.6 を満たさない場合（リバースデータ・受付No 空）が逸脱として書かれていない | 修正（値は人の回答で確定しており、逸脱の明記と持ち越しの記録だけが欠けているため） | 未回答 |\n| 5 | 業務の欠落・矛盾 | specs/contract-info-import/design.md § 機能固有のエラー処理（Error Handling） ほか 1 か所 | 契約者の電話番号の値をバッチ処理状況に出すが steering からの逸脱と書いていない | 修正（出す値は人の回答で確定しており、steering との食い違いの明記と持ち越しの記録が欠けているため） | 未回答 |\n| 10 | 業務の欠落・矛盾 | specs/contract-info-import/design.md § セキュリティ上の考慮（Security Considerations） / 脅威と対策 ほか 1 か所 | 社外ユーザーの範囲外の申請を getApplication・canOperate が拒否するとするが公開契約に無い | 修正（依存先の公開契約に既にある getExternalScope で満たせ、範囲の判定が抜けると他社の申請を取り込めるため） | 未回答 |\n\n**要判断**（5 件）\n\n| 束 | 観点 | 種類 | 件数 | 番号 | AI の推奨（先頭の指摘） |\n|---|---|---|---|---|---|\n| 束1 | traceability | 業務のあいまい・不足 | 3 | #2 #3 #4 | 質問（利用者がバッチ処理状況で見る内容で、回答に無い業務の値のため） |\n| 束2 | evidence-guard | 業務のあいまい・不足 | 2 | #6 #7 | 修正（既存コードで決められる実装の置き場と条件の記述が欠けているため） |\n\n束の内訳（束でまとめて答えるか、番号で 1 件ずつ答えてください）\n\n- [束1] #2 バッチ開始時にすでに取込中だったときのエラーのメッセージが無い\n- [束1] #3 エラーで取り消したときに警告を出すかと、件数の {2} が決まっていない\n- [束1] #4 洗替の前に発行依頼書が無い申請での担当エリア・担当エリア名が決まっていない\n- [束2] #6 STaskList の確認を BatchCommonService で行うとするが、その口が既存に無い\n- [束2] #7 警告を logWarn で出すと既存の基盤では警告終了になり、正常終了と両立しない\n\n**AI が修正案で直す軽微**（2 件。判断は不要。修正の回で直し、再検査で確かめます）\n- #8 CSRF の照合の出典の行が servlet-context.xml:68 で、照合の設定の行と違う\n- #9 契約区分の判定の部品を使えるかを tasks に回しているが、既存コードで決まる\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n**答え方**（後に書いたものが優先。束・範囲でまとめて答えられます）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）。区分を `C[指摘の誤り]` `C[対象外]` `C[後で決める]` `C[解釈で対応]` で付ける。対象外・後で決めるに `+` を付けると（例 `C[後で決める+]`）、次の検査から同じ扱いにします\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n- **推奨** — AI の推奨を採用する（修正なら修正案がそのまま修正の指示になります）\n\n回答例: `1:推奨 / 束1:C[後で決める+] 桁数は design で決める / 3〜5:A / 7:D 次回まで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。根拠と修正案は `詳細 <番号>` で表示します。",
+      "id": "7afaf8344ed04d57a292964247b945e0"
+    },
+    "label": "design-authoring-generate / design-authoring-generate [contract-info-import]",
+    "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-generate/design-authoring-generate[contract-info-import]::end.review\", \"snapshot\": \"53ebd6c74e66942caa5b73e718479d2d03fd0973e4300aad203161a857cb2676\", \"run\": 1, \"inspection_hash\": \"b1f177d6b7e559fe3199ad7483219ae39241e7cc691742f2edecd9eb891aa9a2\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 9 件\n  - 洗替の前にだけある行・後にだけある行を変更履歴に入れない扱い（answer:design-authoring-generate[contract-info-import]）\n  - 渡された 9 項目をセッションの値のままタスクのパラメータにし、DB から引き直さない扱い（answer:design-authoring-generate[contract-info-import]）\n  - バッチが動き出したときに審査フェーズ・状態（14.5）を確かめ直さない扱い（answer:design-authoring-generate[contract-info-import]）\n  - WTG-200009・警告の WTG-000072 に住所の値を出す（steering/non-functional.md からの逸脱として明記済み）（answer:design-authoring-generate[contract-info-import]）\n  - タスクのパラメータに申請者・起案者の氏名を入れ一覧に出す（steering/security.md からの逸脱として明記済み）（answer:design-authoring-generate[contract-info-import]）\n  - pbi design の出力 CSV が「契約情報取込で読める形」でない食い違い（upstream-carryover として明記済み）（answer:design-authoring-generate[contract-info-import]）\n  - TWTGM110 の物理削除と pbi design の「行は物理削除しない」の食い違い（例外として明記済み）（answer:design-authoring-generate[contract-info-import]）\n  - 対応表 2 の No.8 の値（341・241・141、X-11 の返り値 \"1\"）と design の値（003・001・002、\"S\"・\"D\"）の違い。回答が P78 のキー3 と S・D を指定（answer:design-authoring-generate[contract-info-import]）\n  - 同じ申請No のタスクがあるときも WTG-100030 を使い、新しいキーを作らない扱い（answer:design-authoring-generate[contract-info-import]）\n\n### 判断が必要な指摘\n\n**対象**: `specs/contract-info-import/design.md`（スコープ: 成果物単位（contract-info-import） / 1 回目）\n**実行した層**: ① / ②\n\n**重大**（3 件。1 件ずつ判断してください）\n\n| # | 種類 | 対象箇所 | 要約 | AI の推奨 | 判断 |\n|---|---|---|---|---|---|\n| 1 | 業務の欠落・矛盾 | specs/contract-info-import/design.md § ドメインモデル（Domain Model） / 2.6 | 2.6 を満たさない場合（リバースデータ・受付No 空）が逸脱として書かれていない | 修正（値は人の回答で確定しており、逸脱の明記と持ち越しの記録だけが欠けているため） | 未回答 |\n| 5 | 業務の欠落・矛盾 | specs/contract-info-import/design.md § 機能固有のエラー処理（Error Handling） ほか 1 か所 | 契約者の電話番号の値をバッチ処理状況に出すが steering からの逸脱と書いていない | 修正（出す値は人の回答で確定しており、steering との食い違いの明記と持ち越しの記録が欠けているため） | 未回答 |\n| 10 | 業務の欠落・矛盾 | specs/contract-info-import/design.md § セキュリティ上の考慮（Security Considerations） / 脅威と対策 ほか 1 か所 | 社外ユーザーの範囲外の申請を getApplication・canOperate が拒否するとするが公開契約に無い | 修正（依存先の公開契約に既にある getExternalScope で満たせ、範囲の判定が抜けると他社の申請を取り込めるため） | 未回答 |\n\n**要判断**（5 件）\n\n| 束 | 観点 | 種類 | 件数 | 番号 | AI の推奨（先頭の指摘） |\n|---|---|---|---|---|---|\n| 束1 | traceability | 業務のあいまい・不足 | 3 | #2 #3 #4 | 質問（利用者がバッチ処理状況で見る内容で、回答に無い業務の値のため） |\n| 束2 | evidence-guard | 業務のあいまい・不足 | 2 | #6 #7 | 修正（既存コードで決められる実装の置き場と条件の記述が欠けているため） |\n\n束の内訳（束でまとめて答えるか、番号で 1 件ずつ答えてください）\n\n- [束1] #2 バッチ開始時にすでに取込中だったときのエラーのメッセージが無い\n- [束1] #3 エラーで取り消したときに警告を出すかと、件数の {2} が決まっていない\n- [束1] #4 洗替の前に発行依頼書が無い申請での担当エリア・担当エリア名が決まっていない\n- [束2] #6 STaskList の確認を BatchCommonService で行うとするが、その口が既存に無い\n- [束2] #7 警告を logWarn で出すと既存の基盤では警告終了になり、正常終了と両立しない\n\n**AI が修正案で直す軽微**（2 件。判断は不要。修正の回で直し、再検査で確かめます）\n- #8 CSRF の照合の出典の行が servlet-context.xml:68 で、照合の設定の行と違う\n- #9 契約区分の判定の部品を使えるかを tasks に回しているが、既存コードで決まる\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n**答え方**（後に書いたものが優先。束・範囲でまとめて答えられます）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）。区分を `C[指摘の誤り]` `C[対象外]` `C[後で決める]` `C[解釈で対応]` で付ける。対象外・後で決めるに `+` を付けると（例 `C[後で決める+]`）、次の検査から同じ扱いにします\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n- **推奨** — AI の推奨を採用する（修正なら修正案がそのまま修正の指示になります）\n\n回答例: `1:推奨 / 束1:C[後で決める+] 桁数は design で決める / 3〜5:A / 7:D 次回まで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。根拠と修正案は `詳細 <番号>` で表示します。",
+    "allowed_actions": [
+      "decision",
+      "decisions",
+      "resolve",
+      "repair"
+    ],
+    "review_context": {
+      "root": "C:\\project\\Wing",
+      "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+      "call": "design-authoring-generate",
+      "event": "design-authoring-generate",
+      "item": "contract-info-import",
+      "dispatch_id": "7afaf8344ed04d57a292964247b945e0",
+      "unit": "design-authoring-generate/design-authoring-generate[contract-info-import]::end.review",
+      "scope": "feature:contract-info-import",
+      "run": 1,
+      "snapshot": "53ebd6c74e66942caa5b73e718479d2d03fd0973e4300aad203161a857cb2676",
+      "record_hash": "72d15db48500b1e572cd830d88902ad85e5ad6925b206d07a60c253e2e24187d"
+    },
+    "review": [
+      {
+        "scope": "feature:contract-info-import",
+        "run": 1,
+        "number": 1,
+        "current": true,
+        "decision": "",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "意味判定：ID対応あり・内容未充足。requirements 2.6「取込を行うとき、システムは物件基本情報登録変更画面から渡された受付No と契約区分で、契約局ごとに稟議バーコードNo を付けなければならない」は条件を持たない。design の「稟議バーコードNo（2.6）」は「受付No が空（発番の前）なら NULL。リバースデータのときは NULL」とし、リバースデータの取込では全契約局に付けない（あわせて 2.9 で TWTGM110 の行が全部消える）。値の決め方は Q-DS-CI-004 の 2・3 で確定しているが、design の出典の表記・上流との関係の注記と、回答の「上流から意図して外れる点」（pbi design 391 行目付近・non-functional.md・security.md の 3 点）のどちらにも requirements 2.6 から外れることが無く、承認済み requirements と両立しない状態が記録されていない（pbi design の出力 CSV・TWTGM110 の物理削除は upstream-carryover と明記している）",
+        "location": "specs/contract-info-import/design.md § ドメインモデル（Domain Model） / 2.6",
+        "kind": "業務の欠落・矛盾",
+        "severity": "重大",
+        "summary": "2.6 を満たさない場合（リバースデータ・受付No 空）が逸脱として書かれていない",
+        "suggestion": "ドメインモデルの「稟議バーコードNo（2.6）」の末尾に「受付No が空のときとリバースデータのときに稟議バーコードNo を付けないことは、requirements 2.6 から意図して外れる（Q-DS-CI-004）。上流は Phase 5 の最後にまとめて直す（upstream-carryover）」を足し、upstream-carryover に requirements（contract-info-import）2.6 を足す",
+        "recommendation": "修正：値は人の回答で確定しており、逸脱の明記と持ち越しの記録だけが欠けているため",
+        "decided_by": ""
+      },
+      {
+        "scope": "feature:contract-info-import",
+        "run": 1,
+        "number": 2,
+        "current": true,
+        "decision": "",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "意味判定：1.8・4.7 に対応する処理はあるが内容が不足。ドメインモデルの「取込中」は「すでに取込中（06）なら何も変えずにエラーで終わる（元に戻す更新もしない）」、エラー時の分岐フローの E0 は「エラーで終わる 何も変えない」とだけ書き、バッチ処理状況に何のキー・文言を出すか、件数のメッセージを出すか、終了の状態が無い。機能固有エラーコードの表（WTG-200008〜200012・WTG-100030）とバリデーション設計の表にもこの場合の行が無い。Q-DS-CI-006 は「エラーで終わります」までで、キーを定めていない（新しいキーを作らないのは画面の WTG-100030 について）",
+        "location": "specs/contract-info-import/design.md § ドメインモデル（Domain Model） / 2.7 ほか 1 か所",
+        "kind": "業務のあいまい・不足",
+        "severity": "要判断",
+        "summary": "バッチ開始時にすでに取込中だったときのエラーのメッセージが無い",
+        "suggestion": "決めること：E0 でバッチ処理状況に出すメッセージ。案 A：既存の WTG-100030 を logError で出す（新しいキーを作らない方針に合う）。案 B：JAVA-KIT に新しいキーを足す（Q-DS-CI-012 の 2 の範囲が増える）。あわせて件数のメッセージを出すかを決める",
+        "recommendation": "質問：利用者がバッチ処理状況で見る内容で、回答に無い業務の値のため",
+        "decided_by": ""
+      },
+      {
+        "scope": "feature:contract-info-import",
+        "run": 1,
+        "number": 3,
+        "current": true,
+        "decision": "",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "意味判定：4.6・4.8 に対応する記述はあるが境界の場合が不足。データ契約の「バッチ処理状況」は「エラーで取り消したときは {0}・{1} を 0、{3} をエラーのあった行の数にする」とし、ワーニング {2} の値が無い。エラー時の分岐フローは区分 3 にエラーが無いときだけ「警告 WTG-200009・WTG-000072 を出す」へ進むので、エラーがあると警告を出さないと読めるが、検査表の 1-3（「【ﾁｪｯｸ区分3】＜ﾜｰﾆﾝｸﾞ＞」）は警告を区分 3 の中の検査として置いており、ドメインモデルの「警告」にもエラーのときの扱いが無い。Q-DS-CI-012 の 4 も {2} のエラー時の値を定めていない",
+        "location": "specs/contract-info-import/design.md § データ契約と外部連携（Data Contracts & Integration） / 4.6・4.8 ほか 1 か所",
+        "kind": "業務のあいまい・不足",
+        "severity": "要判断",
+        "summary": "エラーで取り消したときに警告を出すかと、件数の {2} が決まっていない",
+        "suggestion": "決めること：エラーで取り消したときに警告を詳細に出すか、{2} に何を入れるか。案 A：警告も出し、{2} は警告の件数。案 B：警告は出さず、{2} は 0（分岐フローのとおり）。決めた内容をデータ契約の「バッチ処理状況」とエラー時の分岐フローの両方に書く",
+        "recommendation": "質問：利用者に出す件数と警告の業務の値で、回答に無いため",
+        "decided_by": ""
+      },
+      {
+        "scope": "feature:contract-info-import",
+        "run": 1,
+        "number": 4,
+        "current": true,
+        "decision": "",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "意味判定：2.5 に対応する記述はあるが境界の場合が不足。ドメインモデルの「洗替の前から引き継ぐ値」は「TWTGM100 は担当エリア・担当エリア名を洗替の前の TWTGM100 から」とし、対応表 2 の No.10・11 も「(40)GM100．担当ｴﾘｱ」「(40)GM100．担当ｴﾘｱ名」だけ。取込は 14.5 の起案者（未起案・下書き）の番でも実行でき、pbi design は発行依頼書を「読取りと削除・複製だけ」とするので、取込の時点で TWTGM100 の行が無い申請がありうる。そのときの担当エリア・担当エリア名（NULL にするか、渡された担当エリア g_AreaCd とその名称を入れるか）が書かれていない。稟議バーコードNo のエリア接頭語は渡された担当エリアで引くと書いており、同じ申請で両者が食い違いうる",
+        "location": "specs/contract-info-import/design.md § ドメインモデル（Domain Model） / 2.5",
+        "kind": "業務のあいまい・不足",
+        "severity": "要判断",
+        "summary": "洗替の前に発行依頼書が無い申請での担当エリア・担当エリア名が決まっていない",
+        "suggestion": "決めること：洗替の前の TWTGM100 が無いときの担当エリア・担当エリア名。案 A：NULL にする。案 B：渡された担当エリア（g_AreaCd）と、そのコードで引いた名称を入れる。案 C：洗替の前の行の有無によらず、渡された担当エリアを入れる",
+        "recommendation": "質問：発行依頼書に残る業務の値で、回答・対応表に無いため",
+        "decided_by": ""
+      },
+      {
+        "scope": "feature:contract-info-import",
+        "run": 1,
+        "number": 5,
+        "current": true,
+        "decision": "",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "矛盾。steering/non-functional.md の「#### 出力しない」#3「契約者の個人情報（氏名、住所、連絡先）」、steering/security.md の「## 機密データ」の「契約者の個人情報（氏名・住所・連絡先）…ログに出さない」。design の「ログ」は「各メッセージの {2} には検査表の『置換文字』の値（…郵便番号・都道府県と市区町村・金額・電話番号など）を入れる」とし、バリデーション設計の WTG-200011「行数[{0}]:{1}[{2}]:固定電話は10桁、IP電話は11桁で入力してください。」の対象は検査表の契約者・関係者①〜⑤_TEL（固定）（携帯）（1-2 の No.39・40 ほか、2-2 の No.55・56 ほか）。電話番号を入れること自体は Q-DS-CI-012 の 3 で決まっているが、design は住所（WTG-200009・WTG-000072）と担当者の氏名（タスクのパラメータ）だけを「steering から意図して外れる」と書き、連絡先（電話番号）は書いていない。回答の「上流から意図して外れる点」にも電話番号は無い。セキュリティ上の考慮の「ログからの個人情報の漏れ」も氏名・メールアドレス・マイナンバーを受け取った日だけを挙げる",
+        "location": "specs/contract-info-import/design.md § 機能固有のエラー処理（Error Handling） ほか 1 か所",
+        "kind": "業務の欠落・矛盾",
+        "severity": "重大",
+        "summary": "契約者の電話番号の値をバッチ処理状況に出すが steering からの逸脱と書いていない",
+        "suggestion": "機能固有のエラー処理の「ログ」と、セキュリティ上の考慮の「データ保護 / プライバシー」に「WTG-200011 は、行番号と一緒に契約者・関係者の電話番号の値を出す。steering/non-functional.md・security.md の『契約者の連絡先をログに出さない』から意図して外れる（Q-DS-CI-012 の 3）。上流は Phase 5 の最後にまとめて直す（upstream-carryover）」を足し、upstream-carryover に足す。電話番号を出さない方に変えるなら、WTG-200011 の {2} を空にする",
+        "recommendation": "修正：出す値は人の回答で確定しており、steering との食い違いの明記と持ち越しの記録が欠けているため",
+        "decided_by": ""
+      },
+      {
+        "scope": "feature:contract-info-import",
+        "run": 1,
+        "number": 6,
+        "current": true,
+        "decision": "",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "根拠の飛躍。取込画面 Service の呼び出し先に「BatchCommonService — STaskList の確認とタスクの登録」、実行の手順 3 に「同じ申請No（パラメータ g_ApplicationNo）の、待機中・処理中の取込のタスクが STaskList にあれば WTG-100030」とある。既存の wing/src/main/java/jp/co/kccs/wt/common/service/BatchCommonService.java は insertTask（:50〜:63）と private の toTSVString（:73）だけで、STaskList を読む口が無い。パラメータは「キー=値」のタブ区切り 1 列（:66〜:92）に入るので、申請No で探す条件（列と比べ方）が要る。待機中・処理中に当たる STaskList の状態の値も書かれていない（既存の一覧は STaskList.status と STaskListEx.Process_Status を持つ。Pzzzo011Mapper.xml:57・:69）。一方、ファイル配置計画の wtg090 は controller・service・form だけで Mapper が無く、変更する既存ファイルは「既存のファイルは変えない」としているので、この確認の SQL を置く場所が無い（手本の wtg040 にも Mapper は無い）",
+        "location": "specs/contract-info-import/design.md § 取込画面 Service / 依存関係 ほか 2 か所",
+        "kind": "業務のあいまい・不足",
+        "severity": "要判断",
+        "summary": "STaskList の確認を BatchCommonService で行うとするが、その口が既存に無い",
+        "suggestion": "ファイル配置計画に wtg090 の Mapper（例 mapper/Pwtgo090Mapper.java と resources の Pwtgo090Mapper.xml）を足し、取込画面 Service の呼び出し先を「Pwtgo090Mapper — STaskList の確認」に直す。実行の手順 3 に、対象のタスク（タスクID A8B36D2BB98F419FB0718303BCA2C9B6）、待機中・処理中に当たる状態の値、パラメータ列での申請No の比べ方（例 g_ApplicationNo=申請No とタブで囲んだ文字列を含む）を書く。既存の BatchCommonService に口を足すなら、変更する既存ファイルにその旨を書く",
+        "recommendation": "修正：既存コードで決められる実装の置き場と条件の記述が欠けているため",
+        "decided_by": ""
+      },
+      {
+        "scope": "feature:contract-info-import",
+        "run": 1,
+        "number": 7,
+        "current": true,
+        "decision": "",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "根拠の飛躍。design は「警告は 1 件ずつ logWarn」（データ契約の「バッチ処理状況」）と「警告だけなら正常終了（警告終了にはしない）」（機能固有のエラー処理の「返し方」、Q-DS-CI-012 の 5）を並べている。既存の WTX_Batch/src/jp/co/kccs/greenearth/javakit/frame/batch/engine/WTBatchJob.java:152〜:174 の logWarn は SBatchLog に LOG_TYPE_WARNNING の行を書き、WTActiveTask.java:350〜:355 は「existsWarningError(getObjectID())」が真なら STATUS_WARNING を返す（:350 の注記は警告・エラーがあれば警告終了にする旨）。existsWarningError の本体は作業ツリーに無い（基盤のクラス）が、名前と注記からは logWarn を 1 件でも書くとタスクが警告終了になると読め、design の 2 つの記述が両立するかを示す根拠が無い",
+        "location": "specs/contract-info-import/design.md § データ契約と外部連携（Data Contracts & Integration） ほか 1 か所",
+        "kind": "業務のあいまい・不足",
+        "severity": "要判断",
+        "summary": "警告を logWarn で出すと既存の基盤では警告終了になり、正常終了と両立しない",
+        "suggestion": "決めること：警告の出し方と終了の状態。案 A：logWarn で出し、警告終了を受け入れる（Q-DS-CI-012 の 5 を直す）。案 B：正常終了を保つため、警告を logWarn ではなく writeCustomLog の INFO で出す（バッチ処理状況の詳細での見え方が変わる）。案 C：existsWarningError の判定を確かめてから決める",
+        "recommendation": "質問：回答の正常終了と既存の基盤の動きが食い違い、どちらを優先するかは人が決めるため",
+        "decided_by": ""
+      },
+      {
+        "scope": "feature:contract-info-import",
+        "run": 1,
+        "number": 8,
+        "current": true,
+        "decision": "修正",
+        "reason": "軽微（AIDD 内部の決まりごと）のため、AI が修正案で直す",
+        "open": true,
+        "resolved": false,
+        "description": "出典不明。API 契約の注記は「/wtg090/execute は URL の末尾が execute なので CSRF の照合に乗る（wing/src/main/resources/servlet-context.xml:68）」とするが、:68 は multipartResolver の maxUploadSize（1048576000）の行。CSRF の照合は :121〜:130 の CSRFTokenCheckInterceptor で、/**/execute は :127",
+        "location": "specs/contract-info-import/design.md § API 契約（API Contract）",
+        "kind": "出典・根拠",
+        "severity": "軽微",
+        "summary": "CSRF の照合の出典の行が servlet-context.xml:68 で、照合の設定の行と違う",
+        "suggestion": "出典を「wing/src/main/resources/servlet-context.xml:121〜:130（/**/execute は :127）」に直す。アップロードの上限の文には「servlet-context.xml:68」を出典として付ける",
+        "recommendation": "修正：出典の行番号の誤りで、正しい行が既存コードで決まるため",
+        "decided_by": "system（自動）"
+      },
+      {
+        "scope": "feature:contract-info-import",
+        "run": 1,
+        "number": 9,
+        "current": true,
+        "decision": "修正",
+        "reason": "軽微（AIDD 内部の決まりごと）のため、AI が修正案で直す",
+        "open": true,
+        "resolved": false,
+        "description": "依存先に「共通部品 WTKeikakuJudgeUtils.chkKichikyoku（契約区分の判定。ir design と同じ）。WTX_Batch から使えない場合は、同じ判定（局種別判定マスタ WTZ/MASTER/M09）を WTX_Batch の側に置く（tasks で決める）」とある。ir design の chkKichikyoku は wing の wing/src/main/java/jp/co/kccs/wt/common/utils/WTKeikakuJudgeUtils.java:36（BindingResult と CodeMstService を受ける）で、WTX_Batch からは使えない。一方 WTX_Batch には既存の WTX_Batch/src/jp/co/kccs/wt/util/WTKeikakuJudgeUtils.java があり、:98 に chkKichikyoku(String)（M09 を引く。:128）がある。使う部品は design で決められ、tasks の工程の境界（B-04 はタスクの分割・実装の順番）に当たらない",
+        "location": "specs/contract-info-import/design.md § 依存してよい対象（Allowed Dependencies）",
+        "kind": "工程・文書の分担",
+        "severity": "軽微",
+        "summary": "契約区分の判定の部品を使えるかを tasks に回しているが、既存コードで決まる",
+        "suggestion": "依存先を「WTX_Batch の既存の共通部品 WTKeikakuJudgeUtils.chkKichikyoku(String)（WTX_Batch/src/jp/co/kccs/wt/util/WTKeikakuJudgeUtils.java:98。局種別判定マスタ M09 を引く。ir design が使う wing の同名の部品と同じ判定）」に直し、「使えない場合は…tasks で決める」を消す",
+        "recommendation": "修正：既存コードで決まる設計の判断を後の工程に残さないため",
+        "decided_by": "system（自動）"
+      },
+      {
+        "scope": "feature:contract-info-import",
+        "run": 1,
+        "number": 10,
+        "current": true,
+        "decision": "",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "design は「社外ユーザーの範囲外の申請 → getApplication・canOperate が範囲外を拒否する（pbi design）」とし、取込画面 Service の実行の手順 2 も「申請No で getApplication を引き、canOperate（契約局取込）で番と状態を判定する」だけ。pbi design の公開契約（WTG 申請状態サービスのサービスインターフェース）では getApplication は「会社コード、申請No → 申請。無ければ null」で範囲の条件を持たず、canOperate は依頼内容・番・状態・審査権限（起案者は常に含む）で可否を返し、会社の範囲を見ない。範囲は getExternalScope（社外ユーザーなら自社の会社コードと本人のユーザーID）として別に公開され、pbi の画面は「申請を取り出す SQL の条件に社外ユーザーの範囲を加え、範囲外は無いものとして扱う」（pbi design のセキュリティ上の考慮）と自分の SQL で絞っている。/wtg090 は 9 項目を POST で受けるので、社外ユーザーが他社の申請No を送ると、この design の手順では範囲で止まらない（steering/security.md の「#### 所有権・エンティティ境界」、requirements 1.7）",
+        "location": "specs/contract-info-import/design.md § セキュリティ上の考慮（Security Considerations） / 脅威と対策 ほか 1 か所",
+        "kind": "業務の欠落・矛盾",
+        "severity": "重大",
+        "summary": "社外ユーザーの範囲外の申請を getApplication・canOperate が拒否するとするが公開契約に無い",
+        "suggestion": "実行の手順 2 に「getExternalScope で社外ユーザーの範囲を取り、申請（getApplication の結果と発行依頼書の契約稟議起案者_会社コード、または登録者）が範囲外なら、無いものとして WTG-100030（または pbi と同じ扱い）で止める」を足し、脅威と対策と依存先（getExternalScope）を同じに直す。WTG 申請状態サービスに範囲つきの取得の口を足すなら、pbi design への差戻しとして扱う",
+        "recommendation": "修正：依存先の公開契約に既にある getExternalScope で満たせ、範囲の判定が抜けると他社の申請を取り込めるため",
+        "decided_by": ""
+      }
+    ],
+    "choices": {
+      "kind": "decisions",
+      "questions": [
+        {
+          "id": "1",
+          "header": "#1 重大",
+          "question": "2.6 を満たさない場合（リバースデータ・受付No 空）が逸脱として書かれていない（業務の欠落・矛盾・重大）にどう対応しますか？ 差戻し（B）・未対応（D）・別の理由は「その他」で入力",
+          "options": [
+            {
+              "label": "推奨：修正",
+              "description": "値は人の回答で確定しており、逸脱の明記と持ち越しの記録だけが欠けているため",
+              "answer": "1:推奨"
+            },
+            {
+              "label": "C 後で決める",
+              "description": "後の工程で決める事項なので、今は直さずに進める",
+              "answer": "1:C[後で決める] 後の工程で決める"
+            },
+            {
+              "label": "C 対象外",
+              "description": "この工程の対象外なので、直さずに進める",
+              "answer": "1:C[対象外] この工程の対象外"
+            }
+          ],
+          "multiSelect": false
+        },
+        {
+          "id": "5",
+          "header": "#5 重大",
+          "question": "契約者の電話番号の値をバッチ処理状況に出すが steering からの逸脱と書いていない（業務の欠落・矛盾・重大）にどう対応しますか？ 差戻し（B）・未対応（D）・別の理由は「その他」で入力",
+          "options": [
+            {
+              "label": "推奨：修正",
+              "description": "出す値は人の回答で確定しており、steering との食い違いの明記と持ち越しの記録が欠けているため",
+              "answer": "5:推奨"
+            },
+            {
+              "label": "C 後で決める",
+              "description": "後の工程で決める事項なので、今は直さずに進める",
+              "answer": "5:C[後で決める] 後の工程で決める"
+            },
+            {
+              "label": "C 対象外",
+              "description": "この工程の対象外なので、直さずに進める",
+              "answer": "5:C[対象外] この工程の対象外"
+            }
+          ],
+          "multiSelect": false
+        },
+        {
+          "id": "10",
+          "header": "#10 重大",
+          "question": "社外ユーザーの範囲外の申請を getApplication・canOperate が拒否するとするが公開契約に無い（業務の欠落・矛盾・重大）にどう対応しますか？ 差戻し（B）・未対応（D）・別の理由は「その他」で入力",
+          "options": [
+            {
+              "label": "推奨：修正",
+              "description": "依存先の公開契約に既にある getExternalScope で満たせ、範囲の判定が抜けると他社の申請を取り込めるため",
+              "answer": "10:推奨"
+            },
+            {
+              "label": "C 後で決める",
+              "description": "後の工程で決める事項なので、今は直さずに進める",
+              "answer": "10:C[後で決める] 後の工程で決める"
+            },
+            {
+              "label": "C 対象外",
+              "description": "この工程の対象外なので、直さずに進める",
+              "answer": "10:C[対象外] この工程の対象外"
+            }
+          ],
+          "multiSelect": false
+        },
+        {
+          "id": "束1",
+          "header": "束1 3件",
+          "question": "束1（業務のあいまい・不足・traceability 3 件：バッチ開始時にすでに取込中だったときのエラーのメッセージが無い / エラーで取り消したときに警告を出すかと、件数の {2} が決まっていない / 洗替の前に発行依頼書が無い申請での担当エリア・担当エリア名が決まっていない）をまとめてどう扱いますか？ 1 件だけ変える場合は「その他」で番号を指定。差戻し（B）・未対応（D）・別の理由は「その他」で入力",
+          "options": [
+            {
+              "label": "A 修正",
+              "description": "この工程で直す（修正案：決めること：E0 でバッチ処理状況に出すメッセージ。案 A：既存の WTG-100030 を logError で出す（）",
+              "answer": "束1:A"
+            },
+            {
+              "label": "C 後で決める",
+              "description": "後の工程で決める事項なので、今は直さずに進める",
+              "answer": "束1:C[後で決める] 後の工程で決める"
+            },
+            {
+              "label": "C 対象外",
+              "description": "この工程の対象外なので、直さずに進める",
+              "answer": "束1:C[対象外] この工程の対象外"
+            }
+          ],
+          "multiSelect": false
+        },
+        {
+          "id": "束2",
+          "header": "束2 2件",
+          "question": "束2（業務のあいまい・不足・evidence-guard 2 件：STaskList の確認を BatchCommonService で行うとするが、その口が既存に無い / 警告を logWarn で出すと既存の基盤では警告終了になり、正常終了と両立しない）をまとめてどう扱いますか？ 1 件だけ変える場合は「その他」で番号を指定。差戻し（B）・未対応（D）・別の理由は「その他」で入力",
+          "options": [
+            {
+              "label": "A 修正",
+              "description": "この工程で直す（修正案：ファイル配置計画に wtg090 の Mapper（例 mapper/Pwtgo090Mapper.java と res）",
+              "answer": "束2:A"
+            },
+            {
+              "label": "C 後で決める",
+              "description": "後の工程で決める事項なので、今は直さずに進める",
+              "answer": "束2:C[後で決める] 後の工程で決める"
+            },
+            {
+              "label": "C 対象外",
+              "description": "この工程の対象外なので、直さずに進める",
+              "answer": "束2:C[対象外] この工程の対象外"
+            }
+          ],
+          "multiSelect": false
+        }
+      ]
+    },
+    "next_action": "提示文をそのまま示し、choices の選択肢を選択式の質問で出して、人に選んでもらってください。検査結果を確認し、重大と要判断の指摘に A〜D か「推奨」で答えてください（束・範囲でまとめて答えられます）。修正（A）と AI が直す軽微があれば repair（findings: \"all-fixes\"）で修正に回し、判断が揃い修正が無ければ承認者名を回答してください。",
+    "operation_id": "020fd8f80c45410db2c9b4cb31b51889",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

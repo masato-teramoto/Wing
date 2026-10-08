@@ -1,0 +1,30 @@
+{
+ "operation_id": "127ff4912d304efab77872700aead8a7",
+ "action": "decisions",
+ "dispatch": {
+  "call": "design-authoring-generate",
+  "unit": "design-authoring-generate/design-authoring-generate[contract-info-import]::end.review",
+  "event": "design-authoring-generate",
+  "item": "contract-info-import",
+  "status": "wait",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-generate/design-authoring-generate[contract-info-import]::end.review\", \"snapshot\": \"53ebd6c74e66942caa5b73e718479d2d03fd0973e4300aad203161a857cb2676\", \"run\": 1, \"inspection_hash\": \"b1f177d6b7e559fe3199ad7483219ae39241e7cc691742f2edecd9eb891aa9a2\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 9 件\n  - 洗替の前にだけある行・後にだけある行を変更履歴に入れない扱い（answer:design-authoring-generate[contract-info-import]）\n  - 渡された 9 項目をセッションの値のままタスクのパラメータにし、DB から引き直さない扱い（answer:design-authoring-generate[contract-info-import]）\n  - バッチが動き出したときに審査フェーズ・状態（14.5）を確かめ直さない扱い（answer:design-authoring-generate[contract-info-import]）\n  - WTG-200009・警告の WTG-000072 に住所の値を出す（steering/non-functional.md からの逸脱として明記済み）（answer:design-authoring-generate[contract-info-import]）\n  - タスクのパラメータに申請者・起案者の氏名を入れ一覧に出す（steering/security.md からの逸脱として明記済み）（answer:design-authoring-generate[contract-info-import]）\n  - pbi design の出力 CSV が「契約情報取込で読める形」でない食い違い（upstream-carryover として明記済み）（answer:design-authoring-generate[contract-info-import]）\n  - TWTGM110 の物理削除と pbi design の「行は物理削除しない」の食い違い（例外として明記済み）（answer:design-authoring-generate[contract-info-import]）\n  - 対応表 2 の No.8 の値（341・241・141、X-11 の返り値 \"1\"）と design の値（003・001・002、\"S\"・\"D\"）の違い。回答が P78 のキー3 と S・D を指定（answer:design-authoring-generate[contract-info-import]）\n  - 同じ申請No のタスクがあるときも WTG-100030 を使い、新しいキーを作らない扱い（answer:design-authoring-generate[contract-info-import]）\n\n### 判断が必要な指摘\n\n**対象**: `specs/contract-info-import/design.md`（スコープ: 成果物単位（contract-info-import） / 1 回目）\n**実行した層**: ① / ②\n\n**重大**（3 件。1 件ずつ判断してください）\n\n| # | 種類 | 対象箇所 | 要約 | AI の推奨 | 判断 |\n|---|---|---|---|---|---|\n| 1 | 業務の欠落・矛盾 | specs/contract-info-import/design.md § ドメインモデル（Domain Model） / 2.6 | 2.6 を満たさない場合（リバースデータ・受付No 空）が逸脱として書かれていない | 修正（値は人の回答で確定しており、逸脱の明記と持ち越しの記録だけが欠けているため） | 未回答 |\n| 5 | 業務の欠落・矛盾 | specs/contract-info-import/design.md § 機能固有のエラー処理（Error Handling） ほか 1 か所 | 契約者の電話番号の値をバッチ処理状況に出すが steering からの逸脱と書いていない | 修正（出す値は人の回答で確定しており、steering との食い違いの明記と持ち越しの記録が欠けているため） | 未回答 |\n| 10 | 業務の欠落・矛盾 | specs/contract-info-import/design.md § セキュリティ上の考慮（Security Considerations） / 脅威と対策 ほか 1 か所 | 社外ユーザーの範囲外の申請を getApplication・canOperate が拒否するとするが公開契約に無い | 修正（依存先の公開契約に既にある getExternalScope で満たせ、範囲の判定が抜けると他社の申請を取り込めるため） | 未回答 |\n\n**要判断**（5 件）\n\n| 束 | 観点 | 種類 | 件数 | 番号 | AI の推奨（先頭の指摘） |\n|---|---|---|---|---|---|\n| 束1 | traceability | 業務のあいまい・不足 | 3 | #2 #3 #4 | 質問（利用者がバッチ処理状況で見る内容で、回答に無い業務の値のため） |\n| 束2 | evidence-guard | 業務のあいまい・不足 | 2 | #6 #7 | 修正（既存コードで決められる実装の置き場と条件の記述が欠けているため） |\n\n束の内訳（束でまとめて答えるか、番号で 1 件ずつ答えてください）\n\n- [束1] #2 バッチ開始時にすでに取込中だったときのエラーのメッセージが無い\n- [束1] #3 エラーで取り消したときに警告を出すかと、件数の {2} が決まっていない\n- [束1] #4 洗替の前に発行依頼書が無い申請での担当エリア・担当エリア名が決まっていない\n- [束2] #6 STaskList の確認を BatchCommonService で行うとするが、その口が既存に無い\n- [束2] #7 警告を logWarn で出すと既存の基盤では警告終了になり、正常終了と両立しない\n\n**AI が修正案で直す軽微**（2 件。判断は不要。修正の回で直し、再検査で確かめます）\n- #8 CSRF の照合の出典の行が servlet-context.xml:68 で、照合の設定の行と違う\n- #9 契約区分の判定の部品を使えるかを tasks に回しているが、既存コードで決まる\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n**答え方**（後に書いたものが優先。束・範囲でまとめて答えられます）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）。区分を `C[指摘の誤り]` `C[対象外]` `C[後で決める]` `C[解釈で対応]` で付ける。対象外・後で決めるに `+` を付けると（例 `C[後で決める+]`）、次の検査から同じ扱いにします\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n- **推奨** — AI の推奨を採用する（修正なら修正案がそのまま修正の指示になります）\n\n回答例: `1:推奨 / 束1:C[後で決める+] 桁数は design で決める / 3〜5:A / 7:D 次回まで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。根拠と修正案は `詳細 <番号>` で表示します。",
+  "id": "7afaf8344ed04d57a292964247b945e0"
+ },
+ "expected": {
+  "root": "C:\\project\\Wing",
+  "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+  "call": "design-authoring-generate",
+  "event": "design-authoring-generate",
+  "item": "contract-info-import",
+  "dispatch_id": "7afaf8344ed04d57a292964247b945e0",
+  "unit": "design-authoring-generate/design-authoring-generate[contract-info-import]::end.review",
+  "scope": "feature:contract-info-import",
+  "run": 1,
+  "snapshot": "53ebd6c74e66942caa5b73e718479d2d03fd0973e4300aad203161a857cb2676",
+  "record_hash": "72d15db48500b1e572cd830d88902ad85e5ad6925b206d07a60c253e2e24187d"
+ },
+ "data": {
+  "answer": "1:推奨 / 2:A 修正案の A。WTG-100030 を logError で出し、件数のメッセージは出しません（取込をしていないため） / 3:A 修正案の A。エラーで取り消したときも警告は出し、件数の {2} は警告の件数、{0}・{1} は 0、{3} はエラーのあった行の数です / 4:A 修正案の A。洗替の前に発行依頼書が無ければ、担当エリア・担当エリア名は NULL です / 5:推奨 / 6:推奨 / 7:A 修正案の A。警告は logWarn で出し、警告だけのときは警告終了を受け入れます。Q-DS-CI-012 の 5 の「正常終了」はこの内容に直します / 10:推奨"
+ }
+}

@@ -1,0 +1,37 @@
+{
+ "operation_id": "c13f284024b742c6910f4dc72255db2f",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[contract-info-import]::run",
+  "event": "design-authoring-revise",
+  "item": "contract-info-import",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "f84766396081410a91d7d6d966d69343"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/contract-info-import/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "design",
+    "scope": "feature:contract-info-import",
+    "run": 3,
+    "number": 1
+   },
+   {
+    "phase": "design",
+    "scope": "feature:contract-info-import",
+    "run": 3,
+    "number": 2
+   }
+  ],
+  "return_candidates": [],
+  "summary": "3 回目 #1：TWTGM100 が引けない申請は会社コードの条件を満たさないものとし、登録者（RegisteredPerson）が本人なら範囲内と手順 2 に書いた（ir design・pbi design の 6.5 と同じ）。#2：WTG-100030 の {0}＝審査フェーズの名称（P28）、{1}＝状態区分の名称（P27）、{2}＝「契約局取込」、範囲外なら {0}・{1} は空と、機能固有エラーコードの表と注記、バッチの開始時の取込中の記述に書いた。要件トレーサビリティ自己診断（contract-info-import）：抽出 29 件、対応あり 29 件、未対応 0 件。"
+ }
+}

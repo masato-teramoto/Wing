@@ -1,0 +1,30 @@
+{
+ "operation_id": "75b7391e4acc4d4f861f7a7ec04b285a",
+ "action": "decisions",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[contract-info-import]::end.review",
+  "event": "design-authoring-revise",
+  "item": "contract-info-import",
+  "status": "wait",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[contract-info-import]::end.review\", \"snapshot\": \"a92fed862c26153b28f68f22cebd6b44f103d43c46f262c07037dc7f8c5f544d\", \"run\": 3, \"inspection_hash\": \"ac91485e7044d498ed9bc212ded6368412a10fd8f2134924aba9fee77b7cbf8a\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 再検査で出なくなり、解消を記録した指摘 3 件\n  - #2-1 STaskList のパラメータで申請No を比べる条件があいまいで、先頭の項目を見逃しうる\n  - #2-2 範囲の判定に使う発行依頼書の会社コードの取り方が無く、画面から送られた値で判定しうる\n  - #2-3 バッチが WTG-100030 を出すが、バッチが読む JAVA-KIT のメッセージに足す予定が無い\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 3 件\n  - 同じ申請No のタスクが待機中・処理中のときも、文言が組合せの不正である WTG-100030 を使い、新しいキーを作らない（answer:design-authoring-generate[contract-info-import]）\n  - WTG-200008〜WTG-200012 を JAVA-KIT のメッセージ（DB）にだけ足し、wing の messages.properties には足さない（answer:design-authoring-generate[contract-info-import]）\n  - 投入の文と手順は本 feature の tasks で作り、投入の実施は発注者が導入手順書に沿って行う（タスクID・出力コード・VE の 14 のテーブル・マスタ）（answer:design-authoring-generate[contract-info-import]）\n\n### 前回の検査（2 回目）からの変更\n\n- `specs/contract-info-import/design.md`：このスペックが持つ責務（This Spec Owns）、コンポーネント一覧（Summary）、取込画面 Service、サービスインターフェース（Service Interface）、機能固有エラーコード、ファイル配置計画（File Structure Plan）、移行方針（Migration Strategy）、移行対象ファイル一覧\n  - 修正の指示に無い節の変更：このスペックが持つ責務（This Spec Owns）、コンポーネント一覧（Summary）、ファイル配置計画（File Structure Plan）、移行方針（Migration Strategy）、移行対象ファイル一覧（意図した変更か確かめてください）\n\n### 判断が必要な指摘\n\n**対象**: `specs/contract-info-import/design.md`（スコープ: 成果物単位（contract-info-import） / 3 回目）\n**実行した層**: ① / ②\n\n**要判断**（2 件）\n\n| # | 種類 | 対象箇所 | 要約 | AI の推奨 | 判断 |\n|---|---|---|---|---|---|\n| 1 | 業務のあいまい・不足 | specs/contract-info-import/design.md § 取込画面 Service / 実行の手順 2 | 発行依頼書（TWTGM100）がまだ無い申請で、社外ユーザーの範囲をどう判定するかが書かれていない | 修正（ir design・pbi design に同じ判定の決まりがあり、本書の判定をそれに揃える記述だけが欠けているため） | 未回答 |\n| 2 | 業務のあいまい・不足 | specs/contract-info-import/design.md § 機能固有エラーコード / WTG-100030 ほか 2 か所 | 本 feature で出す WTG-100030 の {0}〜{2}（ステータス・状態区分・操作）に入れる値が無い | 質問（置換文字に入れる値は承認済みの文書と回答から決まらず、利用者がバッチ処理状況と画面で見る文言が変わるため） | 未回答 |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n**答え方**（後に書いたものが優先。束・範囲でまとめて答えられます）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）。区分を `C[指摘の誤り]` `C[対象外]` `C[後で決める]` `C[解釈で対応]` で付ける。対象外・後で決めるに `+` を付けると（例 `C[後で決める+]`）、次の検査から同じ扱いにします\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n- **推奨** — AI の推奨を採用する（修正なら修正案がそのまま修正の指示になります）\n\n回答例: `1:推奨 / 束1:C[後で決める+] 桁数は design で決める / 3〜5:A / 7:D 次回まで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。根拠と修正案は `詳細 <番号>` で表示します。",
+  "id": "5b7f6a80283343d0926e365f6b818c16"
+ },
+ "expected": {
+  "root": "C:\\project\\Wing",
+  "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+  "call": "design-authoring-revise",
+  "event": "design-authoring-revise",
+  "item": "contract-info-import",
+  "dispatch_id": "5b7f6a80283343d0926e365f6b818c16",
+  "unit": "design-authoring-revise/design-authoring-revise[contract-info-import]::end.review",
+  "scope": "feature:contract-info-import",
+  "run": 3,
+  "snapshot": "a92fed862c26153b28f68f22cebd6b44f103d43c46f262c07037dc7f8c5f544d",
+  "record_hash": "e9457d3e50769a6bc11a1f9c9d62459f55094337189fc4daedd938a5991a07d9"
+ },
+ "data": {
+  "answer": "1:推奨 / 2:A 修正案の A。どの場面でも {0}＝審査フェーズの名称（P28）、{1}＝状態区分の名称（P27）、{2}＝「契約局取込」とします。社外ユーザーの範囲外のときは、{0}・{1} を空にします（印刷・閲覧用帳票と同じ考え方）"
+ }
+}

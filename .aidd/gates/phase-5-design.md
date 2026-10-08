@@ -1086,3 +1086,223 @@ created_at: 2026-10-07T16:53:31+09:00
 | スコープ | 回数 | 対象成果物 | 承認者 | 承認日時 | 原本SHA256 |
 |---|---|---|---|---|---|
 | feature:application-status-search | 2 | specs/application-status-search/design.md | Junichi Noumi | 2026-10-08T15:44:50+09:00 | 4644f42d210af2d852c7456f3387ac7540ec0fee02a5a0909a66dab3b7ca9b39 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-import | 1 | 2026-10-08T16:00:03+09:00 | ①② | ["specs/contract-info-import/design.md"] | {"specs/contract-info-import/design.md":"66017e8bc9c054721ddb1eff881806e043fd711c2d975c9d5af8191faea0898a"} | 10 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | traceability | 業務の欠落・矛盾 | 重大 | 7dfcbcd311148df7 | 7a95fcbaef3ea20b | specs/contract-info-import/design.md § ドメインモデル（Domain Model） / 2.6 | 2.6 稟議バーコードNo | 2.6 を満たさない場合（リバースデータ・受付No 空）が逸脱として書かれていない | 意味判定：ID対応あり・内容未充足。requirements 2.6「取込を行うとき、システムは物件基本情報登録変更画面から渡された受付No と契約区分で、契約局ごとに稟議バーコードNo を付けなければならない」は条件を持たない。design の「稟議バーコードNo（2.6）」は「受付No が空（発番の前）なら NULL。リバースデータのときは NULL」とし、リバースデータの取込では全契約局に付けない（あわせて 2.9 で TWTGM110 の行が全部消える）。値の決め方は Q-DS-CI-004 の 2・3 で確定しているが、design の出典の表記・上流との関係の注記と、回答の「上流から意図して外れる点」（pbi design 391 行目付近・non-functional.md・security.md の 3 点）のどちらにも requirements 2.6 から外れることが無く、承認済み requirements と両立しない状態が記録されていない（pbi design の出力 CSV・TWTGM110 の物理削除は upstream-carryover と明記している） | ドメインモデルの「稟議バーコードNo（2.6）」の末尾に「受付No が空のときとリバースデータのときに稟議バーコードNo を付けないことは、requirements 2.6 から意図して外れる（Q-DS-CI-004）。上流は Phase 5 の最後にまとめて直す（upstream-carryover）」を足し、upstream-carryover に requirements（contract-info-import）2.6 を足す | 修正：値は人の回答で確定しており、逸脱の明記と持ち越しの記録だけが欠けているため | 確認済み |  |  |
+| 2 | traceability | 業務のあいまい・不足 | 要判断 | 673337991fe89133 | 7a95fcbaef3ea20b | specs/contract-info-import/design.md § ドメインモデル（Domain Model） / 2.7 ほか 1 か所 | 取込中の申請へのバッチのエラー | バッチ開始時にすでに取込中だったときのエラーのメッセージが無い | 意味判定：1.8・4.7 に対応する処理はあるが内容が不足。ドメインモデルの「取込中」は「すでに取込中（06）なら何も変えずにエラーで終わる（元に戻す更新もしない）」、エラー時の分岐フローの E0 は「エラーで終わる 何も変えない」とだけ書き、バッチ処理状況に何のキー・文言を出すか、件数のメッセージを出すか、終了の状態が無い。機能固有エラーコードの表（WTG-200008〜200012・WTG-100030）とバリデーション設計の表にもこの場合の行が無い。Q-DS-CI-006 は「エラーで終わります」までで、キーを定めていない（新しいキーを作らないのは画面の WTG-100030 について） | 決めること：E0 でバッチ処理状況に出すメッセージ。案 A：既存の WTG-100030 を logError で出す（新しいキーを作らない方針に合う）。案 B：JAVA-KIT に新しいキーを足す（Q-DS-CI-012 の 2 の範囲が増える）。あわせて件数のメッセージを出すかを決める | 質問：利用者がバッチ処理状況で見る内容で、回答に無い業務の値のため | 確認済み |  |  |
+| 3 | traceability | 業務のあいまい・不足 | 要判断 | d744476992f3ff3e | 0a475ec7d75cc969 | specs/contract-info-import/design.md § データ契約と外部連携（Data Contracts &amp; Integration） / 4.6・4.8 ほか 1 か所 | エラー時の警告と件数 | エラーで取り消したときに警告を出すかと、件数の {2} が決まっていない | 意味判定：4.6・4.8 に対応する記述はあるが境界の場合が不足。データ契約の「バッチ処理状況」は「エラーで取り消したときは {0}・{1} を 0、{3} をエラーのあった行の数にする」とし、ワーニング {2} の値が無い。エラー時の分岐フローは区分 3 にエラーが無いときだけ「警告 WTG-200009・WTG-000072 を出す」へ進むので、エラーがあると警告を出さないと読めるが、検査表の 1-3（「【ﾁｪｯｸ区分3】＜ﾜｰﾆﾝｸﾞ＞」）は警告を区分 3 の中の検査として置いており、ドメインモデルの「警告」にもエラーのときの扱いが無い。Q-DS-CI-012 の 4 も {2} のエラー時の値を定めていない | 決めること：エラーで取り消したときに警告を詳細に出すか、{2} に何を入れるか。案 A：警告も出し、{2} は警告の件数。案 B：警告は出さず、{2} は 0（分岐フローのとおり）。決めた内容をデータ契約の「バッチ処理状況」とエラー時の分岐フローの両方に書く | 質問：利用者に出す件数と警告の業務の値で、回答に無いため | 確認済み |  |  |
+| 4 | traceability | 業務のあいまい・不足 | 要判断 | 1c960550a706ed28 | 7a95fcbaef3ea20b | specs/contract-info-import/design.md § ドメインモデル（Domain Model） / 2.5 | 担当エリアの引き継ぎ | 洗替の前に発行依頼書が無い申請での担当エリア・担当エリア名が決まっていない | 意味判定：2.5 に対応する記述はあるが境界の場合が不足。ドメインモデルの「洗替の前から引き継ぐ値」は「TWTGM100 は担当エリア・担当エリア名を洗替の前の TWTGM100 から」とし、対応表 2 の No.10・11 も「(40)GM100．担当ｴﾘｱ」「(40)GM100．担当ｴﾘｱ名」だけ。取込は 14.5 の起案者（未起案・下書き）の番でも実行でき、pbi design は発行依頼書を「読取りと削除・複製だけ」とするので、取込の時点で TWTGM100 の行が無い申請がありうる。そのときの担当エリア・担当エリア名（NULL にするか、渡された担当エリア g_AreaCd とその名称を入れるか）が書かれていない。稟議バーコードNo のエリア接頭語は渡された担当エリアで引くと書いており、同じ申請で両者が食い違いうる | 決めること：洗替の前の TWTGM100 が無いときの担当エリア・担当エリア名。案 A：NULL にする。案 B：渡された担当エリア（g_AreaCd）と、そのコードで引いた名称を入れる。案 C：洗替の前の行の有無によらず、渡された担当エリアを入れる | 質問：発行依頼書に残る業務の値で、回答・対応表に無いため | 確認済み |  |  |
+| 5 | steering-conformance | 業務の欠落・矛盾 | 重大 | b34da98e86a4a79f | e5f5930e8e1610a9 | specs/contract-info-import/design.md § 機能固有のエラー処理（Error Handling） ほか 1 か所 | WTG-200011 の電話番号 | 契約者の電話番号の値をバッチ処理状況に出すが steering からの逸脱と書いていない | 矛盾。steering/non-functional.md の「#### 出力しない」#3「契約者の個人情報（氏名、住所、連絡先）」、steering/security.md の「## 機密データ」の「契約者の個人情報（氏名・住所・連絡先）…ログに出さない」。design の「ログ」は「各メッセージの {2} には検査表の『置換文字』の値（…郵便番号・都道府県と市区町村・金額・電話番号など）を入れる」とし、バリデーション設計の WTG-200011「行数[{0}]:{1}[{2}]:固定電話は10桁、IP電話は11桁で入力してください。」の対象は検査表の契約者・関係者①〜⑤_TEL（固定）（携帯）（1-2 の No.39・40 ほか、2-2 の No.55・56 ほか）。電話番号を入れること自体は Q-DS-CI-012 の 3 で決まっているが、design は住所（WTG-200009・WTG-000072）と担当者の氏名（タスクのパラメータ）だけを「steering から意図して外れる」と書き、連絡先（電話番号）は書いていない。回答の「上流から意図して外れる点」にも電話番号は無い。セキュリティ上の考慮の「ログからの個人情報の漏れ」も氏名・メールアドレス・マイナンバーを受け取った日だけを挙げる | 機能固有のエラー処理の「ログ」と、セキュリティ上の考慮の「データ保護 / プライバシー」に「WTG-200011 は、行番号と一緒に契約者・関係者の電話番号の値を出す。steering/non-functional.md・security.md の『契約者の連絡先をログに出さない』から意図して外れる（Q-DS-CI-012 の 3）。上流は Phase 5 の最後にまとめて直す（upstream-carryover）」を足し、upstream-carryover に足す。電話番号を出さない方に変えるなら、WTG-200011 の {2} を空にする | 修正：出す値は人の回答で確定しており、steering との食い違いの明記と持ち越しの記録が欠けているため | 確認済み |  |  |
+| 6 | evidence-guard | 業務のあいまい・不足 | 要判断 | 4172a48175b71d02 | d08a2bdf1338340b | specs/contract-info-import/design.md § 取込画面 Service / 依存関係 ほか 2 か所 | 同じ申請No のタスクの確認 | STaskList の確認を BatchCommonService で行うとするが、その口が既存に無い | 根拠の飛躍。取込画面 Service の呼び出し先に「BatchCommonService — STaskList の確認とタスクの登録」、実行の手順 3 に「同じ申請No（パラメータ g_ApplicationNo）の、待機中・処理中の取込のタスクが STaskList にあれば WTG-100030」とある。既存の wing/src/main/java/jp/co/kccs/wt/common/service/BatchCommonService.java は insertTask（:50〜:63）と private の toTSVString（:73）だけで、STaskList を読む口が無い。パラメータは「キー=値」のタブ区切り 1 列（:66〜:92）に入るので、申請No で探す条件（列と比べ方）が要る。待機中・処理中に当たる STaskList の状態の値も書かれていない（既存の一覧は STaskList.status と STaskListEx.Process_Status を持つ。Pzzzo011Mapper.xml:57・:69）。一方、ファイル配置計画の wtg090 は controller・service・form だけで Mapper が無く、変更する既存ファイルは「既存のファイルは変えない」としているので、この確認の SQL を置く場所が無い（手本の wtg040 にも Mapper は無い） | ファイル配置計画に wtg090 の Mapper（例 mapper/Pwtgo090Mapper.java と resources の Pwtgo090Mapper.xml）を足し、取込画面 Service の呼び出し先を「Pwtgo090Mapper — STaskList の確認」に直す。実行の手順 3 に、対象のタスク（タスクID A8B36D2BB98F419FB0718303BCA2C9B6）、待機中・処理中に当たる状態の値、パラメータ列での申請No の比べ方（例 g_ApplicationNo=申請No とタブで囲んだ文字列を含む）を書く。既存の BatchCommonService に口を足すなら、変更する既存ファイルにその旨を書く | 修正：既存コードで決められる実装の置き場と条件の記述が欠けているため | 確認済み |  |  |
+| 7 | evidence-guard | 業務のあいまい・不足 | 要判断 | ead6e63443eeefbe | 0a475ec7d75cc969 | specs/contract-info-import/design.md § データ契約と外部連携（Data Contracts &amp; Integration） ほか 1 か所 | 警告だけのときの終了の状態 | 警告を logWarn で出すと既存の基盤では警告終了になり、正常終了と両立しない | 根拠の飛躍。design は「警告は 1 件ずつ logWarn」（データ契約の「バッチ処理状況」）と「警告だけなら正常終了（警告終了にはしない）」（機能固有のエラー処理の「返し方」、Q-DS-CI-012 の 5）を並べている。既存の WTX_Batch/src/jp/co/kccs/greenearth/javakit/frame/batch/engine/WTBatchJob.java:152〜:174 の logWarn は SBatchLog に LOG_TYPE_WARNNING の行を書き、WTActiveTask.java:350〜:355 は「existsWarningError(getObjectID())」が真なら STATUS_WARNING を返す（:350 の注記は警告・エラーがあれば警告終了にする旨）。existsWarningError の本体は作業ツリーに無い（基盤のクラス）が、名前と注記からは logWarn を 1 件でも書くとタスクが警告終了になると読め、design の 2 つの記述が両立するかを示す根拠が無い | 決めること：警告の出し方と終了の状態。案 A：logWarn で出し、警告終了を受け入れる（Q-DS-CI-012 の 5 を直す）。案 B：正常終了を保つため、警告を logWarn ではなく writeCustomLog の INFO で出す（バッチ処理状況の詳細での見え方が変わる）。案 C：existsWarningError の判定を確かめてから決める | 質問：回答の正常終了と既存の基盤の動きが食い違い、どちらを優先するかは人が決めるため | 確認済み |  |  |
+| 8 | evidence-guard | 出典・根拠 | 軽微 | 1e700ea75056bb76 | 72ba07015e1ca370 | specs/contract-info-import/design.md § API 契約（API Contract） | CSRF の照合の出典 | CSRF の照合の出典の行が servlet-context.xml:68 で、照合の設定の行と違う | 出典不明。API 契約の注記は「/wtg090/execute は URL の末尾が execute なので CSRF の照合に乗る（wing/src/main/resources/servlet-context.xml:68）」とするが、:68 は multipartResolver の maxUploadSize（1048576000）の行。CSRF の照合は :121〜:130 の CSRFTokenCheckInterceptor で、/**/execute は :127 | 出典を「wing/src/main/resources/servlet-context.xml:121〜:130（/**/execute は :127）」に直す。アップロードの上限の文には「servlet-context.xml:68」を出典として付ける | 修正：出典の行番号の誤りで、正しい行が既存コードで決まるため | 確認済み |  |  |
+| 9 | evidence-guard | 工程・文書の分担 | 軽微 | 70729629f4ba0b8f | e4d589d6175021b6 | specs/contract-info-import/design.md § 依存してよい対象（Allowed Dependencies） | chkKichikyoku | 契約区分の判定の部品を使えるかを tasks に回しているが、既存コードで決まる | 依存先に「共通部品 WTKeikakuJudgeUtils.chkKichikyoku（契約区分の判定。ir design と同じ）。WTX_Batch から使えない場合は、同じ判定（局種別判定マスタ WTZ/MASTER/M09）を WTX_Batch の側に置く（tasks で決める）」とある。ir design の chkKichikyoku は wing の wing/src/main/java/jp/co/kccs/wt/common/utils/WTKeikakuJudgeUtils.java:36（BindingResult と CodeMstService を受ける）で、WTX_Batch からは使えない。一方 WTX_Batch には既存の WTX_Batch/src/jp/co/kccs/wt/util/WTKeikakuJudgeUtils.java があり、:98 に chkKichikyoku(String)（M09 を引く。:128）がある。使う部品は design で決められ、tasks の工程の境界（B-04 はタスクの分割・実装の順番）に当たらない | 依存先を「WTX_Batch の既存の共通部品 WTKeikakuJudgeUtils.chkKichikyoku(String)（WTX_Batch/src/jp/co/kccs/wt/util/WTKeikakuJudgeUtils.java:98。局種別判定マスタ M09 を引く。ir design が使う wing の同名の部品と同じ判定）」に直し、「使えない場合は…tasks で決める」を消す | 修正：既存コードで決まる設計の判断を後の工程に残さないため | 確認済み |  |  |
+| 10 | dependency-boundary-conformance | 業務の欠落・矛盾 | 重大 | 5bea7a0034e82084 | 1c723623a42db099 | specs/contract-info-import/design.md § セキュリティ上の考慮（Security Considerations） / 脅威と対策 ほか 1 か所 | 社外ユーザーの範囲 | 社外ユーザーの範囲外の申請を getApplication・canOperate が拒否するとするが公開契約に無い | design は「社外ユーザーの範囲外の申請 → getApplication・canOperate が範囲外を拒否する（pbi design）」とし、取込画面 Service の実行の手順 2 も「申請No で getApplication を引き、canOperate（契約局取込）で番と状態を判定する」だけ。pbi design の公開契約（WTG 申請状態サービスのサービスインターフェース）では getApplication は「会社コード、申請No → 申請。無ければ null」で範囲の条件を持たず、canOperate は依頼内容・番・状態・審査権限（起案者は常に含む）で可否を返し、会社の範囲を見ない。範囲は getExternalScope（社外ユーザーなら自社の会社コードと本人のユーザーID）として別に公開され、pbi の画面は「申請を取り出す SQL の条件に社外ユーザーの範囲を加え、範囲外は無いものとして扱う」（pbi design のセキュリティ上の考慮）と自分の SQL で絞っている。/wtg090 は 9 項目を POST で受けるので、社外ユーザーが他社の申請No を送ると、この design の手順では範囲で止まらない（steering/security.md の「#### 所有権・エンティティ境界」、requirements 1.7） | 実行の手順 2 に「getExternalScope で社外ユーザーの範囲を取り、申請（getApplication の結果と発行依頼書の契約稟議起案者_会社コード、または登録者）が範囲外なら、無いものとして WTG-100030（または pbi と同じ扱い）で止める」を足し、脅威と対策と依存先（getExternalScope）を同じに直す。WTG 申請状態サービスに範囲つきの取得の口を足すなら、pbi design への差戻しとして扱う | 修正：依存先の公開契約に既にある getExternalScope で満たせ、範囲の判定が抜けると他社の申請を取り込めるため | 確認済み |  |  |
+
+### 除外
+
+| 観点 | 対象箇所 | 要約 | 除外の出典 |
+|---|---|---|---|
+| traceability | specs/contract-info-import/design.md § ドメインモデル（Domain Model） / 3.1 | 洗替の前にだけある行・後にだけある行を変更履歴に入れない扱い | answer:design-authoring-generate[contract-info-import] |
+| traceability | specs/contract-info-import/design.md § API 契約（API Contract） / 1.4 | 渡された 9 項目をセッションの値のままタスクのパラメータにし、DB から引き直さない扱い | answer:design-authoring-generate[contract-info-import] |
+| traceability | specs/contract-info-import/design.md § 状態管理（State Management） / 1.7 | バッチが動き出したときに審査フェーズ・状態（14.5）を確かめ直さない扱い | answer:design-authoring-generate[contract-info-import] |
+| steering-conformance | specs/contract-info-import/design.md § 機能固有のエラー処理（Error Handling） | WTG-200009・警告の WTG-000072 に住所の値を出す（steering/non-functional.md からの逸脱として明記済み） | answer:design-authoring-generate[contract-info-import] |
+| steering-conformance | specs/contract-info-import/design.md § セキュリティ上の考慮（Security Considerations） | タスクのパラメータに申請者・起案者の氏名を入れ一覧に出す（steering/security.md からの逸脱として明記済み） | answer:design-authoring-generate[contract-info-import] |
+| dependency-boundary-conformance | specs/contract-info-import/design.md § ドメインモデル（Domain Model） / 2.1 | pbi design の出力 CSV が「契約情報取込で読める形」でない食い違い（upstream-carryover として明記済み） | answer:design-authoring-generate[contract-info-import] |
+| dependency-boundary-conformance | specs/contract-info-import/design.md § ドメインモデル（Domain Model） / 2.9 | TWTGM110 の物理削除と pbi design の「行は物理削除しない」の食い違い（例外として明記済み） | answer:design-authoring-generate[contract-info-import] |
+| evidence-guard | specs/contract-info-import/design.md § ドメインモデル（Domain Model） / 契約区分 | 対応表 2 の No.8 の値（341・241・141、X-11 の返り値 "1"）と design の値（003・001・002、"S"・"D"）の違い。回答が P78 のキー3 と S・D を指定 | answer:design-authoring-generate[contract-info-import] |
+| dependency-boundary-conformance | specs/contract-info-import/design.md § サービスインターフェース（Service Interface） | 同じ申請No のタスクがあるときも WTG-100030 を使い、新しいキーを作らない扱い | answer:design-authoring-generate[contract-info-import] |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| feature:contract-info-import | 1 | 8 | 修正 | 軽微（AIDD 内部の決まりごと）のため、AI が修正案で直す | system（自動） | 2026-10-08T16:09:28+09:00 |  |  |  |
+| feature:contract-info-import | 1 | 9 | 修正 | 軽微（AIDD 内部の決まりごと）のため、AI が修正案で直す | system（自動） | 2026-10-08T16:09:28+09:00 |  |  |  |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| feature:contract-info-import | 1 | 1 | 修正 | AI 推奨を採用: 値は人の回答で確定しており、逸脱の明記と持ち越しの記録だけが欠けているため | Junichi Noumi | 2026-10-08T16:16:33+09:00 |  |  | 採用 |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-import | 1 | 2 | 修正 | 修正案の A。WTG-100030 を logError で出し、件数のメッセージは出しません（取込をしていないため） | Junichi Noumi | 2026-10-08T16:16:37+09:00 |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-import | 1 | 3 | 修正 | 修正案の A。エラーで取り消したときも警告は出し、件数の {2} は警告の件数、{0}・{1} は 0、{3} はエラーのあった行の数です | Junichi Noumi | 2026-10-08T16:16:40+09:00 |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-import | 1 | 4 | 修正 | 修正案の A。洗替の前に発行依頼書が無ければ、担当エリア・担当エリア名は NULL です | Junichi Noumi | 2026-10-08T16:16:44+09:00 |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| feature:contract-info-import | 1 | 5 | 修正 | AI 推奨を採用: 出す値は人の回答で確定しており、steering との食い違いの明記と持ち越しの記録が欠けているため | Junichi Noumi | 2026-10-08T16:16:48+09:00 |  |  | 採用 |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| feature:contract-info-import | 1 | 6 | 修正 | AI 推奨を採用: 既存コードで決められる実装の置き場と条件の記述が欠けているため | Junichi Noumi | 2026-10-08T16:16:51+09:00 |  |  | 採用 |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-import | 1 | 7 | 修正 | 修正案の A。警告は logWarn で出し、警告だけのときは警告終了を受け入れます。Q-DS-CI-012 の 5 の「正常終了」はこの内容に直します | Junichi Noumi | 2026-10-08T16:16:55+09:00 |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| feature:contract-info-import | 1 | 10 | 修正 | AI 推奨を採用: 依存先の公開契約に既にある getExternalScope で満たせ、範囲の判定が抜けると他社の申請を取り込めるため | Junichi Noumi | 2026-10-08T16:16:58+09:00 |  |  | 採用 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-import | 2 | 2026-10-08T16:32:12+09:00 | ①② | ["specs/contract-info-import/design.md"] | {"specs/contract-info-import/design.md":"e10ddaceda22b57a59ce8aad45ad2d0e92d4e245a01d3c1602fdeac99b4939a4"} | 3 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | traceability | 業務のあいまい・不足 | 要判断 | 4b97ec8f81861b0a | fd47e3700381b780 | specs/contract-info-import/design.md § 取込画面 Service / 実行の手順 3 | 同じ申請No のタスクの確認 | STaskList のパラメータで申請No を比べる条件があいまいで、先頭の項目を見逃しうる | 意味判定：1.8 に対応する処理はあるが、条件の書き方が不足。design の手順 3 は「パラメータ（`parameter`）がタブで区切った `g_ApplicationNo=申請No` を含む行があれば `WTG-100030`」とだけ書く。既存の `BatchCommonService.toTSVString`（`wing/src/main/java/jp/co/kccs/wt/common/service/BatchCommonService.java:73`〜`:93`）は各項目を「キー=値」＋タブで連結し、先頭にタブは付かない（末尾にだけ付く）。既存の取込画面はパラメータを `HashMap` で作る（`wing/src/main/java/jp/co/kccs/wt/function/wtg/wtg040/service/Pwtgo040Service.java:106`）ため項目の順は決まらず、`g_ApplicationNo` が先頭に来ることがある。両側をタブで囲んだ文字列で比べると先頭のときに一致せず、同じ申請No のタスクを見逃す。囲まずに `g_ApplicationNo=申請No` だけで比べると、申請No が前方一致する別の申請（例 `=12` と `=123`）を誤って一致させる。状態の値（'0' 待機中・'1' 処理中。`Pzzzo011Service.java:205`〜`:211`）と列（`STaskList.parameter`・`status`。`Pzzzo011Mapper.xml:67`〜`:69`）は既存と一致することを確かめた | 手順 3 の比べ方を「パラメータの先頭にタブを付けた文字列（タブ＋`parameter`）が、タブ＋`g_ApplicationNo=`＋申請No＋タブ を含む」と書く（または `parameter` をタブで分け、`g_ApplicationNo` の値と完全一致で比べる） | 修正：既存コードで決まる比べ方の記述が欠けており、1.8 の多重実行の判定が漏れうるため | 確認済み |  |  |
+| 2 | dependency-boundary-conformance | 業務の欠落・矛盾 | 重大 | 95ccf33fe44782b3 | fd47e3700381b780 | specs/contract-info-import/design.md § 取込画面 Service / 実行の手順 2 ほか 1 か所 | 社外ユーザーの範囲 | 範囲の判定に使う発行依頼書の会社コードの取り方が無く、画面から送られた値で判定しうる | 手順 2 は「申請（発行依頼書の契約稟議起案者_会社コード、または申請の登録者）が範囲外なら無いものとして `WTG-100030`」とする（ほか：セキュリティ上の考慮の脅威と対策「社外ユーザーの範囲外の申請」）。pbi design の公開契約では、`getApplication` の出力は申請（`TWTGM080`：依頼内容・審査フェーズ・状態・申請回数・元申請No・排他用の値ほか）で、発行依頼書（`TWTGM100`）の会社コードを返さない。`getExternalScope` は自社の会社コードとユーザーID を返すだけ（pbi design § サービスインターフェース）。本書の取込画面 Service の呼び出し先と取込画面 Mapper（`STaskList` の確認だけ）にも、申請No で `TWTGM100` を引く口が無い。セッションの 9 項目にある契約稟議起案者の会社コードは `POST /wtg090` で画面から送られる値（API 契約）で、これで判定すると値の書き換えで範囲外の申請を取り込める。pbi design は申請を取り出す SQL の条件に範囲（自社の契約稟議起案会社か本人の登録）を加え、契約稟議起案会社は申請No で引いた `TWTGM100` の 1 件目の契約稟議起案者_会社コードとしている（pbi design § セキュリティ上の考慮・バリデーション設計）。design-check 1 回目 #10 の修正で入った判定の、値の出所が残っている | 取込画面 Mapper に「申請No で `TWTGM100` の契約稟議起案者_会社コードを引く」を足し（コンポーネント一覧・ファイル配置計画の Mapper の説明も）、手順 2 に「会社コードは DB から引き、セッションの値は使わない。登録者は `getApplication` の結果の `RegisteredPerson` と比べる」と書く。WTG 申請状態サービスに範囲つきの取得の口を足すなら、pbi design への差戻しとして扱う | 修正：判定に要る値の取り方が欠けており、送られた値を使うと他社の申請を取り込めるため | 確認済み |  |  |
+| 3 | evidence-guard | 業務のあいまい・不足 | 要判断 | f5124989bedd9db0 | 293efec102f3fc03 | specs/contract-info-import/design.md § 機能固有のエラー処理（Error Handling） ほか 2 か所 | バッチの WTG-100030 | バッチが WTG-100030 を出すが、バッチが読む JAVA-KIT のメッセージに足す予定が無い | 根拠の飛躍。design は、バッチの開始時にすでに取込中なら「`WTG-100030` を `logError` で出す」とする（機能固有のエラー処理の返し方・ドメインモデルの取込中・エラー時の分岐フローの E0）。一方、design 自身が「バッチのメッセージは JAVA-KIT の DB から読む」（既存アーキテクチャの分析）とし、JAVA-KIT に足すのは `WTG-200008`〜`WTG-200012` だけ（機能固有エラーコード、移行方針、移行対象ファイル一覧の「5 行」）。`WTG-100030` は pbi design が wing の `messages.properties` にだけ足すキー（pbi design § 変更する既存ファイル）。JAVA-KIT の DB に `WTG-100030` があることの根拠は、requirements・steering・pbi design のどこにも無い。design-check 1 回目 #2 の判断（`WTG-100030` を `logError` で出す）を実装するための前提が書かれていない | 決めること：A：JAVA-KIT のメッセージに `WTG-100030`（pbi design と同じ文言）を足し、移行方針・移行対象ファイル一覧を 6 行にする。B：JAVA-KIT の DB にすでにあるなら、その出典を書く | 質問：JAVA-KIT の DB にすでにあるかは承認済みの文書から分からず、投入の範囲が変わるため | 確認済み |  |  |
+
+### 除外
+
+| 観点 | 対象箇所 | 要約 | 除外の出典 |
+|---|---|---|---|
+| steering-conformance | specs/contract-info-import/design.md § 機能固有のエラー処理（Error Handling） | WTG-200009・WTG-000072 の住所の値と WTG-200011 の電話番号の値をバッチ処理状況に出す（steering からの逸脱として明記済み） | answer:design-authoring-generate[contract-info-import] |
+| steering-conformance | specs/contract-info-import/design.md § セキュリティ上の考慮（Security Considerations） | タスクのパラメータに申請者と起案者の氏名を入れ、バッチ処理状況一覧に出る（steering からの逸脱として明記済み） | answer:design-authoring-generate[contract-info-import] |
+| traceability | specs/contract-info-import/design.md § ドメインモデル（Domain Model） / 2.6 | 受付No が空のときとリバースデータのときに稟議バーコードNo を NULL にする（requirements 2.6 からの逸脱として明記済み） | answer:design-authoring-generate[contract-info-import] |
+| traceability | specs/contract-info-import/design.md § ドメインモデル（Domain Model） / 2.9 | TWTGM110 を物理削除する（pbi design の「物理削除しない」の例外として明記済み） | answer:design-authoring-generate[contract-info-import] |
+| evidence-guard | specs/contract-info-import/design.md § ドメインモデル（Domain Model） / 4.6 | 警告だけのときに警告終了とし、Q-DS-CI-012 の 5 の「正常終了」と異なる | verify:前回の人の判断（design-check 1 回目 #7、修正案の A）で決まっており、本文に明記済み |
+| dependency-boundary-conformance | specs/contract-info-import/design.md § 依存してよい対象（Allowed Dependencies） | 契約区分の判定に WTKeikakuJudgeUtils.chkKichikyoku を使う（WTX_Batch の既存の共通部品で、ir design の内部への依存ではない。WTKeikakuJudgeUtils.java:98 を確かめた） | answer:design-authoring-generate[contract-info-import] |
+
+## 解消
+
+| スコープ | 回数 | 指摘番号 | 再検査スコープ | 再検査回数 | 確認者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-import | 1 | 1 | feature:contract-info-import | 2 | system（自動）：再検査で再検出なし | 2026-10-08T16:36:46+09:00 |
+| feature:contract-info-import | 1 | 2 | feature:contract-info-import | 2 | system（自動）：再検査で再検出なし | 2026-10-08T16:36:46+09:00 |
+| feature:contract-info-import | 1 | 3 | feature:contract-info-import | 2 | system（自動）：再検査で再検出なし | 2026-10-08T16:36:46+09:00 |
+| feature:contract-info-import | 1 | 4 | feature:contract-info-import | 2 | system（自動）：再検査で再検出なし | 2026-10-08T16:36:46+09:00 |
+| feature:contract-info-import | 1 | 5 | feature:contract-info-import | 2 | system（自動）：再検査で再検出なし | 2026-10-08T16:36:46+09:00 |
+| feature:contract-info-import | 1 | 6 | feature:contract-info-import | 2 | system（自動）：再検査で再検出なし | 2026-10-08T16:36:46+09:00 |
+| feature:contract-info-import | 1 | 7 | feature:contract-info-import | 2 | system（自動）：再検査で再検出なし | 2026-10-08T16:36:46+09:00 |
+| feature:contract-info-import | 1 | 8 | feature:contract-info-import | 2 | system（自動）：再検査で再検出なし | 2026-10-08T16:36:46+09:00 |
+| feature:contract-info-import | 1 | 9 | feature:contract-info-import | 2 | system（自動）：再検査で再検出なし | 2026-10-08T16:36:46+09:00 |
+| feature:contract-info-import | 1 | 10 | feature:contract-info-import | 2 | system（自動）：再検査で再検出なし | 2026-10-08T16:36:46+09:00 |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| feature:contract-info-import | 2 | 1 | 修正 | AI 推奨を採用: 既存コードで決まる比べ方の記述が欠けており、1.8 の多重実行の判定が漏れうるため | Junichi Noumi | 2026-10-08T16:49:50+09:00 |  |  | 採用 |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| feature:contract-info-import | 2 | 2 | 修正 | AI 推奨を採用: 判定に要る値の取り方が欠けており、送られた値を使うと他社の申請を取り込めるため | Junichi Noumi | 2026-10-08T16:49:53+09:00 |  |  | 採用 |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-import | 2 | 3 | 修正 | 修正案の A。WTG-100030 は今回の案件で新しく作るキーなので、JAVA-KIT の DB にはまだありません。WTG-200008〜200012 と一緒に、JAVA-KIT のメッセージに足してください（文言は物件基本情報登録変更と同じ） | Junichi Noumi | 2026-10-08T16:49:57+09:00 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-import | 3 | 2026-10-08T16:52:28+09:00 | ①② | ["specs/contract-info-import/design.md"] | {"specs/contract-info-import/design.md":"6660bfaf7d152ab06d43f3a5e9b0b560ce2f8b532401dc2fdaf08aba255fcf00"} | 2 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | traceability | 業務のあいまい・不足 | 要判断 | 09883b5ecbb50491 | d057a8e58ec71728 | specs/contract-info-import/design.md § 取込画面 Service / 実行の手順 2 | 発行依頼書が無い申請の範囲 | 発行依頼書（TWTGM100）がまだ無い申請で、社外ユーザーの範囲をどう判定するかが書かれていない | 意味判定：1.7（契約局取込ボタンを使える利用者。社外ユーザーは pbi の 6.5 の範囲）に対応する処理はあるが、境界の場合が足りない。design-check 2 回目 #2 の修正で、手順 2 は「範囲の判定に使う契約稟議起案者_会社コードは、取込画面 Mapper で申請No から `TWTGM100` を引いて取り」とした。取込は発行依頼書がまだ無い申請にも実行できる（ドメインモデルの「洗替の前に発行依頼書が無ければ NULL」。design-check 1 回目 #4）ので、`TWTGM100` が引けない場合がある。そのときの判定（会社コードが無いので登録者だけで見るか、範囲外とするか）が本書のどこにも無い。ir design は同じ判定で「発行依頼書がまだ無い申請は物件申請情報の範囲（pbi design の 6.5）で見る」と明記している（`specs/issue-request/design.md` § セキュリティ上の考慮）。pbi design の範囲は「自社の契約稟議起案会社か本人の登録」（`specs/property-basic-info/design.md` § セキュリティ上の考慮）。書かれていないと、引けないときに範囲外として本人が登録した申請の取込を拒む実装も、会社コードの比較を飛ばして範囲内とする実装もありうる | 手順 2 に「`TWTGM100` が引けない（発行依頼書がまだ無い）申請は、会社コードの条件を満たさないものとし、登録者（`getApplication` の結果の `RegisteredPerson`）が本人なら範囲内とする（ir design・pbi design の 6.5 と同じ）」を足す | 修正：ir design・pbi design に同じ判定の決まりがあり、本書の判定をそれに揃える記述だけが欠けているため | 確認済み |  |  |
+| 2 | dependency-boundary-conformance | 業務のあいまい・不足 | 要判断 | 6301daa4b36d6e08 | f8c887ea62daee77 | specs/contract-info-import/design.md § 機能固有エラーコード / WTG-100030 ほか 2 か所 | WTG-100030 の置換文字 | 本 feature で出す WTG-100030 の {0}〜{2}（ステータス・状態区分・操作）に入れる値が無い | pbi design の公開の定義では、`WTG-100030` の文言は「ステータス、状態区分、操作の組み合わせが不正です。ステータス：{0}、状態区分：{1}、操作：{2}」で、置換文字を 3 つ持つ（`specs/property-basic-info/design.md` § 機能固有エラーコード）。本書は `WTG-100030` を (1) 画面で `canOperate`（契約局取込）が受け付けないとき、(2) 社外ユーザーの範囲外のとき、(3) 同じ申請No のタスクが待機中・処理中のとき（取込画面 Service の実行の手順 2・3）、(4) バッチの開始時にすでに取込中のとき（機能固有のエラー処理の返し方、ドメインモデルの取込中）に出し、JAVA-KIT のメッセージにも同じ文言で足す（機能固有エラーコード・移行方針。design-check 2 回目 #3）。しかし、どの場合も {0}〜{2} に何を入れるか（例：審査フェーズの名称、状態区分の名称、操作＝「契約局取込」）が書かれていない。(3)(4) は組合せの不正ではない場面で出すため、pbi design の `transit` の値の入れ方をそのまま使えない | 決めること：各場面の {0}・{1}・{2} の値。案 A：{0}＝申請の審査フェーズ（`P28` の名称）、{1}＝状態区分（`P27` の名称）、{2}＝「契約局取込」をどの場面でも入れる（範囲外のときは申請を無いものとして扱うので空にする）。案 B：場面ごとに別の値を表で定める | 質問：置換文字に入れる値は承認済みの文書と回答から決まらず、利用者がバッチ処理状況と画面で見る文言が変わるため | 確認済み |  |  |
+
+### 除外
+
+| 観点 | 対象箇所 | 要約 | 除外の出典 |
+|---|---|---|---|
+| traceability | specs/contract-info-import/design.md § 取込画面 Service / 実行の手順 3 | 同じ申請No のタスクが待機中・処理中のときも、文言が組合せの不正である WTG-100030 を使い、新しいキーを作らない | answer:design-authoring-generate[contract-info-import] |
+| steering-conformance | specs/contract-info-import/design.md § 機能固有エラーコード | WTG-200008〜WTG-200012 を JAVA-KIT のメッセージ（DB）にだけ足し、wing の messages.properties には足さない | answer:design-authoring-generate[contract-info-import] |
+| evidence-guard | specs/contract-info-import/design.md § 移行方針（Migration Strategy） | 投入の文と手順は本 feature の tasks で作り、投入の実施は発注者が導入手順書に沿って行う（タスクID・出力コード・VE の 14 のテーブル・マスタ） | answer:design-authoring-generate[contract-info-import] |
+
+## 解消
+
+| スコープ | 回数 | 指摘番号 | 再検査スコープ | 再検査回数 | 確認者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-import | 2 | 1 | feature:contract-info-import | 3 | system（自動）：再検査で再検出なし | 2026-10-08T16:56:36+09:00 |
+| feature:contract-info-import | 2 | 2 | feature:contract-info-import | 3 | system（自動）：再検査で再検出なし | 2026-10-08T16:56:36+09:00 |
+| feature:contract-info-import | 2 | 3 | feature:contract-info-import | 3 | system（自動）：再検査で再検出なし | 2026-10-08T16:56:36+09:00 |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| feature:contract-info-import | 3 | 1 | 修正 | AI 推奨を採用: ir design・pbi design に同じ判定の決まりがあり、本書の判定をそれに揃える記述だけが欠けているため | Junichi Noumi | 2026-10-08T18:18:26+09:00 |  |  | 採用 |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-import | 3 | 2 | 修正 | 修正案の A。どの場面でも {0}＝審査フェーズの名称（P28）、{1}＝状態区分の名称（P27）、{2}＝「契約局取込」とします。社外ユーザーの範囲外のときは、{0}・{1} を空にします（印刷・閲覧用帳票と同じ考え方） | Junichi Noumi | 2026-10-08T18:18:30+09:00 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-import | 4 | 2026-10-08T18:26:59+09:00 | ①② | ["specs/contract-info-import/design.md"] | {"specs/contract-info-import/design.md":"4c8a75122096a3b0e11bc9879722b86ecf6a395fe1f145a45958d88a0f58b135"} | 0 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+
+### 除外
+
+| 観点 | 対象箇所 | 要約 | 除外の出典 |
+|---|---|---|---|
+| evidence-guard | specs/contract-info-import/design.md § 機能固有エラーコード / WTG-100030 | WTG-100030 の置換文字（{0}＝P28 の名称、{1}＝P27 の名称、{2}＝「契約局取込」、範囲外は {0}・{1} を空）の出典が上流（requirements・steering）に無い | verify:人の判断（design-check 3 回目 #2 の判断「修正案の A」と理由、Junichi Noumi 2026-10-08T18:18:30+09:00）で決まった値であり、根拠のない追記ではない |
+| traceability | specs/contract-info-import/design.md § 取込画面 Service / 実行の手順 2 | 発行依頼書（TWTGM100）が無い申請は登録者だけで社外ユーザーの範囲を判定する記述が、1.7 と pbi 6.5 の範囲に合うか | verify:ir design § セキュリティ上の考慮（発行依頼書がまだ無い申請は物件申請情報の範囲で見る）と pbi design § セキュリティ上の考慮（自社の契約稟議起案会社か本人の登録）に一致し、問題は実在しない |
+
+## 解消
+
+| スコープ | 回数 | 指摘番号 | 再検査スコープ | 再検査回数 | 確認者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-import | 3 | 1 | feature:contract-info-import | 4 | system（自動）：再検査で再検出なし | 2026-10-08T18:29:40+09:00 |
+| feature:contract-info-import | 3 | 2 | feature:contract-info-import | 4 | system（自動）：再検査で再検出なし | 2026-10-08T18:29:40+09:00 |
+
+## 承認
+
+| スコープ | 回数 | 対象成果物 | 承認者 | 承認日時 | 原本SHA256 |
+|---|---|---|---|---|---|
+| feature:contract-info-import | 4 | specs/contract-info-import/design.md | Junichi Noumi | 2026-10-08T18:33:40+09:00 | 4c8a75122096a3b0e11bc9879722b86ecf6a395fe1f145a45958d88a0f58b135 |

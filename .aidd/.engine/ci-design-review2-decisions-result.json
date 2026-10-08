@@ -1,0 +1,109 @@
+{
+  "status": "ok",
+  "action": "respond",
+  "result": {
+    "status": "wait",
+    "allowed_actions": [
+      "decision",
+      "decisions",
+      "resolve",
+      "repair"
+    ],
+    "review_context": {
+      "root": "C:\\project\\Wing",
+      "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+      "call": "design-authoring-revise",
+      "event": "design-authoring-revise",
+      "item": "contract-info-import",
+      "dispatch_id": "7bd3999d7ef4479cac5df172d96e323d",
+      "unit": "design-authoring-revise/design-authoring-revise[contract-info-import]::end.review",
+      "scope": "feature:contract-info-import",
+      "run": 2,
+      "snapshot": "97b9a0218eae761c08f41cea1eed308b7650cfa6b5ed9d9522680dd473c1d83f",
+      "record_hash": "5b673c259ef574d9240dc6382dd0c778ced22efa27c9e4fffc14ddd8d30d62f1"
+    },
+    "review": [
+      {
+        "scope": "feature:contract-info-import",
+        "run": 2,
+        "number": 1,
+        "current": true,
+        "decision": "修正",
+        "reason": "AI 推奨を採用: 既存コードで決まる比べ方の記述が欠けており、1.8 の多重実行の判定が漏れうるため",
+        "open": true,
+        "resolved": false,
+        "description": "意味判定：1.8 に対応する処理はあるが、条件の書き方が不足。design の手順 3 は「パラメータ（`parameter`）がタブで区切った `g_ApplicationNo=申請No` を含む行があれば `WTG-100030`」とだけ書く。既存の `BatchCommonService.toTSVString`（`wing/src/main/java/jp/co/kccs/wt/common/service/BatchCommonService.java:73`〜`:93`）は各項目を「キー=値」＋タブで連結し、先頭にタブは付かない（末尾にだけ付く）。既存の取込画面はパラメータを `HashMap` で作る（`wing/src/main/java/jp/co/kccs/wt/function/wtg/wtg040/service/Pwtgo040Service.java:106`）ため項目の順は決まらず、`g_ApplicationNo` が先頭に来ることがある。両側をタブで囲んだ文字列で比べると先頭のときに一致せず、同じ申請No のタスクを見逃す。囲まずに `g_ApplicationNo=申請No` だけで比べると、申請No が前方一致する別の申請（例 `=12` と `=123`）を誤って一致させる。状態の値（'0' 待機中・'1' 処理中。`Pzzzo011Service.java:205`〜`:211`）と列（`STaskList.parameter`・`status`。`Pzzzo011Mapper.xml:67`〜`:69`）は既存と一致することを確かめた",
+        "location": "specs/contract-info-import/design.md § 取込画面 Service / 実行の手順 3",
+        "kind": "業務のあいまい・不足",
+        "severity": "要判断",
+        "summary": "STaskList のパラメータで申請No を比べる条件があいまいで、先頭の項目を見逃しうる",
+        "suggestion": "手順 3 の比べ方を「パラメータの先頭にタブを付けた文字列（タブ＋`parameter`）が、タブ＋`g_ApplicationNo=`＋申請No＋タブ を含む」と書く（または `parameter` をタブで分け、`g_ApplicationNo` の値と完全一致で比べる）",
+        "recommendation": "修正：既存コードで決まる比べ方の記述が欠けており、1.8 の多重実行の判定が漏れうるため",
+        "decided_by": "Junichi Noumi"
+      },
+      {
+        "scope": "feature:contract-info-import",
+        "run": 2,
+        "number": 2,
+        "current": true,
+        "decision": "修正",
+        "reason": "AI 推奨を採用: 判定に要る値の取り方が欠けており、送られた値を使うと他社の申請を取り込めるため",
+        "open": true,
+        "resolved": false,
+        "description": "手順 2 は「申請（発行依頼書の契約稟議起案者_会社コード、または申請の登録者）が範囲外なら無いものとして `WTG-100030`」とする（ほか：セキュリティ上の考慮の脅威と対策「社外ユーザーの範囲外の申請」）。pbi design の公開契約では、`getApplication` の出力は申請（`TWTGM080`：依頼内容・審査フェーズ・状態・申請回数・元申請No・排他用の値ほか）で、発行依頼書（`TWTGM100`）の会社コードを返さない。`getExternalScope` は自社の会社コードとユーザーID を返すだけ（pbi design § サービスインターフェース）。本書の取込画面 Service の呼び出し先と取込画面 Mapper（`STaskList` の確認だけ）にも、申請No で `TWTGM100` を引く口が無い。セッションの 9 項目にある契約稟議起案者の会社コードは `POST /wtg090` で画面から送られる値（API 契約）で、これで判定すると値の書き換えで範囲外の申請を取り込める。pbi design は申請を取り出す SQL の条件に範囲（自社の契約稟議起案会社か本人の登録）を加え、契約稟議起案会社は申請No で引いた `TWTGM100` の 1 件目の契約稟議起案者_会社コードとしている（pbi design § セキュリティ上の考慮・バリデーション設計）。design-check 1 回目 #10 の修正で入った判定の、値の出所が残っている",
+        "location": "specs/contract-info-import/design.md § 取込画面 Service / 実行の手順 2 ほか 1 か所",
+        "kind": "業務の欠落・矛盾",
+        "severity": "重大",
+        "summary": "範囲の判定に使う発行依頼書の会社コードの取り方が無く、画面から送られた値で判定しうる",
+        "suggestion": "取込画面 Mapper に「申請No で `TWTGM100` の契約稟議起案者_会社コードを引く」を足し（コンポーネント一覧・ファイル配置計画の Mapper の説明も）、手順 2 に「会社コードは DB から引き、セッションの値は使わない。登録者は `getApplication` の結果の `RegisteredPerson` と比べる」と書く。WTG 申請状態サービスに範囲つきの取得の口を足すなら、pbi design への差戻しとして扱う",
+        "recommendation": "修正：判定に要る値の取り方が欠けており、送られた値を使うと他社の申請を取り込めるため",
+        "decided_by": "Junichi Noumi"
+      },
+      {
+        "scope": "feature:contract-info-import",
+        "run": 2,
+        "number": 3,
+        "current": true,
+        "decision": "修正",
+        "reason": "修正案の A。WTG-100030 は今回の案件で新しく作るキーなので、JAVA-KIT の DB にはまだありません。WTG-200008〜200012 と一緒に、JAVA-KIT のメッセージに足してください（文言は物件基本情報登録変更と同じ）",
+        "open": true,
+        "resolved": false,
+        "description": "根拠の飛躍。design は、バッチの開始時にすでに取込中なら「`WTG-100030` を `logError` で出す」とする（機能固有のエラー処理の返し方・ドメインモデルの取込中・エラー時の分岐フローの E0）。一方、design 自身が「バッチのメッセージは JAVA-KIT の DB から読む」（既存アーキテクチャの分析）とし、JAVA-KIT に足すのは `WTG-200008`〜`WTG-200012` だけ（機能固有エラーコード、移行方針、移行対象ファイル一覧の「5 行」）。`WTG-100030` は pbi design が wing の `messages.properties` にだけ足すキー（pbi design § 変更する既存ファイル）。JAVA-KIT の DB に `WTG-100030` があることの根拠は、requirements・steering・pbi design のどこにも無い。design-check 1 回目 #2 の判断（`WTG-100030` を `logError` で出す）を実装するための前提が書かれていない",
+        "location": "specs/contract-info-import/design.md § 機能固有のエラー処理（Error Handling） ほか 2 か所",
+        "kind": "業務のあいまい・不足",
+        "severity": "要判断",
+        "summary": "バッチが WTG-100030 を出すが、バッチが読む JAVA-KIT のメッセージに足す予定が無い",
+        "suggestion": "決めること：A：JAVA-KIT のメッセージに `WTG-100030`（pbi design と同じ文言）を足し、移行方針・移行対象ファイル一覧を 6 行にする。B：JAVA-KIT の DB にすでにあるなら、その出典を書く",
+        "recommendation": "質問：JAVA-KIT の DB にすでにあるかは承認済みの文書から分からず、投入の範囲が変わるため",
+        "decided_by": "Junichi Noumi"
+      }
+    ],
+    "choices": {
+      "kind": "repair",
+      "questions": [
+        {
+          "id": "repair",
+          "header": "修正に回す",
+          "question": "修正（A）の指摘と AI が直す軽微（3 件）を修正の回へ回しますか？",
+          "options": [
+            {
+              "label": "修正案のとおり修正に回す",
+              "description": "推奨を採用した修正と軽微は、修正案がそのまま指示になる",
+              "answer": "repair:all-fixes"
+            },
+            {
+              "label": "修正の指示を自分で書く",
+              "description": "指示を書きたい指摘がある",
+              "answer": "repair:manual"
+            }
+          ],
+          "multiSelect": false
+        }
+      ]
+    },
+    "next_action": "提示文をそのまま示し、choices の選択肢を選択式の質問で出して、人に選んでもらってください。検査結果を確認し、重大と要判断の指摘に A〜D か「推奨」で答えてください（束・範囲でまとめて答えられます）。修正（A）と AI が直す軽微があれば repair（findings: \"all-fixes\"）で修正に回し、判断が揃い修正が無ければ承認者名を回答してください。",
+    "operation_id": "9724be3e4e944c68b4e14614a3706d31",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

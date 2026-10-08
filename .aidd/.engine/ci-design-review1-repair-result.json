@@ -1,0 +1,18 @@
+{
+  "status": "ok",
+  "action": "respond",
+  "result": {
+    "status": "repair",
+    "allowed_actions": [],
+    "blockers": [],
+    "next_action": "修正の工程（design-authoring-revise --item contract-info-import）を実行し、再検査後に元の検査をやり直してください。",
+    "repair": {
+      "event": "design-authoring-revise",
+      "item": "contract-info-import",
+      "call": "design-authoring-revise"
+    },
+    "operation_id": "b8fec0428db94b6eaf485a80a9bcc826",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

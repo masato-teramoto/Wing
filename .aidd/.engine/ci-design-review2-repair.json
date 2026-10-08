@@ -1,0 +1,30 @@
+{
+ "operation_id": "5ad317cf5cb44ac1bcd781c9b2fff17a",
+ "action": "repair",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[contract-info-import]::end.review",
+  "event": "design-authoring-revise",
+  "item": "contract-info-import",
+  "status": "wait",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[contract-info-import]::end.review\", \"snapshot\": \"97b9a0218eae761c08f41cea1eed308b7650cfa6b5ed9d9522680dd473c1d83f\", \"run\": 2, \"inspection_hash\": \"ae3bc047bbd1ac53525be6779d73922335e78c8c99c61a2d03a9e020ad883eb2\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 再検査で出なくなり、解消を記録した指摘 10 件\n  - #1-1 2.6 を満たさない場合（リバースデータ・受付No 空）が逸脱として書かれていない\n  - #1-2 バッチ開始時にすでに取込中だったときのエラーのメッセージが無い\n  - #1-3 エラーで取り消したときに警告を出すかと、件数の {2} が決まっていない\n  - #1-4 洗替の前に発行依頼書が無い申請での担当エリア・担当エリア名が決まっていない\n  - #1-5 契約者の電話番号の値をバッチ処理状況に出すが steering からの逸脱と書いていない\n  - #1-6 STaskList の確認を BatchCommonService で行うとするが、その口が既存に無い\n  - #1-7 警告を logWarn で出すと既存の基盤では警告終了になり、正常終了と両立しない\n  - #1-8 CSRF の照合の出典の行が servlet-context.xml:68 で、照合の設定の行と違う\n  - #1-9 契約区分の判定の部品を使えるかを tasks に回しているが、既存コードで決まる\n  - #1-10 社外ユーザーの範囲外の申請を getApplication・canOperate が拒否するとするが公開契約に無い\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 6 件\n  - WTG-200009・WTG-000072 の住所の値と WTG-200011 の電話番号の値をバッチ処理状況に出す（steering からの逸脱として明記済み）（answer:design-authoring-generate[contract-info-import]）\n  - タスクのパラメータに申請者と起案者の氏名を入れ、バッチ処理状況一覧に出る（steering からの逸脱として明記済み）（answer:design-authoring-generate[contract-info-import]）\n  - 受付No が空のときとリバースデータのときに稟議バーコードNo を NULL にする（requirements 2.6 からの逸脱として明記済み）（answer:design-authoring-generate[contract-info-import]）\n  - TWTGM110 を物理削除する（pbi design の「物理削除しない」の例外として明記済み）（answer:design-authoring-generate[contract-info-import]）\n  - 警告だけのときに警告終了とし、Q-DS-CI-012 の 5 の「正常終了」と異なる（verify:前回の人の判断（design-check 1 回目 #7、修正案の A）で決まっており、本文に明記済み）\n  - 契約区分の判定に WTKeikakuJudgeUtils.chkKichikyoku を使う（WTX_Batch の既存の共通部品で、ir design の内部への依存ではない。WTKeikakuJudgeUtils.java:98 を確かめた）（answer:design-authoring-generate[contract-info-import]）\n\n### 前回の検査（1 回目）からの変更\n\n- `specs/contract-info-import/design.md`：依存してよい対象（Allowed Dependencies）、アーキテクチャ方式と境界図（Architecture Pattern & Boundary Map）、ドメインモデル（Domain Model）、データ契約と外部連携（Data Contracts & Integration）、コンポーネント一覧（Summary）、API 契約（API Contract）、取込画面 Service、サービスインターフェース（Service Interface）、機能固有のエラー処理（Error Handling）、エラー時の分岐フロー、ファイル配置計画（File Structure Plan）、セキュリティ上の考慮（Security Considerations）\n  - 修正の指示に無い節の変更：アーキテクチャ方式と境界図（Architecture Pattern & Boundary Map）、コンポーネント一覧（Summary）、ファイル配置計画（File Structure Plan）（意図した変更か確かめてください）\n\n### 判断が必要な指摘\n\n**対象**: `specs/contract-info-import/design.md`（スコープ: 成果物単位（contract-info-import） / 2 回目）\n**実行した層**: ① / ②\n\n**重大**（1 件。1 件ずつ判断してください）\n\n| # | 種類 | 対象箇所 | 要約 | AI の推奨 | 判断 |\n|---|---|---|---|---|---|\n| 2 | 業務の欠落・矛盾 | specs/contract-info-import/design.md § 取込画面 Service / 実行の手順 2 ほか 1 か所 | 範囲の判定に使う発行依頼書の会社コードの取り方が無く、画面から送られた値で判定しうる | 修正（判定に要る値の取り方が欠けており、送られた値を使うと他社の申請を取り込めるため） | 未回答 |\n\n**要判断**（2 件）\n\n| # | 種類 | 対象箇所 | 要約 | AI の推奨 | 判断 |\n|---|---|---|---|---|---|\n| 1 | 業務のあいまい・不足 | specs/contract-info-import/design.md § 取込画面 Service / 実行の手順 3 | STaskList のパラメータで申請No を比べる条件があいまいで、先頭の項目を見逃しうる | 修正（既存コードで決まる比べ方の記述が欠けており、1.8 の多重実行の判定が漏れうるため） | 未回答 |\n| 3 | 業務のあいまい・不足 | specs/contract-info-import/design.md § 機能固有のエラー処理（Error Handling） ほか 2 か所 | バッチが WTG-100030 を出すが、バッチが読む JAVA-KIT のメッセージに足す予定が無い | 質問（JAVA-KIT の DB にすでにあるかは承認済みの文書から分からず、投入の範囲が変わるため） | 未回答 |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n**答え方**（後に書いたものが優先。束・範囲でまとめて答えられます）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）。区分を `C[指摘の誤り]` `C[対象外]` `C[後で決める]` `C[解釈で対応]` で付ける。対象外・後で決めるに `+` を付けると（例 `C[後で決める+]`）、次の検査から同じ扱いにします\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n- **推奨** — AI の推奨を採用する（修正なら修正案がそのまま修正の指示になります）\n\n回答例: `1:推奨 / 束1:C[後で決める+] 桁数は design で決める / 3〜5:A / 7:D 次回まで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。根拠と修正案は `詳細 <番号>` で表示します。",
+  "id": "7bd3999d7ef4479cac5df172d96e323d"
+ },
+ "expected": {
+  "root": "C:\\project\\Wing",
+  "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+  "call": "design-authoring-revise",
+  "event": "design-authoring-revise",
+  "item": "contract-info-import",
+  "dispatch_id": "7bd3999d7ef4479cac5df172d96e323d",
+  "unit": "design-authoring-revise/design-authoring-revise[contract-info-import]::end.review",
+  "scope": "feature:contract-info-import",
+  "run": 2,
+  "snapshot": "97b9a0218eae761c08f41cea1eed308b7650cfa6b5ed9d9522680dd473c1d83f",
+  "record_hash": "5b673c259ef574d9240dc6382dd0c778ced22efa27c9e4fffc14ddd8d30d62f1"
+ },
+ "data": {
+  "findings": "all-fixes"
+ }
+}

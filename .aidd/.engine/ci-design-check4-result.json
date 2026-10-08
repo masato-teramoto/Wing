@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "action": "submit",
+  "result": {
+    "unit": "design-authoring-revise/design-authoring-revise[contract-info-import]::end.review",
+    "flow": "design-authoring-revise",
+    "event": "design-authoring-revise",
+    "item": "contract-info-import",
+    "gate": "review",
+    "hookPoint": "end",
+    "name": "review",
+    "type": "script",
+    "target": "scripts/approval.py",
+    "isAgent": false,
+    "requiresHuman": true,
+    "calls": [],
+    "targetReview": [
+      "specs/contract-info-import/design.md"
+    ],
+    "status": "wait",
+    "call": "design-authoring-revise",
+    "dispatch": {
+      "call": "design-authoring-revise",
+      "unit": "design-authoring-revise/design-authoring-revise[contract-info-import]::end.review",
+      "event": "design-authoring-revise",
+      "item": "contract-info-import",
+      "status": "wait",
+      "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+      "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[contract-info-import]::end.review\", \"snapshot\": \"210c0d615db520d9a15deb08ea27fe9c17eb804866afbfd1cfc371686162d1c7\", \"run\": 4, \"inspection_hash\": \"3f6589dd4e57cd1ecd29a5a6f1af1d4c0d2be1857af09e0456ad76cf0056f8d0\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 再検査で出なくなり、解消を記録した指摘 2 件\n  - #3-1 発行依頼書（TWTGM100）がまだ無い申請で、社外ユーザーの範囲をどう判定するかが書かれていない\n  - #3-2 本 feature で出す WTG-100030 の {0}〜{2}（ステータス・状態区分・操作）に入れる値が無い\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 2 件\n  - WTG-100030 の置換文字（{0}＝P28 の名称、{1}＝P27 の名称、{2}＝「契約局取込」、範囲外は {0}・{1} を空）の出典が上流（requirements・steering）に無い（verify:人の判断（design-check 3 回目 #2 の判断「修正案の A」と理由、Junichi Noumi 2026-10-08T18:18:30+09:00）で決まった値であり、根拠のない追記ではない）\n  - 発行依頼書（TWTGM100）が無い申請は登録者だけで社外ユーザーの範囲を判定する記述が、1.7 と pbi 6.5 の範囲に合うか（verify:ir design § セキュリティ上の考慮（発行依頼書がまだ無い申請は物件申請情報の範囲で見る）と pbi design § セキュリティ上の考慮（自社の契約稟議起案会社か本人の登録）に一致し、問題は実在しない）\n\n### 前回の検査（3 回目）からの変更\n\n- `specs/contract-info-import/design.md`：ドメインモデル（Domain Model）、サービスインターフェース（Service Interface）、バリデーション設計、機能固有エラーコード\n  - 修正の指示に無い節の変更：ドメインモデル（Domain Model）、バリデーション設計（意図した変更か確かめてください）\n\n### 判断が必要な指摘\n\n**対象**: `specs/contract-info-import/design.md`（スコープ: 成果物単位（contract-info-import） / 4 回目）\n**実行した層**: ① / ②\n\n**指摘**: なし（0 件。検査は実行済み）\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n判断が揃いました。承認の可否を回答してください（承認する場合は承認者名）。",
+      "id": "e62bb587f95f4a218c3353ef89db471c"
+    },
+    "label": "design-authoring-revise / design-authoring-revise [contract-info-import]",
+    "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[contract-info-import]::end.review\", \"snapshot\": \"210c0d615db520d9a15deb08ea27fe9c17eb804866afbfd1cfc371686162d1c7\", \"run\": 4, \"inspection_hash\": \"3f6589dd4e57cd1ecd29a5a6f1af1d4c0d2be1857af09e0456ad76cf0056f8d0\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 再検査で出なくなり、解消を記録した指摘 2 件\n  - #3-1 発行依頼書（TWTGM100）がまだ無い申請で、社外ユーザーの範囲をどう判定するかが書かれていない\n  - #3-2 本 feature で出す WTG-100030 の {0}〜{2}（ステータス・状態区分・操作）に入れる値が無い\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 2 件\n  - WTG-100030 の置換文字（{0}＝P28 の名称、{1}＝P27 の名称、{2}＝「契約局取込」、範囲外は {0}・{1} を空）の出典が上流（requirements・steering）に無い（verify:人の判断（design-check 3 回目 #2 の判断「修正案の A」と理由、Junichi Noumi 2026-10-08T18:18:30+09:00）で決まった値であり、根拠のない追記ではない）\n  - 発行依頼書（TWTGM100）が無い申請は登録者だけで社外ユーザーの範囲を判定する記述が、1.7 と pbi 6.5 の範囲に合うか（verify:ir design § セキュリティ上の考慮（発行依頼書がまだ無い申請は物件申請情報の範囲で見る）と pbi design § セキュリティ上の考慮（自社の契約稟議起案会社か本人の登録）に一致し、問題は実在しない）\n\n### 前回の検査（3 回目）からの変更\n\n- `specs/contract-info-import/design.md`：ドメインモデル（Domain Model）、サービスインターフェース（Service Interface）、バリデーション設計、機能固有エラーコード\n  - 修正の指示に無い節の変更：ドメインモデル（Domain Model）、バリデーション設計（意図した変更か確かめてください）\n\n### 判断が必要な指摘\n\n**対象**: `specs/contract-info-import/design.md`（スコープ: 成果物単位（contract-info-import） / 4 回目）\n**実行した層**: ① / ②\n\n**指摘**: なし（0 件。検査は実行済み）\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n判断が揃いました。承認の可否を回答してください（承認する場合は承認者名）。",
+    "allowed_actions": [
+      "approve"
+    ],
+    "review_context": {
+      "root": "C:\\project\\Wing",
+      "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+      "call": "design-authoring-revise",
+      "event": "design-authoring-revise",
+      "item": "contract-info-import",
+      "dispatch_id": "e62bb587f95f4a218c3353ef89db471c",
+      "unit": "design-authoring-revise/design-authoring-revise[contract-info-import]::end.review",
+      "scope": "feature:contract-info-import",
+      "run": 4,
+      "snapshot": "210c0d615db520d9a15deb08ea27fe9c17eb804866afbfd1cfc371686162d1c7",
+      "record_hash": "4774be5458b1a86eed810447e74ede712a6d84ecf80442c8f975ceed1739d6e0"
+    },
+    "review": [],
+    "choices": {
+      "kind": "approve",
+      "questions": [
+        {
+          "id": "approve",
+          "header": "承認",
+          "question": "判断が揃いました。承認しますか？",
+          "options": [
+            {
+              "label": "承認する",
+              "description": "回答者の名前で承認を記録する",
+              "answer": "approve"
+            },
+            {
+              "label": "承認しない",
+              "description": "判断を変える・修正を指示する",
+              "answer": "hold"
+            }
+          ],
+          "multiSelect": false
+        }
+      ]
+    },
+    "next_action": "提示文をそのまま示し、choices の選択肢を選択式の質問で出して、人に選んでもらってください。検査結果を確認し、重大と要判断の指摘に A〜D か「推奨」で答えてください（束・範囲でまとめて答えられます）。修正（A）と AI が直す軽微があれば repair（findings: \"all-fixes\"）で修正に回し、判断が揃い修正が無ければ承認者名を回答してください。",
+    "operation_id": "b480014c60d148c9997f7982e6d18cb0",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

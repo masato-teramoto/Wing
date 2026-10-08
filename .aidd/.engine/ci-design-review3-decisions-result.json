@@ -1,0 +1,91 @@
+{
+  "status": "ok",
+  "action": "respond",
+  "result": {
+    "status": "wait",
+    "allowed_actions": [
+      "decision",
+      "decisions",
+      "resolve",
+      "repair"
+    ],
+    "review_context": {
+      "root": "C:\\project\\Wing",
+      "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+      "call": "design-authoring-revise",
+      "event": "design-authoring-revise",
+      "item": "contract-info-import",
+      "dispatch_id": "5b7f6a80283343d0926e365f6b818c16",
+      "unit": "design-authoring-revise/design-authoring-revise[contract-info-import]::end.review",
+      "scope": "feature:contract-info-import",
+      "run": 3,
+      "snapshot": "a92fed862c26153b28f68f22cebd6b44f103d43c46f262c07037dc7f8c5f544d",
+      "record_hash": "761ceb672b9ffcb42f1df808f1be86b1de0c5255b112c3fe94351db29fb9e6d8"
+    },
+    "review": [
+      {
+        "scope": "feature:contract-info-import",
+        "run": 3,
+        "number": 1,
+        "current": true,
+        "decision": "修正",
+        "reason": "AI 推奨を採用: ir design・pbi design に同じ判定の決まりがあり、本書の判定をそれに揃える記述だけが欠けているため",
+        "open": true,
+        "resolved": false,
+        "description": "意味判定：1.7（契約局取込ボタンを使える利用者。社外ユーザーは pbi の 6.5 の範囲）に対応する処理はあるが、境界の場合が足りない。design-check 2 回目 #2 の修正で、手順 2 は「範囲の判定に使う契約稟議起案者_会社コードは、取込画面 Mapper で申請No から `TWTGM100` を引いて取り」とした。取込は発行依頼書がまだ無い申請にも実行できる（ドメインモデルの「洗替の前に発行依頼書が無ければ NULL」。design-check 1 回目 #4）ので、`TWTGM100` が引けない場合がある。そのときの判定（会社コードが無いので登録者だけで見るか、範囲外とするか）が本書のどこにも無い。ir design は同じ判定で「発行依頼書がまだ無い申請は物件申請情報の範囲（pbi design の 6.5）で見る」と明記している（`specs/issue-request/design.md` § セキュリティ上の考慮）。pbi design の範囲は「自社の契約稟議起案会社か本人の登録」（`specs/property-basic-info/design.md` § セキュリティ上の考慮）。書かれていないと、引けないときに範囲外として本人が登録した申請の取込を拒む実装も、会社コードの比較を飛ばして範囲内とする実装もありうる",
+        "location": "specs/contract-info-import/design.md § 取込画面 Service / 実行の手順 2",
+        "kind": "業務のあいまい・不足",
+        "severity": "要判断",
+        "summary": "発行依頼書（TWTGM100）がまだ無い申請で、社外ユーザーの範囲をどう判定するかが書かれていない",
+        "suggestion": "手順 2 に「`TWTGM100` が引けない（発行依頼書がまだ無い）申請は、会社コードの条件を満たさないものとし、登録者（`getApplication` の結果の `RegisteredPerson`）が本人なら範囲内とする（ir design・pbi design の 6.5 と同じ）」を足す",
+        "recommendation": "修正：ir design・pbi design に同じ判定の決まりがあり、本書の判定をそれに揃える記述だけが欠けているため",
+        "decided_by": "Junichi Noumi"
+      },
+      {
+        "scope": "feature:contract-info-import",
+        "run": 3,
+        "number": 2,
+        "current": true,
+        "decision": "修正",
+        "reason": "修正案の A。どの場面でも {0}＝審査フェーズの名称（P28）、{1}＝状態区分の名称（P27）、{2}＝「契約局取込」とします。社外ユーザーの範囲外のときは、{0}・{1} を空にします（印刷・閲覧用帳票と同じ考え方）",
+        "open": true,
+        "resolved": false,
+        "description": "pbi design の公開の定義では、`WTG-100030` の文言は「ステータス、状態区分、操作の組み合わせが不正です。ステータス：{0}、状態区分：{1}、操作：{2}」で、置換文字を 3 つ持つ（`specs/property-basic-info/design.md` § 機能固有エラーコード）。本書は `WTG-100030` を (1) 画面で `canOperate`（契約局取込）が受け付けないとき、(2) 社外ユーザーの範囲外のとき、(3) 同じ申請No のタスクが待機中・処理中のとき（取込画面 Service の実行の手順 2・3）、(4) バッチの開始時にすでに取込中のとき（機能固有のエラー処理の返し方、ドメインモデルの取込中）に出し、JAVA-KIT のメッセージにも同じ文言で足す（機能固有エラーコード・移行方針。design-check 2 回目 #3）。しかし、どの場合も {0}〜{2} に何を入れるか（例：審査フェーズの名称、状態区分の名称、操作＝「契約局取込」）が書かれていない。(3)(4) は組合せの不正ではない場面で出すため、pbi design の `transit` の値の入れ方をそのまま使えない",
+        "location": "specs/contract-info-import/design.md § 機能固有エラーコード / WTG-100030 ほか 2 か所",
+        "kind": "業務のあいまい・不足",
+        "severity": "要判断",
+        "summary": "本 feature で出す WTG-100030 の {0}〜{2}（ステータス・状態区分・操作）に入れる値が無い",
+        "suggestion": "決めること：各場面の {0}・{1}・{2} の値。案 A：{0}＝申請の審査フェーズ（`P28` の名称）、{1}＝状態区分（`P27` の名称）、{2}＝「契約局取込」をどの場面でも入れる（範囲外のときは申請を無いものとして扱うので空にする）。案 B：場面ごとに別の値を表で定める",
+        "recommendation": "質問：置換文字に入れる値は承認済みの文書と回答から決まらず、利用者がバッチ処理状況と画面で見る文言が変わるため",
+        "decided_by": "Junichi Noumi"
+      }
+    ],
+    "choices": {
+      "kind": "repair",
+      "questions": [
+        {
+          "id": "repair",
+          "header": "修正に回す",
+          "question": "修正（A）の指摘と AI が直す軽微（2 件）を修正の回へ回しますか？",
+          "options": [
+            {
+              "label": "修正案のとおり修正に回す",
+              "description": "推奨を採用した修正と軽微は、修正案がそのまま指示になる",
+              "answer": "repair:all-fixes"
+            },
+            {
+              "label": "修正の指示を自分で書く",
+              "description": "指示を書きたい指摘がある",
+              "answer": "repair:manual"
+            }
+          ],
+          "multiSelect": false
+        }
+      ]
+    },
+    "next_action": "提示文をそのまま示し、choices の選択肢を選択式の質問で出して、人に選んでもらってください。検査結果を確認し、重大と要判断の指摘に A〜D か「推奨」で答えてください（束・範囲でまとめて答えられます）。修正（A）と AI が直す軽微があれば repair（findings: \"all-fixes\"）で修正に回し、判断が揃い修正が無ければ承認者名を回答してください。",
+    "operation_id": "75b7391e4acc4d4f861f7a7ec04b285a",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}
