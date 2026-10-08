@@ -1306,3 +1306,149 @@ created_at: 2026-10-07T16:53:31+09:00
 | スコープ | 回数 | 対象成果物 | 承認者 | 承認日時 | 原本SHA256 |
 |---|---|---|---|---|---|
 | feature:contract-info-import | 4 | specs/contract-info-import/design.md | Junichi Noumi | 2026-10-08T18:33:40+09:00 | 4c8a75122096a3b0e11bc9879722b86ecf6a395fe1f145a45958d88a0f58b135 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-download | 1 | 2026-10-08T18:54:39+09:00 | ①② | ["specs/contract-info-download/design.md"] | {"specs/contract-info-download/design.md":"1d5832b573e08c385d822a5ed5ae119e609e0ee8f50fb0bc1ff9d9079fb592de"} | 6 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | format-conformance | 書式 | 軽微 | 532b8712c103b71d | 16a07125ca65d310 | specs/contract-info-download/design.md § 変更する既存ファイル（Modified Files） | DSN_MODIFIED_FILE_N | 変更する既存ファイルのプレースホルダーが不要理由付きで残らず「なし」に置き換わっている | プレースホルダー削除。テンプレート（Templates/specs/_template/design.md 行368）は `- &lt;DSN_MODIFIED_FILE_N&gt; — &lt;DSN_MODIFIED_REASON_N&gt;`。本書 行532 は「- なし（メッセージを足さず、CSRF の照合設定も変えない。Q-DS-CD-008 の 1・Q-DS-CD-010 の 3）」で、プレースホルダーが値にも不要理由付きの残置にもなっていない（status-protocol §7 の保持の規約）。同じ節を承認済みの specs/contract-info-import/design.md 行557 は `&lt;DSN_MODIFIED_FILE_N&gt;（不要：…） — &lt;DSN_MODIFIED_REASON_N&gt;（不要：同上）` の形で残している。本書のほかの不要箇所（行137・267・338・379・577・578・601〜605・628）はプレースホルダーを残して不要理由を併記している | 行532 を「- &lt;DSN_MODIFIED_FILE_N&gt;（不要：既存のファイルは変えない。メッセージを足さず、CSRF の照合設定も変えない — Q-DS-CD-008 の 1・Q-DS-CD-010 の 3） — &lt;DSN_MODIFIED_REASON_N&gt;（不要：同上）」に置き換える | 修正：書式だけの直しで内容は変わらないため | 確認済み |  |  |
+| 2 | traceability | 業務のあいまい・不足 | 要判断 | 88beb5f8cc15dd47 | 57a32d5dd78ab1cf | specs/contract-info-download/design.md § データ契約と外部連携（Data Contracts &amp; Integration） / 3.1 | CSV の列の並び（@CsvColumn） | CSV の列位置を name だけで決め、同じ見出しの No6・No44 の位置が定まらない | 意味判定（ID 対応あり・内容の確定不足）。要件 3.1 は「契約情報取込のリバースデータと同じ 381 列の形式」を求め、列の並びは取込にそのまま効く。本書 § データ契約と外部連携 の CSV（行291）は「381 列に @CsvColumn(name = 見出し) を付け … 見出し行は CsvEntityListHandler が @CsvColumn(name=…) から出す」とだけ書き、列の位置（position）を指定していない。§ ドメインモデル の CSV（行252）と出力の定義（specs/contract-info-download/csv-layout-wtg100.md の「注意」）は、No 6 と No 44 が同じ見出し「契約基本_基地局名_ｶﾅ」になるとする。名前で列を決める書き方では、同じ名前の 2 列が同じ位置に解決されるか、フィールドの宣言順（Java の仕様では getDeclaredFields の順は保証されない）に頼るおそれがあり、No 1〜381 の並びと No 6・No 44 の値の位置が本書から一意に決まらない。§ テスト戦略 の単体の CSV（行620）も見出しの並びだけを確かめ、値の位置を確かめる記述が無い | § データ契約と外部連携 の CSV に「381 列すべてに @CsvColumn(position = 出力の定義の No − 1, name = 見出し) を付け、列の並びを出力の定義の No で固定する。No 6 と No 44 は position で区別する」を足す。§ テスト戦略 の単体の CSV に「No 6 に基地局名_ｶﾅ、No 44 に予備項目3 の値が出る」を足す | 修正：業務の新しい事実は要らず、出力の定義の No をそのまま使えば列の並びが一意に決まるため | 確認済み |  |  |
+| 3 | traceability | 業務のあいまい・不足 | 要判断 | b3dd83ebfd553849 | 6853f8ae7813a6ba | specs/contract-info-download/design.md § 契約情報ダウンロード Service / 出力の手順 4 | 作業用テーブルの会社の分け方 | ビューと作業用テーブルに会社コードが無く、他社の契約者・支払の行が入りうる | 本書 出力の手順 4（行415）「VWTGM010 から、選んだ行（計画基地局番号＋枝番）の 1基本情報・2契約者・3支払情報の行を全部 TWTGD050 に入れる … 選んだ行がログイン会社の TWTGM010 にあり … 合うものだけを入れる」。作業用テーブルの表（specs/contract-info-download/work-tables-wtg100.md 行26〜28・行32〜95）では、VWTGM010 の 1基本情報は「TWTGM010 の全行」で、VWTGM010 と TWTGD050（60 列）の列に会社コードが無い。このため、キーがログイン会社の TWTGM010 にあることは確かめられても、同じ計画基地局番号＋枝番を持つ他社の行（基本・契約者・支払）も VWTGM010 から TWTGD050 に入りうる。要件 3.1（選んだ行だけを出す）、本書 § セキュリティ上の考慮（行548「送られたキーをログイン会社の TWTGM010 と同じ絞り込みで確かめ直し」）、steering/database.md 行117（会社コードを検索条件に含め、会社ごとのデータを混ぜない）に照らすと、会社が複数ある場合の扱いが本書から決まらない。一方、ビューのコード名称は会社コード 'UQ' 固定で引く（本書 行278、csv-layout-wtg100.md 行18）ため、運用上の会社が 1 つだけである可能性もある。作業用テーブルが共通列（会社コードを含む）を持たないこと自体は回答（Q-DS-CD-002 の 2）で決まっており、ここでは指摘しない | 何を決めるか：会社が複数ある場合に、作業用テーブルへ他社の行が入らないことをどう保つか。案 A：契約情報の会社は 'UQ' だけなので扱わない、と出力の手順 4 に明記する。案 B：VWTGM010 に会社コードの列を足し（作業用テーブルの列は変えない）、TWTGD050 へ入れる条件に「会社コード＝ログイン会社」を足す。案 C：TWTGD050・TWTGD060 にも会社コードを持たせる（回答の表を変える） | 質問：ビューと作業用テーブルの列は回答者の表が正で、会社の扱いには業務・運用の事実が要るため | 確認済み |  |  |
+| 4 | steering-conformance | 業務の欠落・矛盾 | 重大 | bc3b89379160250c | ff4e37fd961bbceb | specs/contract-info-download/design.md § バリデーション設計 | サーバーでの入力チェック | サーバーで検索条件の桁・形式を確かめない設計が security.md の入力検証と矛盾し、逸脱の記録が無い | 矛盾。本書 § バリデーション設計（行466〜468）「サーバーで行う入力チェックは、出力のときの未選択チェックだけ」「検索条件の桁は画面の入力桁（maxlength）と IME の入力モードで … 形式は確かめない」。steering/security.md `### 入り口 — 入力検証` の画面の層「必須・桁数・形式の入力チェックを行い、エラー時はメッセージを表示して処理を止める（REQ-063）／Service の checkXxx が BindingResult.rejectValue に…」、同 `### 共通ルール` 1「入力はサーバー側で必ず検査する」、steering/architecture.md `### フロントエンド（FE）` のしないこと「業務ルールの判定（サーバ側のインターセプタと Service が行う）」と両立しない。本書が意図した逸脱として記録しているのは requirements 4.1 だけ（行468）で、§ アーキテクチャ方式と境界図 の steering との整合（行160）にも、upstream-carryover（.aidd/.engine/upstream-carryover.md 行75〜80 の contract-info-download の節）にも、security.md の入力検証からの逸脱が無い。サーバーで確かめない扱いそのものは回答（Q-DS-CD-005）で決まっているため、指摘は steering からの逸脱の記録の欠落に限る | § バリデーション設計 の 3 つ目の項目に「steering/security.md の `### 入り口 — 入力検証`（画面の層の桁数・形式のチェック）と `### 共通ルール` 1（入力はサーバー側で必ず検査する）からも意図して外れる。上流は Phase 5 の最後にまとめて直す（upstream-carryover）」を足し、upstream-carryover の contract-info-download の節に同じ行を足す | 修正：回答で決まった扱いを、ほかの意図した逸脱と同じ形で記録すれば足りるため | 確認済み |  |  |
+| 5 | evidence-guard | 業務のあいまい・不足 | 要判断 | 9ec3494394fffbe2 | 1d2059daea8caa0f | specs/contract-info-download/design.md § ドメインモデル（Domain Model） / 一覧の 19 項目 | 契約先の 7 項目の取り方 | 一覧の契約先 7 項目を GWTG004 と同じ取り方とするが、GWTG004 が検索条件で絞る手順を書いていない | 根拠の飛躍。本書 行242「『契約先/…』の 7 項目は GWTG004 と同じ取り方で、その契約の契約者情報のうち契約者区分 1 の行を、契約者番号の降順で並べた先頭の 1 行から取る（Pwtgo004Mapper.xml:769〜:793、Pwtgo004Service.java:410〜:413）」。挙げた GWTG004 のコードは、まず検索条件の法人名/個人名・法人名/個人名(ｶﾅ)・所属部署名・電話番号を条件に契約者区分 1 の行を引き（wing/src/main/java/jp/co/kccs/wt/function/wtg/wtg002/service/Pwtgo004Service.java:404〜:419、wing/src/main/resources/jp/co/kccs/wt/function/wtg/wtg002/Pwtgo004Mapper.xml:823〜:836）、当たらないときだけ条件を外して引き直す（同 Service:433〜:460）。このため、法人名で検索したとき GWTG004 は条件に合う契約者を契約先として出すが、本書の書き方では条件に合わない契約者が出ることがある。回答（Q-DS-CD-003）は「GWTG004 と同じ取り方です（Pwtgo004Service の契約者の整理）」と「契約者区分 1 の行のうち、契約者番号の降順で先頭の 1 行」の両方を述べており、どちらに寄せるかが本書から決まらない。なお GWTG004 は Service:408 で法人名の条件をカナの値で上書きし、Mapper:824 で法人名を完全一致で比べる | 何を決めるか：一覧の契約先 7 項目に検索条件を効かせるか。案 A：GWTG004 と同じく、検索条件の法人名/個人名・カナなどで契約者区分 1 の行を絞って先頭を出し、当たらなければ条件を外した先頭を出す（比べ方を検索条件と同じ部分一致にするか、GWTG004 のとおりにするかも決める）。案 B：検索条件に関係なく、契約者区分 1 の行を契約者番号の降順で並べた先頭を出す（本書のまま。出典の「GWTG004 と同じ取り方」を「GWTG004 と同じ並び」に直す） | 質問：回答の 2 つの記述が食い違い、どちらにするかは業務の判断が要るため | 確認済み |  |  |
+| 6 | dependency-boundary-conformance | 業務の欠落・矛盾 | 重大 | cafadf062ea1589e | 9387e2a397cd7816 | specs/contract-info-download/design.md § API 契約（API Contract） / /wtg100 | /wtg100 の申請No の受け渡し | /wtg100 の申請No のパラメータ名が無く、pbi design の口も FunctionID を渡さない | 本書 API 契約の `/wtg100` の Request（行367）は「FunctionID、申請No」で、申請No の要求パラメータ名を書いていない。§ データ契約と外部連携 の物件基本情報登録変更との口（行289）も「/wtg100?FunctionID=WTG100 に申請No を足して」とだけ書く。依存先の公開契約 specs/property-basic-info/design.md 行566（API 契約 `/wtg070/keyakuDl`：契約情報ダウンロード画面（GWTG100）を別ウインドウで開く）と行576（「/wtg100 を別ウインドウで開き、申請No だけを渡す（14.14）」）は FunctionID を渡す形になっておらず、パラメータ名も無い。既存の GWTG004 の初期表示は @RequestParam("FunctionID") を必須で受ける（wing/src/main/java/jp/co/kccs/wt/function/wtg/wtg002/controller/Pwtgo004Controller.java:76）ため、同じ作りで pbi design のとおりに開くと FunctionID が無く初期表示できない。FunctionID を渡す口の形は回答（Q-DS-CD-008 の 1）で決まっているが、本書・依存先の両方で受け渡しの名前が決まっていない | § API 契約 の `/wtg100` の Request に申請No のパラメータ名と、FunctionID＝`WTG100` を受けることを書き、§ データ契約と外部連携 の物件基本情報登録変更との口に同じ名前を書く。pbi design 行576 の「申請No だけを渡す」に FunctionID とパラメータ名を足すことを upstream-carryover（全機能をまたいだ確認）に記録する | 修正：口の形は回答で決まっており、名前を決めて両方の design にそろえれば足りるため | 確認済み |  |  |
+
+### 差戻し先候補
+
+| 指摘番号 | 宛先 | 理由 |
+|---|---|---|
+| 4 | steering/security.md（`### 入り口 — 入力検証`・`### 共通ルール` 1。Phase 5 の最後にまとめて直す upstream-carryover） | 回答で決まったサーバーで桁・形式を確かめない扱いと steering の記述が両立しないため |
+| 6 | specs/property-basic-info/design.md（`/wtg070/keyakuDl` の口。14.14） | 依存先の公開契約が FunctionID とパラメータ名を持たず、本書の口と合わないため |
+
+### 除外
+
+| 観点 | 対象箇所 | 要約 | 除外の出典 |
+|---|---|---|---|
+| format-conformance | specs/contract-info-download/design.md § 変更する既存ファイル（Modified Files） | 形式不備のため意味検査から外した | unchecked:形式不備 |
+| traceability | specs/contract-info-download/design.md § ドメインモデル（Domain Model） / 1.3 | 代表契約局番・代表契約枝番を前方一致にし、requirements 1.3（GWTG004 と同じ）から外れる | answer:design-authoring-generate[contract-info-download] |
+| traceability | specs/contract-info-download/design.md § ドメインモデル（Domain Model） / 2.1・2.2 | requirements の「計画マスタ（TWTBM080）」を工事案件マスタとして読み、行が無い契約情報を出す | answer:design-authoring-generate[contract-info-download] |
+| traceability | specs/contract-info-download/design.md § バリデーション設計 / 4.1 | 検索条件の桁・形式のサーバーチェックとメッセージを持たず、requirements 4.1 から外れる | answer:design-authoring-generate[contract-info-download] |
+| traceability | specs/contract-info-download/design.md § ドメインモデル（Domain Model） / 3.4 | 出力は表示中のページで選んだ行だけ（1 ページ 100 件まで）で、100 件を超えて 1 つの CSV にできない | answer:design-authoring-generate[contract-info-download] |
+| steering-conformance | specs/contract-info-download/design.md § 判断 3: 工事案件マスタに行が無い契約情報は絞り込みで落とさない | 工事案件マスタに行が無い契約情報を出す点が security.md 285 行目の「既存の WTB と同じ方式」から外れる | answer:design-authoring-generate[contract-info-download] |
+| steering-conformance | specs/contract-info-download/design.md § 物理データモデル（Physical Data Model） | TWTGD050・TWTGD060 が共通列・主キー・索引を持たず database.md の共通カラムと合わない | answer:design-authoring-generate[contract-info-download] |
+| steering-conformance | specs/contract-info-download/design.md § セキュリティ上の考慮（Security Considerations） | 渡された申請No の申請で画面を使えるかを確かめず、社外ユーザーの範囲も当てない | answer:design-authoring-generate[contract-info-download] |
+| evidence-guard | specs/contract-info-download/design.md § ドメインモデル（Domain Model） / 一覧の 19 項目 | 一覧の並びに GWTG004 の ORDER BY にある支払内容区分・口座番号を含めない | answer:design-authoring-generate[contract-info-download] |
+| evidence-guard | specs/contract-info-download/design.md § 物理データモデル（Physical Data Model） | ビューのコード名称をログイン会社でなく会社コード 'UQ' 固定で引く | answer:design-authoring-generate[contract-info-download] |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| feature:contract-info-download | 1 | 1 | 修正 | 軽微（AIDD 内部の決まりごと）のため、AI が修正案で直す | system（自動） | 2026-10-08T19:05:40+09:00 |  |  |  |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| feature:contract-info-download | 1 | 4 | 修正 | AI 推奨を採用: 回答で決まった扱いを、ほかの意図した逸脱と同じ形で記録すれば足りるため | Junichi Noumi | 2026-10-08T19:14:44+09:00 |  |  | 採用 |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| feature:contract-info-download | 1 | 6 | 修正 | 申請No のパラメータ名は applicationNo | Junichi Noumi | 2026-10-08T19:14:48+09:00 |  |  | 採用 |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| feature:contract-info-download | 1 | 2 | 修正 | AI 推奨を採用: 業務の新しい事実は要らず、出力の定義の No をそのまま使えば列の並びが一意に決まるため | Junichi Noumi | 2026-10-08T19:14:51+09:00 |  |  | 採用 |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-download | 1 | 3 | 修正 | 修正案の A。契約情報の会社は 'UQ' だけなので扱わない（ビューのコード名称を 'UQ' で引くのと同じ前提） | Junichi Noumi | 2026-10-08T19:14:55+09:00 |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-download | 1 | 5 | 修正 | 修正案の A。検索条件のうち契約者に掛かるもの（契約者番号＝前方一致、法人名/個人名・法人名/個人名(ｶﾅ)＝部分一致。入力があるものだけ）で契約者区分 1 の行を絞り、契約者番号の降順で先頭を出す。当たらなければ条件を外して先頭を出す。比べ方は検索条件と同じにし、GWTG004 の「法人名をカナで上書き」「法人名を完全一致」はまねしない | Junichi Noumi | 2026-10-08T19:15:31+09:00 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-download | 2 | 2026-10-08T19:25:21+09:00 | ①② | ["specs/contract-info-download/design.md"] | {"specs/contract-info-download/design.md":"0d7083da44e16a6ffc3907fce0db8953f3544f28ffb68eed21db05de0c8f3d8a"} | 1 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | traceability | 業務のあいまい・不足 | 要判断 | d8ed44f353086c85 | 3446b3df3d01f0fa | specs/contract-info-download/design.md § 物理データモデル（Physical Data Model） / VWTGM010 | 住居_字_地番・住居_建物_ビルの元の列 | ビューの元にする表が、住居の字地番・建物ビルを TWTGM010 に無い ADDRESS_CD3・CD4 から取る | 意味判定（要件 3.1。ID 対応あり・内容の確定不足）。本書 § 物理データモデル の VWTGM010（行278）は「列はデータ種別ごとに意味が変わり、作業用テーブルの表のとおり」とし、§ ファイル配置計画（行525）と § 移行方針（行574）はビューの DDL をその表をもとに作るとする。作業用テーブルの表（specs/contract-info-download/work-tables-wtg100.md 行117・118）の 1基本情報は No 17「住居_字_地番 ← 契約基本情報ﾏｽﾀ.ADDRESS_CD3」、No 18「住居_建物_ビル ← 契約基本情報ﾏｽﾀ.ADDRESS_CD4」で、出力の定義（specs/contract-info-download/csv-layout-wtg100.md 行43・44、No 15・16）の取得元も同じ列を挙げる。既存の TWTGM010 の列は ADDRESS3・ADDRESS4 で（wing/src/main/resources/jp/co/kccs/wt/function/wtg/wtg002/Pwtgo005Mapper.xml:435〜:436 の UPDATE、Pwtgo004Mapper.xml:429・:434）、ADDRESS_CD3・ADDRESS_CD4 は wing の wtg の Mapper に 1 か所も無い。本書自身も一覧の 10・11（行231・232）と検索条件の建物、ﾋﾞﾙ（行202）で TWTGM010.ADDRESS3・ADDRESS4 を使い、出力の定義の TWTGD060 の物理名も ADDRESS3・ADDRESS4 である。表の「処理順_帳票用」の欄の食い違いは本書が注記で読み替えを決めている（行278）が、この 2 列には注記が無く、表のとおりにビューの DDL を作ると存在しない列を参照し、CSV の No 15・16 の値を作れない | § 物理データモデル の VWTGM010 の行に「作業用テーブルの表の 1基本情報の住居_字_地番・住居_建物_ビルの元（契約基本情報ﾏｽﾀ.ADDRESS_CD3・ADDRESS_CD4）は、TWTGM010 の ADDRESS3・ADDRESS4 と読む（出力の定義の TWTGD060 の物理名と同じ）」を足す | 修正：出力の定義の物理名と既存の列名から読み替えが一意に決まり、業務の新しい事実は要らないため | 確認済み |  |  |
+
+### 除外
+
+| 観点 | 対象箇所 | 要約 | 除外の出典 |
+|---|---|---|---|
+| traceability | specs/contract-info-download/design.md § ドメインモデル（Domain Model） / 1.3 | 代表契約局番・代表契約枝番を前方一致にし、requirements 1.3（GWTG004 と同じ）から外れる | answer:design-authoring-generate[contract-info-download] |
+| traceability | specs/contract-info-download/design.md § ドメインモデル（Domain Model） / 2.1・2.2 | requirements の「計画マスタ（TWTBM080）」を工事案件マスタとして読み、行が無い契約情報を出す | answer:design-authoring-generate[contract-info-download] |
+| traceability | specs/contract-info-download/design.md § バリデーション設計 / 4.1 | 検索条件の桁・形式のサーバーチェックとメッセージを持たず、requirements 4.1 から外れる | answer:design-authoring-generate[contract-info-download] |
+| traceability | specs/contract-info-download/design.md § ドメインモデル（Domain Model） / 3.4 | 出力は表示中のページで選んだ行だけ（1 ページ 100 件まで）で、100 件を超えて 1 つの CSV にできない | answer:design-authoring-generate[contract-info-download] |
+| steering-conformance | specs/contract-info-download/design.md § バリデーション設計 | サーバーで検索条件の桁・形式を確かめず、security.md の入力検証から外れる（逸脱は記録済み） | answer:design-authoring-generate[contract-info-download] |
+| steering-conformance | specs/contract-info-download/design.md § 判断 3: 工事案件マスタに行が無い契約情報は絞り込みで落とさない | 工事案件マスタに行が無い契約情報を出す点が security.md 285 行目の「既存の WTB と同じ方式」から外れる | answer:design-authoring-generate[contract-info-download] |
+| steering-conformance | specs/contract-info-download/design.md § API 契約（API Contract） / /wtg100/csv | 作業用テーブルを書く出力の口が CSRF の照合に乗らない（照合の設定を変えない） | answer:design-authoring-generate[contract-info-download] |
+| steering-conformance | specs/contract-info-download/design.md § 物理データモデル（Physical Data Model） | TWTGD050・TWTGD060 が共通列・主キー・索引を持たず database.md の共通カラムと合わない | answer:design-authoring-generate[contract-info-download] |
+| steering-conformance | specs/contract-info-download/design.md § セキュリティ上の考慮（Security Considerations） | 渡された申請No の申請で画面を使えるかを確かめず、社外ユーザーの範囲も当てない | answer:design-authoring-generate[contract-info-download] |
+| evidence-guard | specs/contract-info-download/design.md § ドメインモデル（Domain Model） / 一覧の 19 項目 | 一覧の並びに GWTG004 の ORDER BY にある支払内容区分・口座番号を含めない | answer:design-authoring-generate[contract-info-download] |
+| evidence-guard | specs/contract-info-download/design.md § ドメインモデル（Domain Model） / ベンダー／施工会社の絞り込み | 工事案件マスタへ計画マスタを経由して会社コードで結合し、既存の WTB（TWTBM080 を直接引く）と結合の形が違う | answer:design-authoring-generate[contract-info-download] |
+| evidence-guard | specs/contract-info-download/design.md § 物理データモデル（Physical Data Model） | ビューのコード名称をログイン会社でなく会社コード 'UQ' 固定で引く | answer:design-authoring-generate[contract-info-download] |
+| evidence-guard | specs/contract-info-download/design.md § データ契約と外部連携（Data Contracts &amp; Integration） / CSV | 0 件のとき空の要素を 1 つ渡して見出し行だけを出す（申請状況検索一覧は null の要素 1 つ） | answer:design-authoring-generate[contract-info-download] |
+| evidence-guard | specs/contract-info-download/design.md § セキュリティ上の考慮（Security Considerations） / ZMENUAUTH | ZMENUAUTH の行を、物件基本情報登録変更を使える権限区分と同じ数だけ足す | answer:design-authoring-generate[contract-info-download] |
+
+## 解消
+
+| スコープ | 回数 | 指摘番号 | 再検査スコープ | 再検査回数 | 確認者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-download | 1 | 1 | feature:contract-info-download | 2 | system（自動）：再検査で再検出なし | 2026-10-08T19:33:18+09:00 |
+| feature:contract-info-download | 1 | 2 | feature:contract-info-download | 2 | system（自動）：再検査で再検出なし | 2026-10-08T19:33:18+09:00 |
+| feature:contract-info-download | 1 | 3 | feature:contract-info-download | 2 | system（自動）：再検査で再検出なし | 2026-10-08T19:33:18+09:00 |
+| feature:contract-info-download | 1 | 4 | feature:contract-info-download | 2 | system（自動）：再検査で再検出なし | 2026-10-08T19:33:18+09:00 |
+| feature:contract-info-download | 1 | 5 | feature:contract-info-download | 2 | system（自動）：再検査で再検出なし | 2026-10-08T19:33:18+09:00 |
+| feature:contract-info-download | 1 | 6 | feature:contract-info-download | 2 | system（自動）：再検査で再検出なし | 2026-10-08T19:33:18+09:00 |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| feature:contract-info-download | 2 | 1 | 修正 | 。_handoff の 2 ファイルも直して差し替えました。ADDRESS_CD3・ADDRESS_CD4 はどちらも ADDRESS3・ADDRESS4 に直しています（CSV の表の No 15・16、作業用テーブルの表の 17・18）。読み替えの文は足さず、表どおり ADDRESS3・ADDRESS4 と書いてください。FEE_MANAGE_KIND は、使わない「処理順_帳票用」の式の中だけなので、そのままで構いません | Junichi Noumi | 2026-10-08T19:51:45+09:00 |  |  | 採用 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-download | 3 | 2026-10-08T19:54:37+09:00 | ①② | ["specs/contract-info-download/design.md"] | {"specs/contract-info-download/design.md":"3babb9106f4ffd54b78ce57c1b82ca8b530200d4dd20fe1ced3223ac96066233"} | 0 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+
+## 解消
+
+| スコープ | 回数 | 指摘番号 | 再検査スコープ | 再検査回数 | 確認者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-download | 2 | 1 | feature:contract-info-download | 3 | system（自動）：再検査で再検出なし | 2026-10-08T19:58:17+09:00 |
+
+## 承認
+
+| スコープ | 回数 | 対象成果物 | 承認者 | 承認日時 | 原本SHA256 |
+|---|---|---|---|---|---|
+| feature:contract-info-download | 3 | specs/contract-info-download/design.md | Junichi Noumi | 2026-10-08T20:00:35+09:00 | 3babb9106f4ffd54b78ce57c1b82ca8b530200d4dd20fe1ced3223ac96066233 |

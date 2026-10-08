@@ -1,0 +1,31 @@
+{
+ "operation_id": "64dd11e6f232425291cbaae543d40032",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[contract-info-download]::run",
+  "event": "design-authoring-revise",
+  "item": "contract-info-download",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "3f87bada8260464e9c33bb26445b6ce1"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/contract-info-download/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "design",
+    "scope": "feature:contract-info-download",
+    "run": 2,
+    "number": 1
+   }
+  ],
+  "return_candidates": [],
+  "summary": "2 回目 #1：回答者が差し替えた補足資料 2 つ（CSV の表 No 15・16、作業用テーブルの表 17・18 の取得元を ADDRESS3・ADDRESS4 に直したもの）を写し直し、物理データモデルの VWTGM010 の行に、住居の字地番・建物ビルは TWTGM010 の ADDRESS3・ADDRESS4、登記は PLACE_ADDRESS3・PLACE_KANA から取ると表どおりに書いた（読み替えの文は足さない）。要件トレーサビリティ自己診断（contract-info-download）：抽出 15 件、対応あり 15 件、未対応 0 件。"
+ }
+}

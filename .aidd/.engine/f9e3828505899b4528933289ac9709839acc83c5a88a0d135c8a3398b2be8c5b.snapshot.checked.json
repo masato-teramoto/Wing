@@ -1,0 +1,28 @@
+{
+  "event": "design-authoring-generate",
+  "scope": "feature:contract-info-download",
+  "run": 1,
+  "snapshot": "ed286618d71806a38dd7b19bbbd2d52531584fd5dc61518c051be724dd3b1033",
+  "record_bytes": 256876,
+  "record_hash": "1c25d5c1be08e75e7fd2b46675c25cd274e05b96b656b51f9e0cfb3ad62edf1f",
+  "targets": [
+    "specs/contract-info-download/design.md"
+  ],
+  "hashes": {
+    "specs/contract-info-download/design.md": "1d5832b573e08c385d822a5ed5ae119e609e0ee8f50fb0bc1ff9d9079fb592de"
+  },
+  "inputs": {
+    ".aidd/feature-list.md": "71a64dc3cbf71bc6ddb02a4dc6f8247344064ca63e8a291e5881763ef59256ae",
+    "steering/product.md": "cde5dd8a1007c53f93a270de63e01d294d38f47695e96027d52b6b4862bc149b",
+    "steering/tech.md": "58cc32eb0ad29d7b7185bb02e710ce8d882e374f93eb0a609ae293e3903a4966",
+    "steering/architecture.md": "98be0c57ba256c0aeaf1a66d69682e63b47d20ec0f91ab776589a54e5eb8c33d",
+    "steering/security.md": "34061564b8c5b8c28e5ca2f4a9b744b06d9d58417ddbbff7ab150c9ef1027bbf",
+    "steering/non-functional.md": "ae87c72271e4f3d8593e2f666edc7bb0931cf4d0ca78dafbb21ab7264303f0ac",
+    "steering/database.md": "832d98b289c53f8c8adc9a7dfb25bf0f8b1f54b9c1cc473c6480fa9927a20e21",
+    "steering/api-standards.md": "70eca8d2facbf08bfa22cf1ae1e781219ecab2066bb8129bf4a3414b0fdeddc1",
+    "specs/contract-info-download/requirements.md": "db81769c1f58c458a0583a47ed5daf3a2ffdf8fdee34bd1aa3514a04dcf4a898",
+    "specs/property-basic-info/design.md": "0829e28f5d3a4e0db44e191b174e2518eb0af483f10814026003e86d90d8c7df",
+    "specs/issue-request/design.md": "a543916db8517b94bdbefb90769055130c7b2e00eeb99f9027bf9f66402a5d63",
+    "specs/contract-info-import/design.md": "4c8a75122096a3b0e11bc9879722b86ecf6a395fe1f145a45958d88a0f58b135"
+  }
+}

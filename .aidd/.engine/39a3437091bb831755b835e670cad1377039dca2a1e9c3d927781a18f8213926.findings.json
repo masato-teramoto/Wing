@@ -1,0 +1,7 @@
+{
+  "phase": "design",
+  "event": "design-authoring-revise",
+  "scope": "feature:contract-info-download",
+  "run": 3,
+  "findings": []
+}

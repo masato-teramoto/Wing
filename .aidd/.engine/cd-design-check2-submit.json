@@ -1,0 +1,16 @@
+{
+ "operation_id": "71bd2bcafb5647bdb7b291923c1a70bd",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[contract-info-download]::end.design-check",
+  "event": "design-authoring-revise",
+  "item": "contract-info-download",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "718435f110134fa59ccab6a681314339"
+ },
+ "result": {
+  "status": "completed"
+ }
+}

@@ -1,0 +1,106 @@
+{
+  "status": "ok",
+  "action": "submit",
+  "result": {
+    "unit": "design-authoring-revise/design-authoring-revise[contract-info-download]::end.review",
+    "flow": "design-authoring-revise",
+    "event": "design-authoring-revise",
+    "item": "contract-info-download",
+    "gate": "review",
+    "hookPoint": "end",
+    "name": "review",
+    "type": "script",
+    "target": "scripts/approval.py",
+    "isAgent": false,
+    "requiresHuman": true,
+    "calls": [],
+    "targetReview": [
+      "specs/contract-info-download/design.md"
+    ],
+    "status": "wait",
+    "call": "design-authoring-revise",
+    "dispatch": {
+      "call": "design-authoring-revise",
+      "unit": "design-authoring-revise/design-authoring-revise[contract-info-download]::end.review",
+      "event": "design-authoring-revise",
+      "item": "contract-info-download",
+      "status": "wait",
+      "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+      "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[contract-info-download]::end.review\", \"snapshot\": \"259db2b5c00a04493d01cdf29ce41c6bc22cd9202ebe854d0cd3a4356d46fa26\", \"run\": 2, \"inspection_hash\": \"bd3d6ce995dae791f02cfcaaf99074932faaf67348142f5ee7444a1e91324140\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 再検査で出なくなり、解消を記録した指摘 6 件\n  - #1-1 変更する既存ファイルのプレースホルダーが不要理由付きで残らず「なし」に置き換わっている\n  - #1-2 CSV の列位置を name だけで決め、同じ見出しの No6・No44 の位置が定まらない\n  - #1-3 ビューと作業用テーブルに会社コードが無く、他社の契約者・支払の行が入りうる\n  - #1-4 サーバーで検索条件の桁・形式を確かめない設計が security.md の入力検証と矛盾し、逸脱の記録が無い\n  - #1-5 一覧の契約先 7 項目を GWTG004 と同じ取り方とするが、GWTG004 が検索条件で絞る手順を書いていない\n  - #1-6 /wtg100 の申請No のパラメータ名が無く、pbi design の口も FunctionID を渡さない\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 14 件\n  - 代表契約局番・代表契約枝番を前方一致にし、requirements 1.3（GWTG004 と同じ）から外れる（answer:design-authoring-generate[contract-info-download]）\n  - requirements の「計画マスタ（TWTBM080）」を工事案件マスタとして読み、行が無い契約情報を出す（answer:design-authoring-generate[contract-info-download]）\n  - 検索条件の桁・形式のサーバーチェックとメッセージを持たず、requirements 4.1 から外れる（answer:design-authoring-generate[contract-info-download]）\n  - 出力は表示中のページで選んだ行だけ（1 ページ 100 件まで）で、100 件を超えて 1 つの CSV にできない（answer:design-authoring-generate[contract-info-download]）\n  - サーバーで検索条件の桁・形式を確かめず、security.md の入力検証から外れる（逸脱は記録済み）（answer:design-authoring-generate[contract-info-download]）\n  - 工事案件マスタに行が無い契約情報を出す点が security.md 285 行目の「既存の WTB と同じ方式」から外れる（answer:design-authoring-generate[contract-info-download]）\n  - 作業用テーブルを書く出力の口が CSRF の照合に乗らない（照合の設定を変えない）（answer:design-authoring-generate[contract-info-download]）\n  - TWTGD050・TWTGD060 が共通列・主キー・索引を持たず database.md の共通カラムと合わない（answer:design-authoring-generate[contract-info-download]）\n  - 渡された申請No の申請で画面を使えるかを確かめず、社外ユーザーの範囲も当てない（answer:design-authoring-generate[contract-info-download]）\n  - 一覧の並びに GWTG004 の ORDER BY にある支払内容区分・口座番号を含めない（answer:design-authoring-generate[contract-info-download]）\n\n### 前回の検査（1 回目）からの変更\n\n- `specs/contract-info-download/design.md`：新しいファイル\n\n### 判断が必要な指摘\n\n**対象**: `specs/contract-info-download/design.md`（スコープ: 成果物単位（contract-info-download） / 2 回目）\n**実行した層**: ① / ②\n\n**要判断**（1 件）\n\n| # | 種類 | 対象箇所 | 要約 | AI の推奨 | 判断 |\n|---|---|---|---|---|---|\n| 1 | 業務のあいまい・不足 | specs/contract-info-download/design.md § 物理データモデル（Physical Data Model） / VWTGM010 | ビューの元にする表が、住居の字地番・建物ビルを TWTGM010 に無い ADDRESS_CD3・CD4 から取る | 修正（出力の定義の物理名と既存の列名から読み替えが一意に決まり、業務の新しい事実は要らないため） | 未回答 |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n**答え方**（後に書いたものが優先。束・範囲でまとめて答えられます）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）。区分を `C[指摘の誤り]` `C[対象外]` `C[後で決める]` `C[解釈で対応]` で付ける。対象外・後で決めるに `+` を付けると（例 `C[後で決める+]`）、次の検査から同じ扱いにします\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n- **推奨** — AI の推奨を採用する（修正なら修正案がそのまま修正の指示になります）\n\n回答例: `1:推奨 / 束1:C[後で決める+] 桁数は design で決める / 3〜5:A / 7:D 次回まで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。根拠と修正案は `詳細 <番号>` で表示します。",
+      "id": "461ab9be74b645a48d65cbbb0f56806b"
+    },
+    "label": "design-authoring-revise / design-authoring-revise [contract-info-download]",
+    "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[contract-info-download]::end.review\", \"snapshot\": \"259db2b5c00a04493d01cdf29ce41c6bc22cd9202ebe854d0cd3a4356d46fa26\", \"run\": 2, \"inspection_hash\": \"bd3d6ce995dae791f02cfcaaf99074932faaf67348142f5ee7444a1e91324140\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 再検査で出なくなり、解消を記録した指摘 6 件\n  - #1-1 変更する既存ファイルのプレースホルダーが不要理由付きで残らず「なし」に置き換わっている\n  - #1-2 CSV の列位置を name だけで決め、同じ見出しの No6・No44 の位置が定まらない\n  - #1-3 ビューと作業用テーブルに会社コードが無く、他社の契約者・支払の行が入りうる\n  - #1-4 サーバーで検索条件の桁・形式を確かめない設計が security.md の入力検証と矛盾し、逸脱の記録が無い\n  - #1-5 一覧の契約先 7 項目を GWTG004 と同じ取り方とするが、GWTG004 が検索条件で絞る手順を書いていない\n  - #1-6 /wtg100 の申請No のパラメータ名が無く、pbi design の口も FunctionID を渡さない\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 14 件\n  - 代表契約局番・代表契約枝番を前方一致にし、requirements 1.3（GWTG004 と同じ）から外れる（answer:design-authoring-generate[contract-info-download]）\n  - requirements の「計画マスタ（TWTBM080）」を工事案件マスタとして読み、行が無い契約情報を出す（answer:design-authoring-generate[contract-info-download]）\n  - 検索条件の桁・形式のサーバーチェックとメッセージを持たず、requirements 4.1 から外れる（answer:design-authoring-generate[contract-info-download]）\n  - 出力は表示中のページで選んだ行だけ（1 ページ 100 件まで）で、100 件を超えて 1 つの CSV にできない（answer:design-authoring-generate[contract-info-download]）\n  - サーバーで検索条件の桁・形式を確かめず、security.md の入力検証から外れる（逸脱は記録済み）（answer:design-authoring-generate[contract-info-download]）\n  - 工事案件マスタに行が無い契約情報を出す点が security.md 285 行目の「既存の WTB と同じ方式」から外れる（answer:design-authoring-generate[contract-info-download]）\n  - 作業用テーブルを書く出力の口が CSRF の照合に乗らない（照合の設定を変えない）（answer:design-authoring-generate[contract-info-download]）\n  - TWTGD050・TWTGD060 が共通列・主キー・索引を持たず database.md の共通カラムと合わない（answer:design-authoring-generate[contract-info-download]）\n  - 渡された申請No の申請で画面を使えるかを確かめず、社外ユーザーの範囲も当てない（answer:design-authoring-generate[contract-info-download]）\n  - 一覧の並びに GWTG004 の ORDER BY にある支払内容区分・口座番号を含めない（answer:design-authoring-generate[contract-info-download]）\n\n### 前回の検査（1 回目）からの変更\n\n- `specs/contract-info-download/design.md`：新しいファイル\n\n### 判断が必要な指摘\n\n**対象**: `specs/contract-info-download/design.md`（スコープ: 成果物単位（contract-info-download） / 2 回目）\n**実行した層**: ① / ②\n\n**要判断**（1 件）\n\n| # | 種類 | 対象箇所 | 要約 | AI の推奨 | 判断 |\n|---|---|---|---|---|---|\n| 1 | 業務のあいまい・不足 | specs/contract-info-download/design.md § 物理データモデル（Physical Data Model） / VWTGM010 | ビューの元にする表が、住居の字地番・建物ビルを TWTGM010 に無い ADDRESS_CD3・CD4 から取る | 修正（出力の定義の物理名と既存の列名から読み替えが一意に決まり、業務の新しい事実は要らないため） | 未回答 |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n**答え方**（後に書いたものが優先。束・範囲でまとめて答えられます）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）。区分を `C[指摘の誤り]` `C[対象外]` `C[後で決める]` `C[解釈で対応]` で付ける。対象外・後で決めるに `+` を付けると（例 `C[後で決める+]`）、次の検査から同じ扱いにします\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n- **推奨** — AI の推奨を採用する（修正なら修正案がそのまま修正の指示になります）\n\n回答例: `1:推奨 / 束1:C[後で決める+] 桁数は design で決める / 3〜5:A / 7:D 次回まで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。根拠と修正案は `詳細 <番号>` で表示します。",
+    "allowed_actions": [
+      "decision",
+      "decisions",
+      "resolve",
+      "repair"
+    ],
+    "review_context": {
+      "root": "C:\\project\\Wing",
+      "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+      "call": "design-authoring-revise",
+      "event": "design-authoring-revise",
+      "item": "contract-info-download",
+      "dispatch_id": "461ab9be74b645a48d65cbbb0f56806b",
+      "unit": "design-authoring-revise/design-authoring-revise[contract-info-download]::end.review",
+      "scope": "feature:contract-info-download",
+      "run": 2,
+      "snapshot": "259db2b5c00a04493d01cdf29ce41c6bc22cd9202ebe854d0cd3a4356d46fa26",
+      "record_hash": "72880a6ec0124eddff703943e482b3ac62481a0ba0ade258ea47403870388063"
+    },
+    "review": [
+      {
+        "scope": "feature:contract-info-download",
+        "run": 2,
+        "number": 1,
+        "current": true,
+        "decision": "",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "意味判定（要件 3.1。ID 対応あり・内容の確定不足）。本書 § 物理データモデル の VWTGM010（行278）は「列はデータ種別ごとに意味が変わり、作業用テーブルの表のとおり」とし、§ ファイル配置計画（行525）と § 移行方針（行574）はビューの DDL をその表をもとに作るとする。作業用テーブルの表（specs/contract-info-download/work-tables-wtg100.md 行117・118）の 1基本情報は No 17「住居_字_地番 ← 契約基本情報ﾏｽﾀ.ADDRESS_CD3」、No 18「住居_建物_ビル ← 契約基本情報ﾏｽﾀ.ADDRESS_CD4」で、出力の定義（specs/contract-info-download/csv-layout-wtg100.md 行43・44、No 15・16）の取得元も同じ列を挙げる。既存の TWTGM010 の列は ADDRESS3・ADDRESS4 で（wing/src/main/resources/jp/co/kccs/wt/function/wtg/wtg002/Pwtgo005Mapper.xml:435〜:436 の UPDATE、Pwtgo004Mapper.xml:429・:434）、ADDRESS_CD3・ADDRESS_CD4 は wing の wtg の Mapper に 1 か所も無い。本書自身も一覧の 10・11（行231・232）と検索条件の建物、ﾋﾞﾙ（行202）で TWTGM010.ADDRESS3・ADDRESS4 を使い、出力の定義の TWTGD060 の物理名も ADDRESS3・ADDRESS4 である。表の「処理順_帳票用」の欄の食い違いは本書が注記で読み替えを決めている（行278）が、この 2 列には注記が無く、表のとおりにビューの DDL を作ると存在しない列を参照し、CSV の No 15・16 の値を作れない",
+        "location": "specs/contract-info-download/design.md § 物理データモデル（Physical Data Model） / VWTGM010",
+        "kind": "業務のあいまい・不足",
+        "severity": "要判断",
+        "summary": "ビューの元にする表が、住居の字地番・建物ビルを TWTGM010 に無い ADDRESS_CD3・CD4 から取る",
+        "suggestion": "§ 物理データモデル の VWTGM010 の行に「作業用テーブルの表の 1基本情報の住居_字_地番・住居_建物_ビルの元（契約基本情報ﾏｽﾀ.ADDRESS_CD3・ADDRESS_CD4）は、TWTGM010 の ADDRESS3・ADDRESS4 と読む（出力の定義の TWTGD060 の物理名と同じ）」を足す",
+        "recommendation": "修正：出力の定義の物理名と既存の列名から読み替えが一意に決まり、業務の新しい事実は要らないため",
+        "decided_by": ""
+      }
+    ],
+    "choices": {
+      "kind": "decisions",
+      "questions": [
+        {
+          "id": "1",
+          "header": "#1 要判断",
+          "question": "ビューの元にする表が、住居の字地番・建物ビルを TWTGM010 に無い ADDRESS_CD3・CD4 から取る（業務のあいまい・不足・要判断）にどう対応しますか？ 差戻し（B）・未対応（D）・別の理由は「その他」で入力",
+          "options": [
+            {
+              "label": "推奨：修正",
+              "description": "出力の定義の物理名と既存の列名から読み替えが一意に決まり、業務の新しい事実は要らないため",
+              "answer": "1:推奨"
+            },
+            {
+              "label": "C 後で決める",
+              "description": "後の工程で決める事項なので、今は直さずに進める",
+              "answer": "1:C[後で決める] 後の工程で決める"
+            },
+            {
+              "label": "C 対象外",
+              "description": "この工程の対象外なので、直さずに進める",
+              "answer": "1:C[対象外] この工程の対象外"
+            }
+          ],
+          "multiSelect": false
+        }
+      ]
+    },
+    "next_action": "提示文をそのまま示し、choices の選択肢を選択式の質問で出して、人に選んでもらってください。検査結果を確認し、重大と要判断の指摘に A〜D か「推奨」で答えてください（束・範囲でまとめて答えられます）。修正（A）と AI が直す軽微があれば repair（findings: \"all-fixes\"）で修正に回し、判断が揃い修正が無ければ承認者名を回答してください。",
+    "operation_id": "71bd2bcafb5647bdb7b291923c1a70bd",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

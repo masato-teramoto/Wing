@@ -71,3 +71,12 @@
 - requirements（contract-info-import）2.6：受付No が空のときとリバースデータのときは稟議バーコードNo を付けない（Q-DS-CI-004、design-check 1 回目 #1）
 - steering non-functional.md・security.md（契約者の連絡先をログに出さない）：取込の WTG-200011 は行番号と電話番号の値をバッチ処理状況の詳細に出す（Q-DS-CI-012 の 3、design-check 1 回目 #5）
 - 回答 Q-DS-CI-012 の 5 の「警告だけのときは正常終了」は「警告終了を受け入れる」に変わった（design-check 1 回目 #7。上流の文書の直しは無いが、記録として）
+
+## contract-info-download の design で意図して外れたもの（2026-10-08、回答 answer-ds-cd-20261008-1845.txt による）
+- requirements（contract-info-download）1.3：検索条件の「代表契約局番号」と「代表契約枝番」は、GWTG004 の一致ではなく前方一致にする。「転貸借契約書名」は GWTG004 に無いので、Q-DS-CD-004 で定める（コンボボックス、`WTG/PARAM/P15`、`TWTGM010.MOVE_LEASE_CONTRACT` と一致）
+- requirements（contract-info-download）2.1・2.2：「計画マスタ（`TWTBM080`）」は「工事案件マスタ（`TWTBM080`）」の書き誤り。条件は「工事案件マスタに行が無い、または値のある区分に合う行がある」
+- requirements（contract-info-download）4.1：サーバーでは検索条件の桁と形式のチェックをしない。画面の入力桁（maxlength）と IME の入力モードで、桁を超えて入力させないことで満たす（Q-DS-CD-005）
+- steering security.md 285 行目（既存の契約情報の絞り込み「既存の WTB と同じ方式」）：比べる列と、値のある区分だけで絞る点は既存の WTB と同じ。ただし工事案件マスタ（`TWTBM080`）に行が無い契約情報は出す点が既存の WTB（`EXISTS` だけ）と違う
+- 全機能をまたいだ確認で：契約情報ダウンロードの出力の定義（specs/contract-info-download/csv-layout-wtg100.md）と契約情報取込のリバースの表の列の並びが同じであることを確かめる（取込の design は直さない。Q-DS-CD-001 の 6）
+- steering security.md の `### 入り口 — 入力検証`（画面の層の桁数・形式のチェック）と `### 共通ルール` 1（入力はサーバー側で必ず検査する）：契約情報ダウンロードはサーバーで検索条件の桁・形式を確かめない（Q-DS-CD-005、design-check 1 回目 #4）
+- pbi design（576 行目付近「/wtg100 を別ウインドウで開き、申請No だけを渡す」）：`/wtg100?FunctionID=WTG100&applicationNo=<申請No>` で開くと直す（FunctionID とパラメータ名 applicationNo を足す。契約情報ダウンロード design-check 1 回目 #6）

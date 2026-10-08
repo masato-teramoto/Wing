@@ -1,0 +1,61 @@
+{
+ "operation_id": "bbf84ce20ab44321a27b5f7905edc7b7",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[contract-info-download]::run",
+  "event": "design-authoring-revise",
+  "item": "contract-info-download",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "82569de18b5f47048baee9c5a00e4465"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/contract-info-download/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "design",
+    "scope": "feature:contract-info-download",
+    "run": 1,
+    "number": 1
+   },
+   {
+    "phase": "design",
+    "scope": "feature:contract-info-download",
+    "run": 1,
+    "number": 2
+   },
+   {
+    "phase": "design",
+    "scope": "feature:contract-info-download",
+    "run": 1,
+    "number": 3
+   },
+   {
+    "phase": "design",
+    "scope": "feature:contract-info-download",
+    "run": 1,
+    "number": 4
+   },
+   {
+    "phase": "design",
+    "scope": "feature:contract-info-download",
+    "run": 1,
+    "number": 5
+   },
+   {
+    "phase": "design",
+    "scope": "feature:contract-info-download",
+    "run": 1,
+    "number": 6
+   }
+  ],
+  "return_candidates": [],
+  "summary": "1 回目 #1：変更する既存ファイルをプレースホルダーを残す形にした。#2：381 列に @CsvColumn(position＝No−1, name) を付け No6・No44 を position で区別し、テストに値の位置を足した。#3：契約情報の会社は 'UQ' だけなので他社の行は扱わないと出力の手順 4 に書いた。#4：security.md の入力検証・共通ルール 1 からの意図した逸脱を書き upstream-carryover に足した。#5：契約先 7 項目は契約者に掛かる検索条件（契約者番号＝前方一致、法人名・カナ＝部分一致）で契約者区分 1 の行を絞り、当たらなければ条件を外して契約者番号の降順の先頭を出すとした。#6：/wtg100 の口に FunctionID＝WTG100 と applicationNo を書き、pbi design の直しを upstream-carryover に足した。回答者が差し替えた補足資料 2 つ（登記の字地番・カナの取得元、契約基本 46 列）を写し直した。要件トレーサビリティ自己診断（contract-info-download）：抽出 15 件、対応あり 15 件、未対応 0 件。"
+ }
+}

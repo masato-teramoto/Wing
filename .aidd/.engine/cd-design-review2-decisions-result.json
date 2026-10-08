@@ -1,0 +1,73 @@
+{
+  "status": "ok",
+  "action": "respond",
+  "result": {
+    "status": "wait",
+    "allowed_actions": [
+      "decision",
+      "decisions",
+      "resolve",
+      "repair"
+    ],
+    "review_context": {
+      "root": "C:\\project\\Wing",
+      "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+      "call": "design-authoring-revise",
+      "event": "design-authoring-revise",
+      "item": "contract-info-download",
+      "dispatch_id": "461ab9be74b645a48d65cbbb0f56806b",
+      "unit": "design-authoring-revise/design-authoring-revise[contract-info-download]::end.review",
+      "scope": "feature:contract-info-download",
+      "run": 2,
+      "snapshot": "259db2b5c00a04493d01cdf29ce41c6bc22cd9202ebe854d0cd3a4356d46fa26",
+      "record_hash": "63a663f3e74aa3b080683d4c28a23e03cd5d0fd57111ac73da276497ef92ae0f"
+    },
+    "review": [
+      {
+        "scope": "feature:contract-info-download",
+        "run": 2,
+        "number": 1,
+        "current": true,
+        "decision": "修正",
+        "reason": "。_handoff の 2 ファイルも直して差し替えました。ADDRESS_CD3・ADDRESS_CD4 はどちらも ADDRESS3・ADDRESS4 に直しています（CSV の表の No 15・16、作業用テーブルの表の 17・18）。読み替えの文は足さず、表どおり ADDRESS3・ADDRESS4 と書いてください。FEE_MANAGE_KIND は、使わない「処理順_帳票用」の式の中だけなので、そのままで構いません",
+        "open": true,
+        "resolved": false,
+        "description": "意味判定（要件 3.1。ID 対応あり・内容の確定不足）。本書 § 物理データモデル の VWTGM010（行278）は「列はデータ種別ごとに意味が変わり、作業用テーブルの表のとおり」とし、§ ファイル配置計画（行525）と § 移行方針（行574）はビューの DDL をその表をもとに作るとする。作業用テーブルの表（specs/contract-info-download/work-tables-wtg100.md 行117・118）の 1基本情報は No 17「住居_字_地番 ← 契約基本情報ﾏｽﾀ.ADDRESS_CD3」、No 18「住居_建物_ビル ← 契約基本情報ﾏｽﾀ.ADDRESS_CD4」で、出力の定義（specs/contract-info-download/csv-layout-wtg100.md 行43・44、No 15・16）の取得元も同じ列を挙げる。既存の TWTGM010 の列は ADDRESS3・ADDRESS4 で（wing/src/main/resources/jp/co/kccs/wt/function/wtg/wtg002/Pwtgo005Mapper.xml:435〜:436 の UPDATE、Pwtgo004Mapper.xml:429・:434）、ADDRESS_CD3・ADDRESS_CD4 は wing の wtg の Mapper に 1 か所も無い。本書自身も一覧の 10・11（行231・232）と検索条件の建物、ﾋﾞﾙ（行202）で TWTGM010.ADDRESS3・ADDRESS4 を使い、出力の定義の TWTGD060 の物理名も ADDRESS3・ADDRESS4 である。表の「処理順_帳票用」の欄の食い違いは本書が注記で読み替えを決めている（行278）が、この 2 列には注記が無く、表のとおりにビューの DDL を作ると存在しない列を参照し、CSV の No 15・16 の値を作れない",
+        "location": "specs/contract-info-download/design.md § 物理データモデル（Physical Data Model） / VWTGM010",
+        "kind": "業務のあいまい・不足",
+        "severity": "要判断",
+        "summary": "ビューの元にする表が、住居の字地番・建物ビルを TWTGM010 に無い ADDRESS_CD3・CD4 から取る",
+        "suggestion": "§ 物理データモデル の VWTGM010 の行に「作業用テーブルの表の 1基本情報の住居_字_地番・住居_建物_ビルの元（契約基本情報ﾏｽﾀ.ADDRESS_CD3・ADDRESS_CD4）は、TWTGM010 の ADDRESS3・ADDRESS4 と読む（出力の定義の TWTGD060 の物理名と同じ）」を足す",
+        "recommendation": "修正：出力の定義の物理名と既存の列名から読み替えが一意に決まり、業務の新しい事実は要らないため",
+        "decided_by": "Junichi Noumi"
+      }
+    ],
+    "choices": {
+      "kind": "repair",
+      "questions": [
+        {
+          "id": "repair",
+          "header": "修正に回す",
+          "question": "修正（A）の指摘と AI が直す軽微（1 件）を修正の回へ回しますか？",
+          "options": [
+            {
+              "label": "修正案のとおり修正に回す",
+              "description": "推奨を採用した修正と軽微は、修正案がそのまま指示になる",
+              "answer": "repair:all-fixes"
+            },
+            {
+              "label": "修正の指示を自分で書く",
+              "description": "指示を書きたい指摘がある",
+              "answer": "repair:manual"
+            }
+          ],
+          "multiSelect": false
+        }
+      ]
+    },
+    "next_action": "提示文をそのまま示し、choices の選択肢を選択式の質問で出して、人に選んでもらってください。検査結果を確認し、重大と要判断の指摘に A〜D か「推奨」で答えてください（束・範囲でまとめて答えられます）。修正（A）と AI が直す軽微があれば repair（findings: \"all-fixes\"）で修正に回し、判断が揃い修正が無ければ承認者名を回答してください。",
+    "operation_id": "6255613c263440d79f5ad33e184486e2",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

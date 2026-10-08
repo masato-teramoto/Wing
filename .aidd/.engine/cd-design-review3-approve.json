@@ -1,0 +1,28 @@
+{
+ "operation_id": "875dfbcee69349baa1218382b219b20f",
+ "action": "approve",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[contract-info-download]::end.review",
+  "event": "design-authoring-revise",
+  "item": "contract-info-download",
+  "status": "wait",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[contract-info-download]::end.review\", \"snapshot\": \"2bf6001aa965be5446a8b9b161baaf4ab88bc3e7b4d23e9ba08df3a0e81816a6\", \"run\": 3, \"inspection_hash\": \"fbea127bf726540529570b0cec749a9b04aa77817ffccd38595d08f9a7358d23\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 再検査で出なくなり、解消を記録した指摘 1 件\n  - #2-1 ビューの元にする表が、住居の字地番・建物ビルを TWTGM010 に無い ADDRESS_CD3・CD4 から取る\n\n### 前回の検査（2 回目）からの変更\n\n- `specs/contract-info-download/design.md`：物理データモデル（Physical Data Model）\n\n### 判断が必要な指摘\n\n**対象**: `specs/contract-info-download/design.md`（スコープ: 成果物単位（contract-info-download） / 3 回目）\n**実行した層**: ① / ②\n\n**指摘**: なし（0 件。検査は実行済み）\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n判断が揃いました。承認の可否を回答してください（承認する場合は承認者名）。",
+  "id": "3734a74256af4ce4b9b7c01cf357f17b"
+ },
+ "expected": {
+  "root": "C:\\project\\Wing",
+  "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+  "call": "design-authoring-revise",
+  "event": "design-authoring-revise",
+  "item": "contract-info-download",
+  "dispatch_id": "3734a74256af4ce4b9b7c01cf357f17b",
+  "unit": "design-authoring-revise/design-authoring-revise[contract-info-download]::end.review",
+  "scope": "feature:contract-info-download",
+  "run": 3,
+  "snapshot": "2bf6001aa965be5446a8b9b161baaf4ab88bc3e7b4d23e9ba08df3a0e81816a6",
+  "record_hash": "3be17824b2511d34fc610e7718a7039a2250c82c5ac2e43210a2bbf79c639d56"
+ },
+ "data": {}
+}

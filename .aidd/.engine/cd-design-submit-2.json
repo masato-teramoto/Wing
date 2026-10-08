@@ -1,0 +1,24 @@
+{
+ "operation_id": "e2929e5bf74f4022ab2bb05e187665b4",
+ "dispatch": {
+  "call": "design-authoring-generate",
+  "unit": "design-authoring-generate/design-authoring-generate[contract-info-download]::run",
+  "event": "design-authoring-generate",
+  "item": "contract-info-download",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "e7335a45f8e54dd28bb0dfe852ed264e"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/contract-info-download/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [],
+  "return_candidates": [],
+  "summary": "回答 Q-DS-CD-001〜010（answer-ds-cd-20261008-1845.txt）で design を書いた。出力の定義と作業用テーブルの表は回答者が渡した表を specs/contract-info-download/ に写して補足資料とした。上流から意図して外れる 4 点（requirements 1.3・2.1/2.2・4.1、steering security.md 285 行目）は本文に明記し upstream-carryover に記録した。要件トレーサビリティ自己診断（contract-info-download）：抽出 15 件、対応あり 15 件、未対応 0 件。"
+ }
+}
