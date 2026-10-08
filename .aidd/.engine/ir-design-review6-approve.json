@@ -1,0 +1,28 @@
+{
+ "operation_id": "6801a716fac942139fb7745832d9e99f",
+ "action": "approve",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[issue-request]::end.review",
+  "event": "design-authoring-revise",
+  "item": "issue-request",
+  "status": "wait",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[issue-request]::end.review\", \"snapshot\": \"d503696b75672b9927beeb8cc0599b949a6c596a904a57504507f662f654dfe4\", \"run\": 6, \"inspection_hash\": \"f1e9f34a429140159034c7e2d573127f5f1ba76e2a67e4898bceb21aeed4ce35\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 再検査で出なくなり、解消を記録した指摘 1 件\n  - #5-1 発番のWTG-000002とWTG-100030の判定順が、発番の手順と分岐フローで逆になっている\n\n### 前回の検査（5 回目）からの変更\n\n- `specs/issue-request/design.md`：エラー時の分岐フロー\n\n### 判断が必要な指摘\n\n**対象**: `specs/issue-request/design.md`（スコープ: 成果物単位（issue-request） / 6 回目）\n**実行した層**: ① / ②\n\n**指摘**: なし（0 件。検査は実行済み）\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n判断が揃いました。承認の可否を回答してください（承認する場合は承認者名）。",
+  "id": "267089d3202b47989c0507a9fed52934"
+ },
+ "expected": {
+  "root": "C:\\project\\Wing",
+  "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+  "call": "design-authoring-revise",
+  "event": "design-authoring-revise",
+  "item": "issue-request",
+  "dispatch_id": "267089d3202b47989c0507a9fed52934",
+  "unit": "design-authoring-revise/design-authoring-revise[issue-request]::end.review",
+  "scope": "feature:issue-request",
+  "run": 6,
+  "snapshot": "d503696b75672b9927beeb8cc0599b949a6c596a904a57504507f662f654dfe4",
+  "record_hash": "0de9493e81aa4db3e3dfb83b5eb32d8390a79720f3676755f9ccbbf13b9d5a8e"
+ },
+ "data": {}
+}

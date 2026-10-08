@@ -1,0 +1,24 @@
+{
+ "operation_id": "d18ec9f401544b12a55caab447b3c9d2",
+ "dispatch": {
+  "call": "design-authoring-generate",
+  "unit": "design-authoring-generate/design-authoring-generate[application-status-search]::run",
+  "event": "design-authoring-generate",
+  "item": "application-status-search",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "b24b201877fc46cd815ad9830b2f1c19"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/application-status-search/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [],
+  "return_candidates": [],
+  "summary": "回答 Q-DS-AS-001〜010、回答者が正とした検索条件の表（_handoff/phase5-application-status-search-conditions.md）と既存のコードで design を書き起こした（open_placeholders 0）。7 つの口、38 項目の条件（全部の契約局の行と比べる、承認履歴の最新の審査回、進捗の営業日数）、社外ユーザーの固定値と範囲（会社コードで比べる。表の会社名ではなく回答 Q-DS-AS-005 に従った）、一覧の 14 列、P01・P02 の件数、CSV、WTG-100018（新規）を書いた。桁を超える値のサーバーでの検査は既存の GEF-000003 を使う。requirements 1.1・2.3・3.1 と pbi design の WTG-100018 から意図して外れる点は design に明記し upstream-carryover に積んだ。要件トレーサビリティ自己診断（application-status-search）：抽出 23 件、対応あり 23 件、未対応 0 件。今回の案件の正解コードは根拠にしていない。"
+ }
+}

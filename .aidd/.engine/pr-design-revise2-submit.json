@@ -1,0 +1,31 @@
+{
+ "operation_id": "c22d551ac459443a9a7533337807215a",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[print-report]::run",
+  "event": "design-authoring-revise",
+  "item": "print-report",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "332ad1a92560498b82a73f4600499f4c"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/print-report/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "design",
+    "scope": "feature:print-report",
+    "run": 2,
+    "number": 1
+   }
+  ],
+  "return_candidates": [],
+  "summary": "2 回目 #1（軽微）：発行依頼書のページの隠す行の出典の注記を修正案のとおりに書き換えた（1 ずれるのは 85〜101・106〜111・27〜66・26／31／39／55／63／67、1・2 行目は同じ、4〜12 は Q-DS-PR-002 の 2 に従い 4〜13、隠し行 48 は原本のとおり）。要件トレーサビリティ自己診断（print-report）：抽出 24 件、対応あり 24 件、未対応 0 件。"
+ }
+}

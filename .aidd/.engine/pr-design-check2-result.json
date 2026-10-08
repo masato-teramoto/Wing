@@ -1,0 +1,101 @@
+{
+  "status": "ok",
+  "action": "submit",
+  "result": {
+    "unit": "design-authoring-revise/design-authoring-revise[print-report]::end.review",
+    "flow": "design-authoring-revise",
+    "event": "design-authoring-revise",
+    "item": "print-report",
+    "gate": "review",
+    "hookPoint": "end",
+    "name": "review",
+    "type": "script",
+    "target": "scripts/approval.py",
+    "isAgent": false,
+    "requiresHuman": true,
+    "calls": [],
+    "targetReview": [
+      "specs/print-report/design.md"
+    ],
+    "status": "wait",
+    "call": "design-authoring-revise",
+    "dispatch": {
+      "call": "design-authoring-revise",
+      "unit": "design-authoring-revise/design-authoring-revise[print-report]::end.review",
+      "event": "design-authoring-revise",
+      "item": "print-report",
+      "status": "wait",
+      "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+      "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[print-report]::end.review\", \"snapshot\": \"0bb0194db84626a00ba520ce2fde17ecdb1dc46390f68aa42833f267cc4b6a63\", \"run\": 2, \"inspection_hash\": \"2ae73b859ec3c49ea4fa9852e6b2f862b37e6098e3f9174f9ea2a9aa964a0ea1\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 再検査で出なくなり、解消を記録した指摘 6 件\n  - #1-1 PDF の一時ファイルを誰がいつ消すかが、Service と Controller の記述で食い違う\n  - #1-2 WTG-100030 の {0}〜{2} に入れる値が無く、申請が無いときなどの表示が定まらない\n  - #1-3 一時ファイルの削除に失敗したときのログのレベルとメッセージID が決まっていない\n  - #1-4 原本の写し・POI での読込みと保存・QR 生成に失敗したときのキーとログが決まっていない\n  - #1-5 ZMENUAUTH の行の投入を発注者に任せているが、回答は tasks に INSERT 文を入れるとしている\n  - #1-6 隠す行の番号が項目一覧 3 章の行番号と違い、原本から読み直した旨が書かれていない\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 7 件\n  - 製本の情報と添付資料を発行依頼書のページに出さない（requirements 1.10 と異なる）（answer:design-authoring-generate[print-report]）\n  - 稟議バーコードNo が空なら申請No.pdf にする（requirements 3.3 と異なる）（answer:design-authoring-generate[print-report]）\n  - 光インフラのとき物件名の列を出す（1.8 は No・基地局番号・基地局名）、40 局ごとにページを分ける（1.5・1.7 のページ数）（answer:design-authoring-generate[print-report]）\n  - 物件基本情報登録変更 Service の 6.9 の判定を同じパッケージの部品として直接呼ぶ（answer:design-authoring-generate[print-report]）\n  - 一時ファイルの削除の失敗を処理を止めずに ERROR で出す（non-functional の ERROR は処理を続けられない例外）（verify:1 回目 #3 で人が決めた扱い（ERROR でパスを出し処理は止めない）を書いたもので、指摘の根拠にならない）\n  - OpenOffice への接続に待ち時間の上限・再試行・順に並べる仕組みを持たない（answer:design-authoring-generate[print-report]）\n  - P89 の INSERT 文と原本の配備の手順は本 feature の tasks で作り、実施は発注者が行う（verify:1 回目 #5 で人が決めた分担（判断の理由）を書いたもので、根拠のない追記ではない）\n\n### 前回の検査（1 回目）からの変更\n\n- `specs/print-report/design.md`：このスペックが持つ責務（This Spec Owns）、このスペックが持たない責務（Out of Boundary）、ドメインモデル（Domain Model）、印刷・閲覧用帳票 Controller、サービスインターフェース（Service Interface）、機能固有のエラー処理（Error Handling）、バリデーション設計、機能固有エラーコード、エラー時の分岐フロー、移行方針（Migration Strategy）\n  - 修正の指示に無い節の変更：このスペックが持つ責務（This Spec Owns）、印刷・閲覧用帳票 Controller、移行方針（Migration Strategy）（意図した変更か確かめてください）\n\n### 判断が必要な指摘\n\n**対象**: `specs/print-report/design.md`（スコープ: 成果物単位（print-report） / 2 回目）\n**実行した層**: ① / ②\n\n**AI が修正案で直す軽微**（1 件。判断は不要。修正の回で直し、再検査で確かめます）\n- #1 隠す行の出典の注記が項目一覧の行番号をすべて1ずれとするが、4〜12行目などは合わない\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n修正（A）と AI が直す軽微は、修正の指示を書かずに修正の回へ回せます（repair の findings に \"all-fixes\"）。AI の推奨を採用していない修正には、修正の指示を書いてください。\n承認を問う前に必要なこと: 未解消: feature:print-report / run 2 / #1",
+      "id": "64e2a55225e446cb91926103c2b88c53"
+    },
+    "label": "design-authoring-revise / design-authoring-revise [print-report]",
+    "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[print-report]::end.review\", \"snapshot\": \"0bb0194db84626a00ba520ce2fde17ecdb1dc46390f68aa42833f267cc4b6a63\", \"run\": 2, \"inspection_hash\": \"2ae73b859ec3c49ea4fa9852e6b2f862b37e6098e3f9174f9ea2a9aa964a0ea1\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 再検査で出なくなり、解消を記録した指摘 6 件\n  - #1-1 PDF の一時ファイルを誰がいつ消すかが、Service と Controller の記述で食い違う\n  - #1-2 WTG-100030 の {0}〜{2} に入れる値が無く、申請が無いときなどの表示が定まらない\n  - #1-3 一時ファイルの削除に失敗したときのログのレベルとメッセージID が決まっていない\n  - #1-4 原本の写し・POI での読込みと保存・QR 生成に失敗したときのキーとログが決まっていない\n  - #1-5 ZMENUAUTH の行の投入を発注者に任せているが、回答は tasks に INSERT 文を入れるとしている\n  - #1-6 隠す行の番号が項目一覧 3 章の行番号と違い、原本から読み直した旨が書かれていない\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 7 件\n  - 製本の情報と添付資料を発行依頼書のページに出さない（requirements 1.10 と異なる）（answer:design-authoring-generate[print-report]）\n  - 稟議バーコードNo が空なら申請No.pdf にする（requirements 3.3 と異なる）（answer:design-authoring-generate[print-report]）\n  - 光インフラのとき物件名の列を出す（1.8 は No・基地局番号・基地局名）、40 局ごとにページを分ける（1.5・1.7 のページ数）（answer:design-authoring-generate[print-report]）\n  - 物件基本情報登録変更 Service の 6.9 の判定を同じパッケージの部品として直接呼ぶ（answer:design-authoring-generate[print-report]）\n  - 一時ファイルの削除の失敗を処理を止めずに ERROR で出す（non-functional の ERROR は処理を続けられない例外）（verify:1 回目 #3 で人が決めた扱い（ERROR でパスを出し処理は止めない）を書いたもので、指摘の根拠にならない）\n  - OpenOffice への接続に待ち時間の上限・再試行・順に並べる仕組みを持たない（answer:design-authoring-generate[print-report]）\n  - P89 の INSERT 文と原本の配備の手順は本 feature の tasks で作り、実施は発注者が行う（verify:1 回目 #5 で人が決めた分担（判断の理由）を書いたもので、根拠のない追記ではない）\n\n### 前回の検査（1 回目）からの変更\n\n- `specs/print-report/design.md`：このスペックが持つ責務（This Spec Owns）、このスペックが持たない責務（Out of Boundary）、ドメインモデル（Domain Model）、印刷・閲覧用帳票 Controller、サービスインターフェース（Service Interface）、機能固有のエラー処理（Error Handling）、バリデーション設計、機能固有エラーコード、エラー時の分岐フロー、移行方針（Migration Strategy）\n  - 修正の指示に無い節の変更：このスペックが持つ責務（This Spec Owns）、印刷・閲覧用帳票 Controller、移行方針（Migration Strategy）（意図した変更か確かめてください）\n\n### 判断が必要な指摘\n\n**対象**: `specs/print-report/design.md`（スコープ: 成果物単位（print-report） / 2 回目）\n**実行した層**: ① / ②\n\n**AI が修正案で直す軽微**（1 件。判断は不要。修正の回で直し、再検査で確かめます）\n- #1 隠す行の出典の注記が項目一覧の行番号をすべて1ずれとするが、4〜12行目などは合わない\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n修正（A）と AI が直す軽微は、修正の指示を書かずに修正の回へ回せます（repair の findings に \"all-fixes\"）。AI の推奨を採用していない修正には、修正の指示を書いてください。\n承認を問う前に必要なこと: 未解消: feature:print-report / run 2 / #1",
+    "allowed_actions": [
+      "decision",
+      "decisions",
+      "resolve",
+      "repair"
+    ],
+    "review_context": {
+      "root": "C:\\project\\Wing",
+      "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+      "call": "design-authoring-revise",
+      "event": "design-authoring-revise",
+      "item": "print-report",
+      "dispatch_id": "64e2a55225e446cb91926103c2b88c53",
+      "unit": "design-authoring-revise/design-authoring-revise[print-report]::end.review",
+      "scope": "feature:print-report",
+      "run": 2,
+      "snapshot": "0bb0194db84626a00ba520ce2fde17ecdb1dc46390f68aa42833f267cc4b6a63",
+      "record_hash": "bb385ed91e6945c1156b76ea72d4490f19c61e9ef9a33cbb10d580de334627f9"
+    },
+    "review": [
+      {
+        "scope": "feature:print-report",
+        "run": 2,
+        "number": 1,
+        "current": true,
+        "decision": "修正",
+        "reason": "軽微（AIDD 内部の決まりごと）のため、AI が修正案で直す",
+        "open": true,
+        "resolved": false,
+        "description": "区分：出典不明（出典の書き方の誤り）。前回 #6 の修正で足した注記は「項目一覧 3 章の特記事項の行番号（4〜12・85〜101・106〜111・27〜66・26／31／39／55／63／67）は帳票設計の資料の行の数え方（0 始まり）で、原本の行とは 1 ずれる」と書く。原本（入力フォーム）と照らすと、85〜101→86〜102（その他事項 B86〜）、106〜111→107〜112（添付資料 B107〜X112）、27〜66→28〜67（関係者① B28〜関係者⑤ AC67）、26／31／39／55／63／67→27／32／40／56／64／68（原本の隠し行）は 1 ずれで合う。一方、4〜12 は 1 ずらすと 5〜13 になるが、design が隠すのは 4〜13（UQ担当者入力欄 B4・申請日 AL4 は行 4、案件小グループ名 J13 は行 13。Q-DS-PR-002 の 2「UQ担当者入力欄から案件Gまでの行」）。また項目一覧の「1行目：隠しタイトル」「2行目：契約情報入力フォームの文言」は原本の行 1（B1「契約情報」）・行 2（B2「契約情報入力フォーム」）とずれずに合い、design も行 2 をそのまま隠している。注記のとおりに読むと 4〜12 は 5〜13 となり、design の 4〜13 と食い違って見える（隠す行そのものは原本と回答に合っている）。なお原本の隠し行 48 は項目一覧に無い（design は原本のとおり隠したままにしている）。",
+        "location": "specs/print-report/design.md § ドメインモデル（Domain Model） / 発行依頼書のページ（RWTG071）",
+        "kind": "出典・根拠",
+        "severity": "軽微",
+        "summary": "隠す行の出典の注記が項目一覧の行番号をすべて1ずれとするが、4〜12行目などは合わない",
+        "suggestion": "注記を「項目一覧 3 章の特記事項の行番号のうち、85〜101・106〜111・27〜66・26／31／39／55／63／67 は原本の行より 1 小さい（帳票設計の資料の数え方）。1・2 行目は原本と同じ。4〜12 行目は、Q-DS-PR-002 の 2（UQ担当者入力欄から案件G まで）に従い原本の 4〜13 行とした。原本の隠し行 48 は項目一覧に無いが、原本のとおり隠したままにする」に書き換える",
+        "recommendation": "修正：隠す行の番号は原本と回答に合っており、出典の注記だけを直せば足りるため",
+        "decided_by": "system（自動）"
+      }
+    ],
+    "choices": {
+      "kind": "repair",
+      "questions": [
+        {
+          "id": "repair",
+          "header": "修正に回す",
+          "question": "修正（A）の指摘と AI が直す軽微（1 件）を修正の回へ回しますか？",
+          "options": [
+            {
+              "label": "修正案のとおり修正に回す",
+              "description": "推奨を採用した修正と軽微は、修正案がそのまま指示になる",
+              "answer": "repair:all-fixes"
+            },
+            {
+              "label": "修正の指示を自分で書く",
+              "description": "指示を書きたい指摘がある",
+              "answer": "repair:manual"
+            }
+          ],
+          "multiSelect": false
+        }
+      ]
+    },
+    "next_action": "提示文をそのまま示し、choices の選択肢を選択式の質問で出して、人に選んでもらってください。検査結果を確認し、重大と要判断の指摘に A〜D か「推奨」で答えてください（束・範囲でまとめて答えられます）。修正（A）と AI が直す軽微があれば repair（findings: \"all-fixes\"）で修正に回し、判断が揃い修正が無ければ承認者名を回答してください。",
+    "operation_id": "116a039d88df419abdf5e62e40309d48",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

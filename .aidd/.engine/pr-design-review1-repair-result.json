@@ -1,0 +1,18 @@
+{
+  "status": "ok",
+  "action": "respond",
+  "result": {
+    "status": "repair",
+    "allowed_actions": [],
+    "blockers": [],
+    "next_action": "修正の工程（design-authoring-revise --item print-report）を実行し、再検査後に元の検査をやり直してください。",
+    "repair": {
+      "event": "design-authoring-revise",
+      "item": "print-report",
+      "call": "design-authoring-revise"
+    },
+    "operation_id": "ff4e4721157a4d779881fabce062a0c1",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

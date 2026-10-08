@@ -1,0 +1,37 @@
+{
+ "operation_id": "fff8ca2e6b544234bacfa3dc90a37104",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[issue-request-tutorial]::run",
+  "event": "design-authoring-revise",
+  "item": "issue-request-tutorial",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "2aea1a7cd43249a989039b4307a9f9ae"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/issue-request-tutorial/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "design",
+    "scope": "feature:issue-request-tutorial",
+    "run": 1,
+    "number": 2
+   },
+   {
+    "phase": "design",
+    "scope": "feature:issue-request-tutorial",
+    "run": 1,
+    "number": 3
+   }
+  ],
+  "return_candidates": [],
+  "summary": "#2：データ契約と外部連携の「親画面がするとき」を、ir の公開契約に合わせて /wtg080/changeKeiyakuSyubetsuTutorial の戻りは局種別・設置設備の 2 つ、電気料のリスト・ラベル・入力可否の切替は親画面の契約種別の変更時の処理、と書き直し、ir の公開契約にまだ無いもの（clear の印・入れる順・入力できない項目・電気料等の切替・整形）を upstream-carryover と明記した（一覧の記述も足した）。#3：WTX-100005 は物件基本情報登録変更が追加すると直し（機能固有エラーコード・バリデーション設計・変更する既存ファイル）、pbi design の「既存」を新規に直すことを upstream-carryover に記録した。要件トレーサビリティ自己診断（issue-request-tutorial）：抽出 20 件、対応あり 20 件、未対応 0 件。"
+ }
+}

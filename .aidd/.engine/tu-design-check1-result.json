@@ -1,0 +1,193 @@
+{
+  "status": "ok",
+  "action": "submit",
+  "result": {
+    "unit": "design-authoring-generate/design-authoring-generate[issue-request-tutorial]::end.review",
+    "flow": "design-authoring-generate",
+    "event": "design-authoring-generate",
+    "item": "issue-request-tutorial",
+    "gate": "review",
+    "hookPoint": "end",
+    "name": "review",
+    "type": "script",
+    "target": "scripts/approval.py",
+    "isAgent": false,
+    "requiresHuman": true,
+    "calls": [],
+    "targetReview": [
+      "specs/issue-request-tutorial/design.md"
+    ],
+    "status": "wait",
+    "call": "design-authoring-generate",
+    "dispatch": {
+      "call": "design-authoring-generate",
+      "unit": "design-authoring-generate/design-authoring-generate[issue-request-tutorial]::end.review",
+      "event": "design-authoring-generate",
+      "item": "issue-request-tutorial",
+      "status": "wait",
+      "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+      "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-generate/design-authoring-generate[issue-request-tutorial]::end.review\", \"snapshot\": \"02a325f78bd5df1c4724dddf746b1ac67cc4d921a08dca590da258da8d727ba7\", \"run\": 1, \"inspection_hash\": \"76b38305bc3bee2a2ad4ca448d3ff228e2e7913af1d8c5ce9623634ef5000e93\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 15 件\n  - 画面を 11 にし、RRH数・System構成・UPS工事の 3 画面を使わない（requirements 1.3・1.9 から外れる）（answer:design-authoring-generate[issue-request-tutorial]）\n  - 鋼管柱を KDDI⇒UQ だけに出す（requirements 1.8 から外れる）（answer:design-authoring-generate[issue-request-tutorial]）\n  - ブラウザーの × で閉じることを防がない（requirements 1.10 から外れる）（answer:design-authoring-generate[issue-request-tutorial]）\n  - 入れる先に転貸情報の有無を足して 8 項目にする（requirements 2.1 から外れる）（answer:design-authoring-generate[issue-request-tutorial]）\n  - 「空にする」操作で値を消す（requirements 2.2 の例外）（answer:design-authoring-generate[issue-request-tutorial]）\n  - 開ける人と状態はチュートリアル設定ボタンの表示だけで決め、/wtg081 では確かめない（1.2）（answer:design-authoring-generate[issue-request-tutorial]）\n  - 1.12 の「例」の文言を持つ画面が一部だけ（flow の 4 を正とする）（answer:design-authoring-generate[issue-request-tutorial]）\n  - 桁（12・10）を入力欄の最大桁で止め、検査とメッセージを持たない（3.2・3.3）（answer:design-authoring-generate[issue-request-tutorial]）\n  - 入力チェックの結果を BindingResult でなく JSON の result・messages で返す（tech.md の例外処理フロー）（answer:design-authoring-generate[issue-request-tutorial]）\n  - 画面内で JSON を返す口が 1 つ増える（api-standards.md の「JSON を返すのは既存の 2 か所だけ」）（answer:design-authoring-generate[issue-request-tutorial]）\n\n### 判断が必要な指摘\n\n**対象**: `specs/issue-request-tutorial/design.md`（スコープ: 成果物単位（issue-request-tutorial） / 1 回目）\n**実行した層**: ① / ②\n\n**重大**（3 件。1 件ずつ判断してください）\n\n| # | 種類 | 対象箇所 | 要約 | AI の推奨 | 判断 |\n|---|---|---|---|---|---|\n| 1 | 業務の欠落・矛盾 | specs/issue-request-tutorial/design.md § 技術スタック（Technology Stack） / Infrastructure / Runtime | 開発端末のJDK 1.8がtech.mdの必須ツールJDK 1.7と食い違う | 対応せず進める（pbi design・ir design と同じ扱いとして design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため） | 未回答 |\n| 2 | 業務の欠落・矛盾 | specs/issue-request-tutorial/design.md § データ契約と外部連携（Data Contracts & Integration） / 親画面がするとき ほか 1 か所 | 親画面に求める入力不可の扱い・電気料等の入れ直し・整形がir designの公開契約に無い | 修正（振る舞いは回答 Q-DS-TU-007 で決まっており、ir design へ足す事項を upstream-carryover の記述に加え、本書の中の食い違いを直せば足りるため） | 未回答 |\n| 3 | 業務の欠落・矛盾 | specs/issue-request-tutorial/design.md § 変更する既存ファイル（Modified Files） / messages.properties ほか 1 か所 | WTX-100005を新規とするがpbi designは既存キーとして追加しておらず食い違う | 質問（どの feature の実装で追加するかは実装の順番に関わる人の判断が要り、承認済みの pbi design の記述も直す必要があるため） | 未回答 |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- #1: 人間による確認（steering/tech.md の修正、または本 design の修正）（開発端末の JDK（Q-DS-PBI-014 の回答）が steering の必須ツールと食い違っている。steering 側を直す場合は Phase 2 が宛先になる）\n- #2: 人間による確認（specs/issue-request/design.md の修正）（依存先 ir design の受け渡しの公開契約に、本 design が前提にする入力できない項目の扱い・契約種別の変更時の電気料等の切替・整形が無い。ir design を開き直す場合は Phase 5（issue-request）が宛先になる）\n- #3: 人間による確認（specs/property-basic-info/design.md の修正）（pbi design が WTX-100005 を既存のキーとして扱い、追加していない。pbi design を開き直す場合は Phase 5（property-basic-info）が宛先になる）\n\n**答え方**（後に書いたものが優先。束・範囲でまとめて答えられます）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）。区分を `C[指摘の誤り]` `C[対象外]` `C[後で決める]` `C[解釈で対応]` で付ける。対象外・後で決めるに `+` を付けると（例 `C[後で決める+]`）、次の検査から同じ扱いにします\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n- **推奨** — AI の推奨を採用する（修正なら修正案がそのまま修正の指示になります）\n\n回答例: `1:推奨 / 束1:C[後で決める+] 桁数は design で決める / 3〜5:A / 7:D 次回まで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。根拠と修正案は `詳細 <番号>` で表示します。",
+      "id": "6cd6bf31c7734b9e91417dd570edb406"
+    },
+    "label": "design-authoring-generate / design-authoring-generate [issue-request-tutorial]",
+    "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-generate/design-authoring-generate[issue-request-tutorial]::end.review\", \"snapshot\": \"02a325f78bd5df1c4724dddf746b1ac67cc4d921a08dca590da258da8d727ba7\", \"run\": 1, \"inspection_hash\": \"76b38305bc3bee2a2ad4ca448d3ff228e2e7913af1d8c5ce9623634ef5000e93\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 15 件\n  - 画面を 11 にし、RRH数・System構成・UPS工事の 3 画面を使わない（requirements 1.3・1.9 から外れる）（answer:design-authoring-generate[issue-request-tutorial]）\n  - 鋼管柱を KDDI⇒UQ だけに出す（requirements 1.8 から外れる）（answer:design-authoring-generate[issue-request-tutorial]）\n  - ブラウザーの × で閉じることを防がない（requirements 1.10 から外れる）（answer:design-authoring-generate[issue-request-tutorial]）\n  - 入れる先に転貸情報の有無を足して 8 項目にする（requirements 2.1 から外れる）（answer:design-authoring-generate[issue-request-tutorial]）\n  - 「空にする」操作で値を消す（requirements 2.2 の例外）（answer:design-authoring-generate[issue-request-tutorial]）\n  - 開ける人と状態はチュートリアル設定ボタンの表示だけで決め、/wtg081 では確かめない（1.2）（answer:design-authoring-generate[issue-request-tutorial]）\n  - 1.12 の「例」の文言を持つ画面が一部だけ（flow の 4 を正とする）（answer:design-authoring-generate[issue-request-tutorial]）\n  - 桁（12・10）を入力欄の最大桁で止め、検査とメッセージを持たない（3.2・3.3）（answer:design-authoring-generate[issue-request-tutorial]）\n  - 入力チェックの結果を BindingResult でなく JSON の result・messages で返す（tech.md の例外処理フロー）（answer:design-authoring-generate[issue-request-tutorial]）\n  - 画面内で JSON を返す口が 1 つ増える（api-standards.md の「JSON を返すのは既存の 2 か所だけ」）（answer:design-authoring-generate[issue-request-tutorial]）\n\n### 判断が必要な指摘\n\n**対象**: `specs/issue-request-tutorial/design.md`（スコープ: 成果物単位（issue-request-tutorial） / 1 回目）\n**実行した層**: ① / ②\n\n**重大**（3 件。1 件ずつ判断してください）\n\n| # | 種類 | 対象箇所 | 要約 | AI の推奨 | 判断 |\n|---|---|---|---|---|---|\n| 1 | 業務の欠落・矛盾 | specs/issue-request-tutorial/design.md § 技術スタック（Technology Stack） / Infrastructure / Runtime | 開発端末のJDK 1.8がtech.mdの必須ツールJDK 1.7と食い違う | 対応せず進める（pbi design・ir design と同じ扱いとして design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため） | 未回答 |\n| 2 | 業務の欠落・矛盾 | specs/issue-request-tutorial/design.md § データ契約と外部連携（Data Contracts & Integration） / 親画面がするとき ほか 1 か所 | 親画面に求める入力不可の扱い・電気料等の入れ直し・整形がir designの公開契約に無い | 修正（振る舞いは回答 Q-DS-TU-007 で決まっており、ir design へ足す事項を upstream-carryover の記述に加え、本書の中の食い違いを直せば足りるため） | 未回答 |\n| 3 | 業務の欠落・矛盾 | specs/issue-request-tutorial/design.md § 変更する既存ファイル（Modified Files） / messages.properties ほか 1 か所 | WTX-100005を新規とするがpbi designは既存キーとして追加しておらず食い違う | 質問（どの feature の実装で追加するかは実装の順番に関わる人の判断が要り、承認済みの pbi design の記述も直す必要があるため） | 未回答 |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- #1: 人間による確認（steering/tech.md の修正、または本 design の修正）（開発端末の JDK（Q-DS-PBI-014 の回答）が steering の必須ツールと食い違っている。steering 側を直す場合は Phase 2 が宛先になる）\n- #2: 人間による確認（specs/issue-request/design.md の修正）（依存先 ir design の受け渡しの公開契約に、本 design が前提にする入力できない項目の扱い・契約種別の変更時の電気料等の切替・整形が無い。ir design を開き直す場合は Phase 5（issue-request）が宛先になる）\n- #3: 人間による確認（specs/property-basic-info/design.md の修正）（pbi design が WTX-100005 を既存のキーとして扱い、追加していない。pbi design を開き直す場合は Phase 5（property-basic-info）が宛先になる）\n\n**答え方**（後に書いたものが優先。束・範囲でまとめて答えられます）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）。区分を `C[指摘の誤り]` `C[対象外]` `C[後で決める]` `C[解釈で対応]` で付ける。対象外・後で決めるに `+` を付けると（例 `C[後で決める+]`）、次の検査から同じ扱いにします\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n- **推奨** — AI の推奨を採用する（修正なら修正案がそのまま修正の指示になります）\n\n回答例: `1:推奨 / 束1:C[後で決める+] 桁数は design で決める / 3〜5:A / 7:D 次回まで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。根拠と修正案は `詳細 <番号>` で表示します。",
+    "allowed_actions": [
+      "decision",
+      "decisions",
+      "resolve",
+      "repair"
+    ],
+    "review_context": {
+      "root": "C:\\project\\Wing",
+      "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+      "call": "design-authoring-generate",
+      "event": "design-authoring-generate",
+      "item": "issue-request-tutorial",
+      "dispatch_id": "6cd6bf31c7734b9e91417dd570edb406",
+      "unit": "design-authoring-generate/design-authoring-generate[issue-request-tutorial]::end.review",
+      "scope": "feature:issue-request-tutorial",
+      "run": 1,
+      "snapshot": "02a325f78bd5df1c4724dddf746b1ac67cc4d921a08dca590da258da8d727ba7",
+      "record_hash": "76b38305bc3bee2a2ad4ca448d3ff228e2e7913af1d8c5ce9623634ef5000e93"
+    },
+    "review": [
+      {
+        "scope": "feature:issue-request-tutorial",
+        "run": 1,
+        "number": 1,
+        "current": true,
+        "decision": "",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "矛盾。steering/tech.md `### 必須ツール` は JDK を「1.7（1.7.0.55）／コンパイルと実行」と定めているが、design の技術スタックは「開発端末の JDK 1.8（-source/-target 1.7）」を開発端末でのコンパイルと自動テストの実行に使うとしている。design 自身が「steering/tech.md から意図して外れる」と書き、根拠を Q-DS-PBI-014（物件基本情報登録変更と同じ）としている。Q-DS-PBI-014 は今回の confirmed_answers に含まれない（pbi design の技術スタックに同じ行がある）。issue-request の設計検査 1 回目の指摘 7 と同じ事項",
+        "location": "specs/issue-request-tutorial/design.md § 技術スタック（Technology Stack） / Infrastructure / Runtime",
+        "kind": "業務の欠落・矛盾",
+        "severity": "重大",
+        "summary": "開発端末のJDK 1.8がtech.mdの必須ツールJDK 1.7と食い違う",
+        "suggestion": "steering/tech.md の `### 必須ツール` に「開発端末は JDK 1.8（-source/-target 1.7）でもよい」を足す（Phase 2 への差戻し、または upstream-carryover での一括修正）",
+        "recommendation": "対応せず進める：pbi design・ir design と同じ扱いとして design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため",
+        "decided_by": ""
+      },
+      {
+        "scope": "feature:issue-request-tutorial",
+        "run": 1,
+        "number": 2,
+        "current": true,
+        "decision": "",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "依存先 specs/issue-request/design.md（approved）の公開契約（§ データ契約と外部連携 の「チュートリアル（GWTG081）との受け渡し」、§ API 契約 と § サービスインターフェース の `/wtg080/changeKeiyakuSyubetsuTutorial`）に無い振る舞いを前提にしている。(1) 入れる先の項目が入力できない状態なら入れない（本書 § データ契約 の「親画面がするとき」、§ このスペックが持たない責務）。ir の受け渡しは「値が空のものは入れない」だけで、入力できない項目の扱いは書かれていない。(2) 契約種別を受け取ったときの処理を「`/wtg080/changeKeiyakuSyubetsuTutorial` による局種別・設置設備・電気料のリストの入れ直し、ラベルの変更、入力可否の切替」としているが、ir の `/wtg080/changeKeiyakuSyubetsuTutorial` は「局種別と設置設備のプルダウンの選択肢（2 つのリスト）を返す」だけで、電気料のリスト・ラベル・入力可否は返さない（本書 § 依存してよい対象 も「局種別・設置設備のリストを返す」と書いており、本書の中でも食い違う）。(3) 賃料のカンマと着工予定日の保存の形への変換を親画面に任せている（§ このスペックが持たない責務、§ ドメインモデル の入力値のまま入れる項目）が、ir の受け渡しに無い。本書が upstream-carryover として明記しているのは `json.clear` の印と入れる順の 2 点だけで、(1)〜(3) は書かれていない。振る舞いそのものは回答 Q-DS-TU-007 と対応表（mapping の 0・1）による",
+        "location": "specs/issue-request-tutorial/design.md § データ契約と外部連携（Data Contracts & Integration） / 親画面がするとき ほか 1 か所",
+        "kind": "業務の欠落・矛盾",
+        "severity": "重大",
+        "summary": "親画面に求める入力不可の扱い・電気料等の入れ直し・整形がir designの公開契約に無い",
+        "suggestion": "§ データ契約と外部連携 の「親画面がするとき」の注記を「`json.clear` の印、入れる順、入力できない項目に入れないこと、契約種別の変更時の電気料のリスト・ラベル・入力可否の切替（`/wtg080/changeKeiyakuSyubetsuTutorial` の戻りにはまだ無い）、賃料・着工予定日の整形は、ir design の公開契約にまだ無い。ir design は Phase 5 の最後にまとめて直す（upstream-carryover）」に直す。あわせて「`/wtg080/changeKeiyakuSyubetsuTutorial` による局種別・設置設備・電気料のリストの入れ直し」を、ir の公開契約に合わせた書き方（戻りは局種別・設置設備の 2 つ。電気料・ラベル・入力可否は親画面の契約種別の変更時の処理）に直す",
+        "recommendation": "修正：振る舞いは回答 Q-DS-TU-007 で決まっており、ir design へ足す事項を upstream-carryover の記述に加え、本書の中の食い違いを直せば足りるため",
+        "decided_by": ""
+      },
+      {
+        "scope": "feature:issue-request-tutorial",
+        "run": 1,
+        "number": 3,
+        "current": true,
+        "decision": "",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "上流と食い違う。本書は `WTX-100005`（数字で入力してください）を「新規」とし、「物件基本情報登録変更の電話番号のチェックでも使うので、messages.properties には 1 回だけ足す」として本 feature の変更する既存ファイルに追加を書いている（§ 機能固有エラーコード の表の前の注記と表、§ 変更する既存ファイル）。これは回答 Q-DS-TU-008 の 2 のとおりで、実際に wing/src/main/resources/messages.properties には `WTX-100005` が無い（`WTX-100013` は 401 行にある）。一方、依存先の specs/property-basic-info/design.md（approved）は § 設計判断 で「既存のキー（`WTG-000002`・`GEF-000003`・`WTG-000003`・`WTX-100012`・`WTX-100011`・`WTX-100005`・`WTG-000029`）を使い」と既存のキーとして扱い、§ 変更する既存ファイル の messages.properties の追加に `WTX-100005` を含めていない。本書は pbi design を直すことを upstream-carryover に書いていない。pbi と本 feature のどちらの実装で足すかが決まっていないため、本 feature より先に pbi を実装するとキーが無いまま使われる",
+        "location": "specs/issue-request-tutorial/design.md § 変更する既存ファイル（Modified Files） / messages.properties ほか 1 か所",
+        "kind": "業務の欠落・矛盾",
+        "severity": "重大",
+        "summary": "WTX-100005を新規とするがpbi designは既存キーとして追加しておらず食い違う",
+        "suggestion": "次のどちらかを決める。A：pbi design の `WTX-100005` を「新規（Warning。チュートリアルと共通で 1 回だけ足す）」に直し、pbi の変更する既存ファイルで追加する。本書は「物件基本情報登録変更が追加する（無ければ本 feature が足す）」に直す。B：本書のまま本 feature が追加し、pbi design には「既存」を「issue-request-tutorial が追加する新規のキー」に直す注記だけを足す。どちらの場合も pbi design の修正を upstream-carryover に記録する",
+        "recommendation": "質問：どの feature の実装で追加するかは実装の順番に関わる人の判断が要り、承認済みの pbi design の記述も直す必要があるため",
+        "decided_by": ""
+      }
+    ],
+    "choices": {
+      "kind": "decisions",
+      "questions": [
+        {
+          "id": "1",
+          "header": "#1 重大",
+          "question": "開発端末のJDK 1.8がtech.mdの必須ツールJDK 1.7と食い違う（業務の欠落・矛盾・重大）にどう対応しますか？ 差戻し（B）・未対応（D）・別の理由は「その他」で入力",
+          "options": [
+            {
+              "label": "推奨：対応せず進める",
+              "description": "pbi design・ir design と同じ扱いとして design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため",
+              "answer": "1:推奨"
+            },
+            {
+              "label": "A 修正",
+              "description": "この工程で直す（修正案：steering/tech.md の `### 必須ツール` に「開発端末は JDK 1.8（-source/-targ）",
+              "answer": "1:A"
+            },
+            {
+              "label": "C 後で決める",
+              "description": "後の工程で決める事項なので、今は直さずに進める",
+              "answer": "1:C[後で決める] 後の工程で決める"
+            },
+            {
+              "label": "C 対象外",
+              "description": "この工程の対象外なので、直さずに進める",
+              "answer": "1:C[対象外] この工程の対象外"
+            }
+          ],
+          "multiSelect": false
+        },
+        {
+          "id": "2",
+          "header": "#2 重大",
+          "question": "親画面に求める入力不可の扱い・電気料等の入れ直し・整形がir designの公開契約に無い（業務の欠落・矛盾・重大）にどう対応しますか？ 差戻し（B）・未対応（D）・別の理由は「その他」で入力",
+          "options": [
+            {
+              "label": "推奨：修正",
+              "description": "振る舞いは回答 Q-DS-TU-007 で決まっており、ir design へ足す事項を upstream-carryover の記述に加え、本書の中の食い違いを直せば足りるため",
+              "answer": "2:推奨"
+            },
+            {
+              "label": "C 後で決める",
+              "description": "後の工程で決める事項なので、今は直さずに進める",
+              "answer": "2:C[後で決める] 後の工程で決める"
+            },
+            {
+              "label": "C 対象外",
+              "description": "この工程の対象外なので、直さずに進める",
+              "answer": "2:C[対象外] この工程の対象外"
+            }
+          ],
+          "multiSelect": false
+        },
+        {
+          "id": "3",
+          "header": "#3 重大",
+          "question": "WTX-100005を新規とするがpbi designは既存キーとして追加しておらず食い違う（業務の欠落・矛盾・重大）にどう対応しますか？ AI からの質問：どの feature の実装で追加するかは実装の順番に関わる人の判断が要り、承認済みの pbi design の記述も直す必要があるため　答えて直す場合は「その他」に `3:A <回答>` と入力（回答が修正の指示になる）。差戻し（B）・未対応（D）・別の理由は「その他」で入力",
+          "options": [
+            {
+              "label": "A 修正",
+              "description": "この工程で直す（修正案：次のどちらかを決める。A：pbi design の `WTX-100005` を「新規（Warning。チュートリアルと）",
+              "answer": "3:A"
+            },
+            {
+              "label": "C 後で決める",
+              "description": "後の工程で決める事項なので、今は直さずに進める",
+              "answer": "3:C[後で決める] 後の工程で決める"
+            },
+            {
+              "label": "C 対象外",
+              "description": "この工程の対象外なので、直さずに進める",
+              "answer": "3:C[対象外] この工程の対象外"
+            }
+          ],
+          "multiSelect": false
+        }
+      ]
+    },
+    "next_action": "提示文をそのまま示し、choices の選択肢を選択式の質問で出して、人に選んでもらってください。検査結果を確認し、重大と要判断の指摘に A〜D か「推奨」で答えてください（束・範囲でまとめて答えられます）。修正（A）と AI が直す軽微があれば repair（findings: \"all-fixes\"）で修正に回し、判断が揃い修正が無ければ承認者名を回答してください。",
+    "operation_id": "3cae074d68c04670a9ac0fee2bc5b560",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

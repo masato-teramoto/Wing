@@ -1,0 +1,37 @@
+{
+ "operation_id": "469295343c3d4c6a890432f2ec1159d5",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[issue-request]::run",
+  "event": "design-authoring-revise",
+  "item": "issue-request",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "b1586664befe4dba9970f90bb7b2022b"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/issue-request/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "design",
+    "scope": "feature:issue-request",
+    "run": 1,
+    "number": 5
+   },
+   {
+    "phase": "design",
+    "scope": "feature:issue-request",
+    "run": 1,
+    "number": 9
+   }
+  ],
+  "return_candidates": [],
+  "summary": "#5：コンポーネントとインターフェースの冒頭に、機能固有の監視項目は無く既存の WiNG の監視に任せる旨を足した。#9：更新・一時保存では TWTGM080 をロックも照合もせず、排他は TWTGM100・TWTGM140 の ExclusiveFG だけで行うように、集約とトランザクション境界・依存の制約・サービス間・Mapper・Service のエラー・発番と更新の手順・事前条件・並行制御・処理フロー・エラーコード表・エラー時の分岐フローを直した。申請の状態の変化は、更新・一時保存・発番の最初に getApplication で取り直し canOperate で判定し、できなければ WTG-100030。発番の TWTGM080 の排他は recordNumbering に任せる。依存先に canOperate を足した（pbi の公開契約に既にある）。要件トレーサビリティ自己診断（issue-request）：抽出 62 件、対応あり 62 件、未対応 0 件。"
+ }
+}

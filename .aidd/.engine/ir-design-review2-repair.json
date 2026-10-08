@@ -1,0 +1,30 @@
+{
+ "operation_id": "9bee26003cee4e4990715a01169e864d",
+ "action": "repair",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[issue-request]::end.review",
+  "event": "design-authoring-revise",
+  "item": "issue-request",
+  "status": "wait",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[issue-request]::end.review\", \"snapshot\": \"0580c40fa7385fda19de22fad61727bcae83cb1bd50d1b7ece687aec1af2c993\", \"run\": 2, \"inspection_hash\": \"cc83c25f7f44eee5915e609947ef0f97786aa96b3b6eed7b68e4cd534680e129\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 再検査で出なくなり、解消を記録した指摘 2 件\n  - #1-5 機能固有の監視項目（無いならその旨）がdesignに書かれていない\n  - #1-9 更新・一時保存でTWTGM080を自Mapperでロック・照合し公開契約を通らない\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 6 件\n  - 複数局を発行依頼書編集で更新したとき金額を合計せず入力値で上書きする（5.3）（answer:design-authoring-generate[issue-request]）\n  - コードの列は合計せず連番 1 の値を入れ、合計は (ﾌﾘｰﾌｫｰﾑ) の列に入れる（5.3）（answer:design-authoring-generate[issue-request]）\n  - getApplication の単独複数局ﾌﾗｸﾞ・申請依頼日時と getApplicantName が pbi design の公開契約にまだ無い（answer:design-authoring-generate[issue-request]）\n  - 申請情報欄の基地局番号を連番 1 で初期表示することが pbi design にまだ無い（answer:design-authoring-generate[issue-request]）\n  - 契約区分の自動設定で共通部品 WTKeikakuJudgeUtils.chkKichikyoku を直接呼ぶ（answer:design-authoring-generate[issue-request]）\n  - 画面内で JSON を返す口 /wtg080/changeKeiyakuSyubetsuTutorial を新しく置く（api-standards.md）（answer:design-authoring-generate[issue-request]）\n\n### 前回の検査（1 回目）からの変更\n\n- `specs/issue-request/design.md`：依存してよい対象（Allowed Dependencies）、ドメインモデル（Domain Model）、データ契約と外部連携（Data Contracts & Integration）、コンポーネントとインターフェース（Components and Interfaces）、コンポーネント一覧（Summary）、発行依頼書登録変更 Service、サービスインターフェース（Service Interface）、状態管理（State Management）、処理フロー（System Flows）、機能固有エラーコード、エラー時の分岐フロー\n  - 修正の指示に無い節の変更：依存してよい対象（Allowed Dependencies）、ドメインモデル（Domain Model）、データ契約と外部連携（Data Contracts & Integration）、処理フロー（System Flows）、機能固有エラーコード、エラー時の分岐フロー（意図した変更か確かめてください）\n\n### 判断が必要な指摘\n\n**対象**: `specs/issue-request/design.md`（スコープ: 成果物単位（issue-request） / 2 回目）\n**実行した層**: ① / ②\n\n**重大**（6 件。1 件ずつ判断してください）\n\n| # | 種類 | 対象箇所 | 要約 | AI の推奨 | 判断 |\n|---|---|---|---|---|---|\n| 1 | 業務の欠落・矛盾 | specs/issue-request/design.md § ドメインモデル（Domain Model） / 発番 ほか 2 か所 | 発番で担当エリア等を保存する扱いが要件1.3・1.5・9.3と食い違う | 対応せず進める（人の回答（Q-DS-IR-001 の C）に従った意図的な逸脱として design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため。ただし承認済み requirements と両立しない状態は残る） | 未回答 |\n| 2 | 業務の欠落・矛盾 | specs/issue-request/design.md § 発行依頼書登録変更 Service / 作成組織 | 8.1のログインユーザーのグループを権限区分と読み替えており要件と食い違う | 対応せず進める（グループを権限区分と読むことは物件基本情報と 1 回目の判断で決まっており、上流の文言は Phase 5 の最後にまとめて直す方針とされているため） | 未回答 |\n| 3 | 業務の欠落・矛盾 | specs/issue-request/design.md § 機能固有エラーコード ほか 2 か所 | 業務・排他エラーを例外にせずBindingResultに積む方式がtech.mdと食い違う | 対応せず進める（pbi design と同じ扱いとして design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため） | 未回答 |\n| 4 | 業務の欠落・矛盾 | specs/issue-request/design.md § データ契約と外部連携（Data Contracts & Integration） / 物件基本情報との口 ほか 1 か所 | pbi designの公開契約に無い前提（戻りの入口・発番日時・複製の申請者）に依存 | 対応せず進める（design に明記され、pbi design は Phase 5 の最後にまとめて直す方針とされているため。直すまでは pbi の実装がこの前提を満たさない） | 未回答 |\n| 5 | 業務の欠落・矛盾 | specs/issue-request/design.md § 発行依頼書登録変更 Service / 発番の手順 ほか 5 か所 | canOperateに一時保存・発番の操作が無く、公開契約に無い判定に依存している | 質問（1 回目 #9 の判断は「canOperate で今もその操作ができるかを判定する」「pbi の公開契約に口は足さない」としており、canOperate の操作を足すことが口の追加に当たるかは人の判断が要るため） | 未回答 |\n| 6 | 業務の欠落・矛盾 | specs/issue-request/design.md § 状態管理（State Management） / 並行制御 ほか 1 か所 | 照合する行が無い新規・消えた行の更新を排他で止めず、連番の重複などが起きうる | 質問（1 回目 #9 の判断（排他は TWTGM100・TWTGM140 の ExclusiveFG だけで行う）の範囲で、照合する行が無いときの扱いをどうするかは人の判断が要るため） | 未回答 |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- #1: 人間による確認（requirements.md 1.3・1.5・9.3 の修正、または本 design の修正）（発番時の保存と 9.3 の読み方（Q-DS-IR-001 の回答）が承認済みの requirements と食い違っている。requirements 側を直す場合は Phase 4 が宛先になる）\n- #2: 人間による確認（requirements.md 8.1 と steering/security.md の修正）（P71 のキー3 の「グループ」の意味が requirements・steering の記述と食い違っている。steering 側は Phase 2、requirements 側は Phase 4 が宛先になる）\n- #3: 人間による確認（steering/tech.md の修正、または本 design の修正）（業務エラー・排他エラーの扱いが steering の例外処理フロー・排他制御と食い違っている。steering 側を直す場合は Phase 2 が宛先になる）\n- #4: 人間による確認（specs/property-basic-info/design.md の修正）（依存先 pbi design の公開契約に、本 design が前提にする戻りの入口・recordNumbering の記録内容・複製の申請者が無い。pbi design を開き直す場合は Phase 5（property-basic-info）が宛先になる）\n- #5: 人間による確認（specs/property-basic-info/design.md の修正、または本 design の修正）（pbi design の canOperate の操作に一時保存・発番が無い。canOperate に操作を足す場合は Phase 5（property-basic-info）が宛先になる）\n\n**答え方**（後に書いたものが優先。束・範囲でまとめて答えられます）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）。区分を `C[指摘の誤り]` `C[対象外]` `C[後で決める]` `C[解釈で対応]` で付ける。対象外・後で決めるに `+` を付けると（例 `C[後で決める+]`）、次の検査から同じ扱いにします\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n- **推奨** — AI の推奨を採用する（修正なら修正案がそのまま修正の指示になります）\n\n回答例: `1:推奨 / 束1:C[後で決める+] 桁数は design で決める / 3〜5:A / 7:D 次回まで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。根拠と修正案は `詳細 <番号>` で表示します。",
+  "id": "68954556b3cf4affb5957604b5071ade"
+ },
+ "expected": {
+  "root": "C:\\project\\Wing",
+  "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+  "call": "design-authoring-revise",
+  "event": "design-authoring-revise",
+  "item": "issue-request",
+  "dispatch_id": "68954556b3cf4affb5957604b5071ade",
+  "unit": "design-authoring-revise/design-authoring-revise[issue-request]::end.review",
+  "scope": "feature:issue-request",
+  "run": 2,
+  "snapshot": "0580c40fa7385fda19de22fad61727bcae83cb1bd50d1b7ece687aec1af2c993",
+  "record_hash": "d0f0dd4307b11ea28dcfed69e49b1d4a81bd70eee41ad26c226d9113136830fe"
+ },
+ "data": {
+  "findings": "all-fixes"
+ }
+}

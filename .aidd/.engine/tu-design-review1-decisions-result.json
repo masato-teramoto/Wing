@@ -1,0 +1,109 @@
+{
+  "status": "ok",
+  "action": "respond",
+  "result": {
+    "status": "wait",
+    "allowed_actions": [
+      "decision",
+      "decisions",
+      "resolve",
+      "repair"
+    ],
+    "review_context": {
+      "root": "C:\\project\\Wing",
+      "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+      "call": "design-authoring-generate",
+      "event": "design-authoring-generate",
+      "item": "issue-request-tutorial",
+      "dispatch_id": "6cd6bf31c7734b9e91417dd570edb406",
+      "unit": "design-authoring-generate/design-authoring-generate[issue-request-tutorial]::end.review",
+      "scope": "feature:issue-request-tutorial",
+      "run": 1,
+      "snapshot": "02a325f78bd5df1c4724dddf746b1ac67cc4d921a08dca590da258da8d727ba7",
+      "record_hash": "5124db9c787d2088de0143991714f5aa50d2a48e20f4c5a760cd357a54c12572"
+    },
+    "review": [
+      {
+        "scope": "feature:issue-request-tutorial",
+        "run": 1,
+        "number": 1,
+        "current": true,
+        "decision": "対応せず進める",
+        "reason": "AI 推奨を採用: pbi design・ir design と同じ扱いとして design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため",
+        "open": false,
+        "resolved": false,
+        "description": "矛盾。steering/tech.md `### 必須ツール` は JDK を「1.7（1.7.0.55）／コンパイルと実行」と定めているが、design の技術スタックは「開発端末の JDK 1.8（-source/-target 1.7）」を開発端末でのコンパイルと自動テストの実行に使うとしている。design 自身が「steering/tech.md から意図して外れる」と書き、根拠を Q-DS-PBI-014（物件基本情報登録変更と同じ）としている。Q-DS-PBI-014 は今回の confirmed_answers に含まれない（pbi design の技術スタックに同じ行がある）。issue-request の設計検査 1 回目の指摘 7 と同じ事項",
+        "location": "specs/issue-request-tutorial/design.md § 技術スタック（Technology Stack） / Infrastructure / Runtime",
+        "kind": "業務の欠落・矛盾",
+        "severity": "重大",
+        "summary": "開発端末のJDK 1.8がtech.mdの必須ツールJDK 1.7と食い違う",
+        "suggestion": "steering/tech.md の `### 必須ツール` に「開発端末は JDK 1.8（-source/-target 1.7）でもよい」を足す（Phase 2 への差戻し、または upstream-carryover での一括修正）",
+        "recommendation": "対応せず進める：pbi design・ir design と同じ扱いとして design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため",
+        "decided_by": "Junichi Noumi"
+      },
+      {
+        "scope": "feature:issue-request-tutorial",
+        "run": 1,
+        "number": 2,
+        "current": true,
+        "decision": "修正",
+        "reason": "AI 推奨を採用: 振る舞いは回答 Q-DS-TU-007 で決まっており、ir design へ足す事項を upstream-carryover の記述に加え、本書の中の食い違いを直せば足りるため",
+        "open": true,
+        "resolved": false,
+        "description": "依存先 specs/issue-request/design.md（approved）の公開契約（§ データ契約と外部連携 の「チュートリアル（GWTG081）との受け渡し」、§ API 契約 と § サービスインターフェース の `/wtg080/changeKeiyakuSyubetsuTutorial`）に無い振る舞いを前提にしている。(1) 入れる先の項目が入力できない状態なら入れない（本書 § データ契約 の「親画面がするとき」、§ このスペックが持たない責務）。ir の受け渡しは「値が空のものは入れない」だけで、入力できない項目の扱いは書かれていない。(2) 契約種別を受け取ったときの処理を「`/wtg080/changeKeiyakuSyubetsuTutorial` による局種別・設置設備・電気料のリストの入れ直し、ラベルの変更、入力可否の切替」としているが、ir の `/wtg080/changeKeiyakuSyubetsuTutorial` は「局種別と設置設備のプルダウンの選択肢（2 つのリスト）を返す」だけで、電気料のリスト・ラベル・入力可否は返さない（本書 § 依存してよい対象 も「局種別・設置設備のリストを返す」と書いており、本書の中でも食い違う）。(3) 賃料のカンマと着工予定日の保存の形への変換を親画面に任せている（§ このスペックが持たない責務、§ ドメインモデル の入力値のまま入れる項目）が、ir の受け渡しに無い。本書が upstream-carryover として明記しているのは `json.clear` の印と入れる順の 2 点だけで、(1)〜(3) は書かれていない。振る舞いそのものは回答 Q-DS-TU-007 と対応表（mapping の 0・1）による",
+        "location": "specs/issue-request-tutorial/design.md § データ契約と外部連携（Data Contracts & Integration） / 親画面がするとき ほか 1 か所",
+        "kind": "業務の欠落・矛盾",
+        "severity": "重大",
+        "summary": "親画面に求める入力不可の扱い・電気料等の入れ直し・整形がir designの公開契約に無い",
+        "suggestion": "§ データ契約と外部連携 の「親画面がするとき」の注記を「`json.clear` の印、入れる順、入力できない項目に入れないこと、契約種別の変更時の電気料のリスト・ラベル・入力可否の切替（`/wtg080/changeKeiyakuSyubetsuTutorial` の戻りにはまだ無い）、賃料・着工予定日の整形は、ir design の公開契約にまだ無い。ir design は Phase 5 の最後にまとめて直す（upstream-carryover）」に直す。あわせて「`/wtg080/changeKeiyakuSyubetsuTutorial` による局種別・設置設備・電気料のリストの入れ直し」を、ir の公開契約に合わせた書き方（戻りは局種別・設置設備の 2 つ。電気料・ラベル・入力可否は親画面の契約種別の変更時の処理）に直す",
+        "recommendation": "修正：振る舞いは回答 Q-DS-TU-007 で決まっており、ir design へ足す事項を upstream-carryover の記述に加え、本書の中の食い違いを直せば足りるため",
+        "decided_by": "Junichi Noumi"
+      },
+      {
+        "scope": "feature:issue-request-tutorial",
+        "run": 1,
+        "number": 3,
+        "current": true,
+        "decision": "修正",
+        "reason": "案A。WTX-100005 は物件基本情報登録変更の電話番号のチェックで使い、Phase 8 で先に実装されるので、pbi の変更する既存ファイルで追加します。（pbi design の「既存」を「新規（Warning。チュートリアルと共通で1回だけ足す）」に直す。carryover に記録済みの「WTX-100011・WTX-100012・WTX-100005・WTG-100018 は wing に無い」と同じ件）本書は「物件基本情報登録変更が追加する」に直してください。",
+        "open": true,
+        "resolved": false,
+        "description": "上流と食い違う。本書は `WTX-100005`（数字で入力してください）を「新規」とし、「物件基本情報登録変更の電話番号のチェックでも使うので、messages.properties には 1 回だけ足す」として本 feature の変更する既存ファイルに追加を書いている（§ 機能固有エラーコード の表の前の注記と表、§ 変更する既存ファイル）。これは回答 Q-DS-TU-008 の 2 のとおりで、実際に wing/src/main/resources/messages.properties には `WTX-100005` が無い（`WTX-100013` は 401 行にある）。一方、依存先の specs/property-basic-info/design.md（approved）は § 設計判断 で「既存のキー（`WTG-000002`・`GEF-000003`・`WTG-000003`・`WTX-100012`・`WTX-100011`・`WTX-100005`・`WTG-000029`）を使い」と既存のキーとして扱い、§ 変更する既存ファイル の messages.properties の追加に `WTX-100005` を含めていない。本書は pbi design を直すことを upstream-carryover に書いていない。pbi と本 feature のどちらの実装で足すかが決まっていないため、本 feature より先に pbi を実装するとキーが無いまま使われる",
+        "location": "specs/issue-request-tutorial/design.md § 変更する既存ファイル（Modified Files） / messages.properties ほか 1 か所",
+        "kind": "業務の欠落・矛盾",
+        "severity": "重大",
+        "summary": "WTX-100005を新規とするがpbi designは既存キーとして追加しておらず食い違う",
+        "suggestion": "次のどちらかを決める。A：pbi design の `WTX-100005` を「新規（Warning。チュートリアルと共通で 1 回だけ足す）」に直し、pbi の変更する既存ファイルで追加する。本書は「物件基本情報登録変更が追加する（無ければ本 feature が足す）」に直す。B：本書のまま本 feature が追加し、pbi design には「既存」を「issue-request-tutorial が追加する新規のキー」に直す注記だけを足す。どちらの場合も pbi design の修正を upstream-carryover に記録する",
+        "recommendation": "質問：どの feature の実装で追加するかは実装の順番に関わる人の判断が要り、承認済みの pbi design の記述も直す必要があるため",
+        "decided_by": "Junichi Noumi"
+      }
+    ],
+    "choices": {
+      "kind": "repair",
+      "questions": [
+        {
+          "id": "repair",
+          "header": "修正に回す",
+          "question": "修正（A）の指摘と AI が直す軽微（2 件）を修正の回へ回しますか？",
+          "options": [
+            {
+              "label": "修正案のとおり修正に回す",
+              "description": "推奨を採用した修正と軽微は、修正案がそのまま指示になる",
+              "answer": "repair:all-fixes"
+            },
+            {
+              "label": "修正の指示を自分で書く",
+              "description": "指示を書きたい指摘がある",
+              "answer": "repair:manual"
+            }
+          ],
+          "multiSelect": false
+        }
+      ]
+    },
+    "next_action": "提示文をそのまま示し、choices の選択肢を選択式の質問で出して、人に選んでもらってください。検査結果を確認し、重大と要判断の指摘に A〜D か「推奨」で答えてください（束・範囲でまとめて答えられます）。修正（A）と AI が直す軽微があれば repair（findings: \"all-fixes\"）で修正に回し、判断が揃い修正が無ければ承認者名を回答してください。",
+    "operation_id": "ba2b15cbfdee4201b8edca0bfe45a3f9",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

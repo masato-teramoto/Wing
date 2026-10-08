@@ -1,0 +1,73 @@
+{
+  "status": "ok",
+  "action": "respond",
+  "result": {
+    "status": "wait",
+    "allowed_actions": [
+      "decision",
+      "decisions",
+      "resolve",
+      "repair"
+    ],
+    "review_context": {
+      "root": "C:\\project\\Wing",
+      "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+      "call": "design-authoring-revise",
+      "event": "design-authoring-revise",
+      "item": "print-report",
+      "dispatch_id": "36a67c4518b94036a8f19c2c7738663c",
+      "unit": "design-authoring-revise/design-authoring-revise[print-report]::end.review",
+      "scope": "feature:print-report",
+      "run": 3,
+      "snapshot": "46ecf7ccdaff68177ad95279a8ea5465de69731af58414e98b7f2ec70e97e1a3",
+      "record_hash": "8194aa41e575fb540840e3c4aa6b41f0e85d50dcbc0513650f0d32c4ff5094f3"
+    },
+    "review": [
+      {
+        "scope": "feature:print-report",
+        "run": 3,
+        "number": 1,
+        "current": true,
+        "decision": "修正",
+        "reason": "AI 推奨を採用: 正とされた項目一覧が出力の間は行 1 を表示すると明記しており、業務の新しい事実は要らないため",
+        "open": true,
+        "resolved": false,
+        "description": "区分：根拠の飛躍（正とされた資料と食い違う）。design は「原本で隠してある行（1・27・32・40・48・56・64・68）は隠したまま」とし、タイトルの行 2 も隠すので、発行依頼書のページにタイトルが出ない。項目一覧（回答 Q-DS-PR-002 の 2 が「一覧の 3 章『入力フォーム (契約情報)』の特記事項」として参照し、回答者の指示で design の正とされた資料）の 3 章「(2) 入力フォームシートから帳票イメージ(入力フォーム (契約情報))になるまでの流れ」は、「① 印刷前（印刷準備）の表示／非表示項目」に「1行目：隠しタイトル表示」「2行目：契約情報入力フォームの文言を非表示」とし、「② 印刷後の表示／非表示項目」で「1行目：隠しタイトル非表示」に戻す（`_handoff/phase5-print-report-items.md` の 827〜842 行）。つまり出力の間は行 1 を表示して行 2 の代わりのタイトルにする。原本（入力フォーム）の行 1 は B1「契約情報」で、原本では隠し行（HIDDENROWS に 1）、行 2 は B2「契約情報入力フォーム」。注記の「1・2 行目は原本と同じ」は行番号の対応としては合っている（今回の修正の注記そのものは原本と項目一覧に合う。2 回目 #1 の修正指示どおり）。行 1 を隠したままにする根拠は requirements・回答・項目一覧のどこにも無い。2 回目の指摘内容も行 1 の表示の扱いには触れていない。",
+        "location": "specs/print-report/design.md § ドメインモデル（Domain Model） / 発行依頼書のページ（RWTG071）",
+        "kind": "業務の欠落・矛盾",
+        "severity": "重大",
+        "summary": "発行依頼書のページで行 1 の隠しタイトルを隠したままにしており、項目一覧の「表示」と食い違う",
+        "suggestion": "発行依頼書のページの隠す行の文を「次の行は隠す：タイトルの行 2、UQ担当者入力欄から案件G までの行 4〜13、その他事項（契約に関する特記事項と製本の情報）の行 86〜102、添付資料の行 107〜112。原本で隠してある行 1（B1「契約情報」。隠しタイトル）は表示にする（項目一覧 3 章の特記事項「1行目：隠しタイトル表示」）。ほかの原本で隠してある行（27・32・40・48・56・64・68）は隠したまま」に書き換える",
+        "recommendation": "修正：正とされた項目一覧が出力の間は行 1 を表示すると明記しており、業務の新しい事実は要らないため",
+        "decided_by": "Junichi Noumi"
+      }
+    ],
+    "choices": {
+      "kind": "repair",
+      "questions": [
+        {
+          "id": "repair",
+          "header": "修正に回す",
+          "question": "修正（A）の指摘と AI が直す軽微（1 件）を修正の回へ回しますか？",
+          "options": [
+            {
+              "label": "修正案のとおり修正に回す",
+              "description": "推奨を採用した修正と軽微は、修正案がそのまま指示になる",
+              "answer": "repair:all-fixes"
+            },
+            {
+              "label": "修正の指示を自分で書く",
+              "description": "指示を書きたい指摘がある",
+              "answer": "repair:manual"
+            }
+          ],
+          "multiSelect": false
+        }
+      ]
+    },
+    "next_action": "提示文をそのまま示し、choices の選択肢を選択式の質問で出して、人に選んでもらってください。検査結果を確認し、重大と要判断の指摘に A〜D か「推奨」で答えてください（束・範囲でまとめて答えられます）。修正（A）と AI が直す軽微があれば repair（findings: \"all-fixes\"）で修正に回し、判断が揃い修正が無ければ承認者名を回答してください。",
+    "operation_id": "d31ca14e59c048e4b4d38fc6fe7fe11b",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

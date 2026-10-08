@@ -1,0 +1,16 @@
+{
+ "operation_id": "85d3028be4af4e59ac241d04169f5388",
+ "dispatch": {
+  "call": "design-authoring-generate",
+  "unit": "design-authoring-generate/design-authoring-generate[application-status-search]::end.design-check",
+  "event": "design-authoring-generate",
+  "item": "application-status-search",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "c0783939bcd94046b553ac327353ed41"
+ },
+ "result": {
+  "status": "completed"
+ }
+}

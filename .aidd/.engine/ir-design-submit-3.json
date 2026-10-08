@@ -1,0 +1,24 @@
+{
+ "operation_id": "701fbf050d08484696a6be72a9741bcb",
+ "dispatch": {
+  "call": "design-authoring-generate",
+  "unit": "design-authoring-generate/design-authoring-generate[issue-request]::run",
+  "event": "design-authoring-generate",
+  "item": "issue-request",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "e238fb2536924e4e924bb2b35a52d1f3"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/issue-request/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [],
+  "return_candidates": [],
+  "summary": "追加の質問 Q-DS-IR-016〜023 の回答と、その確認 2 件への回答（契約区分の列はキー3 001〜003、更新・一時保存の排他は TWTGM100・TWTGM140 の ExclusiveFG）を design に反映した（open_placeholders 0）。URL（/wtg080/issue・/wtg080/tempSave）、ズーム 3 つ（ZWTZ074〜076）、契約区分の自動設定（WTKeikakuJudgeUtils.chkKichikyoku）、TWTZM370 の 4 行、複数局の金額、全契約局の変更履歴、TWTGM080 を書き換えない（Q-DS-IR-007 の 7. を取消し）、(ﾌﾘｰﾌｫｰﾑ) 列の合計を反映。物件基本情報登録変更の design に要る口（getApplication の 2 列、getApplicantName、基地局番号の初期表示）は、回答者の指示どおり差戻し候補にせず upstream-carryover に積んだ（Phase 5 の最後にまとめて直す方針）。要件トレーサビリティ自己診断（issue-request）：抽出 62 件、対応あり 62 件、未対応 0 件。今回の案件の正解コードは根拠にしていない。"
+ }
+}

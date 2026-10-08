@@ -1,0 +1,91 @@
+{
+  "status": "ok",
+  "action": "respond",
+  "result": {
+    "status": "wait",
+    "allowed_actions": [
+      "decision",
+      "decisions",
+      "resolve",
+      "repair"
+    ],
+    "review_context": {
+      "root": "C:\\project\\Wing",
+      "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+      "call": "design-authoring-revise",
+      "event": "design-authoring-revise",
+      "item": "issue-request",
+      "dispatch_id": "ce4915fb378348a398afac298277097b",
+      "unit": "design-authoring-revise/design-authoring-revise[issue-request]::end.review",
+      "scope": "feature:issue-request",
+      "run": 3,
+      "snapshot": "17e8e6cf47d080151971e1035a9e21665e3185e86e2d9a8aceb5cbf493c8426a",
+      "record_hash": "2f2543b6f4d27aa75be5629f1b00ea27ab5f77c5a2142d6666e77ed4b490d2ef"
+    },
+    "review": [
+      {
+        "scope": "feature:issue-request",
+        "run": 3,
+        "number": 1,
+        "current": true,
+        "decision": "修正",
+        "reason": "(1)はそのとおり。(2)はB。TWTGM100 が無い申請では、遷移元3の更新・一時保存を受け付けません。キーは WTG-100040（発行依頼書がありません。先に発行依頼書を登録してください。）で、BindingResult に積んで同じ画面に戻します。",
+        "open": true,
+        "resolved": false,
+        "description": "2 回目 #6 の修正（判断「契約局情報追加では、TWTGM100 の行をロック（FOR UPDATE）して照合します」）の反映が一部足りない。(1) § 発行依頼書登録変更 Service の「照合する行が無いときの扱い」は「契約局情報追加（遷移元 3 の新しい連番の登録）では、TWTGM100 の行を SELECT … FOR UPDATE でロックして照合する」とする。一方 § 状態管理 の並行制御は、画面に持たせる排他用の値を「開いている発行依頼書（2 は TWTGM100）か契約局（1・3 はその連番の TWTGM140）の行の ExclusiveFG」とし、§ サービスインターフェース の後の事前条件も「画面を表示したときの開いている行（TWTGM100 か TWTGM140）の排他用の値」とする。遷移元 3 の新しい連番の TWTGM140 の行はまだ無いので、TWTGM100 と照合する値を画面がいつ受け取り持つのかが書かれていない。(2) 物件基本情報登録変更の design は契約局情報追加ボタンを canOperate の条件だけで出し、発行依頼書（TWTGM100）が無い申請での契約局情報追加を止める記述が無い（pbi design の契約局情報の操作の条件、/wtg070/addKeyaku の行。WTG-100022 は発行依頼書編集だけ）。requirements 1.9 も発行依頼書が無い申請での遷移を新規の登録として開くとする。TWTGM100 が無い申請で遷移元 3 から更新・一時保存したとき、ロックして照合する TWTGM100 の行が無く、どう直列にするか（GEF-000027 にするか、発行依頼書の新規登録と同じ扱いにするか）が書かれていない",
+        "location": "specs/issue-request/design.md § 状態管理（State Management） / 並行制御 ほか 2 か所",
+        "kind": "業務のあいまい・不足",
+        "severity": "要判断",
+        "summary": "遷移元3の追加で照合するTWTGM100の排他用の値と、発行依頼書が無いときの扱いが無い",
+        "suggestion": "(1) は § 状態管理 の並行制御と事前条件に「遷移元 3 では、TWTGM100 の行の ExclusiveFG を画面に持たせ、更新・一時保存で照合する」を足す。(2) は次のどれかを決める。A：TWTGM100 が無い申請での契約局情報追加は、発行依頼書の新規登録と同じく、登録の直前に同じ申請No・同じ連番の行があれば GEF-000027 にする（一意キー違反も GEF-000027）。B：TWTGM100 が無い申請では遷移元 3 の更新・一時保存を受け付けず、発行依頼書編集から先に発行依頼書を登録させる（エラーのキーも決める）。C：その他",
+        "recommendation": "質問：(1) は判断のとおり書き足せば足りるが、(2) の TWTGM100 が無いときの扱いは 2 回目 #6 の判断に含まれておらず、人の判断が要るため",
+        "decided_by": "Junichi Noumi"
+      },
+      {
+        "scope": "feature:issue-request",
+        "run": 3,
+        "number": 2,
+        "current": true,
+        "decision": "修正",
+        "reason": "。ただし、ロックした TWTGM100 の ExclusiveFG も画面の隠し項目の値と照合し、違えば GEF-000027 にします。合計を入れ直した TWTGM100 の ExclusiveFG は新しい値にします。別々の契約局を同時に更新したときは後の人が排他エラーになりますが、それでよいです。",
+        "open": true,
+        "resolved": false,
+        "description": "requirements 5.3 は「申請が複数局の場合、発行依頼書の金額を、この画面の値とほかの契約局の金額の合計にしなければならない」とする。design は契約局（1・3）の更新で、その連番の TWTGM140 を書いた後に全契約局の合計で TWTGM100 を入れ直すとし（§ ドメインモデル の契約局の更新）、更新の手順では開いている TWTGM140 の行だけをロックして照合する（§ 発行依頼書登録変更 Service の更新の手順）。§ 状態管理 の並行制御は「同じ申請の別の契約局を 2 人が同時に開いて順に更新しても、開いている行が違えば排他エラーにならない（複数局の TWTGM100 の合計は、後から更新した契約局のときに入れ直される）」とする。2 つの更新が重なると、後の更新はほかの契約局の金額を先の更新の確定前に読んで合計し、TWTGM100 を上書きしうる。この場合、先の更新の金額が合計に入らないまま残り、次に契約局を更新するまで 5.3 を満たさない。TWTGM100 の行のロックは契約局情報追加でだけ行う（§ 発行依頼書登録変更 Service の照合する行が無いときの扱い）。2 回目 #6 の判断理由は「これで同じ申請への追加・更新は1本ずつになります」としているが、契約局の更新どうしは 1 本ずつにならない（意味判定：ID 対応あり・同時更新の異常系が未充足）",
+        "location": "specs/issue-request/design.md § 状態管理（State Management） / 並行制御",
+        "kind": "業務のあいまい・不足",
+        "severity": "要判断",
+        "summary": "契約局の同時更新で、複数局のTWTGM100の金額の合計が古い値のまま残りうる",
+        "suggestion": "次のどれかを決める。A：契約局（1・3）の更新・一時保存でも、最初に同じ申請No の TWTGM100 の行を SELECT … FOR UPDATE でロックしてから合計を読み、同じ申請への契約局の更新を 1 本ずつにする（TWTGM100 の ExclusiveFG は照合しない）。B：重なったときは合計が次の契約局の更新まで古いままになることを許し、§ 状態管理 の「後から更新した契約局のときに入れ直される」をその旨に直す",
+        "recommendation": "質問：同時更新での合計の正しさをどこまで保証するかは人の判断が要るため",
+        "decided_by": "Junichi Noumi"
+      }
+    ],
+    "choices": {
+      "kind": "repair",
+      "questions": [
+        {
+          "id": "repair",
+          "header": "修正に回す",
+          "question": "修正（A）の指摘と AI が直す軽微（2 件）を修正の回へ回しますか？",
+          "options": [
+            {
+              "label": "修正案のとおり修正に回す",
+              "description": "推奨を採用した修正と軽微は、修正案がそのまま指示になる",
+              "answer": "repair:all-fixes"
+            },
+            {
+              "label": "修正の指示を自分で書く",
+              "description": "指示を書きたい指摘がある",
+              "answer": "repair:manual"
+            }
+          ],
+          "multiSelect": false
+        }
+      ]
+    },
+    "next_action": "提示文をそのまま示し、choices の選択肢を選択式の質問で出して、人に選んでもらってください。検査結果を確認し、重大と要判断の指摘に A〜D か「推奨」で答えてください（束・範囲でまとめて答えられます）。修正（A）と AI が直す軽微があれば repair（findings: \"all-fixes\"）で修正に回し、判断が揃い修正が無ければ承認者名を回答してください。",
+    "operation_id": "1b32dec046584d0695aab62c97319739",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

@@ -1,0 +1,30 @@
+{
+ "operation_id": "a3107277cdb8446cb54a41896c4c4a71",
+ "action": "decisions",
+ "dispatch": {
+  "call": "design-authoring-generate",
+  "unit": "design-authoring-generate/design-authoring-generate[application-status-search]::end.review",
+  "event": "design-authoring-generate",
+  "item": "application-status-search",
+  "status": "wait",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-generate/design-authoring-generate[application-status-search]::end.review\", \"snapshot\": \"ac8ccd72f2dba400124b193968bdfc112fc81e478242695eba87e83cc80ae97d\", \"run\": 1, \"inspection_hash\": \"df05a473276d592b8906980c5d2922602b79245a9d1c323435565492def13195\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 10 件\n  - 進捗検索(選択) の初期値「以上」と社外ユーザーの起案会社の初期値が、1.1 の「初期値を空」から外れる（回答で意図して外れると決まり、本書にも明記）（answer:design-authoring-generate[application-status-search]）\n  - 「他n局」を基地局番号にも付けるのは 2.3 から外れる（回答 Q-DS-AS-006 で決まり、本書にも明記）（answer:design-authoring-generate[application-status-search]）\n  - CSV の見出し（13 列目「発注希望日」、半角カナの表記）が一覧の列名と違う（回答 Q-DS-AS-010 で決まり、本書にも明記）（answer:design-authoring-generate[application-status-search]）\n  - pbi design の「既存の WTG-100018」と食い違い、本 feature で新しく足す（回答 Q-DS-AS-009 で決まり、upstream-carryover に記録済み）（answer:design-authoring-generate[application-status-search]）\n  - 社外ユーザーの絞り込みを、検索条件の表の「会社名」ではなく会社コードで比べる（回答 Q-DS-AS-005 の 2 で決まる）（answer:design-authoring-generate[application-status-search]）\n  - P71 のキー3 を、security.md の「ログインユーザーのグループ」ではなく権限区分とする（回答 Q-DS-AS-005 で決まる）（answer:design-authoring-generate[application-status-search]）\n  - アクション名 csv・page・clear・return・detail が tech.md の URL の例に無い（回答 Q-DS-AS-001・Q-DS-AS-010 で決まり、例は「など」で限定していない）（answer:design-authoring-generate[application-status-search]）\n  - 38 項目の入力の形・一致の仕方・比べる列を、回答者が渡した検索条件の表に委ねる（回答 Q-DS-AS-002「その表のとおりにしてください」）（answer:design-authoring-generate[application-status-search]）\n  - 開発端末の JDK 1.8 が、tech.md の JDK 1.7 と食い違う（verify:pbi design（approved）の Q-DS-PBI-014 で人が決めた同じ逸脱で、本書にも意図して外れると明記し、upstream-carryover.md（tech.md の行）に記録済み。原因は上流の 1 か所で、重複になる）\n  - feature-list の依存の列に無い issue-request の TWTGM100 を読む（verify:issue-request design（approved）が「下流が読む形：TWTGM100・TWTGM140 の全列」を公開契約にしており、内部実装への依存ではない）\n\n### 判断が必要な指摘\n\n**対象**: `specs/application-status-search/design.md`（スコープ: 成果物単位（application-status-search） / 1 回目）\n**実行した層**: ① / ②\n\n**重大**（1 件。1 件ずつ判断してください）\n\n| # | 種類 | 対象箇所 | 要約 | AI の推奨 | 判断 |\n|---|---|---|---|---|---|\n| 1 | 業務の欠落・矛盾 | specs/application-status-search/design.md § データ契約と外部連携（Data Contracts & Integration） ほか 2 か所 | returnList の戻り先が pbi design（/wtg060）と本書（/wtg060/return）で食い違う | 修正（戻りの口は回答 Q-DS-AS-001 で決まっており、食い違いの原因は pbi design 側の記述。本書に意図した逸脱として書き、上流を Phase 5 の最後にまとめて直す流れに乗せれば解消できる） | 未回答 |\n\n**要判断**（3 件）\n\n| 束 | 観点 | 種類 | 件数 | 番号 | AI の推奨（先頭の指摘） |\n|---|---|---|---|---|---|\n| 束1 | traceability | 業務のあいまい・不足 | 2 | #2 #3 | 質問（検査するかどうかと使うキーは業務上の決めごとで、回答と上流からは決められない） |\n\n| # | 種類 | 対象箇所 | 要約 | AI の推奨 | 判断 |\n|---|---|---|---|---|---|\n| 4 | 業務のあいまい・不足 | specs/application-status-search/design.md § セキュリティ上の考慮（Security Considerations） | 一覧と CSV に更新者の氏名が出ると書くが、14 列に更新者は無い | 修正（本書の一覧の列と食い違う記述で、本書の中の事実に合わせて直せる） | 未回答 |\n\n束の内訳（束でまとめて答えるか、番号で 1 件ずつ答えてください）\n\n- [束1] #2 申請No・稟議ﾊﾞｰｺｰﾄﾞNo・基地局番号で、文字種（半角英数）を検査するかが決まっていない\n- [束1] #3 社外ユーザーから所属①②・進捗の値が送られても、条件から外すことが書かれていない\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- #1: specs/property-basic-info/design.md（Phase 5、upstream-carryover でまとめて直す）（`/wtg070/returnList` の戻り先が `/wtg060` と書かれており、回答 Q-DS-AS-001 で決めた戻りの口 `/wtg060/return` と食い違う）\n\n**答え方**（後に書いたものが優先。束・範囲でまとめて答えられます）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）。区分を `C[指摘の誤り]` `C[対象外]` `C[後で決める]` `C[解釈で対応]` で付ける。対象外・後で決めるに `+` を付けると（例 `C[後で決める+]`）、次の検査から同じ扱いにします\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n- **推奨** — AI の推奨を採用する（修正なら修正案がそのまま修正の指示になります）\n\n回答例: `1:推奨 / 束1:C[後で決める+] 桁数は design で決める / 3〜5:A / 7:D 次回まで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。根拠と修正案は `詳細 <番号>` で表示します。",
+  "id": "f384cc01d5674bb99adec8d2cd192fb3"
+ },
+ "expected": {
+  "root": "C:\\project\\Wing",
+  "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+  "call": "design-authoring-generate",
+  "event": "design-authoring-generate",
+  "item": "application-status-search",
+  "dispatch_id": "f384cc01d5674bb99adec8d2cd192fb3",
+  "unit": "design-authoring-generate/design-authoring-generate[application-status-search]::end.review",
+  "scope": "feature:application-status-search",
+  "run": 1,
+  "snapshot": "ac8ccd72f2dba400124b193968bdfc112fc81e478242695eba87e83cc80ae97d",
+  "record_hash": "df05a473276d592b8906980c5d2922602b79245a9d1c323435565492def13195"
+ },
+ "data": {
+  "answer": "1:推奨 / 2:A 修正案の B。文字種は検査しません（前方一致で 0 件になるだけ）。桁は入力欄の最大桁で抑え、日付・時刻・進捗の日数の形式は Q-DS-AS-007 のとおり検査します。バリデーション設計にそう書いてください / 3:推奨 / 4:推奨"
+ }
+}

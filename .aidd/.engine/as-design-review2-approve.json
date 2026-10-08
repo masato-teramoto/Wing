@@ -1,0 +1,28 @@
+{
+ "operation_id": "85e245c6ee2a48cbac8d99879b3206af",
+ "action": "approve",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[application-status-search]::end.review",
+  "event": "design-authoring-revise",
+  "item": "application-status-search",
+  "status": "wait",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[application-status-search]::end.review\", \"snapshot\": \"990828a1fb983d76aeb1732b922af38deca90fc70d94e62418ad4f9dbe86dbcf\", \"run\": 2, \"inspection_hash\": \"d67a2b9076a3ec8f8a5d1280e645f7884dcb6ad383c6bd798f1fa8439634e487\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 再検査で出なくなり、解消を記録した指摘 4 件\n  - #1-1 returnList の戻り先が pbi design（/wtg060）と本書（/wtg060/return）で食い違う\n  - #1-2 申請No・稟議ﾊﾞｰｺｰﾄﾞNo・基地局番号で、文字種（半角英数）を検査するかが決まっていない\n  - #1-3 社外ユーザーから所属①②・進捗の値が送られても、条件から外すことが書かれていない\n  - #1-4 一覧と CSV に更新者の氏名が出ると書くが、14 列に更新者は無い\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 8 件\n  - `/wtg070/returnList` の戻り先を pbi design の `/wtg060` ではなく `/wtg060/return` とする（回答 Q-DS-AS-001 で決まり、本書に意図した逸脱と upstream-carryover を明記）（answer:design-authoring-generate[application-status-search]）\n  - 進捗検索(選択) の初期値「以上」と社外ユーザーの起案会社の初期値が、1.1 の「初期値を空」から外れる（回答で意図して外れると決まり、本書にも明記）（answer:design-authoring-generate[application-status-search]）\n  - 「他n局」を基地局番号にも付けるのは 2.3 から外れる（回答 Q-DS-AS-006 で決まり、本書にも明記）（answer:design-authoring-generate[application-status-search]）\n  - CSV の見出し（13 列目「発注希望日」、半角カナの表記）が一覧の列名と違う（回答 Q-DS-AS-010 で決まり、本書にも明記）（answer:design-authoring-generate[application-status-search]）\n  - 社外ユーザーの絞り込みを、検索条件の表の「会社名」ではなく会社コードで比べる（回答 Q-DS-AS-005 の 2 で決まる）（answer:design-authoring-generate[application-status-search]）\n  - P71 のキー3 を、security.md の「ログインユーザーのグループ」ではなく権限区分とする（回答 Q-DS-AS-005 で決まる）（answer:design-authoring-generate[application-status-search]）\n  - 38 項目の入力の形・一致の仕方・比べる列を、回答者が渡した検索条件の表に委ねる（回答 Q-DS-AS-002「その表のとおりにしてください」）（answer:design-authoring-generate[application-status-search]）\n  - 桁の検査・日付・時刻・数字のキー（`GEF-000003`・`WTG-000003`・`GEF-000025`・`WTL-000007`・`GEF-000014`）と、範囲の逆転を検査しないこと（回答 Q-DS-AS-007 で決まり、キーは既存の messages.properties に実在）（answer:design-authoring-generate[application-status-search]）\n\n### 前回の検査（1 回目）からの変更\n\n- `specs/application-status-search/design.md`：このスペックが持たない責務（Out of Boundary）、ドメインモデル（Domain Model）、データ契約と外部連携（Data Contracts & Integration）、バリデーション設計、セキュリティ上の考慮（Security Considerations）、テスト戦略（Testing Strategy）\n  - 修正の指示に無い節の変更：このスペックが持たない責務（Out of Boundary）、テスト戦略（Testing Strategy）（意図した変更か確かめてください）\n\n### 判断が必要な指摘\n\n**対象**: `specs/application-status-search/design.md`（スコープ: 成果物単位（application-status-search） / 2 回目）\n**実行した層**: ① / ②\n\n**指摘**: なし（0 件。検査は実行済み）\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n判断が揃いました。承認の可否を回答してください（承認する場合は承認者名）。",
+  "id": "6892c94add1644f799c8313f2d0b75c7"
+ },
+ "expected": {
+  "root": "C:\\project\\Wing",
+  "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+  "call": "design-authoring-revise",
+  "event": "design-authoring-revise",
+  "item": "application-status-search",
+  "dispatch_id": "6892c94add1644f799c8313f2d0b75c7",
+  "unit": "design-authoring-revise/design-authoring-revise[application-status-search]::end.review",
+  "scope": "feature:application-status-search",
+  "run": 2,
+  "snapshot": "990828a1fb983d76aeb1732b922af38deca90fc70d94e62418ad4f9dbe86dbcf",
+  "record_hash": "df2056f1f25b341f1d410e0d5c0ea361c696577ae7210a994237bf3c90070eb1"
+ },
+ "data": {}
+}

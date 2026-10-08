@@ -1,0 +1,469 @@
+{
+  "status": "ok",
+  "action": "submit",
+  "result": {
+    "unit": "design-authoring-generate/design-authoring-generate[issue-request]::end.review",
+    "flow": "design-authoring-generate",
+    "event": "design-authoring-generate",
+    "item": "issue-request",
+    "gate": "review",
+    "hookPoint": "end",
+    "name": "review",
+    "type": "script",
+    "target": "scripts/approval.py",
+    "isAgent": false,
+    "requiresHuman": true,
+    "calls": [],
+    "targetReview": [
+      "specs/issue-request/design.md"
+    ],
+    "status": "wait",
+    "call": "design-authoring-generate",
+    "dispatch": {
+      "call": "design-authoring-generate",
+      "unit": "design-authoring-generate/design-authoring-generate[issue-request]::end.review",
+      "event": "design-authoring-generate",
+      "item": "issue-request",
+      "status": "wait",
+      "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+      "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-generate/design-authoring-generate[issue-request]::end.review\", \"snapshot\": \"2b44c8ad0340045702569ff22b762d148d718b9db870b7f73db4ca00e5303d37\", \"run\": 1, \"inspection_hash\": \"b055edebfbe680d9c75c781da0db7051c76b06b9ca8ea8fdf0e14b171b1ba1d3\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 8 件\n  - 一時保存・発番の URL が CSRF の照合に乗らず steering/security.md の攻撃対策と食い違う（answer:design-authoring-generate[issue-request]）\n  - ズームの URL が tech.md の URL の規約（/<機能ID小文字>/<アクション>）と違う形になる（answer:design-authoring-generate[issue-request]）\n  - 画面内で JSON を返す口を新しく 2 つ置く（api-standards.md の「JSON を返すのは既存の 2 か所だけ」）（answer:design-authoring-generate[issue-request]）\n  - 複数局を発行依頼書編集で更新したとき金額を合計せず入力値で上書きする（5.3）（answer:design-authoring-generate[issue-request]）\n  - getApplication の単独複数局ﾌﾗｸﾞ・申請依頼日時と getApplicantName が pbi design の公開契約にまだ無い（answer:design-authoring-generate[issue-request]）\n  - 申請情報欄の基地局番号を連番 1 で初期表示することが pbi design にまだ無い（answer:design-authoring-generate[issue-request]）\n  - 契約区分の自動設定で共通部品 WTKeikakuJudgeUtils.chkKichikyoku を直接呼ぶ（answer:design-authoring-generate[issue-request]）\n  - 税率マスタの投入する行（資料では「案」）を確定値として書いている（answer:design-authoring-generate[issue-request]）\n\n### 判断が必要な指摘\n\n**対象**: `specs/issue-request/design.md`（スコープ: 成果物単位（issue-request） / 1 回目）\n**実行した層**: ① / ②\n\n**重大**（9 件。1 件ずつ判断してください）\n\n| # | 種類 | 対象箇所 | 要約 | AI の推奨 | 判断 |\n|---|---|---|---|---|---|\n| 1 | 業務の欠落・矛盾 | specs/issue-request/design.md § ドメインモデル（Domain Model） / 発番 ほか 2 か所 | 発番で担当エリア等を保存する扱いが要件1.3・1.5・9.3と食い違う | 対応せず進める（人の回答（Q-DS-IR-001 の C）に従った意図的な逸脱として design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため。ただし承認済み requirements と両立しない状態は残る） | 未回答 |\n| 2 | 業務の欠落・矛盾 | specs/issue-request/design.md § セキュリティ上の考慮（Security Considerations） / 2.1 | 2.1の本人が登録した発行依頼書を申請の登録者で比べており要件と食い違う | 対応せず進める（人の回答（Q-DS-IR-014）に従った読み方として design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため） | 未回答 |\n| 3 | 業務の欠落・矛盾 | specs/issue-request/design.md § 発行依頼書登録変更 Service / 作成組織 | 8.1のログインユーザーのグループを権限区分と読み替えており要件と食い違う | 対応せず進める（property-basic-info で同じ読み方が判断済みで、上流の文言は Phase 5 の最後にまとめて直す方針とされているため） | 未回答 |\n| 4 | 業務の欠落・矛盾 | specs/issue-request/design.md § バリデーション設計 / 9.6 | 9.6の所属必須に「選んだ会社が社内」の条件を足しており要件と食い違う | 対応せず進める（item-rules.md（回答者が渡した資料）に従った意図的な逸脱として design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため） | 未回答 |\n| 5 | 業務の欠落・矛盾 | specs/issue-request/design.md § コンポーネントとインターフェース（Components and Interfaces） | 機能固有の監視項目（無いならその旨）がdesignに書かれていない | 修正（steering が置き場を design に指定しており、既存の運用に任せる旨を 1 行書けば足りるため） | 未回答 |\n| 6 | 業務の欠落・矛盾 | specs/issue-request/design.md § 機能固有エラーコード ほか 2 か所 | 業務・排他エラーを例外にせずBindingResultに積む方式がtech.mdと食い違う | 対応せず進める（pbi design と同じ扱いとして design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため） | 未回答 |\n| 7 | 業務の欠落・矛盾 | specs/issue-request/design.md § 技術スタック（Technology Stack） / Infrastructure / Runtime | 開発端末のJDK 1.8がtech.mdの必須ツールJDK 1.7と食い違う | 対応せず進める（pbi design と同じ扱いとして design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため） | 未回答 |\n| 8 | 業務の欠落・矛盾 | specs/issue-request/design.md § データ契約と外部連携（Data Contracts & Integration） / 物件基本情報登録変更との口 ほか 1 か所 | pbi designの公開契約に無い前提（戻りの入口・発番日時・複製の申請者）に依存 | 対応せず進める（design に明記され、pbi design は Phase 5 の最後にまとめて直す方針とされているため。直すまでは pbi の実装がこの前提を満たさない） | 未回答 |\n| 9 | 業務の欠落・矛盾 | specs/issue-request/design.md § 状態管理（State Management） / 並行制御 ほか 3 か所 | 更新・一時保存でTWTGM080を自Mapperでロック・照合し公開契約を通らない | 質問（pbi の公開契約に口を足すか、直接のロックと照合を公開の取り決めにするかは、依存先の設計に関わる人の判断が要るため） | 未回答 |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- #1: 人間による確認（requirements.md 1.3・1.5・9.3 の修正、または本 design の修正）（発番時の保存と 9.3 の読み方（Q-DS-IR-001 の回答）が承認済みの requirements と食い違っている。requirements 側を直す場合は Phase 4 が宛先になる）\n- #2: 人間による確認（requirements.md 2.1 の修正、または本 design の修正）（社外ユーザーの範囲の比べ方（Q-DS-IR-014 の回答）が承認済みの requirements と食い違っている。requirements 側を直す場合は Phase 4 が宛先になる）\n- #3: 人間による確認（requirements.md 8.1 と steering/security.md の修正、または本 design の修正）（P71 のキー3 の「グループ」の意味が requirements・steering の記述と食い違っている。steering 側は Phase 2、requirements 側は Phase 4 が宛先になる）\n- #4: 人間による確認（requirements.md 9.6 の修正、または本 design の修正）（所属①②の必須の条件（item-rules.md の 5）が承認済みの requirements と食い違っている。requirements 側を直す場合は Phase 4 が宛先になる）\n- #6: 人間による確認（steering/tech.md の修正、または本 design の修正）（業務エラー・排他エラーの扱いが steering の例外処理フロー・排他制御と食い違っている。steering 側を直す場合は Phase 2 が宛先になる）\n- #7: 人間による確認（steering/tech.md の修正、または本 design の修正）（開発端末の JDK（Q-DS-PBI-014 の回答）が steering の必須ツールと食い違っている。steering 側を直す場合は Phase 2 が宛先になる）\n- #8: 人間による確認（specs/property-basic-info/design.md の修正）（依存先 pbi design の公開契約に、本 design が前提にする戻りの入口・recordNumbering の記録内容・複製の申請者が無い。pbi design を開き直す場合は Phase 5（property-basic-info）が宛先になる）\n- #9: 人間による確認（specs/property-basic-info/design.md の修正、または本 design の修正）（TWTGM080 のロックと ExclusiveFG の照合を他の feature が行う取り決めが pbi design の公開契約に無い。pbi design を開き直す場合は Phase 5（property-basic-info）が宛先になる）\n\n**答え方**（後に書いたものが優先。束・範囲でまとめて答えられます）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）。区分を `C[指摘の誤り]` `C[対象外]` `C[後で決める]` `C[解釈で対応]` で付ける。対象外・後で決めるに `+` を付けると（例 `C[後で決める+]`）、次の検査から同じ扱いにします\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n- **推奨** — AI の推奨を採用する（修正なら修正案がそのまま修正の指示になります）\n\n回答例: `1:推奨 / 束1:C[後で決める+] 桁数は design で決める / 3〜5:A / 7:D 次回まで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。根拠と修正案は `詳細 <番号>` で表示します。",
+      "id": "c15e4523af0d4b77b375b728dfdab552"
+    },
+    "label": "design-authoring-generate / design-authoring-generate [issue-request]",
+    "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-generate/design-authoring-generate[issue-request]::end.review\", \"snapshot\": \"2b44c8ad0340045702569ff22b762d148d718b9db870b7f73db4ca00e5303d37\", \"run\": 1, \"inspection_hash\": \"b055edebfbe680d9c75c781da0db7051c76b06b9ca8ea8fdf0e14b171b1ba1d3\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 8 件\n  - 一時保存・発番の URL が CSRF の照合に乗らず steering/security.md の攻撃対策と食い違う（answer:design-authoring-generate[issue-request]）\n  - ズームの URL が tech.md の URL の規約（/<機能ID小文字>/<アクション>）と違う形になる（answer:design-authoring-generate[issue-request]）\n  - 画面内で JSON を返す口を新しく 2 つ置く（api-standards.md の「JSON を返すのは既存の 2 か所だけ」）（answer:design-authoring-generate[issue-request]）\n  - 複数局を発行依頼書編集で更新したとき金額を合計せず入力値で上書きする（5.3）（answer:design-authoring-generate[issue-request]）\n  - getApplication の単独複数局ﾌﾗｸﾞ・申請依頼日時と getApplicantName が pbi design の公開契約にまだ無い（answer:design-authoring-generate[issue-request]）\n  - 申請情報欄の基地局番号を連番 1 で初期表示することが pbi design にまだ無い（answer:design-authoring-generate[issue-request]）\n  - 契約区分の自動設定で共通部品 WTKeikakuJudgeUtils.chkKichikyoku を直接呼ぶ（answer:design-authoring-generate[issue-request]）\n  - 税率マスタの投入する行（資料では「案」）を確定値として書いている（answer:design-authoring-generate[issue-request]）\n\n### 判断が必要な指摘\n\n**対象**: `specs/issue-request/design.md`（スコープ: 成果物単位（issue-request） / 1 回目）\n**実行した層**: ① / ②\n\n**重大**（9 件。1 件ずつ判断してください）\n\n| # | 種類 | 対象箇所 | 要約 | AI の推奨 | 判断 |\n|---|---|---|---|---|---|\n| 1 | 業務の欠落・矛盾 | specs/issue-request/design.md § ドメインモデル（Domain Model） / 発番 ほか 2 か所 | 発番で担当エリア等を保存する扱いが要件1.3・1.5・9.3と食い違う | 対応せず進める（人の回答（Q-DS-IR-001 の C）に従った意図的な逸脱として design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため。ただし承認済み requirements と両立しない状態は残る） | 未回答 |\n| 2 | 業務の欠落・矛盾 | specs/issue-request/design.md § セキュリティ上の考慮（Security Considerations） / 2.1 | 2.1の本人が登録した発行依頼書を申請の登録者で比べており要件と食い違う | 対応せず進める（人の回答（Q-DS-IR-014）に従った読み方として design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため） | 未回答 |\n| 3 | 業務の欠落・矛盾 | specs/issue-request/design.md § 発行依頼書登録変更 Service / 作成組織 | 8.1のログインユーザーのグループを権限区分と読み替えており要件と食い違う | 対応せず進める（property-basic-info で同じ読み方が判断済みで、上流の文言は Phase 5 の最後にまとめて直す方針とされているため） | 未回答 |\n| 4 | 業務の欠落・矛盾 | specs/issue-request/design.md § バリデーション設計 / 9.6 | 9.6の所属必須に「選んだ会社が社内」の条件を足しており要件と食い違う | 対応せず進める（item-rules.md（回答者が渡した資料）に従った意図的な逸脱として design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため） | 未回答 |\n| 5 | 業務の欠落・矛盾 | specs/issue-request/design.md § コンポーネントとインターフェース（Components and Interfaces） | 機能固有の監視項目（無いならその旨）がdesignに書かれていない | 修正（steering が置き場を design に指定しており、既存の運用に任せる旨を 1 行書けば足りるため） | 未回答 |\n| 6 | 業務の欠落・矛盾 | specs/issue-request/design.md § 機能固有エラーコード ほか 2 か所 | 業務・排他エラーを例外にせずBindingResultに積む方式がtech.mdと食い違う | 対応せず進める（pbi design と同じ扱いとして design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため） | 未回答 |\n| 7 | 業務の欠落・矛盾 | specs/issue-request/design.md § 技術スタック（Technology Stack） / Infrastructure / Runtime | 開発端末のJDK 1.8がtech.mdの必須ツールJDK 1.7と食い違う | 対応せず進める（pbi design と同じ扱いとして design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため） | 未回答 |\n| 8 | 業務の欠落・矛盾 | specs/issue-request/design.md § データ契約と外部連携（Data Contracts & Integration） / 物件基本情報登録変更との口 ほか 1 か所 | pbi designの公開契約に無い前提（戻りの入口・発番日時・複製の申請者）に依存 | 対応せず進める（design に明記され、pbi design は Phase 5 の最後にまとめて直す方針とされているため。直すまでは pbi の実装がこの前提を満たさない） | 未回答 |\n| 9 | 業務の欠落・矛盾 | specs/issue-request/design.md § 状態管理（State Management） / 並行制御 ほか 3 か所 | 更新・一時保存でTWTGM080を自Mapperでロック・照合し公開契約を通らない | 質問（pbi の公開契約に口を足すか、直接のロックと照合を公開の取り決めにするかは、依存先の設計に関わる人の判断が要るため） | 未回答 |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- #1: 人間による確認（requirements.md 1.3・1.5・9.3 の修正、または本 design の修正）（発番時の保存と 9.3 の読み方（Q-DS-IR-001 の回答）が承認済みの requirements と食い違っている。requirements 側を直す場合は Phase 4 が宛先になる）\n- #2: 人間による確認（requirements.md 2.1 の修正、または本 design の修正）（社外ユーザーの範囲の比べ方（Q-DS-IR-014 の回答）が承認済みの requirements と食い違っている。requirements 側を直す場合は Phase 4 が宛先になる）\n- #3: 人間による確認（requirements.md 8.1 と steering/security.md の修正、または本 design の修正）（P71 のキー3 の「グループ」の意味が requirements・steering の記述と食い違っている。steering 側は Phase 2、requirements 側は Phase 4 が宛先になる）\n- #4: 人間による確認（requirements.md 9.6 の修正、または本 design の修正）（所属①②の必須の条件（item-rules.md の 5）が承認済みの requirements と食い違っている。requirements 側を直す場合は Phase 4 が宛先になる）\n- #6: 人間による確認（steering/tech.md の修正、または本 design の修正）（業務エラー・排他エラーの扱いが steering の例外処理フロー・排他制御と食い違っている。steering 側を直す場合は Phase 2 が宛先になる）\n- #7: 人間による確認（steering/tech.md の修正、または本 design の修正）（開発端末の JDK（Q-DS-PBI-014 の回答）が steering の必須ツールと食い違っている。steering 側を直す場合は Phase 2 が宛先になる）\n- #8: 人間による確認（specs/property-basic-info/design.md の修正）（依存先 pbi design の公開契約に、本 design が前提にする戻りの入口・recordNumbering の記録内容・複製の申請者が無い。pbi design を開き直す場合は Phase 5（property-basic-info）が宛先になる）\n- #9: 人間による確認（specs/property-basic-info/design.md の修正、または本 design の修正）（TWTGM080 のロックと ExclusiveFG の照合を他の feature が行う取り決めが pbi design の公開契約に無い。pbi design を開き直す場合は Phase 5（property-basic-info）が宛先になる）\n\n**答え方**（後に書いたものが優先。束・範囲でまとめて答えられます）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）。区分を `C[指摘の誤り]` `C[対象外]` `C[後で決める]` `C[解釈で対応]` で付ける。対象外・後で決めるに `+` を付けると（例 `C[後で決める+]`）、次の検査から同じ扱いにします\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n- **推奨** — AI の推奨を採用する（修正なら修正案がそのまま修正の指示になります）\n\n回答例: `1:推奨 / 束1:C[後で決める+] 桁数は design で決める / 3〜5:A / 7:D 次回まで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。根拠と修正案は `詳細 <番号>` で表示します。",
+    "allowed_actions": [
+      "decision",
+      "decisions",
+      "resolve",
+      "repair"
+    ],
+    "review_context": {
+      "root": "C:\\project\\Wing",
+      "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+      "call": "design-authoring-generate",
+      "event": "design-authoring-generate",
+      "item": "issue-request",
+      "dispatch_id": "c15e4523af0d4b77b375b728dfdab552",
+      "unit": "design-authoring-generate/design-authoring-generate[issue-request]::end.review",
+      "scope": "feature:issue-request",
+      "run": 1,
+      "snapshot": "2b44c8ad0340045702569ff22b762d148d718b9db870b7f73db4ca00e5303d37",
+      "record_hash": "b055edebfbe680d9c75c781da0db7051c76b06b9ca8ea8fdf0e14b171b1ba1d3"
+    },
+    "review": [
+      {
+        "scope": "feature:issue-request",
+        "run": 1,
+        "number": 1,
+        "current": true,
+        "decision": "",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "ID対応あり・内容不整合（意味判定）。requirements 1.3 は申請者が登録・変更できる状態を受付済・回覧中、受付済・確認中、申請済・差戻しに限り、1.5 は「1.2〜1.4 以外の場合、システムは発行依頼書の登録・変更を受け付けてはならない」とする。一方 design は、起案済・回覧中の申請者が発番で担当エリア・担当エリア名・契約区分・代表局番号・枝番を画面から受け取って TWTGM100 に保存するとしている（§ ドメインモデル の「発番」、§ 設計判断 の判断 1、§ API 契約 の /wtg080/issue）。また 9.3 の「起案済の申請を更新するとき」を「起案済の申請で発番するとき」と読み替え、未起案では担当エリア・契約区分を必須にしないとしている（§ バリデーション設計）。design 自身が「requirements の 1.3・1.5 から意図して外れる」「9.3 の文言から意図して外れる読み方」と書き、根拠を Q-DS-IR-001 としている。Q-DS-IR-001 は今回の confirmed_answers（Q-DS-IR-016〜023）に含まれない",
+        "location": "specs/issue-request/design.md § ドメインモデル（Domain Model） / 発番 ほか 2 か所",
+        "kind": "業務の欠落・矛盾",
+        "severity": "重大",
+        "summary": "発番で担当エリア等を保存する扱いが要件1.3・1.5・9.3と食い違う",
+        "suggestion": "requirements 1.5（または 1.3）に「稟議依頼・修正稟議依頼の起案済・回覧中の申請者は、発番で担当エリア・契約区分・代表局番号・枝番だけを登録・変更できる」を足し、9.3 の「起案済の申請を更新するとき」を「起案済の申請で発番するとき」に直す（Phase 4 への差戻し、または upstream-carryover での一括修正）",
+        "recommendation": "対応せず進める：人の回答（Q-DS-IR-001 の C）に従った意図的な逸脱として design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため。ただし承認済み requirements と両立しない状態は残る",
+        "decided_by": ""
+      },
+      {
+        "scope": "feature:issue-request",
+        "run": 1,
+        "number": 2,
+        "current": true,
+        "decision": "",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "ID対応あり・内容不整合（意味判定）。requirements 2.1 は社外ユーザーの対象を「契約稟議起案会社が自社である発行依頼書と、その社外ユーザー本人が登録した発行依頼書」とする。design は「申請の登録者（TWTGM080.RegisteredPerson）が本人」で比べ、発行依頼書がまだ無い申請は物件申請情報の範囲（pbi design の 6.5）で見るとしている。design 自身が「requirements の文言から意図して外れる読み方」と書き、根拠を Q-DS-IR-014 としている（今回の confirmed_answers に含まれない）",
+        "location": "specs/issue-request/design.md § セキュリティ上の考慮（Security Considerations） / 2.1",
+        "kind": "業務の欠落・矛盾",
+        "severity": "重大",
+        "summary": "2.1の本人が登録した発行依頼書を申請の登録者で比べており要件と食い違う",
+        "suggestion": "requirements 2.1 の「その社外ユーザー本人が登録した発行依頼書」を「その社外ユーザー本人が登録した申請（物件申請情報の登録者）の発行依頼書」に直す",
+        "recommendation": "対応せず進める：人の回答（Q-DS-IR-014）に従った読み方として design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため",
+        "decided_by": ""
+      },
+      {
+        "scope": "feature:issue-request",
+        "run": 1,
+        "number": 3,
+        "current": true,
+        "decision": "",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "ID対応あり・内容不整合（意味判定）。requirements 8.1 と steering/security.md `#### 所有権・エンティティ境界` は「P71 で、キー3 がログインユーザーのグループである行」とし、security.md `### 認証 → 認可の契約（AuthContext）` は権限区分（Kengen_Kbn）と所属グループ（グループID ほか）を別の項目としている。design は LoginUserUtils.getAuthority()（権限区分）をキー3 にして P71 を引くとし、「steering/security.md の『ログインユーザーのグループ』から意図して外れる読み方」と書いている。同じ読み替えは property-basic-info の設計検査 2 回目の指摘 13 で「対応せず進める」（steering の文言は次に開き直すときに直す）とされている",
+        "location": "specs/issue-request/design.md § 発行依頼書登録変更 Service / 作成組織",
+        "kind": "業務の欠落・矛盾",
+        "severity": "重大",
+        "summary": "8.1のログインユーザーのグループを権限区分と読み替えており要件と食い違う",
+        "suggestion": "requirements 8.1 と steering/security.md の「ログインユーザーのグループ」を「ログインユーザーの権限区分（TWTZM010.Kengen_Kbn）」に直す",
+        "recommendation": "対応せず進める：property-basic-info で同じ読み方が判断済みで、上流の文言は Phase 5 の最後にまとめて直す方針とされているため",
+        "decided_by": ""
+      },
+      {
+        "scope": "feature:issue-request",
+        "run": 1,
+        "number": 4,
+        "current": true,
+        "decision": "",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "ID対応あり・内容不整合（意味判定）。requirements 9.6 は「社内ユーザーが所属①または所属②を空にして更新した場合、システムはエラーメッセージを表示し、更新を止めなければならない」とし、選んだ会社による条件を持たない。design の検査表（作成組織 所属①・所属②の行）は「社内ユーザー（かつ選んだ会社が社内）で空ならエラー」とし、「requirements の 9.6 から意図して外れる」と書いている。根拠は item-rules.md の 5",
+        "location": "specs/issue-request/design.md § バリデーション設計 / 9.6",
+        "kind": "業務の欠落・矛盾",
+        "severity": "重大",
+        "summary": "9.6の所属必須に「選んだ会社が社内」の条件を足しており要件と食い違う",
+        "suggestion": "requirements 9.6 に「選んだ作成組織の会社が社内のとき」の条件を足す。または design の条件を 9.6 のとおり社内ユーザーだけに戻す",
+        "recommendation": "対応せず進める：item-rules.md（回答者が渡した資料）に従った意図的な逸脱として design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため",
+        "decided_by": ""
+      },
+      {
+        "scope": "feature:issue-request",
+        "run": 1,
+        "number": 5,
+        "current": true,
+        "decision": "",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "可観測性のうちメトリクス（監視）の柱が未反映。steering/non-functional.md の冒頭の分担と `### 監視 / ヘルス` は「機能固有の監視項目は design の Components and Interfaces」に書くとしているが、design には本 feature の監視項目の有無の記述が無い（ログの柱は `## 機能固有のエラー処理` の「ログ」で反映済み。トレースは non-functional.md が専用の ID を発行しないと定めており、feature 固有に書く事項は無い）。依存先の pbi design は同じ節に「監視：本 feature 固有の監視項目は無い。既存の WiNG の監視に任せる」と書いている",
+        "location": "specs/issue-request/design.md § コンポーネントとインターフェース（Components and Interfaces）",
+        "kind": "業務の欠落・矛盾",
+        "severity": "重大",
+        "summary": "機能固有の監視項目（無いならその旨）がdesignに書かれていない",
+        "suggestion": "`## コンポーネントとインターフェース（Components and Interfaces）` の冒頭の注記の後に「- **監視**: 本 feature 固有の監視項目は無い。既存の WiNG の監視に任せる（`steering/non-functional.md` の `### 監視 / ヘルス`）」を足す",
+        "recommendation": "修正：steering が置き場を design に指定しており、既存の運用に任せる旨を 1 行書けば足りるため",
+        "decided_by": ""
+      },
+      {
+        "scope": "feature:issue-request",
+        "run": 1,
+        "number": 6,
+        "current": true,
+        "decision": "",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "矛盾。steering/tech.md `### 例外処理フロー` は「画面：業務ロジック（Service）」で業務上の失敗を ApplicationException の派生（排他は ExclusiveException）としてメッセージキー付きで投げるとし（BindingResult に積むのは入力チェックの行だけ）、`## コード規約` の排他制御も「ExclusiveFG が一致しなければ ExclusiveException を投げる」と定める。design は WTG-100030 と GEF-000027 を例外にせず BindingResult に積んで同じ画面に戻すとしている（§ 機能固有エラーコード の表の後の注記、§ サービスインターフェース の update・saveDraft・issueNumber のエラー、§ 状態管理 の並行制御、§ 設計判断 の判断 4）。design 自身が「steering/tech.md の方式から意図して外れる」と書いている",
+        "location": "specs/issue-request/design.md § 機能固有エラーコード ほか 2 か所",
+        "kind": "業務の欠落・矛盾",
+        "severity": "重大",
+        "summary": "業務・排他エラーを例外にせずBindingResultに積む方式がtech.mdと食い違う",
+        "suggestion": "steering/tech.md の `### 例外処理フロー` と `## コード規約` の排他制御に「入力を残す必要がある画面は、業務エラー・排他エラーも BindingResult に積んで同じ画面に戻してよい」を足す（Phase 2 への差戻し、または upstream-carryover での一括修正）",
+        "recommendation": "対応せず進める：pbi design と同じ扱いとして design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため",
+        "decided_by": ""
+      },
+      {
+        "scope": "feature:issue-request",
+        "run": 1,
+        "number": 7,
+        "current": true,
+        "decision": "",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "矛盾。steering/tech.md `### 必須ツール` は JDK を「1.7（1.7.0.55）／コンパイルと実行」と定めているが、design の技術スタックは「開発端末の JDK 1.8（-source/-target 1.7）」を開発端末でのコンパイルと自動テストの実行に使うとしている。design 自身が「steering/tech.md から意図して外れる」と書き、根拠を Q-DS-PBI-014（物件基本情報登録変更と同じ）としている",
+        "location": "specs/issue-request/design.md § 技術スタック（Technology Stack） / Infrastructure / Runtime",
+        "kind": "業務の欠落・矛盾",
+        "severity": "重大",
+        "summary": "開発端末のJDK 1.8がtech.mdの必須ツールJDK 1.7と食い違う",
+        "suggestion": "steering/tech.md の `### 必須ツール` に「開発端末は JDK 1.8（-source/-target 1.7）でもよい」を足す（Phase 2 への差戻し、または upstream-carryover での一括修正）",
+        "recommendation": "対応せず進める：pbi design と同じ扱いとして design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため",
+        "decided_by": ""
+      },
+      {
+        "scope": "feature:issue-request",
+        "run": 1,
+        "number": 8,
+        "current": true,
+        "decision": "",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "依存先 specs/property-basic-info/design.md（approved）の公開契約に無い要素を前提にしている。(1) 戻り：/wtg080/return から /wtg070/ へ申請No を渡して forward するとしているが、pbi の API 契約の /wtg070 は「なし（メニューからの新規）」で、申請No を受けて開く口は /wtg070/pushApplicationNo（申請状況一覧から）だけ。遷移元の値（1・2・3）と GET の形も pbi には無い（pbi は「申請No・連番・遷移元を渡す」だけ）。(2) recordNumbering：pbi の入出力・事後条件は「受付済・回覧中にし、承認履歴に発番の行が 1 行増える」だけで、発番日時（Hatsuban_Uketsuke_DateTime）と更新者名を入れること、承認履歴の行の値（判定 \"11\"・審査権限 \"02\" ほか）は書かれていない。requirements 3.3 の発番日時の記録はこれに依存する。(3) 複製：申請者（Application_Name）にログインユーザーのユーザーID を入れる決まり（§ ドメインモデル の複製）は pbi の複製の記述に無い。design 自身が 3 点とも「pbi design にまだ書かれていない。Phase 5 の最後にまとめて直す（upstream-carryover）」と書いている",
+        "location": "specs/issue-request/design.md § データ契約と外部連携（Data Contracts & Integration） / 物件基本情報登録変更との口 ほか 1 か所",
+        "kind": "業務の欠落・矛盾",
+        "severity": "重大",
+        "summary": "pbi designの公開契約に無い前提（戻りの入口・発番日時・複製の申請者）に依存",
+        "suggestion": "pbi design に (1) 申請No を受けて開く初期表示の口（または /wtg080/return の戻り先を /wtg070/pushApplicationNo にする）と遷移元の値 1・2・3、(2) recordNumbering が発番日時・更新者名を入れることと承認履歴の行の値、(3) 発行依頼書の複製で申請者にユーザーID を入れることを足す",
+        "recommendation": "対応せず進める：design に明記され、pbi design は Phase 5 の最後にまとめて直す方針とされているため。直すまでは pbi の実装がこの前提を満たさない",
+        "decided_by": ""
+      },
+      {
+        "scope": "feature:issue-request",
+        "run": 1,
+        "number": 9,
+        "current": true,
+        "decision": "",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "依存先の内部に直接依存している。design は更新・一時保存・発番の最初に、本 feature の Mapper で物件申請情報（TWTGM080）の行を SELECT … FOR UPDATE でロックして ExclusiveFG を照合するとしている（§ 状態管理 の並行制御、§ ドメインモデル の集約とトランザクション境界、§ 依存してよい対象 の依存の制約、§ コンポーネント一覧 の発行依頼書登録変更 Mapper）。TWTGM080 は pbi design が持つ表で、pbi の公開契約（WTG 申請状態サービスの getApplication・resolveTurn・getAuthorities・transit・recordNumbering・getExternalScope と、データ契約の TWTGM100 から読む列）には、他の feature が TWTGM080 の行をロックし ExclusiveFG を照合する口・取り決めが無い。confirmed_answers の Q-DS-IR-022 1. は「TWTGM080 の排他用の値は、発番の recordNumbering が扱います」とするだけで、更新・一時保存での扱いは design が「その確認への回答」として引く回答によるが、その回答は今回の confirmed_answers に含まれない",
+        "location": "specs/issue-request/design.md § 状態管理（State Management） / 並行制御 ほか 3 か所",
+        "kind": "業務の欠落・矛盾",
+        "severity": "重大",
+        "summary": "更新・一時保存でTWTGM080を自Mapperでロック・照合し公開契約を通らない",
+        "suggestion": "次のどちらかを決める。A：WTG 申請状態サービスに申請の行をロックして ExclusiveFG を照合する口（例 lockApplication）を足し、本 feature はそれを呼ぶ（pbi design を upstream-carryover に入れる）。B：本 feature の Mapper から TWTGM080 をロック・照合（書き換えない）することを pbi design のデータ契約に明記する",
+        "recommendation": "質問：pbi の公開契約に口を足すか、直接のロックと照合を公開の取り決めにするかは、依存先の設計に関わる人の判断が要るため",
+        "decided_by": ""
+      }
+    ],
+    "choices": {
+      "kind": "decisions",
+      "questions": [
+        {
+          "id": "1",
+          "header": "#1 重大",
+          "question": "発番で担当エリア等を保存する扱いが要件1.3・1.5・9.3と食い違う（業務の欠落・矛盾・重大）にどう対応しますか？ 差戻し（B）・未対応（D）・別の理由は「その他」で入力",
+          "options": [
+            {
+              "label": "推奨：対応せず進める",
+              "description": "人の回答（Q-DS-IR-001 の C）に従った意図的な逸脱として design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため。ただし承認済み requirements と両立しない状態は残る",
+              "answer": "1:推奨"
+            },
+            {
+              "label": "A 修正",
+              "description": "この工程で直す（修正案：requirements 1.5（または 1.3）に「稟議依頼・修正稟議依頼の起案済・回覧中の申請者は、発番で担当エリア）",
+              "answer": "1:A"
+            },
+            {
+              "label": "C 後で決める",
+              "description": "後の工程で決める事項なので、今は直さずに進める",
+              "answer": "1:C[後で決める] 後の工程で決める"
+            },
+            {
+              "label": "C 対象外",
+              "description": "この工程の対象外なので、直さずに進める",
+              "answer": "1:C[対象外] この工程の対象外"
+            }
+          ],
+          "multiSelect": false
+        },
+        {
+          "id": "2",
+          "header": "#2 重大",
+          "question": "2.1の本人が登録した発行依頼書を申請の登録者で比べており要件と食い違う（業務の欠落・矛盾・重大）にどう対応しますか？ 差戻し（B）・未対応（D）・別の理由は「その他」で入力",
+          "options": [
+            {
+              "label": "推奨：対応せず進める",
+              "description": "人の回答（Q-DS-IR-014）に従った読み方として design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため",
+              "answer": "2:推奨"
+            },
+            {
+              "label": "A 修正",
+              "description": "この工程で直す（修正案：requirements 2.1 の「その社外ユーザー本人が登録した発行依頼書」を「その社外ユーザー本人が登録した申請（）",
+              "answer": "2:A"
+            },
+            {
+              "label": "C 後で決める",
+              "description": "後の工程で決める事項なので、今は直さずに進める",
+              "answer": "2:C[後で決める] 後の工程で決める"
+            },
+            {
+              "label": "C 対象外",
+              "description": "この工程の対象外なので、直さずに進める",
+              "answer": "2:C[対象外] この工程の対象外"
+            }
+          ],
+          "multiSelect": false
+        },
+        {
+          "id": "3",
+          "header": "#3 重大",
+          "question": "8.1のログインユーザーのグループを権限区分と読み替えており要件と食い違う（業務の欠落・矛盾・重大）にどう対応しますか？ 差戻し（B）・未対応（D）・別の理由は「その他」で入力",
+          "options": [
+            {
+              "label": "推奨：対応せず進める",
+              "description": "property-basic-info で同じ読み方が判断済みで、上流の文言は Phase 5 の最後にまとめて直す方針とされているため",
+              "answer": "3:推奨"
+            },
+            {
+              "label": "A 修正",
+              "description": "この工程で直す（修正案：requirements 8.1 と steering/security.md の「ログインユーザーのグループ」を「ログ）",
+              "answer": "3:A"
+            },
+            {
+              "label": "C 後で決める",
+              "description": "後の工程で決める事項なので、今は直さずに進める",
+              "answer": "3:C[後で決める] 後の工程で決める"
+            },
+            {
+              "label": "C 対象外",
+              "description": "この工程の対象外なので、直さずに進める",
+              "answer": "3:C[対象外] この工程の対象外"
+            }
+          ],
+          "multiSelect": false
+        },
+        {
+          "id": "4",
+          "header": "#4 重大",
+          "question": "9.6の所属必須に「選んだ会社が社内」の条件を足しており要件と食い違う（業務の欠落・矛盾・重大）にどう対応しますか？ 差戻し（B）・未対応（D）・別の理由は「その他」で入力",
+          "options": [
+            {
+              "label": "推奨：対応せず進める",
+              "description": "item-rules.md（回答者が渡した資料）に従った意図的な逸脱として design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため",
+              "answer": "4:推奨"
+            },
+            {
+              "label": "A 修正",
+              "description": "この工程で直す（修正案：requirements 9.6 に「選んだ作成組織の会社が社内のとき」の条件を足す。または design の条件を 9）",
+              "answer": "4:A"
+            },
+            {
+              "label": "C 後で決める",
+              "description": "後の工程で決める事項なので、今は直さずに進める",
+              "answer": "4:C[後で決める] 後の工程で決める"
+            },
+            {
+              "label": "C 対象外",
+              "description": "この工程の対象外なので、直さずに進める",
+              "answer": "4:C[対象外] この工程の対象外"
+            }
+          ],
+          "multiSelect": false
+        },
+        {
+          "id": "5",
+          "header": "#5 重大",
+          "question": "機能固有の監視項目（無いならその旨）がdesignに書かれていない（業務の欠落・矛盾・重大）にどう対応しますか？ 差戻し（B）・未対応（D）・別の理由は「その他」で入力",
+          "options": [
+            {
+              "label": "推奨：修正",
+              "description": "steering が置き場を design に指定しており、既存の運用に任せる旨を 1 行書けば足りるため",
+              "answer": "5:推奨"
+            },
+            {
+              "label": "C 後で決める",
+              "description": "後の工程で決める事項なので、今は直さずに進める",
+              "answer": "5:C[後で決める] 後の工程で決める"
+            },
+            {
+              "label": "C 対象外",
+              "description": "この工程の対象外なので、直さずに進める",
+              "answer": "5:C[対象外] この工程の対象外"
+            }
+          ],
+          "multiSelect": false
+        },
+        {
+          "id": "6",
+          "header": "#6 重大",
+          "question": "業務・排他エラーを例外にせずBindingResultに積む方式がtech.mdと食い違う（業務の欠落・矛盾・重大）にどう対応しますか？ 差戻し（B）・未対応（D）・別の理由は「その他」で入力",
+          "options": [
+            {
+              "label": "推奨：対応せず進める",
+              "description": "pbi design と同じ扱いとして design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため",
+              "answer": "6:推奨"
+            },
+            {
+              "label": "A 修正",
+              "description": "この工程で直す（修正案：steering/tech.md の `### 例外処理フロー` と `## コード規約` の排他制御に「入力を残す必要）",
+              "answer": "6:A"
+            },
+            {
+              "label": "C 後で決める",
+              "description": "後の工程で決める事項なので、今は直さずに進める",
+              "answer": "6:C[後で決める] 後の工程で決める"
+            },
+            {
+              "label": "C 対象外",
+              "description": "この工程の対象外なので、直さずに進める",
+              "answer": "6:C[対象外] この工程の対象外"
+            }
+          ],
+          "multiSelect": false
+        },
+        {
+          "id": "7",
+          "header": "#7 重大",
+          "question": "開発端末のJDK 1.8がtech.mdの必須ツールJDK 1.7と食い違う（業務の欠落・矛盾・重大）にどう対応しますか？ 差戻し（B）・未対応（D）・別の理由は「その他」で入力",
+          "options": [
+            {
+              "label": "推奨：対応せず進める",
+              "description": "pbi design と同じ扱いとして design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため",
+              "answer": "7:推奨"
+            },
+            {
+              "label": "A 修正",
+              "description": "この工程で直す（修正案：steering/tech.md の `### 必須ツール` に「開発端末は JDK 1.8（-source/-targ）",
+              "answer": "7:A"
+            },
+            {
+              "label": "C 後で決める",
+              "description": "後の工程で決める事項なので、今は直さずに進める",
+              "answer": "7:C[後で決める] 後の工程で決める"
+            },
+            {
+              "label": "C 対象外",
+              "description": "この工程の対象外なので、直さずに進める",
+              "answer": "7:C[対象外] この工程の対象外"
+            }
+          ],
+          "multiSelect": false
+        },
+        {
+          "id": "8",
+          "header": "#8 重大",
+          "question": "pbi designの公開契約に無い前提（戻りの入口・発番日時・複製の申請者）に依存（業務の欠落・矛盾・重大）にどう対応しますか？ 差戻し（B）・未対応（D）・別の理由は「その他」で入力",
+          "options": [
+            {
+              "label": "推奨：対応せず進める",
+              "description": "design に明記され、pbi design は Phase 5 の最後にまとめて直す方針とされているため。直すまでは pbi の実装がこの前提を満たさない",
+              "answer": "8:推奨"
+            },
+            {
+              "label": "A 修正",
+              "description": "この工程で直す（修正案：pbi design に (1) 申請No を受けて開く初期表示の口（または /wtg080/return の戻り先を ）",
+              "answer": "8:A"
+            },
+            {
+              "label": "C 後で決める",
+              "description": "後の工程で決める事項なので、今は直さずに進める",
+              "answer": "8:C[後で決める] 後の工程で決める"
+            },
+            {
+              "label": "C 対象外",
+              "description": "この工程の対象外なので、直さずに進める",
+              "answer": "8:C[対象外] この工程の対象外"
+            }
+          ],
+          "multiSelect": false
+        },
+        {
+          "id": "9",
+          "header": "#9 重大",
+          "question": "更新・一時保存でTWTGM080を自Mapperでロック・照合し公開契約を通らない（業務の欠落・矛盾・重大）にどう対応しますか？ AI からの質問：pbi の公開契約に口を足すか、直接のロックと照合を公開の取り決めにするかは、依存先の設計に関わる人の判断が要るため　答えて直す場合は「その他」に `9:A <回答>` と入力（回答が修正の指示になる）。差戻し（B）・未対応（D）・別の理由は「その他」で入力",
+          "options": [
+            {
+              "label": "A 修正",
+              "description": "この工程で直す（修正案：次のどちらかを決める。A：WTG 申請状態サービスに申請の行をロックして ExclusiveFG を照合する口（例 lo）",
+              "answer": "9:A"
+            },
+            {
+              "label": "C 後で決める",
+              "description": "後の工程で決める事項なので、今は直さずに進める",
+              "answer": "9:C[後で決める] 後の工程で決める"
+            },
+            {
+              "label": "C 対象外",
+              "description": "この工程の対象外なので、直さずに進める",
+              "answer": "9:C[対象外] この工程の対象外"
+            }
+          ],
+          "multiSelect": false
+        }
+      ]
+    },
+    "next_action": "提示文をそのまま示し、choices の選択肢を選択式の質問で出して、人に選んでもらってください。検査結果を確認し、重大と要判断の指摘に A〜D か「推奨」で答えてください（束・範囲でまとめて答えられます）。修正（A）と AI が直す軽微があれば repair（findings: \"all-fixes\"）で修正に回し、判断が揃い修正が無ければ承認者名を回答してください。",
+    "operation_id": "5ec5ab4336654fb09e25407b82484fcf",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

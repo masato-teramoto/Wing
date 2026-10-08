@@ -1,0 +1,101 @@
+{
+  "status": "ok",
+  "action": "submit",
+  "result": {
+    "unit": "design-authoring-revise/design-authoring-revise[issue-request]::end.review",
+    "flow": "design-authoring-revise",
+    "event": "design-authoring-revise",
+    "item": "issue-request",
+    "gate": "review",
+    "hookPoint": "end",
+    "name": "review",
+    "type": "script",
+    "target": "scripts/approval.py",
+    "isAgent": false,
+    "requiresHuman": true,
+    "calls": [],
+    "targetReview": [
+      "specs/issue-request/design.md"
+    ],
+    "status": "wait",
+    "call": "design-authoring-revise",
+    "dispatch": {
+      "call": "design-authoring-revise",
+      "unit": "design-authoring-revise/design-authoring-revise[issue-request]::end.review",
+      "event": "design-authoring-revise",
+      "item": "issue-request",
+      "status": "wait",
+      "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+      "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[issue-request]::end.review\", \"snapshot\": \"34c5304f0db59d20949c94013be086fd592ffb4e0ac03cd51e4685125cacdbbe\", \"run\": 5, \"inspection_hash\": \"afe453707a56627c1007d09ae9672ed3afa34771c5a606f697db7bebc0f3a221\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 再検査で出なくなり、解消を記録した指摘 2 件\n  - #4-1 発行依頼書が無い複数局の申請は、契約局情報追加も発行依頼書編集も使えず画面から登録できない\n  - #4-2 WTG-100040がServiceの更新・一時保存のエラー欄とAPI契約・分岐フローに載っていない\n\n### 前回の検査（4 回目）からの変更\n\n- `specs/issue-request/design.md`：ドメインモデル（Domain Model）、API 契約（API Contract）、サービスインターフェース（Service Interface）、機能固有エラーコード、エラー時の分岐フロー\n  - 修正の指示に無い節の変更：ドメインモデル（Domain Model）、API 契約（API Contract）、機能固有エラーコード、エラー時の分岐フロー（意図した変更か確かめてください）\n\n### 判断が必要な指摘\n\n**対象**: `specs/issue-request/design.md`（スコープ: 成果物単位（issue-request） / 5 回目）\n**実行した層**: ① / ②\n\n**AI が修正案で直す軽微**（1 件。判断は不要。修正の回で直し、再検査で確かめます）\n- #1 発番のWTG-000002とWTG-100030の判定順が、発番の手順と分岐フローで逆になっている\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n修正（A）と AI が直す軽微は、修正の指示を書かずに修正の回へ回せます（repair の findings に \"all-fixes\"）。AI の推奨を採用していない修正には、修正の指示を書いてください。\n承認を問う前に必要なこと: 未解消: feature:issue-request / run 5 / #1",
+      "id": "06c3ba0058e546e59084df7c4e641135"
+    },
+    "label": "design-authoring-revise / design-authoring-revise [issue-request]",
+    "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[issue-request]::end.review\", \"snapshot\": \"34c5304f0db59d20949c94013be086fd592ffb4e0ac03cd51e4685125cacdbbe\", \"run\": 5, \"inspection_hash\": \"afe453707a56627c1007d09ae9672ed3afa34771c5a606f697db7bebc0f3a221\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 再検査で出なくなり、解消を記録した指摘 2 件\n  - #4-1 発行依頼書が無い複数局の申請は、契約局情報追加も発行依頼書編集も使えず画面から登録できない\n  - #4-2 WTG-100040がServiceの更新・一時保存のエラー欄とAPI契約・分岐フローに載っていない\n\n### 前回の検査（4 回目）からの変更\n\n- `specs/issue-request/design.md`：ドメインモデル（Domain Model）、API 契約（API Contract）、サービスインターフェース（Service Interface）、機能固有エラーコード、エラー時の分岐フロー\n  - 修正の指示に無い節の変更：ドメインモデル（Domain Model）、API 契約（API Contract）、機能固有エラーコード、エラー時の分岐フロー（意図した変更か確かめてください）\n\n### 判断が必要な指摘\n\n**対象**: `specs/issue-request/design.md`（スコープ: 成果物単位（issue-request） / 5 回目）\n**実行した層**: ① / ②\n\n**AI が修正案で直す軽微**（1 件。判断は不要。修正の回で直し、再検査で確かめます）\n- #1 発番のWTG-000002とWTG-100030の判定順が、発番の手順と分岐フローで逆になっている\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n修正（A）と AI が直す軽微は、修正の指示を書かずに修正の回へ回せます（repair の findings に \"all-fixes\"）。AI の推奨を採用していない修正には、修正の指示を書いてください。\n承認を問う前に必要なこと: 未解消: feature:issue-request / run 5 / #1",
+    "allowed_actions": [
+      "decision",
+      "decisions",
+      "resolve",
+      "repair"
+    ],
+    "review_context": {
+      "root": "C:\\project\\Wing",
+      "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+      "call": "design-authoring-revise",
+      "event": "design-authoring-revise",
+      "item": "issue-request",
+      "dispatch_id": "06c3ba0058e546e59084df7c4e641135",
+      "unit": "design-authoring-revise/design-authoring-revise[issue-request]::end.review",
+      "scope": "feature:issue-request",
+      "run": 5,
+      "snapshot": "34c5304f0db59d20949c94013be086fd592ffb4e0ac03cd51e4685125cacdbbe",
+      "record_hash": "17404c421052b5a49df84507c2ca02c7f24ab77666e40ff2e807d1a7a4743485"
+    },
+    "review": [
+      {
+        "scope": "feature:issue-request",
+        "run": 5,
+        "number": 1,
+        "current": true,
+        "decision": "修正",
+        "reason": "軽微（AIDD 内部の決まりごと）のため、AI が修正案で直す",
+        "open": true,
+        "resolved": false,
+        "description": "今回変わった § エラー時の分岐フロー の図は、更新・一時保存・発番の要求をまず「取り直した申請が…その操作ができる」（できない → WTG-100030）で判定し、発番は「一致・発番」の枝から「区分1 の入力チェック 必須・桁・形式」（エラー → WTG-000002 ほか）へ進む。つまり発番では WTG-100030 の判定が先で、担当エリア・契約区分の必須（WTG-000002。§ バリデーション設計 の「発番」：担当エリアと契約区分の必須だけ）が後。一方、§ 発行依頼書登録変更 Service の「発番の手順」1. は「担当エリア・契約区分が空なら WTG-000002。getApplication で申請を取り直し、操作の可否の判定で発番できるかを確かめる（できなければ WTG-100030）」で、必須の検査が先。§ サービスインターフェース（Service Interface） の 発番（issueNumber）のエラーの列も WTG-000002 → WTG-100030 の順に書いている。更新・一時保存は図と「更新の手順」（操作の可否 → TWTGM100 の照合・WTG-100040 → 開いている行の照合 → 入力チェック）が一致しており、食い違うのは発番だけ。番でない人が担当エリアを空にして発番を送ったときに、どちらのキーが返るかが文書の中で 2 通りに読める（意味判定：要件 3.5・9.3 の実現の記述の対応が取れていない）",
+        "location": "specs/issue-request/design.md § エラー時の分岐フロー / 発番 ほか 2 か所",
+        "kind": "文書間の参照",
+        "severity": "軽微",
+        "summary": "発番のWTG-000002とWTG-100030の判定順が、発番の手順と分岐フローで逆になっている",
+        "suggestion": "§ エラー時の分岐フロー の図で、発番は最初に「担当エリア・契約区分が空」→ WTG-000002 の分岐を置いてから C（操作の可否）へ進むようにし、D の「一致・発番」の枝は更新・一時保存だけにする（発番の手順 1. とサービスインターフェースのエラーの列に合わせる）。あるいは発番の手順 1. を図に合わせて「getApplication で取り直して操作の可否を判定 → 担当エリア・契約区分の必須」の順に直し、エラーの列の順も入れ替える。どちらか一方にそろえる",
+        "recommendation": "修正：同じ文書の中の記述の順をそろえるだけで、業務の新しい事実は要らないため",
+        "decided_by": "system（自動）"
+      }
+    ],
+    "choices": {
+      "kind": "repair",
+      "questions": [
+        {
+          "id": "repair",
+          "header": "修正に回す",
+          "question": "修正（A）の指摘と AI が直す軽微（1 件）を修正の回へ回しますか？",
+          "options": [
+            {
+              "label": "修正案のとおり修正に回す",
+              "description": "推奨を採用した修正と軽微は、修正案がそのまま指示になる",
+              "answer": "repair:all-fixes"
+            },
+            {
+              "label": "修正の指示を自分で書く",
+              "description": "指示を書きたい指摘がある",
+              "answer": "repair:manual"
+            }
+          ],
+          "multiSelect": false
+        }
+      ]
+    },
+    "next_action": "提示文をそのまま示し、choices の選択肢を選択式の質問で出して、人に選んでもらってください。検査結果を確認し、重大と要判断の指摘に A〜D か「推奨」で答えてください（束・範囲でまとめて答えられます）。修正（A）と AI が直す軽微があれば repair（findings: \"all-fixes\"）で修正に回し、判断が揃い修正が無ければ承認者名を回答してください。",
+    "operation_id": "1a690422d4be43a591fe0ecdf80ab73d",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

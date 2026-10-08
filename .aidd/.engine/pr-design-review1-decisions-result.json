@@ -1,0 +1,163 @@
+{
+  "status": "ok",
+  "action": "respond",
+  "result": {
+    "status": "wait",
+    "allowed_actions": [
+      "decision",
+      "decisions",
+      "resolve",
+      "repair"
+    ],
+    "review_context": {
+      "root": "C:\\project\\Wing",
+      "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+      "call": "design-authoring-generate",
+      "event": "design-authoring-generate",
+      "item": "print-report",
+      "dispatch_id": "c82055d7fefa4d65adc93f267bbdcb08",
+      "unit": "design-authoring-generate/design-authoring-generate[print-report]::end.review",
+      "scope": "feature:print-report",
+      "run": 1,
+      "snapshot": "11e053a8df266806847decd0490b284d93884e68a9a415405ba270a9fd126da4",
+      "record_hash": "0b2b2a4bf4f57717fc6534b6bce75d29c3a4d04437f1e2a95b689d59d4313ff4"
+    },
+    "review": [
+      {
+        "scope": "feature:print-report",
+        "run": 1,
+        "number": 1,
+        "current": true,
+        "decision": "修正",
+        "reason": "AI 推奨を採用: 回答（Q-DS-PR-012 の 4）の範囲で、呼ぶ側と時期を書き分ければ揃うため",
+        "open": true,
+        "resolved": false,
+        "description": "意味判定（3.6・3.1・3.2。ID 対応あり・記述が両立しない）。Service の帳票の作成の手順 9 は「成功でも失敗でも、作った編集用 Excel・PDF・QR の画像を finally の Files.deleteIfExists で消す。PDF は Controller が応答に書き出したあとで消す」、createReport の出力は「PDF の一時ファイルと、利用者に見せるファイル名」、deleteTempFiles は別のメソッド。一方 § 印刷・閲覧用帳票 Controller の データ所有権 / 不変条件 は「PDF を書き出したあとの一時ファイルの削除は Service の finally に任せる」。deleteTempFiles を誰がいつ呼ぶかが書かれておらず、createReport の finally で PDF を消すと Controller が書き出せない。全箇所：§ サービスインターフェース（Service Interface）の手順 9 と deleteTempFiles の行、§ 印刷・閲覧用帳票 Controller の データ所有権 / 不変条件",
+        "location": "specs/print-report/design.md § サービスインターフェース（Service Interface） / deleteTempFiles ほか 1 か所",
+        "kind": "業務のあいまい・不足",
+        "severity": "要判断",
+        "summary": "PDF の一時ファイルを誰がいつ消すかが、Service と Controller の記述で食い違う",
+        "suggestion": "「createReport は途中で失敗したら作ったファイルをすべて消して例外を投げ、成功したら PDF・編集用 Excel・QR の画像のパスを返す。Controller は PDF を応答に書き出す処理を try で囲み、finally で Service の deleteTempFiles を呼ぶ」と、Service の手順 9 と Controller の データ所有権 / 不変条件 を同じ書き方に揃える",
+        "recommendation": "修正：回答（Q-DS-PR-012 の 4）の範囲で、呼ぶ側と時期を書き分ければ揃うため",
+        "decided_by": "Junichi Noumi"
+      },
+      {
+        "scope": "feature:print-report",
+        "run": 1,
+        "number": 2,
+        "current": true,
+        "decision": "修正",
+        "reason": "。{0} は審査フェーズの名称、{1} は状態の名称（申請が無ければどちらも空）、{2} は「閲覧」か「印刷」。物件基本情報登録変更の WTG-100030 と同じ並び",
+        "open": true,
+        "resolved": false,
+        "description": "意味判定（3.4・3.5 の拒否の表示）。pbi design § 機能固有エラーコード の WTG-100030 の文言は「ステータス、状態区分、操作の組み合わせが不正です。ステータス：{0}、状態区分：{1}、操作：{2}」。本書の § バリデーション設計 のメッセージ例は「（物件基本情報登録変更で決めた文言）」、§ サービスインターフェース（Service Interface） は「ApplicationException を投げる：WTG-100030」だけで、{0}〜{2} に入れる値（申請が無い・社外ユーザーの範囲外・発行依頼書か代表局が無いときを含む）が書かれていない。回答 Q-DS-PR-011 の 2・3 と Q-DS-PR-014 は「WTG-100030 で止める」「既存の文言」までで、差し込む値は決めていない。全箇所：§ 機能固有エラーコード の WTG-100030 の行、§ バリデーション設計 の出力の条件の行",
+        "location": "specs/print-report/design.md § 機能固有エラーコード / WTG-100030 ほか 1 か所",
+        "kind": "業務のあいまい・不足",
+        "severity": "要判断",
+        "summary": "WTG-100030 の {0}〜{2} に入れる値が無く、申請が無いときなどの表示が定まらない",
+        "suggestion": "次のどれにするか決める。A：{0}・{1} に申請の審査フェーズ・状態の名称（申請が無ければ空）、{2} に「閲覧」または「印刷」を入れる。B：{0}〜{2} をすべて空にする。C：その他",
+        "recommendation": "質問：エラー画面に出る文言は利用者に見える値で、回答に無いため",
+        "decided_by": "Junichi Noumi"
+      },
+      {
+        "scope": "feature:print-report",
+        "run": 1,
+        "number": 3,
+        "current": true,
+        "decision": "修正",
+        "reason": "修正案の B。削除の失敗は ERROR でファイルのパスを出し、処理は止めない（個人情報を含むファイルが残るので運用で気づけるようにする）。変換・接続の失敗は DS-100015 の文言とスタックトレースを ERROR で出す、でよい",
+        "open": true,
+        "resolved": false,
+        "description": "非機能方針の反映を突合（上流→下流）。steering/non-functional.md の ### ログ方針 / #### ログレベル は ERROR（処理を続けられない例外）・INFO（処理の開始・終了と件数）・DEBUG の 3 つで、#### ログフィールド標準 の禁止事項 1 は「文言を直接書かず、メッセージID から文言を取得してログに出す」。本書は「一時ファイルを消すのに失敗したときはログに出すだけ」（§ 機能固有のエラー処理（Error Handling）のログ、§ サービスインターフェース（Service Interface）の deleteTempFiles）で、レベルとメッセージID が無い。変換・接続の失敗の「ログに ERROR とスタックトレース」も、どのメッセージID の文言を出すか（DS-100015 か）が書かれていない",
+        "location": "specs/print-report/design.md § 機能固有のエラー処理（Error Handling） / ログ",
+        "kind": "業務のあいまい・不足",
+        "severity": "要判断",
+        "summary": "一時ファイルの削除に失敗したときのログのレベルとメッセージID が決まっていない",
+        "suggestion": "次を決めて § 機能固有のエラー処理（Error Handling）のログに足す。削除の失敗：A：INFO で既存のキーの文言とファイルのパスを出す。B：ERROR で出す（処理は止めない）。C：その他。あわせて、変換・接続の失敗の ERROR ログは DS-100015 の文言とスタックトレースを出す、でよいか",
+        "recommendation": "質問：削除の失敗は処理を止めない事象で、steering のレベルの用途にそのまま当てはまるものが無いため",
+        "decided_by": "Junichi Noumi"
+      },
+      {
+        "scope": "feature:print-report",
+        "run": 1,
+        "number": 4,
+        "current": true,
+        "decision": "修正",
+        "reason": "修正案の B。原本の読込みの失敗は GEF-000058（{0}＝「原本エクセルファイル」。requirements 1.2 と同じ扱い）、原本の写し・保存・QR の生成の失敗は DS-100015。どちらも ERROR とスタックトレースを出し、一時ファイルは finally で消す",
+        "open": true,
+        "resolved": false,
+        "description": "意味判定（要件 4 の異常系）。§ サービスインターフェース（Service Interface）の帳票の作成の手順 4〜7（原本を一時ファイルの置き場へ写す、POI で開いて値を入れる、数式を計算して写す、QR の画像を貼る、保存）に失敗したときの扱いが無く、§ エラー時の分岐フロー の F（原本を写して値を入れ…保存）にも失敗の分岐が無い。§ 機能固有エラーコード は WTG-100030・DS-000084・GEF-000058・DS-100015 の 4 つで、DS-100015 は「PDF への変換、または OpenOffice への接続に失敗した（4.1）」に限っている。写しの失敗（書込みの権限・容量）、POI での原本の読込みの失敗、POI が計算できない関数（判断 2 の採用による影響）での失敗が、どのキー・ログで止まるかが読めない。全箇所：§ エラー時の分岐フロー、§ サービスインターフェース（Service Interface）の手順 4〜8",
+        "location": "specs/print-report/design.md § エラー時の分岐フロー ほか 1 か所",
+        "kind": "業務のあいまい・不足",
+        "severity": "要判断",
+        "summary": "原本の写し・POI での読込みと保存・QR 生成に失敗したときのキーとログが決まっていない",
+        "suggestion": "次のどれにするか決める。A：変換の失敗と同じく ERROR とスタックトレースを出し DS-100015 で止める（一時ファイルは finally で消す）。B：原本の読込みの失敗は GEF-000058（{0}＝「原本エクセルファイル」）、それ以外は DS-100015。C：その他",
+        "recommendation": "質問：利用者に見せるメッセージの選択で、回答（Q-DS-PR-013・Q-DS-PR-014）は変換・接続の失敗までしか決めていないため",
+        "decided_by": "Junichi Noumi"
+      },
+      {
+        "scope": "feature:print-report",
+        "run": 1,
+        "number": 5,
+        "current": true,
+        "decision": "修正",
+        "reason": "。ZMENUAUTH は修正案のとおり。P89 の行と原本の配備は、INSERT 文と配備の手順を本 feature の tasks で作り、投入と配備の実施は発注者が導入手順書に沿って行う（ZMENUAUTH と同じ分担）",
+        "open": true,
+        "resolved": false,
+        "description": "根拠の飛躍。本書 § このスペックが持たない責務（Out of Boundary）は「コードマスタ P89 の行と、ZMENUAUTH の PWTGO072 の行の投入、原本の配備 → 発注者」。回答 Q-DS-PR-011 の 4 は「足す行はリリースのデータ投入（INSERT 文）として tasks に入れます。PWTGO073 も同じ扱いです」で、§ 移行方針（Migration Strategy）も「リリースのデータ投入（INSERT 文）として投入する」と書く。INSERT 文を本 feature の成果物として作るのかが § このスペックが持つ責務（This Spec Owns）に無く、委譲の記述と読み分けられない。P89 の行の投入と原本の配備を発注者が行う根拠も requirements・回答に無い（回答 Q-DS-PR-012 の 1 は「この行は新しく追加します」、Q-DS-PR-001 の 3 は「配備のときに 2. のフォルダへ写します」まで）。探した根拠：specs/print-report/requirements.md、steering/*.md、confirmed_answers。全箇所：§ このスペックが持たない責務（Out of Boundary）、§ このスペックが持つ責務（This Spec Owns）、§ 移行方針（Migration Strategy）の段階分け",
+        "location": "specs/print-report/design.md § このスペックが持たない責務（Out of Boundary） / ZMENUAUTH ほか 2 か所",
+        "kind": "業務のあいまい・不足",
+        "severity": "要判断",
+        "summary": "ZMENUAUTH の行の投入を発注者に任せているが、回答は tasks に INSERT 文を入れるとしている",
+        "suggestion": "§ このスペックが持つ責務（This Spec Owns）に「ZMENUAUTH の PWTGO072・PWTGO073 の行を足す INSERT 文（リリースのデータ投入。tasks で作る）」を足し、§ このスペックが持たない責務（Out of Boundary）は投入の実施だけを発注者に任せる形に直す。P89 の行の投入と原本の配備を誰が行うかは、回答者に確かめる（A：発注者が導入手順書に沿って行う。B：本 feature のリリース作業に含める。C：その他）",
+        "recommendation": "修正：ZMENUAUTH は回答どおりに書き分けられる。P89 と原本の配備の担い手は回答者への確認が要る",
+        "decided_by": "Junichi Noumi"
+      },
+      {
+        "scope": "feature:print-report",
+        "run": 1,
+        "number": 6,
+        "current": true,
+        "decision": "修正",
+        "reason": "軽微（AIDD 内部の決まりごと）のため、AI が修正案で直す",
+        "open": true,
+        "resolved": false,
+        "description": "出典不明。本書は「次の行は隠す：タイトルの行 2、UQ担当者入力欄から案件G までの行 4〜13、その他事項…の行 86〜102、添付資料の行 107〜112。原本で隠してある行（1・27・32・40・48・56・64・68）は隠したまま。契約者区分が空の関係者の欄（行 r〜r＋7）も隠す」。本書が正とする項目一覧（_handoff/phase5-print-report-items.md）3 章「印刷・閲覧用帳票(入力フォーム (契約情報))」の特記事項は「4行目～12行目」「85行目～101行目」「106行目～111行目」「27行目～66行目（関係者①〜⑤）」「26・67・31・39・55・63 行目を非表示」。本書の入力フォームのセル（D86・D108・関係者の先頭行 28 など）とは合っているが、項目一覧と行番号が違う理由（原本から読み直したこと）が書かれていない。原本（.xlsm）の中身は今回の検査では開いて確かめていない",
+        "location": "specs/print-report/design.md § ドメインモデル（Domain Model） / 発行依頼書のページ（RWTG071）",
+        "kind": "出典・根拠",
+        "severity": "軽微",
+        "summary": "隠す行の番号が項目一覧 3 章の行番号と違い、原本から読み直した旨が書かれていない",
+        "suggestion": "発行依頼書のページの項目に「行番号は原本から読み取った。項目一覧 3 章の特記事項の行番号（4〜12・85〜101・106〜111・27〜66・26/31/39/55/63/67）は帳票設計の資料の行で、原本の行とは違う」と出典を足す",
+        "recommendation": "修正：出典の追記で直せるため",
+        "decided_by": "system（自動）"
+      }
+    ],
+    "choices": {
+      "kind": "repair",
+      "questions": [
+        {
+          "id": "repair",
+          "header": "修正に回す",
+          "question": "修正（A）の指摘と AI が直す軽微（6 件）を修正の回へ回しますか？",
+          "options": [
+            {
+              "label": "修正案のとおり修正に回す",
+              "description": "推奨を採用した修正と軽微は、修正案がそのまま指示になる",
+              "answer": "repair:all-fixes"
+            },
+            {
+              "label": "修正の指示を自分で書く",
+              "description": "指示を書きたい指摘がある",
+              "answer": "repair:manual"
+            }
+          ],
+          "multiSelect": false
+        }
+      ]
+    },
+    "next_action": "提示文をそのまま示し、choices の選択肢を選択式の質問で出して、人に選んでもらってください。検査結果を確認し、重大と要判断の指摘に A〜D か「推奨」で答えてください（束・範囲でまとめて答えられます）。修正（A）と AI が直す軽微があれば repair（findings: \"all-fixes\"）で修正に回し、判断が揃い修正が無ければ承認者名を回答してください。",
+    "operation_id": "56266a4d16d745ba8fdf9cde8aec36d2",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

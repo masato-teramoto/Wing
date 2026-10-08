@@ -1,0 +1,37 @@
+{
+ "operation_id": "2989a60f11194e21b467ec5c36e4f751",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[issue-request]::run",
+  "event": "design-authoring-revise",
+  "item": "issue-request",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "eeffc0b5d35f4c5f930514012d0158a1"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/issue-request/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "design",
+    "scope": "feature:issue-request",
+    "run": 2,
+    "number": 5
+   },
+   {
+    "phase": "design",
+    "scope": "feature:issue-request",
+    "run": 2,
+    "number": 6
+   }
+  ],
+  "return_candidates": [],
+  "summary": "2 回目 #5：canOperate を使わず、本 feature の Service の「操作の可否の判定」（getApplication で取り直し、resolveTurn・getAuthorities で番と審査権限を取り、画面を開いたときと同じ規則 1.2〜1.4 で判定。一時保存は起案者の番、発番は起案済・回覧中で申請者の番。最後の確定は recordNumbering。できなければ WTG-100030）を足し、canOperate を参照していた箇所をすべてこれに置き換えた。依存先から canOperate を外した。2 回目 #6：「照合する行が無いときの扱い」（開いていた行が見つからなければ GEF-000027、契約局情報追加は TWTGM100 を FOR UPDATE でロックして照合し連番が既にあれば GEF-000027、発行依頼書の新規登録は同じ申請No の行があるか一意キー違反なら GEF-000027。どれも BindingResult に積む）を足し、並行制御から参照した。要件トレーサビリティ自己診断（issue-request）：抽出 62 件、対応あり 62 件、未対応 0 件。"
+ }
+}

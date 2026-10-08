@@ -1,0 +1,16 @@
+{
+ "operation_id": "3cae074d68c04670a9ac0fee2bc5b560",
+ "dispatch": {
+  "call": "design-authoring-generate",
+  "unit": "design-authoring-generate/design-authoring-generate[issue-request-tutorial]::end.design-check",
+  "event": "design-authoring-generate",
+  "item": "issue-request-tutorial",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "17eea5691f1c451997f340973f48ee35"
+ },
+ "result": {
+  "status": "completed"
+ }
+}

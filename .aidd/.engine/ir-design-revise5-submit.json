@@ -1,0 +1,31 @@
+{
+ "operation_id": "8c21cbadce1e40808a794ccbe2bc1fa6",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[issue-request]::run",
+  "event": "design-authoring-revise",
+  "item": "issue-request",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "fc6ad790903c4fa2bb7da31fd403b53d"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/issue-request/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "design",
+    "scope": "feature:issue-request",
+    "run": 5,
+    "number": 1
+   }
+  ],
+  "return_candidates": [],
+  "summary": "5 回目 #1（軽微）：エラー時の分岐フローを、発番の手順 1. とサービスインターフェースのエラーの列に合わせ、発番は最初に担当エリア・契約区分の必須（WTG-000002）を判定してから操作の可否（WTG-100030）へ進む順にした。発番は行のロック・入力チェックの枝を通らず更新へ進み、排他・入力チェックの枝は更新・一時保存だけにした。要件トレーサビリティ自己診断（issue-request）：抽出 62 件、対応あり 62 件、未対応 0 件。"
+ }
+}

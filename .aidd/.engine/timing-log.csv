@@ -112,3 +112,99 @@
 2026-10-07 20:02:46,5,issue-request,1,AI作成開始,design 本体の書き起こし
 2026-10-07 20:17:15,5,issue-request,1,AI提出,design を書き起こし。追加の質問 8 件
 2026-10-07 20:21:13,5,issue-request,1,中断,ユーザーの指示で中断（追加の質問 8 件と残り 5 機能の質問の回答待ち）
+2026-10-08 07:56:48,5,-,-,環境更新,α3.1 の資材を配置（ファイルの更新時刻。配置作業はユーザー）
+2026-10-08 08:21:57,5,-,-,環境更新,環境の再確認（doctor・validate・状態の照合）を終えてコミット fcecca7
+2026-10-08 08:22:13,5,issue-request,1,再開,α3.1 へ更新後に再開（追加の質問 8 件を再提示）
+2026-10-08 08:37:21,5,issue-request,1,回答受領,Q-DS-IR-016〜023（追加の質問 8 件）
+2026-10-08 08:38:10,5,issue-request,1,AI作成開始,追加の質問 8 件の回答を design に反映
+2026-10-08 09:03:45,5,issue-request,1,AI提出,回答 8 件と確認 2 件を design に反映し completed で提出
+2026-10-08 09:04:24,5,issue-request,1,AI検査開始,design-check（1 回目）
+2026-10-08 09:10:35,5,issue-request,1,AI検査終了,design-check（1 回目）指摘 9 件
+2026-10-08 09:11:08,5,issue-request,1,レビュー提示,design-check 1 回目（重大 9 件）
+2026-10-08 10:13:48,5,issue-request,1,回答受領,design-check 1 回目の判断 9 件
+2026-10-08 10:20:44,5,issue-request,2,AI作成開始,修正の回（#5・#9 と軽微）
+2026-10-08 10:22:08,5,issue-request,2,AI提出,修正の回（#5・#9）を提出
+2026-10-08 10:22:46,5,issue-request,2,AI検査開始,design-check（2 回目）
+2026-10-08 10:27:04,5,issue-request,2,AI検査終了,design-check（2 回目）指摘 6 件
+2026-10-08 10:27:41,5,issue-request,2,レビュー提示,design-check 2 回目（重大 6 件）
+2026-10-08 10:40:41,5,issue-request,2,回答受領,design-check 2 回目の判断 6 件
+2026-10-08 10:42:16,5,issue-request,3,AI作成開始,修正の回（2 回目 #5・#6）
+2026-10-08 10:43:00,5,issue-request,3,AI提出,修正の回（2 回目 #5・#6）を提出
+2026-10-08 10:43:29,5,issue-request,3,AI検査開始,design-check（3 回目）
+2026-10-08 10:46:33,5,issue-request,3,AI検査終了,design-check（3 回目）指摘 2 件
+2026-10-08 10:47:03,5,issue-request,3,レビュー提示,design-check 3 回目
+2026-10-08 10:58:20,5,issue-request,3,回答受領,design-check 3 回目の判断 2 件
+2026-10-08 11:02:28,5,issue-request,4,AI作成開始,修正の回（3 回目 #1・#2）
+2026-10-08 11:03:56,5,issue-request,4,AI提出,修正の回（3 回目 #1・#2）を提出
+2026-10-08 11:04:26,5,issue-request,4,AI検査開始,design-check（4 回目）
+2026-10-08 11:07:15,5,issue-request,4,AI検査終了,design-check（4 回目）指摘 2 件
+2026-10-08 11:07:45,5,issue-request,4,レビュー提示,design-check 4 回目
+2026-10-08 11:11:59,5,issue-request,4,回答受領,design-check 4 回目の判断 1 件
+2026-10-08 11:12:48,5,issue-request,5,AI作成開始,修正の回（4 回目 #1・#2）
+2026-10-08 11:13:19,5,issue-request,5,AI提出,修正の回（4 回目 #1・#2）を提出
+2026-10-08 11:13:50,5,issue-request,5,AI検査開始,design-check（5 回目）
+2026-10-08 11:16:43,5,issue-request,5,AI検査終了,design-check（5 回目）指摘 1 件（軽微）
+2026-10-08 11:17:13,5,issue-request,5,レビュー提示,design-check 5 回目
+2026-10-08 11:25:05,5,issue-request,6,AI作成開始,修正の回（5 回目 #1 軽微）
+2026-10-08 11:25:27,5,issue-request,6,AI提出,修正の回（5 回目 #1）を提出
+2026-10-08 11:25:58,5,issue-request,6,AI検査開始,design-check（6 回目）
+2026-10-08 11:28:09,5,issue-request,6,AI検査終了,design-check（6 回目）指摘 0 件
+2026-10-08 11:28:41,5,issue-request,6,レビュー提示,design-check 6 回目（承認の可否）
+2026-10-08 11:30:03,5,issue-request,6,回答受領,承認（Junichi Noumi）
+2026-10-08 11:30:29,5,issue-request,6,AI記録完了,design 承認を記録（approved）
+2026-10-08 11:38:46,5,issue-request-tutorial,1,回答受領,Q-DS-TU-001〜008（別ファイルの画面の流れ・設定値の対応つき）
+2026-10-08 11:40:47,5,issue-request-tutorial,1,AI記録完了,質問 8 件を提出し回答を answer で記録
+2026-10-08 11:41:15,5,issue-request-tutorial,1,AI作成開始,design 本体の書き起こし
+2026-10-08 11:47:58,5,issue-request-tutorial,1,AI提出,design を書き起こし completed で提出
+2026-10-08 11:48:32,5,issue-request-tutorial,1,AI検査開始,design-check（1 回目）
+2026-10-08 11:54:11,5,issue-request-tutorial,1,AI検査終了,design-check（1 回目）指摘 3 件
+2026-10-08 11:54:44,5,issue-request-tutorial,1,レビュー提示,design-check 1 回目（重大 3 件）
+2026-10-08 11:59:44,5,issue-request-tutorial,1,回答受領,design-check 1 回目の判断 3 件
+2026-10-08 12:01:25,5,issue-request-tutorial,2,AI作成開始,修正の回（#2・#3）
+2026-10-08 12:01:56,5,issue-request-tutorial,2,AI提出,修正の回（#2・#3）を提出
+2026-10-08 12:02:31,5,issue-request-tutorial,2,AI検査開始,design-check（2 回目）
+2026-10-08 12:04:30,5,issue-request-tutorial,2,AI検査終了,design-check（2 回目）指摘 0 件
+2026-10-08 12:05:06,5,issue-request-tutorial,2,レビュー提示,design-check 2 回目
+2026-10-08 12:08:23,5,issue-request-tutorial,2,回答受領,承認（Junichi Noumi）
+2026-10-08 12:08:43,5,issue-request-tutorial,2,AI記録完了,design 承認を記録（approved）
+2026-10-08 12:25:54,5,print-report,1,回答受領,Q-DS-PR-001〜015（別ファイルの項目一覧・原本 xlsm つき）
+2026-10-08 12:28:10,5,print-report,1,AI記録完了,質問 15 件を提出し回答を answer で記録
+2026-10-08 12:28:10,5,print-report,1,AI作成開始,design 本体の書き起こし
+2026-10-08 12:41:38,5,print-report,1,AI提出,design を書き起こし completed で提出
+2026-10-08 12:42:15,5,print-report,1,AI検査開始,design-check（1 回目）
+2026-10-08 12:51:13,5,print-report,1,AI検査終了,design-check（1 回目）指摘 6 件
+2026-10-08 12:51:50,5,print-report,1,レビュー提示,design-check 1 回目
+2026-10-08 13:40:45,5,print-report,1,回答受領,design-check 1 回目の判断 5 件
+2026-10-08 13:45:09,5,print-report,2,AI作成開始,修正の回（#1〜#6）
+2026-10-08 13:46:03,5,print-report,2,AI提出,修正の回（#1〜#6）を提出
+2026-10-08 13:46:41,5,print-report,2,AI検査開始,design-check（2 回目）
+2026-10-08 13:50:02,5,print-report,2,AI検査終了,design-check（2 回目）指摘 1 件
+2026-10-08 13:50:43,5,print-report,2,レビュー提示,design-check 2 回目
+2026-10-08 14:18:07,5,print-report,3,AI作成開始,修正の回（2 回目 #1 軽微）
+2026-10-08 14:18:07,5,print-report,3,AI提出,修正の回（2 回目 #1）を提出
+2026-10-08 14:18:46,5,print-report,3,AI検査開始,design-check（3 回目）
+2026-10-08 14:21:21,5,print-report,3,AI検査終了,design-check（3 回目）指摘 1 件
+2026-10-08 14:22:00,5,print-report,3,レビュー提示,design-check 3 回目
+2026-10-08 14:27:12,5,print-report,3,回答受領,design-check 3 回目の判断 1 件
+2026-10-08 14:28:49,5,print-report,4,AI作成開始,修正の回（3 回目 #1）
+2026-10-08 14:29:05,5,print-report,4,AI提出,修正の回（3 回目 #1）を提出
+2026-10-08 14:29:43,5,print-report,4,AI検査開始,design-check（4 回目）
+2026-10-08 14:32:21,5,print-report,4,AI検査終了,design-check（4 回目）指摘 0 件
+2026-10-08 14:33:00,5,print-report,4,レビュー提示,design-check 4 回目（承認の可否）
+2026-10-08 14:38:58,5,print-report,4,回答受領,承認（Junichi Noumi）
+2026-10-08 14:39:21,5,print-report,4,AI記録完了,design 承認を記録（approved）
+2026-10-08 15:04:07,5,application-status-search,1,回答受領,Q-DS-AS-001〜010（別ファイルの検索条件の表つき）
+2026-10-08 15:06:10,5,application-status-search,1,AI記録完了,質問 10 件を提出し回答を answer で記録
+2026-10-08 15:06:10,5,application-status-search,1,AI作成開始,design 本体の書き起こし
+2026-10-08 15:10:44,5,application-status-search,1,AI提出,design を書き起こし completed で提出
+2026-10-08 15:11:25,5,application-status-search,1,AI検査開始,design-check（1 回目）
+2026-10-08 15:19:18,5,application-status-search,1,AI検査終了,design-check（1 回目）指摘 4 件
+2026-10-08 15:20:00,5,application-status-search,1,レビュー提示,design-check 1 回目
+2026-10-08 15:27:07,5,application-status-search,1,回答受領,design-check 1 回目の判断 4 件
+2026-10-08 15:28:34,5,application-status-search,2,AI作成開始,修正の回（#1〜#4）
+2026-10-08 15:28:49,5,application-status-search,2,AI提出,修正の回（#1〜#4）を提出
+2026-10-08 15:29:31,5,application-status-search,2,AI検査開始,design-check（2 回目）
+2026-10-08 15:32:21,5,application-status-search,2,AI検査終了,design-check（2 回目）指摘 0 件
+2026-10-08 15:33:07,5,application-status-search,2,レビュー提示,design-check 2 回目（承認の可否）
+2026-10-08 15:44:45,5,application-status-search,2,回答受領,承認（Junichi Noumi）
+2026-10-08 15:45:08,5,application-status-search,2,AI記録完了,design 承認を記録（approved）

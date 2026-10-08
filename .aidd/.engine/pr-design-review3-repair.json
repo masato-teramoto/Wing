@@ -1,0 +1,30 @@
+{
+ "operation_id": "0daedb0c23664c95a1fd5d78f97543c9",
+ "action": "repair",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[print-report]::end.review",
+  "event": "design-authoring-revise",
+  "item": "print-report",
+  "status": "wait",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[print-report]::end.review\", \"snapshot\": \"46ecf7ccdaff68177ad95279a8ea5465de69731af58414e98b7f2ec70e97e1a3\", \"run\": 3, \"inspection_hash\": \"db492017aaaf179f9b94c1daaf8aa3ff2526f4df3ae9d285b21be3346c7aea45\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 再検査で出なくなり、解消を記録した指摘 1 件\n  - #2-1 隠す行の出典の注記が項目一覧の行番号をすべて1ずれとするが、4〜12行目などは合わない\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 3 件\n  - 製本の情報と添付資料を発行依頼書のページに出さない（requirements 1.10 と異なる）（answer:design-authoring-generate[print-report]）\n  - 稟議バーコードNo が空なら申請No.pdf にする（requirements 3.3 と異なる）（answer:design-authoring-generate[print-report]）\n  - 光インフラのとき物件名の列を出す（1.8 は No・基地局番号・基地局名）、40 局ごとにページを分ける（1.5・1.7 のページ数）（answer:design-authoring-generate[print-report]）\n\n### 前回の検査（2 回目）からの変更\n\n- `specs/print-report/design.md`：ドメインモデル（Domain Model）\n\n### 判断が必要な指摘\n\n**対象**: `specs/print-report/design.md`（スコープ: 成果物単位（print-report） / 3 回目）\n**実行した層**: ① / ②\n\n**重大**（1 件。1 件ずつ判断してください）\n\n| # | 種類 | 対象箇所 | 要約 | AI の推奨 | 判断 |\n|---|---|---|---|---|---|\n| 1 | 業務の欠落・矛盾 | specs/print-report/design.md § ドメインモデル（Domain Model） / 発行依頼書のページ（RWTG071） | 発行依頼書のページで行 1 の隠しタイトルを隠したままにしており、項目一覧の「表示」と食い違う | 修正（正とされた項目一覧が出力の間は行 1 を表示すると明記しており、業務の新しい事実は要らないため） | 未回答 |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n**答え方**（後に書いたものが優先。束・範囲でまとめて答えられます）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）。区分を `C[指摘の誤り]` `C[対象外]` `C[後で決める]` `C[解釈で対応]` で付ける。対象外・後で決めるに `+` を付けると（例 `C[後で決める+]`）、次の検査から同じ扱いにします\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n- **推奨** — AI の推奨を採用する（修正なら修正案がそのまま修正の指示になります）\n\n回答例: `1:推奨 / 束1:C[後で決める+] 桁数は design で決める / 3〜5:A / 7:D 次回まで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。根拠と修正案は `詳細 <番号>` で表示します。",
+  "id": "36a67c4518b94036a8f19c2c7738663c"
+ },
+ "expected": {
+  "root": "C:\\project\\Wing",
+  "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+  "call": "design-authoring-revise",
+  "event": "design-authoring-revise",
+  "item": "print-report",
+  "dispatch_id": "36a67c4518b94036a8f19c2c7738663c",
+  "unit": "design-authoring-revise/design-authoring-revise[print-report]::end.review",
+  "scope": "feature:print-report",
+  "run": 3,
+  "snapshot": "46ecf7ccdaff68177ad95279a8ea5465de69731af58414e98b7f2ec70e97e1a3",
+  "record_hash": "8194aa41e575fb540840e3c4aa6b41f0e85d50dcbc0513650f0d32c4ff5094f3"
+ },
+ "data": {
+  "findings": "all-fixes"
+ }
+}

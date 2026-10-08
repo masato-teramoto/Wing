@@ -1,0 +1,37 @@
+{
+ "operation_id": "c77bfd9e72044fbd83e45176814de209",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[issue-request]::run",
+  "event": "design-authoring-revise",
+  "item": "issue-request",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "9d719c8770d746f9a3374d0359a83d1b"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/issue-request/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "design",
+    "scope": "feature:issue-request",
+    "run": 4,
+    "number": 1
+   },
+   {
+    "phase": "design",
+    "scope": "feature:issue-request",
+    "run": 4,
+    "number": 2
+   }
+  ],
+  "return_candidates": [],
+  "summary": "4 回目 #1（修正案の B）：WTG-100040 で止めるままにし、「照合する行が無いときの扱い」とエラーコード表の対応の文を、複数局は契約局取込か単独局のまま発行依頼書を登録してから切り替える案内（pbi の WTG-100022 と同じ）に直した。新しい契約局（3）は発行依頼書が登録済みの申請だけと書き、requirements 1.9 から意図して外れる旨と upstream-carryover を書いた（一覧にも追加）。4 回目 #2：Service の更新・一時保存のエラー欄、API 契約の /wtg080/update・/wtg080/tempSave、エラー時の分岐フローに WTG-100040（と TWTGM100 の排他）を足した。要件トレーサビリティ自己診断（issue-request）：抽出 62 件、対応あり 62 件、未対応 0 件。"
+ }
+}

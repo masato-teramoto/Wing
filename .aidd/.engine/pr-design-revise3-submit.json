@@ -1,0 +1,31 @@
+{
+ "operation_id": "6e939f7136ca40c0852d3b074335fdf6",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[print-report]::run",
+  "event": "design-authoring-revise",
+  "item": "print-report",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "1d95d16aba634522a1ecf22abdd043b9"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/print-report/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "design",
+    "scope": "feature:print-report",
+    "run": 3,
+    "number": 1
+   }
+  ],
+  "return_candidates": [],
+  "summary": "3 回目 #1：発行依頼書のページで、原本で隠してある行 1（B1「契約情報」。隠しタイトル）を表示にし、ほかの原本の隠し行（27・32・40・48・56・64・68）は隠したままにすると書き換えた（項目一覧 3 章の「1行目：隠しタイトル表示」）。要件トレーサビリティ自己診断（print-report）：抽出 24 件、対応あり 24 件、未対応 0 件。"
+ }
+}

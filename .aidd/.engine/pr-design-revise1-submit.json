@@ -1,0 +1,61 @@
+{
+ "operation_id": "bccecea5c55a4753ba184450f7a992c9",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[print-report]::run",
+  "event": "design-authoring-revise",
+  "item": "print-report",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "b934d26bed67430ab9bd952b7a458df4"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/print-report/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "design",
+    "scope": "feature:print-report",
+    "run": 1,
+    "number": 1
+   },
+   {
+    "phase": "design",
+    "scope": "feature:print-report",
+    "run": 1,
+    "number": 2
+   },
+   {
+    "phase": "design",
+    "scope": "feature:print-report",
+    "run": 1,
+    "number": 3
+   },
+   {
+    "phase": "design",
+    "scope": "feature:print-report",
+    "run": 1,
+    "number": 4
+   },
+   {
+    "phase": "design",
+    "scope": "feature:print-report",
+    "run": 1,
+    "number": 5
+   },
+   {
+    "phase": "design",
+    "scope": "feature:print-report",
+    "run": 1,
+    "number": 6
+   }
+  ],
+  "return_candidates": [],
+  "summary": "#1：一時ファイルの削除を、失敗時は createReport の finally、成功時は Controller が PDF を書き出したあとの finally で deleteTempFiles を呼ぶ、とそろえた。#2：WTG-100030 の {0}＝審査フェーズの名称・{1}＝状態の名称（申請が無ければ空）・{2}＝閲覧か印刷を書いた。#3：削除の失敗は ERROR でパスを出し止めない、変換・接続の失敗は DS-100015 の文言とスタックトレースを ERROR、を書いた。#4：原本の読込みの失敗は GEF-000058、写し・保存・QR の生成の失敗は DS-100015（ERROR とスタックトレース、finally で削除）を手順・エラー表・分岐フロー・バリデーション表に書いた。#5：ZMENUAUTH（PWTGO072・073）と P89 の INSERT 文、原本の配備の手順は本 feature の tasks で作り、投入・配備の実施は発注者が導入手順書に沿って行う、と持つ責務・持たない責務・移行方針を直した。#6：隠す行の番号は原本から読み取り、項目一覧 3 章の行番号とは 1 ずれることを書いた。要件トレーサビリティ自己診断（print-report）：抽出 24 件、対応あり 24 件、未対応 0 件。"
+ }
+}

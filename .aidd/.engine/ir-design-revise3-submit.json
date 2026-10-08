@@ -1,0 +1,37 @@
+{
+ "operation_id": "0b831efffee74811b8eae01867adbf6b",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[issue-request]::run",
+  "event": "design-authoring-revise",
+  "item": "issue-request",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "3b7a012ee8f64646af52200df36cb529"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/issue-request/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "design",
+    "scope": "feature:issue-request",
+    "run": 3,
+    "number": 1
+   },
+   {
+    "phase": "design",
+    "scope": "feature:issue-request",
+    "run": 3,
+    "number": 2
+   }
+  ],
+  "return_candidates": [],
+  "summary": "3 回目 #1：遷移元 3 では TWTGM100 の ExclusiveFG を隠し項目で持たせて照合することを事前条件・並行制御・照合する行が無いときの扱いに足し、TWTGM100 が無い申請での遷移元 3 の更新・一時保存は WTG-100040（物件基本情報登録変更が追加したキー）で受け付けないことを足した（エラーコード表にも追加）。3 回目 #2：契約局（1・3）の更新・一時保存では最初に TWTGM100 を FOR UPDATE でロックし、ExclusiveFG を隠し項目と照合（違えば GEF-000027）、合計を入れ直した TWTGM100 の ExclusiveFG を新しい値にする、別々の契約局の同時更新は後の人が排他エラーでよい、を並行制御と更新の手順に書いた。要件トレーサビリティ自己診断（issue-request）：抽出 62 件、対応あり 62 件、未対応 0 件。"
+ }
+}

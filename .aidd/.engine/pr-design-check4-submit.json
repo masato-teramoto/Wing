@@ -1,0 +1,16 @@
+{
+ "operation_id": "57b118a305754d119cbca694ef2f32d3",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[print-report]::end.design-check",
+  "event": "design-authoring-revise",
+  "item": "print-report",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "2ae77d0f08354b719fd28da9731e6ad6"
+ },
+ "result": {
+  "status": "completed"
+ }
+}

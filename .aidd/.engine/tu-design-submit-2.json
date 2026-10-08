@@ -1,0 +1,24 @@
+{
+ "operation_id": "81fe195c89884538a0a887e7b84fd1de",
+ "dispatch": {
+  "call": "design-authoring-generate",
+  "unit": "design-authoring-generate/design-authoring-generate[issue-request-tutorial]::run",
+  "event": "design-authoring-generate",
+  "item": "issue-request-tutorial",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "7c1368c4d5cb456d837322cd0ee13a9f"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/issue-request-tutorial/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [],
+  "return_candidates": [],
+  "summary": "回答 Q-DS-TU-001〜008 と、回答者が正とした別ファイル（_handoff/phase5-issue-request-tutorial-flow.md・mapping.md）、既存のコードで design を書き起こした（open_placeholders 0）。別ウインドウ（wtg081 パッケージ・/wtg081・/wtg081/next の JSON）、サーバーで次の画面・入れる値・入力チェックを決める作り、11 画面の分岐、8 項目への対応と「空にする」の印（clear）、WTG-100015・WTX-100005（新規）・WTX-100013（既存）を書いた。requirements 1.3・1.8・1.9・1.10・2.1・2.2 から意図して外れる点は回答者の指示どおり design に明記し upstream-carryover に積んだ。ir design の受け渡しの口（clear の印・入力できない項目に入れない・契約種別の変更時の処理を先に動かす順）と steering api-standards の JSON の口は、差戻し候補にせず upstream-carryover に積んだ（Phase 5 の最後にまとめて直す方針）。要件トレーサビリティ自己診断（issue-request-tutorial）：抽出 20 件、対応あり 20 件（1.2 はチュートリアル設定ボタンの条件として ir design に委譲）、未対応 0 件。今回の案件の正解コードは根拠にしていない。"
+ }
+}

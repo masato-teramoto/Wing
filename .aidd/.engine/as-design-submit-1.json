@@ -1,0 +1,95 @@
+{
+ "operation_id": "cf6f4b013980449597910a17c86b79eb",
+ "dispatch": {
+  "call": "design-authoring-generate",
+  "unit": "design-authoring-generate/design-authoring-generate[application-status-search]::run",
+  "event": "design-authoring-generate",
+  "item": "application-status-search",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "61155b685d144de8b11e3243d5db1eb6"
+ },
+ "result": {
+  "status": "waiting",
+  "targets": [
+   "specs/application-status-search/design.md"
+  ],
+  "questions": [
+   {
+    "id": "Q-DS-AS-001",
+    "target": "specs/application-status-search/design.md",
+    "location": "ファイル配置計画、API 契約（Controller）、要件 1・2",
+    "question": "プログラムID・URL・メニュー。1. 申請状況検索一覧（GWTG060）のプログラムID と機能ID - 下書きの案：プログラムID `PWTGO060`、機能ID `WTG060`、URL `/wtg060`、パッケージ `function/wtg/wtg060`（URL は pbi design の `/wtg060` に合わせる。物件基本情報登録変更の `PWTGO070`・`/wtg070` と同じ付け方） 2. メニューの名前 - 下書きの案：「[WTG060]物件契約情報申請状況検索」",
+    "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-application-status-search.md）"
+   },
+   {
+    "id": "Q-DS-AS-002",
+    "target": "specs/application-status-search/design.md",
+    "location": "画面設計（API 契約）、バリデーション設計、要件 1.1〜1.5・4.1",
+    "question": "検索条件 38 項目と、比べる列。検索条件の全部の項目と、比べる列を決めます（Phase 4 ゲート #2・#7 で design に回したもの）。 下の表の下書きを直してください。★は下書きを決められなかった項目です。 発行依頼書（`TWTGM100`）の列の型・桁は issue-request の design が持つので、ここでは「どの項目と比べるか」だけを聞きます。 | No | 画面の項目名 | 一致 | 比べる列（下書きの案） | 入力の形（下書きの案） | |---|---|---|---|---| | 1 | 申請No | 前方 | `TWTGM080.Application_No` | テキスト、半角英数 11 桁まで | | 2 | 稟議バーコードNo | 前方 | `TWTGM140.Ringi_Barcode_No`（どの行かは Q-DS-AS-003） | テキスト、半角英数記号 25 桁まで | | 3 | 基地局番号 | 前方 | `TWTGM080.Kichikyoku_No`（Q-DS-AS-003） | テキスト、半角英数 9 桁まで | | 4 | 発送書類名 | 前方 | ★どの列か（`TWTGM080` には発送書類有無ﾌﾗｸﾞしか無い） | ★ | | 5 | 基地局名 | 部分 | `TWTGM080.Kichikyoku_Name`（Q-DS-AS-003） | テキスト 120 桁まで | | 6 | 更新者名 | 部分 | `TWTGM080.UpdatedPerson_Name` | テキスト 20 桁まで | | 7 | 起案の所属① | 部分 | `TWTGM100` の契約稟議起案者_所属名① | テキスト 100 桁まで | | 8 | 起案の所属② | 部分 | `TWTGM100` の契約稟議起案者_所属名② | テキスト 100 桁まで | | 9 | 起案担当者 | 部分 | `TWTGM100` の契約稟議起案者_氏名 | テキスト 100 桁まで | | 10 | 案件小グループ | 部分 | ★`TWTGM140` の案件小グループ名か、`TWTGM100`／`TWTGM140` の案件小グループコードか | テキスト | | 11 | エリア | 完全 | `TWTGM080.Area_Cd` | コンボ（`C01`） | | 12 | 審査フェーズ | 完全 | `TWTGM080.Status` | コンボ（`P28`）、1 つだけ選ぶ | | 13 | 状態 | 完全 | `TWTGM080.JOTAI_KBN` | コンボ（`P27`）、1 つだけ選ぶ | | 14 | 依頼内容 | 完全 | `TWTGM080.Irai_Naiyo`（名称の文字列） | コンボ（`P29` の名称）。★修正稟議依頼を選択肢に入れるか（入れるなら「\"稟議依頼\" かつ 元申請No あり」で絞る） | | 15 | 施策 | 完全 | `TWTGM080.SHISAKU_CD` | コンボ（`P30`） | | 16 | 起案会社 | 完全 | `TWTGM100` の契約稟議起案者_会社コード | ★Q-DS-AS-005 | | 17 | 押印種別 | 完全 | ★`TWTGM140` の UQ押印種別か | ★コンボ（どのコードマスタか） | | 18 | 転貸借の契約種別 | 完全 | ★`TWTGM140` の転貸借_契約種別か | ★コンボ（どのコードマスタか） | | 19〜22 | 起案日時 From・To（日付＋時刻） | 範囲 | `TWTGM080` の★初回申請依頼日時か申請依頼日時か（Q-DS-AS-006 の「起案日」と同じ列） | 日付 YYYY/MM/DD＋時刻 HH:MM | | 23・24 | 稟議承認日 From・To | 範囲 | ★`TWTGM080.Kessai_DateTime_From`（決裁日時）の日付部分か | 日付 YYYY/MM/DD | | 25・26 | 初回支払日 From・To | 範囲 | ★`TWTGM100` の初回支払1〜4_初回支払日のどれか（いずれか 1 つでも範囲に入れば該当？）、または `TWTGM140` の支払日か | 日付 YYYY/MM/DD | | 27〜30 | 申請日時 From・To（日付＋時刻） | 範囲 | `TWTGM080.Application_Date` | 日付＋時刻 | | 31・32 | 発送希望日 From・To | 範囲 | `TWTGM080.Hasso_Kibo_Date`（yyyyMMdd） | 日付 YYYY/MM/DD | | 33〜36 | 確認日時 From・To（日付＋時刻） | 範囲 | `TWTGM080.Check_DateTime_From` | 日付＋時刻 | | 37・38 | 進捗の日数 From・To | 範囲 | Q-DS-AS-004 | 半角数字 3 桁まで（社外ユーザーには出さない） | 教えてほしいこと 1. ★の項目の答え 2. 項目の数え方が合っているか（日時の範囲を「日付 From・時刻 From・日付 To・時刻 To」の 4 つと数えると 38 になります） 3. 桁数・文字種の下書き（DB の列の桁に合わせた）でよいか。違う項目だけ教えてください",
+    "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-application-status-search.md）"
+   },
+   {
+    "id": "Q-DS-AS-003",
+    "target": "specs/application-status-search/design.md",
+    "location": "画面設計（API 契約）、Mapper の SQL、要件 1.2〜1.4・2.1",
+    "question": "契約局情報（複数行）にある項目の比べ方。稟議バーコードNo・押印種別・転貸借の契約種別・案件小グループ（`TWTGM140` の項目なら）は、契約局ごとに行があります。 一覧の稟議バーコードNo は「代表局のもの」（2.1）と決まっていますが、検索条件はまだ決まっていません。 - A：代表局（連番 1）の行だけと比べる - B：どれか 1 行でも合えば該当にする 項目ごとに A／B を教えてください。 基地局番号・基地局名は `TWTGM080`（代表局と同じ値。pbi design の `WTG-100019`）と比べる下書きです。契約局の 2 行目以降の基地局でも探せるようにするなら教えてください。",
+    "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-application-status-search.md）"
+   },
+   {
+    "id": "Q-DS-AS-004",
+    "target": "specs/application-status-search/design.md",
+    "location": "ドメインモデル、画面設計、要件 1.5・1.6",
+    "question": "進捗の日数。「進捗の日数」は何から何までの日数ですか。 - 下書きの案：最新の申請依頼日時（`TWTGM080.Application_Req_DateTime`）の翌日から今日までの営業日の数。休日は `WTI/CODE/C06` の会社ごとの登録で除く - ほかの候補：今の番になってからの日数（承認履歴 `TWTGM180` の最新の行の日時から今日まで）、初回申請依頼日時から今日まで - 承認済・完了や取下げの申請も数えるか（数えるなら、決裁日時で止めるか） - 起点の日を 0 日目と数えるか 1 日目と数えるか - 一覧・CSV には出さない（14 列に無い）でよいか",
+    "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-application-status-search.md）"
+   },
+   {
+    "id": "Q-DS-AS-005",
+    "target": "specs/application-status-search/design.md",
+    "location": "画面設計、セキュリティ上の考慮、要件 1.4・1.6・1.7",
+    "question": "起案会社の条件と、社外ユーザーの固定値。Phase 4 ゲート #4 で「社外ユーザーは、起案会社に自社の会社名を初期値で入れて変更不可、所属①②は空で変更不可」と決まっています。 次が決まっていません。 1. 起案会社の入力の形と選択肢の出所 - 下書きの案：コンボ。選択肢は `P71` の行（値は文字項目2 の会社コード、表示は名称）。発行依頼書の契約稟議起案者_会社コードと完全一致で比べる - wing のログインユーザーから会社名は取れません（「コードで確かめたこと」17）。社外ユーザーの「自社の会社名」は、権限区分をキー3 にして引いた `P71` の行の名称でよいか 2. 社外ユーザーで、固定した起案会社を検索の条件にも加えるか（食い違い） - 1.7 の範囲は「起案会社が自社の申請」**または**「本人が登録した申請」です - 固定した起案会社を条件に加えると、本人が登録した他社の申請と、発行依頼書がまだ無い申請（起案会社が空）が一覧に出なくなります - A：画面に表示するだけで、条件には加えない（範囲は `getExternalScope` だけで絞る） - B：条件にも加える（1.7 の「本人が登録した申請」のうち、自社でないものは出ない）",
+    "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-application-status-search.md）"
+   },
+   {
+    "id": "Q-DS-AS-006",
+    "target": "specs/application-status-search/design.md",
+    "location": "画面設計、論理データモデル、要件 2.1〜2.4",
+    "question": "一覧の 14 列の出し方。下の表の下書きを直してください。★は決められなかったものです。 | 列 | 出す値（下書きの案） | |---|---| | 申請No | `TWTGM080.Application_No`。取込中でなければリンク | | 依頼内容 | `Irai_Naiyo` をそのまま（修正稟議も \"稟議依頼\"。pbi の画面と同じ）。★修正稟議を「修正稟議依頼」と出し分けるか | | 審査フェーズ | `P28` の名称。再申請なら後ろに「(再申請)」。★「再申請」は何で判定するか（下書き：申請回数 `Application_Count` が 2 以上） | | 状態 | `P27` の名称 | | 稟議バーコードNo | `TWTGM140` の連番 1 の行の `Ringi_Barcode_No` | | 基地局番号 | `TWTGM080.Kichikyoku_No` | | 基地局名 | `TWTGM080.Kichikyoku_Name`。複数局なら「基地局名 他n局」。★「複数局」の判定（下書き：`TWTGM140` の行が 2 行以上）と n（下書き：行数－1）。単独複数局ﾌﾗｸﾞ（`Tandoku_Fukusu_Flg`）が \"1\" でも行が 1 行のときは付けない、でよいか | | 案件小グループ | ★コードか名称か、どの表の値か（Q-DS-AS-002 No.10 と同じ） | | 起案会社名 | `TWTGM100` の契約稟議起案者_会社名 | | エリア | ★`C01` の名称だけか、「エリアコード:名称」か（pbi の画面は「エリアコード:名称」） | | 起案担当者 | `TWTGM100` の契約稟議起案者_氏名 | | 起案日 | ★初回申請依頼日時か、最新の申請依頼日時か。YYYY/MM/DD | | 発送希望日 | `Hasso_Kibo_Date` を YYYY/MM/DD | | 施策 | `P30` の名称 | - 発行依頼書・契約局情報がまだ無い申請も一覧に出し、その列は空にする（外部結合）でよいか - 並びは申請No の降順（2.4）だけで、列見出しでの並べ替えは付けない、でよいか",
+    "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-application-status-search.md）"
+   },
+   {
+    "id": "Q-DS-AS-007",
+    "target": "specs/application-status-search/design.md",
+    "location": "バリデーション設計、要件 1.1・1.5・4.1",
+    "question": "範囲の条件の決まり。Phase 4 ゲート #8 で design に回したものです。既存のコード（「コードで確かめたこと」10〜13）に合わせた下書きです。 1. 両端を含む（`>=`・`<=`）。片方だけの入力も受け付ける — 下書きのとおりでよいか 2. 開始が終了より後のとき - A：検査しない（既存の Pwtgo004 と同じ。0 件になる） - B：既存の `ZZZ-000001`「{0}:日付の範囲指定が不正です」で止める（進捗の日数も同じキーでよいか） 3. 日時の範囲は、To の時刻に秒 59 を付けて比べる（23:59 は 23:59:59 まで含む）。日付があり時刻が空なら `WTL-000008` で止める — 既存の Pwtlo021 と同じでよいか 4. 日付・時刻の形式誤りは、日付だけの項目は `WTG-000003`、日時の項目は `GEF-000025`（日付）・`WTL-000007`（時刻）。数字の誤りは `GEF-000014`「{0}:数値を入力して下さい」。新しいキーは作らない、でよいか",
+    "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-application-status-search.md）"
+   },
+   {
+    "id": "Q-DS-AS-008",
+    "target": "specs/application-status-search/design.md",
+    "location": "依存してよい対象、性能とスケーラビリティ、要件 2.5・3.3",
+    "question": "1 ページの件数と上限件数のコードマスタの行。既存の共通処理（「コードで確かめたこと」1〜3）は、プログラムID の行が無ければ ALL の行を使います。 1. `WTZ/PARAM/P01`・`P02` にこの画面（キー3＝プログラムID）の行を足すか。足すなら値（1 ページの件数、上限件数、警告件数）。足さないなら ALL の行を使う - 値の登録は、ほかのコードマスタと同じく発注者が行う、でよいか 2. 警告件数（`DS-100025` の確認）を画面の検索で使うか（使わないなら数値項目2 を -1 にする） 3. CSV 出力では警告の確認を出さず、上限件数を超えたら見出し行だけを出す（3.4）、でよいか",
+    "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-application-status-search.md）"
+   },
+   {
+    "id": "Q-DS-AS-009",
+    "target": "specs/application-status-search/design.md",
+    "location": "機能固有エラーコード、API 契約、要件 2.7・2.8",
+    "question": "取込中の申請と WTG-100018。pbi design は「取込中の申請は一覧で遷移させず、一覧が既存の `WTG-100018`「取込処理中のため登録画面へ遷移できません」を出す」と書いています。 しかし `WTG-100018` は今の wing にありません（「コードで確かめたこと」15）。また 2.8 では取込中の申請はリンクにしないので、通常はこのメッセージを出す場面がありません。 1. `WTG-100018` を本 feature で新しく追加するか。種別は Warning、文言は上のとおりでよいか 2. 出す場面 - 下書きの案：リンクを押すと一覧の Controller（`/wtg060/detail`）が申請を読み直し、その間に取込中になっていたら `WTG-100018` を出して一覧を出し直す。取込中でなければ `forward:/wtg070/pushApplicationNo` へ送る（既存の Pwtgo004 の `detail` と同じ作り） 3. pbi design の「既存の」の表記は、上流の開き直しの一覧（`.aidd/.engine/upstream-carryover.md`）に足すか",
+    "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-application-status-search.md）"
+   },
+   {
+    "id": "Q-DS-AS-010",
+    "target": "specs/application-status-search/design.md",
+    "location": "データ契約と外部連携、API 契約、要件 3.1〜3.5",
+    "question": "CSV の細部。requirements で決まっている（14 列・MS932・カンマ・見出し行あり・ファイル名・範囲・0 件と上限超えは見出しだけ）以外を決めます。 下書きは pbi design の `CsvUtils.defaultCsvConfig()` に合わせました。 | 項目 | 下書きの案 | |---|---| | 囲み | 全項目をダブルクォートで囲む。値の中の \" は \"\" | | 改行コード | CRLF | | NULL | 空文字 | | 見出し行の文言 | 一覧の列名と同じ（申請No、依頼内容、審査フェーズ、状態、稟議バーコードNo、基地局番号、基地局名、案件小グループ、起案会社名、エリア、起案担当者、起案日、発送希望日、施策） | | 値の形 | 一覧と同じ（名称に変えたもの、「(再申請)」、「他n局」、日付は YYYY/MM/DD） | | ファイル名の時刻 | `WTG060_yyyyMMddHHmmss.csv`（出力した時刻） | | 返し方 | ダウンロード（`Content-Disposition: attachment`）。出力管理（`TZZZM027`）は使わない | | URL | `/wtg060/download`（CSRF の照合の対象外。更新しないため） | あわせて、Phase 4 ゲート #10 で design に回したもの： - 検索条件に形式の誤りがあるとき CSV 出力を押したら、検索と同じ入力チェックをして、エラーメッセージを画面に出し、CSV を出さない — でよいか",
+    "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-application-status-search.md）"
+   }
+  ],
+  "open_placeholders": 141,
+  "changed_findings": [],
+  "return_candidates": [],
+  "summary": "テンプレートから下書きを用意し、承認済み入力と既存のコードで決められない値を質問 10 件にまとめた（_handoff/questions-phase5-application-status-search.md と同じ）。今回の案件の成果物（正解）にあたるコードは作業ツリーに無く、根拠にしていない。"
+ }
+}

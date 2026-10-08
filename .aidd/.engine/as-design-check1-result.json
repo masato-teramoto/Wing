@@ -1,0 +1,206 @@
+{
+  "status": "ok",
+  "action": "submit",
+  "result": {
+    "unit": "design-authoring-generate/design-authoring-generate[application-status-search]::end.review",
+    "flow": "design-authoring-generate",
+    "event": "design-authoring-generate",
+    "item": "application-status-search",
+    "gate": "review",
+    "hookPoint": "end",
+    "name": "review",
+    "type": "script",
+    "target": "scripts/approval.py",
+    "isAgent": false,
+    "requiresHuman": true,
+    "calls": [],
+    "targetReview": [
+      "specs/application-status-search/design.md"
+    ],
+    "status": "wait",
+    "call": "design-authoring-generate",
+    "dispatch": {
+      "call": "design-authoring-generate",
+      "unit": "design-authoring-generate/design-authoring-generate[application-status-search]::end.review",
+      "event": "design-authoring-generate",
+      "item": "application-status-search",
+      "status": "wait",
+      "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+      "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-generate/design-authoring-generate[application-status-search]::end.review\", \"snapshot\": \"ac8ccd72f2dba400124b193968bdfc112fc81e478242695eba87e83cc80ae97d\", \"run\": 1, \"inspection_hash\": \"df05a473276d592b8906980c5d2922602b79245a9d1c323435565492def13195\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 10 件\n  - 進捗検索(選択) の初期値「以上」と社外ユーザーの起案会社の初期値が、1.1 の「初期値を空」から外れる（回答で意図して外れると決まり、本書にも明記）（answer:design-authoring-generate[application-status-search]）\n  - 「他n局」を基地局番号にも付けるのは 2.3 から外れる（回答 Q-DS-AS-006 で決まり、本書にも明記）（answer:design-authoring-generate[application-status-search]）\n  - CSV の見出し（13 列目「発注希望日」、半角カナの表記）が一覧の列名と違う（回答 Q-DS-AS-010 で決まり、本書にも明記）（answer:design-authoring-generate[application-status-search]）\n  - pbi design の「既存の WTG-100018」と食い違い、本 feature で新しく足す（回答 Q-DS-AS-009 で決まり、upstream-carryover に記録済み）（answer:design-authoring-generate[application-status-search]）\n  - 社外ユーザーの絞り込みを、検索条件の表の「会社名」ではなく会社コードで比べる（回答 Q-DS-AS-005 の 2 で決まる）（answer:design-authoring-generate[application-status-search]）\n  - P71 のキー3 を、security.md の「ログインユーザーのグループ」ではなく権限区分とする（回答 Q-DS-AS-005 で決まる）（answer:design-authoring-generate[application-status-search]）\n  - アクション名 csv・page・clear・return・detail が tech.md の URL の例に無い（回答 Q-DS-AS-001・Q-DS-AS-010 で決まり、例は「など」で限定していない）（answer:design-authoring-generate[application-status-search]）\n  - 38 項目の入力の形・一致の仕方・比べる列を、回答者が渡した検索条件の表に委ねる（回答 Q-DS-AS-002「その表のとおりにしてください」）（answer:design-authoring-generate[application-status-search]）\n  - 開発端末の JDK 1.8 が、tech.md の JDK 1.7 と食い違う（verify:pbi design（approved）の Q-DS-PBI-014 で人が決めた同じ逸脱で、本書にも意図して外れると明記し、upstream-carryover.md（tech.md の行）に記録済み。原因は上流の 1 か所で、重複になる）\n  - feature-list の依存の列に無い issue-request の TWTGM100 を読む（verify:issue-request design（approved）が「下流が読む形：TWTGM100・TWTGM140 の全列」を公開契約にしており、内部実装への依存ではない）\n\n### 判断が必要な指摘\n\n**対象**: `specs/application-status-search/design.md`（スコープ: 成果物単位（application-status-search） / 1 回目）\n**実行した層**: ① / ②\n\n**重大**（1 件。1 件ずつ判断してください）\n\n| # | 種類 | 対象箇所 | 要約 | AI の推奨 | 判断 |\n|---|---|---|---|---|---|\n| 1 | 業務の欠落・矛盾 | specs/application-status-search/design.md § データ契約と外部連携（Data Contracts & Integration） ほか 2 か所 | returnList の戻り先が pbi design（/wtg060）と本書（/wtg060/return）で食い違う | 修正（戻りの口は回答 Q-DS-AS-001 で決まっており、食い違いの原因は pbi design 側の記述。本書に意図した逸脱として書き、上流を Phase 5 の最後にまとめて直す流れに乗せれば解消できる） | 未回答 |\n\n**要判断**（3 件）\n\n| 束 | 観点 | 種類 | 件数 | 番号 | AI の推奨（先頭の指摘） |\n|---|---|---|---|---|---|\n| 束1 | traceability | 業務のあいまい・不足 | 2 | #2 #3 | 質問（検査するかどうかと使うキーは業務上の決めごとで、回答と上流からは決められない） |\n\n| # | 種類 | 対象箇所 | 要約 | AI の推奨 | 判断 |\n|---|---|---|---|---|---|\n| 4 | 業務のあいまい・不足 | specs/application-status-search/design.md § セキュリティ上の考慮（Security Considerations） | 一覧と CSV に更新者の氏名が出ると書くが、14 列に更新者は無い | 修正（本書の一覧の列と食い違う記述で、本書の中の事実に合わせて直せる） | 未回答 |\n\n束の内訳（束でまとめて答えるか、番号で 1 件ずつ答えてください）\n\n- [束1] #2 申請No・稟議ﾊﾞｰｺｰﾄﾞNo・基地局番号で、文字種（半角英数）を検査するかが決まっていない\n- [束1] #3 社外ユーザーから所属①②・進捗の値が送られても、条件から外すことが書かれていない\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- #1: specs/property-basic-info/design.md（Phase 5、upstream-carryover でまとめて直す）（`/wtg070/returnList` の戻り先が `/wtg060` と書かれており、回答 Q-DS-AS-001 で決めた戻りの口 `/wtg060/return` と食い違う）\n\n**答え方**（後に書いたものが優先。束・範囲でまとめて答えられます）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）。区分を `C[指摘の誤り]` `C[対象外]` `C[後で決める]` `C[解釈で対応]` で付ける。対象外・後で決めるに `+` を付けると（例 `C[後で決める+]`）、次の検査から同じ扱いにします\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n- **推奨** — AI の推奨を採用する（修正なら修正案がそのまま修正の指示になります）\n\n回答例: `1:推奨 / 束1:C[後で決める+] 桁数は design で決める / 3〜5:A / 7:D 次回まで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。根拠と修正案は `詳細 <番号>` で表示します。",
+      "id": "f384cc01d5674bb99adec8d2cd192fb3"
+    },
+    "label": "design-authoring-generate / design-authoring-generate [application-status-search]",
+    "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-generate/design-authoring-generate[application-status-search]::end.review\", \"snapshot\": \"ac8ccd72f2dba400124b193968bdfc112fc81e478242695eba87e83cc80ae97d\", \"run\": 1, \"inspection_hash\": \"df05a473276d592b8906980c5d2922602b79245a9d1c323435565492def13195\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 10 件\n  - 進捗検索(選択) の初期値「以上」と社外ユーザーの起案会社の初期値が、1.1 の「初期値を空」から外れる（回答で意図して外れると決まり、本書にも明記）（answer:design-authoring-generate[application-status-search]）\n  - 「他n局」を基地局番号にも付けるのは 2.3 から外れる（回答 Q-DS-AS-006 で決まり、本書にも明記）（answer:design-authoring-generate[application-status-search]）\n  - CSV の見出し（13 列目「発注希望日」、半角カナの表記）が一覧の列名と違う（回答 Q-DS-AS-010 で決まり、本書にも明記）（answer:design-authoring-generate[application-status-search]）\n  - pbi design の「既存の WTG-100018」と食い違い、本 feature で新しく足す（回答 Q-DS-AS-009 で決まり、upstream-carryover に記録済み）（answer:design-authoring-generate[application-status-search]）\n  - 社外ユーザーの絞り込みを、検索条件の表の「会社名」ではなく会社コードで比べる（回答 Q-DS-AS-005 の 2 で決まる）（answer:design-authoring-generate[application-status-search]）\n  - P71 のキー3 を、security.md の「ログインユーザーのグループ」ではなく権限区分とする（回答 Q-DS-AS-005 で決まる）（answer:design-authoring-generate[application-status-search]）\n  - アクション名 csv・page・clear・return・detail が tech.md の URL の例に無い（回答 Q-DS-AS-001・Q-DS-AS-010 で決まり、例は「など」で限定していない）（answer:design-authoring-generate[application-status-search]）\n  - 38 項目の入力の形・一致の仕方・比べる列を、回答者が渡した検索条件の表に委ねる（回答 Q-DS-AS-002「その表のとおりにしてください」）（answer:design-authoring-generate[application-status-search]）\n  - 開発端末の JDK 1.8 が、tech.md の JDK 1.7 と食い違う（verify:pbi design（approved）の Q-DS-PBI-014 で人が決めた同じ逸脱で、本書にも意図して外れると明記し、upstream-carryover.md（tech.md の行）に記録済み。原因は上流の 1 か所で、重複になる）\n  - feature-list の依存の列に無い issue-request の TWTGM100 を読む（verify:issue-request design（approved）が「下流が読む形：TWTGM100・TWTGM140 の全列」を公開契約にしており、内部実装への依存ではない）\n\n### 判断が必要な指摘\n\n**対象**: `specs/application-status-search/design.md`（スコープ: 成果物単位（application-status-search） / 1 回目）\n**実行した層**: ① / ②\n\n**重大**（1 件。1 件ずつ判断してください）\n\n| # | 種類 | 対象箇所 | 要約 | AI の推奨 | 判断 |\n|---|---|---|---|---|---|\n| 1 | 業務の欠落・矛盾 | specs/application-status-search/design.md § データ契約と外部連携（Data Contracts & Integration） ほか 2 か所 | returnList の戻り先が pbi design（/wtg060）と本書（/wtg060/return）で食い違う | 修正（戻りの口は回答 Q-DS-AS-001 で決まっており、食い違いの原因は pbi design 側の記述。本書に意図した逸脱として書き、上流を Phase 5 の最後にまとめて直す流れに乗せれば解消できる） | 未回答 |\n\n**要判断**（3 件）\n\n| 束 | 観点 | 種類 | 件数 | 番号 | AI の推奨（先頭の指摘） |\n|---|---|---|---|---|---|\n| 束1 | traceability | 業務のあいまい・不足 | 2 | #2 #3 | 質問（検査するかどうかと使うキーは業務上の決めごとで、回答と上流からは決められない） |\n\n| # | 種類 | 対象箇所 | 要約 | AI の推奨 | 判断 |\n|---|---|---|---|---|---|\n| 4 | 業務のあいまい・不足 | specs/application-status-search/design.md § セキュリティ上の考慮（Security Considerations） | 一覧と CSV に更新者の氏名が出ると書くが、14 列に更新者は無い | 修正（本書の一覧の列と食い違う記述で、本書の中の事実に合わせて直せる） | 未回答 |\n\n束の内訳（束でまとめて答えるか、番号で 1 件ずつ答えてください）\n\n- [束1] #2 申請No・稟議ﾊﾞｰｺｰﾄﾞNo・基地局番号で、文字種（半角英数）を検査するかが決まっていない\n- [束1] #3 社外ユーザーから所属①②・進捗の値が送られても、条件から外すことが書かれていない\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- #1: specs/property-basic-info/design.md（Phase 5、upstream-carryover でまとめて直す）（`/wtg070/returnList` の戻り先が `/wtg060` と書かれており、回答 Q-DS-AS-001 で決めた戻りの口 `/wtg060/return` と食い違う）\n\n**答え方**（後に書いたものが優先。束・範囲でまとめて答えられます）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）。区分を `C[指摘の誤り]` `C[対象外]` `C[後で決める]` `C[解釈で対応]` で付ける。対象外・後で決めるに `+` を付けると（例 `C[後で決める+]`）、次の検査から同じ扱いにします\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n- **推奨** — AI の推奨を採用する（修正なら修正案がそのまま修正の指示になります）\n\n回答例: `1:推奨 / 束1:C[後で決める+] 桁数は design で決める / 3〜5:A / 7:D 次回まで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。根拠と修正案は `詳細 <番号>` で表示します。",
+    "allowed_actions": [
+      "decision",
+      "decisions",
+      "resolve",
+      "repair"
+    ],
+    "review_context": {
+      "root": "C:\\project\\Wing",
+      "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+      "call": "design-authoring-generate",
+      "event": "design-authoring-generate",
+      "item": "application-status-search",
+      "dispatch_id": "f384cc01d5674bb99adec8d2cd192fb3",
+      "unit": "design-authoring-generate/design-authoring-generate[application-status-search]::end.review",
+      "scope": "feature:application-status-search",
+      "run": 1,
+      "snapshot": "ac8ccd72f2dba400124b193968bdfc112fc81e478242695eba87e83cc80ae97d",
+      "record_hash": "df05a473276d592b8906980c5d2922602b79245a9d1c323435565492def13195"
+    },
+    "review": [
+      {
+        "scope": "feature:application-status-search",
+        "run": 1,
+        "number": 1,
+        "current": true,
+        "decision": "",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "本書は、物件基本情報登録変更画面の戻るが `/wtg070/returnList` から `/wtg060/return` に戻り、セッションの条件で再検索すると書く（§ データ契約と外部連携、§ このスペックが持たない責務（Out of Boundary）の「`/wtg070/returnList` で `/wtg060/return` へ戻す → `specs/property-basic-info/design.md`」、§ アーキテクチャ方式と境界図の図）。また § API 契約では `/wtg060` を「初期値。検索条件のセッションを消す。一覧は出さない」としている。\n依存先の pbi design（approved）の API 契約は、`/wtg070/returnList` の Response を「申請状況一覧（GWTG060、`/wtg060`）へ戻り、セッションに置いた一覧の検索条件で再検索する」と定めている。pbi design の公開契約どおり `/wtg060` に戻ると、本書の `/wtg060` がセッションを消して初期表示になるため、2.10（前の検索条件を残して、もう一度検索する）を満たさない。\n回答 Q-DS-AS-001 は `/wtg060/return` を戻りの口に決めたが、pbi design を直すことには触れていない。本書は WTG-100018 と違い、この点を「上流から意図して外れる（upstream-carryover）」と書いておらず、`.aidd/.engine/upstream-carryover.md` にも記録が無い。本書は pbi design が `/wtg060/return` へ戻すと書いているが、依存先の公開契約にその記述は無い。",
+        "location": "specs/application-status-search/design.md § データ契約と外部連携（Data Contracts & Integration） ほか 2 か所",
+        "kind": "業務の欠落・矛盾",
+        "severity": "重大",
+        "summary": "returnList の戻り先が pbi design（/wtg060）と本書（/wtg060/return）で食い違う",
+        "suggestion": "§ このスペックが持たない責務（Out of Boundary）と § データ契約と外部連携に「pbi design は `/wtg070/returnList` の戻り先を `/wtg060` と書いているが、本書の `/wtg060/return` に直す。pbi design は Phase 5 の最後にまとめて直す（upstream-carryover）」と足す。`.aidd/.engine/upstream-carryover.md` にも同じ行を足す",
+        "recommendation": "修正：戻りの口は回答 Q-DS-AS-001 で決まっており、食い違いの原因は pbi design 側の記述。本書に意図した逸脱として書き、上流を Phase 5 の最後にまとめて直す流れに乗せれば解消できる",
+        "decided_by": ""
+      },
+      {
+        "scope": "feature:application-status-search",
+        "run": 1,
+        "number": 2,
+        "current": true,
+        "decision": "",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "上流：requirements 4.1「検索条件に桁数・形式の条件を満たさない項目がある場合、システムはエラーメッセージを表示し、検索を止めなければならない（項目ごとの条件は design の画面設計で定める）」。\n下流：本書 § ドメインモデルは「38 項目の入力の形（桁・文字種・コンボの元）…は、検索条件の表を正とする」と書く。検索条件の表（`_handoff/phase5-application-status-search-conditions.md`）では、No.1 申請No が「半角英数」、No.2 稟議ﾊﾞｰｺｰﾄﾞNo が「半角英数（「-」を含む）」、No.3 基地局番号が「半角英数」。一方 § バリデーション設計の表は、これらの文字項目に桁の検査（`GEF-000003`）だけを置く。文字種の誤り（全角・記号）を検査するのか、検査しないのかが書かれていない。\n回答 Q-DS-AS-007 の 4 は、日付・時刻・数字のキーと「新しいキーは作らない」を決めているが、文字種には触れていない。\n意味判定：上流→下流。4.1 との ID 対応はあるが、形式の条件の一部（文字種）が決まっておらず、内容が足りない。",
+        "location": "specs/application-status-search/design.md § バリデーション設計",
+        "kind": "業務のあいまい・不足",
+        "severity": "要判断",
+        "summary": "申請No・稟議ﾊﾞｰｺｰﾄﾞNo・基地局番号で、文字種（半角英数）を検査するかが決まっていない",
+        "suggestion": "次のどちらかを決める。A：文字種もサーバーで検査し、既存のキーで止める（例：`WTE-000004`「{0}:半角英数以外が入力されています」。稟議ﾊﾞｰｺｰﾄﾞNo は「-」を許す既存のキー、たとえば `WTE-000011`「半角英数記号以外が入力されています」）。B：文字種は検査しない（前方一致で 0 件になるだけ）と、§ バリデーション設計に書く",
+        "recommendation": "質問：検査するかどうかと使うキーは業務上の決めごとで、回答と上流からは決められない",
+        "decided_by": ""
+      },
+      {
+        "scope": "feature:application-status-search",
+        "run": 1,
+        "number": 3,
+        "current": true,
+        "decision": "",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "上流：requirements 1.6「ログインユーザーが社外ユーザーの場合、システムは検索条件の起案会社と所属を変更させず、進捗の検索条件を表示してはならない」。回答 Q-DS-AS-004「社外ユーザーには日数・以上/以下の 2 項目を出さない（条件にもならない）」。回答 Q-DS-AS-005「所属①②は空で変更不可」。steering/security.md の `#### 権限モデル` の禁止「画面の表示だけで制御せず、サーバー側でも権限を判定する」。\n下流：本書 § ドメインモデルの社外ユーザーの項は「所属①②は空で変更不可、進捗検索(日数)・(選択) は出さない」と、画面の扱いだけを書く。起案会社については、§ セキュリティ上の考慮で「起案会社は条件に使わない（変更不可の値を書き換えて送っても効かない）」と書いている。しかし、所属①②と進捗検索(日数)・(選択) について、Service が送られた値を条件から外すことは書いていない（§ サービスインターフェースの search と、§ テスト戦略の単体の社外ユーザーも同じ）。\n意味判定：1.6 との ID 対応はあるが、回答の「条件にもならない」が設計に反映されておらず、内容が足りない。",
+        "location": "specs/application-status-search/design.md § ドメインモデル（Domain Model） ほか 1 か所",
+        "kind": "業務のあいまい・不足",
+        "severity": "要判断",
+        "summary": "社外ユーザーから所属①②・進捗の値が送られても、条件から外すことが書かれていない",
+        "suggestion": "§ ドメインモデルの社外ユーザーの項に「社外ユーザーのときは、Service が所属①②・進捗検索(日数)・(選択) の値を空として扱い、条件に入れない（画面から送られても効かない）」と足す。§ テスト戦略の単体の社外ユーザーにも同じ確認を足す",
+        "recommendation": "修正：進捗は回答 Q-DS-AS-004 が「条件にもならない」と決めており、所属①②も回答で空と決まっている。書き足すだけで済む",
+        "decided_by": ""
+      },
+      {
+        "scope": "feature:application-status-search",
+        "run": 1,
+        "number": 4,
+        "current": true,
+        "decision": "",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "区分：根拠の飛躍。\n本書の「データ保護 / プライバシー」は「一覧と CSV に起案担当者と更新者の氏名が出る」と書く。根拠にあたる requirements の非機能要件（プライバシー）は「個人情報として起案担当者と更新者の氏名を扱い」（Q-RQ-AS-006「扱う個人情報は、起案担当者と更新者の氏名である」）で、扱うと書いているだけである。\n本書の一覧の 14 列（§ ドメインモデル）、CSV の見出し、requirements 2.1・3.1 のどこにも更新者は無い。更新者名は検索条件（部分一致、`TWTGM080.UpdatedPerson_Name`）として比べるだけである。探した根拠：requirements.md、steering/security.md の `## 機密データ`、回答 Q-DS-AS-006・Q-DS-AS-010。",
+        "location": "specs/application-status-search/design.md § セキュリティ上の考慮（Security Considerations）",
+        "kind": "業務のあいまい・不足",
+        "severity": "要判断",
+        "summary": "一覧と CSV に更新者の氏名が出ると書くが、14 列に更新者は無い",
+        "suggestion": "「一覧と CSV に起案担当者の氏名が出る。更新者の氏名は検索条件として比べるだけで、画面にも CSV にも出さない。出すのは範囲内の申請だけで、ログに出さない」に直す",
+        "recommendation": "修正：本書の一覧の列と食い違う記述で、本書の中の事実に合わせて直せる",
+        "decided_by": ""
+      }
+    ],
+    "choices": {
+      "kind": "decisions",
+      "questions": [
+        {
+          "id": "1",
+          "header": "#1 重大",
+          "question": "returnList の戻り先が pbi design（/wtg060）と本書（/wtg060/return）で食い違う（業務の欠落・矛盾・重大）にどう対応しますか？ 差戻し（B）・未対応（D）・別の理由は「その他」で入力",
+          "options": [
+            {
+              "label": "推奨：修正",
+              "description": "戻りの口は回答 Q-DS-AS-001 で決まっており、食い違いの原因は pbi design 側の記述。本書に意図した逸脱として書き、上流を Phase 5 の最後にまとめて直す流れに乗せれば解消できる",
+              "answer": "1:推奨"
+            },
+            {
+              "label": "C 後で決める",
+              "description": "後の工程で決める事項なので、今は直さずに進める",
+              "answer": "1:C[後で決める] 後の工程で決める"
+            },
+            {
+              "label": "C 対象外",
+              "description": "この工程の対象外なので、直さずに進める",
+              "answer": "1:C[対象外] この工程の対象外"
+            }
+          ],
+          "multiSelect": false
+        },
+        {
+          "id": "4",
+          "header": "#4 要判断",
+          "question": "一覧と CSV に更新者の氏名が出ると書くが、14 列に更新者は無い（業務のあいまい・不足・要判断）にどう対応しますか？ 差戻し（B）・未対応（D）・別の理由は「その他」で入力",
+          "options": [
+            {
+              "label": "推奨：修正",
+              "description": "本書の一覧の列と食い違う記述で、本書の中の事実に合わせて直せる",
+              "answer": "4:推奨"
+            },
+            {
+              "label": "C 後で決める",
+              "description": "後の工程で決める事項なので、今は直さずに進める",
+              "answer": "4:C[後で決める] 後の工程で決める"
+            },
+            {
+              "label": "C 対象外",
+              "description": "この工程の対象外なので、直さずに進める",
+              "answer": "4:C[対象外] この工程の対象外"
+            }
+          ],
+          "multiSelect": false
+        },
+        {
+          "id": "束1",
+          "header": "束1 2件",
+          "question": "束1（業務のあいまい・不足・traceability 2 件：申請No・稟議ﾊﾞｰｺｰﾄﾞNo・基地局番号で、文字種（半角英数）を検査するかが決まっていない / 社外ユーザーから所属①②・進捗の値が送られても、条件から外すことが書かれていない）をまとめてどう扱いますか？ 1 件だけ変える場合は「その他」で番号を指定。差戻し（B）・未対応（D）・別の理由は「その他」で入力",
+          "options": [
+            {
+              "label": "A 修正",
+              "description": "この工程で直す（修正案：次のどちらかを決める。A：文字種もサーバーで検査し、既存のキーで止める（例：`WTE-000004`「{0}:半角英数以）",
+              "answer": "束1:A"
+            },
+            {
+              "label": "C 後で決める",
+              "description": "後の工程で決める事項なので、今は直さずに進める",
+              "answer": "束1:C[後で決める] 後の工程で決める"
+            },
+            {
+              "label": "C 対象外",
+              "description": "この工程の対象外なので、直さずに進める",
+              "answer": "束1:C[対象外] この工程の対象外"
+            }
+          ],
+          "multiSelect": false
+        }
+      ]
+    },
+    "next_action": "提示文をそのまま示し、choices の選択肢を選択式の質問で出して、人に選んでもらってください。検査結果を確認し、重大と要判断の指摘に A〜D か「推奨」で答えてください（束・範囲でまとめて答えられます）。修正（A）と AI が直す軽微があれば repair（findings: \"all-fixes\"）で修正に回し、判断が揃い修正が無ければ承認者名を回答してください。",
+    "operation_id": "85d3028be4af4e59ac241d04169f5388",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

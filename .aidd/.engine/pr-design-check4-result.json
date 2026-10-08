@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "action": "submit",
+  "result": {
+    "unit": "design-authoring-revise/design-authoring-revise[print-report]::end.review",
+    "flow": "design-authoring-revise",
+    "event": "design-authoring-revise",
+    "item": "print-report",
+    "gate": "review",
+    "hookPoint": "end",
+    "name": "review",
+    "type": "script",
+    "target": "scripts/approval.py",
+    "isAgent": false,
+    "requiresHuman": true,
+    "calls": [],
+    "targetReview": [
+      "specs/print-report/design.md"
+    ],
+    "status": "wait",
+    "call": "design-authoring-revise",
+    "dispatch": {
+      "call": "design-authoring-revise",
+      "unit": "design-authoring-revise/design-authoring-revise[print-report]::end.review",
+      "event": "design-authoring-revise",
+      "item": "print-report",
+      "status": "wait",
+      "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+      "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[print-report]::end.review\", \"snapshot\": \"56c4a799d1b6e89ecfb883f4bac5608cd184d798828037f935f70111698c90d1\", \"run\": 4, \"inspection_hash\": \"dd9a3218d881d756e7f3263b91ae473e1f23041b28b4402949d621f439877af2\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 再検査で出なくなり、解消を記録した指摘 1 件\n  - #3-1 発行依頼書のページで行 1 の隠しタイトルを隠したままにしており、項目一覧の「表示」と食い違う\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 3 件\n  - 製本の情報と添付資料を発行依頼書のページに出さない（requirements 1.10 と異なる）（answer:design-authoring-generate[print-report]）\n  - 稟議バーコードNo が空なら申請No.pdf にする（requirements 3.3 と異なる）（answer:design-authoring-generate[print-report]）\n  - 光インフラのとき物件名の列を出す（1.8 は No・基地局番号・基地局名）、40 局ごとにページを分ける（1.5・1.7 のページ数）（answer:design-authoring-generate[print-report]）\n\n### 前回の検査（3 回目）からの変更\n\n- `specs/print-report/design.md`：ドメインモデル（Domain Model）\n\n### 判断が必要な指摘\n\n**対象**: `specs/print-report/design.md`（スコープ: 成果物単位（print-report） / 4 回目）\n**実行した層**: ① / ②\n\n**指摘**: なし（0 件。検査は実行済み）\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n判断が揃いました。承認の可否を回答してください（承認する場合は承認者名）。",
+      "id": "d715cc535c4641b1bad9998c2e248f0e"
+    },
+    "label": "design-authoring-revise / design-authoring-revise [print-report]",
+    "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[print-report]::end.review\", \"snapshot\": \"56c4a799d1b6e89ecfb883f4bac5608cd184d798828037f935f70111698c90d1\", \"run\": 4, \"inspection_hash\": \"dd9a3218d881d756e7f3263b91ae473e1f23041b28b4402949d621f439877af2\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 再検査で出なくなり、解消を記録した指摘 1 件\n  - #3-1 発行依頼書のページで行 1 の隠しタイトルを隠したままにしており、項目一覧の「表示」と食い違う\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 3 件\n  - 製本の情報と添付資料を発行依頼書のページに出さない（requirements 1.10 と異なる）（answer:design-authoring-generate[print-report]）\n  - 稟議バーコードNo が空なら申請No.pdf にする（requirements 3.3 と異なる）（answer:design-authoring-generate[print-report]）\n  - 光インフラのとき物件名の列を出す（1.8 は No・基地局番号・基地局名）、40 局ごとにページを分ける（1.5・1.7 のページ数）（answer:design-authoring-generate[print-report]）\n\n### 前回の検査（3 回目）からの変更\n\n- `specs/print-report/design.md`：ドメインモデル（Domain Model）\n\n### 判断が必要な指摘\n\n**対象**: `specs/print-report/design.md`（スコープ: 成果物単位（print-report） / 4 回目）\n**実行した層**: ① / ②\n\n**指摘**: なし（0 件。検査は実行済み）\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n判断が揃いました。承認の可否を回答してください（承認する場合は承認者名）。",
+    "allowed_actions": [
+      "approve"
+    ],
+    "review_context": {
+      "root": "C:\\project\\Wing",
+      "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+      "call": "design-authoring-revise",
+      "event": "design-authoring-revise",
+      "item": "print-report",
+      "dispatch_id": "d715cc535c4641b1bad9998c2e248f0e",
+      "unit": "design-authoring-revise/design-authoring-revise[print-report]::end.review",
+      "scope": "feature:print-report",
+      "run": 4,
+      "snapshot": "56c4a799d1b6e89ecfb883f4bac5608cd184d798828037f935f70111698c90d1",
+      "record_hash": "222ec5264f97e1290c6c4e29902ce4edb5b048b0f77d82007a54f21300d81a8a"
+    },
+    "review": [],
+    "choices": {
+      "kind": "approve",
+      "questions": [
+        {
+          "id": "approve",
+          "header": "承認",
+          "question": "判断が揃いました。承認しますか？",
+          "options": [
+            {
+              "label": "承認する",
+              "description": "回答者の名前で承認を記録する",
+              "answer": "approve"
+            },
+            {
+              "label": "承認しない",
+              "description": "判断を変える・修正を指示する",
+              "answer": "hold"
+            }
+          ],
+          "multiSelect": false
+        }
+      ]
+    },
+    "next_action": "提示文をそのまま示し、choices の選択肢を選択式の質問で出して、人に選んでもらってください。検査結果を確認し、重大と要判断の指摘に A〜D か「推奨」で答えてください（束・範囲でまとめて答えられます）。修正（A）と AI が直す軽微があれば repair（findings: \"all-fixes\"）で修正に回し、判断が揃い修正が無ければ承認者名を回答してください。",
+    "operation_id": "57b118a305754d119cbca694ef2f32d3",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

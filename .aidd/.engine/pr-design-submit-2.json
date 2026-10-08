@@ -1,0 +1,24 @@
+{
+ "operation_id": "16d176b3ae2a410d9700bf53db0be3ca",
+ "dispatch": {
+  "call": "design-authoring-generate",
+  "unit": "design-authoring-generate/design-authoring-generate[print-report]::run",
+  "event": "design-authoring-generate",
+  "item": "print-report",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "fb54788c185449e98af7be2af8fc411f"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/print-report/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [],
+  "return_candidates": [],
+  "summary": "回答 Q-DS-PR-001〜015、回答者が正とした帳票の項目一覧（_handoff/phase5-print-report-items.md）、原本の xlsm（セルの位置・シート・数式を読み取った）と既存のコードで design を書き起こした（open_placeholders 0）。/wtg072/search（3 つの入力、GET・POST、inline・attachment）、6.9 の判定を呼ぶ出力の条件、入力フォームのセルの対応、出すシートと隠す行、40 局ごとのシートのコピーとフッター、印・提出日・QR、一時ファイル（P89）と finally での削除、OpenOffice への変換、既存のメッセージキーだけを使うエラーを書いた。原本では PDF 用の表紙の値の欄が空で計算用の表紙が数式のため、計算用の数式を POI で計算して PDF 用へ写す作りにした（判断 2）。requirements 1.10・3.3、pbi design の /wtg072/search、steering の zxing・.xlsx から意図して外れる点は design に明記し upstream-carryover に積んだ。要件トレーサビリティ自己診断（print-report）：抽出 24 件、対応あり 24 件、未対応 0 件。"
+ }
+}

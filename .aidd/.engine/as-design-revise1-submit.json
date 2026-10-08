@@ -1,0 +1,49 @@
+{
+ "operation_id": "a05d2392addd4248b9814dc74909647e",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[application-status-search]::run",
+  "event": "design-authoring-revise",
+  "item": "application-status-search",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "1ef1bef3fdd34487860a350bcb2d99a1"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/application-status-search/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "design",
+    "scope": "feature:application-status-search",
+    "run": 1,
+    "number": 1
+   },
+   {
+    "phase": "design",
+    "scope": "feature:application-status-search",
+    "run": 1,
+    "number": 2
+   },
+   {
+    "phase": "design",
+    "scope": "feature:application-status-search",
+    "run": 1,
+    "number": 3
+   },
+   {
+    "phase": "design",
+    "scope": "feature:application-status-search",
+    "run": 1,
+    "number": 4
+   }
+  ],
+  "return_candidates": [],
+  "summary": "#1：pbi design の returnList の戻り先（/wtg060）を本書の /wtg060/return に直す旨を持たない責務とデータ契約に書き、upstream-carryover に足した。#2：文字種は検査せず（前方一致で 0 件）、桁は入力欄の最大桁で抑え、形式は日付・時刻・進捗の日数だけ検査するとバリデーション設計に書いた。#3：社外ユーザーのときは起案会社・所属①②・進捗の値を空として扱い条件に入れないとドメインモデルとテスト戦略に書いた。#4：一覧と CSV に出るのは起案担当者の氏名で、更新者は比べるだけと直した。要件トレーサビリティ自己診断（application-status-search）：抽出 23 件、対応あり 23 件、未対応 0 件。"
+ }
+}

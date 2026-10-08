@@ -1,0 +1,7 @@
+{
+  "phase": "design",
+  "event": "design-authoring-generate",
+  "scope": "feature:issue-request-tutorial",
+  "run": 1,
+  "findings": []
+}

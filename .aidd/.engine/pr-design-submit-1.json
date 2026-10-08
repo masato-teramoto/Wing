@@ -1,0 +1,130 @@
+{
+ "operation_id": "6016998fb7c946349d2ba7dff6983581",
+ "dispatch": {
+  "call": "design-authoring-generate",
+  "unit": "design-authoring-generate/design-authoring-generate[print-report]::run",
+  "event": "design-authoring-generate",
+  "item": "print-report",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "82e93a6a3c2a47f99e7ff5ac97367119"
+ },
+ "result": {
+  "status": "waiting",
+  "targets": [
+   "specs/print-report/design.md"
+  ],
+  "questions": [
+   {
+    "id": "Q-DS-PR-001",
+    "target": "specs/print-report/design.md",
+    "location": "ファイル配置計画、依存してよい対象、要件 1（1.1・1.2）",
+    "question": "帳票の原本（Excel テンプレート）の提供と置き場。原本の Excel が案件の中にありません（確かめたこと 1）。 1. 原本の .xlsx をいただけますか。セル位置は原本を見て design に書きます。 2. 原本の置き場（サーバー上のパス）と、そのパスを持つプロパティのキーを決めてください。 - 下書きの案：`wing-web.properties` に `report.template.wtg072=<パス>/RWTG070.xlsx` を足す（確かめたこと 5 のバッチと同じく、パスをプロパティで持つ） 3. 原本を案件のリポジトリのどこに置くか（例 `wing/src/main/resources/report/RWTG070.xlsx` に置いて、配備でサーバーへ写す）。 4. 原本のフォントは何か。サーバーの OpenOffice にそのフォントが入っているか（無いと PDF の見た目がずれます）。",
+    "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-print-report.md）"
+   },
+   {
+    "id": "Q-DS-PR-002",
+    "target": "specs/print-report/design.md",
+    "location": "処理フロー、コンポーネント（帳票作成）、要件 1（1.3〜1.8）",
+    "question": "シート構成と、閲覧・印刷でのページの組み方。1. 原本のシート構成を教えてください。 - 下書きの案：1 つのブックに「表紙」「発行依頼書」「契約局情報」の 3 シート。A4 縦と印刷範囲は原本で設定済み 2. 閲覧・印刷で出さないページの外し方。 - 下書きの案：PDF に変換する前に、出さないシートを POI で消す（OpenOffice はブックの全シートを PDF にするため） 3. 契約局情報が 1 ページに入らないときの作り方。 - 1 ページに何行まで入れるか - 下書きの案 A：契約局情報のシートを必要な数だけコピーして増やす - 下書きの案 B：1 つのシートに行を足し、決まった行数ごとに改ページを入れる 4. ページ番号の書式と場所（例「1/3」をシートの右下）。番号は契約局情報のページの中で数えるか、帳票全体で数えるか。",
+    "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-print-report.md）"
+   },
+   {
+    "id": "Q-DS-PR-003",
+    "target": "specs/print-report/design.md",
+    "location": "データ契約と外部連携、コンポーネント（帳票作成）、要件 1（1.9）",
+    "question": "表紙の項目とセルの対応。1.9 の項目ごとに、取得元とセル位置を表で教えてください。原本をいただければ、セル位置は原本から読みます。 | 表紙の項目 | 取得元（テーブル・列、またはコードマスタの名称） | セル | 備考 | |---|---|---|---| | 代表局番号 | 案：`TWTGM140` 連番 1 の代表局番号＋枝番 | | 枝番を付けるか | | 提出日 | Q-DS-PR-004 | | | | 申請者・確認者・決裁者の印 | Q-DS-PR-004 | | | | 決裁日 | 案：`TWTGM080.Kessai_DateTime_From` | | 未決裁なら空 | | 基地局番号と基地局名 | 案：`TWTGM140` 連番 1 | | 複数局で「〜他n局」にするか | | 所在地 | | | 住居と登記のどちらか | | 起案の部署と氏名 | 案：発行依頼書の契約稟議起案者の会社名・所属名①②・氏名 | | | | 案件グループ | | | 大グループ・小グループのどちらか、両方か | | 締結者 | | | 関係者のどれか | | 支払の内容 | | | 支払内容1〜4、初回支払内容1〜4 のどれまでか。複数局で合計するか | | 契約期間 | | | | | 受電方法 | | | コードの名称で出すか | | 賃料 | | | | | 製本と押印の種別 | 案：`TWTGM140` 連番 1 の製本種別・UQ押印種別の名称 | | | | 部数 | | | | | 添付資料 | 案：発行依頼書の添付資料(契約書)①〜・添付資料(補足)① 〜 | | 何件まで出すか | | QR コード | Q-DS-PR-008 | | | | （ほかに出す項目） | | | 1.9 の「など」に当たるもの | 複数局の申請で、表紙の値を発行依頼書（申請に 1 行）と契約局情報の 1 行目（代表局）のどちらから取るかも、項目ごとに教えてください。",
+    "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-print-report.md）"
+   },
+   {
+    "id": "Q-DS-PR-004",
+    "target": "specs/print-report/design.md",
+    "location": "データ契約と外部連携、要件 1（1.9）",
+    "question": "表紙の「印」と提出日の取り方。1. 申請者・確認者・決裁者の印の欄に何を出すか。 - 下書きの案：承認履歴（`TWTGM180`）の今の審査回で、判定が 02（申請）・03（確認）・04（承認）の最新の行の最終更新者名と日付を出す。まだ行が無ければ空にする - 再製本依頼は確認者がいないので、確認者の欄を空にするか - 申請者の印は「申請」と「確認」（申請者が確認作業中の 03）のどちらの行で取るか 2. 提出日に何を出すか。 - 案 A：申請依頼日時（`TWTGM080.Application_Req_DateTime`） - 案 B：発番日時（`TWTGM080.Hatsuban_Uketsuke_DateTime`） - 案 C：帳票を出力した日",
+    "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-print-report.md）"
+   },
+   {
+    "id": "Q-DS-PR-005",
+    "target": "specs/print-report/design.md",
+    "location": "データ契約と外部連携、コンポーネント（帳票作成）、要件 1（1.10）",
+    "question": "発行依頼書のページの項目とセルの対応。1.10 の項目ごとに、取得元とセル位置を表で教えてください。列の型・桁は聞きません。 | 発行依頼書の項目 | 取得元（発行依頼書・契約局情報の項目名、またはコードマスタの名称） | セル | 備考 | |---|---|---|---| | 関係者①〜⑤ | | | 各関係者でどの項目を出すか（区分・地位・氏名・住所・電話・メール・FAX など） | | 契約の内容 | | | | | 支払の内容 | | | | | 製本の情報 | | | | | 添付資料 | | | | | （ほかに出す項目） | | | 1.10 の「など」に当たるもの | 複数局の申請では、閲覧で出す発行依頼書のページは代表局の分の 1 ページだけでよいか（1.5 は 3 ページ）。",
+    "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-print-report.md）"
+   },
+   {
+    "id": "Q-DS-PR-006",
+    "target": "specs/print-report/design.md",
+    "location": "コンポーネント（帳票作成）、要件 1（1.8）",
+    "question": "契約局情報のページの項目。1. No は契約局情報の連番（`Renban`）をそのまま出すか、1 からの通し番号か。 2. 基地局番号に枝番を付けるか。 3. 見出しの欄に、申請No・稟議バーコードNo・代表局番号などを出すか。出すならセル位置。 4. 単独局の申請を閲覧・印刷するときは、契約局情報のページを出さない（1.4・1.6）でよいか。複数局で契約局が 1 件だけのときも出すか。",
+    "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-print-report.md）"
+   },
+   {
+    "id": "Q-DS-PR-007",
+    "target": "specs/print-report/design.md",
+    "location": "データ契約と外部連携、要件 1",
+    "question": "値の書式。帳票に入れる値の書式を決めてください。 | 種類 | 下書きの案 | |---|---| | 日付 | yyyy/MM/dd（西暦） | | 金額 | 3 桁ごとのカンマ。単位「円」は原本の文字で持つ | | コード値 | コードマスタの名称（出力 CSV と同じ。`specs/property-basic-info/csv-layout-wtg070.md`） | | 値が空 | 空のセルのままにする | | 長い文字列 | 原本のセルの「縮小して全体を表示」または折り返しに任せ、プログラムで切らない |",
+    "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-print-report.md）"
+   },
+   {
+    "id": "Q-DS-PR-008",
+    "target": "specs/print-report/design.md",
+    "location": "コンポーネント（QR 生成）、要件 2（2.1・2.2）",
+    "question": "QR コードの中身・大きさ・位置。1. 中身は稟議バーコードNo の文字列だけでよいか（前後に何も付けない）。 2. 大きさと位置（貼るセルの範囲、または縦横の mm）。 3. 誤り訂正のレベルと余白。 - 下書きの案：誤り訂正 M、余白 1 モジュール、PNG にして指定のセルに貼る 4. 稟議バーコードNo が空のとき（2.2）、QR の場所は空白のままでよいか。",
+    "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-print-report.md）"
+   },
+   {
+    "id": "Q-DS-PR-009",
+    "target": "specs/print-report/design.md",
+    "location": "API 契約、要件 1（1.4〜1.7）・要件 3（3.1・3.2）",
+    "question": "閲覧と印刷の区別をどう受け渡すか（食い違い）。物件基本情報登録変更の design は `/wtg072/search` の入力を「申請No」だけにしています（確かめたこと 14）。 閲覧と印刷で出すページと応答の形が違うので、どちらかを受け取る必要があります。 - 案 A：同じ URL に出力区分（1:閲覧 / 2:印刷）を足す。物件基本情報登録変更の design の API 契約の表に入力を 1 つ足す - 案 B：URL を分ける（例 `/wtg072/search` を閲覧、`/wtg072/print` を印刷） あわせて、閲覧の別ウインドウの開き方（フォームの `target` に別ウインドウ名を付ける、ウインドウの大きさ）は物件基本情報登録変更の画面のスクリプトが持つ、でよいか。",
+    "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-print-report.md）"
+   },
+   {
+    "id": "Q-DS-PR-010",
+    "target": "specs/print-report/design.md",
+    "location": "API 契約、要件 3（3.1〜3.3）",
+    "question": "応答の形とファイル名。1. 応答のヘッダ。 - 下書きの案：閲覧は `Content-Type: application/pdf` と `Content-Disposition: inline; filename=\"<稟議バーコードNo>.pdf\"`。印刷は既存の `downloadFile` と同じ `attachment`（確かめたこと 6） - キャッシュさせないヘッダ（`Cache-Control: no-store`）を付けるか（帳票に個人情報が載るため） 2. ファイル名の稟議バーコードNo は代表局（連番 1）のものでよいか。 3. 代表局の稟議バーコードNo が空のとき（2.2 で QR を出さない場合）、ファイル名をどうするか。 - 案 A：申請No.pdf - 案 B：出力しない（エラーにする）",
+    "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-print-report.md）"
+   },
+   {
+    "id": "Q-DS-PR-011",
+    "target": "specs/print-report/design.md",
+    "location": "セキュリティ上の考慮、コンポーネント、要件 3（3.4・3.5）",
+    "question": "出力の条件のサーバー側での確かめ方。ボタンを出す条件（6.9）は物件基本情報登録変更の Service が判定します（確かめたこと 15）。帳票の要求が直接送られたときも、サーバーで同じ条件を確かめる必要があります。 1. 判定のしかた。 - 案 A：同じ `wtg070` パッケージにある物件基本情報登録変更の Service の 6.9 の判定を呼ぶ - 案 B：6.9 の判定を WTG 申請状態サービスに移し、両方から呼ぶ（物件基本情報登録変更の design の変更になる） 2. 条件に合わないときの扱い。 - 下書きの案：既存の `WTG-100030` で止める - 申請が無い・社外ユーザーの範囲外のときも同じでよいか 3. 発行依頼書が無い、または契約局情報の 1 行目が無いとき（前提が崩れたとき）のメッセージ。 4. 帳票の機能ID（`@FuncID(\"PWTGO072\")`）のメニュー権限（`ZMENUAUTH`）の行が要ります（確かめたこと 10）。行の登録は誰が・どの資料で行うか。",
+    "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-print-report.md）"
+   },
+   {
+    "id": "Q-DS-PR-012",
+    "target": "specs/print-report/design.md",
+    "location": "ファイル配置計画、処理フロー、要件 3（3.6）・要件 4（4.2）",
+    "question": "一時ファイルの置き場・名前・消す時期。wing には今使える一時フォルダの設定がありません（確かめたこと 7）。 1. 置き場のパスと、そのプロパティのキー。 - 下書きの案：`wing-web.properties` に `report.temp.directory.wtg072` を足す 2. 置き場が無いとき（4.2）、フォルダを自動で作らずにエラーにする、でよいか。 3. ファイル名。 - 下書きの案：`<申請No>_<ユーザーID>_<yyyyMMddHHmmssSSS>.xlsx` と同じ名前の `.pdf`（同時に出しても重ならないように） 4. 消す時期。 - 下書きの案：PDF を応答に書き出した後に、成功・失敗を問わず Excel と PDF の両方を消す - 消すのに失敗したときは、ログに出して利用者には知らせない、でよいか",
+    "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-print-report.md）"
+   },
+   {
+    "id": "Q-DS-PR-013",
+    "target": "specs/print-report/design.md",
+    "location": "依存してよい対象、性能とスケーラビリティ、エラー時の分岐フロー、要件 4（4.1）",
+    "question": "OpenOffice への接続と失敗の扱い。steering はサーバー上の OpenOffice（localhost の 8100 番）と jodconverter 2.2.1 を決めています。 1. 接続先（ホスト・ポート）をプロパティに持つか、プログラムに書くか。 - 下書きの案：`wing-web.properties` に `report.openoffice.host=localhost`・`report.openoffice.port=8100` を足す 2. 接続できないときと、変換に失敗したときを分けるか。 - 下書きの案：分けない。どちらもログに ERROR とスタックトレースを出し、利用者には同じメッセージを出す（4.1） 3. 同時に複数の人が出したときの扱い。 - 下書きの案：要求ごとに接続して、変換が終わったら切る。変換は 1 件ずつ順に行う（同時に変換しない） 4. 待ち時間の上限を設けるか（例：接続 10 秒）。設けるなら値。",
+    "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-print-report.md）"
+   },
+   {
+    "id": "Q-DS-PR-014",
+    "target": "specs/print-report/design.md",
+    "location": "機能固有エラーコード、エラー時の分岐フロー、要件 1（1.2）・要件 4（4.1・4.2）",
+    "question": "エラーの表示先とメッセージキー・文言。1. エラーをどこに出すか。 - 閲覧は別ウインドウで開くので、そのウインドウにエラー画面（`ExceptionResolver`。確かめたこと 11）を出す、でよいか - 印刷は同じウインドウからダウンロードするので、エラー画面に移ると物件基本情報登録変更画面から離れます。案 A：印刷も別ウインドウで開き、そこにエラー画面を出す。案 B：物件基本情報登録変更画面に戻してメッセージを出す 2. メッセージキーと文言を決めてください。property-basic-info では `WTG-1000xx` のキーを指定いただきました。 | 場面 | 下書きの案（キー） | 下書きの案（文言） | |---|---|---| | 原本が無い（1.2） | `WTG-1000xx`（新規） | 帳票のテンプレートが見つかりません | | 一時ファイルの置き場が無い（4.2） | `WTG-1000xx`（新規） | 帳票の作成に必要なフォルダがありません | | PDF への変換・OpenOffice への接続に失敗（4.1） | `DS-100015`（既存） | 帳票の出力に失敗しました | | 出力の条件に合わない（3.4・3.5） | `WTG-100030`（既存） | 既存の文言 | | 発行依頼書・契約局情報の 1 行目が無い | `WTG-1000xx`（新規） | |",
+    "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-print-report.md）"
+   },
+   {
+    "id": "Q-DS-PR-015",
+    "target": "specs/print-report/design.md",
+    "location": "技術スタック、要件 2",
+    "question": "zxing 3.4.1 と Java 7 の食い違い。steering は QR の生成に zxing 3.4.1 を決めています（`steering/tech.md:73`）。 zxing は 3.4.0 から Java 8 以上が必要です（zxing の CHANGES「3.4.0 (19 May 2019) - Requires Java 8+」）。 本番の実行環境は JDK 1.7 です（`steering/tech.md` のコアテクノロジ、`wing/pom.xml:18-19`）。 開発端末は JDK 1.8 なのでコンパイルは通りますが、本番で動きません。どれにしますか。 - 案 A：Java 7 で動く最後の版の zxing 3.3.3（core と javase）にする。steering の版を直す - 案 B：本番の JDK を 1.8 に上げる - 案 C：そのほか",
+    "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-print-report.md）"
+   }
+  ],
+  "open_placeholders": 141,
+  "changed_findings": [],
+  "return_candidates": [],
+  "summary": "テンプレートから下書きを用意し、承認済み入力と既存のコードで決められない値を質問 15 件にまとめた（_handoff/questions-phase5-print-report.md と同じ）。今回の案件の成果物（正解）にあたるコードは作業ツリーに無く、根拠にしていない。"
+ }
+}
