@@ -1,0 +1,17 @@
+{
+ "operation_id": "8e6b9a35-61e7-4e33-8bda-f7b20a69ce84",
+ "action": "accept-plan",
+ "dispatch": {
+  "call": "tasks-plan",
+  "unit": "tasks-plan/tasks-plan[application-status-search]::run",
+  "event": "tasks-plan",
+  "item": "application-status-search",
+  "status": "wait",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": "**Phase 7（tasks 作成）を feature `application-status-search` について始めます（Feature 方式）。** 開始前に実行計画を確認してください。\n\n**選択**: `application-status-search`（選択者: masato-teramoto / 2026-10-09T23:42:24+09:00）\n\n**依存先（推移的）**: `property-basic-info`\n**この計画の前提にする feature**: `property-basic-info`、`application-status-search`\n\n**入力として読むもの**（すべて `approved`）\n- `.aidd/feature-list.md`\n- `steering/product.md`\n- `steering/tech.md`\n- `steering/architecture.md`\n- `steering/security.md`\n- `steering/non-functional.md`\n- `steering/database.md`\n- `steering/api-standards.md`\n- `docs/code-design.md`\n- `docs/architecture/data-model.md`\n- `docs/architecture/system-overview.md`\n- `specs/property-basic-info/requirements.md`\n- `specs/application-status-search/requirements.md`\n- `specs/property-basic-info/design.md`\n- `specs/application-status-search/design.md`\n\n**出力先**: `specs/property-basic-info/tasks.md` / `specs/application-status-search/tasks.md`\n\n**他の feature の状態**（表示のみ。承認前提には使わない）\n  - `property-basic-info`（User / 依存先: なし / 被依存: issue-request、issue-request-tutorial、print-report、application-status-search、contract-info-import、contract-info-download / 状態: 未着手）\n  - `issue-request`（User / 依存先: property-basic-info / 被依存: issue-request-tutorial、print-report、contract-info-import、contract-info-download / 状態: 未着手） — 選べない理由: 依存先の tasks が未承認: property-basic-info\n  - `issue-request-tutorial`（User / 依存先: property-basic-info、issue-request / 被依存: なし / 状態: 未着手） — 選べない理由: 依存先の tasks が未承認: property-basic-info, issue-request\n  - `print-report`（User / 依存先: property-basic-info、issue-request / 被依存: なし / 状態: 未着手） — 選べない理由: 依存先の tasks が未承認: property-basic-info, issue-request\n  - `application-status-search`（User / 依存先: property-basic-info / 被依存: なし / 状態: draft） — 選べない理由: 依存先の tasks が未承認: property-basic-info\n  - `contract-info-import`（User / 依存先: property-basic-info、issue-request / 被依存: contract-info-download / 状態: 未着手） — 選べない理由: 依存先の tasks が未承認: property-basic-info, issue-request\n  - `contract-info-download`（User / 依存先: property-basic-info、issue-request、contract-info-import / 被依存: なし / 状態: 未着手） — 選べない理由: 依存先の tasks が未承認: property-basic-info, issue-request, contract-info-import\n\n工程の承認後も、依存する側の feature には自動で進みません。次の feature は改めて選びます（select-scope）。\n\nこの計画で進めてよいか指示してください。",
+  "id": "ec4ff52d11c74da0bd87ab3c754307d1"
+ },
+ "data": {
+  "note": "対象は application-status-search。依存先 property-basic-info の tasks は、application-status-search の tasks を承認するための前提として含める（ユーザー指示 2026-10-09）。他の feature は一切手をつけない。ds_mock（画面設計工程）の成果物を application-status-search と _app-shell について参照済み。修正の指摘は推奨を適用し、推奨が決まらないものは C[対象外]。承認はユーザー指示による自動承認"
+ }
+}

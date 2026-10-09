@@ -1,0 +1,24 @@
+{
+ "operation_id": "86aacd6a-8b75-45ba-a0fa-f81a42bb1725",
+ "dispatch": {
+  "call": "tasks-authoring-revise",
+  "unit": "tasks-authoring-revise/tasks-authoring-revise[application-status-search]::run",
+  "event": "tasks-authoring-revise",
+  "item": "application-status-search",
+  "status": "emit",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": null,
+  "id": "a9d668dcef9a42dd8bbba02b78d634ec"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/application-status-search/tasks.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [],
+  "return_candidates": [],
+  "summary": "開き直し（draft に戻す）のみで、本文の修正指示は無い。着手履歴は無い（.aidd/implementation が存在しない）。編集せず、Feature 方式での個別検査へ回す"
+ }
+}

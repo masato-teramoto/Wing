@@ -1,0 +1,7 @@
+{"timestamp": "2026-10-09T23:44:52+09:00", "level": "info", "orchestrator_id": "01M4GHZH22NAWVJMM33029JM8H", "detail": "開始 call(tasks-plan) version=alpha3"}
+{"timestamp": "2026-10-09T23:44:52+09:00", "level": "info", "orchestrator_id": "01M4GHZH22NAWVJMM33029JM8H", "phase_id": "01M4GHZH23SV11ARC3DPT1H08M", "detail": "開始 tasks-plan イベント=1"}
+{"timestamp": "2026-10-09T23:44:52+09:00", "level": "info", "orchestrator_id": "01M4GHZH22NAWVJMM33029JM8H", "phase_id": "01M4GHZH23SV11ARC3DPT1H08M", "sub_phase_id": "01M4GHZH23ECR903XK3X8FVZWW", "detail": "開始 tasks-plan type=script item=application-status-search ゲート=3+0"}
+{"timestamp": "2026-10-09T23:45:04+09:00", "level": "info", "orchestrator_id": "01M4GHZH22NAWVJMM33029JM8H", "phase_id": "01M4GHZH23SV11ARC3DPT1H08M", "sub_phase_id": "01M4GHZH23ECR903XK3X8FVZWW", "detail": "終了 tasks-plan 結果=人間待ち"}
+{"timestamp": "2026-10-09T23:45:04+09:00", "level": "info", "orchestrator_id": "01M4GHZH22NAWVJMM33029JM8H", "phase_id": "01M4GHZH23SV11ARC3DPT1H08M", "detail": "終了 tasks-plan 結果=人間待ち 残り=0"}
+{"timestamp": "2026-10-09T23:45:04+09:00", "level": "info", "orchestrator_id": "01M4GHZH22NAWVJMM33029JM8H", "detail": "終了 call(tasks-plan) 結果=人間待ち 所要=0m12s"}
+{"timestamp": "2026-10-09T23:45:28+09:00", "level": "info", "orchestrator_id": "01M4GHZH22NAWVJMM33029JM8H", "phase_id": "01M4GHZH23SV11ARC3DPT1H08M", "sub_phase_id": "01M4GHZH23ECR903XK3X8FVZWW", "event_id": "01M4GJ0M7ZJXEZ818QZE4HVDNX", "detail": "終了 scripts/plan.py 結果=成功"}

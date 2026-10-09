@@ -1,0 +1,24 @@
+{
+ "operation_id": "f76a4c93-b797-4907-ace8-bf2b183e55a3",
+ "dispatch": {
+  "call": "tasks-authoring-generate",
+  "unit": "tasks-authoring-generate/tasks-authoring-generate[property-basic-info]::run",
+  "event": "tasks-authoring-generate",
+  "item": "property-basic-info",
+  "status": "emit",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": null,
+  "id": "c89ae99dff2442b7893c27414e9aa9f8"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/property-basic-info/tasks.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [],
+  "return_candidates": [],
+  "summary": "specs/property-basic-info/tasks.md を新規作成（draft、34 タスク。受け入れ基準 94 件を割り付け）。application-status-search が前提にする契約（getExternalScope・CsvUtils・pushApplicationNo・returnList・deleteShinse など）をタスク化。画面設計書は未作成のため design.md を根拠とする旨を明記"
+ }
+}

@@ -1,0 +1,8 @@
+{"timestamp": "2026-10-09T23:41:03+09:00", "level": "info", "orchestrator_id": "01M4GHRH4RTXJJVSQ7K1P4WZ76", "detail": "開始 call(mode-switch) version=alpha3"}
+{"timestamp": "2026-10-09T23:41:03+09:00", "level": "info", "orchestrator_id": "01M4GHRH4RTXJJVSQ7K1P4WZ76", "phase_id": "01M4GHRH4R4VYFM1T34XBVDCJN", "detail": "開始 mode-switch イベント=1"}
+{"timestamp": "2026-10-09T23:41:03+09:00", "level": "info", "orchestrator_id": "01M4GHRH4RTXJJVSQ7K1P4WZ76", "phase_id": "01M4GHRH4R4VYFM1T34XBVDCJN", "sub_phase_id": "01M4GHRH4RWJBR475KS49QXKHG", "detail": "開始 mode-switch-confirm type=script ゲート=0+0"}
+{"timestamp": "2026-10-09T23:41:03+09:00", "level": "info", "orchestrator_id": "01M4GHRH4RTXJJVSQ7K1P4WZ76", "phase_id": "01M4GHRH4R4VYFM1T34XBVDCJN", "sub_phase_id": "01M4GHRH4RWJBR475KS49QXKHG", "event_id": "01M4GHRH4RESA2RRW21WNZY2RH", "detail": "開始 scripts/mode_switch.py type=script 契機=event"}
+{"timestamp": "2026-10-09T23:41:05+09:00", "level": "info", "orchestrator_id": "01M4GHRH4RTXJJVSQ7K1P4WZ76", "phase_id": "01M4GHRH4R4VYFM1T34XBVDCJN", "sub_phase_id": "01M4GHRH4RWJBR475KS49QXKHG", "event_id": "01M4GHRH4RESA2RRW21WNZY2RH", "detail": "終了 scripts/mode_switch.py 結果=成功 終了コード=0"}
+{"timestamp": "2026-10-09T23:41:05+09:00", "level": "info", "orchestrator_id": "01M4GHRH4RTXJJVSQ7K1P4WZ76", "phase_id": "01M4GHRH4R4VYFM1T34XBVDCJN", "sub_phase_id": "01M4GHRH4RWJBR475KS49QXKHG", "detail": "終了 mode-switch-confirm 結果=成功"}
+{"timestamp": "2026-10-09T23:41:05+09:00", "level": "info", "orchestrator_id": "01M4GHRH4RTXJJVSQ7K1P4WZ76", "phase_id": "01M4GHRH4R4VYFM1T34XBVDCJN", "detail": "終了 mode-switch 結果=成功 残り=0"}
+{"timestamp": "2026-10-09T23:41:05+09:00", "level": "info", "orchestrator_id": "01M4GHRH4RTXJJVSQ7K1P4WZ76", "detail": "終了 call(mode-switch) 結果=完了 所要=0m02s"}

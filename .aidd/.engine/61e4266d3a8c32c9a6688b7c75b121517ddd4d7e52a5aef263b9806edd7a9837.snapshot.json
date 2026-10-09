@@ -1,0 +1,84 @@
+{
+  "schema": 2,
+  "phase": "tasks",
+  "event": "tasks-authoring-generate",
+  "scope": "feature:property-basic-info",
+  "at": "2026-10-10T00:12:50+09:00",
+  "artifacts": {
+    "specs/property-basic-info/tasks.md": {
+      "status": "draft",
+      "sha256": "cdb8225f3bca7310e8613e1e81869b1d932073f507d85110c0a832ca448d076c"
+    }
+  },
+  "record": {
+    "bytes": 34435,
+    "sha256": "b9edd5bc591f11aab0b80f7106773f0102dc8a6e675cf3a95028b5ab46097a93",
+    "blocks": 11
+  },
+  "run": 1,
+  "sections": {
+    "specs/property-basic-info/tasks.md": {
+      "": "e3b0c44298fc1c14",
+      "実装計画": "eec666269855db15",
+      "注記表記の早見表": "46aab9d16aa77546",
+      "本計画の前提と規約": "a44419a7a082a3f3",
+      "対象の範囲": "37816ac732789272",
+      "画面設計工程の成果物の扱い（UI タスク）": "f79603d905a5b896",
+      "検証の前提": "46c9af72b0536d02",
+      "上流との食い違い・不足の扱い（タスクで吸収せず記録する事項）": "722551a3a5f065c0",
+      "DDL・投入文の置き場": "187ca34a5c69cb6b",
+      "タスク一覧": "c94ea32a876dea46",
+      "基盤・準備": "b0d9afa4a52da78a",
+      "WTG 共通（WTG 申請状態サービス）": "1bb8581b35fbbae8",
+      "物件基本情報登録変更（データアクセスと業務ロジック）": "81ebca98c50b913a",
+      "文書バーコード": "c5546ea99fa27272",
+      "API / 入口": "6d6fd863a620d485",
+      "UI / 表示": "63ab239053045507",
+      "横断確認": "58fa058e815b2284",
+      "実装メモ（Implementation Notes）": "fb2dfbc5f0a2ebc7",
+      "決定ログ": "8f39aa9acf1f2078",
+      "既知の制約 / 残課題": "0c28dbee39855a57",
+      "後続への申し送り": "ea246458e3f38049",
+      "*": "eec666269855db15"
+    }
+  },
+  "own_sections": {
+    "specs/property-basic-info/tasks.md": {
+      "": "e3b0c44298fc1c14",
+      "実装計画": "e35ec02b74548cc9",
+      "注記表記の早見表": "46aab9d16aa77546",
+      "本計画の前提と規約": "016bf7f330bea5ae",
+      "対象の範囲": "37816ac732789272",
+      "画面設計工程の成果物の扱い（UI タスク）": "f79603d905a5b896",
+      "検証の前提": "46c9af72b0536d02",
+      "上流との食い違い・不足の扱い（タスクで吸収せず記録する事項）": "722551a3a5f065c0",
+      "DDL・投入文の置き場": "187ca34a5c69cb6b",
+      "タスク一覧": "ead049a01fe0f434",
+      "基盤・準備": "b0d9afa4a52da78a",
+      "WTG 共通（WTG 申請状態サービス）": "1bb8581b35fbbae8",
+      "物件基本情報登録変更（データアクセスと業務ロジック）": "81ebca98c50b913a",
+      "文書バーコード": "c5546ea99fa27272",
+      "API / 入口": "6d6fd863a620d485",
+      "UI / 表示": "63ab239053045507",
+      "横断確認": "58fa058e815b2284",
+      "実装メモ（Implementation Notes）": "43ac18fdeb302c63",
+      "決定ログ": "8f39aa9acf1f2078",
+      "既知の制約 / 残課題": "0c28dbee39855a57",
+      "後続への申し送り": "ea246458e3f38049",
+      "*": "eec666269855db15"
+    }
+  },
+  "inputs": {
+    ".aidd/feature-list.md": "projection:c37ba7df6e9ebd8b7ee083bbdfd8b57982ba0d3ef3b2f78afde630de4103fac6",
+    "steering/product.md": "cde5dd8a1007c53f93a270de63e01d294d38f47695e96027d52b6b4862bc149b",
+    "steering/tech.md": "58cc32eb0ad29d7b7185bb02e710ce8d882e374f93eb0a609ae293e3903a4966",
+    "steering/architecture.md": "98be0c57ba256c0aeaf1a66d69682e63b47d20ec0f91ab776589a54e5eb8c33d",
+    "steering/security.md": "34061564b8c5b8c28e5ca2f4a9b744b06d9d58417ddbbff7ab150c9ef1027bbf",
+    "steering/non-functional.md": "ae87c72271e4f3d8593e2f666edc7bb0931cf4d0ca78dafbb21ab7264303f0ac",
+    "steering/database.md": "832d98b289c53f8c8adc9a7dfb25bf0f8b1f54b9c1cc473c6480fa9927a20e21",
+    "steering/api-standards.md": "70eca8d2facbf08bfa22cf1ae1e781219ecab2066bb8129bf4a3414b0fdeddc1",
+    "specs/property-basic-info/requirements.md": "5f172c4890f034214da64d63ee9eddbb59f2ea979f258073b31cb99122bfa6bc",
+    "specs/property-basic-info/design.md": "03331555d6ee0825bd90f023f17f4951d532f97b0f4bde7b7f50878d4cc4da03",
+    "docs_revision": "f7251dc8b3ed5ceb8641b0990e817c418de5fece7d221a5c1ccf03808dbb3bad"
+  }
+}

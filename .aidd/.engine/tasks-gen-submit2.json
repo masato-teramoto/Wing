@@ -1,0 +1,24 @@
+{
+ "operation_id": "eddd2c99-bbfd-4228-9834-bd17f9d73221",
+ "dispatch": {
+  "call": "tasks-authoring-generate",
+  "unit": "tasks-authoring-generate/tasks-authoring-generate[application-status-search]::run",
+  "event": "tasks-authoring-generate",
+  "item": "application-status-search",
+  "status": "emit",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": null,
+  "id": "f811059d6767464aa0218b1a6b703ec1"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/application-status-search/tasks.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [],
+  "return_candidates": [],
+  "summary": "回答を反映: タスク 17 を /menu の HTTP 200 の経路に、execution_mode を feature に、タスク 13 を既存 wing の共通ヘッダ・メニュー・エラー画面の確認・改修に直した。残るプレースホルダーは実績用スロット（実装メモ）のみ"
+ }
+}

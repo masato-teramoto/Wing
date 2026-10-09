@@ -1,0 +1,6 @@
+{"timestamp": "2026-10-09T23:46:10+09:00", "level": "info", "orchestrator_id": "01M4GJ1XGPRNC20QDTKGMT2PGQ", "detail": "開始 call(tasks-plan) version=alpha3"}
+{"timestamp": "2026-10-09T23:46:10+09:00", "level": "info", "orchestrator_id": "01M4GJ1XGPRNC20QDTKGMT2PGQ", "phase_id": "01M4GJ1XGQQ2J16CEYEFQZBZV5", "detail": "開始 tasks-plan イベント=1"}
+{"timestamp": "2026-10-09T23:46:10+09:00", "level": "info", "orchestrator_id": "01M4GJ1XGPRNC20QDTKGMT2PGQ", "phase_id": "01M4GJ1XGQQ2J16CEYEFQZBZV5", "sub_phase_id": "01M4GJ1XGQ6P6M21W6H62NW44P", "detail": "開始 tasks-plan type=script item=application-status-search ゲート=3+0"}
+{"timestamp": "2026-10-09T23:46:10+09:00", "level": "info", "orchestrator_id": "01M4GJ1XGPRNC20QDTKGMT2PGQ", "phase_id": "01M4GJ1XGQQ2J16CEYEFQZBZV5", "sub_phase_id": "01M4GJ1XGQ6P6M21W6H62NW44P", "detail": "終了 tasks-plan 結果=成功"}
+{"timestamp": "2026-10-09T23:46:10+09:00", "level": "info", "orchestrator_id": "01M4GJ1XGPRNC20QDTKGMT2PGQ", "phase_id": "01M4GJ1XGQQ2J16CEYEFQZBZV5", "detail": "終了 tasks-plan 結果=成功 残り=0"}
+{"timestamp": "2026-10-09T23:46:10+09:00", "level": "info", "orchestrator_id": "01M4GJ1XGPRNC20QDTKGMT2PGQ", "detail": "終了 call(tasks-plan) 結果=完了 所要=0m00s"}

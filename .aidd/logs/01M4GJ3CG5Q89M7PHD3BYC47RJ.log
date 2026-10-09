@@ -1,0 +1,2 @@
+{"timestamp": "2026-10-09T23:46:58+09:00", "level": "info", "orchestrator_id": "01M4GJ3CG5Q89M7PHD3BYC47RJ", "detail": "開始 call(tasks-authoring-generate) version=alpha3"}
+{"timestamp": "2026-10-09T23:46:58+09:00", "level": "info", "orchestrator_id": "01M4GJ3CG5Q89M7PHD3BYC47RJ", "detail": "終了 call(tasks-authoring-generate) 結果=完了 所要=0m00s"}

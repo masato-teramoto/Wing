@@ -1,0 +1,7 @@
+{
+  "phase": "tasks",
+  "event": "tasks-authoring-generate",
+  "scope": "feature:application-status-search",
+  "run": 1,
+  "findings": []
+}

@@ -1,0 +1,97 @@
+{
+ "operation_id": "448118be-9cb4-4840-a212-12c4c04cbf34",
+ "dispatch": {
+  "call": "tasks-authoring-generate",
+  "unit": "tasks-authoring-generate/tasks-authoring-generate[application-status-search]::run",
+  "event": "tasks-authoring-generate",
+  "item": "application-status-search",
+  "status": "emit",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": null,
+  "id": "c83e115c4ca042f2867a2bc605a4f8cc"
+ },
+ "result": {
+  "status": "waiting",
+  "targets": [
+   "specs/application-status-search/tasks.md"
+  ],
+  "questions": [
+   {
+    "id": "Q-TK-AS-001",
+    "target": "specs/application-status-search/tasks.md",
+    "location": "タスク 17（結合確認タスク）× 完了条件・本文",
+    "question": "全体結合確認の smoke wrapper（tools/smoke.py）が通す 1 経路と、起動完了（readiness）の判定を決めてください。",
+    "reason_unanswered": "根拠が steering・design にありません。",
+    "options": [
+     {
+      "label": "A",
+      "description": "DB に接続できる検証環境で実行し、ログインして GET /wtg060 の初期表示（HTTP 200 と画面の見出し）を 1 経路とする",
+      "answer": "A"
+     },
+     {
+      "label": "B",
+      "description": "DB に依存しない口（例: ログイン画面）の HTTP 200 を起動完了の判定と 1 経路にする。口の URL は回答者が指定する",
+      "answer": "B"
+     },
+     {
+      "label": "C",
+      "description": "smoke を実行できる環境が無いため、owner の選び直しまたは「候補なし」を計画で選び直す",
+      "answer": "C"
+     }
+    ]
+   },
+   {
+    "id": "Q-TK-AS-002",
+    "target": "specs/application-status-search/tasks.md",
+    "location": "front matter execution_mode",
+    "question": "テンプレートの execution_mode に入れる値を指定してください。",
+    "reason_unanswered": "上流成果物に導出元がありません。",
+    "options": [
+     {
+      "label": "all",
+      "description": "全件方式（workflow.mode の現在値）の表記をそのまま使う",
+      "answer": "all"
+     },
+     {
+      "label": "feature",
+      "description": "Feature 方式の表記を使う",
+      "answer": "feature"
+     },
+     {
+      "label": "該当なし",
+      "description": "この案件では execution_mode を使わない",
+      "answer": "該当なし（不要理由を人が明記）"
+     }
+    ]
+   },
+   {
+    "id": "Q-TK-AS-003",
+    "target": "specs/application-status-search/tasks.md",
+    "location": "タスク 13（共通シェル・入口・システムエラー）",
+    "question": "_app-shell（共通ヘッダ・入口メニュー・システムエラー画面）の実装先を決めてください。",
+    "reason_unanswered": "steering・design に定めがありません。",
+    "options": [
+     {
+      "label": "A",
+      "description": "既存 wing の共通ヘッダ・メニュー・エラー画面を、画面設計書に合わせて確認・改修する",
+      "answer": "A"
+     },
+     {
+      "label": "B",
+      "description": "WTG の機能配下（function/wtg/common など）に、画面設計書どおりの画面を新規に作る",
+      "answer": "B"
+     },
+     {
+      "label": "C",
+      "description": "既存の共通シェルが画面設計書と一致することの確認だけを行い、差分は改修せず上流へ戻す",
+      "answer": "C"
+     }
+    ]
+   }
+  ],
+  "open_placeholders": 0,
+  "changed_findings": [],
+  "return_candidates": [],
+  "summary": "specs/application-status-search/tasks.md を新規作成（draft）。17 タスク。質問 3 件（smoke の経路と readiness、execution_mode の値、_app-shell の実装先）の回答待ち"
+ }
+}

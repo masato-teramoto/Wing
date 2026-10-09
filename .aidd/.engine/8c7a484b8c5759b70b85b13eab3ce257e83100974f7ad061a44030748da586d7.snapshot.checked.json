@@ -1,0 +1,27 @@
+{
+  "event": "tasks-authoring-revise",
+  "scope": "feature:application-status-search",
+  "run": 2,
+  "snapshot": "77cb5fcb3e31b369f29ac654078442fc84782d57a68ba06402e68cf77b29e407",
+  "record_bytes": 33724,
+  "record_hash": "bf41fe9643899060b926fdb1b3bdc47345e27c061696d2bc812ec21fd8edda7f",
+  "targets": [
+    "specs/application-status-search/tasks.md"
+  ],
+  "hashes": {
+    "specs/application-status-search/tasks.md": "afa2de5e7a5a68130f521be7e70f213ed05dd075bd087cf90020e023a9dd8a59"
+  },
+  "inputs": {
+    ".aidd/feature-list.md": "projection:5fbc40f84be39194459fb2d74f61f7f4751def3b8d8fbd22d1847ebd027d6bdc",
+    "steering/product.md": "cde5dd8a1007c53f93a270de63e01d294d38f47695e96027d52b6b4862bc149b",
+    "steering/tech.md": "58cc32eb0ad29d7b7185bb02e710ce8d882e374f93eb0a609ae293e3903a4966",
+    "steering/architecture.md": "98be0c57ba256c0aeaf1a66d69682e63b47d20ec0f91ab776589a54e5eb8c33d",
+    "steering/security.md": "34061564b8c5b8c28e5ca2f4a9b744b06d9d58417ddbbff7ab150c9ef1027bbf",
+    "steering/non-functional.md": "ae87c72271e4f3d8593e2f666edc7bb0931cf4d0ca78dafbb21ab7264303f0ac",
+    "steering/database.md": "832d98b289c53f8c8adc9a7dfb25bf0f8b1f54b9c1cc473c6480fa9927a20e21",
+    "steering/api-standards.md": "70eca8d2facbf08bfa22cf1ae1e781219ecab2066bb8129bf4a3414b0fdeddc1",
+    "specs/application-status-search/requirements.md": "55d9ff1879cc34261f13d0a12fab45b26b91a0783b22e3136a1edc72f808ce82",
+    "specs/application-status-search/design.md": "b0d59adc5f67c4377772191bd6d81adc4234cdaf73d7f61c30eac704d697f0fa",
+    "docs_revision": "f7251dc8b3ed5ceb8641b0990e817c418de5fece7d221a5c1ccf03808dbb3bad"
+  }
+}
