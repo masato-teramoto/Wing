@@ -1,10 +1,10 @@
 {
   "event": "requirements-cross-gate",
   "scope": "cross",
-  "run": 3,
-  "snapshot": "b9c01e619c0e7c795f8effa9642a03a8e830c5da89e7e41e65041074aa33f638",
-  "record_bytes": 299731,
-  "record_hash": "013c38661e3036ac23e8f400d15dd787773276739a063926c57550de3820b232",
+  "run": 4,
+  "snapshot": "90f1a37fffc802ae590fb93e8eaf6d7b993822f9d69ab7fab9c49b57826732ea",
+  "record_bytes": 308977,
+  "record_hash": "ba0b48f3b32ef1d1aad816c7a3913173c7a698eee9fa0259b3bedde5e82dc774",
   "targets": [
     "specs/property-basic-info/requirements.md",
     "specs/issue-request/requirements.md",
@@ -24,8 +24,8 @@
     "specs/contract-info-download/requirements.md": "db81769c1f58c458a0583a47ed5daf3a2ffdf8fdee34bd1aa3514a04dcf4a898"
   },
   "inputs": {
-    ".aidd/requirement-list.md": "bdf3027f78209be11ea79d4b3026928aaa5959c4f6fbebb20c35357626604947",
-    ".aidd/feature-list.md": "71a64dc3cbf71bc6ddb02a4dc6f8247344064ca63e8a291e5881763ef59256ae",
+    ".aidd/requirement-list.md": "0f27710cd1eb4f103a426cbccec48d5af14f504bd9e40c7f8c697f3ef031c859",
+    ".aidd/feature-list.md": "9c8fae4dbc53b2ff6cc98e2476e7c02797d2077359d9b2709d5eff7e5111b642",
     "steering/product.md": "cde5dd8a1007c53f93a270de63e01d294d38f47695e96027d52b6b4862bc149b",
     "steering/tech.md": "58cc32eb0ad29d7b7185bb02e710ce8d882e374f93eb0a609ae293e3903a4966",
     "steering/architecture.md": "98be0c57ba256c0aeaf1a66d69682e63b47d20ec0f91ab776589a54e5eb8c33d",

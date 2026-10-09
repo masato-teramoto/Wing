@@ -57,14 +57,70 @@ def timestamp(value):
     return value
 
 
-def scope_key(value):
+# スコープ値の種類の判定はここだけで行う（文字列の比較を各所に書かない）。
+#   phase / cross          全件の工程承認 / 全件の横断確認
+#   phase:<S> / cross:<S>  選択 feature S の工程承認 / 横断確認（Feature 方式）
+#   feature:<name>         feature 単位の検査・承認
+SCOPE_KINDS = ("phase", "cross", "feature")
+_NAME = r"[a-z0-9][a-z0-9_-]*"
+
+
+def scope_parts(value):
+    """(種類, feature 名)。全件の phase / cross は名前が空。不正な値は ValueError。"""
     if value in ("phase", "cross"):
-        return value
-    if isinstance(value, str) and value.startswith("feature:"):
-        name = value[len("feature:"):]
-        if re.fullmatch(r"[a-z0-9][a-z0-9_-]*", name):
-            return value
+        return value, ""
+    if isinstance(value, str) and ":" in value:
+        kind, name = value.split(":", 1)
+        if kind in SCOPE_KINDS and re.fullmatch(_NAME, name):
+            return kind, name
     raise ValueError("invalid scope: %r" % value)
+
+
+def scope_key(value):
+    scope_parts(value)
+    return value
+
+
+def scope_of(kind, name=""):
+    """種類と feature 名からスコープ値を作る。feature は名前が必須。"""
+    if kind not in SCOPE_KINDS or (kind == "feature" and not name):
+        raise ValueError("invalid scope kind: %r %r" % (kind, name))
+    return kind + (":" + name if name else "")
+
+
+def scope_kind(value):
+    return scope_parts(value)[0]
+
+
+def scope_feature(value):
+    """スコープが指す feature 名（feature:<f>・phase:<S>・cross:<S>）。全件スコープは空。"""
+    return scope_parts(value)[1]
+
+
+def is_cross_scope(value):
+    """横断確認（確認行。status を変えない）。全件 cross と selection の cross:<S>。"""
+    return scope_kind(value) == "cross"
+
+
+def is_phase_scope(value):
+    """工程の承認（承認行。status を変える）。全件 phase と selection の phase:<S>。"""
+    return scope_kind(value) == "phase"
+
+
+def resolves(original, recheck):
+    """解消に使える再検査スコープ：同じスコープ、または対象を包含する全件スコープ（cross ⊇ cross:<S>、phase ⊇ phase:<S>）。"""
+    kind, name = scope_parts(original)
+    return recheck == original or (bool(name) and kind in ("cross", "phase") and recheck == kind)
+
+
+def is_feature_scope(value):
+    return scope_kind(value) == "feature"
+
+
+def is_selection_scope(value):
+    """Feature 方式の selection スコープ（phase:<S>・cross:<S>）。"""
+    kind, name = scope_parts(value)
+    return kind in ("phase", "cross") and bool(name)
 
 
 def positive(value):
@@ -357,7 +413,8 @@ def parse(text):
                     _decision_extras(row, finding)
                 else:
                     new_key = scope_key(row["再検査スコープ"]), positive(row["再検査回数"])
-                    if new_key not in runs or new_key[0] != key[0] or new_key[1] <= key[1] or not filled(row["確認者"]) or finding.decision not in ("修正", "差戻し"):
+                    if (new_key not in runs or not resolves(key[0], new_key[0]) or (new_key[0] == key[0] and new_key[1] <= key[1])
+                            or not filled(row["確認者"]) or finding.decision not in ("修正", "差戻し")):
                         raise ValueError("resolution requires a later inspection and human confirmation")
                     if record.runs.index(runs[new_key]) <= record.runs.index(runs[key[:2]]):
                         raise ValueError("resolution inspection predates the finding")
@@ -367,7 +424,7 @@ def parse(text):
             active, stage = None, None
             for row in rows:
                 key = identity(row)
-                if key not in runs or key[0] != "cross" or not filled(row["確認者"]) or json.loads(row["原本SHA256"]) != runs[key].hashes:
+                if key not in runs or not is_cross_scope(key[0]) or not filled(row["確認者"]) or json.loads(row["原本SHA256"]) != runs[key].hashes:
                     raise ValueError("cross confirmation requires matching inspection and person")
                 timestamp(row["日時"])
                 record.confirmations.append(row)

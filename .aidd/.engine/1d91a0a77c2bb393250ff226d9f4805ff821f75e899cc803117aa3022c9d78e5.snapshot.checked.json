@@ -1,10 +1,10 @@
 {
   "event": "steering-authoring-revise",
   "scope": "phase",
-  "run": 6,
-  "snapshot": "cc3e9d1e71eb70e5d68762f02c34a982aa5b7494a91d985646372c9782238ad4",
-  "record_bytes": 64211,
-  "record_hash": "d74b9e661b634457dc4527790b764e64ca95809bb9a5d716c663650a1e3b3ce4",
+  "run": 7,
+  "snapshot": "575bca9f4da2f307d2c8dd8933caa35ac798ebf577ef87d443aef89240e98aea",
+  "record_bytes": 73143,
+  "record_hash": "5298d0aaa312b9443e48298d882c733fb2546a3a53f1d460869d10e75e24148c",
   "targets": [
     "steering/product.md",
     "steering/tech.md",
@@ -24,6 +24,6 @@
     "steering/api-standards.md": "70eca8d2facbf08bfa22cf1ae1e781219ecab2066bb8129bf4a3414b0fdeddc1"
   },
   "inputs": {
-    ".aidd/requirement-list.md": "bdf3027f78209be11ea79d4b3026928aaa5959c4f6fbebb20c35357626604947"
+    ".aidd/requirement-list.md": "0f27710cd1eb4f103a426cbccec48d5af14f504bd9e40c7f8c697f3ef031c859"
   }
 }

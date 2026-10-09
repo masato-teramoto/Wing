@@ -1,0 +1,43 @@
+{
+ "operation_id": "689363ac-af9b-4c6a-b56a-3918db6b8b9c",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[issue-request]::run",
+  "event": "design-authoring-revise",
+  "item": "issue-request",
+  "status": "emit",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": null,
+  "id": "47a8c46412ec40e398f378ff582658e0"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/issue-request/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "design",
+    "scope": "feature:issue-request",
+    "run": 10,
+    "number": 1
+   },
+   {
+    "phase": "design",
+    "scope": "feature:issue-request",
+    "run": 10,
+    "number": 2
+   },
+   {
+    "phase": "design",
+    "scope": "feature:issue-request",
+    "run": 10,
+    "number": 3
+   }
+  ],
+  "return_candidates": [],
+  "summary": "規則 2 のその他①〜④の桁を 50 に、規則 1 の参照を規則 8 に直し、TWTGA130 の説明に DRAFT_FLG の注記を足した"
+ }
+}

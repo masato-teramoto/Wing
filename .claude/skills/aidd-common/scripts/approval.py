@@ -19,6 +19,7 @@ import review_contract
 import review_view
 import inspection_seal
 import snapshot_artifacts
+import record_format
 
 NAMES = {"intake": "要求受入", "steering": "Steering 作成", "feature": "Feature 分割", "requirements": "requirements 作成",
          "design": "design 作成", "docs": "docs 作成", "tasks": "tasks 作成", "implement": "実装"}
@@ -36,11 +37,12 @@ def label(finding, latest, multi):
 
 
 def scope_label(scope):
-    if scope == "cross":
-        return "横断"
-    if scope.startswith("feature:"):
-        return "成果物単位（%s）" % scope[len("feature:"):]
-    return "成果物単位"
+    kind, name = record_format.scope_parts(scope)
+    if kind == "cross":
+        return "横断（%s を中心とする比較集合）" % name if name else "横断"
+    if kind == "feature":
+        return "成果物単位（%s）" % name
+    return "工程承認（%s）" % name if name else "成果物単位"
 
 
 def viewpoints(process):
@@ -153,7 +155,7 @@ def finding_table(lines, findings, latest, multi):
 def render_scope(lines, context, view, multi):
     """1 スコープ分の指摘。返り値は未回答の件数。"""
     run = view.run
-    targets = review_contract.targets_for(context, view.scope) if view.scope != "cross" else run.targets
+    targets = run.targets if record_format.is_cross_scope(view.scope) else review_contract.targets_for(context, view.scope)
     latest = run.number
     if multi:
         lines += ["#### %s" % view.scope, ""]
@@ -233,6 +235,60 @@ def automatic(views, multi):
     return lines
 
 
+def carried_selection(context, record, scopes):
+    """全件の回で、部分集合のスコープ（cross:<S>・phase:<S>）に残る指摘を示す（§6.4 (3)。今回の件数に含めない）。
+
+    全件の回で同じ問題が再検出されたら新しい番号で記録し、ここに並ぶ過去の指摘は候補として示すだけで引き継がない（(4)）。
+    """
+    fulls = [s for s in scopes if record_format.scope_parts(s)[0] in ("cross", "phase") and not record_format.scope_parts(s)[1]]
+    rows = []
+    for full in fulls:
+        kind = record_format.scope_parts(full)[0]
+        for run in record.runs:
+            name = record_format.scope_parts(run.scope)[1]
+            if record_format.scope_parts(run.scope)[0] != kind or not name:
+                continue
+            for f in run.findings:
+                if f.is_open or f.decision in ("未対応", "対応せず進める"):
+                    rows.append("- %s %d 回目 #%s %s [%s] — %s（全件の回で解消できます: `resolve` の scope=%s）"
+                                % (run.scope, run.number, f.number, cell(f.description), cell(f.location),
+                                   f.decision or "判断が未回答", run.scope))
+    if not rows:
+        return []
+    return ["### 部分集合の回に残る指摘（今回の件数に含めない）", ""] + rows + [""]
+
+
+def unexecuted_layers(context):
+    """Feature 方式の承認提示：未実施の横断層（§6.7）。承認は止めない。"""
+    import feature_scope
+    if not feature_scope.is_feature(context):
+        return []
+    name = context.item if not context.kind else ""
+    if context.kind:
+        try:
+            import implementation_requests
+            name = implementation_requests.feature_of(context)
+        except (ValueError, OSError, KeyError):
+            name = ""
+    if not name or name not in {e["name"] for e in context.features()}:
+        return []
+    import review_decisions
+    kind = next(e["kind"] for e in context.features() if e["name"] == name)
+    lines = ["### 未実施の横断層（承認は止めない）", ""]
+    for process in ("requirements", "design"):
+        if kind != "Platform":
+            lines.append("- %s の横断確認：User feature のため最後の全件確認で実施予定" % process)
+        elif not feature_scope.consumers(context, process, name):
+            lines.append("- %s の横断確認：利用側がまだ無いため省略（Cons(p)=∅）" % process)
+        else:
+            state, _ = review_decisions.selection_cross_state(context, process, name)
+            label = {"valid": "実施済み", "stale": "実施済み（古い：比較相手が増えた・変わった）",
+                     "invalid": "実施済みだが無効（再実施が必要）", "missing": "未実施"}[state]
+            lines.append("- %s の横断確認 cross:%s：%s" % (process, name, label))
+    lines += ["- tasks の全件確認（tasks-gate-run 全件）：U 全件の tasks が揃った後に実施", ""]
+    return lines
+
+
 def reevaluated(context, views):
     """再評価の回なら、切り替え前の指摘を何件見直し、何件が残ったかを示す。"""
     try:
@@ -285,6 +341,7 @@ def main():
         lines += changes(context)
         lines += ["### 判断が必要な指摘", ""]
         undecided_total = sum(render_scope(lines, context, view, multi) for view in views)
+        lines += carried_selection(context, record, scopes) + unexecuted_layers(context)
         if undecided_total:
             example = ("回答例: `%s 1:推奨 / %s 2:C[後で決める+] design で決める`（複数の範囲をまとめて確認するため、# の欄のとおり範囲を付けて答える）"
                        % (scopes[0], scopes[0]) if multi else

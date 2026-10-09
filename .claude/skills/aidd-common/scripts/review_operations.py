@@ -10,6 +10,7 @@ import re
 
 import artifacts
 import project_state
+import location_identity
 import record_format
 import review_gate
 import project_progress
@@ -48,8 +49,22 @@ def status_effect(context, target, status, at):
 def apply_effect(context, effect):
     if effect['kind'] == 'cross':
         value = project_progress.workflow(context)
-        project_progress.save(context, {'invalidated_cross':[p for p in value.get('invalidated_cross', [])
-                                                         if p != context.process]})
+        key = project_progress.cross_key(context.process, context.selection)
+        update = {'invalidated_cross': [p for p in value.get('invalidated_cross', []) if p != key]}
+        if effect.get('scope') and context.selection:
+            import feature_scope
+            core = [context.selection, *feature_scope.closure(context, context.selection)]
+            features = []
+            for target in effect.get('targets', []):
+                parts = target.split('/')
+                if len(parts) > 2 and parts[0] == 'specs' and parts[1] not in features:
+                    features.append(parts[1])
+            scopes = dict(value.get('scopes', {}))
+            scopes['%s#%d' % (effect['scope'], effect['run'])] = {
+                'selection': context.selection, 'closure': [n for n in core[1:]],
+                'consumers': [n for n in features if n not in core]}
+            update['scopes'] = scopes
+        project_progress.save(context, update)
         return
     path = Path(context.path(effect['path']))
     before = path.read_bytes()
@@ -88,7 +103,7 @@ def execute(context, operation, data, actor, expected, operation_id, prepare):
         operations = dict(project_progress.workflow(context).get('review_operations', {}))
         previous = operations.get(operation_id)
         if previous:
-            if previous['request'] != request:
+            if not location_identity.same_request(previous['request'], request):
                 raise ValueError('operation ID already used with different content')
             if previous['status'] == 'applied':
                 return {**previous['result'],'replayed':True}

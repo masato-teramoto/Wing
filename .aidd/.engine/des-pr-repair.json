@@ -1,0 +1,30 @@
+{
+ "operation_id": "e7f8845a-34d6-4e37-98df-3eca6ddf0862",
+ "action": "repair",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[print-report]::end.review",
+  "event": "design-authoring-revise",
+  "item": "print-report",
+  "status": "wait",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[print-report]::end.review\", \"snapshot\": \"db308243578f32b5751c6161c1c9c98801bdf36635158b72e0a73795303ad00b\", \"run\": 6, \"inspection_hash\": \"c770fe1ef34ff7dad3014adb5a8fd963a0b507cb4c54c6774cc27089a355cfe6\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n\n### 前回の検査（5 回目）からの変更\n\n- 上流の入力が前回の検査から変わった（または比べられない）ため、全体を検査する。対象の全体を見てください。\n\n### 判断が必要な指摘\n\n**対象**: `specs/print-report/design.md`（スコープ: 成果物単位（print-report） / 6 回目）\n**実行した層**: ① / ②\n\n**AI が修正案で直す軽微**（1 件。判断は不要。修正の回で直し、再検査で確かめます）\n- #1 参照先 specs/issue-request/db-TWTGM100.md・db-TWTGM140.md が実在しない\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n修正（A）と AI が直す軽微は、修正の指示を書かずに修正の回へ回せます（repair の findings に \"all-fixes\"）。AI の推奨を採用していない修正には、修正の指示を書いてください。\n承認を問う前に必要なこと: 必要な検査が未完了: feature:print-report / 回数 6 / 形式不備で意味検査から外した対象 specs/print-report/design.md（形式を直して再検査する）",
+  "id": "d84db2c0ef924c88be2dcb41db8b8735"
+ },
+ "expected": {
+  "root": "/home/kccs/Wing",
+  "state": "/home/kccs/Wing/.aidd/phase-progress.json",
+  "call": "design-authoring-revise",
+  "event": "design-authoring-revise",
+  "item": "print-report",
+  "dispatch_id": "d84db2c0ef924c88be2dcb41db8b8735",
+  "unit": "design-authoring-revise/design-authoring-revise[print-report]::end.review",
+  "scope": "feature:print-report",
+  "run": 6,
+  "snapshot": "db308243578f32b5751c6161c1c9c98801bdf36635158b72e0a73795303ad00b",
+  "record_hash": "13e04b8c59d5e5ff6e8aaa84597c94b99f6726de7cc04b86bc679135625f2e37"
+ },
+ "data": {
+  "findings": "all-fixes"
+ }
+}

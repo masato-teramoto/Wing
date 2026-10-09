@@ -28,7 +28,8 @@ def receipts(context, execution, stage='verify', current=True):
 
 def validate_task(context, execution):
     verified = receipts(context, execution)
-    if execution['policy']['tasks'][execution['task_id']]['tdd']:
+    if execution['policy']['tasks'][execution['task_id']]['tdd'] and not execution.get('reverify'):
+        # reverify（コード編集 0 件）は RED を観測できないので、GREEN・VERIFY 相当の checks だけを取り直す（§6.5）。
         red = store.read(context.root, store.BASE + '/runs/' + execution['execution_id'] + '/red.json')
         green = receipts(context, execution, stage='green', current=False)
         if (red.get('task_id') != execution['task_id'] or red.get('execution_id') != execution['execution_id']

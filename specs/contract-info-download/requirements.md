@@ -1,7 +1,7 @@
 ---
 feature: contract-info-download
 status: approved
-updated_at: 2026-10-05T20:50:14+09:00
+updated_at: 2026-10-09T18:30:20+09:00
 ---
 
 # 要件定義書

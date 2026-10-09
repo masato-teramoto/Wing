@@ -3,7 +3,7 @@
   "phase": "requirements",
   "event": "requirements-authoring-revise",
   "scope": "feature:application-status-search",
-  "at": "2026-10-05T20:07:22+09:00",
+  "at": "2026-10-09T18:14:49+09:00",
   "artifacts": {
     "specs/application-status-search/requirements.md": {
       "status": "draft",
@@ -11,9 +11,64 @@
     }
   },
   "record": {
-    "bytes": 231748,
-    "sha256": "543f9381f26e279a5653b33439c29e1042b3e36a754fa18d46feabe1bab2a6d9",
-    "blocks": 266
+    "bytes": 304479,
+    "sha256": "2a7bc487a87497120807eb8757867069d055715095e8f641c4568ebaec202464",
+    "blocks": 354
   },
-  "run": 2
+  "run": 3,
+  "sections": {
+    "specs/application-status-search/requirements.md": {
+      "": "e3b0c44298fc1c14",
+      "要件定義書": "51ada75ab37d0083",
+      "概要（Introduction）": "7f54d314a982e850",
+      "業務フロー": "63a7fb87cc386915",
+      "スコープの境界（Boundary Context）": "6c80b233e5d8ea53",
+      "対象外": "52ee6607f334f15c",
+      "前提と依存（Dependencies / Assumptions）": "290d1d874d1c3824",
+      "要件（Requirements）": "989e0aa7066935a7",
+      "要件 1: 申請状況の検索（REQ-006）": "e3f4b247aa69bee7",
+      "受け入れ基準（Acceptance Criteria）": "f16805ceded4fba3",
+      "要件 2: 検索結果の一覧（REQ-006）": "3825974b29e702b3",
+      "受け入れ基準（Acceptance Criteria） (2)": "a1337b06ceeb4d67",
+      "要件 3: 検索結果の CSV 出力（REQ-007）": "d1dd9bba2638c56a",
+      "受け入れ基準（Acceptance Criteria） (3)": "2c46cad3ab600f45",
+      "要件 4: 入力チェック（REQ-063）": "492858c4755c943b",
+      "受け入れ基準（Acceptance Criteria） (4)": "9cb478892faa32ac",
+      "非機能要件（Non-Functional Requirements）": "cad1041d65c26436",
+      "*": "51ada75ab37d0083"
+    }
+  },
+  "own_sections": {
+    "specs/application-status-search/requirements.md": {
+      "": "e3b0c44298fc1c14",
+      "要件定義書": "56c65a6972e49c08",
+      "概要（Introduction）": "7f54d314a982e850",
+      "業務フロー": "63a7fb87cc386915",
+      "スコープの境界（Boundary Context）": "6c80b233e5d8ea53",
+      "対象外": "52ee6607f334f15c",
+      "前提と依存（Dependencies / Assumptions）": "290d1d874d1c3824",
+      "要件（Requirements）": "2855f05e424bda39",
+      "要件 1: 申請状況の検索（REQ-006）": "3a743812e09f5825",
+      "受け入れ基準（Acceptance Criteria）": "f16805ceded4fba3",
+      "要件 2: 検索結果の一覧（REQ-006）": "42d67ef423e982c7",
+      "受け入れ基準（Acceptance Criteria） (2)": "a1337b06ceeb4d67",
+      "要件 3: 検索結果の CSV 出力（REQ-007）": "130399aae92a57c4",
+      "受け入れ基準（Acceptance Criteria） (3)": "2c46cad3ab600f45",
+      "要件 4: 入力チェック（REQ-063）": "acc2170809636bdd",
+      "受け入れ基準（Acceptance Criteria） (4)": "9cb478892faa32ac",
+      "非機能要件（Non-Functional Requirements）": "cad1041d65c26436",
+      "*": "51ada75ab37d0083"
+    }
+  },
+  "inputs": {
+    ".aidd/requirement-list.md": "0f27710cd1eb4f103a426cbccec48d5af14f504bd9e40c7f8c697f3ef031c859",
+    ".aidd/feature-list.md": "9c8fae4dbc53b2ff6cc98e2476e7c02797d2077359d9b2709d5eff7e5111b642",
+    "steering/product.md": "cde5dd8a1007c53f93a270de63e01d294d38f47695e96027d52b6b4862bc149b",
+    "steering/tech.md": "58cc32eb0ad29d7b7185bb02e710ce8d882e374f93eb0a609ae293e3903a4966",
+    "steering/architecture.md": "98be0c57ba256c0aeaf1a66d69682e63b47d20ec0f91ab776589a54e5eb8c33d",
+    "steering/security.md": "34061564b8c5b8c28e5ca2f4a9b744b06d9d58417ddbbff7ab150c9ef1027bbf",
+    "steering/non-functional.md": "ae87c72271e4f3d8593e2f666edc7bb0931cf4d0ca78dafbb21ab7264303f0ac",
+    "steering/database.md": "832d98b289c53f8c8adc9a7dfb25bf0f8b1f54b9c1cc473c6480fa9927a20e21",
+    "steering/api-standards.md": "70eca8d2facbf08bfa22cf1ae1e781219ecab2066bb8129bf4a3414b0fdeddc1"
+  }
 }

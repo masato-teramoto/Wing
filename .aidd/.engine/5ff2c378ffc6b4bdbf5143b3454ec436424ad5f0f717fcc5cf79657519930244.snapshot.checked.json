@@ -1,18 +1,18 @@
 {
   "event": "design-authoring-revise",
   "scope": "feature:issue-request",
-  "run": 8,
-  "snapshot": "5030e813ca4ad5f557854bfab5281ebaea89c86ab50ff8688a3f6d07f3f0c87f",
-  "record_bytes": 324503,
-  "record_hash": "85012fe8233b909e4e8404970ca0142438be4f2d4d95bebd0afcf5dbe43f7150",
+  "run": 11,
+  "snapshot": "fc773e5b71746a5f4b8decf9fa32e5d08fa3eba6dda7ac3337f91eb064c14475",
+  "record_bytes": 421258,
+  "record_hash": "f64e0204aaad029409637bc97002ec649c77f13ede6c1752bae968eadb6cf061",
   "targets": [
     "specs/issue-request/design.md"
   ],
   "hashes": {
-    "specs/issue-request/design.md": "7bedc0d4618ebcb9a1667ce749bf24513272ac9c19fbdebdfe1ac2954ab67fbb"
+    "specs/issue-request/design.md": "8cf01f68fe35f51ecb925f5258243beb7a476500279d2757c8a0a7788c2917ec"
   },
   "inputs": {
-    ".aidd/feature-list.md": "71a64dc3cbf71bc6ddb02a4dc6f8247344064ca63e8a291e5881763ef59256ae",
+    ".aidd/feature-list.md": "9c8fae4dbc53b2ff6cc98e2476e7c02797d2077359d9b2709d5eff7e5111b642",
     "steering/product.md": "cde5dd8a1007c53f93a270de63e01d294d38f47695e96027d52b6b4862bc149b",
     "steering/tech.md": "58cc32eb0ad29d7b7185bb02e710ce8d882e374f93eb0a609ae293e3903a4966",
     "steering/architecture.md": "98be0c57ba256c0aeaf1a66d69682e63b47d20ec0f91ab776589a54e5eb8c33d",

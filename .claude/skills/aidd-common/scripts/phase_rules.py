@@ -21,12 +21,20 @@ import execution_context as framework  # L0 の枠組み
 import artifacts as artifact_io
 import feature_manifest
 import project_state
+import record_format
 
 COMMON = Path(__file__).resolve().parents[1]
 # Phase names are the identifiers of the L3 rules below and in the other scripts.
 PHASE_NAMES = ("intake", "steering", "feature", "requirements", "design", "docs", "tasks", "implement")
 # Phase 8 task actions write no fixed outputs, so its final review cannot join by outputs.
 IMPLEMENT_REVIEW = "implement-gate-run"
+# Phase 8 の action の種類（計画 v3 §6.11、§9 段階 3）。implement 工程の分岐は action 名ではなく種類で判定する。
+IMPLEMENT_TASKS = ("implement-authoring-generate", "implement-authoring-revise")
+IMPLEMENT_PLAN = "implement-plan"
+# 実装の証跡（タスクの実行記録・feature の review.json）を持つ種類。
+EVIDENCE_KINDS = ("task", "final")
+# feature を持たない Phase 8 の実行（記録を書かない）。全体結合確認と横断 ACE（§6.11）。
+IMPLEMENT_PROJECT_RUNS = ("implement-integration-run", "implement-cross-ace-run")
 ROLES = ("generate", "repair")
 # Skill の手順の冒頭の宣言（D18）。L0 は読まない。
 _STEPS = re.compile(r"^## 手順[ \t]*\n(.*?)(?=^## |\Z)", re.M | re.S)
@@ -135,6 +143,14 @@ def build(data, role_of=skill_role, per_feature_of=skill_per_feature):
         decider = IMPLEMENT_REVIEW if name == "implement" else rule["generate"]
         rule["per_feature"] = bool(skill(decider) and per_feature_of(skill(decider)))
     process_of[IMPLEMENT_REVIEW] = "implement"
+    # 名前規則（§6.11）：`<工程>-cross-gate` と、feature を持たない Phase 8 の実行（outputs を持たないものもある）。
+    for name in actions:
+        if name in process_of:
+            continue
+        if name.endswith("-cross-gate") and name[:-len("-cross-gate")] in rules:
+            process_of[name] = name[:-len("-cross-gate")]
+        elif name in IMPLEMENT_PROJECT_RUNS:
+            process_of[name] = "implement"
     # Actions outside the phase flows (plans, cross gates) join the phase with the same outputs.
     for name, row in actions.items():
         if name in process_of or not row["outputs"]:
@@ -161,6 +177,26 @@ def action_row(name):
         return config()["actions"][name]
     except KeyError:
         raise ValueError("unknown main_flow action: %s" % name) from None
+
+
+def implement_kind(action):
+    """implement 工程の action の種類。implement 工程でなければ空。
+
+    task（タスク）／final（feature の最終検査 implement-gate-run）／plan（計画停止点 implement-plan[S]、D-11）／
+    cross（全体結合確認 implement-cross-gate）／integration（feature を持たない実行：implement-integration-run・
+    implement-cross-ace-run。記録を書かない）。
+    """
+    if config()["process_of"].get(action) != "implement":
+        return ""
+    if action in IMPLEMENT_TASKS:
+        return "task"
+    if action == IMPLEMENT_REVIEW:
+        return "final"
+    if action == IMPLEMENT_PLAN:
+        return "plan"
+    if action.endswith("-cross-gate"):
+        return "cross"
+    return "integration"
 
 
 def __getattr__(name):
@@ -207,11 +243,40 @@ class ExecutionContext(framework.ExecutionContext):
         return self.action.endswith("-cross-gate")
 
     @property
+    def kind(self):
+        """Phase 8 の action の種類（implement_kind）。implement 工程でなければ空。"""
+        return implement_kind(self.action)
+
+    @property
+    def is_implementation(self):
+        """実装の証跡を持つ Phase 8 の action（task・final）。"""
+        return self.kind in EVIDENCE_KINDS
+
+    @property
+    def takes_selection(self):
+        """全件の横断確認 action。item（選択 feature 名）を付けると selection 単位になる（§6.3 2a）。"""
+        return self.process in ("requirements", "design", "tasks") and (self.is_cross or self.action == "tasks-gate-run")
+
+    @property
+    def selection(self):
+        """selection 単位で呼ばれたときの選択 feature S。全件の呼出しと他の action では空。"""
+        return self.item if self.takes_selection and self.item else ""
+
+    @property
+    def plan_item(self):
+        """Feature 方式の計画停止点 `<process>-plan[S]` の S。item 無しの計画と他の action では空。"""
+        return self.item if self.action.endswith("-plan") and self.process in ("requirements", "design", "tasks") else ""
+
+    @property
     def scope(self):
-        if self.process == 'implement':
+        # 横断確認を implement の判定より先に見る（implement-cross-gate は feature を持たない、§6.11）。
+        if self.takes_selection or self.is_cross:
+            return record_format.scope_of("cross" if self.is_cross else "phase", self.selection)
+        if self.kind:
             import implementation_requests
-            return 'feature:' + implementation_requests.feature_of(self)
-        return "cross" if self.is_cross else ("feature:" + self.item if self.item else "phase")
+            feature = implementation_requests.feature_of(self)
+            return record_format.scope_of("feature", feature) if feature else record_format.scope_of("phase")
+        return record_format.scope_of("feature", self.item) if self.item else record_format.scope_of("phase")
 
     def state(self):
         return project_state.read(self.state_path)
@@ -267,28 +332,35 @@ class ExecutionContext(framework.ExecutionContext):
             return self.artifacts()
         return self._selected([p.replace("{item}", self.item) for p in patterns], "inspection gate")
 
+    def approval_targets(self):
+        """人が承認する成果物。通常は検査対象と同じ。
+
+        tasks-gate-run[S] は比較集合 C(p) の tasks.md 全部を検査し（hash を記録）、承認するのは S の tasks.md だけ。
+        比較相手（D、Platform なら利用側）の tasks.md は各自の回の承認のまま（§6.4）。検査対象から外すと
+        ゲートの target_review（`specs/**`）と検査対象の一致規則（check_gate_targets）に反するため、承認対象だけを分ける。
+        """
+        if self.selection and not self.is_cross:
+            rule = config()["rules"][self.process]
+            return ExecutionContext(self.root, self.state_path, rule["generate"], self.selection).review_targets()
+        return self.review_targets()
+
     def _selected(self, patterns, label):
         """Select outputs by the L0 rule (file, `<dir>/`, `<dir>/**`, `**`); the order is the output order."""
         return framework.select(patterns, self.artifacts(), label, self.action)
 
     def _dependencies(self):
-        entries = self.features()
-        by_name = {entry["name"]: entry for entry in entries}
-        found = set()
-        pending = list(self.feature()["depends_on"])
-        while pending:
-            name = pending.pop()
-            if name not in found:
-                found.add(name)
-                pending.extend(by_name[name]["depends_on"])
-        return [entry["name"] for entry in entries if entry["name"] in found]
+        found = self._closure(self.feature()["name"])
+        return [entry["name"] for entry in self.features() if entry["name"] in found]
 
     def expand(self, paths, feature):
         """Resolve {feature} (the given feature), {features} and {depends_on} of declared paths."""
         result = []
+        names = None
         for path in paths:
             if "{features}" in path:
-                result += [path.replace("{features}", entry["name"]) for entry in self.features()]
+                if names is None:
+                    names = self._features_names()
+                result += [path.replace("{features}", name) for name in names]
             elif "{depends_on}" in path:
                 if not self.item:
                     raise ValueError("action needs a feature (--item): %s" % self.action)
@@ -301,9 +373,53 @@ class ExecutionContext(framework.ExecutionContext):
                 result.append(path)
         return list(dict.fromkeys(result))
 
+    def _features_names(self):
+        """`{features}` の展開先（§6.10 C1）。item 無しの全件方式は承認済み一覧の全件。"""
+        import feature_scope
+        if self.selection:
+            return self.comparison_features()  # 横断確認 action[S]：比較集合 C(p)
+        if self.plan_item:
+            return feature_scope.plan_features(self, self.process, self.plan_item)  # 計画停止点[S]：S ∪ D
+        if self.process == "docs" and feature_scope.is_feature(self):
+            import docs_revision
+            return docs_revision.members(self)  # Feature 方式の docs：収録集合（design が approved）
+        return [e["name"] for e in self.features()]
+
+    def comparison_features(self):
+        """比較集合 C(p)（§6.2）。S ∪ D、S が Platform なら工程 p で承認済みの利用側 Cons(p) を加える。
+
+        一覧の並び順で返す。利用側は S を推移的に依存先に持つ feature で、工程 p の成果物が approved のもの。
+        status 欄は候補の絞り込みにだけ使い、承認の証跡は upstream-check が照合する（requirements／design は
+        inputs の承認照合、tasks は prerequisites.check の承認行照合）。
+        """
+        entries = self.features()
+        selected = self.feature()
+        names = {selected["name"], *self._dependencies()}
+        if selected["kind"] == "Platform":
+            outputs = [p for p in config()["rules"][self.process]["outputs"] if "{feature}" in p]
+            for entry in entries:
+                if entry["name"] in names or selected["name"] not in self._closure(entry["name"]):
+                    continue
+                if outputs and all(status_of(self.path(p.replace("{feature}", entry["name"]))) == "approved" for p in outputs):
+                    names.add(entry["name"])
+        return [entry["name"] for entry in entries if entry["name"] in names]
+
+    def _closure(self, name):
+        by_name = {entry["name"]: entry for entry in self.features()}
+        found, pending = set(), list(by_name[name]["depends_on"])
+        while pending:
+            current = pending.pop()
+            if current not in found:
+                found.add(current)
+                pending.extend(by_name[current]["depends_on"])
+        return found
+
     def _item_feature(self):
         """The item as {feature}. An item on an action without {feature} is a wrong --item."""
         row = action_row(self.action)
+        if self.selection or self.plan_item:
+            self.feature()
+            return ""
         if not any("{feature}" in p or "{depends_on}" in p for p in row["inputs"] + row["outputs"]):
             if self.item:
                 raise ValueError("action does not take a feature: %s" % self.action)
@@ -313,20 +429,17 @@ class ExecutionContext(framework.ExecutionContext):
         return self.item
 
     def artifacts(self):
-        if self.process == 'implement':
+        if self.kind:
             import implementation_requests
-            import implementation_evidence
-            feature = implementation_requests.feature_of(self)
-            if self.action in implementation_requests.TASK_ACTIONS:
-                import implementation_store
-                return implementation_store.read_execution(self)['allowed_paths']
-            return [implementation_evidence.review_path(feature)]
+            return implementation_requests.evidence_paths(self)
         outputs = self._declared("outputs")
         return self.expand(outputs, self._item_feature())
 
     def _inputs(self):
         inputs = self._declared("inputs")
-        if self.process == 'implement':
+        if self.kind in ("cross", "integration"):
+            return []  # 前提は implementation_project.prerequisites、記録入力は implementation_project.signature
+        if self.kind:
             import implementation_requests
             return self.expand(inputs, implementation_requests.feature_of(self))
         return self.expand(inputs, self._item_feature())
@@ -347,7 +460,9 @@ class ExecutionContext(framework.ExecutionContext):
 
         prerequisites.check applies its approved check to this resolved list.
         """
-        if self.process == 'implement':
+        if self.kind in ("cross", "integration"):
+            return []  # 承認済みの前提（全 feature の実装承認）は implementation_project.prerequisites が見る
+        if self.kind:
             import implementation_requests
             return implementation_requests.upstream(self, implementation_requests.feature_of(self))
         return [p for p in self._inputs() if not p.endswith("/")]
@@ -422,7 +537,10 @@ def inspection_review(context, action):
 
 
 def inspection_digest(context, target):
-    if context.process == 'implement':
+    if context.kind == "cross":
+        import implementation_project
+        return implementation_project.cross_digest(context, target)
+    if context.kind:
         import implementation_evidence
         return implementation_evidence.review_digest(context, target)
     return artifact_io.protected_digest(context.path(target))
@@ -435,4 +553,10 @@ def status_of(path):
 
 # The script protocol (exit codes 0 / 1 / 10, `AIDD-LOG:` lines) belongs to L0.
 EXIT_OK, EXIT_FAIL, EXIT_WAIT = framework.EXIT_OK, framework.EXIT_FAIL, framework.EXIT_WAIT
+# 工程に属さない管理用の action（§6.4）。呼出し先（flow）→ action。前提検査・audit・記録・完了の記録を通さない。
+MANAGEMENT_CALLS = {"mode-switch": "mode-switch-confirm"}
+
+
+def is_management(action):
+    return action in MANAGEMENT_CALLS.values()
 log_keys, ok, fail = framework.log_keys, framework.ok, framework.fail

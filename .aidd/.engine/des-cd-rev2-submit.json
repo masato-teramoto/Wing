@@ -1,0 +1,31 @@
+{
+ "operation_id": "e815cafd-d1d8-422e-b257-16708561726e",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[contract-info-download]::run",
+  "event": "design-authoring-revise",
+  "item": "contract-info-download",
+  "status": "emit",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": null,
+  "id": "ea882ef3026d4f7a9c67d5fce96c0384"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/contract-info-download/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "design",
+    "scope": "feature:contract-info-download",
+    "run": 6,
+    "number": 1
+   }
+  ],
+  "return_candidates": [],
+  "summary": "流れ 2 の「基地局番号＋枝番」を「計画基地局番号＋枝番」に直した"
+ }
+}

@@ -1,0 +1,43 @@
+{
+ "operation_id": "372e6c2b-3597-44bb-808a-5fca97c081e3",
+ "action": "repair",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[contract-info-download]::end.review",
+  "event": "design-authoring-revise",
+  "item": "contract-info-download",
+  "status": "wait",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[contract-info-download]::end.review\", \"snapshot\": \"8748c3adfd9a3663c1b2ce14fa548dff1e41a4e087168fa8f4a0a8fdad7ad87f\", \"run\": 5, \"inspection_hash\": \"bf8457d539583494b7de605d097731374a34df47ff68640c6bde3d5e39c061c6\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 9 件\n  - 削除済みの補足資料 2 件へのパス参照が切れている（verify:重複（traceabilityと同じ箇所・原因））\n  - 代表契約局番・代表契約枝番を前方一致にし、転貸借契約書名を足す（requirements 1.3 から意図して外れる）（answer:design-authoring-generate[contract-info-download]）\n  - 計画マスタ（TWTBM080）を工事案件マスタの書き誤りと読む（requirements 2.1・2.2 から意図して外れる）（answer:design-authoring-generate[contract-info-download]）\n  - サーバーで桁・形式を確かめない（requirements 4.1 から意図して外れる）（answer:design-authoring-generate[contract-info-download]）\n  - 工事案件マスタに行が無い契約情報を出す点が security.md 285 行目の「既存の WTB と同じ方式」と違う（answer:design-authoring-generate[contract-info-download]）\n  - サーバーでの桁・形式のチェックをしない点が security.md の入力検証と違う（逸脱は本文に記録済み）（answer:design-authoring-generate[contract-info-download]）\n  - 開発端末の JDK 1.8 が tech.md の JDK 1.7 と違う（answer:design-authoring-generate[property-basic-info]）\n  - 契約者①〜⑤の並びの「契約者区分」が、名称にした列かコードか本文で読めない（learned:design feature:contract-info-download 4-1）\n  - CSV の値の形で名称にする列が 3 つだけで、登録状態の「コード:名称」が抜けている（learned:design feature:contract-info-download 4-2）\n\n### 前回の検査（4 回目）からの変更\n\n- 上流の入力が前回の検査から変わった（または比べられない）ため、全体を検査する。対象の全体を見てください。\n\n### 判断が必要な指摘\n\n**対象**: `specs/contract-info-download/design.md`（スコープ: 成果物単位（contract-info-download） / 5 回目）\n**実行した層**: ① / ②\n\n**要判断**（1 件）\n\n| # | 種類 | 対象箇所 | 要約 | AI の推奨 | 判断 |\n|---|---|---|---|---|---|\n| 1 | 業務のあいまい・不足 | specs/contract-info-download/design.md § 補足資料（Supporting References） / 出力の定義・作業用テーブルとビュー ほか 2 か所 | 本書の正とした補足資料2件が削除済みで、381列等の定義が本文に無い | 質問（4 案のどれを正本にするかは利用者が決める事実で、AI が決められない（利用者が既に資料を削除しており、A は意図と逆の可能性がある）） | 未回答 |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n**答え方**（後に書いたものが優先。束・範囲でまとめて答えられます）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）。区分を `C[指摘の誤り]` `C[対象外]` `C[後で決める]` `C[解釈で対応]` で付ける。対象外・後で決めるに `+` を付けると（例 `C[後で決める+]`）、次の検査から同じ扱いにします\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n- **推奨** — AI の推奨を採用する（修正なら修正案がそのまま修正の指示になります）\n\n回答例: `1:推奨 / 束1:C[後で決める+] 桁数は design で決める / 3〜5:A / 7:D 次回まで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。根拠と修正案は `詳細 <番号>` で表示します。",
+  "id": "5ad7b7101be344d2bad559290736716d"
+ },
+ "expected": {
+  "root": "/home/kccs/Wing",
+  "state": "/home/kccs/Wing/.aidd/phase-progress.json",
+  "call": "design-authoring-revise",
+  "event": "design-authoring-revise",
+  "item": "contract-info-download",
+  "dispatch_id": "5ad7b7101be344d2bad559290736716d",
+  "unit": "design-authoring-revise/design-authoring-revise[contract-info-download]::end.review",
+  "scope": "feature:contract-info-download",
+  "run": 5,
+  "snapshot": "8748c3adfd9a3663c1b2ce14fa548dff1e41a4e087168fa8f4a0a8fdad7ad87f",
+  "record_hash": "26c28f1578cd466c4df7da6effcaf183d4dc8fa5d3c92d342e0d621aba5e375f"
+ },
+ "data": {
+  "event": "design-authoring-generate",
+  "item": "contract-info-download",
+  "targets": [
+   "specs/contract-info-download/design.md"
+  ],
+  "findings": [
+   {
+    "phase": "design",
+    "scope": "feature:contract-info-download",
+    "run": 5,
+    "number": 1,
+    "instruction": "削除済みの補足資料 specs/contract-info-download/csv-layout-wtg100.md（出力 CSV 381 列の定義）と work-tables-wtg100.md（作業用テーブルとビューの表）を、_handoff/csv-layout-wtg100.md と _handoff/work-tables-wtg100.md の原本どおりに design 本文（物理データモデルとデータ契約など）へ取り込み、14・671・672 行ほかの参照を本文内の実在する節への参照に直す。意味を変えず、原本にない定義を足さない。契約情報取込のリバースの表との列の並びの照合は横断確認で行う（本修正では行わない）。"
+   }
+  ]
+ }
+}

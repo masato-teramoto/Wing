@@ -21,6 +21,7 @@ Phase 8 は [実装契約](../implementation/contract.md) に従い、タスク1
 
 - ホストが解決した event / item / targets / authoring_inputs / 質問回答 / 修正要求（repair）を受け取る。入力・対象が欠ける、別の所有物を指す、必要入力がapprovedでない場合はfailedで返す。RFPだけは自由形式でstatusを要求しない。context の `unreviewed_inputs` に挙げた入力（上流工程の `target_review` から外れ、検査・承認されない draft）も、approvedでなくてよい入力として読む。targets は作成・修正する自分の出力すべて（検査対象 `review_targets` とは別）。
 - 実行時に対象のL1テンプレートと該当する作成規則を読む。steering は全工程で一式（全文）を読み、該当章だけを選んで読まない。入力は `paths.md` §6 と解決後の一覧に従い、ゲート記録・phase-progress・docs（Phase 7）を生成の根拠にしない。
+- tasks修正では、入口が添えた`task_history`とその参照先を、着手状態・既存証跡への変更影響の確認に限って読む。上流の生成要件や承認の代わりにはせず、履歴・状態を編集しない。受渡し手順は`.claude/skills/aidd-tasks/SKILL.md`の「修正Skillへ渡す着手履歴」を参照する。
 - 生成は未作成または同じ作業のdraftへの再入。review/approvedの既存文書を生成Skillで変更しない。
 - ファイルの存在や質問0件だけを完了条件にしない。必要な対象・項目が揃い、受け取った回答を反映し、根拠のない必須値が残っていないことを確認する。
 - 根拠のない値を書かない。上流成果物や人間の実回答に根拠が無い、または判断に迷う値は推測で補完せず質問として返す。

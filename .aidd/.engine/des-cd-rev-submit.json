@@ -1,0 +1,31 @@
+{
+ "operation_id": "4aca0daf-2d52-4114-b7dc-53387768b693",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[contract-info-download]::run",
+  "event": "design-authoring-revise",
+  "item": "contract-info-download",
+  "status": "emit",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": null,
+  "id": "85e02f90345744f38ff48823f7010924"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/contract-info-download/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "design",
+    "scope": "feature:contract-info-download",
+    "run": 5,
+    "number": 1
+   }
+  ],
+  "return_candidates": [],
+  "summary": "削除済みの補足資料 2 件の内容を _handoff の原本のとおり design 本文（物理データモデルの下の 2 つの節）へ取り込み、出典の表記・補足資料の表・約 22 か所の参照を取り込んだ節への参照に直した"
+ }
+}

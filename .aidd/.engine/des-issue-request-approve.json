@@ -1,0 +1,28 @@
+{
+ "operation_id": "07dc4f15-0863-44db-9656-fddbce7e7474",
+ "action": "approve",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[issue-request]::end.review",
+  "event": "design-authoring-revise",
+  "item": "issue-request",
+  "status": "wait",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[issue-request]::end.review\", \"snapshot\": \"fc773e5b71746a5f4b8decf9fa32e5d08fa3eba6dda7ac3337f91eb064c14475\", \"run\": 11, \"inspection_hash\": \"f64e0204aaad029409637bc97002ec649c77f13ede6c1752bae968eadb6cf061\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 再検査で出なくなり、解消を記録した指摘 3 件\n  - #10-1 その他①〜④の入力桁 100 が DB 列 Sonota1〜4_Freeform の 50 と食い違う\n  - #10-2 規則 1 の契約区分が自動設定の参照を「下の 7.」とするが正しくは規則 8\n  - #10-3 TWTGA130 の No.353 が DRAFT_FLG で、「列名が同じ」の説明と合わない\n\n### 前回の検査（10 回目）からの変更\n\n- `specs/issue-request/design.md`：TWTGA130 の DB レイアウト（発行依頼書情報変更履歴。Q-DS-IR-013）、規則 1. UQ担当者入力欄・ヘッダー、規則 2. 案件G・基本情報・作成組織・契約形態\n\n### 判断が必要な指摘\n\n**対象**: `specs/issue-request/design.md`（スコープ: 成果物単位（issue-request） / 11 回目）\n**実行した層**: ① / ②\n\n**指摘**: なし（0 件。検査は実行済み）\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n判断が揃いました。承認の可否を回答してください（承認する場合は承認者名）。",
+  "id": "156697209d134296be114ddf62168e23"
+ },
+ "expected": {
+  "root": "/home/kccs/Wing",
+  "state": "/home/kccs/Wing/.aidd/phase-progress.json",
+  "call": "design-authoring-revise",
+  "event": "design-authoring-revise",
+  "item": "issue-request",
+  "dispatch_id": "156697209d134296be114ddf62168e23",
+  "unit": "design-authoring-revise/design-authoring-revise[issue-request]::end.review",
+  "scope": "feature:issue-request",
+  "run": 11,
+  "snapshot": "fc773e5b71746a5f4b8decf9fa32e5d08fa3eba6dda7ac3337f91eb064c14475",
+  "record_hash": "4e90c376d3ed678f1d44dc7f13189526a97ca070789e9e1398d3f7b1666ca3f1"
+ },
+ "data": {}
+}

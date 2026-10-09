@@ -20,7 +20,7 @@ def check_open_placeholders(data):
 
 
 def validate(context, data):
-    if context.process == 'implement':
+    if context.is_implementation:
         import implementation_requests
         return implementation_requests.validate_result(context, data)
     rule = phase_rules.RULES[context.process]
@@ -65,7 +65,7 @@ def validate(context, data):
 
 
 def save(context, data):
-    if context.process == 'implement':
+    if context.is_implementation:
         import implementation_requests
         return implementation_requests.save_result(context, data)
     value = validate(context, data)

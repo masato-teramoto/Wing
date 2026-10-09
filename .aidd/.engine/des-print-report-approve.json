@@ -1,0 +1,28 @@
+{
+ "operation_id": "25c90ac6-452f-4d45-9688-5119ad60f6a0",
+ "action": "approve",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[print-report]::end.review",
+  "event": "design-authoring-revise",
+  "item": "print-report",
+  "status": "wait",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[print-report]::end.review\", \"snapshot\": \"926d47314550e4c7ea91b9a824ce69bda1423db1ed1ea26aca5ae4a2d8f5d319\", \"run\": 7, \"inspection_hash\": \"e4d038d3ad21e99e728cf26c115045658c32be1e54ba3e3ff6122f7fcabcbb86\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 再検査で出なくなり、解消を記録した指摘 1 件\n  - #6-1 参照先 specs/issue-request/db-TWTGM100.md・db-TWTGM140.md が実在しない\n\n### 前回の検査（6 回目）からの変更\n\n- `specs/print-report/design.md`：新しいファイル\n\n### 判断が必要な指摘\n\n**対象**: `specs/print-report/design.md`（スコープ: 成果物単位（print-report） / 7 回目）\n**実行した層**: ① / ②\n\n**指摘**: なし（0 件。検査は実行済み）\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n判断が揃いました。承認の可否を回答してください（承認する場合は承認者名）。",
+  "id": "06e71518c3014ca29df83281970e703d"
+ },
+ "expected": {
+  "root": "/home/kccs/Wing",
+  "state": "/home/kccs/Wing/.aidd/phase-progress.json",
+  "call": "design-authoring-revise",
+  "event": "design-authoring-revise",
+  "item": "print-report",
+  "dispatch_id": "06e71518c3014ca29df83281970e703d",
+  "unit": "design-authoring-revise/design-authoring-revise[print-report]::end.review",
+  "scope": "feature:print-report",
+  "run": 7,
+  "snapshot": "926d47314550e4c7ea91b9a824ce69bda1423db1ed1ea26aca5ae4a2d8f5d319",
+  "record_hash": "cc6b1d0676317779cb4e250d549d080c9a4df31b37051c256ad854237da11cf3"
+ },
+ "data": {}
+}

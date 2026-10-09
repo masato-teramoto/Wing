@@ -3,7 +3,7 @@
   "phase": "requirements",
   "event": "requirements-authoring-revise",
   "scope": "feature:issue-request-tutorial",
-  "at": "2026-10-05T19:23:23+09:00",
+  "at": "2026-10-09T17:58:48+09:00",
   "artifacts": {
     "specs/issue-request-tutorial/requirements.md": {
       "status": "draft",
@@ -11,9 +11,60 @@
     }
   },
   "record": {
-    "bytes": 230154,
-    "sha256": "1e5212958df6260d726fc43e6be7888a535ab5b0108d14b3bc1e762de9bca611",
-    "blocks": 260
+    "bytes": 302575,
+    "sha256": "c1828d732ffd7f8c2e352adc09cbb85dcf0c4635d484c8d2ee0b2e5df70ce3cf",
+    "blocks": 348
   },
-  "run": 4
+  "run": 5,
+  "sections": {
+    "specs/issue-request-tutorial/requirements.md": {
+      "": "e3b0c44298fc1c14",
+      "要件定義書": "7f0fe3e66ae8094d",
+      "概要（Introduction）": "2034bcae5422bc65",
+      "業務フロー": "8bd90aef0b1d234c",
+      "スコープの境界（Boundary Context）": "f986639e6412d46b",
+      "対象外": "42e17c512f0e4fbe",
+      "前提と依存（Dependencies / Assumptions）": "71bb72c0271bb0a6",
+      "要件（Requirements）": "29a79fce0f8203a8",
+      "要件 1: チュートリアル画面の表示と切替（REQ-028・REQ-029）": "fbba947d4c12c5ca",
+      "受け入れ基準（Acceptance Criteria）": "d335a6a0451bcffe",
+      "要件 2: 発行依頼書の項目への設定（REQ-028）": "9ecaad9284b9bbd5",
+      "受け入れ基準（Acceptance Criteria） (2)": "8943d1936e2529fc",
+      "要件 3: 入力チェック（REQ-063）": "b5d10209e31cf715",
+      "受け入れ基準（Acceptance Criteria） (3)": "0754d5a466a756e1",
+      "非機能要件（Non-Functional Requirements）": "2d04754133ace6b9",
+      "*": "7f0fe3e66ae8094d"
+    }
+  },
+  "own_sections": {
+    "specs/issue-request-tutorial/requirements.md": {
+      "": "e3b0c44298fc1c14",
+      "要件定義書": "991fbe65429a28ef",
+      "概要（Introduction）": "2034bcae5422bc65",
+      "業務フロー": "8bd90aef0b1d234c",
+      "スコープの境界（Boundary Context）": "f986639e6412d46b",
+      "対象外": "42e17c512f0e4fbe",
+      "前提と依存（Dependencies / Assumptions）": "71bb72c0271bb0a6",
+      "要件（Requirements）": "2855f05e424bda39",
+      "要件 1: チュートリアル画面の表示と切替（REQ-028・REQ-029）": "3bda8ff2ff22aa4c",
+      "受け入れ基準（Acceptance Criteria）": "d335a6a0451bcffe",
+      "要件 2: 発行依頼書の項目への設定（REQ-028）": "7be98e62bbea3c19",
+      "受け入れ基準（Acceptance Criteria） (2)": "8943d1936e2529fc",
+      "要件 3: 入力チェック（REQ-063）": "b18400f9fd14450a",
+      "受け入れ基準（Acceptance Criteria） (3)": "0754d5a466a756e1",
+      "非機能要件（Non-Functional Requirements）": "2d04754133ace6b9",
+      "*": "7f0fe3e66ae8094d"
+    }
+  },
+  "inputs": {
+    ".aidd/requirement-list.md": "0f27710cd1eb4f103a426cbccec48d5af14f504bd9e40c7f8c697f3ef031c859",
+    ".aidd/feature-list.md": "9c8fae4dbc53b2ff6cc98e2476e7c02797d2077359d9b2709d5eff7e5111b642",
+    "steering/product.md": "cde5dd8a1007c53f93a270de63e01d294d38f47695e96027d52b6b4862bc149b",
+    "steering/tech.md": "58cc32eb0ad29d7b7185bb02e710ce8d882e374f93eb0a609ae293e3903a4966",
+    "steering/architecture.md": "98be0c57ba256c0aeaf1a66d69682e63b47d20ec0f91ab776589a54e5eb8c33d",
+    "steering/security.md": "34061564b8c5b8c28e5ca2f4a9b744b06d9d58417ddbbff7ab150c9ef1027bbf",
+    "steering/non-functional.md": "ae87c72271e4f3d8593e2f666edc7bb0931cf4d0ca78dafbb21ab7264303f0ac",
+    "steering/database.md": "832d98b289c53f8c8adc9a7dfb25bf0f8b1f54b9c1cc473c6480fa9927a20e21",
+    "steering/api-standards.md": "70eca8d2facbf08bfa22cf1ae1e781219ecab2066bb8129bf4a3414b0fdeddc1"
+  }
 }

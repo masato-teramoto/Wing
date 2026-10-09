@@ -1,0 +1,28 @@
+{
+ "operation_id": "62519c3d-6fbd-41b1-b0f1-e404321cd997",
+ "action": "approve",
+ "dispatch": {
+  "call": "requirements-authoring-revise",
+  "unit": "requirements-authoring-revise/requirements-authoring-revise[print-report]::end.review",
+  "event": "requirements-authoring-revise",
+  "item": "print-report",
+  "status": "wait",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"requirements-authoring-revise/requirements-authoring-revise[print-report]::end.review\", \"snapshot\": \"62ef37b1ef5ab958c28764ff58540f4eaf7f06e6107a9f5e219cdc6a73ccb044\", \"run\": 3, \"inspection_hash\": \"a68670b41bd112985f51f9f5af7a8413e03d2ba30b03b118bafcf16a45584d8b\"}\n**Phase 4（requirements 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 業務ルールとして正しいか\n- AC が観測できるか\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式・要件 ID の形式、要求 ID との対応（トレーサビリティ）、steering との整合、依存の記載、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-4-requirements.md`）\n\n### 判断が必要な指摘\n\n**対象**: `specs/print-report/requirements.md`（スコープ: 成果物単位（print-report） / 3 回目）\n**実行した層**: ① / ②\n\n**指摘**: なし（0 件。検査は実行済み）\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n判断が揃いました。承認の可否を回答してください（承認する場合は承認者名）。",
+  "id": "2cdd14faa5744be6bfb6bc29bc7f0b45"
+ },
+ "expected": {
+  "root": "/home/kccs/Wing",
+  "state": "/home/kccs/Wing/.aidd/phase-progress.json",
+  "call": "requirements-authoring-revise",
+  "event": "requirements-authoring-revise",
+  "item": "print-report",
+  "dispatch_id": "2cdd14faa5744be6bfb6bc29bc7f0b45",
+  "unit": "requirements-authoring-revise/requirements-authoring-revise[print-report]::end.review",
+  "scope": "feature:print-report",
+  "run": 3,
+  "snapshot": "62ef37b1ef5ab958c28764ff58540f4eaf7f06e6107a9f5e219cdc6a73ccb044",
+  "record_hash": "a68670b41bd112985f51f9f5af7a8413e03d2ba30b03b118bafcf16a45584d8b"
+ },
+ "data": {}
+}

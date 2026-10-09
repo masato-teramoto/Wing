@@ -160,9 +160,21 @@ def freeze(context, feature):
         project(path, path.read_bytes())
         return store.read(root, location)
     import phase_rules
+    import record_format
     import review_contract
-    approved = phase_rules.ExecutionContext(context.root, context.state_path, 'tasks-gate-run')
-    record = review_contract.check_approved(approved)
+    import feature_scope
+    # Feature 方式は S の tasks の工程承認を参照する。全件 phase の有効な承認は phase:<S> を包含する（§7.1。
+    # 全件方式から切り替えた案件には全件の回しか無い）ので、承認行の scope の回を参照する。全件方式は全件の承認。
+    if feature_scope.is_feature(context):
+        row = review_contract.phase_approved(context, 'specs/' + store.identifier(feature) + '/tasks.md')
+        approved = phase_rules.ExecutionContext(context.root, context.state_path, 'tasks-gate-run',
+                                                record_format.scope_feature(row['スコープ']))
+        record = review_contract.read(approved)
+        approved_run = int(row['回数'])
+    else:
+        approved = phase_rules.ExecutionContext(context.root, context.state_path, 'tasks-gate-run', '')
+        record = review_contract.check_approved(approved)
+        approved_run = record.latest(approved.scope).number
     approval_bytes = Path(approved.gate_record).read_bytes()
     data = path.read_bytes()
     tasks, order = parse(data)
@@ -172,8 +184,8 @@ def freeze(context, feature):
              'tasks': tasks, 'order': order, 'operations': [],
              'approval': {'path': Path(approved.gate_record).relative_to(context.root).as_posix(),
                           'bytes': len(approval_bytes), 'sha256': store.digest(approval_bytes),
-                          'scope': 'phase', 'run': record.latest('phase').number,
-                          'feature_run': record.latest('feature:' + feature).number}}
+                          'scope': approved.scope, 'run': approved_run,
+                          'feature_run': record.latest(record_format.scope_of('feature', feature)).number}}
     store.write(root, location.replace('active.json', plan_ref + '.json'), value)
     store.write(root, location, value)
     return value

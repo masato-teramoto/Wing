@@ -1,0 +1,24 @@
+{
+ "operation_id": "2e765aca-1277-4ee9-8a67-5ddbfcafc71d",
+ "dispatch": {
+  "call": "feature-decomposition-revise",
+  "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::run",
+  "event": "feature-decomposition-revise",
+  "item": null,
+  "status": "emit",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": null,
+  "id": "49492d3d3a864adca7dee3037c519a9b"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   ".aidd/feature-list.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [],
+  "return_candidates": [],
+  "summary": "feature 一覧は front matter（status/updated_at）のみの変更。本文の修正は不要のため編集せず、再検査・再承認へ回す"
+ }
+}

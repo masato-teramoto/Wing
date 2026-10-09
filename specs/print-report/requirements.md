@@ -1,7 +1,7 @@
 ---
 feature: print-report
 status: approved
-updated_at: 2026-10-05T20:06:51+09:00
+updated_at: 2026-10-09T18:12:41+09:00
 ---
 
 # 要件定義書

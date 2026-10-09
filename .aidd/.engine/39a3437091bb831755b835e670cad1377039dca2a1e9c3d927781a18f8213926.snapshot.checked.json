@@ -1,18 +1,18 @@
 {
   "event": "design-authoring-revise",
   "scope": "feature:contract-info-download",
-  "run": 4,
-  "snapshot": "06f917a71e648f66a14376158684604f83f6caef63167e611d66b63e6388e668",
-  "record_bytes": 374311,
-  "record_hash": "f3a15482d2dc6ab16de957197dd0a9c7575031d9c441a76dc6ea421f69a526e0",
+  "run": 8,
+  "snapshot": "b9715ded322a28eb8268765c5b30e8d3e4f79ae00609abb8b1002744dea119f7",
+  "record_bytes": 481873,
+  "record_hash": "58dae5f832ec6b3acea93cac57ad8b7fdc45080a2db7a57b94f52b4f7c6444d2",
   "targets": [
     "specs/contract-info-download/design.md"
   ],
   "hashes": {
-    "specs/contract-info-download/design.md": "e365aaa3c25a50d9a24dad8e438b02ebc77d61278d53da5492b16a4a793311a1"
+    "specs/contract-info-download/design.md": "27ba55f3a7a9e22056ad895471864d26e75d5cfc687e37a50f384120f2a263d0"
   },
   "inputs": {
-    ".aidd/feature-list.md": "71a64dc3cbf71bc6ddb02a4dc6f8247344064ca63e8a291e5881763ef59256ae",
+    ".aidd/feature-list.md": "9c8fae4dbc53b2ff6cc98e2476e7c02797d2077359d9b2709d5eff7e5111b642",
     "steering/product.md": "cde5dd8a1007c53f93a270de63e01d294d38f47695e96027d52b6b4862bc149b",
     "steering/tech.md": "58cc32eb0ad29d7b7185bb02e710ce8d882e374f93eb0a609ae293e3903a4966",
     "steering/architecture.md": "98be0c57ba256c0aeaf1a66d69682e63b47d20ec0f91ab776589a54e5eb8c33d",
@@ -22,7 +22,7 @@
     "steering/api-standards.md": "70eca8d2facbf08bfa22cf1ae1e781219ecab2066bb8129bf4a3414b0fdeddc1",
     "specs/contract-info-download/requirements.md": "db81769c1f58c458a0583a47ed5daf3a2ffdf8fdee34bd1aa3514a04dcf4a898",
     "specs/property-basic-info/design.md": "03331555d6ee0825bd90f023f17f4951d532f97b0f4bde7b7f50878d4cc4da03",
-    "specs/issue-request/design.md": "7bedc0d4618ebcb9a1667ce749bf24513272ac9c19fbdebdfe1ac2954ab67fbb",
-    "specs/contract-info-import/design.md": "f8c85c02fe3eac668a090b8cb084d4319381ea95428d4c25c7149c98c569bebc"
+    "specs/issue-request/design.md": "8cf01f68fe35f51ecb925f5258243beb7a476500279d2757c8a0a7788c2917ec",
+    "specs/contract-info-import/design.md": "ae5933ac53ec20d549fb9d91ff896e06610778cf237b06837eb5c5941abd1692"
   }
 }

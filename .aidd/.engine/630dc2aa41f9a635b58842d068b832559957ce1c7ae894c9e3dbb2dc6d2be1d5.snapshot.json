@@ -3,30 +3,30 @@
   "phase": "design",
   "event": "design-authoring-revise",
   "scope": "feature:application-status-search",
-  "at": "2026-10-09T13:41:07+09:00",
+  "at": "2026-10-09T19:55:04+09:00",
   "artifacts": {
     "specs/application-status-search/design.md": {
       "status": "draft",
-      "sha256": "32696c8e99e895008c9a84e8e9c0f98da61fbd800fb352fd06a5749c8171cc3a"
+      "sha256": "b0d59adc5f67c4377772191bd6d81adc4234cdaf73d7f61c30eac704d697f0fa"
     }
   },
   "record": {
-    "bytes": 356801,
-    "sha256": "9cc7e7a7f5234e4131b0e772c238d92453fc587b42a23503da8b3c1fad9a70b3",
-    "blocks": 260
+    "bytes": 441933,
+    "sha256": "76dbde25e0a4bc89b5e64f428823662c40c085198fd199de29f32196d5bdd6a8",
+    "blocks": 332
   },
-  "run": 5,
+  "run": 7,
   "sections": {
     "specs/application-status-search/design.md": {
       "": "e3b0c44298fc1c14",
-      "技術設計書": "1d0b51d437dc4058",
+      "技術設計書": "682bca1161caed30",
       "概要（Overview）": "0db493852bcd372f",
       "達成目標（Goals）": "c8c9455594a2fab5",
       "やらないこと（Non-Goals）": "55b64b688df8be07",
-      "責務境界（Boundary Commitments）": "339dff244187303a",
+      "責務境界（Boundary Commitments）": "4506681255c4d3b7",
       "このスペックが持つ責務（This Spec Owns）": "a434b6255771a5bd",
       "このスペックが持たない責務（Out of Boundary）": "33c886d7dc0b9167",
-      "依存してよい対象（Allowed Dependencies）": "96e89156592a9142",
+      "依存してよい対象（Allowed Dependencies）": "697a0c457c4c8ff7",
       "再確認が必要になる変更（Revalidation Triggers）": "57d9f1cca286efca",
       "アーキテクチャ（Architecture）": "bd4e3fcef9495e5c",
       "既存アーキテクチャの分析（Existing Architecture Analysis）": "14b50da8dafeb2b1",
@@ -62,7 +62,7 @@
       "判断 1: 契約局情報と比べる項目は全部の契約局の行と比べる": "af3225279ead2eda",
       "判断 2: 社外ユーザーの起案会社は画面に出すだけで、範囲は会社コードの絞り込みで決める": "39d3f3363f064e6e",
       "補足資料（Supporting References）": "b6128dc422e89907",
-      "*": "1d0b51d437dc4058"
+      "*": "682bca1161caed30"
     }
   },
   "own_sections": {
@@ -75,7 +75,7 @@
       "責務境界（Boundary Commitments）": "319ca7723bda7861",
       "このスペックが持つ責務（This Spec Owns）": "a434b6255771a5bd",
       "このスペックが持たない責務（Out of Boundary）": "33c886d7dc0b9167",
-      "依存してよい対象（Allowed Dependencies）": "96e89156592a9142",
+      "依存してよい対象（Allowed Dependencies）": "697a0c457c4c8ff7",
       "再確認が必要になる変更（Revalidation Triggers）": "57d9f1cca286efca",
       "アーキテクチャ（Architecture）": "d884ae957d36c25c",
       "既存アーキテクチャの分析（Existing Architecture Analysis）": "14b50da8dafeb2b1",
@@ -111,11 +111,11 @@
       "判断 1: 契約局情報と比べる項目は全部の契約局の行と比べる": "af3225279ead2eda",
       "判断 2: 社外ユーザーの起案会社は画面に出すだけで、範囲は会社コードの絞り込みで決める": "39d3f3363f064e6e",
       "補足資料（Supporting References）": "b6128dc422e89907",
-      "*": "1d0b51d437dc4058"
+      "*": "682bca1161caed30"
     }
   },
   "inputs": {
-    ".aidd/feature-list.md": "71a64dc3cbf71bc6ddb02a4dc6f8247344064ca63e8a291e5881763ef59256ae",
+    ".aidd/feature-list.md": "9c8fae4dbc53b2ff6cc98e2476e7c02797d2077359d9b2709d5eff7e5111b642",
     "steering/product.md": "cde5dd8a1007c53f93a270de63e01d294d38f47695e96027d52b6b4862bc149b",
     "steering/tech.md": "58cc32eb0ad29d7b7185bb02e710ce8d882e374f93eb0a609ae293e3903a4966",
     "steering/architecture.md": "98be0c57ba256c0aeaf1a66d69682e63b47d20ec0f91ab776589a54e5eb8c33d",
@@ -126,19 +126,15 @@
     "specs/application-status-search/requirements.md": "55d9ff1879cc34261f13d0a12fab45b26b91a0783b22e3136a1edc72f808ce82",
     "specs/property-basic-info/design.md": "03331555d6ee0825bd90f023f17f4951d532f97b0f4bde7b7f50878d4cc4da03"
   },
-  "previous_run": 4,
+  "previous_run": 6,
   "changed_sections": {
     "specs/application-status-search/design.md": [
-      "技術設計書",
-      "責務境界（Boundary Commitments）",
-      "再確認が必要になる変更（Revalidation Triggers）",
-      "補足資料（Supporting References）"
+      "*"
     ]
   },
   "changed_own": {
     "specs/application-status-search/design.md": [
-      "再確認が必要になる変更（Revalidation Triggers）",
-      "補足資料（Supporting References）"
+      "*"
     ]
   }
 }

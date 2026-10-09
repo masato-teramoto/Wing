@@ -1,0 +1,31 @@
+{
+ "operation_id": "0bb18a04-d115-4385-989a-c206c240b5b5",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[print-report]::run",
+  "event": "design-authoring-revise",
+  "item": "print-report",
+  "status": "emit",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": null,
+  "id": "368fcd9aa0304a68ad186d8bb6979607"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/print-report/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "design",
+    "scope": "feature:print-report",
+    "run": 6,
+    "number": 1
+   }
+  ],
+  "return_candidates": [],
+  "summary": "削除済みの db-TWTGM100.md・db-TWTGM140.md への 2 か所の参照（属性と型・発行依頼書の列）を、issue-request の design の TWTGM100・TWTGM140 の DB レイアウトの節への参照に直した"
+ }
+}

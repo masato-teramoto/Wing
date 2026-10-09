@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 ## 手順
 
-profileが`implementation-task-review-v1`の場合は、task-implement-checkの対象・返却契約を使う。
+profileが`implementation-task-review-v1`・`implementation-task-reverify-v1`の場合は、task-implement-checkの対象・返却契約を使う。
 当該タスクのRequirements/Design参照と完了条件を分母にする。未着手の後続タスクを未実装として指摘しない。
 以下のfeature向け手順のうち全タスク・最終レポートを要求する部分は適用せず、実コードで判断する観点は共用する。
 

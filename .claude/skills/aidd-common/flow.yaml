@@ -67,3 +67,8 @@
     name: implement-review            # Phase 8 の feature 最終検査・承認。工程の flow ではないため改名できる。
     steps:
       - action: implement-gate-run
+
+- flow:
+    name: mode-switch                 # 管理用（工程ではない）。全件方式 → Feature 方式の切替の確認表示だけを出す
+    steps:
+      - action: mode-switch-confirm

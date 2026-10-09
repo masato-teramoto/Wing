@@ -23,7 +23,7 @@ def save(context, run):
     data = {'event':context.action,'scope':context.scope,'run':run.number,
             'snapshot':digest(snapshot),'record_bytes':len(record),'record_hash':digest(record),
             'targets':run.targets,'hashes':run.hashes,'inputs':project_progress.signature(context)}
-    if context.process == 'implement':
+    if context.is_implementation:
         import implementation_checks
         data['implementation_tools'] = implementation_checks.tools_digest(context)
     target = path(context)
@@ -44,7 +44,7 @@ def verify(context, record):
         raise ValueError('inspection changed after scope-check; obtain a new checked review')
     if value['inputs'] != project_progress.signature(context):
         raise ValueError('inputs changed since inspection; run audit before resuming')
-    if context.process == 'implement':
+    if context.is_implementation:
         import implementation_checks
         if value.get('implementation_tools') != implementation_checks.tools_digest(context):
             raise ValueError('tool reports changed since scope-check; obtain a new inspection')

@@ -1,0 +1,48 @@
+{
+ "operation_id": "a8b682a5-08e4-4c58-92bf-a5d7f3996f8c",
+ "action": "repair",
+ "dispatch": null,
+ "expected": {
+  "root": "/home/kccs/Wing",
+  "state": "/home/kccs/Wing/.aidd/phase-progress.json",
+  "call": "design-authoring-revise",
+  "event": "design-authoring-revise",
+  "item": "issue-request",
+  "dispatch_id": "df33927e423b42e68db6ae7ad4619758",
+  "unit": "design-authoring-revise/design-authoring-revise[issue-request]::end.review",
+  "scope": "feature:issue-request",
+  "run": 9,
+  "snapshot": "72ac561917851f1c2d37624e8ee165281f7940bc97e72758fa40253dc1b23dd1",
+  "record_hash": "7901f513842c2433475235ae242ef1c5c1ffa12755ebfde31c3e513cfd05e589"
+ },
+ "data": {
+  "event": "design-authoring-generate",
+  "item": "issue-request",
+  "targets": [
+   "specs/issue-request/design.md"
+  ],
+  "findings": [
+   {
+    "phase": "design",
+    "scope": "feature:issue-request",
+    "run": 9,
+    "number": 1,
+    "instruction": "実在しない補足資料 9 件（db-TWTG*.md・item-rules.md）への参照（前書き 14 行、物理データモデル 255〜262 行の「全列は…」、補足資料の表 822〜828 行ほか）を、指摘 2・3 で取り込んだ先の実在する参照に合わせて直す。"
+   },
+   {
+    "phase": "design",
+    "scope": "feature:issue-request",
+    "run": 9,
+    "number": 2,
+    "instruction": "項目ごとの入力チェック規則（必須・桁・形式・選択肢の元・入力できない場合・条件付き必須・相関・メッセージ）を、_handoff/phase5-ir-item-rules.md の原本どおりに design 本文（バリデーション設計の表など）へ取り込む。意味を変えず、原本にない規則を足さない。"
+   },
+   {
+    "phase": "design",
+    "scope": "feature:issue-request",
+    "run": 9,
+    "number": 3,
+    "instruction": "TWTGM100・TWTGM140・TWTGA130・TWTGA150・TWTGV030・TWTGV050 の全列定義と TWTGM160 の 25 件の中身を、_handoff/phase5-ir-db-*.md の原本どおりに design 本文、または実在する別ファイルへ取り込み、その実在するパスを参照先にする。意味を変えず、原本にない定義を足さない。"
+   }
+  ]
+ }
+}

@@ -35,3 +35,19 @@ description: feature 別 design、横断確認、docs 統合までを進める�
    c. 承認されたら次へ進む。
    docs は設計の抽出物。design 間の競合が見つかれば design の所有工程へ差し戻す（host-protocol §4）。
 5. 完了後 `/aidd-tasks` へ進むよう人へ伝える。
+
+## Feature 方式（`workflow.mode` が `feature`）
+
+手順 1〜3 の全件ループは使わず、選択中の feature（S）だけを進める。`--item` は付けない。入口（`aidd_entry.py`）が選択中の S を補う（計画停止点・作成・修正は S。横断確認・全体確認は、その工程の成果物が全 feature で承認済みのときだけ item 無しの全件、それ以外は S。差し戻した S の再承認も S）。
+明示した item が選択中の S と違えば L3 が拒否する。S が未選択なら入口が止めて select-scope を求める。
+承認後も、依存する側の feature には自動で進まない。次の feature は人が選ぶ（select-scope）。
+
+1. 対象を変えるときは `select-scope`（payload `{"feature": "<名前>"}`）を呼ぶ。依存先の design が未承認の feature は選べない（理由が返る）。
+2. `--call design-plan advance` で S の計画停止点（前提は S と依存先）を提示し、了承を記録する。
+3. `--call design-authoring-generate advance` で S の design を作り、承認まで進める（修正の回は `--call design-authoring-revise advance`）。
+4. S が Platform で、利用側の design が承認済みなら、`--call design-cross-gate advance` で S の横断確認（契約整合、利用側と比較）を行う。
+   利用側がまだ無ければ呼ばない。User なら呼ばない。
+5. docs を S の design に合わせて累積する。docs が未作成なら `--call docs-integration-generate advance`（docs の計画停止が 1 回出る）、
+   作成済みなら `--call docs-integration-revise advance`（L3 が収録の修正要求を起こす）。検査・人間承認まで進める。
+6. 全 feature の design が承認されたら、`--call design-cross-gate advance` で全件の横断確認を行い、docs の最終改訂と承認を通す。
+7. 続けて S の tasks を作るなら `/aidd-tasks`、別の feature を進めるなら `select-scope` から。

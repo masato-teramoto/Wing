@@ -1,7 +1,7 @@
 ---
 feature: property-basic-info
 status: approved
-updated_at: 2026-10-07T16:40:06+09:00
+updated_at: 2026-10-09T17:51:31+09:00
 ---
 
 # 要件定義書

@@ -19,8 +19,9 @@ def main():
         elif context.action == 'tasks-gate-run':
             # Individual task documents have no approval gate. Their repair
             # requests finish only when the aggregate approval is complete.
-            for feature in context.features():
-                repair_requests.consume(repair_requests.revise_context(context, 'tasks', feature['name']))
+            names = [context.selection] if context.selection else [f['name'] for f in context.features()]
+            for name in names:
+                repair_requests.consume(repair_requests.revise_context(context, 'tasks', name))
     except (ValueError, OSError) as error:
         phase_rules.fail(str(error))
     phase_rules.ok("all required artifacts are approved")

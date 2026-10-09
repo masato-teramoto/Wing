@@ -54,16 +54,25 @@ def require_saved(context, value):
     saved = value.get('flow_contract')
     if saved is None:
         raise ValueError('legacy Phase 8 execution: finish the active request with its original distribution before switching flows')
-    if saved != configuration(context):
+    if not same_contract(context, saved):
         raise ValueError('Phase 8 flow configuration changed; restore the saved configuration or explicitly rebase at a quiescent boundary')
     return saved
+
+
+def same_contract(context, saved):
+    """保存した flow 契約が現在と同じか、再固定記録（implement-repin）の連鎖でつながるか（§6.5）。"""
+    current = configuration(context)
+    if saved == current:
+        return True
+    import implementation_reverify
+    return implementation_reverify.repinned_contract(context, saved, current)
 
 
 def require_current(context):
     import implementation_requests as requests
     feature = requests.feature_of(context)
     require_saved(context, requests.feature_state(context, feature))
-    if context.action in requests.TASK_ACTIONS:
+    if requests.kind(context) == 'task':
         require_saved(context, store.current_execution(context))
 
 

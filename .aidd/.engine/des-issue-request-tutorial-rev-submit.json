@@ -1,0 +1,24 @@
+{
+ "operation_id": "5e3b3812-0105-41ec-9119-fcef7c0ebcc0",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[issue-request-tutorial]::run",
+  "event": "design-authoring-revise",
+  "item": "issue-request-tutorial",
+  "status": "emit",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": null,
+  "id": "ad12cbbbe8ea48e1aa4b7e22b70225a5"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/issue-request-tutorial/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [],
+  "return_candidates": [],
+  "summary": "上流は front matter と改行コードのみの変更で本文は同一。修正は不要のため編集せず、再検査・再承認へ回す"
+ }
+}

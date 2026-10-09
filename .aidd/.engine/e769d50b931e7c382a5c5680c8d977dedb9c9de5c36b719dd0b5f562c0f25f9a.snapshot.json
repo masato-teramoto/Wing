@@ -3,7 +3,7 @@
   "phase": "requirements",
   "event": "requirements-authoring-revise",
   "scope": "feature:print-report",
-  "at": "2026-10-05T19:35:20+09:00",
+  "at": "2026-10-09T18:09:51+09:00",
   "artifacts": {
     "specs/print-report/requirements.md": {
       "status": "draft",
@@ -11,9 +11,64 @@
     }
   },
   "record": {
-    "bytes": 230976,
-    "sha256": "aff92a7469509c6c7c9dbe23eb74f4c6168dabbbc5a8f172c4288dc8db255f86",
-    "blocks": 263
+    "bytes": 303552,
+    "sha256": "4b56c4663d74434aa169a2d255c79ab1071584480d5289c6a6d570403e0ff33c",
+    "blocks": 351
   },
-  "run": 2
+  "run": 3,
+  "sections": {
+    "specs/print-report/requirements.md": {
+      "": "e3b0c44298fc1c14",
+      "要件定義書": "9685edacbaee56aa",
+      "概要（Introduction）": "ab7fa86a81e5b480",
+      "業務フロー": "76bc69d7e58b6b7b",
+      "スコープの境界（Boundary Context）": "a13d0c546ae4e3e8",
+      "対象外": "17fc680c53d531f6",
+      "前提と依存（Dependencies / Assumptions）": "5c261ab03fa6e5cd",
+      "要件（Requirements）": "a76ee68f4360c556",
+      "要件 1: 帳票の作成（REQ-016）": "36d7156e0b0922b8",
+      "受け入れ基準（Acceptance Criteria）": "2fc5c513b489196f",
+      "要件 2: QR コードの印字（REQ-017）": "16e59e9affc2b310",
+      "受け入れ基準（Acceptance Criteria） (2)": "4f7c1c2b7ad40645",
+      "要件 3: 閲覧と印刷（REQ-018）": "e4cf54dd02f6ff28",
+      "受け入れ基準（Acceptance Criteria） (3)": "77ddb03b24af9855",
+      "要件 4: 出力の失敗（REQ-016・REQ-018）": "8e74ccb4b81d1731",
+      "受け入れ基準（Acceptance Criteria） (4)": "7e3ef21b199825fb",
+      "非機能要件（Non-Functional Requirements）": "d377560b285ff661",
+      "*": "9685edacbaee56aa"
+    }
+  },
+  "own_sections": {
+    "specs/print-report/requirements.md": {
+      "": "e3b0c44298fc1c14",
+      "要件定義書": "88f95a0eb81f7441",
+      "概要（Introduction）": "ab7fa86a81e5b480",
+      "業務フロー": "76bc69d7e58b6b7b",
+      "スコープの境界（Boundary Context）": "a13d0c546ae4e3e8",
+      "対象外": "17fc680c53d531f6",
+      "前提と依存（Dependencies / Assumptions）": "5c261ab03fa6e5cd",
+      "要件（Requirements）": "2855f05e424bda39",
+      "要件 1: 帳票の作成（REQ-016）": "3ebc92c76f8ecb5f",
+      "受け入れ基準（Acceptance Criteria）": "2fc5c513b489196f",
+      "要件 2: QR コードの印字（REQ-017）": "6985310276f0d212",
+      "受け入れ基準（Acceptance Criteria） (2)": "4f7c1c2b7ad40645",
+      "要件 3: 閲覧と印刷（REQ-018）": "cc8b671bbbba5c37",
+      "受け入れ基準（Acceptance Criteria） (3)": "77ddb03b24af9855",
+      "要件 4: 出力の失敗（REQ-016・REQ-018）": "0f2ab43d56b7e16b",
+      "受け入れ基準（Acceptance Criteria） (4)": "7e3ef21b199825fb",
+      "非機能要件（Non-Functional Requirements）": "d377560b285ff661",
+      "*": "9685edacbaee56aa"
+    }
+  },
+  "inputs": {
+    ".aidd/requirement-list.md": "0f27710cd1eb4f103a426cbccec48d5af14f504bd9e40c7f8c697f3ef031c859",
+    ".aidd/feature-list.md": "9c8fae4dbc53b2ff6cc98e2476e7c02797d2077359d9b2709d5eff7e5111b642",
+    "steering/product.md": "cde5dd8a1007c53f93a270de63e01d294d38f47695e96027d52b6b4862bc149b",
+    "steering/tech.md": "58cc32eb0ad29d7b7185bb02e710ce8d882e374f93eb0a609ae293e3903a4966",
+    "steering/architecture.md": "98be0c57ba256c0aeaf1a66d69682e63b47d20ec0f91ab776589a54e5eb8c33d",
+    "steering/security.md": "34061564b8c5b8c28e5ca2f4a9b744b06d9d58417ddbbff7ab150c9ef1027bbf",
+    "steering/non-functional.md": "ae87c72271e4f3d8593e2f666edc7bb0931cf4d0ca78dafbb21ab7264303f0ac",
+    "steering/database.md": "832d98b289c53f8c8adc9a7dfb25bf0f8b1f54b9c1cc473c6480fa9927a20e21",
+    "steering/api-standards.md": "70eca8d2facbf08bfa22cf1ae1e781219ecab2066bb8129bf4a3414b0fdeddc1"
+  }
 }

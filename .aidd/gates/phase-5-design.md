@@ -2089,3 +2089,558 @@ created_at: 2026-10-07T16:53:31+09:00
 | cross | 2 | 1 | 対応せず進める | 案 A の扱い（発行依頼書登録変更の更新・一時保存は TWTGM080 を更新せず、排他用の値が変わるのは発番のときだけ）。pbi design の文言は upstream-carryover に足し、Phase 5 の最後にまとめて直す | cross | 2 |
 | cross | 2 | 2 | 対応せず進める | pbi design から specs/issue-request/db-TWTGM140.md を指す修正を upstream-carryover に足し、Phase 5 の最後にまとめて直す | cross | 2 |
 | cross | 2 | 3 | 対応せず進める | 契約者区分は 1:契約者・2:関係者（"01" は回答者の取り違え）。pbi design の直しは upstream-carryover に足し、Phase 5 の最後にまとめて直す | cross | 2 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:property-basic-info | 8 | 2026-10-09T18:41:35+09:00 | ①② | ["specs/property-basic-info/design.md"] | {"specs/property-basic-info/design.md":"03331555d6ee0825bd90f023f17f4951d532f97b0f4bde7b7f50878d4cc4da03"} | 0 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+
+### 除外
+
+| 観点 | 対象箇所 | 要約 | 除外の出典 |
+|---|---|---|---|
+| traceability | specs/property-basic-info/design.md § 物理データモデル（Physical Data Model） / TWTGM140 | TWTGM140 の全 345 列のうち「残りの列」の定義の所在が本書から辿れない（参照先だった ir 側の db 資料が削除済みという事実を含む） | learned:design cross 2-2 |
+
+## 承認
+
+| スコープ | 回数 | 対象成果物 | 承認者 | 承認日時 | 原本SHA256 |
+|---|---|---|---|---|---|
+| feature:property-basic-info | 8 | specs/property-basic-info/design.md | masato-teramoto | 2026-10-09T18:46:09+09:00 | 03331555d6ee0825bd90f023f17f4951d532f97b0f4bde7b7f50878d4cc4da03 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:issue-request | 9 | 2026-10-09T18:51:17+09:00 | ①② | ["specs/issue-request/design.md"] | {"specs/issue-request/design.md":"7bedc0d4618ebcb9a1667ce749bf24513272ac9c19fbdebdfe1ac2954ab67fbb"} | 3 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | format-conformance | 文書間の参照 | 軽微 | 406c817d39490539 | 77b2bf036e78ac85 | specs/issue-request/design.md § 補足資料（Supporting References） / 資料 7 行 ほか 42 か所 | 実在しない補足資料への参照 | 実在しない補足資料 9 件（db-TWTG*.md 8 件・item-rules.md）を 43 行で参照している | 参照先が実在しない。specs/issue-request/ には design.md と requirements.md しか無いことを Glob で確認した（db-TWTGA130.md・db-TWTGA150.md・db-TWTGM100.md・db-TWTGM140.md・db-TWTGM160.md・db-TWTGV030.md・db-TWTGV050.md・db-TWTZM370.md・item-rules.md の 9 件はどれも無い）。design.md 内の該当は 43 行（item-rules.md を含む行 27、db-*.md を含む行 19、両方を含む行 3）。内訳（design.md の行番号）：(a) 前書き 14（「回答者の指示でこの場所に置いたもの」と書いた説明そのものが事実と合わない）。(b) 達成目標 38。(c) 責務境界 73・112・113・115・130。(d) 論理データモデル 244（db-*.md と item-rules.md）。(e) 物理データモデル 255〜262（TWTGM100・TWTGM140・TWTGA130・TWTGA150・TWTGV030・TWTGV050・TWTGM160・TWTZM370 の各行に「全列は specs/issue-request/db-….md」）。(f) データ契約 291。(g) Service の責務と入力可否表 407・424・428・429・468。(h) バリデーション設計 542・548・559・562・565〜569。(i) 移行方針 710、移行対象ファイル一覧 726・727。(j) テスト戦略 754・757。(k) 補足資料の表 822〜828（9 件すべてを参照先に挙げる 7 行）。実在するのは specs/property-basic-info/csv-layout-wtg070.md など他の参照先のみ。他の feature の design にも同じ参照が残っている（contract-info-import 3 行・print-report 2 行・application-status-search 1 行。今回の検査対象外のため指摘にはしていない）。なお原本は specs の外の _handoff/phase5-ir-db-*.md と _handoff/phase5-ir-item-rules.md に残っており、回答（.aidd/.engine/answer-ds-ir-20261007-1959.txt 2・30・64 行付近）がそれを出典に挙げている。過去の人の判断との関係：1 回目 #4（9.6 の所属必須を item-rules.md に従って意図的に外す）は 対応せず進める で判断済みで、ここでは出し直さない（根拠にしたファイルが無くなった事実だけを (h) 559 行として数えた）。 | 次のどちらかに決めて直す。A：9 件を specs/issue-request/ に戻す（または _handoff の原本への参照に変える）。B：参照を外し、必要な内容を本文に取り込む（取り込む範囲は指摘 2・3 を参照）。どちらでも、前書き 14 行の説明、物理データモデル 255〜262 の「全列は…」、補足資料の表 822〜828 の参照先を実在する参照に合わせる。 | 質問：参照先を戻すか、本文に取り込むか、参照だけ外すかは人が決める事項のため | 確認済み |  |  |
+| 2 | traceability | 業務のあいまい・不足 | 要判断 | 9ab64d5830674d88 | ed91e2366e415e60 | specs/issue-request/design.md § バリデーション設計 / 項目ごとの規則（item-rules.md） ほか 7 か所 | 項目ごとの入力チェック規則 | 入力チェックの項目別規則が item-rules.md だけにあり、本文で確定できない | 要件 9（9.1〜9.7）と 2.x・8.x を満たす入力チェックの項目別の必須・桁・形式・選択肢の元・入力できない場合・条件付き必須・相関・メッセージを、design 本文は「item-rules.md を正とする」（542 行）「item-rules.md のとおり」（38 行）と委ねている。item-rules.md が実在しないため、本文だけでは次を決められない。(1) 更新時に必須の全項目と桁数・形式（本文は 553〜557 行に一部の項目を列挙するのみ。「全項目の必須・桁・形式」は 542 行で item-rules.md に委ねる）。(2) 条件付き必須の中身（565 行「item-rules.md の条件付きの必須」、{0}・{1} に入る項目の組合せが不明。558・564 行の 2 種だけが本文にある）。(3) 入力できない項目（429 行「製本種別・支払方法・法人個人区分・発送先・契約種別による入力不可」の条件）。(4) 関係(地位)と契約種別・受電方法・役職氏名の整合（566 行）、転貸借の P53／P37 の組合せ（568 行）、TEL の桁（567 行）、郵便番号と住所の照合の対象項目（569・548 行）、案件小グループの工事案件での使用可否（562 行）。(5) コード値で持つ属性の選択肢の元の一覧（244 行「item-rules.md の『選択肢の元』」、112 行は P06〜P90 の範囲だけ）と、それをもとにした移行の TWTZM040 投入行（710 行・728 行）。(6) 契約区分の自動設定（468 行）は本文に判定規則があり自己完結しているが、「item-rules.md の 8」を出典にしている。契約情報取込の行のチェックもこの規則に合わせる前提（73・130・291 行）のため、下流にも影響する。出典：回答 Q-DS-IR-006（.aidd/.engine/answer-ds-ir-20261007-1959.txt 64 行付近）は規則の本体を _handoff/phase5-ir-item-rules.md に置いたと答えており、回答自体には規則の本体が無い。要件側は 9.1 に「必須・桁数・形式」とだけあり、項目ごとの値は requirements では決めない（finding-rules B-02。design で決める）ため、design 本文に定義が無い状態になっている。同じ原因（参照先の消失）は指摘 1 が参照の切れとして出しており、ここでは「定義が本文に残っていない」ことだけを扱う。 | 次から選ぶ。A：item-rules.md を戻し、参照先として復元する（指摘 1 の A）。B：項目ごとの規則（必須・桁・形式・選択肢の元・入力できない場合・条件付き必須・相関・メッセージ）を design 本文（バリデーション設計の表など）へ取り込む。C：_handoff/phase5-ir-item-rules.md を正本とし、参照先をそのパスに変える（specs の外の資料を正とする扱いの可否を人が決める）。 | 質問：項目別規則を本文に取り込むか、資料を戻すか、_handoff を正本とするかは業務側の判断が要るため | 確認済み |  |  |
+| 3 | traceability | 業務のあいまい・不足 | 要判断 | 6fc6002cee782f4b | 51eb0ad82e3d6da1 | specs/issue-request/design.md § 物理データモデル（Physical Data Model） / TWTGM100・TWTGM140 ほか 6 か所 | テーブルの全列定義と投入データ | TWTGM100・140 ほかの全列定義と TWTGM160 の 25 件が本文だけでは定義できない | 要件 1.1・7.1・7.2・4.2・4.3 を満たす列の定義が db-*.md だけにある。(1) TWTGM100（353 列）・TWTGM140（345 列）・TWTGA130（353 列）・TWTGA150（345 列）・TWTGV030・TWTGV050 の全列の列名・型・桁・必須・許可値・並び（255〜260 行。本文にあるのは主な列と、TWTGM100 だけ・TWTGM140 だけの列の差、金額 2〜4 の桁が違うこと）。変更履歴の比べる範囲「No.7 Keiyaku_Kbn〜No.353 Draft_Flg」「No.7 Application_No〜No.345 Draft_Flg」（235 行・278 行）の No. は db-TWTGM100.md・db-TWTGM140.md の並びを前提にしており、並びが本文に無いと範囲を特定できない。(2) 名称の列・(ﾌﾘｰﾌｫｰﾑ) の列の入れ方と、コードと (ﾌﾘｰﾌｫｰﾑ) が組になる金額項目の一覧（213 行・231 行・291 行。例は電気料【月額】だけで、組になる項目の全体は本文に無い）。(3) TWTGM160 の 25 件の中身と、案件小グループ・その他①をキー3 に置き換えて投入する対応（261 行・710 行・726 行。本文は列の概要と、001・002 が汎用例であることだけ）。要件 4.2・4.3 は 25 件から選ぶ前提のため、投入データが決まらないとズームの動作（383 行）が確かめられない。(4) TWTZM370 は列と 4 行が本文（262 行・710 行）と回答 Q-DS-IR-018 に残っているため、自己完結している（指摘対象外）。軽減要因：steering/database.md の「マイグレーション」は DDL を発注者の DB レイアウト設計書から作ると定めており、列の最終の正本は発注者の資料である。ただし本文は 255〜260 行・補足資料で正を db-*.md と明記しているため、実装者（Mapper・Form・Info bean の 353 項目）が参照できる定義が design から辿れない。これは指摘 1 の参照切れとは別に、定義の置き場所を決める内容。 | 次から選ぶ。A：db-*.md 8 件を戻して参照先を復元する（指摘 1 の A）。B：design 本文または docs の DB レイアウトへ全列の定義を取り込む（列数が多いため補足資料として別ファイルに置く場合は、実在するパスを参照先にする）。C：発注者の DB レイアウト設計書を正本とし、design の参照先をその資料（名称・版）に変える。 | 質問：列定義と投入データの正本をどこに置くかは人が決めるため | 確認済み |  |  |
+
+### 除外
+
+| 観点 | 対象箇所 | 要約 | 除外の出典 |
+|---|---|---|---|
+| evidence-guard | specs/issue-request/design.md § 物理データモデル（Physical Data Model） / TWTGM100・TWTGM140 | 全 353 列・345 列、比べる範囲 No.7〜No.353・No.7〜No.345 の数値は資料が無くなっても回答に出典がある | answer:design-authoring-generate[issue-request] |
+| evidence-guard | specs/issue-request/design.md § 物理データモデル（Physical Data Model） / TWTGM160 ほか | TWTGM160 の列の桁・25 件・TWTZM370 の 4 行の数値は回答 Q-DS-IR-009・Q-DS-IR-018 に出典がある | answer:design-authoring-generate[issue-request] |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| feature:issue-request | 9 | 1 | 修正 | 軽微（AIDD 内部の決まりごと）のため、AI が修正案で直す | system（自動） | 2026-10-09T18:55:49+09:00 |  |  |  |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:issue-request | 9 | 2 | 修正 |  | masato-teramoto | 2026-10-09T18:59:25+09:00 |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:issue-request | 9 | 3 | 修正 |  | masato-teramoto | 2026-10-09T18:59:31+09:00 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:issue-request | 10 | 2026-10-09T19:03:46+09:00 | ①② | ["specs/issue-request/design.md"] | {"specs/issue-request/design.md":"832c47b0cc28093cee938b3184cdd52710ba04f2cd6364c463ecd0f032cac8fc"} | 3 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | traceability | 業務の欠落・矛盾 | 重大 | f9039b471ed09eb8 | bc6a71f021e3c480 | specs/issue-request/design.md § 項目ごとの規則（Q-DS-IR-006） / 規則 2. 案件G・基本情報・作成組織・契約形態 / その他①〜④ | その他①〜④の桁 | その他①〜④の入力桁 100 が DB 列 Sonota1〜4_Freeform の 50 と食い違う | 規則 2 の「その他①〜④」の行（design.md 2824 行）は桁を 100 とし、データリスト WTG/PARAM/P35 の名称も手入力もこの桁まで受け付ける。一方、TWTGM100 の DB レイアウトは Sonota1〜4（コード列）が 20 桁、Sonota1_Freeform〜Sonota4_Freeform（手入力・名称を入れる列）が 50 桁（design.md 596〜603 行。No.320〜327）。51〜100 バイトを入力すると桁数の検査（GEF-000003）を通ったうえで、更新で 50 桁の列に入らない。同じ「(ﾌﾘｰﾌｫｰﾑ)」列の組のうち、ほかの項目（市区町村 50、契約事由 256、その他書類 100、添付資料 200、部数 10、関係(地位) 40 など）は規則の桁と DB の桁が一致しており、この 1 組だけ食い違う。規則 2 の記述は原本（_handoff/phase5-ir-item-rules.md 32 行）のとおりで、取り込みの欠落・改変ではない。前回までは DB の列定義が本文に無く、桁を突き合わせられなかった。TWTGM140・TWTGA150・TWTGV050 の対応列（Sonota1〜4_Freeform）の桁は個別には読んでいない（桁 50 の行の総数は原本の合計と一致）。 | 次から選ぶ。A：規則 2 の「その他①〜④」の桁を 50 に直す（DB レイアウトを正とする）。B：DB レイアウトの Sonota1〜4_Freeform を 100 に直す（TWTGM100・TWTGM140・TWTGA130・TWTGA150・TWTGV030・TWTGV050 の 6 表と、回答者の DB レイアウト設計書も同時に直す）。C：コード列（20 桁）に入る名称の長さと 100 の関係を確かめ、規則の 100 の意味（名称の最大長か入力桁か）を決める。 | 質問：どちらの桁が正しいかは回答者（DB レイアウト設計書と画面設計の持ち主）の判断が要るため | 確認済み |  |  |
+| 2 | traceability | 文書間の参照 | 軽微 | a6f7bd42ae49681f | bc6a71f021e3c480 | specs/issue-request/design.md § 項目ごとの規則（Q-DS-IR-006） / 規則 1. UQ担当者入力欄・ヘッダー / 契約区分 | 契約区分の自動設定の参照先 | 規則 1 の契約区分が自動設定の参照を「下の 7.」とするが正しくは規則 8 | 規則 1 の「契約区分」の行（design.md 2815 行）の「入力できない場合」に「基地局番号を入れたとき自動設定（下の 7.）」とある。取り込み後の見出しは、規則 7 が「一時保存・発番のときの検査」（2937 行）、規則 8 が「契約区分の自動設定（基地局番号を入れたとき）」（2942 行）で、自動設定の本体は規則 8。ほかの相互参照（規則 0 の「下の 6.」＝規則 6、規則 2・3 の「下の 5.」＝規則 5）は合っている。原本（_handoff/phase5-ir-item-rules.md 23 行）も「下の 7.」で、原本の見出しも 7・8 の順のため、取り込みで生じたのではなく原本の誤記を引き継いだもの。 | 2815 行の「（下の 7.）」を「（規則 8）」に直す。 | 修正：参照番号を見出しに合わせるだけで足り、業務の判断は要らないため | 確認済み |  |  |
+| 3 | traceability | 文書間の参照 | 軽微 | 6c7373eeb6f40b80 | 9e8c068b42d69383 | specs/issue-request/design.md § TWTGA130 の DB レイアウト（発行依頼書情報変更履歴。Q-DS-IR-013） / No.353 ほか 3 か所 | 一時保存フラグの列名と許可値 | TWTGA130 の No.353 が DRAFT_FLG で、「列名が同じ」の説明と合わない | TWTGA130 の前書き（design.md 989 行）は「列は TWTGM100 とまったく同じ（353 列。名前・型・桁が同じ）」とするが、No.353 の項目名は `DRAFT_FLG`（1348 行）で、TWTGM100 の `Draft_Flg`（629 行）と綴りが違う。変更履歴の比べる列の説明（235 行）は No.353 を `Draft_Flg` と書く。許可値も、TWTGM100（629 行）・TWTGM140（985 行）は「0：更新済 / 1：一時保存中」だが、TWTGA130（1348 行）・TWTGV030（2066 行）・TWTGA150（1703 行）・TWTGV050（2421 行）は空欄で、「名前・型・桁が同じ」の説明が許可値までは言っていないものの、読み手には同じ定義に見える。原本（_handoff/phase5-ir-db-TWTGA130.md 362 行ほか）のとおりの取り込みで、欠落・改変ではない。INSERT … SELECT * は列の並びで写すため動作には影響しないが、列名を書く Mapper の SQL・DDL では綴りの違いが残る。 | 989 行の説明に「ただし No.353 の項目名は DRAFT_FLG（DB レイアウトのまま）。変更履歴・トランの許可値は書かれていない（意味は TWTGM100 と同じ）」と注記する。または DB レイアウト設計書を確かめて項目名を Draft_Flg にそろえる。 | 修正：本文の説明を実際の定義に合わせる注記で足り、定義の変更は不要のため | 確認済み |  |  |
+
+### 除外
+
+| 観点 | 対象箇所 | 要約 | 除外の出典 |
+|---|---|---|---|
+| evidence-guard | specs/issue-request/design.md § 物理データモデル（Physical Data Model） / TWTGM100・TWTGM140 | 全 353 列・345 列、比べる範囲 No.7〜No.353・No.7〜No.345 の数値は回答に出典がある | answer:design-authoring-generate[issue-request] |
+| evidence-guard | specs/issue-request/design.md § TWTGM160 の DB レイアウトと投入データ（ｻﾝﾌﾟﾙ文設定ﾏｽﾀ。Q-DS-IR-009） / 投入データ | TWTGM160 の列の桁・25 件、TWTZM370 の 4 行の数値は回答 Q-DS-IR-009・Q-DS-IR-018 に出典がある | answer:design-authoring-generate[issue-request] |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| feature:issue-request | 10 | 2 | 修正 | 軽微（AIDD 内部の決まりごと）のため、AI が修正案で直す | system（自動） | 2026-10-09T19:10:05+09:00 |  |  |  |
+| feature:issue-request | 10 | 3 | 修正 | 軽微（AIDD 内部の決まりごと）のため、AI が修正案で直す | system（自動） | 2026-10-09T19:10:05+09:00 |  |  |  |
+
+## 解消
+
+| スコープ | 回数 | 指摘番号 | 再検査スコープ | 再検査回数 | 確認者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:issue-request | 9 | 1 | feature:issue-request | 10 | system（自動）：再検査で再検出なし | 2026-10-09T19:10:05+09:00 |
+| feature:issue-request | 9 | 2 | feature:issue-request | 10 | system（自動）：再検査で再検出なし | 2026-10-09T19:10:05+09:00 |
+| feature:issue-request | 9 | 3 | feature:issue-request | 10 | system（自動）：再検査で再検出なし | 2026-10-09T19:10:05+09:00 |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:issue-request | 10 | 1 | 修正 |  | masato-teramoto | 2026-10-09T19:13:19+09:00 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:issue-request | 11 | 2026-10-09T19:15:54+09:00 | ①② | ["specs/issue-request/design.md"] | {"specs/issue-request/design.md": "8cf01f68fe35f51ecb925f5258243beb7a476500279d2757c8a0a7788c2917ec"} | 0 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+
+## 解消
+
+| スコープ | 回数 | 指摘番号 | 再検査スコープ | 再検査回数 | 確認者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:issue-request | 10 | 1 | feature:issue-request | 11 | system（自動）：再検査で再検出なし | 2026-10-09T19:18:30+09:00 |
+| feature:issue-request | 10 | 2 | feature:issue-request | 11 | system（自動）：再検査で再検出なし | 2026-10-09T19:18:30+09:00 |
+| feature:issue-request | 10 | 3 | feature:issue-request | 11 | system（自動）：再検査で再検出なし | 2026-10-09T19:18:30+09:00 |
+
+## 承認
+
+| スコープ | 回数 | 対象成果物 | 承認者 | 承認日時 | 原本SHA256 |
+|---|---|---|---|---|---|
+| feature:issue-request | 11 | specs/issue-request/design.md | masato-teramoto | 2026-10-09T19:18:59+09:00 | 8cf01f68fe35f51ecb925f5258243beb7a476500279d2757c8a0a7788c2917ec |
+
+## 残件
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 承認スコープ | 承認回数 |
+|---|---|---|---|---|---|---|
+| feature:issue-request | 1 | 2 | 対応せず進める | AI 推奨を採用: 人の回答（Q-DS-IR-014）に従った読み方として design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため | feature:issue-request | 11 |
+| feature:issue-request | 1 | 4 | 対応せず進める | AI 推奨を採用: item-rules.md（回答者が渡した資料）に従った意図的な逸脱として design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため | feature:issue-request | 11 |
+| feature:issue-request | 1 | 7 | 対応せず進める | AI 推奨を採用: pbi design と同じ扱いとして design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため | feature:issue-request | 11 |
+| feature:issue-request | 1 | 8 | 対応せず進める | AI 推奨を採用: design に明記され、pbi design は Phase 5 の最後にまとめて直す方針とされているため。直すまでは pbi の実装がこの前提を満たさない | feature:issue-request | 11 |
+| feature:issue-request | 2 | 1 | 対応せず進める | AI 推奨を採用: 人の回答（Q-DS-IR-001 の C）に従った意図的な逸脱として design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため。ただし承認済み requirements と両立しない状態は残る | feature:issue-request | 11 |
+| feature:issue-request | 2 | 2 | 対応せず進める | AI 推奨を採用: グループを権限区分と読むことは物件基本情報と 1 回目の判断で決まっており、上流の文言は Phase 5 の最後にまとめて直す方針とされているため | feature:issue-request | 11 |
+| feature:issue-request | 2 | 3 | 対応せず進める | AI 推奨を採用: pbi design と同じ扱いとして design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため | feature:issue-request | 11 |
+| feature:issue-request | 2 | 4 | 対応せず進める | AI 推奨を採用: design に明記され、pbi design は Phase 5 の最後にまとめて直す方針とされているため。直すまでは pbi の実装がこの前提を満たさない | feature:issue-request | 11 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:issue-request-tutorial | 5 | 2026-10-09T19:21:55+09:00 | ①② | ["specs/issue-request-tutorial/design.md"] | {"specs/issue-request-tutorial/design.md":"bcad7f98ec585831c7119db075ee27d872ee16eb00345aa75b3b7d78ac9f8542"} | 1 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | dependency-boundary-conformance | 業務の欠落・矛盾 | 重大 | ab0e607c3cb9e607 | 1f0b54e4cad792e9 | specs/issue-request-tutorial/design.md § データ契約と外部連携（Data Contracts &amp; Integration） / 開き方 ほか 2 か所 | ir design の公開契約に無い、開く部品の読込とウインドウ名 | 開く部品の読込とウインドウ名 pwtgo081 が ir design に書かれていない | 本書は「発行依頼書登録変更画面のテンプレートが `pages/wtg/wtg081/pwtgo081ZoomForm.html` を読み込む」「ウインドウ名 `pwtgo081` の別ウインドウを `/zoom/wait` で開く」と書き、責務境界でも「ir design の画面がテンプレートに読み込む」としている（本書 § このスペックが持つ責務（This Spec Owns）、§ データ契約と外部連携 開き方、§ ファイル配置計画）。現在の `specs/issue-request/design.md`（再承認後）の § データ契約と外部連携 / チュートリアル（GWTG081）との受け渡し（2507〜2510 行）は、URL `/wtg081`・POST の渡し方・`window.opener[ウインドウ名 + 'callback'](json)`・項目名までで、`pwtgo081ZoomForm.html` を読み込むこと、ウインドウ名が `pwtgo081` であること、`ZOOM_DEFINE.pwtgo081` は書いていない。ir design § ファイル配置計画（3030 行）にも `pwtgo081ZoomForm.html` は無く、`pwtgo080.html・pwtgo080Script.html` が「ズームとチュートリアルのコールバック」を持つとだけある。`.aidd/.engine/upstream-carryover.md` の ir design 向け記述（50 行）はコールバック名 `pwtgo081callback` までで、開く部品の読込とウインドウ名は足されていない。本書 § データ契約と外部連携 親画面がするとき は「ir design の公開契約にまだ無い」事項を列挙しているが、この 2 点は含まれていない。なお、ir design の他の参照（`/wtg080/changeKeiyakuSyubetsuTutorial` の入出力、項目名 `inputInfo.contractSyubetsu`・`kyokuSyubetsu`・`sechiSetsubi`・`moveLeaseChinryo`・`moveLeaseDenkiryoFreeform`・`moveLeaseChakkoYoteiDate`・`moveLeaseKind`・`kddiRentalContract`・`moveLeaseContractStartDate`、`/wtg081?FunctionID=WTG081&amp;keiyakuKbn=` の POST、更新ボタンを出す条件、判断 5 の CSRF 照合の扱い、`WTG-100015` をチュートリアルが使うこと）は、現在の ir design と食い違わない。補足資料・本文のいずれにも、削除済みの補足資料（`db-*.md`・`item-rules.md`）への参照は無い。 | 本書の「ir design の画面がテンプレートに読み込む」を「ir design にまだ無い。親画面は `pwtgo081ZoomForm.html` を読み込み、ウインドウ名 `pwtgo081` で開く」に直し、§ データ契約と外部連携 親画面がするとき の「ir design の公開契約にまだ無い」事項に加える。upstream-carryover の ir design 向け記述に、開く部品 `pwtgo081ZoomForm.html` の読込とウインドウ名 `pwtgo081` を足す（Phase 5 の最後にまとめて直す）。 | 修正：判断 1・§ データ契約と外部連携の既存の扱い（上流は Phase 5 の最後にまとめて直す）と同じく、本書の書き方と upstream-carryover を直せば足り、業務の新しい事実は要らない | 確認済み |  |  |
+
+### 差戻し先候補
+
+| 指摘番号 | 宛先 | 理由 |
+|---|---|---|
+| 1 | specs/issue-request/design.md（Phase 5 の最後の上流まとめ直し） | ir design の受け渡しの公開契約に、開く部品の読込とウインドウ名が無いため（本書の記述を直したうえで upstream-carryover に足す） |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| feature:issue-request-tutorial | 5 | 1 | 修正 | AI 推奨を採用: 判断 1・§ データ契約と外部連携の既存の扱い（上流は Phase 5 の最後にまとめて直す）と同じく、本書の書き方と upstream-carryover を直せば足り、業務の新しい事実は要らない | masato-teramoto | 2026-10-09T19:27:07+09:00 |  |  | 採用 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:issue-request-tutorial | 6 | 2026-10-09T19:29:37+09:00 | ①② | ["specs/issue-request-tutorial/design.md"] | {"specs/issue-request-tutorial/design.md": "d7c594a832cbe0fbab57395810305bccadf57f10983df788ca4e850bd0c1084a"} | 0 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+
+## 解消
+
+| スコープ | 回数 | 指摘番号 | 再検査スコープ | 再検査回数 | 確認者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:issue-request-tutorial | 5 | 1 | feature:issue-request-tutorial | 6 | system（自動）：再検査で再検出なし | 2026-10-09T19:32:05+09:00 |
+
+## 承認
+
+| スコープ | 回数 | 対象成果物 | 承認者 | 承認日時 | 原本SHA256 |
+|---|---|---|---|---|---|
+| feature:issue-request-tutorial | 6 | specs/issue-request-tutorial/design.md | masato-teramoto | 2026-10-09T19:32:37+09:00 | d7c594a832cbe0fbab57395810305bccadf57f10983df788ca4e850bd0c1084a |
+
+## 残件
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 承認スコープ | 承認回数 |
+|---|---|---|---|---|---|---|
+| feature:issue-request-tutorial | 3 | 1 | 対応せず進める | 前回（1 回目 #1）と同じ指摘で、箇所に変更がない: AI 推奨を採用: pbi design・ir design と同じ扱いとして design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため | feature:issue-request-tutorial | 6 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:print-report | 6 | 2026-10-09T19:35:19+09:00 | ①② | ["specs/print-report/design.md"] | {"specs/print-report/design.md":"ebfa76def7ce6d9e5503ba27aac9d1ad8b052882340b663b0ced66ab205e5197"} | 1 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | format-conformance | 文書間の参照 | 軽微 | 5dae0723a86d85f2 | 859927701a790ce3 | specs/print-report/design.md § 論理データモデル（Logical Data Model） / 属性と型 ほか 1 か所 | 削除済みの補足資料 db-TWTGM100.md・db-TWTGM140.md への参照 | 参照先 specs/issue-request/db-TWTGM100.md・db-TWTGM140.md が実在しない | 参照が切れている箇所は 2 か所。(1) 論理データモデル「属性と型」（243 行目）「`specs/issue-request/db-TWTGM100.md`・`specs/issue-request/db-TWTGM140.md` のとおり」。(2) 補足資料の表「発行依頼書の列」の参照先（652 行目）「`specs/issue-request/db-TWTGM100.md`・`specs/issue-request/db-TWTGM140.md`」。`specs/issue-request/` に実在するのは design.md と requirements.md だけで、db-*.md は削除済み（Glob で確認）。内容は現在の `specs/issue-request/design.md` へ取り込み済みで、`#### TWTGM100 の DB レイアウト（発行依頼書情報ﾏｽﾀ。Q-DS-IR-003）`（266 行目。全 353 列）と `#### TWTGM140 の DB レイアウト（契約局情報ﾏｽﾀ。Q-DS-IR-004）`（631 行目。全 345 列）に実在する。なお、本 design が使う列（稟議バーコードNo＝TWTGM140 の Ringi_Barcode_No・25 桁、連番 Renban、担当エリア名 Area_Name、基地局番号・基地局名・物件名、TWTGM080 の Tandoku_Fukusu_Flg・Moto_Application_No・Application_Date）は、ir design・pbi design の現在の列定義と名前・意味の食い違いが無いことを確かめた（本 design は列の型・桁を自分では書かず、参照だけをしている）。 | (1) 243 行目を「各属性と型は pbi design・ir design の物理データモデルと、`specs/issue-request/design.md` の `#### TWTGM100 の DB レイアウト（発行依頼書情報ﾏｽﾀ。Q-DS-IR-003）`・`#### TWTGM140 の DB レイアウト（契約局情報ﾏｽﾀ。Q-DS-IR-004）` のとおり」に直す。(2) 652 行目の参照先を「`specs/issue-request/design.md` の `#### TWTGM100 の DB レイアウト（発行依頼書情報ﾏｽﾀ。Q-DS-IR-003）`・`#### TWTGM140 の DB レイアウト（契約局情報ﾏｽﾀ。Q-DS-IR-004）`」に直す。 | 修正：参照先を現在の ir design の実在する節へ直すだけで解消し、業務の新しい事実は要らないため | 確認済み |  |  |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| feature:print-report | 6 | 1 | 修正 | 軽微（AIDD 内部の決まりごと）のため、AI が修正案で直す | system（自動） | 2026-10-09T19:38:22+09:00 |  |  |  |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:print-report | 7 | 2026-10-09T19:41:02+09:00 | ①② | ["specs/print-report/design.md"] | {"specs/print-report/design.md":"e6d65db63292a5733f32042793e645f314b884f64423bea613d93d7f2d8fb620"} | 0 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+
+## 解消
+
+| スコープ | 回数 | 指摘番号 | 再検査スコープ | 再検査回数 | 確認者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:print-report | 6 | 1 | feature:print-report | 7 | system（自動）：再検査で再検出なし | 2026-10-09T19:43:27+09:00 |
+
+## 承認
+
+| スコープ | 回数 | 対象成果物 | 承認者 | 承認日時 | 原本SHA256 |
+|---|---|---|---|---|---|
+| feature:print-report | 7 | specs/print-report/design.md | masato-teramoto | 2026-10-09T19:43:59+09:00 | e6d65db63292a5733f32042793e645f314b884f64423bea613d93d7f2d8fb620 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:application-status-search | 6 | 2026-10-09T19:46:55+09:00 | ①② | ["specs/application-status-search/design.md"] | {"specs/application-status-search/design.md": "32696c8e99e895008c9a84e8e9c0f98da61fbd800fb352fd06a5749c8171cc3a"} | 2 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | format-conformance | 文書間の参照 | 軽微 | bf3c352aa1efd1aa | 96e89156592a9142 | specs/application-status-search/design.md § 依存してよい対象（Allowed Dependencies） / 依存先（98 行） | `specs/issue-request/db-TWTGM100.md` | 削除済みの `db-TWTGM100.md` を参照しており、参照先が実在しない | 98 行に「発行依頼書（`TWTGM100`）の定義（ir design。`specs/issue-request/db-TWTGM100.md`）」とある。`specs/issue-request/` にあるのは `requirements.md` と `design.md` だけで、`db-TWTGM100.md` は存在しない（補足資料は削除済み）。本文内にこのパスを書いた箇所はここ 1 か所だけ（`specs/application-status-search/` 全体を検索）。補足資料の内容は `specs/issue-request/design.md` の見出し「#### TWTGM100 の DB レイアウト（発行依頼書情報ﾏｽﾀ。Q-DS-IR-003）」（266 行）に取り込まれており、その節が全 353 列（表示名・項目名・型・桁・必須・許可値）を持つ。本書が使う列（`Anken_Syo_Grp_Cd`・`Sonota1`・`Sonota1_Freeform`・`Keiyaku_Ringi_Kiansha_Kaisha_Cd`・`Keiyaku_Ringi_Kiansha_Kaisha_Name`・`Keiyaku_Ringi_Kiansha_Name`・`First_Pay_Day1`〜`4`）の列名・型（1:String）・桁（10・20・50・20・50・100・8）は、その節の定義と食い違っていない（発送希望日 `Hasso_Kibo_Date` と依頼内容 `Irai_Naiyo` は `TWTGM080` の列で、pbi design の定義と一致）。 | 98 行の「（ir design。`specs/issue-request/db-TWTGM100.md`）」を「（ir design。`specs/issue-request/design.md` の `#### TWTGM100 の DB レイアウト（発行依頼書情報ﾏｽﾀ。Q-DS-IR-003）`）」に直す。参照先の節は実在する。 | 修正：参照先の節が ir design に実在し、直すだけで解消できる | 確認済み |  |  |
+| 2 | dependency-boundary-conformance | 文書間の参照 | 軽微 | 76208e0269b32236 | 96e89156592a9142 | specs/application-status-search/design.md § 依存してよい対象（Allowed Dependencies） / 依存先（98 行）ほか 1 か所 | 発行依頼書（`TWTGM100`）の定義（ir design） | feature-list の依存は pbi だけだが、ir design の定義を依存先に挙げている | `.aidd/feature-list.md` の application-status-search の依存列は「property-basic-info」だけで、`specs/application-status-search/requirements.md` の「前提と依存」の依存も property-basic-info だけ。一方、本書は「依存してよい対象（Allowed Dependencies）」の依存先（98 行）に ir design の `TWTGM100` の定義を挙げ、「再確認が必要になる変更（Revalidation Triggers）」（113 行）にも「pbi design・ir design」と書く。本書は `TWTGM100` を外部結合して起案会社・案件小グループ・初回支払日を比べる・出すので、ir design の DB レイアウトを読む実態はある（requirements 1.7 も契約稟議起案会社で絞る）。読むのは ir design の公開された DB レイアウトで、内部実装には触れておらず、公開契約経由の依存になっている。本書が ir design を依存として扱う書き方は Allowed Dependencies と Revalidation Triggers の 2 か所だけで、Out of Boundary（81 行）は発行依頼書の持ち主を `specs/issue-request/design.md` と正しく書く。食い違いは宣言（feature-list・requirements の依存）と実際の読み取りの間にある。 | 98 行の末尾に「feature-list の依存列は property-basic-info だけだが、本 feature は `TWTGM100` を外部結合で読むため ir design の DB レイアウトを読む。feature-list の依存列は Phase 5 の最後にまとめて直す（upstream-carryover）」と足す。本書の依存先の書き方は変えない。feature-list の依存列に issue-request を足すかどうかは人が決める。 | 修正：本書の書き方は公開契約を読むだけで境界を越えない。宣言とのずれは本書の upstream-carryover の書き方で残せる | 確認済み |  |  |
+
+### 差戻し先候補
+
+| 指摘番号 | 宛先 | 理由 |
+|---|---|---|
+| 2 | 人間による確認（`.aidd/feature-list.md` の application-status-search の依存列に issue-request を足すか。requirements の「前提と依存」も同様） | 原因は上流の依存の宣言（feature-list・requirements）が `TWTGM100` を読む実態を含まないこと。本書の記述では解消できない |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| feature:application-status-search | 6 | 1 | 修正 | 軽微（AIDD 内部の決まりごと）のため、AI が修正案で直す | system（自動） | 2026-10-09T19:50:45+09:00 |  |  |  |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| feature:application-status-search | 6 | 2 | 修正 | AI 推奨を採用: 本書の書き方は公開契約を読むだけで境界を越えない。宣言とのずれは本書の upstream-carryover の書き方で残せる | masato-teramoto | 2026-10-09T19:52:24+09:00 |  |  | 採用 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:application-status-search | 7 | 2026-10-09T19:55:04+09:00 | ①② | ["specs/application-status-search/design.md"] | {"specs/application-status-search/design.md": "b0d59adc5f67c4377772191bd6d81adc4234cdaf73d7f61c30eac704d697f0fa"} | 0 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+
+## 解消
+
+| スコープ | 回数 | 指摘番号 | 再検査スコープ | 再検査回数 | 確認者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:application-status-search | 6 | 1 | feature:application-status-search | 7 | system（自動）：再検査で再検出なし | 2026-10-09T19:57:46+09:00 |
+| feature:application-status-search | 6 | 2 | feature:application-status-search | 7 | system（自動）：再検査で再検出なし | 2026-10-09T19:57:46+09:00 |
+
+## 承認
+
+| スコープ | 回数 | 対象成果物 | 承認者 | 承認日時 | 原本SHA256 |
+|---|---|---|---|---|---|
+| feature:application-status-search | 7 | specs/application-status-search/design.md | masato-teramoto | 2026-10-09T19:58:13+09:00 | b0d59adc5f67c4377772191bd6d81adc4234cdaf73d7f61c30eac704d697f0fa |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-import | 7 | 2026-10-09T20:01:06+09:00 | ①② | ["specs/contract-info-import/design.md"] | {"specs/contract-info-import/design.md":"f8c85c02fe3eac668a090b8cb084d4319381ea95428d4c25c7149c98c569bebc"} | 2 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | format-conformance | 文書間の参照 | 軽微 | 5d4b46e91a0c246d | 748c288b8256108a | specs/contract-info-import/design.md § 論理データモデル（Logical Data Model） / 属性と型 ほか 2 か所 | 削除済みの補足資料への参照 | 存在しない db-*.md・item-rules.md への参照が 3 か所ある | 参照先が実在しない（相対パス参照切れ）。specs/issue-request/ には requirements.md と design.md しか無く、db-*.md と item-rules.md は削除済みで、内容は ir design 本文へ取り込まれている。全 3 か所：(1) 122 行付近 § 再確認が必要になる変更（Revalidation Triggers）：`specs/issue-request/item-rules.md`。(2) 222 行付近 § 論理データモデル（Logical Data Model） / 属性と型：`specs/issue-request/db-TWTGM140.md`・`db-TWTGM100.md`・`db-TWTGV050.md`・`db-TWTGV030.md`・`db-TWTGA150.md`・`db-TWTGA130.md`（6 件）。(3) 699 行付近 § 補足資料（Supporting References）の「テーブルの定義と変更履歴の手順」行：`specs/issue-request/db-TWTGM100.md`・`db-TWTGM140.md`。ir design 側に対応する節は実在する（`specs/issue-request/design.md` の見出しを確認済み）。 | 参照先を `specs/issue-request/design.md` の次の節（見出し）へ直す。(1) item-rules.md → 「#### 項目ごとの規則（Q-DS-IR-006）」。(2) db-TWTGM140.md → 「#### TWTGM140 の DB レイアウト（契約局情報ﾏｽﾀ。Q-DS-IR-004）」、db-TWTGM100.md → 「#### TWTGM100 の DB レイアウト（発行依頼書情報ﾏｽﾀ。Q-DS-IR-003）」、db-TWTGV050.md → 「#### TWTGV050 の DB レイアウト（契約局情報ﾄﾗﾝ。Q-DS-IR-013）」、db-TWTGV030.md → 「#### TWTGV030 の DB レイアウト（発行依頼書情報ﾄﾗﾝ。Q-DS-IR-013）」、db-TWTGA150.md → 「#### TWTGA150 の DB レイアウト（契約局情報変更履歴。Q-DS-IR-013）」、db-TWTGA130.md → 「#### TWTGA130 の DB レイアウト（発行依頼書情報変更履歴。Q-DS-IR-013）」。(3) 補足資料の行は参照先を `specs/issue-request/design.md`（「#### TWTGM100 の DB レイアウト…」「#### TWTGM140 の DB レイアウト…」。変更履歴の手順は「### データ契約と外部連携（Data Contracts &amp; Integration）」の「変更履歴の手順」）に書き換え、db-*.md の 2 件を外す。 | 修正：参照先の内容は ir design の実在する節にあり、パスと見出しを直すだけで解消するため | 確認済み |  |  |
+| 2 | dependency-boundary-conformance | 業務の欠落・矛盾 | 重大 | 5e6e6d63da049fcb | c079a088446ab563 | specs/contract-info-import/design.md § バリデーション設計 / 列ごとの必須・桁・形式（検査表を正とする） ほか 1 か所（金額。指摘内容に記載） | 検査表と ir の項目ごとの規則の桁 | その他①〜④の桁が検査表で 100、ir の規則 2 と DB 列は 50 | 本書は列ごとの桁を検査表（_handoff/phase5-contract-info-import-checks.md）を正とし（§ バリデーション設計の冒頭・§ ドメインモデル / 検査）、テーブルの列と型は ir design のとおりとする（§ 論理データモデル / 属性と型）。ir design は項目ごとの規則を「契約情報取込の行のチェックの元」としている（ir design の § 補足資料の項目ごとの規則の行）。ir design の現在の値と検査表が食い違う。(a) その他①〜④：検査表 1-2 の No.215〜218 は「最大：100」。ir design の「#### 項目ごとの規則（Q-DS-IR-006）」の規則 2 は「その他①〜④ … 50」（ir は 100 から 50 に直した）で、DB 列 Sonota1〜4_Freeform（TWTGM100 の No.321・323・325・327、TWTGM140 の No.318・320・322・324）も 50。51〜100 バイトの値が区分 3 の検査を通ったまま洗替の INSERT で桁あふれし、「エラーなら全件取消し」（4.2・4.5）の前提を満たさない。(b) 金額[1-4]・初回金額[1-4]（同じ原因。同種の食い違い）：検査表 No.121・130・139・148・157・166・175・184 は「最大：50 ※14」。ir design の規則 4 は金額を「11・数値、P72 の名称でも 11 バイト以内の数値でもない値は WTG-100016」としている（DB 列 Payment_FeeN_Freeform は 50）。取込でどちらの桁で検査するかが本書に書かれていない。備考（2000）・契約に関する特記事項（3000）は検査表側が ir に合わせて直してあり一致している。本回は検査表 1-2 の 228 列のうち、桁を持つ列を ir design の TWTGM100 の DB レイアウトと規則 2〜4 に照らして確認した（リバースデータ 381 列の 2-2・2-3 は全列を照合していない）。 | 本書の § バリデーション設計に、行チェックの桁は ir design の「項目ごとの規則（Q-DS-IR-006）」に合わせる旨と、検査表から外れる列（その他①〜④は 50）を明記し、検査表 No.215〜218 の桁も 50 に直す。金額[1-4]・初回金額[1-4]は、ir の 11 バイト以内の数値に合わせるか、検査表の 50 のままにして DB 列（50）で保存するかを決めて本書に書く。 | 修正：その他①〜④は DB 列が 50 で ir design が確定済みのため合わせる。金額の桁だけは取込で 11 と 50 のどちらにするか人の決定が要る | 確認済み |  |  |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| feature:contract-info-import | 7 | 1 | 修正 | 軽微（AIDD 内部の決まりごと）のため、AI が修正案で直す | system（自動） | 2026-10-09T20:05:39+09:00 |  |  |  |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| feature:contract-info-import | 7 | 2 | 修正 |  | masato-teramoto | 2026-10-09T20:07:00+09:00 |  |  | 採用 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-import | 8 | 2026-10-09T20:09:44+09:00 | ①② | ["specs/contract-info-import/design.md"] | {"specs/contract-info-import/design.md":"ae5933ac53ec20d549fb9d91ff896e06610778cf237b06837eb5c5941abd1692"} | 0 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+
+## 解消
+
+| スコープ | 回数 | 指摘番号 | 再検査スコープ | 再検査回数 | 確認者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-import | 7 | 1 | feature:contract-info-import | 8 | system（自動）：再検査で再検出なし | 2026-10-09T20:12:44+09:00 |
+| feature:contract-info-import | 7 | 2 | feature:contract-info-import | 8 | system（自動）：再検査で再検出なし | 2026-10-09T20:12:44+09:00 |
+
+## 承認
+
+| スコープ | 回数 | 対象成果物 | 承認者 | 承認日時 | 原本SHA256 |
+|---|---|---|---|---|---|
+| feature:contract-info-import | 8 | specs/contract-info-import/design.md | masato-teramoto | 2026-10-09T20:13:40+09:00 | ae5933ac53ec20d549fb9d91ff896e06610778cf237b06837eb5c5941abd1692 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-download | 5 | 2026-10-09T20:16:48+09:00 | ①② | ["specs/contract-info-download/design.md"] | {"specs/contract-info-download/design.md":"e365aaa3c25a50d9a24dad8e438b02ebc77d61278d53da5492b16a4a793311a1"} | 1 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | traceability | 業務のあいまい・不足 | 要判断 | 1ceb375aa2d72d29 | b7c642edd2a84eca | specs/contract-info-download/design.md § 補足資料（Supporting References） / 出力の定義・作業用テーブルとビュー ほか 2 か所 | 本書の正とした補足資料（csv-layout-wtg100・work-tables-wtg100） | 本書の正とした補足資料2件が削除済みで、381列等の定義が本文に無い | 【事実】design.md は削除済みの specs/contract-info-download/csv-layout-wtg100.md と specs/contract-info-download/work-tables-wtg100.md を「回答者の指示で本書の正」とし、参照先の欄（671 行・672 行）と冒頭の出典の表記（14 行）に置く。specs/contract-info-download/ には design.md と requirements.md しか無い（Glob で確認）。14 行は _handoff の原本パス（csv-layout-wtg100.md・work-tables-wtg100.md。実在する）と specs 側の写し 2 件を併記しており、実在しない specs 側のパスは 14 行 2 件・671 行 1 件・672 行 1 件の計 4 件。本文は「出力の定義」を 14 回（14・37・72・83・116・248・252・253×2・290・291×2・621・671 行）、「作業用テーブルの表」を 8 回（14・67・105・265・277・278×2・574 行）引いて定義を委ねている（「本書の正」「DDL の元」の語は 3 か所）。specs 配下でこの 2 ファイル名を指すのは本 design だけ（grep）。また、本 design 内に specs/issue-request/db-*.md・item-rules.md への参照は無い（grep で 0 件）。【本文だけで確定できるか】できない。本文にあるもの：381＝契約基本 46＋契約者①〜⑤ 各 27＋支払情報①〜④ 各 50 の枠数、契約者・支払の入れ方（旧を除く・区分と番号の昇順・支払有効期間TO が空・枠を超えた行は出さない）、並び、MS932・書き方、受電方法・契約者区分・法人_個人区分の値の形、No 6 と No 44 の見出しが同じこと、TWTGD050 が 60 列・TWTGD060 が実行ユーザーID＋381 列（String 500）という要約。本文に無いもの：(1) 381 列それぞれの見出し（No 1〜381。例として「契約基本_計画基地局番号」「契約者①_契約者番号」だけが出る）と、TWTGD060 の物理名（KEIKAKU_KICHIKYOKU_NO・CONSTRACT_CD_1 など 381 件）、(2) 各列の取得元（元の表の列・コードマスタ。例：No 12 住居_都道府県名←M05、No 34 更新形態←P07、No 41 UQ押印者_名称←P24、No 37 転貸借契約書名←P15）と、YYYY/MM/DD にする列の一覧（No 28〜31 ほか。本文は「出力の定義で YYYY/MM/DD にしている列だけ」と書くのみ）、(3) TWTGD050 の 60 列の列名・型・桁（USER_ID 20・DATA_SHUBETSU 9・SYORI_JYUN 85・FIELD_01〜FIELD_50 の桁 120/120/40/…/500・検索条件 4 列・SYORI_JYUN2 5）、(4) VWTGM010 のデータ種別ごとの列（1基本情報・2契約者・3支払情報で項目1〜50 に何を入れるか。別表は 56 行×3 種）と、検索条件 4 列の中身（登録状態の名称・代表契約局番・代表契約枝番・確定局番＝KICHIKYOKU_NO）、(5) TWTGD060 の列と FIELD_xx の対応（契約者①〜⑤・支払情報①〜④へ更新する列の突き合わせ）。このため、tasks が DDL（2 テーブルとビュー）と Pwtgo100CsvInfo の 381 件の @CsvColumn（position と name）を作る元が無く、テスト戦略の「見出し行が 381 の見出しのとおり」も照合先が無い。要件 3.1（契約情報取込のリバースデータと同じ 381 列）の中身を本文で確かめられない（ID 対応あり・内容未充足の意味判定）。【経緯】2026-10-09 に利用者が当該 2 ファイルと specs/issue-request/db-*.md・item-rules.md を削除済み。issue-request の design は補足資料の内容を本文へ取り込んで再承認、contract-info-import の design は削除済みの issue-request の補足資料への参照を直して再承認済み。原本は /home/kccs/Wing/_handoff/csv-layout-wtg100.md（381 行の項目表）と _handoff/work-tables-wtg100.md（TWTGD050 60 列、VWTGM010 の列表）に残っている。【参考】契約情報取込の design（697〜699 行）は _handoff/phase5-contract-info-import-reverse-381.md・checks.md を「回答者の指示で本書の正」として _handoff を直接指しており、application-status-search・print-report・issue-request-tutorial の各 design も _handoff を参照する。【重複】format-conformance（相対パス参照の参照先が存在しない）も同じ箇所・同じ原因を検出した。同じ原因は 1 件にまとめ、重大度の高い種類（業務のあいまい・不足）の本指摘に残した。 | 次から選ぶ（業務の事実＝どの資料を正にするかの決めが要るため、修正案は 1 つに決めない）。A 資料を戻す：_handoff の 2 ファイルを specs/contract-info-download/csv-layout-wtg100.md と work-tables-wtg100.md として置き直す。design は変えない。利用者が削除した方針と逆になる。B 本文へ取り込む：381 列の表・TWTGD050/TWTGD060・VWTGM010 の列表を design 本文（物理データモデルとデータ契約）へ移し、補足資料の 2 行は本文の節を指す形に直す（issue-request と同じ扱い）。design は大きく増え、契約情報取込のリバースの表と二重定義になる点は横断確認で確かめる。C _handoff の原本を正本にする：補足資料の 2 行と 14 行の出典を _handoff/csv-layout-wtg100.md・_handoff/work-tables-wtg100.md に直す（契約情報取込の design と同じ扱い）。_handoff が specs の外にあり、消えると再び定義が失われる。D 発注者の設計書を正本にする：発注者の資料（ファイル名・版・節を指定してもらう）を正とし、補足資料の 2 行をその資料に直す。資料の名前と置き場所は利用者が示す必要がある。いずれの場合も、取込側の表との列の並びの照合は横断確認で行う（Q-DS-CD-001 の 6）。 | 質問：4 案のどれを正本にするかは利用者が決める事実で、AI が決められない（利用者が既に資料を削除しており、A は意図と逆の可能性がある） | 確認済み |  |  |
+
+### 除外
+
+| 観点 | 対象箇所 | 要約 | 除外の出典 |
+|---|---|---|---|
+| format-conformance | specs/contract-info-download/design.md § 補足資料（Supporting References） / 出力の定義・作業用テーブルとビュー | 削除済みの補足資料 2 件へのパス参照が切れている | verify:重複（traceabilityと同じ箇所・原因） |
+| traceability | specs/contract-info-download/design.md § ドメインモデル（Domain Model） / 検索条件 | 代表契約局番・代表契約枝番を前方一致にし、転貸借契約書名を足す（requirements 1.3 から意図して外れる） | answer:design-authoring-generate[contract-info-download] |
+| traceability | specs/contract-info-download/design.md § ドメインモデル（Domain Model） / ベンダー／施工会社の絞り込み | 計画マスタ（TWTBM080）を工事案件マスタの書き誤りと読む（requirements 2.1・2.2 から意図して外れる） | answer:design-authoring-generate[contract-info-download] |
+| traceability | specs/contract-info-download/design.md § バリデーション設計 | サーバーで桁・形式を確かめない（requirements 4.1 から意図して外れる） | answer:design-authoring-generate[contract-info-download] |
+| steering-conformance | specs/contract-info-download/design.md § 判断 3 / ドメインモデル | 工事案件マスタに行が無い契約情報を出す点が security.md 285 行目の「既存の WTB と同じ方式」と違う | answer:design-authoring-generate[contract-info-download] |
+| steering-conformance | specs/contract-info-download/design.md § バリデーション設計 | サーバーでの桁・形式のチェックをしない点が security.md の入力検証と違う（逸脱は本文に記録済み） | answer:design-authoring-generate[contract-info-download] |
+| steering-conformance | specs/contract-info-download/design.md § 技術スタック | 開発端末の JDK 1.8 が tech.md の JDK 1.7 と違う | answer:design-authoring-generate[property-basic-info] |
+| traceability | specs/contract-info-download/design.md § 物理データモデル（Physical Data Model） / VWTGM010 ほか 1 か所 | 契約者①〜⑤の並びの「契約者区分」が、名称にした列かコードか本文で読めない | learned:design feature:contract-info-download 4-1 |
+| traceability | specs/contract-info-download/design.md § ドメインモデル（Domain Model） / CSV の値の形 | CSV の値の形で名称にする列が 3 つだけで、登録状態の「コード:名称」が抜けている | learned:design feature:contract-info-download 4-2 |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-download | 5 | 1 | 修正 |  | masato-teramoto | 2026-10-09T20:25:01+09:00 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-download | 6 | 2026-10-09T20:28:49+09:00 | ①② | ["specs/contract-info-download/design.md"] | {"specs/contract-info-download/design.md":"5e7a77f99ee89f8f71b238e59461ec45685c230bcbc60e31731179c528e1f254"} | 1 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | traceability | 業務のあいまい・不足 | 要判断 | adc4158e3776a4a0 | c506828f4414083f | specs/contract-info-download/design.md § 出力ボタンを押したときの流れ / 2 | 選んだ行の識別キー | 流れ2が選んだ行を「基地局番号＋枝番」と書き、計画基地局番号と別の列に読める | 取り込んだ「出力ボタンを押したときの流れ」2 は「選んだ行（基地局番号＋枝番）」と書く。同じ本文の流れ 3 と 4（「計画基地局番号＋枝番で突き合わせて」）、出力 CSV の項目定義の書き方（「契約基本情報 TWTGM010 の 計画基地局番号＋枝番」）、`### サービスインターフェース` の出力の入力（「選んだ行のキー（計画基地局番号＋枝番）」）と出力の手順 4 は、キーを計画基地局番号（KEIKAKU_KICHIKYOKU_NO）＋枝番としている。基地局番号（KICHIKYOKU_NO）は別の列で、CSV の先頭に置く行の判定に使う列でもあるため、流れ 2 だけが別の列を指すように読める。原本 `_handoff/work-tables-wtg100.md` 16 行目の表現をそのまま取り込んだもので、取り込みの誤りではなく原本由来の表現（意味判定。ID の対応ではなく本文内の食い違い）。 | 流れ 2 の「基地局番号＋枝番」を「計画基地局番号＋枝番」に直す（流れ 3・4、Service の出力の手順 4 と同じ）。原本どおりに取り込む決定を優先する場合は、この表現を残す理由を本文に 1 文添える。 | 修正：新しい業務の事実は要らず、本文の他の 5 か所と同じ「計画基地局番号＋枝番」に揃えれば足りるため | 確認済み |  |  |
+
+### 除外
+
+| 観点 | 対象箇所 | 要約 | 除外の出典 |
+|---|---|---|---|
+| traceability | specs/contract-info-download/design.md § VWTGM010 発行依頼書リバースデータビュー（3 つの SELECT を UNION ALL。データ種別で列の意味が変わる） / 2契約者 No 6 | 契約者①〜⑤の並びの「契約者区分」が、名称にした列かコードか読めない（取り込んだ表にも残る） | learned:design feature:contract-info-download 4-1 |
+| traceability | specs/contract-info-download/design.md § ドメインモデル（Domain Model） / CSV の値の形 | 名称にする列を 3 つだけ挙げ、登録状態の「コード:名称」が抜けている（取り込んだ表 No 9 に定義がある） | learned:design feature:contract-info-download 4-2 |
+
+## 解消
+
+| スコープ | 回数 | 指摘番号 | 再検査スコープ | 再検査回数 | 確認者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-download | 5 | 1 | feature:contract-info-download | 6 | system（自動）：再検査で再検出なし | 2026-10-09T20:33:21+09:00 |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| feature:contract-info-download | 6 | 1 | 修正 | AI 推奨を採用: 新しい業務の事実は要らず、本文の他の 5 か所と同じ「計画基地局番号＋枝番」に揃えれば足りるため | masato-teramoto | 2026-10-09T20:34:14+09:00 |  |  | 採用 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-download | 7 | 2026-10-09T20:36:58+09:00 | ①② | ["specs/contract-info-download/design.md"] | {"specs/contract-info-download/design.md": "a62d04a8fd56bd8271c36c4a4050f14d14b25984f95c453c74159f177c33520c"} | 0 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+
+## 解消
+
+| スコープ | 回数 | 指摘番号 | 再検査スコープ | 再検査回数 | 確認者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-download | 6 | 1 | feature:contract-info-download | 7 | system（自動）：再検査で再検出なし | 2026-10-09T20:40:44+09:00 |
+
+## 承認
+
+| スコープ | 回数 | 対象成果物 | 承認者 | 承認日時 | 原本SHA256 |
+|---|---|---|---|---|---|
+| feature:contract-info-download | 7 | specs/contract-info-download/design.md | masato-teramoto | 2026-10-09T20:42:02+09:00 | a62d04a8fd56bd8271c36c4a4050f14d14b25984f95c453c74159f177c33520c |
+
+## 残件
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 承認スコープ | 承認回数 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-download | 4 | 1 | 対応せず進める | Phase 5 の最後の上流まとめ直しと横断確認で扱う | feature:contract-info-download | 7 |
+| feature:contract-info-download | 4 | 2 | 対応せず進める | Phase 5 の最後の上流まとめ直しと横断確認で扱う | feature:contract-info-download | 7 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| cross | 3 | 2026-10-09T20:43:33+09:00 | ② | ["specs/property-basic-info/design.md","specs/issue-request/design.md","specs/issue-request-tutorial/design.md","specs/print-report/design.md","specs/application-status-search/design.md","specs/contract-info-import/design.md","specs/contract-info-download/design.md"] | {"specs/property-basic-info/design.md":"03331555d6ee0825bd90f023f17f4951d532f97b0f4bde7b7f50878d4cc4da03","specs/issue-request/design.md":"8cf01f68fe35f51ecb925f5258243beb7a476500279d2757c8a0a7788c2917ec","specs/issue-request-tutorial/design.md":"d7c594a832cbe0fbab57395810305bccadf57f10983df788ca4e850bd0c1084a","specs/print-report/design.md":"e6d65db63292a5733f32042793e645f314b884f64423bea613d93d7f2d8fb620","specs/application-status-search/design.md":"b0d59adc5f67c4377772191bd6d81adc4234cdaf73d7f61c30eac704d697f0fa","specs/contract-info-import/design.md":"ae5933ac53ec20d549fb9d91ff896e06610778cf237b06837eb5c5941abd1692","specs/contract-info-download/design.md":"a62d04a8fd56bd8271c36c4a4050f14d14b25984f95c453c74159f177c33520c"} | 3 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | ssot-consistency | 業務の欠落・矛盾 | 重大 | d0c4e386e9a5747c | ab050ce8579d9542 | specs/contract-info-download/design.md § 出力 CSV の項目定義（381 列） / 項目一覧 No.44 ほか 7 か所 | 381 列の見出し | 出力 CSV の見出し 8 件が取込のリバース表と違い、No.44 は予備項目3 が基地局名_ｶﾅ | 契約情報ダウンロード design の項目一覧（464〜844 行）の 381 行と、契約情報取込のリバース表（`_handoff/phase5-contract-info-import-reverse-381.md`。ci design 697 行が「回答者の指示で本書の正」と指す。入力一覧外だが依頼により比較）を No.1〜381 の全行で突き合わせた。並び（No の順・列数 381）は全行で一致。見出しの違いは次の 8 件だけ（CD の見出し ／ リバース表の見出し）。No.17 契約基本_住居_カナ ／ 契約基本_住居_ｶﾅ。No.23 契約基本_登記_カナ ／ 契約基本_登記_ｶﾅ。No.44 契約基本_基地局名_ｶﾅ（No.6 と同じ見出しが重複する。値は YOBI_KOMOKU3）／ 契約基本_予備項目3。No.64 契約者①_カナ ／ 契約者①_ｶﾅ。No.91 契約者②_カナ ／ 契約者②_ｶﾅ。No.118 契約者③_カナ ／ 契約者③_ｶﾅ。No.145 契約者④_カナ ／ 契約者④_ｶﾅ。No.172 契約者⑤_カナ ／ 契約者⑤_ｶﾅ。CD design 456〜457 行は No.6 と No.44 が同じ見出しになること、ｶﾅ と カナ の混在を表のとおり出すことを明記している。ci design 192 行は「リバースデータの 381 列の並びはリバースの表（契約情報ダウンロードの出力と同じ。見出しの文字は見ない）」と書くため、取込の動作には影響しないが、「同じ」とする 2 つの文書で見出しの文字が違う。CD design 83 行・ci design 192 行は、並びが同じことを横断確認で確かめるとしている。 | 案 A：CD の見出しを取込側に合わせる（No.17・23・64・91・118・145・172 を「ｶﾅ」、No.44 を「契約基本_予備項目3」）。案 B：取込側の表（design の外の資料）を CD に合わせる。案 C：現状のまま（取込は見出しを見ないので、No.44 の重複見出しを許す）と決める。 | 質問：見出しの文字はどちらを正とするか。取込は見出しを見ないので動作には影響しない | 確認済み |  |  |
+| 2 | ssot-consistency | 業務の欠落・矛盾 | 重大 | 01bb32e190ab9e96 | ab050ce8579d9542 | specs/contract-info-download/design.md § 出力 CSV の項目定義（381 列） / 項目一覧「取込側の型・バイト数」列 No.5 ほか 40 か所 | 取込側の型・バイト数 | 項目一覧の「取込側の型・バイト数」41 行が、取込のリバース表の型・桁と食い違う | CD design 460 行は「取込側の型・バイト数」を「契約情報取込で受け取るときの型・バイト数で、参考」とするが、取込のリバース表（`_handoff/phase5-contract-info-import-reverse-381.md`。ci design 697 行が正）と 41 行で値が違う（CD ／ リバース表）。No.5・6：ー 120 ／ ー ー。No.35：全角 2 ／ 全角 ー。No.57：数値 10⇒11 ／ 数値 10。No.59：半角 8⇒7 ／ 半角 8。契約者②：No.75 全角 100 ／ 全角 2、No.76 全角 100 ／ 全角 40、No.78 全角 100 ／ 全角 120、No.79・81 半角 100 ／ 半角 160、No.80 全角 100 ／ 全角 160、No.84 数値 10⇒11 ／ 数値 10、No.87 全角 ー ／ 全角 50、No.88 全角 100 ／ 全角 50。契約者③：No.102 全角 100 ／ 全角 2、No.103 全角 100 ／ 全角 40、No.104 全角 ー ／ 全角 2、No.105 全角 100 ／ 全角 120、No.106・108 半角 100 ／ 半角 160、No.107 全角 100 ／ 全角 160、No.114 全角 ー ／ 全角 50、No.115 全角 100 ／ 全角 50。契約者④：No.129 全角 100 ／ 全角 2、No.130 全角 100 ／ 全角 40、No.132 全角 100 ／ 全角 120、No.133・135 半角 100 ／ 半角 160、No.134 全角 100 ／ 全角 160、No.141 全角 ー ／ 全角 50、No.142 全角 100 ／ 全角 50。契約者⑤：No.156・157・159〜162・168・169 が ④ と同じ違い（No.156 全角 100 ／ 全角 2、No.157 全角 100 ／ 全角 40、No.159 全角 100 ／ 全角 120、No.160・162 半角 100 ／ 半角 160、No.161 全角 100 ／ 全角 160、No.168 全角 ー ／ 全角 50、No.169 全角 100 ／ 全角 50）。No.184：ー 2 ／ ー ー。No.221：ー 60 ／ ー ー。契約者①（No.47〜73）は「⇒」付きで取込側の表と合っているが、②〜⑤ は古い値のまま。取込側の表を正とするのが ci design の指示。 | 「取込側の型・バイト数」の列を、取込のリバース表の型・桁に合わせて直す。または参考列を削り、契約情報取込のリバース表を参照するだけにする。 | 修正：取込のリバース表が正と ci design が定めており、どちらに合わせるかは決まっているため | 確認済み |  |  |
+| 3 | ssot-consistency | 文書間の参照 | 軽微 | fc6dee8b1e6f7183 | 7e14ff52e562ef5e | specs/issue-request/design.md § 再確認が必要になる変更（Revalidation Triggers） / TWTGM100・TWTGM140 の列の変更（128 行） | TWTGM100・TWTGM140 を読む側の列挙 | 128 行の読む側に契約情報ダウンロードを挙げるが読まず、申請状況検索一覧が漏れている | ir design 128 行は TWTGM100・TWTGM140 の列の変更で再確認が要る側を「印刷・閲覧用帳票、契約情報取込の洗替、契約情報ダウンロード、物件基本情報登録変更の出力 CSV」と挙げる。契約情報ダウンロード design は両テーブルを読まない（読むのは TWTGM010〜030・TWTBM010・TWTBM080・TWTZM040 と、TWTGM080 の Kichikyoku_No だけ。101・102・247・276〜278 行。247 行は「TWTGM140 は見ない」と明記。TWTGM100・TWTGM140 は同 design の本文に出てこない）。一方、申請状況検索一覧 design は TWTGM100（Anken_Syo_Grp_Cd・Sonota1・Sonota1_Freeform・First_Pay_Day1〜4・Keiyaku_Ringi_Kiansha_Kaisha_Cd・_Name・Keiyaku_Ringi_Kiansha_Name）と TWTGM140 を読み（98・113・190〜212・241 行）、自身の再確認の項目にも ir design・pbi design の列の変更を挙げる（113 行）が、ir design の 128 行には挙がっていない。TWTGM100 の列を変えても、申請状況検索一覧への再確認が ir 側から出ない。前者（契約情報ダウンロードが読まない）は upstream-carryover に気づきとして記録済みで、後者は今回新しく分かった。feature-list の依存列（申請状況検索一覧は物件基本情報登録変更だけ）と実態のずれ（upstream-carryover 記録済み）も同じ原因の延長で、新しい閉路にはならない（申請状況検索一覧 → 発行依頼書は DB の読取りだけで、逆向きの辺は無い）。 | 128 行の括弧書きを「印刷・閲覧用帳票、申請状況検索一覧、契約情報取込の洗替、物件基本情報登録変更の出力 CSV」に直す（契約情報ダウンロードを外し、申請状況検索一覧を足す）。 | 修正：事実は両 design の本文で確認でき、業務の新しい事実は要らないため | 確認済み |  |  |
+
+### 除外
+
+| 観点 | 対象箇所 | 要約 | 除外の出典 |
+|---|---|---|---|
+| ssot-consistency | specs/property-basic-info/design.md § 物理データモデル（Physical Data Model） / TWTGM140 ほか 1 か所 | TWTGM140 の全 345 列の定義が ir design の本文にあり、持ち主の pbi design が別の言い方で参照している（削除済みの補足資料の指しも、pbi design の直しとして記録済み） | learned:design cross 2-2 |
+| ssot-consistency | specs/property-basic-info/design.md § API 契約（API Contract） / 契約局情報欄に出す列 | 契約者の条件が契約者区分 "01" で、ir design の値（1:契約者・2:関係者）と合わない | learned:design cross 2-3 |
+| ssot-consistency | specs/property-basic-info/design.md § 判断 2 ほか | 発行依頼書登録変更の更新が申請の排他用の値を変えない扱い（案 A） | learned:design cross 2-1 |
+| ssot-consistency | specs/issue-request-tutorial/design.md § 概要・データ契約 / pwtgo081ZoomForm.html・ウインドウ名 pwtgo081・json.clear が ir design の公開契約に無い | ir design の受け渡し（ウインドウ名＋callback。値の名前）とチュートリアルの pwtgo081callback・値の名前は矛盾せず、無い部分は design に明記され upstream-carryover に記録済み | verify:既決（upstream-carryover の issue-request の項目。両 design が明記済みで矛盾は無い） |
+| ssot-consistency | specs/application-status-search/design.md § 依存してよい対象（Allowed Dependencies） | feature-list の依存列（物件基本情報登録変更だけ）と、TWTGM100 を読む実態のずれ | verify:既決（upstream-carryover の application-status-search の項目。design が自ら明記。ir design 側の列挙漏れは指摘 3 で出した） |
+| ssot-consistency | specs/contract-info-import/design.md § バリデーション設計 / 検査表から外れる桁 | その他①〜④の桁 50 は ir design 規則 2・DB 列と一致。金額・初回金額の桁 50 は ir design 規則 4（11 バイト以内の数値）と異なるが、ci design が人の決定（2026-10-09）として明記済み | verify:既決（ci design に人の決定として明記済みで、本文の食い違い自体が宣言されている） |
+| ssot-consistency | steering/api-standards.md § 画面内で JSON を返す口 | 画面内 JSON 口のエラーの返し方は口ごとに違う | verify:既決（upstream-carryover の「design 横断確認 1 回目で決まったもの」。横断確認 1 回目 #5 の案 B） |
+| dependency-cycle-detection | specs/*/design.md の API 契約（pbi と ci・pbi と AS・ci → AS・pbi と print-report・pbi と cd・ir と tutorial） | 画面の遷移・戻り・コールバックと WTG 共通部品への呼出しで、各 design の依存してよい対象は一方向。feature 間の閉路は構成しない | verify:画面の遷移・戻り・コールバックと WTG 共通部品への呼出しは feature 間の依存の辺にならない |
+| steering-conformance | specs/contract-info-download/design.md § 物理データモデル（Physical Data Model） | 作業用テーブル TWTGD050・TWTGD060 が共通列を持たない（steering/database.md の共通カラム） | answer:design-authoring-generate[contract-info-download] |
+| steering-conformance | specs/issue-request/design.md § 物理データモデル（Physical Data Model）・論理データモデル | トランの種別 V（steering/database.md はトラン F）、金額・調整額を文字で持つ（金額は数値） | answer:design-authoring-generate[issue-request] |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| cross | 3 | 1 | 対応せず進める | 見出しの文字は取込の動作に影響しないので後の工程で決める | masato-teramoto | 2026-10-09T20:54:51+09:00 | 後で決める |  |  |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| cross | 3 | 2 | 修正 | AI 推奨を採用: 取込のリバース表が正と ci design が定めており、どちらに合わせるかは決まっているため | masato-teramoto | 2026-10-09T20:54:55+09:00 |  |  | 採用 |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| cross | 3 | 3 | 修正 | AI 推奨を採用: 事実は両 design の本文で確認でき、業務の新しい事実は要らないため | masato-teramoto | 2026-10-09T20:55:00+09:00 |  |  | 採用 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-download | 8 | 2026-10-09T20:58:35+09:00 | ①② | ["specs/contract-info-download/design.md"] | {"specs/contract-info-download/design.md": "27ba55f3a7a9e22056ad895471864d26e75d5cfc687e37a50f384120f2a263d0"} | 0 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+
+## 承認
+
+| スコープ | 回数 | 対象成果物 | 承認者 | 承認日時 | 原本SHA256 |
+|---|---|---|---|---|---|
+| feature:contract-info-download | 8 | specs/contract-info-download/design.md | masato-teramoto | 2026-10-09T21:02:19+09:00 | 27ba55f3a7a9e22056ad895471864d26e75d5cfc687e37a50f384120f2a263d0 |
+
+## 残件
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 承認スコープ | 承認回数 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-download | 4 | 1 | 対応せず進める | Phase 5 の最後の上流まとめ直しと横断確認で扱う | feature:contract-info-download | 8 |
+| feature:contract-info-download | 4 | 2 | 対応せず進める | Phase 5 の最後の上流まとめ直しと横断確認で扱う | feature:contract-info-download | 8 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| cross | 4 | 2026-10-09T21:04:12+09:00 | ② | ["specs/property-basic-info/design.md", "specs/issue-request/design.md", "specs/issue-request-tutorial/design.md", "specs/print-report/design.md", "specs/application-status-search/design.md", "specs/contract-info-import/design.md", "specs/contract-info-download/design.md"] | {"specs/property-basic-info/design.md": "03331555d6ee0825bd90f023f17f4951d532f97b0f4bde7b7f50878d4cc4da03", "specs/issue-request/design.md": "8cf01f68fe35f51ecb925f5258243beb7a476500279d2757c8a0a7788c2917ec", "specs/issue-request-tutorial/design.md": "d7c594a832cbe0fbab57395810305bccadf57f10983df788ca4e850bd0c1084a", "specs/print-report/design.md": "e6d65db63292a5733f32042793e645f314b884f64423bea613d93d7f2d8fb620", "specs/application-status-search/design.md": "b0d59adc5f67c4377772191bd6d81adc4234cdaf73d7f61c30eac704d697f0fa", "specs/contract-info-import/design.md": "ae5933ac53ec20d549fb9d91ff896e06610778cf237b06837eb5c5941abd1692", "specs/contract-info-download/design.md": "27ba55f3a7a9e22056ad895471864d26e75d5cfc687e37a50f384120f2a263d0"} | 1 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | ssot-consistency | 文書間の参照 | 軽微 | fc6dee8b1e6f7183 | 7e14ff52e562ef5e | specs/issue-request/design.md § 再確認が必要になる変更（Revalidation Triggers） / TWTGM100・TWTGM140 の列の変更（128 行） | TWTGM100・TWTGM140 を読む側の列挙 | 128 行の読む側に契約情報ダウンロードを挙げるが読まず、申請状況検索一覧が漏れている | 前回（3 回目 #3）と同じ内容で、design は未修正（ir design 128 行は変更なし）。ir design 128 行は TWTGM100・TWTGM140 を読む側として「印刷・閲覧用帳票、契約情報取込の洗替、契約情報ダウンロード、物件基本情報登録変更の出力 CSV」を挙げる。しかし contract-info-download design は TWTGM100・TWTGM140 のテーブルを読まない（247 行「複数局の申請でも見るのはこの 1 つだけで、`TWTGM140` は見ない」。依存先 101〜105 行は TWTGM010〜030・TWBM010・TWBM080・TWTZM040・TWTGM080 の Kichikyoku_No・コードマスタのみ。TWTGM100／TWTGM140 の語は同 design にこの 1 か所だけ）。一方 application-status-search design は 98 行で TWTGM140 を読み、TWTGM100 を外部結合で読むと書く（本 feature は読むだけ）。そのため ir design の Revalidation Triggers の読む側に、application-status-search が無い。また契約情報取込が洗替で TWTGM100・TWTGM140 を書く側である点は同行の「洗替」で表されている。 | ir design 128 行の読む側から「契約情報ダウンロード」を外し、「申請状況検索一覧」（application-status-search。TWTGM100・TWTGM140 を読む）を足す。 | 修正：事実は両 design の本文で確認でき、業務の新しい事実は要らない（人の指示で Phase 5 の他の修正は対象外とする方針があるため、扱いは人の判断による） | 確認済み |  |  |
+
+### 除外
+
+| 観点 | 対象箇所 | 要約 | 除外の出典 |
+|---|---|---|---|
+| ssot-consistency | specs/property-basic-info/design.md § 判断 2: 申請単位の排他を物件申請情報の排他用の値 1 つで行う ほか 4 か所 | 発行依頼書登録変更の更新は申請の排他用の値を変えず、物件基本情報の排他の前提と食い違う | learned:design cross 2-1 |
+| ssot-consistency | specs/property-basic-info/design.md § 物理データモデル（Physical Data Model） / TWTGM140 ほか 1 か所 | TWTGM140の全345列の定義がir側の資料にだけあり、持ち主のpbi designは別の言い方で参照しない | learned:design cross 2-2 |
+| ssot-consistency | specs/property-basic-info/design.md § API 契約（API Contract） / 契約局情報欄に出す列 | 契約局情報欄の契約者の条件が契約者区分 "01" で、発行依頼書の値（1:契約者）と合わない | learned:design cross 2-3 |
+| traceability | specs/contract-info-download/design.md § 物理データモデル（Physical Data Model） / VWTGM010 ほか 1 か所 | 契約者①〜⑤の並びの「契約者区分」が、名称にした列かコードか本文で読めない | learned:design feature:contract-info-download 4-1 |
+| traceability | specs/contract-info-download/design.md § ドメインモデル（Domain Model） / CSV の値の形 | CSV の値の形で名称にする列を 3 つだけ挙げ、登録状態の「コード:名称」が抜けている | learned:design feature:contract-info-download 4-2 |
+
+## 解消
+
+| スコープ | 回数 | 指摘番号 | 再検査スコープ | 再検査回数 | 確認者 | 日時 |
+|---|---|---|---|---|---|---|
+| cross | 3 | 2 | cross | 4 | system（自動）：再検査で再検出なし | 2026-10-09T21:07:52+09:00 |
+| cross | 3 | 3 | cross | 4 | system（自動）：同じ指摘を 4 回目 #1 へ引き継ぎ | 2026-10-09T21:07:52+09:00 |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| cross | 4 | 1 | 対応せず進める | Phase 5 では他の修正は対象外とする（ユーザー指示） | masato-teramoto | 2026-10-09T21:08:14+09:00 | 対象外 |  | 不採用 |
+
+## 確認
+
+| スコープ | 回数 | 確認者 | 日時 | 原本SHA256 |
+|---|---|---|---|---|
+| cross | 4 | masato-teramoto | 2026-10-09T21:08:49+09:00 | {"specs/property-basic-info/design.md": "03331555d6ee0825bd90f023f17f4951d532f97b0f4bde7b7f50878d4cc4da03", "specs/issue-request/design.md": "8cf01f68fe35f51ecb925f5258243beb7a476500279d2757c8a0a7788c2917ec", "specs/issue-request-tutorial/design.md": "d7c594a832cbe0fbab57395810305bccadf57f10983df788ca4e850bd0c1084a", "specs/print-report/design.md": "e6d65db63292a5733f32042793e645f314b884f64423bea613d93d7f2d8fb620", "specs/application-status-search/design.md": "b0d59adc5f67c4377772191bd6d81adc4234cdaf73d7f61c30eac704d697f0fa", "specs/contract-info-import/design.md": "ae5933ac53ec20d549fb9d91ff896e06610778cf237b06837eb5c5941abd1692", "specs/contract-info-download/design.md": "27ba55f3a7a9e22056ad895471864d26e75d5cfc687e37a50f384120f2a263d0"} |
+
+## 残件
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 承認スコープ | 承認回数 |
+|---|---|---|---|---|---|---|
+| cross | 2 | 1 | 対応せず進める | 案 A の扱い（発行依頼書登録変更の更新・一時保存は TWTGM080 を更新せず、排他用の値が変わるのは発番のときだけ）。pbi design の文言は upstream-carryover に足し、Phase 5 の最後にまとめて直す | cross | 4 |
+| cross | 2 | 2 | 対応せず進める | pbi design から specs/issue-request/db-TWTGM140.md を指す修正を upstream-carryover に足し、Phase 5 の最後にまとめて直す | cross | 4 |
+| cross | 2 | 3 | 対応せず進める | 契約者区分は 1:契約者・2:関係者（"01" は回答者の取り違え）。pbi design の直しは upstream-carryover に足し、Phase 5 の最後にまとめて直す | cross | 4 |
+| cross | 3 | 1 | 対応せず進める | 見出しの文字は取込の動作に影響しないので後の工程で決める | cross | 4 |
+| cross | 4 | 1 | 対応せず進める | Phase 5 では他の修正は対象外とする（ユーザー指示） | cross | 4 |

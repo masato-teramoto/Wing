@@ -1,0 +1,28 @@
+{
+ "operation_id": "762a98cd-98cf-48fc-bdeb-daaa670336f9",
+ "action": "approve",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[contract-info-import]::end.review",
+  "event": "design-authoring-revise",
+  "item": "contract-info-import",
+  "status": "wait",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[contract-info-import]::end.review\", \"snapshot\": \"319cde964a36daac4ca56013d930e94298bc50f64ecbf228bd6fa7797ec1b7cb\", \"run\": 8, \"inspection_hash\": \"6164e424088746d7fd5046b504ddf2848121c33003c8d3239da64325f97c233d\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 再検査で出なくなり、解消を記録した指摘 2 件\n  - #7-1 存在しない db-*.md・item-rules.md への参照が 3 か所ある\n  - #7-2 その他①〜④の桁が検査表で 100、ir の規則 2 と DB 列は 50\n\n### 前回の検査（7 回目）からの変更\n\n- `specs/contract-info-import/design.md`：新しいファイル\n\n### 判断が必要な指摘\n\n**対象**: `specs/contract-info-import/design.md`（スコープ: 成果物単位（contract-info-import） / 8 回目）\n**実行した層**: ① / ②\n\n**指摘**: なし（0 件。検査は実行済み）\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n判断が揃いました。承認の可否を回答してください（承認する場合は承認者名）。",
+  "id": "8fca09284f3d42f3b0cb6fdc5507b0a8"
+ },
+ "expected": {
+  "root": "/home/kccs/Wing",
+  "state": "/home/kccs/Wing/.aidd/phase-progress.json",
+  "call": "design-authoring-revise",
+  "event": "design-authoring-revise",
+  "item": "contract-info-import",
+  "dispatch_id": "8fca09284f3d42f3b0cb6fdc5507b0a8",
+  "unit": "design-authoring-revise/design-authoring-revise[contract-info-import]::end.review",
+  "scope": "feature:contract-info-import",
+  "run": 8,
+  "snapshot": "319cde964a36daac4ca56013d930e94298bc50f64ecbf228bd6fa7797ec1b7cb",
+  "record_hash": "4b639bbc60f12a6cae2dc718f76295425f6438c3720d6d840ec152225f76c1a0"
+ },
+ "data": {}
+}

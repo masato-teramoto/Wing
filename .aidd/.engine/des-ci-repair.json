@@ -1,0 +1,50 @@
+{
+ "operation_id": "5bfbfae3-ce32-4f98-8d6f-ad28b27582da",
+ "action": "repair",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[contract-info-import]::end.review",
+  "event": "design-authoring-revise",
+  "item": "contract-info-import",
+  "status": "wait",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[contract-info-import]::end.review\", \"snapshot\": \"69dfec9913224ad724de75a78b88d6b34a2566fc1cd607c9e19e5c34dd0e31d0\", \"run\": 7, \"inspection_hash\": \"bf8dddfe0f9eacc8365968a604845f36331896d636007e7cc7db5e97e984a1fc\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n\n### 前回の検査（6 回目）からの変更\n\n- 上流の入力が前回の検査から変わった（または比べられない）ため、全体を検査する。対象の全体を見てください。\n\n### 判断が必要な指摘\n\n**対象**: `specs/contract-info-import/design.md`（スコープ: 成果物単位（contract-info-import） / 7 回目）\n**実行した層**: ① / ②\n\n**重大**（1 件。1 件ずつ判断してください）\n\n| # | 種類 | 対象箇所 | 要約 | AI の推奨 | 判断 |\n|---|---|---|---|---|---|\n| 2 | 業務の欠落・矛盾 | specs/contract-info-import/design.md § バリデーション設計 / 列ごとの必須・桁・形式（検査表を正とする） ほか 1 か所（金額。指摘内容に記載） | その他①〜④の桁が検査表で 100、ir の規則 2 と DB 列は 50 | 修正（その他①〜④は DB 列が 50 で ir design が確定済みのため合わせる。金額の桁だけは取込で 11 と 50 のどちらにするか人の決定が要る） | 未回答 |\n\n**AI が修正案で直す軽微**（1 件。判断は不要。修正の回で直し、再検査で確かめます）\n- #1 存在しない db-*.md・item-rules.md への参照が 3 か所ある\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n**答え方**（後に書いたものが優先。束・範囲でまとめて答えられます）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）。区分を `C[指摘の誤り]` `C[対象外]` `C[後で決める]` `C[解釈で対応]` で付ける。対象外・後で決めるに `+` を付けると（例 `C[後で決める+]`）、次の検査から同じ扱いにします\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n- **推奨** — AI の推奨を採用する（修正なら修正案がそのまま修正の指示になります）\n\n回答例: `1:推奨 / 束1:C[後で決める+] 桁数は design で決める / 3〜5:A / 7:D 次回まで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。根拠と修正案は `詳細 <番号>` で表示します。",
+  "id": "13e4a0d4e9a0463cbc48df3f61aa61a4"
+ },
+ "expected": {
+  "root": "/home/kccs/Wing",
+  "state": "/home/kccs/Wing/.aidd/phase-progress.json",
+  "call": "design-authoring-revise",
+  "event": "design-authoring-revise",
+  "item": "contract-info-import",
+  "dispatch_id": "13e4a0d4e9a0463cbc48df3f61aa61a4",
+  "unit": "design-authoring-revise/design-authoring-revise[contract-info-import]::end.review",
+  "scope": "feature:contract-info-import",
+  "run": 7,
+  "snapshot": "69dfec9913224ad724de75a78b88d6b34a2566fc1cd607c9e19e5c34dd0e31d0",
+  "record_hash": "9be6680eaa3be0be6cfb31a1250926f685eca286d4f3d38112e66bd2121cee89"
+ },
+ "data": {
+  "event": "design-authoring-generate",
+  "item": "contract-info-import",
+  "targets": [
+   "specs/contract-info-import/design.md"
+  ],
+  "findings": [
+   {
+    "phase": "design",
+    "scope": "feature:contract-info-import",
+    "run": 7,
+    "number": 1,
+    "instruction": "存在しない db-*.md・item-rules.md への参照 3 か所（122・222・699 行付近）を、issue-request の design（specs/issue-request/design.md）の実在する節への参照に直す。item-rules.md→「#### 項目ごとの規則（Q-DS-IR-006）」。db-TWTGM140.md→「#### TWTGM140 の DB レイアウト（契約局情報ﾏｽﾀ。Q-DS-IR-004）」、db-TWTGM100.md→「#### TWTGM100 の DB レイアウト（発行依頼書情報ﾏｽﾀ。Q-DS-IR-003）」、db-TWTGV050.md→「#### TWTGV050 の DB レイアウト（契約局情報ﾄﾗﾝ。Q-DS-IR-013）」、db-TWTGV030.md→「#### TWTGV030 の DB レイアウト（発行依頼書情報ﾄﾗﾝ。Q-DS-IR-013）」、db-TWTGA150.md→「#### TWTGA150 の DB レイアウト（契約局情報変更履歴。Q-DS-IR-013）」、db-TWTGA130.md→「#### TWTGA130 の DB レイアウト（発行依頼書情報変更履歴。Q-DS-IR-013）」。699 行付近の補足資料の行は、参照先を specs/issue-request/design.md の「#### TWTGM100 の DB レイアウト…」「#### TWTGM140 の DB レイアウト…」と「### データ契約と外部連携」の「変更履歴の手順」にし、db-*.md の 2 件を外す。"
+   },
+   {
+    "phase": "design",
+    "scope": "feature:contract-info-import",
+    "run": 7,
+    "number": 2,
+    "instruction": "バリデーション設計（列ごとの必須・桁・形式。検査表を正とする旨の節）に、次を明記する。(a) 「その他①〜④」の桁は 50（issue-request の「項目ごとの規則」の規則 2 と DB 列 Sonota1〜4_Freeform に合わせる。検査表の 100 からは外れる）。(b) 金額[1-4]・初回金額[1-4]の桁は検査表どおり 50 とし、DB 列（Payment_FeeN_Freeform 等）の 50 で保存する。issue-request の規則 4（11 バイト以内の数値）とは取込では異なることを明記する（人の決定、2026-10-09）。検査表（_handoff）そのものは編集しない。他の節は変えない。"
+   }
+  ]
+ }
+}

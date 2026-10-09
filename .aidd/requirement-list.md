@@ -1,7 +1,7 @@
 ---
 source: .aidd/rfp/RFP.md（文書バージョン 2.0、作成日 2026-09-07）
 status: approved
-updated_at: 2026-10-01T15:54:38+09:00
+updated_at: 2026-10-09T17:00:37+09:00
 ---
 
 # 要求一覧

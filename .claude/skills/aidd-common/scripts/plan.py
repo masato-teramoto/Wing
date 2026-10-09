@@ -56,7 +56,15 @@ def main():
         "**対象 feature と順序**（`.aidd/feature-list.md` の優先度順）",
     ]
 
+    if context.kind == "plan":
+        print("\n".join(_implement_plan(context, context.item)))
+        sys.exit(phase_rules.EXIT_WAIT)
     features = context.features() if context.phase >= 4 else []
+    import feature_scope
+    current_mode = feature_scope.mode(context) if context.phase >= 4 else "all"
+    if context.plan_item:
+        print("\n".join(_selection_plan(context, context.plan_item)))
+        sys.exit(phase_rules.EXIT_WAIT)
     if context.process not in PER_FEATURE:
         lines.append("- 該当なし（feature 単位ではない）")
     elif not features:
@@ -104,10 +112,108 @@ def main():
     if context.process == "design":
         lines.append("feature ごとに要件トレーサビリティの自己診断結果を報告します。")
 
+    if context.process == "requirements" and current_mode is None:
+        lines += ["", "**進め方（方式）を選んでください**（了承時に記録し、以後の変更は `/aidd-mode-switch` で全件方式→Feature 方式の 1 回だけ）",
+                  "- 全件方式：上の順で全 feature の requirements を作ってから design へ進む（従来どおり）",
+                  "- Feature 方式：1 feature ずつ選んで requirements→design→docs→tasks→実装まで進める。候補は次のとおり："]
+        lines += _candidates(context, "requirements")
+    lines += _owner_lines(context)
     lines += ["", "この計画で進めてよいか指示してください。"]
 
     print("\n".join(lines))
     sys.exit(phase_rules.EXIT_WAIT)
+
+
+def _owner_lines(context):
+    """smoke wrapper の owner の候補と選択（§6.11。候補がいれば選ばないと了承できない）。"""
+    import feature_scope
+    candidates = feature_scope.owner_required(context)
+    if not candidates:
+        return []
+    return ["", "**smoke wrapper の owner を選んでください**（選ばないと了承できません）",
+            "- 候補：" + "、".join("`%s`" % c for c in candidates),
+            "- owner の tasks に、全体結合確認の 1 経路を実行する wrapper を作る「結合確認タスク」を入れます。",
+            "- 業務 API を持つ feature が無いときは「候補なし」と理由を答えます（smoke は起動→readiness 待ち→停止に縮めます）",
+            "- 回答：accept-plan の data に `owner`（と「候補なし」なら `owner_reason`）"]
+
+
+def _candidates(context, process):
+    import feature_scope
+    rows = []
+    for row in feature_scope.candidates(context, process):
+        rows.append("  - `%s`（%s / 依存先: %s / 被依存: %s / 状態: %s）%s"
+                    % (row["name"], row["kind"], "、".join(row["depends_on"]) or "なし",
+                       "、".join(row["dependents"]) or "なし", row["status"],
+                       "" if row["selectable"] else " — 選べない理由: " + row["reason"]))
+    return rows
+
+
+def _selection_plan(context, name):
+    """Feature 方式の計画停止点 `<process>-plan[S]`（D-9）。承認前提は S と D だけにかかる。"""
+    import feature_scope
+    chosen = (context.state().get("workflow") or {}).get("selection") or {}
+    members = feature_scope.plan_features(context, context.process, name)
+    lines = ["**Phase %s（%s）を feature `%s` について始めます（Feature 方式）。** 開始前に実行計画を確認してください。"
+             % (context.phase, PLANS[context.process][0], name), "",
+             "**選択**: `%s`（選択者: %s / %s）" % (name, chosen.get("actor", "—"), chosen.get("at", "—")), "",
+             "**依存先（推移的）**: %s" % ("、".join("`%s`" % d for d in feature_scope.closure(context, name)) or "なし"),
+             "**この計画の前提にする feature**: %s" % "、".join("`%s`" % m for m in members), ""]
+    lines += ["**入力として読むもの**（すべて `approved`）"] + ["- `%s`" % p for p in dict.fromkeys(context.upstream())]
+    lines += ["", "**出力先**: %s" % " / ".join("`%s`" % o for o in context.artifacts()), "",
+              "**他の feature の状態**（表示のみ。承認前提には使わない）"] + _candidates(context, context.process)
+    lines += _owner_lines(context)
+    lines += ["", "工程の承認後も、依存する側の feature には自動で進みません。次の feature は改めて選びます（select-scope）。",
+              "", "この計画で進めてよいか指示してください。"]
+    return lines
+
+
+def _implement_plan(context, name):
+    """Feature 方式の Phase 8 の計画停止点 `implement-plan[S]`（D-11）。"""
+    import feature_scope
+    import implementation_requests
+    import implementation_evidence
+    import task_runtime
+    chosen = (context.state().get("workflow") or {}).get("selection") or {}
+    lines = ["**Phase 8（実装）を feature `%s` について始めます（Feature 方式）。** 開始前に実行計画を確認してください。" % name, ""]
+    if chosen.get("previous") and chosen.get("previous") != name:
+        lines.append("**対象の切替**: `%s` から `%s` に切り替えました（選択者: %s / %s）"
+                     % (chosen["previous"], name, chosen.get("actor", "—"), chosen.get("at", "—")))
+    else:
+        lines.append("**選択**: `%s`（選択者: %s / %s）" % (name, chosen.get("actor", "—"), chosen.get("at", "—")))
+    lines += ["", "**依存先（推移的）**: %s" % ("、".join("`%s`" % d for d in feature_scope.closure(context, name)) or "なし"), ""]
+    plan = task_runtime.freeze(context, name)
+    lines.append("**対象タスクと依存順**")
+    for key in plan["order"]:
+        task = plan["tasks"][key]
+        lines.append("%s. %s%s（依存: %s）" % (key, task["summary"], "（完了済み）" if task.get("checked") else "",
+                                           "、".join(task["depends_on"]) or "なし"))
+    config = implementation_evidence.config_path(name)
+    lines += ["", "**検証計画**（`%s`。AI が用意したもの）" % config]
+    try:
+        import implementation_store
+        value = implementation_store.read(context.root, config)
+        for check in value.get("checks") or []:
+            lines.append("- `%s`：`%s`（上限 %s 秒）" % (check.get("id"), " ".join(check.get("argv") or []), check.get("timeout_seconds")))
+        for key, task in sorted((value.get("tasks") or {}).items()):
+            lines.append("- タスク %s の変更範囲（allowed_paths）：%s" % (key, "、".join("`%s`" % p for p in task.get("allowed_paths") or [])))
+    except (ValueError, OSError, KeyError):
+        lines.append("- **未作成。** 了承の前に検証計画を用意してください")
+    remaining = [k for k in plan["order"] if not plan["tasks"][k].get("checked")]
+    lines += ["", "**想定される停止回数**: タスクの人間確認 %d 回 ＋ feature の最終承認 1 回。作業中に根拠が足りなければ、その都度質問して停止します。"
+              % len(remaining)]
+    entry = next(e for e in context.features() if e["name"] == name)
+    if entry["kind"] == "Platform":
+        waiting = [n for n in feature_scope.dependents(context, name)
+                   if phase_rules.status_of(context.path("specs/%s/requirements.md" % n)) != "approved"]
+        if waiting:
+            lines += ["", "**利用側 %d 件（%s）の requirements が未承認です。** 契約が変わると、承認済みの実装の再検証が起きます。"
+                      "進めるかどうかの判断は了承の note に残してください" % (len(waiting), "、".join(waiting))]
+    found = implementation_requests.overlaps(context, name)
+    if found:
+        lines += ["", "**依存先の変更範囲との重なり**（依存先の再検証を伴う変更。了承した場合だけ許します）"]
+        lines += ["- `%s` と依存先 `%s` の `%s`" % (mine, other, theirs) for other, mine, theirs in found]
+    lines += ["", "対象を変えるときは select-scope で選び直します。この計画で進めてよいか指示してください。"]
+    return lines
 
 
 def _stops(process, features):

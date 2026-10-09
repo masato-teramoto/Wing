@@ -7,6 +7,7 @@ next gate here to verify. Generation and verification criteria remain in L4.
 import gate_exchange
 import implementation_requests as requests
 import implementation_store as store
+import location_identity
 import review_decisions
 import review_gate
 import task_quality
@@ -22,7 +23,7 @@ WAIT = 'task-specification-review'
 
 
 def task_context(context):
-    return context.action in requests.TASK_ACTIONS
+    return requests.kind(context) == 'task'
 
 
 def applicable(context):
@@ -352,7 +353,8 @@ def recorded_response(context, execution):
     payload = request.get('payload', {})
     if (not entry or entry['status'] not in ('reported', 'finished') or request.get('kind') != 'respond'
             or request.get('event') != execution['event'] or request.get('item') != execution['task_item']
-            or request.get('root') != context.root or request.get('state') != context.state_path
+            or not location_identity.same_binding({key: request.get(key) for key in ('root', 'state')},
+                                                  {'root': context.root, 'state': context.state_path})
             or request.get('actor') != value['actor'] or payload.get('action') != value['action']
             or payload.get('expected') != value['expected'] or payload.get('data') != value['data']
             or value['expected']['target']['execution_id'] != execution['execution_id']

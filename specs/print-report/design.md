@@ -1,7 +1,7 @@
 ---
 feature: print-report
 status: approved
-updated_at: 2026-10-09T13:11:35+09:00
+updated_at: 2026-10-09T19:43:59+09:00
 ---
 
 # 技術設計書
@@ -240,7 +240,7 @@ flowchart LR
 > _書き方_: 保存先の製品には依存させない。製品固有の話は物理データモデルに書く
 
 - **エンティティ間の多重度（カーディナリティ）**: 申請 1 : 発行依頼書 1（出力の条件。無ければ出さない）、申請 1 : 契約局情報 1..n（連番 1 が代表局。無ければ出さない）、申請 1 : 承認履歴 0..n。再製本依頼は申請 1 : 元申請 1（`Moto_Application_No`）
-- **属性と型**: 読むだけ。各属性と型は pbi design・ir design の物理データモデルと、`specs/issue-request/db-TWTGM100.md`・`specs/issue-request/db-TWTGM140.md` のとおり
+- **属性と型**: 読むだけ。各属性と型は pbi design・ir design の物理データモデルと、`specs/issue-request/design.md` の `#### TWTGM100 の DB レイアウト（発行依頼書情報ﾏｽﾀ。Q-DS-IR-003）`・`#### TWTGM140 の DB レイアウト（契約局情報ﾏｽﾀ。Q-DS-IR-004）` のとおり
 - **自然キー / 識別子**: 申請は「会社コード＋申請No」（ログインユーザーの会社コードと `hdnApplicationNo`）。契約局情報の代表局は「会社コード＋申請No＋連番 1」
 - **参照整合性のルール**: <DSN_LOGICAL_INTEGRITY>（不要：本 feature は読むだけで、整合を保つ責任は持ち主の feature にある — pbi design・ir design）
 
@@ -649,7 +649,7 @@ wing/src/main/
 | 原本の Excel | 5 つのシート、入力フォームのセル（`### ドメインモデル（Domain Model）` の位置の元）、表紙の数式・図形・印刷範囲、複数局用入力フォームの行 | `_handoff/BaseStationRentContractIssuingOrderForm.xlsm`（リポジトリでは `wing/src/main/webapp/static/manual/BaseStationRentContractIssuingOrderForm.xlsm` に置く） |
 | 既存のファイルの返し方 | 一時ファイルを `response` に書き出す作りと、ファイル名の文字コードの変換 | `wing/src/main/java/jp/co/kccs/wt/common/service/ServiceBase.java` |
 | 閲覧・印刷ボタンの条件と申請・承認履歴 | 6.9 の判定、`TWTGM080`・`TWTGM140`・`TWTGM180` の定義、`/wtg072/search` の口 | `specs/property-basic-info/design.md` |
-| 発行依頼書の列 | `TWTGM100`・`TWTGM140` の全列 | `specs/issue-request/db-TWTGM100.md`・`specs/issue-request/db-TWTGM140.md` |
+| 発行依頼書の列 | `TWTGM100`・`TWTGM140` の全列 | `specs/issue-request/design.md` の `#### TWTGM100 の DB レイアウト（発行依頼書情報ﾏｽﾀ。Q-DS-IR-003）`・`#### TWTGM140 の DB レイアウト（契約局情報ﾏｽﾀ。Q-DS-IR-004）` |
 
 ---
 

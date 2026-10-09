@@ -1,0 +1,43 @@
+{
+ "operation_id": "675850c7-e69e-477a-a38c-b5c28d39e150",
+ "action": "repair",
+ "dispatch": {
+  "call": "design-cross-gate",
+  "unit": "design-cross-gate/design-cross-gate[-]::end.review",
+  "event": "design-cross-gate",
+  "item": null,
+  "status": "wait",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-cross-gate/design-cross-gate[-]::end.review\", \"snapshot\": \"d877b9b2db5183c5b055f56da46b51215e0c69ae5e8770d4aede6f0d4a2d65d2\", \"run\": 3, \"inspection_hash\": \"a5136444e3b44301631170e0648c2221599c295eef383d57608f450c0a35aa64\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 10 件\n  - TWTGM140 の全 345 列の定義が ir design の本文にあり、持ち主の pbi design が別の言い方で参照している（削除済みの補足資料の指しも、pbi design の直しとして記録済み）（learned:design cross 2-2）\n  - 契約者の条件が契約者区分 \"01\" で、ir design の値（1:契約者・2:関係者）と合わない（learned:design cross 2-3）\n  - 発行依頼書登録変更の更新が申請の排他用の値を変えない扱い（案 A）（learned:design cross 2-1）\n  - ir design の受け渡し（ウインドウ名＋callback。値の名前）とチュートリアルの pwtgo081callback・値の名前は矛盾せず、無い部分は design に明記され upstream-carryover に記録済み（verify:既決（upstream-carryover の issue-request の項目。両 design が明記済みで矛盾は無い））\n  - feature-list の依存列（物件基本情報登録変更だけ）と、TWTGM100 を読む実態のずれ（verify:既決（upstream-carryover の application-status-search の項目。design が自ら明記。ir design 側の列挙漏れは指摘 3 で出した））\n  - その他①〜④の桁 50 は ir design 規則 2・DB 列と一致。金額・初回金額の桁 50 は ir design 規則 4（11 バイト以内の数値）と異なるが、ci design が人の決定（2026-10-09）として明記済み（verify:既決（ci design に人の決定として明記済みで、本文の食い違い自体が宣言されている））\n  - 画面内 JSON 口のエラーの返し方は口ごとに違う（verify:既決（upstream-carryover の「design 横断確認 1 回目で決まったもの」。横断確認 1 回目 #5 の案 B））\n  - 画面の遷移・戻り・コールバックと WTG 共通部品への呼出しで、各 design の依存してよい対象は一方向。feature 間の閉路は構成しない（verify:画面の遷移・戻り・コールバックと WTG 共通部品への呼出しは feature 間の依存の辺にならない）\n  - 作業用テーブル TWTGD050・TWTGD060 が共通列を持たない（steering/database.md の共通カラム）（answer:design-authoring-generate[contract-info-download]）\n  - トランの種別 V（steering/database.md はトラン F）、金額・調整額を文字で持つ（金額は数値）（answer:design-authoring-generate[issue-request]）\n\n### 前回の検査（2 回目）からの変更\n\n- 上流の入力が前回の検査から変わった（または比べられない）ため、全体を検査する。対象の全体を見てください。\n\n### 判断が必要な指摘\n\n**対象**: `specs/property-basic-info/design.md` / `specs/issue-request/design.md` / `specs/issue-request-tutorial/design.md` / `specs/print-report/design.md` / `specs/application-status-search/design.md` / `specs/contract-info-import/design.md` / `specs/contract-info-download/design.md`（スコープ: 横断 / 3 回目）\n**実行した層**: ②（形式検査を持たない横断スコープのため ② のみ）\n\n**重大**（2 件。1 件ずつ判断してください）\n\n| # | 種類 | 対象箇所 | 要約 | AI の推奨 | 判断 |\n|---|---|---|---|---|---|\n| 1 | 業務の欠落・矛盾 | specs/contract-info-download/design.md § 出力 CSV の項目定義（381 列） / 項目一覧 No.44 ほか 7 か所 | 出力 CSV の見出し 8 件が取込のリバース表と違い、No.44 は予備項目3 が基地局名_ｶﾅ | 質問（見出しの文字はどちらを正とするか。取込は見出しを見ないので動作には影響しない） | 未回答 |\n| 2 | 業務の欠落・矛盾 | specs/contract-info-download/design.md § 出力 CSV の項目定義（381 列） / 項目一覧「取込側の型・バイト数」列 No.5 ほか 40 か所 | 項目一覧の「取込側の型・バイト数」41 行が、取込のリバース表の型・桁と食い違う | 修正（取込のリバース表が正と ci design が定めており、どちらに合わせるかは決まっているため） | 未回答 |\n\n**要判断**（1 件）\n\n| # | 種類 | 対象箇所 | 要約 | AI の推奨 | 判断 |\n|---|---|---|---|---|---|\n| 3 | 文書間の参照 | specs/issue-request/design.md § 再確認が必要になる変更（Revalidation Triggers） / TWTGM100・TWTGM140 の列の変更（128 行） | 128 行の読む側に契約情報ダウンロードを挙げるが読まず、申請状況検索一覧が漏れている | 修正（事実は両 design の本文で確認でき、業務の新しい事実は要らないため） | 未回答 |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n**答え方**（後に書いたものが優先。束・範囲でまとめて答えられます）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）。区分を `C[指摘の誤り]` `C[対象外]` `C[後で決める]` `C[解釈で対応]` で付ける。対象外・後で決めるに `+` を付けると（例 `C[後で決める+]`）、次の検査から同じ扱いにします\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n- **推奨** — AI の推奨を採用する（修正なら修正案がそのまま修正の指示になります）\n\n回答例: `1:推奨 / 束1:C[後で決める+] 桁数は design で決める / 3〜5:A / 7:D 次回まで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。根拠と修正案は `詳細 <番号>` で表示します。",
+  "id": "89b12cf55b794e9da1bd4c132077ee32"
+ },
+ "expected": {
+  "root": "/home/kccs/Wing",
+  "state": "/home/kccs/Wing/.aidd/phase-progress.json",
+  "call": "design-cross-gate",
+  "event": "design-cross-gate",
+  "item": "",
+  "dispatch_id": "89b12cf55b794e9da1bd4c132077ee32",
+  "unit": "design-cross-gate/design-cross-gate[-]::end.review",
+  "scope": "cross",
+  "run": 3,
+  "snapshot": "d877b9b2db5183c5b055f56da46b51215e0c69ae5e8770d4aede6f0d4a2d65d2",
+  "record_hash": "177b0f3b0a8744ef1b52242e4a487d3480d8fd1747441c6fe2f42e4a3a2d906b"
+ },
+ "data": {
+  "event": "design-authoring-generate",
+  "item": "issue-request",
+  "targets": [
+   "specs/issue-request/design.md"
+  ],
+  "findings": [
+   {
+    "phase": "design",
+    "scope": "cross",
+    "run": 3,
+    "number": 3,
+    "instruction": "128 行付近の括弧書き「印刷・閲覧用帳票、契約情報取込の洗替、契約情報ダウンロード、物件基本情報登録変更の出力 CSV」を「印刷・閲覧用帳票、申請状況検索一覧、契約情報取込の洗替、物件基本情報登録変更の出力 CSV」に直す（契約情報ダウンロードを外し、申請状況検索一覧を足す）。他の節は変えない。"
+   }
+  ]
+ }
+}

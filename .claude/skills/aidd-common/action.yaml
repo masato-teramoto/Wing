@@ -1,6 +1,11 @@
 # inputs / outputs はアクションが読む入力・書く出力（案件ルート相対）。L3 が展開する。
 #   {feature}    アクションの item（feature 名）
-#   {features}   承認済み feature ごとに 1 本
+#   {features}   承認済み feature ごとに 1 本。ただし item の有無で意味が変わる（Feature 方式、計画 v3 §6.10 C1）：
+#                - `*-cross-gate` / `tasks-gate-run` に item（選択 feature S）があるとき：比較集合 C(p)
+#                  （S ∪ 依存先 D、S が Platform なら工程 p で承認済みの利用側を加える。scope `cross:<S>` / `phase:<S>`）
+#                - `requirements-plan` / `design-plan` / `tasks-plan` に item があるとき：S ∪ D（requirements-plan は S のみ）
+#                - Feature 方式の `docs-integration-*`：docs の収録集合（design が承認済みの feature）
+#                item 無し（全件方式の呼び方）は従来どおり全件。展開した具体パスは L3 が計画提示と scope 記録に出す
 #   {depends_on} item の依存先 feature（推移的）ごとに 1 本
 #   末尾 /       ディレクトリ配下のファイル。approved を求めない（RFP）
 # { を含むパスはフロー形式 [...] に書けない（YAML がマッピングと読む）。ブロック形式 - で書く。
@@ -76,7 +81,7 @@
     run: { type: skill, target: requirements-authoring }
 
 - action:
-    name: requirements-cross-gate     # 全 feature が揃ってからの横断検査（契約整合）。1 回だけ `call`
+    name: requirements-cross-gate     # [全件、または item=S で selection 単位（Platform のみ）] 全 feature が揃ってからの横断検査（契約整合）。1 回だけ `call`
     inputs:
       - .aidd/requirement-list.md
       - .aidd/feature-list.md
@@ -131,7 +136,7 @@
     run: { type: skill, target: design-authoring }
 
 - action:
-    name: design-cross-gate           # 全 feature が揃ってからの横断検査（契約整合）。1 回だけ `call`
+    name: design-cross-gate           # [全件、または item=S で selection 単位（Platform のみ）] 全 feature が揃ってからの横断検査（契約整合）。1 回だけ `call`
     inputs:
       - .aidd/feature-list.md
       - steering/product.md
@@ -214,7 +219,7 @@
     run: { type: skill, target: tasks-authoring }
 
 - action:
-    name: tasks-gate-run              # 全 feature ぶんの指摘を一括で人間に提示する。1 回だけ `call`
+    name: tasks-gate-run              # [全件、または item=S で S の tasks を承認] 全 feature ぶんの指摘を一括で人間に提示する。1 回だけ `call`
     inputs:
       - .aidd/feature-list.md
       - steering/product.md
@@ -342,6 +347,19 @@
 # and a feature name only for its final independent inspection/review.
 # The task events have no fixed outputs: each task's allowed paths come from tasks.md at run time.
 # {feature} of a task action is the feature of the running task, not the task item.
+# Feature 方式の Phase 8 の計画停止点（D-11）。flow を持たない単独の action（requirements-plan と同じ）。
+# outputs は implement-gate-run と同じ形にして implement 工程に入れる。inputs は S の requirements／design／tasks だけ。
+# config/<S>.json・config/<D>.json・feature 一覧の射影は status を持たないので記録入力に入れる（plan_signature）。
+- action:
+    name: implement-plan
+    inputs:
+      - specs/{feature}/requirements.md
+      - specs/{feature}/design.md
+      - specs/{feature}/tasks.md
+    outputs:
+      - .aidd/implementation/features/{feature}/review.json
+    run: { type: script, target: scripts/plan.py, requiresHuman: true }
+
 - action:
     name: implement-authoring-generate
     inputs:
@@ -404,3 +422,31 @@
       isAgent: true
       target: implement-check
       calls: [implementation-traceability, implementation-boundary, implementation-tests, finding-verification, gate-report]
+
+# Phase 8 の案件レベル（全 feature の実装承認の後、両方式。§6.11）。item は group（build・smoke）／ACE 計画のチャンク ID。
+# feature を持たず、記録（phase-8-implement.md）を書かない。本体の run はゲートが保存した受領証を確かめるだけの L3 の script。
+- action:
+    name: implement-integration-run
+    run: { type: script, target: scripts/implementation_project_check.py }
+
+- action:
+    name: implement-cross-ace-run
+    run: { type: script, target: scripts/implementation_project_check.py }
+
+# 実コードの横断確認（item 無し、全件。分割しない）。検査本体は run（既存の横断系と同じ例外。L4 修正計画 U-03）。
+# 検査対象は全 feature の実装承認・全体結合確認・横断 ACE の受領証を束ねた cross-review.json。記録は phase-8 の `cross` scope。
+- action:
+    name: implement-cross-gate
+    outputs:
+      - .aidd/implementation/cross-review.json
+    run:
+      type: skill
+      isAgent: true
+      target: implement-cross-check
+      calls: [implementation-traceability, implementation-boundary, finding-verification, gate-report]
+
+# 管理用の action（工程に属さない、§6.4）。inputs・outputs を持たず、記録（phase-N.md）に書かない。
+# 確認表示を出すだけで状態を変えない。確定は host 操作 switch-mode（入口 Skill が人の確定の回答を受けて呼ぶ）。
+- action:
+    name: mode-switch-confirm
+    run: { type: script, target: scripts/mode_switch.py }

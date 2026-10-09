@@ -96,6 +96,8 @@ submit 用 JSON は次の形。dispatch オブジェクトを返却値から丸�
 - 生成 Skill の result は実際の返却 JSON 全体。targets を空のまま使わない。
 - 修正 Skill は context の `repair` を見る。`null` なら何も編集せず
   `{"status":"completed","targets":[],"questions":[],"open_placeholders":0,"changed_findings":[],"return_candidates":[],"summary":"修正対象 0 件"}` を返す。
+- `tasks-authoring-revise`で対象がある場合は、`.claude/skills/aidd-tasks/SKILL.md`の「修正Skillへ渡す着手履歴」に従い、
+  ホストが保存済み履歴を収集して`task_history`を添える。再開時も収集し、CLIのdispatch/contextそのものは書き換えない。
 - 検査 agent の result は `{"status":"completed"}` または `{"status":"failed"}`。検査役は 1 実行ブロックを
   `inspection_path` に書くだけで、ゲート記録・成果物は編集しない（追記と review 遷移は L3 の scope-check が 1 回だけ行う）。
   中断後にもう一度検査を実行しても記録は二重にならない。
@@ -133,6 +135,9 @@ completed は今回の検査処理と記録が完了したことを意味する�
 **計画**：detail を提示し、人の回答に応じて次のどちらかを respond する。
 
 - 了承：`{"operation_id":..., "action":"accept-plan", "dispatch":<wait の dispatch>, "data":{"note":"今回は上位2件だけ等、進め方の指示があれば"}}`
+  - tasks の計画停止点で smoke wrapper の owner の候補が示されたときは、`data` に `"owner":"<候補の feature>"` を足す。
+    業務 API を持つ feature が無いときは `"owner":"候補なし", "owner_reason":"<理由>"`。候補がいるのに無ければ了承できない。
+  - Phase 8 の計画停止点 `implement-plan[S]` では、別の feature を選び直すときは了承せずに `select-scope` を呼ぶ。
 - 対象・順序の変更（Phase 4 / 5 / 7）：`{"action":"change-plan", "dispatch":..., "data":{"instruction":"実際の変更指示"}}`。
   Phase 3 への差戻しとして feature 一覧を修正・再検査・再承認し、その後に計画を出し直す。
 - 「開始してよいですか」だけを問わない。計画を示さずに可否を尋ねない。

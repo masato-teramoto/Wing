@@ -1,7 +1,7 @@
 ---
 feature: issue-request
 status: approved
-updated_at: 2026-10-05T19:22:40+09:00
+updated_at: 2026-10-09T17:56:50+09:00
 ---
 
 # 要件定義書

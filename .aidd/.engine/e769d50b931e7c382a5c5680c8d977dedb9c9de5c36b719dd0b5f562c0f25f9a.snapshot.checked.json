@@ -1,10 +1,10 @@
 {
   "event": "requirements-authoring-revise",
   "scope": "feature:print-report",
-  "run": 2,
-  "snapshot": "1c73147f00986a0c140d38888372e5da077f75833a888e1b1dfd9af71ccb7e9c",
-  "record_bytes": 231447,
-  "record_hash": "d3859152b50111beb0a5508ad1c86479ea8672117a709a37ad0a7d8ba320a6bd",
+  "run": 3,
+  "snapshot": "62ef37b1ef5ab958c28764ff58540f4eaf7f06e6107a9f5e219cdc6a73ccb044",
+  "record_bytes": 304176,
+  "record_hash": "a68670b41bd112985f51f9f5af7a8413e03d2ba30b03b118bafcf16a45584d8b",
   "targets": [
     "specs/print-report/requirements.md"
   ],
@@ -12,8 +12,8 @@
     "specs/print-report/requirements.md": "7d7de30b0895cdabc937b9cce759067c8c0732a2f344d03ae09c469e45743cd8"
   },
   "inputs": {
-    ".aidd/requirement-list.md": "bdf3027f78209be11ea79d4b3026928aaa5959c4f6fbebb20c35357626604947",
-    ".aidd/feature-list.md": "71a64dc3cbf71bc6ddb02a4dc6f8247344064ca63e8a291e5881763ef59256ae",
+    ".aidd/requirement-list.md": "0f27710cd1eb4f103a426cbccec48d5af14f504bd9e40c7f8c697f3ef031c859",
+    ".aidd/feature-list.md": "9c8fae4dbc53b2ff6cc98e2476e7c02797d2077359d9b2709d5eff7e5111b642",
     "steering/product.md": "cde5dd8a1007c53f93a270de63e01d294d38f47695e96027d52b6b4862bc149b",
     "steering/tech.md": "58cc32eb0ad29d7b7185bb02e710ce8d882e374f93eb0a609ae293e3903a4966",
     "steering/architecture.md": "98be0c57ba256c0aeaf1a66d69682e63b47d20ec0f91ab776589a54e5eb8c33d",

@@ -3,6 +3,7 @@
 
     python3 .claude/skills/aidd-common/scripts/aidd_entry.py <コマンド> [オプション] <操作> [オプション]
     python3 .claude/skills/aidd-common/scripts/aidd_entry.py validate | doctor [--runtime-only]
+    python3 .claude/skills/aidd-common/scripts/aidd_entry.py recover-checks [--processes-stopped]
 
 コマンドは L0 の CommandResolver が `command.yaml` の CommandDefinition（id または `/aidd-...`）から解決し、
 `--call` / `--action` はそのコマンドの呼出し先に限る（仕様書の不変条件 1）。
@@ -31,10 +32,31 @@ def doctor(root, state, config, runtime_only):
     return command_resolver.doctor(root, state, config, runtime_only, extra)
 
 
+def default_item(root, state, action):
+    """Feature 方式で `--item` を省いた advance に、選択中の S を補う（計画 v3 §6.1「ガード」）。
+
+    入口 Skill は方式を問わず同じ呼び方（`--call <工程の action> advance`）で呼べる。補い方の規則は
+    feature_scope.default_item。全件方式・Phase 4〜7 の外の action・flow 名の呼出しには何も足さない。
+    """
+    import phase_rules
+    if action not in phase_rules.PROCESS_OF:
+        return []
+    import feature_scope
+    try:
+        item = feature_scope.default_item(phase_rules.ExecutionContext(root, state, action, ''))
+    except ValueError as error:
+        raise command_resolver.DefinitionError(str(error)) from error  # 入口の失敗として返す（select-scope の案内）
+    return ['--item', item] if item else []
+
+
 def run(argv):
     if not argv or argv[0] in ('-h', '--help'):
         print(__doc__)
         return 0 if argv else 1
+    if argv[0] == 'recover-checks':
+        import recover_checks
+        return recover_checks.main(command_resolver.PROJECT_ROOT,
+                                   os.path.join(command_resolver.PROJECT_ROOT, '.aidd/phase-progress.json'), argv[1:])
     if argv[0] == 'doctor':
         known = command_resolver._options(argv[1:])
         return doctor(*command_resolver._paths(known), '--runtime-only' in known.rest)
@@ -58,6 +80,8 @@ def run(argv):
     previous = os.environ.get('AIDD_CONFIG')
     os.environ['AIDD_CONFIG'] = config
     try:
+        if known.operation == 'advance' and '--item' not in known.rest:
+            known.rest += default_item(root, state, known.action or known.call)
         return host_operations.main(['--root', root, '--state', state] + command_resolver._passthrough(known)
                                     + known.rest + [known.operation])
     finally:

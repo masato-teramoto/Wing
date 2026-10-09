@@ -47,6 +47,8 @@ def _run_commands(root, checks, directory, report_directory=None, final=False):
                 metric_before = (metric_path.stat().st_mtime_ns, store.digest(metric_path.read_bytes()))
         running = {'schema': 1, 'status': 'running', 'operation_id': operation, 'check_id': check['id'], 'pid': None}
         store.write(root, marker, running)
+        command_stopped = True  # No command exists until Popen succeeds.
+        process = None
         try:
             with out_path.open('wb') as stdout, err_path.open('wb') as stderr:
                 options = {'creationflags': subprocess.CREATE_NEW_PROCESS_GROUP} if os.name == 'nt' else {'start_new_session': True}
@@ -59,6 +61,7 @@ def _run_commands(root, checks, directory, report_directory=None, final=False):
                     environment = dict(os.environ)
                     if report_directory:
                         environment.update(AIDD_REPORT_DIR=report_directory, AIDD_REPORTING='1' if final else '0')
+                    command_stopped = False
                     process = subprocess.Popen(launched, cwd=cwd, stdout=stdout, stderr=stderr, env=environment,
                                                stdin=subprocess.PIPE if os.name == 'nt' else subprocess.DEVNULL,
                                                shell=False, **options)
@@ -80,6 +83,7 @@ def _run_commands(root, checks, directory, report_directory=None, final=False):
                 finally:
                     if tree is not None:
                         tree.close()
+                    command_stopped = process is None or process.poll() is not None
             if receipt['status'] == 'passed' and metric:
                 try:
                     raw = metric_path.read_bytes()
@@ -108,8 +112,14 @@ def _run_commands(root, checks, directory, report_directory=None, final=False):
             receipts.append(receipt)
             store.write(root, prefix + '.receipt.json', {'schema': 1, **receipt})
             store.write(root, marker, {**running, 'status': 'finished'})
-        except BaseException:
-            # Preserve running marker and logs; a retry may not launch duplicates.
+        except OSError as error:
+            # A log/receipt write failure after a confirmed stop is retryable.
+            # Unknown crashes and processes still alive retain the running marker.
+            if command_stopped:
+                try:
+                    store.write(root, marker, {**running, 'status': 'interrupted', 'error': str(error)})
+                except OSError:
+                    pass  # Preserve the original failure if even the marker cannot be saved.
             raise
     return receipts
 

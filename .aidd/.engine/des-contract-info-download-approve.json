@@ -1,0 +1,28 @@
+{
+ "operation_id": "27dd3ff7-c716-4871-b175-10e3876470c6",
+ "action": "approve",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[contract-info-download]::end.review",
+  "event": "design-authoring-revise",
+  "item": "contract-info-download",
+  "status": "wait",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[contract-info-download]::end.review\", \"snapshot\": \"b9715ded322a28eb8268765c5b30e8d3e4f79ae00609abb8b1002744dea119f7\", \"run\": 8, \"inspection_hash\": \"58dae5f832ec6b3acea93cac57ad8b7fdc45080a2db7a57b94f52b4f7c6444d2\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n\n### 前回の検査（7 回目）からの変更\n\n- `specs/contract-info-download/design.md`：項目一覧\n\n### 判断が必要な指摘\n\n**対象**: `specs/contract-info-download/design.md`（スコープ: 成果物単位（contract-info-download） / 8 回目）\n**実行した層**: ① / ②\n\n**指摘**: なし（0 件。検査は実行済み）\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n判断が揃いました。承認の可否を回答してください（承認する場合は承認者名）。",
+  "id": "4c81e16de5fc462489ee2b175f794c93"
+ },
+ "expected": {
+  "root": "/home/kccs/Wing",
+  "state": "/home/kccs/Wing/.aidd/phase-progress.json",
+  "call": "design-authoring-revise",
+  "event": "design-authoring-revise",
+  "item": "contract-info-download",
+  "dispatch_id": "4c81e16de5fc462489ee2b175f794c93",
+  "unit": "design-authoring-revise/design-authoring-revise[contract-info-download]::end.review",
+  "scope": "feature:contract-info-download",
+  "run": 8,
+  "snapshot": "b9715ded322a28eb8268765c5b30e8d3e4f79ae00609abb8b1002744dea119f7",
+  "record_hash": "58dae5f832ec6b3acea93cac57ad8b7fdc45080a2db7a57b94f52b4f7c6444d2"
+ },
+ "data": {}
+}

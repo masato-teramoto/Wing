@@ -1,0 +1,17 @@
+{
+ "operation_id": "8243776e-f265-4c1c-a228-34c4931131d8",
+ "action": "accept-plan",
+ "dispatch": {
+  "call": "requirements-plan",
+  "unit": "requirements-plan/requirements-plan[-]::run",
+  "event": "requirements-plan",
+  "item": null,
+  "status": "wait",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": "**Phase 4（requirements 作成）に入ります。** 開始前に実行計画を確認してください。\n\n**生成単位**: 1 feature ずつ（優先度順）。ゲートは feature ごとに 1 回 ＋ 全 feature が approved になった後に横断 1 回 通します。\n\n**対象 feature と順序**（`.aidd/feature-list.md` の優先度順）\n1. `property-basic-info`（User / 依存: なし）\n2. `issue-request`（User / 依存: `property-basic-info`）\n3. `issue-request-tutorial`（User / 依存: `issue-request`）\n4. `print-report`（User / 依存: `property-basic-info`、`issue-request`）\n5. `application-status-search`（User / 依存: `property-basic-info`）\n6. `contract-info-import`（User / 依存: `property-basic-info`、`issue-request`）\n7. `contract-info-download`（User / 依存: `contract-info-import`）\n\n**入力として読むもの**（すべて `approved`）\n- `.aidd/requirement-list.md`\n- `.aidd/feature-list.md`\n- `steering/product.md`\n- `steering/tech.md`\n- `steering/architecture.md`\n- `steering/security.md`\n- `steering/non-functional.md`\n- `steering/database.md`\n- `steering/api-standards.md`\n\n**出力先**: `specs/property-basic-info/requirements.md` / `specs/issue-request/requirements.md` / `specs/issue-request-tutorial/requirements.md` / `specs/print-report/requirements.md` / `specs/application-status-search/requirements.md` / `specs/contract-info-import/requirements.md` / `specs/contract-info-download/requirements.md`（7 ファイル）\n\n**想定される停止回数**: feature 数 + 1 回（8 回）。作成中に根拠が足りない箇所があれば、その都度質問して停止します。\n\n**対象 feature や順序を変える場合は `.aidd/feature-list.md` の変更になるため、Phase 3 への差戻しとして扱います。**\n（変更する場合は、その内容を指示してください。今回は一部だけ作る等の進め方の指示は計画に記録し、フェーズの完了条件は全 feature の完了のままです。）\n\nこの計画で進めてよいか指示してください。",
+  "id": "d5d795658b9747f99b9b8c48e4d5af18"
+ },
+ "data": {
+  "note": "今回は property-basic-info の 1 件だけ進める"
+ }
+}

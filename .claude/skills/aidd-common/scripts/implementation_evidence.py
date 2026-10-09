@@ -9,6 +9,8 @@ import implementation_store as store
 GENERATED = {'.git', '__pycache__', '.pytest_cache', '.venv', 'node_modules'}
 CONTROL = {'.aidd', '.claude', 'Templates', 'specs', 'steering', 'docs'}
 CONTROL_FILES = {'.main-flow-assets.json', 'CLAUDE.md'}
+# User-local settings are outside AIDD: never counted in any inventory (plan v3 §6.6).
+LOCAL_FILES = {'.claude/settings.local.json', 'CLAUDE.local.md'}
 ASPECTS = ['implementation-traceability', 'implementation-boundary', 'implementation-tests']
 
 
@@ -16,11 +18,8 @@ def config_path(feature):
     return store.BASE + '/config/' + store.identifier(feature) + '.json'
 
 
-def policy(context, feature, tasks):
-    value = store.read(context.root, config_path(feature))
-    if value.get('feature') != feature or set(value.get('tasks', {})) != set(tasks):
-        raise ValueError('verification policy must identify the feature and every task')
-    checks = value.get('checks')
+def validate_checks(context, checks):
+    """検証コマンドの宣言（id・argv・cwd・timeout 1..480・metric・合計 480 秒）。feature と案件レベル（_project.json）で共通。"""
     if not isinstance(checks, list) or not checks:
         raise ValueError('nonempty mandatory verification checks required')
     ids = []
@@ -47,6 +46,14 @@ def policy(context, feature, tasks):
         raise ValueError('duplicate check ID')
     if sum(c['timeout_seconds'] for c in checks) > 480:
         raise ValueError('aggregate tool budget exceeds 480 seconds; split the checks or decide on an L0 timeout extension')
+    return ids
+
+
+def policy(context, feature, tasks):
+    value = store.read(context.root, config_path(feature))
+    if value.get('feature') != feature or set(value.get('tasks', {})) != set(tasks):
+        raise ValueError('verification policy must identify the feature and every task')
+    ids = validate_checks(context, value.get('checks'))
     if value.get('feature_checks') != ids:
         raise ValueError('feature_checks must include every mandatory check in declared order')
     for key, task in value['tasks'].items():
@@ -62,6 +69,11 @@ def policy(context, feature, tasks):
             artifacts.relative_path(path.rstrip('/'))
             if path.split('/')[0] in CONTROL | GENERATED or path.rstrip('/') in CONTROL_FILES:
                 raise ValueError('implementation cannot modify workflow/specification assets')
+            if path.rstrip('/') in LOCAL_FILES:
+                raise ValueError('user-local settings are outside AIDD and cannot be planned: ' + path)
+        for path in task.get('review_paths', []) or []:
+            if isinstance(path, str) and path.rstrip('/') in LOCAL_FILES:
+                raise ValueError('user-local settings are outside AIDD and cannot be planned: ' + path)
         if type(task.get('tdd')) is not bool or (not task['tdd'] and not task.get('non_code_reason')):
             raise ValueError('task must use TDD or identify why it is a non-code task')
     verification_paths = value.get('verification_paths', [])
@@ -69,6 +81,8 @@ def policy(context, feature, tasks):
         raise ValueError('verification_paths must be an array')
     for path in verification_paths:
         artifacts.relative_path(path.rstrip('/'))
+        if path.rstrip('/') in LOCAL_FILES:
+            raise ValueError('user-local settings are outside AIDD and cannot be planned: ' + path)
     generated = value.get('generated_paths', [])
     if not isinstance(generated, list):
         raise ValueError('generated_paths must be an array')
@@ -106,6 +120,8 @@ def inventory(context, policy_value, protected=False):
         paths.extend(parent / name for name in files)
     for path in sorted(paths):
         relative = path.relative_to(base).as_posix()
+        if relative in LOCAL_FILES:
+            continue
         parts = relative.split('/')
         if any(part in GENERATED for part in parts):
             continue
@@ -157,6 +173,53 @@ def receipts(context, execution, stage='verify', current=True):
     return task_verification.receipts(context, execution, stage, current)
 
 
+REVIEW_DIGEST_VERSION = 2
+LOCAL_SETTINGS = '.claude/settings.local.json'
+
+
+def review_protected(context, feature):
+    """feature 承認の照合で凍結する保護対象（D-7、§6.6）。L4 から呼べる公開関数。
+
+    集合：自 feature と推移閉包 D の specs、docs（Feature 方式は固定版の参照、全件方式は 3 文書）、
+    steering、Templates、`.claude`（`settings.local.json` を除く）。無関係 feature の specs、作業用 docs の
+    実体（Feature 方式）、CONTROL_FILES は含めない。specs と docs は承認操作で変わる status・updated_at を除いた
+    digest、それ以外は生バイト。`inventory()`（タスク実行中の保護対象・L4 のタスク品質入力）は変えない。
+    """
+    import feature_scope
+    import docs_revision
+    names = [feature, *feature_scope.closure(context, feature)]
+    base = Path(context.root)
+    result = {}
+    for name in names:
+        folder = base / 'specs' / name
+        for path in sorted(folder.rglob('*')) if folder.is_dir() else []:
+            if path.is_file() and not any(part in GENERATED for part in path.parts):
+                relative = path.relative_to(base).as_posix()
+                result[relative] = (artifacts.protected_digest(str(path)) if path.suffix == '.md'
+                                    else store.digest(path.read_bytes()))
+    if feature_scope.is_feature(context):
+        result['docs_revision'] = docs_revision.fixed(context, feature) or 'unfixed'
+    else:
+        import phase_rules
+        for relative in phase_rules.config()['rules']['docs']['outputs']:
+            if (base / relative).is_file():
+                result[relative] = artifacts.protected_digest(str(base / relative))
+    for top in ('steering', 'Templates', '.claude'):
+        folder = base / top
+        for path in sorted(folder.rglob('*')) if folder.is_dir() else []:
+            relative = path.relative_to(base).as_posix()
+            if path.is_file() and relative != LOCAL_SETTINGS and not any(part in GENERATED for part in path.parts):
+                result[relative] = store.digest(path.read_bytes())
+    return result
+
+
+def tasks_current(context, feature, version):
+    path = Path(context.path('specs/' + feature + '/tasks.md'))
+    if version == REVIEW_DIGEST_VERSION:
+        return artifacts.protected_digest(str(path))
+    return store.digest(path.read_bytes())
+
+
 def review_path(feature):
     return store.BASE + '/features/' + store.identifier(feature) + '/review.json'
 
@@ -172,6 +235,9 @@ def verify_review(context):
     import implementation_requests as requests
     state = requests.feature_state(context, context.item)
     value = store.read(context.root, review_path(context.item))
+    version = state.get('review_digest_version')
+    protected = (review_protected(context, context.item) if version == REVIEW_DIGEST_VERSION
+                 else inventory(context, state['policy'], protected=True))
     import implementation_report_plan
     if value.get('report_plan') != implementation_report_plan.freeze(context, state['policy']):
         raise ValueError('reporting configuration or inputs changed; reinspection required')
@@ -179,9 +245,9 @@ def verify_review(context):
     implementation_flows.require_saved(context, value)
     requests.check_feature_ready(context, context.item)
     if (value['code'] != feature_inventory(context, state['policy'])
-            or value['protected'] != inventory(context, state['policy'], protected=True)
-            or value['tasks_current_sha256'] != store.digest(Path(context.path('specs/' + context.item + '/tasks.md')).read_bytes())
-            or value['inputs'] != requests.input_signature(context, context.item)
+            or not requests.same_inputs(context, context.item, value['protected'], protected)
+            or value['tasks_current_sha256'] != tasks_current(context, context.item, version)
+            or not requests.same_inputs(context, context.item, value['inputs'], requests.input_signature(context, context.item))
             or value['tasks'] != state['completed']):
         raise ValueError('implementation changed since feature inspection; reinspection required')
     return value

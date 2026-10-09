@@ -7,7 +7,7 @@ if __name__ == '__main__':
     try:
         context = phase_rules.gate_context()
         implementation_flows.guard(context)
-        if context.action == requests.FINAL:
+        if requests.kind(context) == 'final':
             requests.prepare_review(context)
         elif context.hook_point == 'start':
             requests.preflight(context)

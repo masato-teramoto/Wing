@@ -1,10 +1,10 @@
 {
   "event": "requirements-authoring-revise",
   "scope": "feature:contract-info-download",
-  "run": 3,
-  "snapshot": "3cf1046fe07d4ad190a482cb3e9b5ffbbb6b390b969473e995191e5b267d3031",
-  "record_bytes": 275114,
-  "record_hash": "660bf36a9177b235b1bf6a485afa7ee0b9eb536ba32492d4e2686fffc72022a7",
+  "run": 4,
+  "snapshot": "263f4329d88ff4478ec2af0c5cc6e276838e78d68c1328f294e69913aad58d58",
+  "record_bytes": 307092,
+  "record_hash": "9e61a0656a7cfc5ab05664bd0b28780d74a94318a6ededbb454136b6c6dca6ef",
   "targets": [
     "specs/contract-info-download/requirements.md"
   ],
@@ -12,8 +12,8 @@
     "specs/contract-info-download/requirements.md": "db81769c1f58c458a0583a47ed5daf3a2ffdf8fdee34bd1aa3514a04dcf4a898"
   },
   "inputs": {
-    ".aidd/requirement-list.md": "bdf3027f78209be11ea79d4b3026928aaa5959c4f6fbebb20c35357626604947",
-    ".aidd/feature-list.md": "71a64dc3cbf71bc6ddb02a4dc6f8247344064ca63e8a291e5881763ef59256ae",
+    ".aidd/requirement-list.md": "0f27710cd1eb4f103a426cbccec48d5af14f504bd9e40c7f8c697f3ef031c859",
+    ".aidd/feature-list.md": "9c8fae4dbc53b2ff6cc98e2476e7c02797d2077359d9b2709d5eff7e5111b642",
     "steering/product.md": "cde5dd8a1007c53f93a270de63e01d294d38f47695e96027d52b6b4862bc149b",
     "steering/tech.md": "58cc32eb0ad29d7b7185bb02e710ce8d882e374f93eb0a609ae293e3903a4966",
     "steering/architecture.md": "98be0c57ba256c0aeaf1a66d69682e63b47d20ec0f91ab776589a54e5eb8c33d",

@@ -72,3 +72,12 @@ snapshot の scope / run / at / artifacts をそのまま使う。指摘には�
 - 指示された観点 Skill 以外を勝手に実行しない
 - 合否を自分で判断しない。重大度は書かない（L3 が種類から決める）
 - `status` を遷移させない
+
+## 部分集合モード（Feature 方式の selection 単位の横断確認）
+
+context に `scope_features` があるときだけ読む。全件方式（`scope_features` が無い）の手順は変えない。
+
+- 分母は `scope_features`（比較集合 C(p)。選択 feature `selection` と依存先、共通機能なら承認済みの利用側）。inputs の解決済みパスだけを読み、glob しない。
+- `excluded_features` は U のうち比較集合に入らない feature。これらの成果物が無いこと・読んでいないことを欠落や割当て漏れとして指摘しない。
+- 指摘は比較集合の中の矛盾・重複・契約のずれに限る。比較集合の外を経由する循環や未宣言の衝突は構造上検出できないので、最後の全件確認に委ねる（推測で指摘しない）。
+- 記録の scope は snapshot の値（`cross:<selection>`、tasks は `phase:<selection>`）をそのまま書く。

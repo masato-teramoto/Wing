@@ -1,0 +1,24 @@
+{
+ "operation_id": "0bfb7b47-9dab-4bb1-a001-58666e605b4a",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[contract-info-import]::run",
+  "event": "design-authoring-revise",
+  "item": "contract-info-import",
+  "status": "emit",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": null,
+  "id": "38ef043d2f27450fae50d25c8ff4a166"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/contract-info-import/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [],
+  "return_candidates": [],
+  "summary": "上流は front matter と改行コードのみの変更で本文は同一。修正は不要のため編集せず、再検査・再承認へ回す"
+ }
+}

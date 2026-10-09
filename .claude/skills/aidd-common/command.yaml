@@ -41,5 +41,15 @@
     id: aidd-implement
     command: /aidd-implement
     steps:
+      - { flow: implement-plan }                # Feature 方式のみ：S の計画停止点（D-11）。全件方式では入口 Skill が呼ばない
       - { flow: implement }                     # タスクごと。item はタスクの task_item（SKILL と L3 が扱う）
       - { flow: implement-review }              # feature の最終検査・承認（feature を item にして呼ぶ）
+      - { flow: implement-integration-run }     # 全 feature の実装承認後：全体結合確認（item は build → smoke）
+      - { flow: implement-cross-ace-run }       # 横断 ACE（item は ACE 計画のチャンク ID。チャンクの数だけ）
+      - { flow: implement-cross-gate }          # 実コードの横断確認と承認（全件、両方式）
+
+- command:
+    id: aidd-mode-switch
+    command: /aidd-mode-switch
+    steps:
+      - { flow: mode-switch }                   # 管理用：全件方式 → Feature 方式の切替（1 回限り）。確定は host 操作 switch-mode

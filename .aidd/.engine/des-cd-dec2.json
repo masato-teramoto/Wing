@@ -1,0 +1,30 @@
+{
+ "operation_id": "614c53c3-1777-4c86-b31f-2127360b04d1",
+ "action": "decisions",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[contract-info-download]::end.review",
+  "event": "design-authoring-revise",
+  "item": "contract-info-download",
+  "status": "wait",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[contract-info-download]::end.review\", \"snapshot\": \"497efe308ca2dbc627ccf22de5622540e251f142980d57633991d5606f5b36a1\", \"run\": 6, \"inspection_hash\": \"b21b4dede139a1d093fe0886b27950439106778f2b7f68cfa0e7ed076974ed54\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 再検査で出なくなり、解消を記録した指摘 1 件\n  - #5-1 本書の正とした補足資料2件が削除済みで、381列等の定義が本文に無い\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 2 件\n  - 契約者①〜⑤の並びの「契約者区分」が、名称にした列かコードか読めない（取り込んだ表にも残る）（learned:design feature:contract-info-download 4-1）\n  - 名称にする列を 3 つだけ挙げ、登録状態の「コード:名称」が抜けている（取り込んだ表 No 9 に定義がある）（learned:design feature:contract-info-download 4-2）\n\n### 前回の検査（5 回目）からの変更\n\n- `specs/contract-info-download/design.md`：技術設計書、達成目標（Goals）、このスペックが持つ責務（This Spec Owns）、このスペックが持たない責務（Out of Boundary）、依存してよい対象（Allowed Dependencies）、再確認が必要になる変更（Revalidation Triggers）、ドメインモデル（Domain Model）、論理データモデル（Logical Data Model）、物理データモデル（Physical Data Model）、作業用テーブルとビューの定義、出力ボタンを押したときの流れ、VWTGM010 の絞り込みと処理順2、TWTGD050 発行依頼書リバースデータ（作業用。主キー・一意キー・索引なし）、VWTGM010 発行依頼書リバースデータビュー（3 つの SELECT を UNION ALL。データ種別で列の意味が変わる）、出力 CSV の項目定義（381 列）、書き方、契約者①〜⑤・支払情報①〜④の入れ方、注意、項目一覧、データ契約と外部連携（Data Contracts & Integration）、移行方針（Migration Strategy）、テスト戦略（Testing Strategy）、補足資料（Supporting References）\n  - 修正の指示に無い節の変更：技術設計書、達成目標（Goals）、このスペックが持つ責務（This Spec Owns）、このスペックが持たない責務（Out of Boundary）、依存してよい対象（Allowed Dependencies）、再確認が必要になる変更（Revalidation Triggers）、ドメインモデル（Domain Model）、論理データモデル（Logical Data Model）、物理データモデル（Physical Data Model）、作業用テーブルとビューの定義、出力ボタンを押したときの流れ、VWTGM010 の絞り込みと処理順2、TWTGD050 発行依頼書リバースデータ（作業用。主キー・一意キー・索引なし）、VWTGM010 発行依頼書リバースデータビュー（3 つの SELECT を UNION ALL。データ種別で列の意味が変わる）、出力 CSV の項目定義（381 列）、書き方、契約者①〜⑤・支払情報①〜④の入れ方、注意、項目一覧、データ契約と外部連携（Data Contracts & Integration）、移行方針（Migration Strategy）、テスト戦略（Testing Strategy）（意図した変更か確かめてください）\n\n### 判断が必要な指摘\n\n**対象**: `specs/contract-info-download/design.md`（スコープ: 成果物単位（contract-info-download） / 6 回目）\n**実行した層**: ① / ②\n\n**要判断**（1 件）\n\n| # | 種類 | 対象箇所 | 要約 | AI の推奨 | 判断 |\n|---|---|---|---|---|---|\n| 1 | 業務のあいまい・不足 | specs/contract-info-download/design.md § 出力ボタンを押したときの流れ / 2 | 流れ2が選んだ行を「基地局番号＋枝番」と書き、計画基地局番号と別の列に読める | 修正（新しい業務の事実は要らず、本文の他の 5 か所と同じ「計画基地局番号＋枝番」に揃えれば足りるため） | 未回答 |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n**答え方**（後に書いたものが優先。束・範囲でまとめて答えられます）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）。区分を `C[指摘の誤り]` `C[対象外]` `C[後で決める]` `C[解釈で対応]` で付ける。対象外・後で決めるに `+` を付けると（例 `C[後で決める+]`）、次の検査から同じ扱いにします\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n- **推奨** — AI の推奨を採用する（修正なら修正案がそのまま修正の指示になります）\n\n回答例: `1:推奨 / 束1:C[後で決める+] 桁数は design で決める / 3〜5:A / 7:D 次回まで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。根拠と修正案は `詳細 <番号>` で表示します。",
+  "id": "a94cb2a0f2584b35b815573885f404d7"
+ },
+ "expected": {
+  "root": "/home/kccs/Wing",
+  "state": "/home/kccs/Wing/.aidd/phase-progress.json",
+  "call": "design-authoring-revise",
+  "event": "design-authoring-revise",
+  "item": "contract-info-download",
+  "dispatch_id": "a94cb2a0f2584b35b815573885f404d7",
+  "unit": "design-authoring-revise/design-authoring-revise[contract-info-download]::end.review",
+  "scope": "feature:contract-info-download",
+  "run": 6,
+  "snapshot": "497efe308ca2dbc627ccf22de5622540e251f142980d57633991d5606f5b36a1",
+  "record_hash": "a225e0b1c9d7611d08da1ea9696bba3118eb30cf2d4447d3a62ddb107d7df210"
+ },
+ "data": {
+  "answer": "1:推奨"
+ }
+}

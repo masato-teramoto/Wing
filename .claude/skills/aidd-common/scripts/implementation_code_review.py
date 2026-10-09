@@ -133,7 +133,7 @@ def review_context(context):
             'changed_since_review': {p: ''.join(difflib.unified_diff((before.get(p) or '').splitlines(True),
                 (after.get(p) or '').splitlines(True), fromfile='previous/' + p, tofile='current/' + p))
                 for p in sorted(set(before) | set(after)) if before.get(p) != after.get(p)}}
-    return {'profile': quality.PROFILE, 'request': compact, 'request_sha256': store.fingerprint(request),
+    return {'profile': request['profile'], 'request': compact, 'request_sha256': store.fingerprint(request),
             'required_aspects': quality.ASPECTS,
             'unreviewed_inputs': prerequisites.unreviewed_inputs(context, request['inputs']['upstream']),
             'required_paths': sorted(set(request['inputs']['code']) | set(request['inputs']['deleted'])

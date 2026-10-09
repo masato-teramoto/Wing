@@ -32,7 +32,8 @@ def source_hash(root, approved=True):
     return artifacts.protected_digest(path)
 
 
-def parse(text):
+def table_rows(text):
+    """The fixed manifest table's data rows as cell lists (header checked). parse() validates the values."""
     sections = re.findall(r"^## フィーチャー一覧\s*\n(.*?)(?=^## |\Z)", text, re.M | re.S)
     if len(sections) != 1:
         raise ValueError("one フィーチャー一覧 section is required")
@@ -51,9 +52,13 @@ def parse(text):
         rows.append(cells)
     if rows[0] != COLUMNS or not all(re.fullmatch(r":?-{3,}:?", cell) for cell in rows[1]):
         raise ValueError("feature table header differs from the L1 contract")
+    return rows[2:]
+
+
+def parse(text):
     features, seen = [], set()
     previous_priority = 0
-    for cells in rows[2:]:
+    for cells in table_rows(text):
         if any(not cell or re.search(r"<[A-Z][A-Z0-9_]*>|\{\{", cell) for cell in cells):
             raise ValueError("feature table contains empty or placeholder cells")
         name, kind, _, dependency, priority, scale, _ = cells
@@ -76,6 +81,22 @@ def parse(text):
         seen.add(name)
         previous_priority = value
     return features
+
+
+def projection(root, names):
+    """Feature 方式の一覧入力の射影（計画 v3 §6.5）。names の行だけを、名前順に正規化して digest にする。
+
+    含める列は名前・種別・目的（概要）・依存・対応要求ID。優先度と想定規模は含めない（並び替え・規模の
+    見直しだけでは変わらない）。承認済みの一覧だけを読む。
+    """
+    source_hash(root)
+    rows = {cells[0]: [cells[0], cells[1], cells[2], cells[3], cells[6]]
+            for cells in table_rows(source_path(root).read_text(encoding="utf-8"))}
+    missing = sorted(set(names) - set(rows))
+    if missing:
+        raise ValueError("feature not in approved manifest: " + ", ".join(missing))
+    value = [rows[name] for name in sorted(set(names))]
+    return "projection:" + hashlib.sha256(json.dumps(value, ensure_ascii=False).encode()).hexdigest()
 
 
 def synchronize(root, state_path):

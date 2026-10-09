@@ -1,0 +1,24 @@
+{
+ "operation_id": "f7d22c3f-c3ab-48e6-b7a3-478b3f490973",
+ "dispatch": {
+  "call": "requirements-authoring-revise",
+  "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::run",
+  "event": "requirements-authoring-revise",
+  "item": "issue-request-tutorial",
+  "status": "emit",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": null,
+  "id": "23a599c6cdf64b299ee4a658a94df54d"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/issue-request-tutorial/requirements.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [],
+  "return_candidates": [],
+  "summary": "上流は front matter と改行コードのみの変更で本文は同一。修正は不要のため編集せず、再検査・再承認へ回す"
+ }
+}

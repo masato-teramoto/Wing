@@ -15,17 +15,18 @@ def read(context):
 
 def scopes(context):
     if context.action == "tasks-gate-run":
-        return ["feature:" + f["name"] for f in context.features()] + ["phase"]
+        names = [context.selection] if context.selection else [f["name"] for f in context.features()]
+        return [record_format.scope_of("feature", name) for name in names] + [context.scope]
     return [context.scope]
 
 
 def targets_for(context, scope):
-    if context.process == 'implement':
-        if context.action != 'implement-gate-run' or scope != context.scope:
+    if context.kind and context.kind != 'cross':
+        if context.kind != 'final' or scope != context.scope:
             raise ValueError('implementation approval is only available for the whole feature')
         return context.review_targets()
-    if scope.startswith("feature:"):
-        item = scope[len("feature:"):]
+    if record_format.is_feature_scope(scope):
+        item = record_format.scope_feature(scope)
         if scope == context.scope:
             return context.review_targets()
         rule = phase_rules.RULES[context.process]
@@ -46,7 +47,7 @@ def inspection(context, record, scope):
 
 def required_layers(context, scope):
     """L3 coverage policy; tasks' aggregate does not replace feature checks."""
-    if scope == "cross" or (context.action == "tasks-gate-run" and scope == "phase"):
+    if record_format.is_cross_scope(scope) or (context.action == "tasks-gate-run" and record_format.is_phase_scope(scope)):
         return "②"
     return "①②"
 
@@ -55,7 +56,7 @@ def complete_inspection(context, record, scope):
     # Only this scope's latest, hash-matching run can satisfy coverage. Earlier
     # runs and human acceptance of findings cannot fill missing inspection work.
     run = inspection(context, record, scope)
-    if context.process == 'implement':
+    if context.is_implementation:
         import implementation_checks
         implementation_checks.complete_inspection(context)
     required = required_layers(context, scope)
@@ -129,20 +130,38 @@ def approval_for(record, run, target):
                  and row["対象成果物"] == target and row["原本SHA256"] == run.hashes[target]), None)
 
 
+def phase_approved(context, target):
+    """tasks.md など工程承認の対象が、いずれかの工程承認（全件 phase または phase:<その feature>）で
+    現在の内容のまま承認されているか。status 欄は証跡にしない。記録は対象の工程（tasks.md なら tasks）のものを読む。"""
+    process = Path(target).stem
+    owner = phase_rules.ExecutionContext(context.root, context.state_path, phase_rules.RULES[process]["generate"],
+                                         target.split("/")[1] if target.startswith("specs/") else "")
+    record = read(owner)
+    digest = phase_rules.inspection_digest(owner, target)
+    name = target.split("/")[1] if target.startswith("specs/") else ""
+    for row in reversed(record.approvals):
+        if (row["対象成果物"] == target and row["原本SHA256"] == digest and record_format.is_phase_scope(row["スコープ"])
+                and record_format.scope_feature(row["スコープ"]) in ("", name)):
+            return row
+    raise ValueError("required upstream artifact is missing or not approved: " + target)
+
+
 def check_approved(context, require_all=True, allow_repair=False):
     if context.is_cross:
         record = ready(context, allow_repair=allow_repair)
         if require_all:
             import review_decisions
-            review_decisions.check_cross(context, context.process)
+            # ゲート自身の完了判定は、現在の回の人の確認を求める（§6.4）。「古い」を止めない緩い判定（check_cross）は
+            # 下流の前提確認（prerequisites・implementation_requests）だけに使う（F29）。
+            review_decisions._check_cross(context, context.process, context.selection)
         return record
     record = ready(context, allow_repair=allow_repair)
     run = inspection(context, record, context.scope)
-    if context.process == 'implement':
+    if context.kind:
         if require_all and any(approval_for(record, run, target) is None for target in context.review_targets()):
             raise ValueError('feature implementation needs current human approval evidence')
         return record
-    for target in context.review_targets():
+    for target in context.approval_targets():
         status = (artifacts.fields(context.path(target)) or {}).get("status")
         if require_all and status != "approved":
             raise ValueError("artifact is not approved: %s" % target)

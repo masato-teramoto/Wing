@@ -12,7 +12,7 @@ L0 の emit を受けたホストから起動される検査実行体。L3 の�
 - L0 の unit にある target（合成 Skill 名）と calls（順序・重複を保持した観点 Skill 名）。
 - 検査対象（context の `review_targets`。snapshot の対象と同じ）と上流の明示的なパス一覧。検査対象はゲートの `target_review`（省略時はアクションの出力すべて）。RFP と、`unreviewed_inputs` に挙げた入力（上流工程の `target_review` から外れた draft）を除く上流は approved。一覧に無いファイルを Glob で検査対象へ追加しない。
 - snapshot_path と findings_path、gate_record_path（読むだけ）、inspection_path（今回の1実行ブロックの書き出し先）。当該実行の phase / event / scope / run / at と対象・ハッシュが snapshot に含まれる。
-- scope は phase / feature:<name> / cross。feature 名は item と一致する。実行回数や日時を自分で推測・採番しない。
+- scope は phase / feature:<name> / cross / cross:<name> / phase:<name>。`cross:<name>`・`phase:<name>` は Feature 方式の selection 単位（横断確認の確認行、tasks の selection 承認の承認行）で、name は item（選択 feature）と一致する。feature 名は item と一致する。実行回数や日時を自分で推測・採番しない。
 - 検査の前提（context）。人が宣言・回答・選択したものだけが入る。
 
   | 項目 | 中身 |
@@ -35,11 +35,19 @@ profileが`task-specification-v1`の場合は、指定された`task-specificati
 仕様書内容の独立レビュー、MCP呼出し、gate-report、ファイル書込みは行わない。
 このprofileでは以下の検査記録用手順を適用しない。
 
-profileが`implementation-task-review-v1`の場合は、`task-implement-check`のSkillを読み、
+profileが`implementation-task-review-v1`または`implementation-task-reverify-v1`の場合は、`task-implement-check`のSkillを読み、
 指定された3観点を1回の呼出しで順に実施する。タスク範囲と返却JSONはそのSkillに従う。
 request.mcpの固定参照・全ACE指摘と実ファイル・保存済み検証実績を読み、ACE指摘への根拠付き対応、実施観点・未確認範囲・指摘・前回指摘の解消根拠を返す。
 実行コマンド、追加モデル起動、gate-report、ファイル書込みは行わない。
 このprofileでは以下の検査記録用手順を適用しない。
+
+profileが `implementation-cross-v1` の場合は実コードの横断確認（implement-cross-gate、全件）として扱う。
+cross_review_path の束ね（全 feature の実装承認行、全体結合確認の受領証、ACE 計画と全チャンクの結果）と
+reviews に挙げた全 feature の review.json の code 一覧、project_config の checks・wrapper を読む。
+実コード・テスト・設定・tasks・review.json・受領証には一切書き込まない。ACE の指摘（チャンクの結果の findings）は
+機械指摘として同じ検査回に載せ、ACE 対象外（cross_review.ace.excluded）は件数・理由・一覧を指摘とは別に示す。
+smoke_note があれば、smoke の 1 経路を縮めたことと理由を示す。scope は `cross`。
+返却JSONには scope/run/layers に加えて、実施済み aspects の順序付き ID 一覧を必ず含める。
 
 profileが `implementation-code-v1` の場合はコード検査として扱う。対象manifestのcode一覧と
 明示されたupstream/verification_pathsを読み、tool_results_pathの全必須コマンドの実績を確認する。

@@ -1,0 +1,28 @@
+{
+ "operation_id": "6b948e38-b20f-4e07-89a1-4d8ea2e56628",
+ "action": "approve",
+ "dispatch": {
+  "call": "steering-authoring-revise",
+  "unit": "steering-authoring-revise/steering-authoring-revise[-]::end.review",
+  "event": "steering-authoring-revise",
+  "item": null,
+  "status": "wait",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"steering-authoring-revise/steering-authoring-revise[-]::end.review\", \"snapshot\": \"575bca9f4da2f307d2c8dd8933caa35ac798ebf577ef87d443aef89240e98aea\", \"run\": 7, \"inspection_hash\": \"5298d0aaa312b9443e48298d882c733fb2546a3a53f1d460869d10e75e24148c\"}\n**Phase 2（Steering 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 方針そのものの妥当性\n- 「不要」としたプレースホルダーの理由\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：7 文書の書式、要求一覧との対応、文書間の二重定義・参照、品質特性・脅威・SLO の網羅、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-2-steering.md`）\n\n### 判断が必要な指摘\n\n**対象**: `steering/product.md` / `steering/tech.md` / `steering/architecture.md` / `steering/security.md` / `steering/non-functional.md` / `steering/database.md` / `steering/api-standards.md`（スコープ: 成果物単位 / 7 回目）\n**実行した層**: ① / ②\n\n**指摘**: なし（0 件。検査は実行済み）\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n判断が揃いました。承認の可否を回答してください（承認する場合は承認者名）。",
+  "id": "aeddb551653c456bb2f8cc52fdeff5b2"
+ },
+ "expected": {
+  "root": "/home/kccs/Wing",
+  "state": "/home/kccs/Wing/.aidd/phase-progress.json",
+  "call": "steering-authoring-revise",
+  "event": "steering-authoring-revise",
+  "item": "",
+  "dispatch_id": "aeddb551653c456bb2f8cc52fdeff5b2",
+  "unit": "steering-authoring-revise/steering-authoring-revise[-]::end.review",
+  "scope": "phase",
+  "run": 7,
+  "snapshot": "575bca9f4da2f307d2c8dd8933caa35ac798ebf577ef87d443aef89240e98aea",
+  "record_hash": "5298d0aaa312b9443e48298d882c733fb2546a3a53f1d460869d10e75e24148c"
+ },
+ "data": {}
+}

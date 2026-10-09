@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 ## 手順
 
-profileが`implementation-task-review-v1`の場合は、task-implement-checkの対象・返却契約を使う。
+profileが`implementation-task-review-v1`・`implementation-task-reverify-v1`の場合は、task-implement-checkの対象・返却契約を使う。
 当該タスクの完了条件、実テストと適用されるRED/GREEN/VERIFYを照合する。非コードでtdd=falseなら専用VERIFYを評価し、RED/GREENや単体テストを一律に要求しない。feature最終のtool_results_path/report_summaryは要求しない。最終レポートの不存在をタスク欠陥にしない。
 以下のfeature向け手順のうち全タスク・最終レポートを要求する部分は適用せず、実コードで判断する観点は共用する。
 

@@ -1,0 +1,28 @@
+{
+ "operation_id": "3763c8bb-4d6f-42df-ac87-7363258a5244",
+ "action": "approve",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[application-status-search]::end.review",
+  "event": "design-authoring-revise",
+  "item": "application-status-search",
+  "status": "wait",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[application-status-search]::end.review\", \"snapshot\": \"0160e581aa6293632e6dac54324775571ff65896aa34b0493e4ca28aba9b0c3d\", \"run\": 7, \"inspection_hash\": \"c9395aafcef8133301b7db43f94ab3bd978fec834281f2f8f2039fbce211462f\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 再検査で出なくなり、解消を記録した指摘 2 件\n  - #6-1 削除済みの `db-TWTGM100.md` を参照しており、参照先が実在しない\n  - #6-2 feature-list の依存は pbi だけだが、ir design の定義を依存先に挙げている\n\n### 前回の検査（6 回目）からの変更\n\n- `specs/application-status-search/design.md`：新しいファイル\n\n### 判断が必要な指摘\n\n**対象**: `specs/application-status-search/design.md`（スコープ: 成果物単位（application-status-search） / 7 回目）\n**実行した層**: ① / ②\n\n**指摘**: なし（0 件。検査は実行済み）\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n判断が揃いました。承認の可否を回答してください（承認する場合は承認者名）。",
+  "id": "69b34427ed764fbda105873c9419d7c5"
+ },
+ "expected": {
+  "root": "/home/kccs/Wing",
+  "state": "/home/kccs/Wing/.aidd/phase-progress.json",
+  "call": "design-authoring-revise",
+  "event": "design-authoring-revise",
+  "item": "application-status-search",
+  "dispatch_id": "69b34427ed764fbda105873c9419d7c5",
+  "unit": "design-authoring-revise/design-authoring-revise[application-status-search]::end.review",
+  "scope": "feature:application-status-search",
+  "run": 7,
+  "snapshot": "0160e581aa6293632e6dac54324775571ff65896aa34b0493e4ca28aba9b0c3d",
+  "record_hash": "3bce49d998105940e3e75c5a14921ec4426794035c623d1aadbfa72a0966be37"
+ },
+ "data": {}
+}

@@ -1,0 +1,30 @@
+{
+ "operation_id": "ce70aecb-d062-47c5-9c41-ca2e6d0ea12c",
+ "dispatch": {
+  "call": "steering-authoring-revise",
+  "unit": "steering-authoring-revise/steering-authoring-revise[-]::run",
+  "event": "steering-authoring-revise",
+  "item": null,
+  "status": "emit",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": null,
+  "id": "7d402d95ab6a4f5b9cfda25f77615200"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "steering/product.md",
+   "steering/tech.md",
+   "steering/architecture.md",
+   "steering/security.md",
+   "steering/non-functional.md",
+   "steering/database.md",
+   "steering/api-standards.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [],
+  "return_candidates": [],
+  "summary": "上流の要求一覧は front matter（status/updated_at）のみの変更で本文は同一。steering の修正は不要のため編集せず、再検査・再承認へ回す"
+ }
+}

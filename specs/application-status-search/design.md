@@ -1,7 +1,7 @@
 ---
 feature: application-status-search
 status: approved
-updated_at: 2026-10-09T13:50:01+09:00
+updated_at: 2026-10-09T19:58:13+09:00
 ---
 
 # 技術設計書
@@ -95,7 +95,7 @@ updated_at: 2026-10-09T13:50:01+09:00
 
 - **依存先**:
   - WTG 申請状態サービス（`function/wtg/common`。pbi design の公開契約）：`getExternalScope`（社外ユーザーの判定と範囲）
-  - 物件申請情報（`TWTGM080`）・契約局情報（`TWTGM140`）・承認履歴（`TWTGM180`）の定義（pbi design）、発行依頼書（`TWTGM100`）の定義（ir design。`specs/issue-request/db-TWTGM100.md`）。本 feature は読むだけ
+  - 物件申請情報（`TWTGM080`）・契約局情報（`TWTGM140`）・承認履歴（`TWTGM180`）の定義（pbi design）、発行依頼書（`TWTGM100`）の定義（ir design。`specs/issue-request/design.md` の `#### TWTGM100 の DB レイアウト（発行依頼書情報ﾏｽﾀ。Q-DS-IR-003）`）。本 feature は読むだけ。feature-list の依存列は property-basic-info だけだが、本 feature は `TWTGM100` を外部結合で読むため ir design の DB レイアウトを読む。feature-list の依存列は Phase 5 の最後にまとめて直す（upstream-carryover）
   - 物件基本情報登録変更の口：`/wtg070/pushApplicationNo`（申請No を受けて開く）（pbi design）
   - wing の共通基盤：`ServiceBase` の 1 ページの件数・上限件数・警告件数（`validateSearchLimitCount`）とページング（`wing/src/main/java/jp/co/kccs/wt/common/service/ServiceBase.java:112`〜`:242`）、ファイルのダウンロード（同 `:252`〜`:264`）、`SessionService`、`StringUtils.escapeSQLforLike`（`wing/src/main/java/jp/co/kccs/wt/common/utils/StringUtils.java:936`）、`LoginUserUtils`、`CodeMstService`、共通部品 `common/pager`・`common/pageCount`・`common/emptyMsg`
   - CSV：`CsvUtils`（pbi design が新しく作る。orangesignal-csv 2.2.1）

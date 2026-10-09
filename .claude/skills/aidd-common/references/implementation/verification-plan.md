@@ -17,7 +17,7 @@ requirements/design/tasks、steering・docs、既存コード・テスト・実�
 
 1. 既存設定があればそれを基点にし、新規なら下の基本例を使う。featureを置き換え、tasks.mdの全IDをtasksへ写す。
 2. 完了条件を確かめる実コマンドをchecksへ定義し、各タスクのcheck_idsから参照する。編集先はallowed_paths、範囲外の読取依存はverification_paths、生成物の除外はgenerated_pathsへ記す。
-3. 新規案件では`task_review: {"schema": 2, "engine": "host", "mcp": "ace"}`と各タスクの`review_paths`も記す。編集範囲外の呼出し元・呼出し先・共有fixture等を列挙し、追加依存がなければ`[]`にする。
+3. 下の「ACEの適用区分」でtasksの作成・修正要求と履歴を確認する。新規作成・明示的な再作成では、対象featureに`task_review: {"schema": 2, "engine": "host", "mcp": "ace"}`と各タスクの`review_paths`を記す。編集範囲外の呼出し元・呼出し先・共有fixture等を列挙し、追加依存がなければ`[]`にする。局所修正・通常再開・VerUpのみでは既存の適用設定を維持する。
 4. 実テストのまとまりごとにsuitesを定義し、対象タスクのspecification_scopeへそのIDを写す。非コードで対象外にする時だけ補足を読み、両方の理由を記す。
 5. feature_checksへchecksの全IDを宣言順に写す。全タスクの必須項目、検査ID・スイートIDの参照先、未使用スイートがないことを確認してから選択する。
 
@@ -79,7 +79,7 @@ task_qualityの適用は仕様書生成の有無を表す。ホストは新規�
 
 ## タスクのコードレビュー
 
-新規案件は`task_review: {"schema": 2, "engine": "host", "mcp": "ace"}`を設定する。3観点のL4レビューを
+tasksの新規作成・明示的な再作成では、下の適用区分に従って`task_review: {"schema": 2, "engine": "host", "mcp": "ace"}`を設定する。3観点のL4レビューを
 仕様書生成後・人間確認前に1回実施する。準備処理でACEを実行し、その証跡と指摘を同じ3観点レビューへ渡す。
 各タスクの`review_paths`は読取り依存の文字列配列で、追加がなければ`[]`を明記する。
 allowed_pathsに含まれる実装・テストは自動で対象になる。レビュー時には依存が実在する必要がある。
@@ -91,7 +91,39 @@ allowed_pathsに含まれる実装・テストは自動で対象になる。レ�
 明示的な非コード作業だけを対象外とする場合はnon_code_reasonとreview_exemptionに実理由を記し、
 review_pathsを併記しない。VERIFYとfeature最終検査は維持する。
 task_review未設定はレビュー非適用を表す。未公開のschema 1は受理せず、schema 2へ統一する。
-進行中案件へ設定・ゲートを上書きして移行しない。
+適用を切り替える条件と、既存設定を維持する条件は次のとおり。
+
+### ACEの適用区分
+
+案件の開始時期ではなく、対象featureのtasksに対する作成・修正要求とその履歴で区分する。
+検証計画がまだ無いこと、再承認されたこと、資材の版が変わったことだけでは新規作成・再作成と判定しない。
+
+区分の根拠は、今回の作成・修正依頼と対象featureの保存済み結果を組み合わせて読む。
+初回のPhase 8では、`.aidd/phase-progress.json`の`workflow.results["tasks-authoring-generate[<feature>]"]`を確認する。
+`status: completed`かつ`targets`に対象の`specs/<feature>/tasks.md`を含む生成結果が今回の作成に対応していれば、
+それを新規作成の根拠としてACEを既定有効にする。新規かどうかを重ねて質問しない。
+直近の結果が再開で消えている場合は、同ファイル直下の`host_operations`に残る完了したsubmitの
+`request.event` / `request.item` / `request.payload.result`も参照できる（`status: finished`、`result: ok`を確認）。
+イベント名だけ、対象を持たない結果、未完了の記録では生成完了としない。古いgenerate記録が残っていても、
+今回の依頼が通常再開・VerUp・既存tasksの局所修正なら新規作成へ読み替えない。
+明示的な再作成は、保存済みの修正指示（repairのinstruction）や人の実回答を根拠にする。
+移行・持込み等で今回の作成との対応を確かめられない場合だけ、不足する履歴を確認する。
+
+| tasksの扱い | 対象featureのtask_review |
+|---|---|
+| 新規作成 | ACEを既定有効にする |
+| 明示的な再計画・再生成による再作成 | 既存案件でもACEを既定有効にする。既に同じ設定なら重複追加しない |
+| 局所的な指摘修正、通常の再開、VerUpのみ | 設定済み・未設定を含め既存の適用設定を維持する。これらを再作成と扱わない |
+
+設定はtasks承認後にPhase 8のホストが記入し、Phase 7から直接書かない。新規作成・再作成では旧設定が
+未設定だったことだけを非適用の理由にしない。明示的な非適用指示は尊重し、その指示と対象範囲を記録する。
+要求・履歴だけでは区分できなければ、その不足を確認してから適用を決める。既定有効にするための確認を毎タスク追加しない。
+各タスクのreview_pathsと非コードの理由付き例外は上記規則に従い、既存のレビュー結果に対する人間確認を維持する。
+
+Phase 8開始後は実行中の設定・ゲートを上書きしない。変更が必要なら、適用前に対象feature、変更項目、
+全タスクの再検証・最終検査・再承認への影響を示し、[修正・再開](contract.md#修正再開)の既存手順で切り替える。
+未回答dispatch・進行中実行を確定し、承認済み入力を揃え、実actor・理由付きの`implement-rebase`と新request_idを使う。
+旧証跡・完了状態・承認は履歴として残し、新実行へ付け替えない。タスク構造・状態形式・移行処理の変更が必要なら別対応とする。
 
 MCPに送るのは、その生成・repair executionの開始版との差分にある追加・変更ファイルの現行全文。
 同executionのretryは開始版を維持し、別repair executionは新しいbaselineを使う。

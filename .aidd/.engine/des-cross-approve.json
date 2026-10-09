@@ -1,0 +1,28 @@
+{
+ "operation_id": "8dac8ddf-eb3f-4123-827c-28e86c8e98b5",
+ "action": "approve",
+ "dispatch": {
+  "call": "design-cross-gate",
+  "unit": "design-cross-gate/design-cross-gate[-]::end.review",
+  "event": "design-cross-gate",
+  "item": null,
+  "status": "wait",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-cross-gate/design-cross-gate[-]::end.review\", \"snapshot\": \"d18bde3baf464e8fbec0c73a72357b3baa3145c74012d8ad972b77a494e5503c\", \"run\": 4, \"inspection_hash\": \"c01ca2247ec0b5515847871f66c7d1511b9fb4661abd7a00a408bd942b61f05d\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 再検査で出なくなり、解消を記録した指摘 2 件\n  - #3-2 項目一覧の「取込側の型・バイト数」41 行が、取込のリバース表の型・桁と食い違う\n  - #3-3 128 行の読む側に契約情報ダウンロードを挙げるが読まず、申請状況検索一覧が漏れている\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 5 件\n  - 発行依頼書登録変更の更新は申請の排他用の値を変えず、物件基本情報の排他の前提と食い違う（learned:design cross 2-1）\n  - TWTGM140の全345列の定義がir側の資料にだけあり、持ち主のpbi designは別の言い方で参照しない（learned:design cross 2-2）\n  - 契約局情報欄の契約者の条件が契約者区分 \"01\" で、発行依頼書の値（1:契約者）と合わない（learned:design cross 2-3）\n  - 契約者①〜⑤の並びの「契約者区分」が、名称にした列かコードか本文で読めない（learned:design feature:contract-info-download 4-1）\n  - CSV の値の形で名称にする列を 3 つだけ挙げ、登録状態の「コード:名称」が抜けている（learned:design feature:contract-info-download 4-2）\n\n### 前回の検査（3 回目）からの変更\n\n- 上流の入力が前回の検査から変わった（または比べられない）ため、全体を検査する。対象の全体を見てください。\n\n### 判断が必要な指摘\n\n**対象**: `specs/property-basic-info/design.md` / `specs/issue-request/design.md` / `specs/issue-request-tutorial/design.md` / `specs/print-report/design.md` / `specs/application-status-search/design.md` / `specs/contract-info-import/design.md` / `specs/contract-info-download/design.md`（スコープ: 横断 / 4 回目）\n**実行した層**: ②（形式検査を持たない横断スコープのため ② のみ）\n\n**要判断**（1 件）\n\n| # | 種類 | 対象箇所 | 要約 | AI の推奨 | 判断 |\n|---|---|---|---|---|---|\n| 1 | 文書間の参照 | specs/issue-request/design.md § 再確認が必要になる変更（Revalidation Triggers） / TWTGM100・TWTGM140 の列の変更（128 行） | 128 行の読む側に契約情報ダウンロードを挙げるが読まず、申請状況検索一覧が漏れている | 修正（事実は両 design の本文で確認でき、業務の新しい事実は要らない（人の指示で Phase 5 の他の修正は対象外とする方針があるため、扱いは人の判断による）） | 未回答 |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n**答え方**（後に書いたものが優先。束・範囲でまとめて答えられます）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）。区分を `C[指摘の誤り]` `C[対象外]` `C[後で決める]` `C[解釈で対応]` で付ける。対象外・後で決めるに `+` を付けると（例 `C[後で決める+]`）、次の検査から同じ扱いにします\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n- **推奨** — AI の推奨を採用する（修正なら修正案がそのまま修正の指示になります）\n\n回答例: `1:推奨 / 束1:C[後で決める+] 桁数は design で決める / 3〜5:A / 7:D 次回まで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。根拠と修正案は `詳細 <番号>` で表示します。",
+  "id": "f778a3e67461421e9ec144a8ec4059e3"
+ },
+ "expected": {
+  "root": "/home/kccs/Wing",
+  "state": "/home/kccs/Wing/.aidd/phase-progress.json",
+  "call": "design-cross-gate",
+  "event": "design-cross-gate",
+  "item": "",
+  "dispatch_id": "f778a3e67461421e9ec144a8ec4059e3",
+  "unit": "design-cross-gate/design-cross-gate[-]::end.review",
+  "scope": "cross",
+  "run": 4,
+  "snapshot": "d18bde3baf464e8fbec0c73a72357b3baa3145c74012d8ad972b77a494e5503c",
+  "record_hash": "5f48c48b6ef33961fbe3644556dd81c59916f94656664871f5972eab1aeb28e9"
+ },
+ "data": {}
+}

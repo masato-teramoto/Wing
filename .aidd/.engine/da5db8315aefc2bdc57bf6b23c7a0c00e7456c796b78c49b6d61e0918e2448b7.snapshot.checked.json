@@ -1,10 +1,10 @@
 {
   "event": "requirements-authoring-revise",
   "scope": "feature:issue-request-tutorial",
-  "run": 4,
-  "snapshot": "356c5ace9efc5f4d6c32307f97dd01e3169184f36f07441bd76144f20dd6b4a5",
-  "record_bytes": 230655,
-  "record_hash": "a2cd5ed753d5a39d13b42ac11ae4197a63e4ef16c5a86f282a5e09ab46616d6d",
+  "run": 5,
+  "snapshot": "7a7dee7fd5cec1f44deea47c538515123689b64fb076ddcfa7b8d86b96515c46",
+  "record_bytes": 303229,
+  "record_hash": "cf20bd653328e3ab0b8810d56df601e59c45c29fe791a09cb2ca1a6c7b864c5b",
   "targets": [
     "specs/issue-request-tutorial/requirements.md"
   ],
@@ -12,8 +12,8 @@
     "specs/issue-request-tutorial/requirements.md": "3e1042329d04e128a1c95e89adc17075768e5744202d85de60d5704eedf1923e"
   },
   "inputs": {
-    ".aidd/requirement-list.md": "bdf3027f78209be11ea79d4b3026928aaa5959c4f6fbebb20c35357626604947",
-    ".aidd/feature-list.md": "71a64dc3cbf71bc6ddb02a4dc6f8247344064ca63e8a291e5881763ef59256ae",
+    ".aidd/requirement-list.md": "0f27710cd1eb4f103a426cbccec48d5af14f504bd9e40c7f8c697f3ef031c859",
+    ".aidd/feature-list.md": "9c8fae4dbc53b2ff6cc98e2476e7c02797d2077359d9b2709d5eff7e5111b642",
     "steering/product.md": "cde5dd8a1007c53f93a270de63e01d294d38f47695e96027d52b6b4862bc149b",
     "steering/tech.md": "58cc32eb0ad29d7b7185bb02e710ce8d882e374f93eb0a609ae293e3903a4966",
     "steering/architecture.md": "98be0c57ba256c0aeaf1a66d69682e63b47d20ec0f91ab776589a54e5eb8c33d",

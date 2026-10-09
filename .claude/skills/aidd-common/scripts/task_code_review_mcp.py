@@ -3,17 +3,34 @@ import copy
 from pathlib import Path
 
 import code_review_mcp as adapter
+import implementation_project as project  # ACE の版・索引の鍵の定義は L3 に 1 つだけ置く（§6.11、L4-5）
 import implementation_store as store
 import task_quality_storage as storage
 
 BASE_NAMES = {'mcp-request.json', 'mcp-response.json', 'mcp-review.json', 'mcp-summary.md'}
-RULES = ('code_review_mcp.py', 'task_code_review_mcp.py', 'task_code_review.py', 'task_quality_storage.py')
+RULES = project.ACE_RULES
 
 
 def version():
     config, sha = adapter.settings()
     return {'settings_sha256': sha, 'config': config,
             'rules': {name: store.digest(Path(__file__).with_name(name).read_bytes()) for name in RULES}}
+
+
+def record_index(root, result, reference):
+    """受け付けて応答を得たファイルを (path, sha256, 版) の索引に足す（execution をまたぐ再利用：M-06・M-08）。"""
+    version = project.ace_version()
+    for path in result['reviewed']:
+        target = project.index_path(path)
+        try:
+            value = store.read(root, target)
+        except (OSError, ValueError):
+            value = {'schema': 1, 'path': path, 'entries': []}
+        entry = {'sha256': result['files'][path], 'version': version, 'status': 'completed', 'reference': reference,
+                 'findings': [f for f in result['findings'] if f['source']['path'] == path]}
+        if not any(row['sha256'] == entry['sha256'] and row['version'] == version for row in value['entries']):
+            value['entries'].append(entry)
+            store.write(root, target, value)
 
 
 def file_name(path):
@@ -167,4 +184,5 @@ def prepare(context_value, execution, request, prior=None):
     manifest = {'schema': 1, 'files': {name: store.digest(storage.path(root, execution_id, number, name).read_bytes()) for name in sorted(names)}}
     storage.write_once(root, execution_id, number, 'mcp-manifest.json', manifest)
     reference = {'execution_id': execution_id, 'round': number, 'manifest_sha256': store.fingerprint(manifest)}
+    record_index(root, result, {'kind': 'task', **reference})
     return context(reference, result)

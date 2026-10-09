@@ -52,7 +52,8 @@ Claude Code が未導入の場合は [公式セットアップ](https://code.cla
 | `/aidd-requirements` | feature 別 requirements と横断確認（Phase 4） |
 | `/aidd-design` | feature 別 design、横断確認、統合 docs（Phase 5–6） |
 | `/aidd-tasks` | feature 別 tasks と全体確認・承認（Phase 7） |
-| `/aidd-implement <feature> [1,2,...]` | タスク1件ずつ実装し、全体検査とfeature単位の人間承認（Phase 8） |
+| `/aidd-implement <feature> [1,2,...]` | タスク1件ずつ実装し、全体検査とfeature単位の人間承認（Phase 8）。全 feature の実装承認の後に、全体結合確認と実コードの横断確認 |
+| `/aidd-mode-switch` | 全件方式から Feature 方式への切替（1 回限り。確認表示を見てから確定） |
 
 Phase 8の開始前に、実在するテスト・検査コマンドとBoundaryに基づく編集範囲を
 `.aidd/implementation/config/<feature>.json` に設定します（基本的に AI が設定します。不足があれば対話で確認します）。
@@ -73,6 +74,25 @@ AI が OSSのテスト結果・coverageと仕様説明を用意します。タ�
 指摘を「対応せず進める」としても承認は止まります。修正して再検査を行い、必要な検査を揃えて
 から承認します（形式の指摘を人が「指摘の誤り」と判断した場合は止まりません）。
 過去版の検査・承認履歴がある案件は、同梱の移行手順に従って診断してください。
+
+### 進め方の方式（alpha3.2）
+
+最初の `/aidd-requirements` の計画停止点で、進め方を選びます。
+
+- **全件方式**：全 feature の requirements を作ってから design へ、と工程ごとに全件を進めます（alpha3.1 までと同じ）。
+- **Feature 方式**：1 feature ずつ選んで requirements → design → docs → tasks → 実装まで進めます。
+  各工程の計画停止点で対象の feature（`select-scope`）を確かめます。共通機能（種別 Platform）の feature の番では、
+  利用側と合わせた横断確認を行います。Phase 8 にも計画停止点 `implement-plan[<feature>]` があり、
+  対象タスク・検証計画・停止回数・依存先との変更範囲の重なりを確かめてから実装に入ります。
+- 全件方式で始めた案件は、Phase 4 以降で 1 回だけ `/aidd-mode-switch` で Feature 方式へ切り替えられます（戻せません）。
+
+どちらの方式でも、全 feature の実装承認の後に次の 2 つを通すまで Phase 8 は完了になりません
+（[統合確認の参照](.claude/skills/aidd-common/references/implementation/integration.md)）。
+
+- **全体結合確認**：案件の検証計画 `.aidd/implementation/config/_project.json` の build と smoke（起動→共通機能を通る 1 経路→停止）を実行します。
+  smoke の 1 経路を実行する wrapper は、tasks の計画停止点で選ぶ owner feature の「結合確認タスク」で作ります。
+- **実コードの横断確認**（`implement-cross-gate`）：feature をまたいだ依存境界・要求の実装網羅・重複などを検査し、
+  ACE で案件全体のコードを静的レビューした結果と合わせて 1 回で承認します。
 
 ### 指摘への判断（alpha3.1）
 
@@ -118,6 +138,39 @@ Phase 8 では、承認済みタスクごとの実コード・テストが案件
 記録は監査と再開に必要なので、実行開始後は保存してください。
 
 ## 問題が起きたとき
+
+### Windowsのパス長エラー・案件フォルダの移動
+
+本対応を導入済みのα版では、進捗を含む案件フォルダ全体を短い場所へ移して継続できます。
+検査と子プロセスを停止してバックアップし、`.aidd`・`.claude`を含めて、例えば `C:\w\project`
+へ移動します。移動先を開き直して同じ入口コマンドを実行してください。実行資材を変えず、
+配置場所だけを変える場合は承認を引き継げます。元のコピーと同時には実行しないでください。
+
+旧版で開始した案件は、コード・成果物・履歴を保存したコピーで、最新版の配布一式への更新を優先して検討します。
+11ファイルだけの部分更新は必須ではありません。旧構成の未完了操作がある場合は更新後のrebaseが拒否されるため、
+旧版で完結させるか、停止したコピーで復旧方法を診断します。更新できた場合も、Phase 8の
+`implement-rebase` と必要な再検証・再承認を行います。旧実行と完了情報は履歴に残ります。
+完成済みコードを故意に壊してREDを作らず、正規手順が成立しない場合は停止してください。
+[既存案件の復旧手順](.claude/skills/aidd-common/references/workspace-recovery.md)で一式更新の条件と操作順を確認してください。
+
+旧版の失敗で「verification may still be running」が残る場合は、Windowsのターミナルで
+案件ルートから次を実行します。
+
+```powershell
+python -B .claude/skills/aidd-common/scripts/aidd_entry.py recover-checks
+# 表示された検査と子プロセスがすべて停止していることを確認した後だけ実行
+python -B .claude/skills/aidd-common/scripts/aidd_entry.py recover-checks --processes-stopped
+```
+
+処理中の記録を`.aidd/recovery/`へ退避して再試行を許可します。ログと既存の完了証跡は保持します。
+検査コマンドが実行済みなら、再試行前に部分導入や外部への更新の状態も確認してください。
+長いパス設定を有効化する必要はありませんが、feature名・check ID・レポート階層も短くしてください。
+コマンド内の絶対パスや仮想環境は別途確認が必要です。
+
+α版の緩和は配置場所の照合に限ります。実行ID・回答内容・ファイルのハッシュは照合を続けます。
+案件全体のコピーも同じ案件として扱う制約があります。詳細は[実装契約](.claude/skills/aidd-common/references/implementation/contract.md#α版の配置場所変更)。
+
+### その他
 
 - コマンドが見えない: `.claude/skills/` があるフォルダで Claude Code を再起動し、
   `/aidd-requirements-init` を確認してください。`--safe-mode` ではプロジェクト資材が読み込まれません。

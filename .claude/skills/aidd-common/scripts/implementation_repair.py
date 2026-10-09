@@ -16,7 +16,7 @@ import project_progress
 def request(context, payload, actor):
     review_decisions.person(actor)
     flows.configuration(context, validate=True)
-    if context.action != requests.FINAL:
+    if requests.kind(context) != 'final':
         raise ValueError('select implementation repairs from the feature review')
     request_id = store.identifier(payload.get('request_id'))
     path = store.request_path(request_id)
@@ -98,6 +98,22 @@ def resolution_ready(context, scope, run, number):
     requests.check_feature_ready(context, context.item)
     import implementation_checks
     implementation_checks.complete_inspection(context)
+
+
+def reopen(context, changed):
+    """記録入力が変わった Phase 8 の consumer の開き直し（種類ごとに 1 か所、§6.11）。
+
+    計画停止点 implement-plan[S] は計画を出し直す（了承の照合値も変わるので、了承前にタスクは始まらない）。
+    実装の証跡を持つ種類は feature の証跡を失効させる。
+    """
+    if requests.kind(context) in ('plan', 'integration'):
+        project_progress.redo(context, context.action, context.item)
+    elif requests.kind(context) == 'cross':
+        import repair_requests
+        repair_requests._redo_cross(context, context.process, '')
+    elif requests.kind(context) in phase_rules.EVIDENCE_KINDS:
+        invalidate_feature(context, requests.feature_of(context),
+                           retire_plan=any(p.endswith('/tasks.md') for p in changed))
 
 
 def invalidate_feature(context, feature, retire_plan=False):

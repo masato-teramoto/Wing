@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 ## 手順
 
-profileが`implementation-task-review-v1`の場合は、task-implement-checkの対象・返却契約を使う。
+profileが`implementation-task-review-v1`・`implementation-task-reverify-v1`の場合は、task-implement-checkの対象・返却契約を使う。
 当該タスクの変更と宣言された関連入力を読む。影響先が不足する場合はパスと理由を未確認として返す。
 以下のfeature向け手順のうち全タスク・最終レポートを要求する部分は適用せず、実コードで判断する観点は共用する。
 

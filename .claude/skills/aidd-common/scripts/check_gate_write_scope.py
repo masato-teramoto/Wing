@@ -166,7 +166,7 @@ def _append_staged(context, before):
         temporary = record_path.with_name(record_path.name + ".append.tmp")
         temporary.write_bytes(data + suffix)
         temporary.replace(record_path)
-    if context.scope != "cross" and context.process != "implement":
+    if not record_format.is_cross_scope(context.scope) and not context.kind:
         import project_state
         for relative, previous in before["artifacts"].items():
             target = context.path(relative)
@@ -220,12 +220,10 @@ def validate_staged(context):
 
 def check(context):
     before = snapshot_artifacts.load(context)
-    if context.process == 'implement':
-        import implementation_evidence
-        import implementation_requests
-        state = implementation_requests.feature_state(context, context.item)
-        if before['workspace_code'] != implementation_evidence.inventory(context, state['policy']):
-            raise ValueError('inspector modified implementation workspace files')
+    import implementation_requests
+    code = implementation_requests.workspace_code(context)
+    if code is not None and before.get('workspace_code') != code:
+        raise ValueError('inspector modified implementation workspace files')
     validate_staged(context)
     for relative, previous in before.get("unreviewed", {}).items():
         if snapshot_artifacts.body_digest(context.path(relative)) != previous["sha256"]:
@@ -237,7 +235,7 @@ def check(context):
         target = context.path(relative)
         if phase_rules.inspection_digest(context, relative) != previous["sha256"]:
             raise ValueError("protected artifact changed: %s" % relative)
-        if context.process == "implement":
+        if context.kind:
             continue
         status = (artifacts.fields(target) or {}).get("status")
         allowed = (previous["status"], "review") if previous["status"] in ("draft", "review") else (previous["status"],)

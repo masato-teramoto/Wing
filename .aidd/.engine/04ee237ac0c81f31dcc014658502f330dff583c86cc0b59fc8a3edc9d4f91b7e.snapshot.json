@@ -3,17 +3,44 @@
   "phase": "intake",
   "event": "requirement-intake-revise",
   "scope": "phase",
-  "at": "2026-10-01T14:39:31+09:00",
+  "at": "2026-10-09T16:58:05+09:00",
   "artifacts": {
     ".aidd/requirement-list.md": {
       "status": "draft",
-      "sha256": "bdf3027f78209be11ea79d4b3026928aaa5959c4f6fbebb20c35357626604947"
+      "sha256": "0f27710cd1eb4f103a426cbccec48d5af14f504bd9e40c7f8c697f3ef031c859"
     }
   },
   "record": {
-    "bytes": 17827,
-    "sha256": "6756dd25a7fb8c7a781ad38c405734916c689a0ddffe8638e7fe4f48d559ce07",
-    "blocks": 21
+    "bytes": 26927,
+    "sha256": "72624417632aa93c4ef487414166bcb71cc6b24581196ff806573b68b884c636",
+    "blocks": 40
   },
-  "run": 3
+  "run": 4,
+  "sections": {
+    ".aidd/requirement-list.md": {
+      "": "e3b0c44298fc1c14",
+      "要求一覧": "7170714ec108bab9",
+      "要求一覧 (2)": "45a0375a024e5049",
+      "項目の定義": "c2960a90dd96344d",
+      "記入ルール": "4b13093d7ec4d50a",
+      "要求IDの安定性ルール": "859616e07c98e3d0",
+      "廃止済み要求": "f85f0d2e25007802",
+      "*": "7170714ec108bab9"
+    }
+  },
+  "own_sections": {
+    ".aidd/requirement-list.md": {
+      "": "e3b0c44298fc1c14",
+      "要求一覧": "9316103fa469c1f4",
+      "要求一覧 (2)": "8241bea735f5ca55",
+      "項目の定義": "c2960a90dd96344d",
+      "記入ルール": "4b13093d7ec4d50a",
+      "要求IDの安定性ルール": "859616e07c98e3d0",
+      "廃止済み要求": "f85f0d2e25007802",
+      "*": "7170714ec108bab9"
+    }
+  },
+  "inputs": {
+    ".aidd/rfp/RFP.md": "821ef820b9f314a3cc375b7fcdef36a887ee4f84ee2c153a2c3a6f0a37c95f00"
+  }
 }

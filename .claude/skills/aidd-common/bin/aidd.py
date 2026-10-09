@@ -151,17 +151,17 @@ def _dispatch(args):
         # so a script running inside a call may read the configuration it runs under.
         definitions = repositories.load(args.config)
         # The log settings are part of the configuration a run depends on (doctor uses validate).
-        log_module.Settings.load(os.path.abspath(args.root), getattr(args, "log_config", None) or os.environ.get("AIDD_LOG_CONFIG"))
+        log_module.Settings.load(os.path.realpath(args.root), getattr(args, "log_config", None) or os.environ.get("AIDD_LOG_CONFIG"))
         return _validate(args, definitions)
-    state_path = args.state if os.path.isabs(args.state) else os.path.join(os.path.abspath(args.root), args.state)
+    state_path = os.path.realpath(args.state if os.path.isabs(args.state) else os.path.join(os.path.realpath(args.root), args.state))
     with aidd_lock.hold(state_path):
         return _dispatch_locked(args)
 
 
 def _dispatch_locked(args):
     definitions = repositories.load(args.config)
-    root = os.path.abspath(args.root)
-    state_path = args.state if os.path.isabs(args.state) else os.path.join(root, args.state)
+    root = os.path.realpath(args.root)
+    state_path = os.path.realpath(args.state if os.path.isabs(args.state) else os.path.join(root, args.state))
     state = state_module.State.load(state_path)
     state.path = state_path
 

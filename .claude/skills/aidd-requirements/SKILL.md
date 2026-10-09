@@ -28,3 +28,21 @@ description: 承認済み feature 一覧から feature 別 requirements と横�
    1 件目の粒度・AC・要求ID対応の誤りを後続に繰り返さないため、feature ごとに承認してから次へ進む。
 3. 全 feature の承認後、`--call requirements-cross-gate advance` で横断検査を行い人間の確認を得る。
 4. 修正・差戻しは host-protocol §4。完了後 `/aidd-design` へ進むよう人へ伝える。
+
+## Feature 方式（`workflow.mode` が `feature`）
+
+方式は手順 1 の最初の計画停止点（方式の選択）で決まる。Feature 方式を選んだら、手順 2〜3 の全件ループは使わず、
+選んだ feature（S）1 件ずつ次のとおり進める。`--item` は付けない。入口（`aidd_entry.py`）が選択中の S を補う（計画停止点・作成・修正は S。横断確認・全体確認は、その工程の成果物が全 feature で承認済みのときだけ item 無しの全件、それ以外は S。差し戻した S の再承認も S）。
+明示した item が選択中の S と違えば L3 が拒否する。S が未選択なら入口が止めて select-scope を求める。
+承認後も、依存する側の feature には自動で進まない。次の feature は人が選ぶ（select-scope）。
+
+1. 計画の候補（依存先・被依存・選べない理由）を人に示し、人が選んだ feature で `select-scope`（payload `{"feature": "<名前>"}`）を呼ぶ。
+   計画停止点の待ち中に選び直すときも同じ（待っていた計画は出し直しになる）。
+2. `--call requirements-plan advance` で S の計画停止点を提示し、了承を記録する。
+3. `--call requirements-authoring-generate advance` で S の requirements を作り、検査・人間レビュー・承認まで進める
+   （修正の回は返却の `repair` のとおり `--call requirements-authoring-revise advance`）。
+4. S が Platform（種別が Platform）で、S を依存先に持つ feature（利用側）の requirements が承認済みなら、
+   `--call requirements-cross-gate advance` で S の横断確認（利用側との比較）を行う。利用側がまだ無ければ呼ばない（後で利用側が承認されたときに行う）。
+   S が User なら呼ばない（依存先との整合は design-check が見る）。
+5. 全 feature の requirements が承認されたら、`--call requirements-cross-gate advance` で全件の横断確認を行う（入口は item を補わない）。
+6. 続けて S の design を作るなら `/aidd-design`、別の feature の requirements を作るなら 1 に戻る。

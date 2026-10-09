@@ -1,18 +1,18 @@
 {
   "event": "feature-decomposition-revise",
   "scope": "phase",
-  "run": 6,
-  "snapshot": "210df960cd4626e9dc19163c8336c4152d6caa64a63af255bd16c24003ce5be2",
-  "record_bytes": 35229,
-  "record_hash": "8383e449e2524935402f654b53fffe3fbe111e7176ab0ec88dda511d50a32ddf",
+  "run": 7,
+  "snapshot": "a667bab0d4c47a7010aa87aa4ec41b203ebf5d248e32547e807bf136f7d2358d",
+  "record_bytes": 40412,
+  "record_hash": "8aacac976989dc1328ee2b18459b1ca4d8a95a48ad72f7213568bb54c94cbd8c",
   "targets": [
     ".aidd/feature-list.md"
   ],
   "hashes": {
-    ".aidd/feature-list.md": "71a64dc3cbf71bc6ddb02a4dc6f8247344064ca63e8a291e5881763ef59256ae"
+    ".aidd/feature-list.md": "9c8fae4dbc53b2ff6cc98e2476e7c02797d2077359d9b2709d5eff7e5111b642"
   },
   "inputs": {
-    ".aidd/requirement-list.md": "bdf3027f78209be11ea79d4b3026928aaa5959c4f6fbebb20c35357626604947",
+    ".aidd/requirement-list.md": "0f27710cd1eb4f103a426cbccec48d5af14f504bd9e40c7f8c697f3ef031c859",
     "steering/product.md": "cde5dd8a1007c53f93a270de63e01d294d38f47695e96027d52b6b4862bc149b",
     "steering/tech.md": "58cc32eb0ad29d7b7185bb02e710ce8d882e374f93eb0a609ae293e3903a4966",
     "steering/architecture.md": "98be0c57ba256c0aeaf1a66d69682e63b47d20ec0f91ab776589a54e5eb8c33d",

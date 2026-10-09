@@ -30,7 +30,7 @@ def _open_blocker(context, finding):
 
 def auto_repairable(context, scope):
     """system が軽微を直せる検査か（直す成果物がその検査の対象 1 つに決まる）。"""
-    return context.process != "implement" and scope != "cross" and context.action != "tasks-gate-run"
+    return not context.kind and not record_format.is_cross_scope(scope) and context.action != "tasks-gate-run"
 
 
 def self_fixable(finding, run):
@@ -77,7 +77,7 @@ def plan(context, record, run, at):
     for finding in earlier:
         if finding.resolved or finding.decision not in ("修正", "差戻し") or not finding.identity:
             continue
-        if context.process == "implement":
+        if context.kind:
             continue  # 実装の解消は、L3 の resolve が確かめる実装固有の条件（resolution_ready）を通す
         again = current.get(finding.identity)
         row = {"スコープ": run.scope, "回数": str(finding.run), "指摘番号": str(finding.number),

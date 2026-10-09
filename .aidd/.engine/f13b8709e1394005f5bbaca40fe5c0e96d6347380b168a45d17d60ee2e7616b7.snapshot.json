@@ -3,17 +3,51 @@
   "phase": "feature",
   "event": "feature-decomposition-revise",
   "scope": "phase",
-  "at": "2026-10-05T18:25:55+09:00",
+  "at": "2026-10-09T17:05:49+09:00",
   "artifacts": {
     ".aidd/feature-list.md": {
       "status": "draft",
-      "sha256": "71a64dc3cbf71bc6ddb02a4dc6f8247344064ca63e8a291e5881763ef59256ae"
+      "sha256": "9c8fae4dbc53b2ff6cc98e2476e7c02797d2077359d9b2709d5eff7e5111b642"
     }
   },
   "record": {
-    "bytes": 28697,
-    "sha256": "d2727d9fa10a2345896f0e2b746d7e5272a24e450fa92b4f70d5d40a384265a6",
-    "blocks": 34
+    "bytes": 39829,
+    "sha256": "221c78dc3db370253f718f93bec4c84ab631ad6b67021f04c5721d53b41a26a9",
+    "blocks": 43
   },
-  "run": 6
+  "run": 7,
+  "sections": {
+    ".aidd/feature-list.md": {
+      "": "e3b0c44298fc1c14",
+      "フィーチャー一覧": "bf7a45099e374c17",
+      "フィーチャー一覧 (2)": "2911a006dd7ab5cd",
+      "項目の定義": "106d9fb9aedd3b5d",
+      "種別の判定": "61b45522f380a12f",
+      "優先度の決定方針": "83069fbb9e78fa93",
+      "依存関係図（任意）": "c38d8f4549ee6422",
+      "*": "bf7a45099e374c17"
+    }
+  },
+  "own_sections": {
+    ".aidd/feature-list.md": {
+      "": "e3b0c44298fc1c14",
+      "フィーチャー一覧": "c7be124bc475a837",
+      "フィーチャー一覧 (2)": "f3eaed317264e3a4",
+      "項目の定義": "106d9fb9aedd3b5d",
+      "種別の判定": "61b45522f380a12f",
+      "優先度の決定方針": "83069fbb9e78fa93",
+      "依存関係図（任意）": "c38d8f4549ee6422",
+      "*": "bf7a45099e374c17"
+    }
+  },
+  "inputs": {
+    ".aidd/requirement-list.md": "0f27710cd1eb4f103a426cbccec48d5af14f504bd9e40c7f8c697f3ef031c859",
+    "steering/product.md": "cde5dd8a1007c53f93a270de63e01d294d38f47695e96027d52b6b4862bc149b",
+    "steering/tech.md": "58cc32eb0ad29d7b7185bb02e710ce8d882e374f93eb0a609ae293e3903a4966",
+    "steering/architecture.md": "98be0c57ba256c0aeaf1a66d69682e63b47d20ec0f91ab776589a54e5eb8c33d",
+    "steering/security.md": "34061564b8c5b8c28e5ca2f4a9b744b06d9d58417ddbbff7ab150c9ef1027bbf",
+    "steering/non-functional.md": "ae87c72271e4f3d8593e2f666edc7bb0931cf4d0ca78dafbb21ab7264303f0ac",
+    "steering/database.md": "832d98b289c53f8c8adc9a7dfb25bf0f8b1f54b9c1cc473c6480fa9927a20e21",
+    "steering/api-standards.md": "70eca8d2facbf08bfa22cf1ae1e781219ecab2066bb8129bf4a3414b0fdeddc1"
+  }
 }

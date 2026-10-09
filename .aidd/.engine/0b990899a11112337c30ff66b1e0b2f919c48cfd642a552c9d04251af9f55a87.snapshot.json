@@ -3,7 +3,7 @@
   "phase": "requirements",
   "event": "requirements-authoring-revise",
   "scope": "feature:issue-request",
-  "at": "2026-10-05T19:16:17+09:00",
+  "at": "2026-10-09T17:54:40+09:00",
   "artifacts": {
     "specs/issue-request/requirements.md": {
       "status": "draft",
@@ -11,9 +11,84 @@
     }
   },
   "record": {
-    "bytes": 224706,
-    "sha256": "1a9bf505148865a8da21b78f637a4044bc3e5c3ac87701e588225ee8fdb6280b",
-    "blocks": 254
+    "bytes": 301643,
+    "sha256": "9227273e3851455c1cd47486222a241c82788a4eea397b1121e679ada4d1b04c",
+    "blocks": 345
   },
-  "run": 3
+  "run": 4,
+  "sections": {
+    "specs/issue-request/requirements.md": {
+      "": "e3b0c44298fc1c14",
+      "要件定義書": "7120decc9bbc1230",
+      "概要（Introduction）": "4d1a8f60f3d10f3e",
+      "業務フロー": "20fcd6bbd1bde893",
+      "スコープの境界（Boundary Context）": "1ebb4d28223ae1f8",
+      "対象外": "25cdc558c9e31a8f",
+      "前提と依存（Dependencies / Assumptions）": "e3d5e4b47ba1a35c",
+      "要件（Requirements）": "fc6cb8014e908200",
+      "要件 1: 発行依頼書の登録・変更（REQ-019）": "9c0a283977e352aa",
+      "受け入れ基準（Acceptance Criteria）": "dd18ea8452780ddd",
+      "要件 2: 権限による画面の制御（REQ-020）": "88d136f5613a6122",
+      "受け入れ基準（Acceptance Criteria） (2)": "8ff4208d939aa7c7",
+      "要件 3: 契約書の発番（REQ-021）": "13cb59a016b2e7ce",
+      "受け入れ基準（Acceptance Criteria） (3)": "32f7269232079914",
+      "要件 4: サンプルからの入力（REQ-022）": "827f7b8a00c4c02a",
+      "受け入れ基準（Acceptance Criteria） (4)": "08f6cf508b741379",
+      "要件 5: 単独局・複数局と複数局モードの項目の制御（REQ-023・REQ-025・REQ-026）": "118e1a02be528e33",
+      "受け入れ基準（Acceptance Criteria） (5)": "8daecd5b1ed47b52",
+      "要件 6: 金額の自動計算（REQ-024）": "d1cb756616973339",
+      "受け入れ基準（Acceptance Criteria） (6)": "44ee63c3a6325607",
+      "要件 7: 変更履歴の登録と複製（REQ-027）": "c668a5fe377688d0",
+      "受け入れ基準（Acceptance Criteria） (7)": "7601aeb0c5c53789",
+      "要件 8: 作成組織の入力（REQ-064）": "159a6679ca2fbd47",
+      "受け入れ基準（Acceptance Criteria） (8)": "e4f572f75f7a684a",
+      "要件 9: 入力チェック（REQ-063）": "d770a321e9a2c43a",
+      "受け入れ基準（Acceptance Criteria） (9)": "d4541a0601c0d891",
+      "非機能要件（Non-Functional Requirements）": "0fef251e6ce4e0fe",
+      "*": "7120decc9bbc1230"
+    }
+  },
+  "own_sections": {
+    "specs/issue-request/requirements.md": {
+      "": "e3b0c44298fc1c14",
+      "要件定義書": "f0e50f33e78dda9d",
+      "概要（Introduction）": "4d1a8f60f3d10f3e",
+      "業務フロー": "20fcd6bbd1bde893",
+      "スコープの境界（Boundary Context）": "1ebb4d28223ae1f8",
+      "対象外": "25cdc558c9e31a8f",
+      "前提と依存（Dependencies / Assumptions）": "e3d5e4b47ba1a35c",
+      "要件（Requirements）": "2855f05e424bda39",
+      "要件 1: 発行依頼書の登録・変更（REQ-019）": "2e43b111cdf3c3a8",
+      "受け入れ基準（Acceptance Criteria）": "dd18ea8452780ddd",
+      "要件 2: 権限による画面の制御（REQ-020）": "10a47d7328c40120",
+      "受け入れ基準（Acceptance Criteria） (2)": "8ff4208d939aa7c7",
+      "要件 3: 契約書の発番（REQ-021）": "f092026c664c8e89",
+      "受け入れ基準（Acceptance Criteria） (3)": "32f7269232079914",
+      "要件 4: サンプルからの入力（REQ-022）": "36c92486f942a59a",
+      "受け入れ基準（Acceptance Criteria） (4)": "08f6cf508b741379",
+      "要件 5: 単独局・複数局と複数局モードの項目の制御（REQ-023・REQ-025・REQ-026）": "c5e1a3b990288180",
+      "受け入れ基準（Acceptance Criteria） (5)": "8daecd5b1ed47b52",
+      "要件 6: 金額の自動計算（REQ-024）": "6c99f45d8dd9cb32",
+      "受け入れ基準（Acceptance Criteria） (6)": "44ee63c3a6325607",
+      "要件 7: 変更履歴の登録と複製（REQ-027）": "8a58c493c6330352",
+      "受け入れ基準（Acceptance Criteria） (7)": "7601aeb0c5c53789",
+      "要件 8: 作成組織の入力（REQ-064）": "c7cd14004cba631c",
+      "受け入れ基準（Acceptance Criteria） (8)": "e4f572f75f7a684a",
+      "要件 9: 入力チェック（REQ-063）": "d9a83a1487040cb4",
+      "受け入れ基準（Acceptance Criteria） (9)": "d4541a0601c0d891",
+      "非機能要件（Non-Functional Requirements）": "0fef251e6ce4e0fe",
+      "*": "7120decc9bbc1230"
+    }
+  },
+  "inputs": {
+    ".aidd/requirement-list.md": "0f27710cd1eb4f103a426cbccec48d5af14f504bd9e40c7f8c697f3ef031c859",
+    ".aidd/feature-list.md": "9c8fae4dbc53b2ff6cc98e2476e7c02797d2077359d9b2709d5eff7e5111b642",
+    "steering/product.md": "cde5dd8a1007c53f93a270de63e01d294d38f47695e96027d52b6b4862bc149b",
+    "steering/tech.md": "58cc32eb0ad29d7b7185bb02e710ce8d882e374f93eb0a609ae293e3903a4966",
+    "steering/architecture.md": "98be0c57ba256c0aeaf1a66d69682e63b47d20ec0f91ab776589a54e5eb8c33d",
+    "steering/security.md": "34061564b8c5b8c28e5ca2f4a9b744b06d9d58417ddbbff7ab150c9ef1027bbf",
+    "steering/non-functional.md": "ae87c72271e4f3d8593e2f666edc7bb0931cf4d0ca78dafbb21ab7264303f0ac",
+    "steering/database.md": "832d98b289c53f8c8adc9a7dfb25bf0f8b1f54b9c1cc473c6480fa9927a20e21",
+    "steering/api-standards.md": "70eca8d2facbf08bfa22cf1ae1e781219ecab2066bb8129bf4a3414b0fdeddc1"
+  }
 }

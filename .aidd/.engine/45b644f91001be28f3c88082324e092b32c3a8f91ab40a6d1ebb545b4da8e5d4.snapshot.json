@@ -3,38 +3,38 @@
   "phase": "design",
   "event": "design-authoring-revise",
   "scope": "feature:contract-info-import",
-  "at": "2026-10-09T14:06:37+09:00",
+  "at": "2026-10-09T20:09:44+09:00",
   "artifacts": {
     "specs/contract-info-import/design.md": {
       "status": "draft",
-      "sha256": "f8c85c02fe3eac668a090b8cb084d4319381ea95428d4c25c7149c98c569bebc"
+      "sha256": "ae5933ac53ec20d549fb9d91ff896e06610778cf237b06837eb5c5941abd1692"
     }
   },
   "record": {
-    "bytes": 364187,
-    "sha256": "576dd7dd0f7b9aa9da0d020fd6d12aa14b53be9f1866f3a29035c62b5ef0898b",
-    "blocks": 268
+    "bytes": 450231,
+    "sha256": "9be6680eaa3be0be6cfb31a1250926f685eca286d4f3d38112e66bd2121cee89",
+    "blocks": 340
   },
-  "run": 6,
+  "run": 8,
   "sections": {
     "specs/contract-info-import/design.md": {
       "": "e3b0c44298fc1c14",
-      "技術設計書": "d4439040773decc8",
+      "技術設計書": "bb73a6d7532a77b6",
       "概要（Overview）": "a5cb1e1ec64162a2",
       "達成目標（Goals）": "e50b7f4e16ddba9b",
       "やらないこと（Non-Goals）": "495f7c254a925dd8",
-      "責務境界（Boundary Commitments）": "09d5d83e2a35914b",
+      "責務境界（Boundary Commitments）": "01ef3110a5e36901",
       "このスペックが持つ責務（This Spec Owns）": "baa547887d8aecc5",
       "このスペックが持たない責務（Out of Boundary）": "8c5cc122e952473b",
       "依存してよい対象（Allowed Dependencies）": "d18d93981421f114",
-      "再確認が必要になる変更（Revalidation Triggers）": "9652fb95daefa9dc",
+      "再確認が必要になる変更（Revalidation Triggers）": "1d2860d0c9a37dd1",
       "アーキテクチャ（Architecture）": "c65d757d6b613be0",
       "既存アーキテクチャの分析（Existing Architecture Analysis）": "858a37a590c289e1",
       "アーキテクチャ方式と境界図（Architecture Pattern & Boundary Map）": "9299178a17421c9f",
       "技術スタック（Technology Stack）": "8386e642b72fcab9",
-      "データモデル（Data Models）": "03ab9aa511ef8177",
+      "データモデル（Data Models）": "82e3d4e87bc76629",
       "ドメインモデル（Domain Model）": "29101ac4582235c8",
-      "論理データモデル（Logical Data Model）": "748c288b8256108a",
+      "論理データモデル（Logical Data Model）": "2bbd497037fdebc8",
       "物理データモデル（Physical Data Model）": "2b92dae40040d47b",
       "データ契約と外部連携（Data Contracts & Integration）": "99e96020e8c1d7b4",
       "コンポーネントとインターフェース（Components and Interfaces）": "20621133fa2190d5",
@@ -48,8 +48,8 @@
       "バッチ / ジョブ契約（Batch / Job Contract）": "bc4641086284ba38",
       "状態管理（State Management）": "73546dda75a33f07",
       "処理フロー（System Flows）": "4e232383087891f5",
-      "機能固有のエラー処理（Error Handling）": "d05eb9fc0ac422ba",
-      "バリデーション設計": "c079a088446ab563",
+      "機能固有のエラー処理（Error Handling）": "da790fedf8d91271",
+      "バリデーション設計": "528ee8aa7a6bf286",
       "機能固有エラーコード": "f1dd14dbadd859d8",
       "エラー時の分岐フロー": "ebbd6fb1ce594060",
       "ファイル配置計画（File Structure Plan）": "9d04d2fea38a1d7e",
@@ -65,8 +65,8 @@
       "判断 1: 取込中にするのはバッチが動き出したときで、多重実行は画面とバッチの両方で防ぐ": "fd03aab8cd9e1860",
       "判断 2: 元に戻す更新は本体と別のトランザクションで必ず動かし、それでも残ったら運用で戻す": "0d79b3a6bcf966c8",
       "判断 3: 取り込んだファイルは消さずに残す": "d01f88b4d585e7b2",
-      "補足資料（Supporting References）": "2479f06a9bd48202",
-      "*": "d4439040773decc8"
+      "補足資料（Supporting References）": "72e48b5c33102b18",
+      "*": "bb73a6d7532a77b6"
     }
   },
   "own_sections": {
@@ -80,14 +80,14 @@
       "このスペックが持つ責務（This Spec Owns）": "baa547887d8aecc5",
       "このスペックが持たない責務（Out of Boundary）": "8c5cc122e952473b",
       "依存してよい対象（Allowed Dependencies）": "d18d93981421f114",
-      "再確認が必要になる変更（Revalidation Triggers）": "9652fb95daefa9dc",
+      "再確認が必要になる変更（Revalidation Triggers）": "1d2860d0c9a37dd1",
       "アーキテクチャ（Architecture）": "d884ae957d36c25c",
       "既存アーキテクチャの分析（Existing Architecture Analysis）": "858a37a590c289e1",
       "アーキテクチャ方式と境界図（Architecture Pattern & Boundary Map）": "9299178a17421c9f",
       "技術スタック（Technology Stack）": "8386e642b72fcab9",
       "データモデル（Data Models）": "7f56063d2219091b",
       "ドメインモデル（Domain Model）": "29101ac4582235c8",
-      "論理データモデル（Logical Data Model）": "748c288b8256108a",
+      "論理データモデル（Logical Data Model）": "2bbd497037fdebc8",
       "物理データモデル（Physical Data Model）": "2b92dae40040d47b",
       "データ契約と外部連携（Data Contracts & Integration）": "99e96020e8c1d7b4",
       "コンポーネントとインターフェース（Components and Interfaces）": "596c52c2870f12f7",
@@ -102,7 +102,7 @@
       "状態管理（State Management）": "73546dda75a33f07",
       "処理フロー（System Flows）": "4e232383087891f5",
       "機能固有のエラー処理（Error Handling）": "71efccfdf25c2e9c",
-      "バリデーション設計": "c079a088446ab563",
+      "バリデーション設計": "528ee8aa7a6bf286",
       "機能固有エラーコード": "f1dd14dbadd859d8",
       "エラー時の分岐フロー": "ebbd6fb1ce594060",
       "ファイル配置計画（File Structure Plan）": "2483982e7c0f904f",
@@ -118,12 +118,12 @@
       "判断 1: 取込中にするのはバッチが動き出したときで、多重実行は画面とバッチの両方で防ぐ": "fd03aab8cd9e1860",
       "判断 2: 元に戻す更新は本体と別のトランザクションで必ず動かし、それでも残ったら運用で戻す": "0d79b3a6bcf966c8",
       "判断 3: 取り込んだファイルは消さずに残す": "d01f88b4d585e7b2",
-      "補足資料（Supporting References）": "2479f06a9bd48202",
-      "*": "d4439040773decc8"
+      "補足資料（Supporting References）": "72e48b5c33102b18",
+      "*": "bb73a6d7532a77b6"
     }
   },
   "inputs": {
-    ".aidd/feature-list.md": "71a64dc3cbf71bc6ddb02a4dc6f8247344064ca63e8a291e5881763ef59256ae",
+    ".aidd/feature-list.md": "9c8fae4dbc53b2ff6cc98e2476e7c02797d2077359d9b2709d5eff7e5111b642",
     "steering/product.md": "cde5dd8a1007c53f93a270de63e01d294d38f47695e96027d52b6b4862bc149b",
     "steering/tech.md": "58cc32eb0ad29d7b7185bb02e710ce8d882e374f93eb0a609ae293e3903a4966",
     "steering/architecture.md": "98be0c57ba256c0aeaf1a66d69682e63b47d20ec0f91ab776589a54e5eb8c33d",
@@ -133,19 +133,17 @@
     "steering/api-standards.md": "70eca8d2facbf08bfa22cf1ae1e781219ecab2066bb8129bf4a3414b0fdeddc1",
     "specs/contract-info-import/requirements.md": "23cf03a7c36f258901fd28108f2a3c41132bd2639f5475ed681ec077a1e57677",
     "specs/property-basic-info/design.md": "03331555d6ee0825bd90f023f17f4951d532f97b0f4bde7b7f50878d4cc4da03",
-    "specs/issue-request/design.md": "7bedc0d4618ebcb9a1667ce749bf24513272ac9c19fbdebdfe1ac2954ab67fbb"
+    "specs/issue-request/design.md": "8cf01f68fe35f51ecb925f5258243beb7a476500279d2757c8a0a7788c2917ec"
   },
-  "previous_run": 5,
+  "previous_run": 7,
   "changed_sections": {
     "specs/contract-info-import/design.md": [
-      "技術設計書",
-      "データモデル（Data Models）",
-      "ドメインモデル（Domain Model）"
+      "*"
     ]
   },
   "changed_own": {
     "specs/contract-info-import/design.md": [
-      "ドメインモデル（Domain Model）"
+      "*"
     ]
   }
 }

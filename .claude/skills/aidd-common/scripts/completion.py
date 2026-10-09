@@ -23,7 +23,11 @@ def canonical(context):
 
 
 def proof(context):
-    if context.process == "tasks" and context.item:
+    rule = phase_rules.RULES[context.process]
+    if context.kind == "integration":
+        import implementation_project
+        implementation_project.run_proof(context)  # 記録を書かない action は受領証で確かめる（§6.11）
+    elif context.process == "tasks" and context.action in (rule["generate"], rule["repair"]):
         record = review_contract.read(context)
         review_contract.complete_inspection(context, record, context.scope)
         for target in context.artifacts():
@@ -35,17 +39,17 @@ def proof(context):
 
 def record(context, call=None, flow_done=False):
     """flow_done: the host saw this process finish inside its flow (status of later units pending)."""
-    if context.process == 'implement':
+    if context.is_implementation:
         import implementation_flows
         call = implementation_flows.require_call(context, call)
-        if context.action != 'implement-gate-run':
+        if context.kind == 'task':
             import implementation_requests
             return implementation_requests.record_completion(context)
     if context.action.endswith('-plan'):
         raise ValueError("plans are recorded by accept-plan")
     rule = phase_rules.RULES[context.process]
     allowed = {context.action}
-    if context.process == 'implement':
+    if context.is_implementation:
         allowed.add(call)
     if context.action in (rule['generate'], rule['repair']):
         allowed.add(rule['call'])
@@ -74,7 +78,7 @@ def record(context, call=None, flow_done=False):
 
 
 def check(context):
-    if context.process == 'implement' and context.action != 'implement-gate-run':
+    if context.kind == 'task':
         import implementation_store
         import implementation_requests
         import implementation_evidence
@@ -83,10 +87,11 @@ def check(context):
         state = implementation_requests.feature_state(context, value['feature'])
         certificate = state['completed'].get(value['task_id'], {})
         valid = (value.get('event_complete') and not state.get('invalidated')
-                 and value.get('flow_contract') == implementation_flows.configuration(context)
+                 and implementation_flows.same_contract(context, value.get('flow_contract'))
                  and state.get('flow_contract') == value.get('flow_contract')
                  and certificate.get('execution_id') == value['execution_id']
-                 and state['inputs'] == implementation_requests.input_signature(context, value['feature'])
+                 and implementation_requests.same_inputs(context, value['feature'], state['inputs'],
+                                                         implementation_requests.input_signature(context, value['feature']))
                  and state['live_code'] == implementation_evidence.feature_inventory(context, state['policy']))
         return {'complete': bool(valid), 'source_event': context.action}
     value = project_progress.workflow(context).get('completions', {}).get(canonical(context))

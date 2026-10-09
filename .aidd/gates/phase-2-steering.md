@@ -501,3 +501,26 @@ created_at: 2026-10-01T17:00:40+09:00
 | phase | 6 | 6 | 対応せず進める | steering に置く。「PWTGB030Job のやり方はすべての洗替の決まりではない」が全体の決まりで、契約情報取込の手順はその例として残す。ほかの洗替のやり方は、各 feature の design で決める。 | phase | 6 |
 | phase | 6 | 7 | 対応せず進める | steering に置く。ジョブ全体で 1 つのトランザクションという決まりの例外を、決まりの隣に書いておかないと、契約情報取込の design が steering と食い違うため。例外は今のところこの 1 つだけ。 | phase | 6 |
 | phase | 6 | 8 | 対応せず進める | 「本プロジェクトでは定めない」は保守運用のサービス提供の休日のことで、営業日の数え方は別の話と読む。営業日を数えるときに既存の休日の登録を使うことは、全体の決まりとして残す。今は申請状況検索だけが当たる。 | phase | 6 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| phase | 7 | 2026-10-09T17:02:09+09:00 | ①② | ["steering/product.md", "steering/tech.md", "steering/architecture.md", "steering/security.md", "steering/non-functional.md", "steering/database.md", "steering/api-standards.md"] | {"steering/product.md": "cde5dd8a1007c53f93a270de63e01d294d38f47695e96027d52b6b4862bc149b", "steering/tech.md": "58cc32eb0ad29d7b7185bb02e710ce8d882e374f93eb0a609ae293e3903a4966", "steering/architecture.md": "98be0c57ba256c0aeaf1a66d69682e63b47d20ec0f91ab776589a54e5eb8c33d", "steering/security.md": "34061564b8c5b8c28e5ca2f4a9b744b06d9d58417ddbbff7ab150c9ef1027bbf", "steering/non-functional.md": "ae87c72271e4f3d8593e2f666edc7bb0931cf4d0ca78dafbb21ab7264303f0ac", "steering/database.md": "832d98b289c53f8c8adc9a7dfb25bf0f8b1f54b9c1cc473c6480fa9927a20e21", "steering/api-standards.md": "70eca8d2facbf08bfa22cf1ae1e781219ecab2066bb8129bf4a3414b0fdeddc1"} | 0 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+
+## 承認
+
+| スコープ | 回数 | 対象成果物 | 承認者 | 承認日時 | 原本SHA256 |
+|---|---|---|---|---|---|
+| phase | 7 | steering/product.md | masato-teramoto | 2026-10-09T17:04:46+09:00 | cde5dd8a1007c53f93a270de63e01d294d38f47695e96027d52b6b4862bc149b |
+| phase | 7 | steering/tech.md | masato-teramoto | 2026-10-09T17:04:46+09:00 | 58cc32eb0ad29d7b7185bb02e710ce8d882e374f93eb0a609ae293e3903a4966 |
+| phase | 7 | steering/architecture.md | masato-teramoto | 2026-10-09T17:04:46+09:00 | 98be0c57ba256c0aeaf1a66d69682e63b47d20ec0f91ab776589a54e5eb8c33d |
+| phase | 7 | steering/security.md | masato-teramoto | 2026-10-09T17:04:46+09:00 | 34061564b8c5b8c28e5ca2f4a9b744b06d9d58417ddbbff7ab150c9ef1027bbf |
+| phase | 7 | steering/non-functional.md | masato-teramoto | 2026-10-09T17:04:46+09:00 | ae87c72271e4f3d8593e2f666edc7bb0931cf4d0ca78dafbb21ab7264303f0ac |
+| phase | 7 | steering/database.md | masato-teramoto | 2026-10-09T17:04:46+09:00 | 832d98b289c53f8c8adc9a7dfb25bf0f8b1f54b9c1cc473c6480fa9927a20e21 |
+| phase | 7 | steering/api-standards.md | masato-teramoto | 2026-10-09T17:04:46+09:00 | 70eca8d2facbf08bfa22cf1ae1e781219ecab2066bb8129bf4a3414b0fdeddc1 |

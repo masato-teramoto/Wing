@@ -1,0 +1,16 @@
+{
+ "operation_id": "8aaad5b7-849b-4e16-9818-2025f09fef6c",
+ "dispatch": {
+  "call": "requirements-authoring-revise",
+  "unit": "requirements-authoring-revise/requirements-authoring-revise[issue-request-tutorial]::end.requirements-check",
+  "event": "requirements-authoring-revise",
+  "item": "issue-request-tutorial",
+  "status": "emit",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": null,
+  "id": "7c272e3f2b5849e98f5204ec13420069"
+ },
+ "result": {
+  "status": "completed"
+ }
+}

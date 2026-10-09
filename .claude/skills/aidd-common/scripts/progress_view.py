@@ -58,8 +58,60 @@ def calculate(context):
         paths = ([p.format(feature=feature) for feature in names for p in rule["outputs"]]
                  if rule["per_feature"] else rule["outputs"])
         values[name] = {p: document_status(context, p) for p in paths}
-    return {"schema": 1, "status": "partial" if names is None else "ready",
+    view = {"schema": 1, "status": "partial" if names is None else "ready",
             "feature_status": "undetermined" if names is None else "ready", "documents": values}
+    if names and any(Path(context.root, ".aidd/implementation/features").glob("*/state.json")):
+        # Phase 8 に入った案件だけ（全件の照合を毎回走らせない）。表示の失敗は残件の不明として出す。
+        try:
+            view["whole_project"] = whole_project(context)
+        except ERRORS as error:
+            view["whole_project"] = {"status": "不明", "remaining": [], "reason": str(error)}
+    if workflow.get("mode") == "feature":
+        # Feature 方式の進捗（§6.1 のナビゲーション）：方式・S・切替・差戻しで止まっている feature。
+        switch = workflow.get("mode_switch") or {}
+        stopped = sorted({n for b in context.blockers() if b.get("status") != "resolved"
+                          for n in (b.get("affected_features") or [])})
+        view["feature_mode"] = {"mode": "feature", "selection": (workflow.get("selection") or {}).get("feature", ""),
+                                "switched_at": switch.get("at", ""), "switched_by": switch.get("actor", ""),
+                                "stopped_features": stopped}
+    return view
+
+
+def whole_project(context):
+    """案件全体の全件横断確認の残件（§6.7）。途中確認の寄せ集めで全件確認を済んだ扱いにしない。
+
+    仕様の 3 層（全件の requirements／design 横断確認、全件 tasks-gate-run）と、実コードの 2 層（全体結合確認・
+    implement-cross-gate）。ACE 対象外は implement-cross-gate の承認で人が一覧を見ていれば未実施に数えない。
+    """
+    import review_contract
+    import review_decisions
+    remaining = []
+    for process in ("requirements", "design"):
+        try:
+            review_decisions.check_cross(context, process)
+        except ERRORS:
+            remaining.append("%s の全件横断確認" % process)
+    try:
+        review_contract.check_approved(phase_rules.ExecutionContext(context.root, context.state_path, "tasks-gate-run"))
+    except ERRORS:
+        remaining.append("tasks の全件確認（tasks-gate-run）")
+    import implementation_project
+    code = implementation_project.progress(context)
+    if code["unapproved"]:
+        remaining.append("実装承認（未承認: %s）" % ", ".join(code["unapproved"]))
+    for group in implementation_project.GROUPS:
+        if code["integration"].get(group, "未実施") != "passed":
+            remaining.append("全体結合確認（%s）" % group)
+    cross = phase_rules.ExecutionContext(context.root, context.state_path, implementation_project.CROSS_GATE)
+    try:
+        review_contract.check_approved(cross)
+        approved = True
+    except ERRORS:
+        approved = False
+        remaining.append("実コードの横断確認（implement-cross-gate）")
+    excluded = (code["ace"] or {}).get("excluded", 0)
+    status = ("全件整合済み" + ("（ACE 対象外 %d 件を承認済み）" % excluded if excluded and approved else "")) if not remaining else "残件あり"
+    return {"status": status, "remaining": remaining, "ace": code["ace"]}
 
 
 def refresh(context):

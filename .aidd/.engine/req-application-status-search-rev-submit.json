@@ -1,0 +1,24 @@
+{
+ "operation_id": "5b45062d-83bf-421f-91da-acf14f959f84",
+ "dispatch": {
+  "call": "requirements-authoring-revise",
+  "unit": "requirements-authoring-revise/requirements-authoring-revise[application-status-search]::run",
+  "event": "requirements-authoring-revise",
+  "item": "application-status-search",
+  "status": "emit",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": null,
+  "id": "f5133f789a7345308cacab90817d0c09"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/application-status-search/requirements.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [],
+  "return_candidates": [],
+  "summary": "上流は front matter と改行コードのみの変更で本文は同一。修正は不要のため編集せず、再検査・再承認へ回す"
+ }
+}

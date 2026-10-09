@@ -29,7 +29,7 @@ INSTRUCTION = "再評価のため本文は変えない。完了（targets は依
 
 
 def owner(context):
-    if context.is_cross or context.action == "tasks-gate-run" or context.process == "implement":
+    if context.is_cross or context.action == "tasks-gate-run" or context.kind:
         raise ValueError("再評価は成果物ごとの検査で使う（横断・tasks 全体・実装の検査では、判断するか検査をやり直す）")
     revise = repair_requests.revise_context(context)
     waiting = repair_requests.waiting(revise)

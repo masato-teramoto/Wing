@@ -1,0 +1,28 @@
+{
+ "operation_id": "b62ac9e2-3f88-4570-8c2b-e8ba1103c2d2",
+ "action": "approve",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[issue-request-tutorial]::end.review",
+  "event": "design-authoring-revise",
+  "item": "issue-request-tutorial",
+  "status": "wait",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[issue-request-tutorial]::end.review\", \"snapshot\": \"b7dd650877d45996c87365b0520ec7a0eafbe528aca6f570ac4325553a653cc1\", \"run\": 6, \"inspection_hash\": \"c1fb04429c7954cd833274e7260f54fbd4ddd4dcd28affb325b225735e4e58bf\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 再検査で出なくなり、解消を記録した指摘 1 件\n  - #5-1 開く部品の読込とウインドウ名 pwtgo081 が ir design に書かれていない\n\n### 前回の検査（5 回目）からの変更\n\n- `specs/issue-request-tutorial/design.md`：このスペックが持つ責務（This Spec Owns）、データ契約と外部連携（Data Contracts & Integration）\n  - 修正の指示に無い節の変更：このスペックが持つ責務（This Spec Owns）（意図した変更か確かめてください）\n\n### 判断が必要な指摘\n\n**対象**: `specs/issue-request-tutorial/design.md`（スコープ: 成果物単位（issue-request-tutorial） / 6 回目）\n**実行した層**: ① / ②\n\n**指摘**: なし（0 件。検査は実行済み）\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n判断が揃いました。承認の可否を回答してください（承認する場合は承認者名）。",
+  "id": "64a605d88b094ff1854d4c645b8a7341"
+ },
+ "expected": {
+  "root": "/home/kccs/Wing",
+  "state": "/home/kccs/Wing/.aidd/phase-progress.json",
+  "call": "design-authoring-revise",
+  "event": "design-authoring-revise",
+  "item": "issue-request-tutorial",
+  "dispatch_id": "64a605d88b094ff1854d4c645b8a7341",
+  "unit": "design-authoring-revise/design-authoring-revise[issue-request-tutorial]::end.review",
+  "scope": "feature:issue-request-tutorial",
+  "run": 6,
+  "snapshot": "b7dd650877d45996c87365b0520ec7a0eafbe528aca6f570ac4325553a653cc1",
+  "record_hash": "49baeb28ce7a3281db2aa31e88631a7b2c3e6fa494b5a4fe4cac324c706602df"
+ },
+ "data": {}
+}

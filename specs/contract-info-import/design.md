@@ -1,7 +1,7 @@
 ---
 feature: contract-info-import
 status: approved
-updated_at: 2026-10-09T14:11:57+09:00
+updated_at: 2026-10-09T20:13:40+09:00
 ---
 
 # 技術設計書
@@ -119,7 +119,7 @@ updated_at: 2026-10-09T14:11:57+09:00
 - 物件基本情報登録変更の出力 CSV（228 列）と、契約情報ダウンロードの CSV（381 列）の並びの変更
 - 物件基本情報登録変更から渡す 9 項目と、`canOperate`（契約局取込）の条件の変更
 - 稟議バーコードNo の形の変更（ir design の 3.2）
-- 検査の基準になる発行依頼書登録変更の入力チェック（`specs/issue-request/item-rules.md`）の変更
+- 検査の基準になる発行依頼書登録変更の入力チェック（`specs/issue-request/design.md` の `#### 項目ごとの規則（Q-DS-IR-006）`）の変更
 
 ## アーキテクチャ（Architecture）
 
@@ -219,7 +219,7 @@ flowchart LR
 > _書き方_: 保存先の製品には依存させない。製品固有の話は物理データモデルに書く
 
 - **エンティティ間の多重度（カーディナリティ）**: 取込 1 : データ行 1..n（＝契約局情報 1..n。連番はファイルの順）、取込 1 : 発行依頼書 1（最初のデータ行）、申請 1 : トラン（契約局情報）0..n・トラン（発行依頼書）0..1、申請 1 : 変更履歴 0..n
-- **属性と型**: テーブルの列と型は pbi design・ir design（`specs/issue-request/db-TWTGM140.md`・`specs/issue-request/db-TWTGM100.md`・`specs/issue-request/db-TWTGV050.md`・`specs/issue-request/db-TWTGV030.md`・`specs/issue-request/db-TWTGA150.md`・`specs/issue-request/db-TWTGA130.md`）のとおり。ファイルの列の型・桁・必須はリバースの表と検査表のとおり
+- **属性と型**: テーブルの列と型は pbi design・ir design（`specs/issue-request/design.md` の `#### TWTGM140 の DB レイアウト（契約局情報ﾏｽﾀ。Q-DS-IR-004）`・`#### TWTGM100 の DB レイアウト（発行依頼書情報ﾏｽﾀ。Q-DS-IR-003）`・`#### TWTGV050 の DB レイアウト（契約局情報ﾄﾗﾝ。Q-DS-IR-013）`・`#### TWTGV030 の DB レイアウト（発行依頼書情報ﾄﾗﾝ。Q-DS-IR-013）`・`#### TWTGA150 の DB レイアウト（契約局情報変更履歴。Q-DS-IR-013）`・`#### TWTGA130 の DB レイアウト（発行依頼書情報変更履歴。Q-DS-IR-013）`）のとおり。ファイルの列の型・桁・必須はリバースの表と検査表のとおり
 - **自然キー / 識別子**: 取込の単位は「会社コード＋申請No」。契約局情報は「会社コード＋申請No＋連番＋計画基地局番号」で、変更履歴の突き合わせは連番で行う（Q-DS-CI-008）。データ行はファイルの行番号で識別し、メッセージの {0} に入れる
 - **参照整合性のルール**: DB の外部キーは張らず、アプリ側で保つ（`steering/database.md` の `## 整合性`）。契約局情報に無くなった稟議バーコードNo の契約文書情報は消す（2.9）。変更履歴は元の行が消えても残す
 
@@ -462,6 +462,8 @@ sequenceDiagram
 
 列ごとの必須・桁・形式・コードの存在と整合の全部は検査表（1-2〜1-4・2-2・2-3）を正とする。ここには区分ごとの代表と、本 feature で決めたものを書く。
 
+検査表から外れる桁（人の決定、2026-10-09）：(a) 「その他①〜④」の桁は 50 とする（`specs/issue-request/design.md` の `#### 項目ごとの規則（Q-DS-IR-006）` の規則 2 と DB 列 Sonota1〜4_Freeform に合わせる。検査表の 100 からは外れる）。(b) 金額[1-4]・初回金額[1-4]の桁は検査表どおり 50 とし、DB 列（Payment_FeeN_Freeform など）の 50 で保存する。ir design の規則 4（11 バイト以内の数値）とは、取込では異なる。
+
 | チェック対象 | 項目名 | 条件 / ルール | エラーコード | メッセージ例 | UI の対処 |
 |---|---|---|---|---|---|
 | 画面 | 登録するファイル | 選ばれている・0 バイトでない・拡張子が .csv（4.1） | `GEF-000001`・`GEF-000058`・`ZZZ-000056`（既存） | （既存の文言） | 同じ画面にメッセージを出し、タスクを登録しない |
@@ -696,7 +698,7 @@ WTX_Batch/src/jp/co/kccs/wt/wtg/wtg090/            # バッチ PWTGB090（PWTGB0
 | 対応表 | ファイルの列からテーブルの列への入れ方（`TWTGM140`・`TWTGM100`、発行依頼書データとリバースデータ）、コードマスタの参照条件（回答者の指示で本書の正） | `_handoff/phase5-contract-info-import-mapping.md` |
 | 検査表 | 区分 1〜3 の列ごとの検査・整合・警告・置換文字（228 列は 1-2〜1-4、381 列は 2-2・2-3）（回答者の指示で本書の正） | `_handoff/phase5-contract-info-import-checks.md` |
 | 既存の取込の手本 | 画面のファイルの検査・アップロード・タスクの登録、バッチのトランザクション・検査の表・件数・メッセージ | `wing/src/main/java/jp/co/kccs/wt/function/wtg/wtg040/service/Pwtgo040Service.java`・`WTX_Batch/src/jp/co/kccs/wt/wtg/wtg040/PWTGB040Job.java`・`WTX_Batch/src/jp/co/kccs/wt/wtg/wtg040/PWTGB040Const.java` |
-| テーブルの定義と変更履歴の手順 | `TWTGM100`・`TWTGM140`・トラン・変更履歴の列、比べる範囲 | `specs/issue-request/design.md`・`specs/issue-request/db-TWTGM100.md`・`specs/issue-request/db-TWTGM140.md` |
+| テーブルの定義と変更履歴の手順 | `TWTGM100`・`TWTGM140`・トラン・変更履歴の列、比べる範囲 | `specs/issue-request/design.md` の `#### TWTGM100 の DB レイアウト（発行依頼書情報ﾏｽﾀ。Q-DS-IR-003）`・`#### TWTGM140 の DB レイアウト（契約局情報ﾏｽﾀ。Q-DS-IR-004）`・`### データ契約と外部連携（Data Contracts & Integration）` の「変更履歴の手順」 |
 | 取込画面への口と状態 | `/wtg070/keyakuTorikomi`・9 項目・`canOperate`・取込中の扱い | `specs/property-basic-info/design.md` |
 
 ---

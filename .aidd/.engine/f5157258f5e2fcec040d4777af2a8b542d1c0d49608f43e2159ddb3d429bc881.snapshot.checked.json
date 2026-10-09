@@ -1,10 +1,10 @@
 {
   "event": "design-authoring-revise",
   "scope": "feature:property-basic-info",
-  "run": 7,
-  "snapshot": "d0603d9a041b7ea0a0115f44ff7cfda7189e4da8fb68be3410de801b7c69cd51",
-  "record_bytes": 314050,
-  "record_hash": "2943123b9fda7a9fc09832e947c0a3f0264df38bde52afe6f510561a105766d8",
+  "run": 8,
+  "snapshot": "4c101334a318c42820a4cafd5b2aef76cc61c72b6ec72ff3250ebeabed0062c4",
+  "record_bytes": 400771,
+  "record_hash": "2b467c3b42d93e50b3ec2bec75702b8142aa76b15be2d51184d044d3da953f35",
   "targets": [
     "specs/property-basic-info/design.md"
   ],
@@ -12,7 +12,7 @@
     "specs/property-basic-info/design.md": "03331555d6ee0825bd90f023f17f4951d532f97b0f4bde7b7f50878d4cc4da03"
   },
   "inputs": {
-    ".aidd/feature-list.md": "71a64dc3cbf71bc6ddb02a4dc6f8247344064ca63e8a291e5881763ef59256ae",
+    ".aidd/feature-list.md": "9c8fae4dbc53b2ff6cc98e2476e7c02797d2077359d9b2709d5eff7e5111b642",
     "steering/product.md": "cde5dd8a1007c53f93a270de63e01d294d38f47695e96027d52b6b4862bc149b",
     "steering/tech.md": "58cc32eb0ad29d7b7185bb02e710ce8d882e374f93eb0a609ae293e3903a4966",
     "steering/architecture.md": "98be0c57ba256c0aeaf1a66d69682e63b47d20ec0f91ab776589a54e5eb8c33d",

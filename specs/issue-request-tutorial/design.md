@@ -1,7 +1,7 @@
 ---
 feature: issue-request-tutorial
 status: approved
-updated_at: 2026-10-09T13:05:22+09:00
+updated_at: 2026-10-09T19:32:37+09:00
 ---
 
 # 技術設計書
@@ -63,7 +63,7 @@ updated_at: 2026-10-09T13:05:22+09:00
   - <DSN_OWNS_DATA_N>（不要：チュートリアルはデータベースの表を持たず、読み書きもしない。参照するのはコードマスタ（`TWTZM040`）だけ — Q-DS-TU-002）
 - **定義するインターフェース**:
   - チュートリアル画面（GWTG081）と、その入口（`/wtg081` が受け取る `FunctionID`・`keiyakuKbn`）と、画面の切替の口（`/wtg081/next`）（Q-DS-TU-001・Q-DS-TU-002）
-  - 発行依頼書登録変更画面から開く部品（`pages/wtg/wtg081/pwtgo081ZoomForm.html`。ir design の画面がテンプレートに読み込む）（Q-DS-TU-001）
+  - 発行依頼書登録変更画面から開く部品（`pages/wtg/wtg081/pwtgo081ZoomForm.html`。ir design の公開契約にまだ無い。親画面は `pwtgo081ZoomForm.html` を読み込み、ウインドウ名 `pwtgo081` で開く）（Q-DS-TU-001）
   - 親画面へ値を入れる受け渡しの形（コールバックの名前と、渡す JSON の項目・値・「空にする」の印）（`### データ契約と外部連携（Data Contracts & Integration）`。ir design の受け渡しの口に合わせる）
   - 画面の分岐と表示文言（`_handoff/phase5-issue-request-tutorial-flow.md`）と、選択・入力と項目の対応（`_handoff/phase5-issue-request-tutorial-mapping.md`）（Q-DS-TU-004〜006）
 
@@ -225,7 +225,7 @@ flowchart LR
   - 開き方（Q-DS-TU-001・Q-DS-TU-002）：発行依頼書登録変更画面のテンプレートが `pages/wtg/wtg081/pwtgo081ZoomForm.html` を読み込む。チュートリアル設定ボタンで、ウインドウ名 `pwtgo081` の別ウインドウを `/zoom/wait` で開き、`FunctionID=WTG081` と `keiyakuKbn`（画面にいま表示している契約区分）を `/wtg081` へ POST する。大きさは `ZOOM_DEFINE.pwtgo081=1000px,600px`
   - 値の返し方（2.1・2.2）：ボタン・反映ボタンを押すたびに、チュートリアルが `window.opener['pwtgo081callback'](json)` を呼ぶ。OK でまとめて返さない（Q-DS-TU-001）。`json` は入れる項目だけを持つ。項目名は ir design の受け渡しの名前（契約種別 `inputInfo.contractSyubetsu`・局種別 `kyokuSyubetsu`・設置設備 `sechiSetsubi`・賃料【月額】 `moveLeaseChinryo`・電気料【月額】 `moveLeaseDenkiryoFreeform`・着工予定日 `moveLeaseChakkoYoteiDate`・転貸情報の有無 `moveLeaseKind`・KDDI転貸借契約書 `kddiRentalContract`）。契約開始日（`moveLeaseContractStartDate`）は入れない（mapping の 1）
   - 「空にする」の印（Q-DS-TU-005）：消す項目は `json.clear`（項目名の配列）で渡す。値の空文字とは区別する（ir design は「値が空のものは入れない」ので、空文字では消えない）
-  - 親画面がするとき（Q-DS-TU-007）：入れる先の項目が入力できない状態なら入れない（例：UQ⇒OCT・OCT⇒UQ の転貸情報の有無）。契約種別を受け取ったときは、契約種別の変更時の処理を先に動かし、そのあとで残りの値を入れる。契約種別の変更時の処理は、`/wtg080/changeKeiyakuSyubetsuTutorial` による局種別・設置設備のリストの入れ直し（ir design の公開契約の戻りはこの 2 つ）と、親画面の契約種別の変更時の処理による電気料のリスト・ラベル・入力可否の切替。賃料【月額】のカンマと着工予定日の保存の形への変換は親画面が行う。`json.clear` の印、入れる順、入力できない項目に入れないこと、契約種別の変更時の電気料のリスト・ラベル・入力可否の切替（`/wtg080/changeKeiyakuSyubetsuTutorial` の戻りにはまだ無い）、賃料・着工予定日の整形は、ir design の公開契約にまだ無い。ir design は Phase 5 の最後にまとめて直す（upstream-carryover）
+  - 親画面がするとき（Q-DS-TU-007）：入れる先の項目が入力できない状態なら入れない（例：UQ⇒OCT・OCT⇒UQ の転貸情報の有無）。契約種別を受け取ったときは、契約種別の変更時の処理を先に動かし、そのあとで残りの値を入れる。契約種別の変更時の処理は、`/wtg080/changeKeiyakuSyubetsuTutorial` による局種別・設置設備のリストの入れ直し（ir design の公開契約の戻りはこの 2 つ）と、親画面の契約種別の変更時の処理による電気料のリスト・ラベル・入力可否の切替。賃料【月額】のカンマと着工予定日の保存の形への変換は親画面が行う。`json.clear` の印、入れる順、入力できない項目に入れないこと、契約種別の変更時の電気料のリスト・ラベル・入力可否の切替（`/wtg080/changeKeiyakuSyubetsuTutorial` の戻りにはまだ無い）、賃料・着工予定日の整形、親画面が開く部品 `pwtgo081ZoomForm.html` を読み込むこととウインドウ名 `pwtgo081` で開くことは、ir design の公開契約にまだ無い。ir design は Phase 5 の最後にまとめて直す（upstream-carryover）
   - 親画面が無いとき（Q-DS-TU-007 の 2）：`window.opener` が閉じられた、またはコールバックが無いときは、値を渡さず（何もしない）、次の画面へは進む。メッセージは出さない
 
 ## コンポーネントとインターフェース（Components and Interfaces）

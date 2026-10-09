@@ -38,7 +38,7 @@ def main(argv=None):
     parser.add_argument("--payload", help="UTF-8 JSON with the actual response or selected repair")
     parser.add_argument("--actor", default="")
     parser.add_argument("--call", help="Actual flow/action call, if different from --action")
-    parser.add_argument("operation", choices=("implement-select", "implement-next", "implement-note", "implement-check", "implement-repair", "implement-rebase", "implement-retry", "advance", "submit", "respond", "review-context", "migration-review", "audit", "preflight", "context", "progress", "metrics", "result", "complete", "completion", "decision", "resolve", "approve", "accept-plan", "wait", "answer", "repair", "reopen", "upstream-approved", "resolve-rollback"))
+    parser.add_argument("operation", choices=("implement-select", "implement-next", "implement-note", "implement-check", "implement-repair", "implement-rebase", "implement-retry", "implement-reverify", "implement-repin", "advance", "submit", "respond", "review-context", "migration-review", "audit", "preflight", "context", "progress", "metrics", "result", "complete", "completion", "decision", "resolve", "approve", "accept-plan", "select-scope", "switch-mode", "wait", "answer", "repair", "reopen", "upstream-approved", "resolve-rollback"))
     args = parser.parse_args(argv)
     try:
         action = args.action
@@ -95,7 +95,7 @@ def _execute(context, operation, data, actor):
 
 def dispatch(context, operation, data, actor):
     if operation.startswith('implement-'):
-        if context.process != 'implement':
+        if not context.kind:
             raise ValueError('implementation operation requires a Phase 8 action')
         import implementation_requests as implementation
         import implementation_repair
@@ -108,6 +108,8 @@ def dispatch(context, operation, data, actor):
             'implement-repair': lambda: implementation_repair.request(context, data, actor),
             'implement-rebase': lambda: implementation_repair.rebase(context, data, actor),
             'implement-retry': lambda: implementation_repair.retry(context, data),
+            'implement-reverify': lambda: __import__('implementation_reverify').reverify(context, data, actor),
+            'implement-repin': lambda: __import__('implementation_reverify').repin(context, data, actor),
         }
         return actions[operation]()
     if operation == 'review-context':
@@ -135,7 +137,7 @@ def dispatch(context, operation, data, actor):
         import authoring_results
         return authoring_results.save(context, data)
     if operation == "context":
-        if context.process == 'implement' and context.action != 'implement-gate-run':
+        if context.kind == 'task':
             import implementation_requests
             # The task-level review emits get their context from the record their preparing gate published (gate_exchange).
             return implementation_requests.task_context(context)
@@ -148,7 +150,10 @@ def dispatch(context, operation, data, actor):
                   "upstream": context.upstream(), "unreviewed_inputs": prerequisites.unreviewed_inputs(context),
                   "gate_record_path": context.gate_record}
         result["authoring_inputs"] = context.authoring_inputs()
-        if context.process == 'implement':
+        if context.kind == 'cross':
+            import implementation_project
+            result.update(implementation_project.cross_context(context))
+        if context.kind == 'final':
             import implementation_evidence
             import implementation_checks
             result.update(profile='implementation-code-v1', implementation=implementation_evidence.verify_review(context),
@@ -160,11 +165,16 @@ def dispatch(context, operation, data, actor):
             result.update(snapshot_path=str(path), snapshot=snapshot_artifacts.load(context),
                           findings_path=findings_stage.stage_path(context), findings=findings_stage.read(context))
         result["questions"] = project_progress.workflow(context).get("waiting", {}).get(project_progress.key(context))
-        if context.process != 'implement':
+        if not context.kind:
             # 検査の前提（指摘の共通ルール・人が確定した回答・却下から学んだ扱い・前回までの指摘）。
             import review_premises
             import reevaluation
             result.update(review_premises.collect(context))
+            if context.selection:
+                # 横断確認の部分集合モード（L4-1、§6.3 2c）：比較集合と、U のうち未収録の feature を渡す。
+                scope_features = context.comparison_features()
+                result.update(selection=context.selection, scope_features=scope_features,
+                              excluded_features=[e["name"] for e in context.features() if e["name"] not in scope_features])
             legacy = reevaluation.inspector_input(context)
             if legacy:
                 # この修正の回は再評価：検査役は旧形式の指摘だけを finding-reevaluation の手順で見直す
@@ -194,12 +204,18 @@ def dispatch(context, operation, data, actor):
     elif operation == "approve":
         return review_decisions.approve(context, actor,expected=data.get('expected'),operation_id=data.get('operation_id'))
     elif operation == "accept-plan":
-        plans = dict(project_progress.workflow(context).get("accepted_plans", {}))
-        plans[context.process] = {"actor": actor, "at": project_state.now(), "note": data.get("note", ""),
-                                  "manifest": feature_manifest.source_hash(context.root) if context.phase >= 4 else None}
-        project_progress.save(context, {"accepted_plans": plans})
+        import feature_scope
+        feature_scope.accept_plan(context, data, actor)
+    elif operation == "select-scope":
+        import feature_scope
+        return feature_scope.select(context, data.get("feature"), actor, data.get("note", ""))
+    elif operation == "switch-mode":
+        import mode_switch
+        if not data.get("confirm"):
+            return mode_switch.preview(context)
+        return mode_switch.switch(context, data, actor)
     elif operation in ("wait", "answer"):
-        if context.process == 'implement' and context.action != 'implement-gate-run':
+        if context.kind == 'task':
             import implementation_store
             implementation_store.require_execution(context, data)
         waiting = dict(project_progress.workflow(context).get("waiting", {}))
@@ -209,7 +225,7 @@ def dispatch(context, operation, data, actor):
             waiting[project_progress.key(context)] = {**data, "actor": actor, "at": project_state.now(), "status": "waiting"}
         else:
             entry = waiting.get(project_progress.key(context))
-            if (context.process == 'implement' and entry
+            if (context.is_implementation and entry
                     and entry.get('execution_id') != data.get('execution_id')):
                 raise ValueError('questions belong to an earlier execution')
             if not entry or not data.get("answers"):

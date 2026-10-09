@@ -1,0 +1,31 @@
+{
+ "operation_id": "f719f1ff-68d4-4a5d-a522-c50725d2f210",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[issue-request-tutorial]::run",
+  "event": "design-authoring-revise",
+  "item": "issue-request-tutorial",
+  "status": "emit",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": null,
+  "id": "47fc7fff1a954df590bd9803059598a5"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/issue-request-tutorial/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "design",
+    "scope": "feature:issue-request-tutorial",
+    "run": 5,
+    "number": 1
+   }
+  ],
+  "return_candidates": [],
+  "summary": "開く部品 pwtgo081ZoomForm.html の読込とウインドウ名 pwtgo081 が ir design の公開契約にまだ無いことを tutorial design（責務境界・親画面がするとき）に明記し、upstream-carryover の ir design 向け記述に追記した"
+ }
+}

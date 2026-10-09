@@ -17,6 +17,7 @@
 ## Phase 4 からの持ち越し（2026-10-07 回答者の指示で一覧に追加）
 - steering non-functional.md：「出力しない」項目に担当者の氏名を足す（security.md の機密データの扱いとそろえる）
 - feature 一覧：TWTGM100 の注記に、契約情報取込が発行依頼書を洗い替えすること（全削除→再登録）を足す（Phase 4 contract-info-import 2 回目 #13 で C にしたもの）
+- feature 一覧：application-status-search の依存列は property-basic-info だけだが、設計は TWTGM100 を外部結合で読むため issue-request の design の DB レイアウトを読む。依存列に issue-request を足すか、requirements の「前提と依存」も含めて人が決める（application-status-search design の再検査 #6-2、2026-10-09）
 
 ## 物件基本情報登録変更の design（承認済み。開き直して直す。2026-10-07 回答者の指示と調査）
 - 採番マスタの申請No の行の MAX区分を "0"（ローテーション無し。NumberingService.java:56-60 のとおり）に直す（Q-DS-IR-012 の回答）
@@ -47,7 +48,7 @@
 - 1.10：ブラウザーの × で閉じることは防げない（Q-DS-TU-001）
 - 2.1：入れる項目に「転貸情報の有無」を足す（8 項目。Q-DS-TU-005）
 - 2.2：設計で「空にする」と決めた操作（設置設備・電気料を消す）は「入れる値が空なら変えない」の例外（Q-DS-TU-005）
-- ir design（issue-request）：チュートリアルとの受け渡しに「空にする」の印 json.clear（項目名の配列）を足す。入れる先が入力できないときは入れない。契約種別を受け取ったときは契約種別の変更時の処理（リストの入れ直し・ラベル・入力可否）を先に動かしてから残りの値を入れる（今は値を入れた後にリストを入れ直す）。契約種別の変更時の電気料のリスト・ラベル・入力可否の切替と、賃料のカンマ・着工予定日の保存の形への変換を親画面が行うことも書く。コールバック名は pwtgo081callback（tutorial design、Q-DS-TU-005・Q-DS-TU-007、2026-10-08）
+- ir design（issue-request）：チュートリアルとの受け渡しに「空にする」の印 json.clear（項目名の配列）を足す。入れる先が入力できないときは入れない。契約種別を受け取ったときは契約種別の変更時の処理（リストの入れ直し・ラベル・入力可否）を先に動かしてから残りの値を入れる（今は値を入れた後にリストを入れ直す）。契約種別の変更時の電気料のリスト・ラベル・入力可否の切替と、賃料のカンマ・着工予定日の保存の形への変換を親画面が行うことも書く。コールバック名は pwtgo081callback。親画面（発行依頼書登録変更画面のテンプレート）が開く部品 pages/wtg/wtg081/pwtgo081ZoomForm.html を読み込むことと、ウインドウ名 pwtgo081 で開くことも書く（tutorial design、Q-DS-TU-005・Q-DS-TU-007、2026-10-08。開く部品・ウインドウ名は 2026-10-09 の再検査 #5-1 で追記）
 - steering api-standards.md：画面内で JSON を返す口が増える（/wtg081/next。issue-request の /wtg080/calcTaxAdjustment・/wtg080/changeKeiyakuSyubetsuTutorial も同じ）（Q-DS-TU-002・Q-DS-TU-008、2026-10-08）
 
 ## requirements（print-report）・steering で意図して外れたもの（2026-10-08、回答 answer-ds-pr-20261008-1225.txt による）

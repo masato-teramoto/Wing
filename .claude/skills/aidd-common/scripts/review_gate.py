@@ -2,6 +2,7 @@
 import hashlib
 import json
 from pathlib import Path
+import location_identity
 
 import inspection_seal
 import review_contract
@@ -18,7 +19,7 @@ class OperationRejected(ValueError):
 
 def current(context, call=None):
     """The live feature-level review wait (a task-level review wait is L4's: implementation_task_review.current)."""
-    if context.process == 'implement':
+    if context.is_implementation:
         import implementation_flows
         call = implementation_flows.require_call(context, call)
     call = call or context.action
@@ -50,6 +51,6 @@ def require(context, expected, call=None, resuming=False):
         raise OperationRejected('a current review context is required; obtain review-context first')
     now = current(context, call or expected.get('call'))
     names = set(now) - ({'record_hash'} if resuming else set())
-    if any(now[k] != expected.get(k) for k in names):
+    if not location_identity.same_binding({k: now[k] for k in names}, {k: expected.get(k) for k in names}):
         raise OperationRejected('stale review context; obtain the current review before writing')
     return now

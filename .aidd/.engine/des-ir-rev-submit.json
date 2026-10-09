@@ -1,0 +1,43 @@
+{
+ "operation_id": "17f4be2e-ac19-456a-8793-5dea17b7b0c9",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[issue-request]::run",
+  "event": "design-authoring-revise",
+  "item": "issue-request",
+  "status": "emit",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": null,
+  "id": "793b25ce18d441f49fada969e9642035"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/issue-request/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "design",
+    "scope": "feature:issue-request",
+    "run": 9,
+    "number": 1
+   },
+   {
+    "phase": "design",
+    "scope": "feature:issue-request",
+    "run": 9,
+    "number": 2
+   },
+   {
+    "phase": "design",
+    "scope": "feature:issue-request",
+    "run": 9,
+    "number": 3
+   }
+  ],
+  "return_candidates": [],
+  "summary": "_handoff の原本から項目ごとの規則（バリデーション設計）と 7 テーブルの DB レイアウトを design 本文へ取り込み、実在しない補足資料への参照を本文内の見出しへの参照に直した"
+ }
+}

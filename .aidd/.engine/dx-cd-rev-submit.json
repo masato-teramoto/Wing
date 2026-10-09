@@ -1,0 +1,31 @@
+{
+ "operation_id": "e0e60723-7e57-4cf8-aea0-9bb165ec2fd2",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[contract-info-download]::run",
+  "event": "design-authoring-revise",
+  "item": "contract-info-download",
+  "status": "emit",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": null,
+  "id": "58ca26286c9244b6b51d19d9c2efaf5e"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/contract-info-download/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "design",
+    "scope": "cross",
+    "run": 3,
+    "number": 2
+   }
+  ],
+  "return_candidates": [],
+  "summary": "項目一覧の「取込側の型・バイト数」列を取込のリバース表の型・桁に合わせた（381 行中 55 行。指摘の 41 行に加え、同じ食い違いの「旧⇒新」表記 14 行も合わせた）。見出しの文字は変えていない"
+ }
+}

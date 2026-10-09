@@ -17,6 +17,7 @@ the live dispatch before saving. A reissued dispatch can replace a record in the
 import copy
 
 import implementation_store as store
+import location_identity
 
 KINDS = ('published', 'result', 'answer')
 
@@ -66,7 +67,7 @@ def _validate_payload(context, kind, record):
         expected = record['expected']
         binding = {'event': context.action, 'item': context.item, 'root': context.root,
                    'state': context.state_path, 'dispatch_id': record['dispatch_id']}
-        if any(expected.get(key) != value for key, value in binding.items()):
+        if not location_identity.same_binding({key: expected.get(key) for key in binding}, binding):
             raise ValueError('task gate answer belongs to another dispatch')
 
 
@@ -132,11 +133,33 @@ def _publications(execution):
     return values
 
 
+def _publication(execution, key):
+    values = _publications(execution)
+    value = values.get(key)
+    if isinstance(value, dict):
+        if (set(value) != {'sha256', 'record'} or not isinstance(value['record'], dict)
+                or value['sha256'] != store.fingerprint(value['record'])):
+            raise ValueError('task gate publication is changed or lacks its saved binding')
+        return value['sha256'], value['record']
+    if key in values and not isinstance(value, str):
+        raise ValueError('invalid task gate publication binding')
+    return value, None  # Existing executions saved only the raw fingerprint.
+
+
+def _portable_publication(record):
+    value = copy.deepcopy(record)
+    if value['evidence'] is not None:
+        import implementation_completion
+        value['evidence'] = implementation_completion.portable_snapshot(value['evidence'])
+    return value
+
+
 def publish(context, gate, output=None, skip=None, review_context=None, answers=None, evidence=None):
     """Seal this attempt's presentation or reasoned skip before the unit is issued.
 
-    Persist the full-record fingerprint in the execution first. If either write is interrupted,
-    only an identical publication may resume; an old unbound record cannot supply a decision.
+    Persist the original record and fingerprint together in the execution first.
+    A move during an interrupted write can then replay those exact original bytes.
+    An old unbound record cannot supply a decision.
     """
     if skip is not None and (not isinstance(skip, str) or not skip.strip()):
         raise ValueError('a skipped task gate needs its reason')
@@ -149,15 +172,25 @@ def publish(context, gate, output=None, skip=None, review_context=None, answers=
     key = _publication_key(context, gate, attempt)
     fingerprint = store.fingerprint(record)
     publications = _publications(execution)
-    if key in publications and publications[key] != fingerprint:
-        raise ValueError('immutable task gate publication differs; use a new attempt')
+    pinned_hash, prepared = _publication(execution, key)
     previous = _read(context, gate, 'published', required=False)
     if previous is not None:
-        if key not in publications or store.fingerprint(previous) != fingerprint:
+        if pinned_hash != store.fingerprint(previous):
             raise ValueError('task gate publication is changed or lacks its saved binding')
+        prepared = previous
+    if prepared is not None:
+        _validate_record(context, gate, 'published', execution, attempt, prepared)
+        _validate_evidence(context, prepared['evidence'])
+        if _portable_publication(prepared) != _portable_publication(record):
+            raise ValueError('immutable task gate publication differs; use a new attempt')
+        record = prepared
+    elif pinned_hash is not None and pinned_hash != fingerprint:
+        # A legacy interrupted binding has no original record to reconstruct safely.
+        raise ValueError('immutable task gate publication differs; explicitly rebase for revalidation')
+    if previous is not None:
         return previous
     if key not in publications:
-        execution['gate_publications'] = {**publications, key: fingerprint}
+        execution['gate_publications'] = {**publications, key: {'sha256': fingerprint, 'record': record}}
         store.write(context.root, store.execution_path(execution['execution_id']), execution)
     store.write(context.root, path, record)
     return record
@@ -166,7 +199,7 @@ def publish(context, gate, output=None, skip=None, review_context=None, answers=
 def published(context, gate):
     record = _read(context, gate, 'published')
     execution, attempt = _binding(context)
-    fingerprint = _publications(execution).get(_publication_key(context, gate, attempt))
+    fingerprint, _ = _publication(execution, _publication_key(context, gate, attempt))
     if fingerprint != store.fingerprint(record):
         raise ValueError('task gate publication is changed or lacks its saved binding')
     _validate_evidence(context, record['evidence'])
@@ -246,7 +279,7 @@ def record_operation(context, gate, kind, stored_record, *, allow_saved=False):
     identity = {'root': context.root, 'state': context.state_path,
                 'event': context.action, 'item': context.item}
     if (not _text(operation_id) or entry.get('status') not in statuses
-            or any(request.get(key) != value for key, value in identity.items())
+            or not location_identity.same_binding({key: request.get(key) for key in identity}, identity)
             or not isinstance(payload, dict) or payload.get('operation_id') != operation_id
             or receipt.get('event') != context.action or (receipt.get('item') or '') != context.item
             or not _text(receipt.get('call')) or not _text(receipt.get('unit'))):

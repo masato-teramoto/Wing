@@ -36,6 +36,7 @@ for _path in (_BIN, os.path.join(COMMON, "lib")):
 import aidd_lock  # noqa: E402
 import engine_cli  # noqa: E402
 import project_state  # noqa: E402
+import location_identity  # noqa: E402
 
 OPERATIONS = ("advance", "submit", "respond")
 JOURNAL = "host_operations"
@@ -64,8 +65,8 @@ def ensure_idle(state, operation_id=None):
 
 class Host:
     def __init__(self, root, state_path=None, config=None, stage_runner=None):
-        self.root = os.path.abspath(root)
-        self.state_path = state_path or os.path.join(self.root, ".aidd/phase-progress.json")
+        self.root = os.path.realpath(root)
+        self.state_path = os.path.realpath(state_path or os.path.join(self.root, ".aidd/phase-progress.json"))
         self.config = os.path.abspath(config or COMMON)
         self.stage_runner = stage_runner
 
@@ -118,7 +119,7 @@ class Host:
         request = {"kind": kind, "payload": payload, "actor": actor, "event": action, "item": item,
                    "root": self.root, "state": self.state_path}
         entry = self._journal().get(operation_id)
-        if entry and entry["request"] != request:
+        if entry and not location_identity.same_request(entry["request"], request):
             raise ValueError("operation ID already used with different content")
         if not (entry and entry["status"] == "finished"):
             ensure_idle(project_state.read(self.state_path), operation_id)
@@ -211,6 +212,8 @@ class Host:
     def respond(self, action, item, payload, actor=""):
         with aidd_lock.hold(self.state_path):
             operation_id, request, entry = self._begin("respond", action, item, payload, actor)
+            if entry:
+                payload = entry['request']['payload']  # Preserve the original answer bytes on relocation replay.
             if entry and entry["status"] == "finished":
                 return dict(entry["output"], replayed=True)
             if not entry:

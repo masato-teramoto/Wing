@@ -1,0 +1,28 @@
+{
+ "operation_id": "ff094d90-895e-4a7a-8999-d08d75c20793",
+ "action": "approve",
+ "dispatch": {
+  "call": "feature-decomposition-revise",
+  "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::end.review",
+  "event": "feature-decomposition-revise",
+  "item": null,
+  "status": "wait",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"feature-decomposition-revise/feature-decomposition-revise[-]::end.review\", \"snapshot\": \"a667bab0d4c47a7010aa87aa4ec41b203ebf5d248e32547e807bf136f7d2358d\", \"run\": 7, \"inspection_hash\": \"8aacac976989dc1328ee2b18459b1ca4d8a95a48ad72f7213568bb54c94cbd8c\"}\n**Phase 3（Feature 分割）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 分割の妥当性（粒度・種別の割当）\n- 優先度（異議がある場合のみ）\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：feature 一覧の書式、要求 ID の対応（漏れ・二重）、依存の循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-3-feature.md`）\n\n### 判断が必要な指摘\n\n**対象**: `.aidd/feature-list.md`（スコープ: 成果物単位 / 7 回目）\n**実行した層**: ① / ②\n\n**指摘**: なし（0 件。検査は実行済み）\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n判断が揃いました。承認の可否を回答してください（承認する場合は承認者名）。",
+  "id": "919aef2b8e784aba95e5893a17eec3a7"
+ },
+ "expected": {
+  "root": "/home/kccs/Wing",
+  "state": "/home/kccs/Wing/.aidd/phase-progress.json",
+  "call": "feature-decomposition-revise",
+  "event": "feature-decomposition-revise",
+  "item": "",
+  "dispatch_id": "919aef2b8e784aba95e5893a17eec3a7",
+  "unit": "feature-decomposition-revise/feature-decomposition-revise[-]::end.review",
+  "scope": "phase",
+  "run": 7,
+  "snapshot": "a667bab0d4c47a7010aa87aa4ec41b203ebf5d248e32547e807bf136f7d2358d",
+  "record_hash": "8aacac976989dc1328ee2b18459b1ca4d8a95a48ad72f7213568bb54c94cbd8c"
+ },
+ "data": {}
+}

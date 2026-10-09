@@ -1,0 +1,28 @@
+{
+ "operation_id": "7e461243-cd8f-4a8c-b73b-a4295bb7fcd0",
+ "action": "approve",
+ "dispatch": {
+  "call": "requirements-authoring-revise",
+  "unit": "requirements-authoring-revise/requirements-authoring-revise[application-status-search]::end.review",
+  "event": "requirements-authoring-revise",
+  "item": "application-status-search",
+  "status": "wait",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"requirements-authoring-revise/requirements-authoring-revise[application-status-search]::end.review\", \"snapshot\": \"7d96518c40eb2a18f28c7eca1178721fd57571d2731c5578468e50d4f50f0c5f\", \"run\": 3, \"inspection_hash\": \"9feded12e55645efd1a62b8be089323ef521672455a83d1db6f3ee2d760efb3e\"}\n**Phase 4（requirements 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 業務ルールとして正しいか\n- AC が観測できるか\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式・要件 ID の形式、要求 ID との対応（トレーサビリティ）、steering との整合、依存の記載、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-4-requirements.md`）\n\n### 判断が必要な指摘\n\n**対象**: `specs/application-status-search/requirements.md`（スコープ: 成果物単位（application-status-search） / 3 回目）\n**実行した層**: ① / ②\n\n**指摘**: なし（0 件。検査は実行済み）\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n判断が揃いました。承認の可否を回答してください（承認する場合は承認者名）。",
+  "id": "0d20215ab93a4117994538960b7cdffc"
+ },
+ "expected": {
+  "root": "/home/kccs/Wing",
+  "state": "/home/kccs/Wing/.aidd/phase-progress.json",
+  "call": "requirements-authoring-revise",
+  "event": "requirements-authoring-revise",
+  "item": "application-status-search",
+  "dispatch_id": "0d20215ab93a4117994538960b7cdffc",
+  "unit": "requirements-authoring-revise/requirements-authoring-revise[application-status-search]::end.review",
+  "scope": "feature:application-status-search",
+  "run": 3,
+  "snapshot": "7d96518c40eb2a18f28c7eca1178721fd57571d2731c5578468e50d4f50f0c5f",
+  "record_hash": "9feded12e55645efd1a62b8be089323ef521672455a83d1db6f3ee2d760efb3e"
+ },
+ "data": {}
+}

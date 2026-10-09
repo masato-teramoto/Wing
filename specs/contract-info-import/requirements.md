@@ -1,7 +1,7 @@
 ---
 feature: contract-info-import
 status: approved
-updated_at: 2026-10-05T20:26:08+09:00
+updated_at: 2026-10-09T18:24:46+09:00
 ---
 
 # 要件定義書

@@ -18,9 +18,10 @@ import project_state
 import review_decisions
 import review_contract
 import project_progress
+import record_format
 
 ORIGINS = ("finding", "plan-change", "reopen", "authoring-candidate", "rollback", "rollback-derived", "rfp-change", "edited-outside-flow", "upstream-change",
-           "reevaluation")
+           "reevaluation", "docs-revision", "docs-accumulate")
 
 
 def rule_of(context):
@@ -207,15 +208,21 @@ def resume_unscheduled(context):
             ensure_scheduled(owner)
 
 
-def _redo_cross(context, process):
-    """The owner phase's cross confirmation no longer matches; inspect it again."""
-    if process in ("requirements", "design"):
+def _redo_cross(context, process, selection=""):
+    """The owner phase's cross confirmation no longer matches; inspect it again.
+
+    selection が空なら全件の回、あれば selection 単位の回（item=S）だけを開き直す。
+    implement は実コードの横断確認 implement-cross-gate（全件のみ。§6.11 の失効は「同じ action の次の unit」）。
+    """
+    item = selection or None
+    if process in ("requirements", "design", "implement"):
         action = process + "-cross-gate"
         current = project_progress.workflow(context)
-        project_progress.save(context, {"invalidated_cross": sorted(set(current.get("invalidated_cross", [])) | {process})})
-        project_progress.redo(context, action)
+        key = project_progress.cross_key(process, selection)
+        project_progress.save(context, {"invalidated_cross": sorted(set(current.get("invalidated_cross", [])) | {key})})
+        project_progress.redo(context, action, item)
     elif process == "tasks":
-        project_progress.redo(context, "tasks-gate-run")
+        project_progress.redo(context, "tasks-gate-run", item)
 
 
 def _discovering(context, row, owner_process, actor):
@@ -224,17 +231,18 @@ def _discovering(context, row, owner_process, actor):
     rule = phase_rules.RULES[phase]
     scope = row["scope"]
     note = "差戻し先（%s）の修正を反映して見直す: %s" % (owner_process, row["instruction"])
+    kind, name = record_format.scope_parts(scope)
+    if kind == "cross":  # implement の判定より先に見る（implement-cross-gate の指摘は feature を持たない）
+        _redo_cross(context, phase, name)
+        return
     if phase == 'implement':
         import implementation_repair
-        implementation_repair.invalidate_feature(context, scope.removeprefix('feature:'), retire_plan=False)
+        implementation_repair.invalidate_feature(context, record_format.scope_feature(scope), retire_plan=False)
         return
-    if scope == "cross":
-        _redo_cross(context, phase)
+    if phase == "tasks" and kind == "phase":
+        project_progress.redo(context, "tasks-gate-run", name or None)
         return
-    if phase == "tasks" and scope in ("phase",):
-        project_progress.redo(context, "tasks-gate-run")
-        return
-    item = scope[len("feature:"):] if scope.startswith("feature:") else ""
+    item = name if kind == "feature" else ""
     if rule["per_feature"] and not item:
         return
     owner = revise_context(context, phase, item)
@@ -255,17 +263,23 @@ def _derived(context, owner_process, row, actor):
             _open(docs, targets, [], actor, "rollback-derived", "design の差戻し修正を docs に反映する: " + row["instruction"])
 
 
+def _other_feature(context, row):
+    """同じ工程の、別 feature の成果物単位の指摘か（横断・工程承認のスコープは含めない）。"""
+    return record_format.is_feature_scope(row["scope"]) and row["scope"] != context.scope
+
+
 def discovering_key(row):
     """-revise action/item of the artifact whose inspection found the rollback."""
     rule = phase_rules.RULES[row["phase"]]
     scope = row["scope"]
+    kind, name = record_format.scope_parts(scope)
+    if kind == "cross":  # implement の判定より先に見る（implement-cross-gate の指摘を implement-gate-run[cross] にしない）
+        return row["phase"] + "-cross-gate", name
     if row['phase'] == 'implement':
-        return 'implement-gate-run', scope.removeprefix('feature:')
-    if scope == "cross":
-        return row["phase"] + "-cross-gate", ""
-    if row["phase"] == "tasks" and scope == "phase":
-        return "tasks-gate-run", ""
-    return rule["repair"], scope[len("feature:"):] if scope.startswith("feature:") else ""
+        return phase_rules.IMPLEMENT_REVIEW, record_format.scope_feature(scope)
+    if row["phase"] == "tasks" and kind == "phase":
+        return "tasks-gate-run", name
+    return rule["repair"], name if kind == "feature" else ""
 
 
 def request(context, payload, actor, apply=True, operation_id=None):
@@ -337,7 +351,7 @@ def request(context, payload, actor, apply=True, operation_id=None):
             row = dict(row, instruction=instruction, instruction_source="判断の理由" if instruction == found.reason.strip() else "AI の修正案")
         if phase != context.process and found.decision != "差戻し":
             raise ValueError("cross-phase repair requires the human rollback decision")
-        if phase == context.process and row["scope"] not in (context.scope, "cross", "phase") and found.decision != "差戻し":
+        if phase == context.process and _other_feature(context, row) and found.decision != "差戻し":
             raise ValueError("repairing another feature's artifact requires the human rollback decision")
         rows.append(row)
     if missing:
@@ -348,14 +362,14 @@ def request(context, payload, actor, apply=True, operation_id=None):
     data = _open(owner, targets, rows, actor, "finding", extra={"operation_id": operation_id} if operation_id else None)
     blockers = list(context.blockers())
     for row in rows:
-        other_feature = row["phase"] == context.process and row["scope"] not in (context.scope, "cross", "phase")
+        other_feature = row["phase"] == context.process and _other_feature(context, row)
         if phase_rules.RULES[row["phase"]]["number"] > context.phase or other_feature:
             if any(b.get("status") == "open" and b.get("target_event") == owner.action and b.get("target_item") == owner.item
                    and all((b.get("finding") or {}).get(k) == row.get(k) for k in ("phase", "scope", "run", "number"))
                    for b in blockers):
                 continue  # a resent request after a partial failure
             resume_action, resume_item = discovering_key(row)
-            blockers.append({"id": data["id"] + ":" + str(len(blockers)), "status": "open",
+            blockers.append({"id": data["id"] + ":" + str(len(blockers)), "status": "open", **_scope_of_block(context, owner),
                              "return_to_phase": context.phase, "target_event": owner.action,
                              "target_item": owner.item, "targets": targets, "finding": row,
                              "resume_event": resume_action, "resume_item": resume_item,
@@ -398,6 +412,14 @@ def fix_rows(context):
     return rows
 
 
+def _scope_of_block(context, owner):
+    """Feature 方式の blocker が止める範囲（§6.8）。全件方式は欄を書かない（動作を変えない）。"""
+    import feature_scope
+    if not feature_scope.is_feature(context):
+        return {}
+    return {"affected_features": feature_scope.affected_features(context, owner.item)}
+
+
 def reopen(context, targets, instruction, origin, actor, resume_action="", resume_item=""):
     """Human instruction without a gate finding: plan change, explicit reinspection, etc."""
     review_decisions.person(actor)
@@ -416,6 +438,7 @@ def reopen(context, targets, instruction, origin, actor, resume_action="", resum
                        for b in blockers)
         if not existing:
             blockers.append({"id": data["id"] + ":" + str(len(blockers)), "status": "open", "origin": origin,
+                             **_scope_of_block(context, owner),
                              "return_to_phase": context.phase, "target_event": owner.action, "target_item": owner.item,
                              "targets": targets, "finding": None, "instruction": instruction,
                              "resume_event": resume_action, "resume_item": resume_item, "actor": actor, "at": project_state.now()})
@@ -510,8 +533,9 @@ def complete_rollback(context, blocker_id, actor):
     if found is None or found.get("status") != "upstream-approved":
         raise ValueError("upstream reapproval is required before clearing rollback")
     row = found["finding"]
+    kind, name = record_format.scope_parts(row["scope"])
     finder = phase_rules.ExecutionContext(context.root, context.state_path, phase_rules.RULES[row["phase"]]["generate"],
-                                row["scope"][len("feature:"):] if row["scope"].startswith("feature:") else "")
+                                name if kind == "feature" else "")
     record = review_contract.read(finder)
     finding = review_decisions.finding(record, row["scope"], row["run"], row["number"])
     if not finding or not finding.resolved:

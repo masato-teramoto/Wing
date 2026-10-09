@@ -12,6 +12,8 @@ import task_verification
 import task_code_review_mcp as mcp
 
 PROFILE = 'implementation-task-review-v1'
+# 3 段の (2) の reverify 用レビュー（L4 修正計画 M-05・M-06）。変更の集合（共有ファイル・依存先・docs・steering 等の前後）を読む。
+REVERIFY_PROFILE = 'implementation-task-reverify-v1'
 ASPECTS = list(evidence.ASPECTS)
 RULE_FILES = ['.claude/agents/check-runner.md'] + [
     '.claude/skills/' + name + '/SKILL.md' for name in ['task-implement-check', 'implement-check'] + ASPECTS]
@@ -77,6 +79,9 @@ def snapshot(context, execution):
         if not any(evidence.matches(p, pattern) for p in selected):
             raise ValueError('review dependency missing: ' + pattern)
     changed = evidence.changed(execution['baseline'], code)
+    if execution.get('reverify'):
+        # reverify（3 段の (2)）：コード編集は 0 件。変わった共有ファイルのうち、このタスクのレビュー対象に入るものを見る。
+        changed = sorted(p for p in execution['reverify'].get('code', {}) if p in selected)
     before = execution.get('review_baseline')
     if before is None:
         raise ValueError('task review baseline missing; create a new execution')
@@ -103,15 +108,21 @@ def make_request(context, execution, round_number, task, previous):
     target = {key: execution[key] for key in ('feature', 'task_id', 'task_item', 'execution_id', 'request_id', 'plan_ref')}
     target.update(review_round=round_number, input_sha256=store.fingerprint(inputs),
                   config_sha256=store.fingerprint(execution['policy']))
-    return {'schema': 1, 'profile': PROFILE, 'target': target, 'inputs': inputs, 'task': task,
+    return {'schema': 1, 'profile': profile_for(execution),
+            'target': target, 'inputs': inputs, 'task': task, 'reverify': execution.get('reverify'),
             'required_aspects': ASPECTS, 'previous': previous,
             'instruction': execution.get('quality_instructions', {}).get('instruction', '')}
+
+
+def profile_for(execution):
+    """このタスクの実行のレビューの profile。reverify（3 段の (2)）の子 execution は再検証用。"""
+    return REVERIFY_PROFILE if execution.get('reverify') else PROFILE
 
 
 def verify_request(context, execution, pointer, current=True):
     request = storage.read(context.root, execution['execution_id'], pointer['round'], 'code-request.json')
     target = request['target']
-    if (store.fingerprint(request) != pointer['request_sha256'] or request.get('profile') != PROFILE
+    if (store.fingerprint(request) != pointer['request_sha256'] or request.get('profile') != profile_for(execution)
             or target.get('review_round') != pointer['round'] or request.get('required_aspects') != ASPECTS
             or any(target.get(k) != execution[k] for k in ('feature', 'task_id', 'task_item', 'execution_id', 'request_id', 'plan_ref'))
             or target.get('config_sha256') != store.fingerprint(execution['policy'])

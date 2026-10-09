@@ -9,6 +9,7 @@ L0 は L3 を import しない。繰り返しは入口 Skill の手順が持ち�
 import re
 
 import l0  # noqa: F401
+import location_identity
 import host as l0_host  # L0 の host（L3 は L0 を import してよい）
 
 import phase_rules
@@ -72,6 +73,8 @@ def stage_resolve(data):
     action, call, item = data.get('action') or '', data.get('call'), data.get('item') or ''
     if not action and call in phase_rules.PROCESS_OF:
         action = call  # a single action (plan, cross gate) called directly
+    if not action and call in phase_rules.MANAGEMENT_CALLS:
+        action = phase_rules.MANAGEMENT_CALLS[call]  # 工程に属さない管理用の action
     if not action:
         first = [rule for rule in sorted(phase_rules.RULES.values(), key=lambda r: r['number']) if rule['call'] == call]
         if data.get('operation') != 'advance':
@@ -80,12 +83,12 @@ def stage_resolve(data):
             action = first[0]['generate']
         else:
             import implementation_flows
-            probe = phase_rules.ExecutionContext(data['root'], data['state'], 'implement-gate-run', item)
+            probe = phase_rules.ExecutionContext(data['root'], data['state'], phase_rules.IMPLEMENT_REVIEW, item)
             action = implementation_flows.entry_action(probe, call)
             if not action:
                 raise ValueError('unknown workflow flow: ' + str(call))
     context = _context(data, action, item)
-    if call is None and context.process == 'implement':
+    if call is None and context.is_implementation:
         import implementation_flows
         call = implementation_flows.call(context)
     return {'action': action, 'item': item, 'call': call or action}
@@ -95,10 +98,16 @@ def stage_guard(data):
     """操作の前：review の書込みが途中でないこと、Phase 8 の実行が今のものであること。"""
     context = _context(data)
     review_operations.ensure_idle(context, data.get('operation_id'))
-    if data.get('operation') in ('submit', 'respond') and context.process == 'implement':
+    if data.get('operation') in ('submit', 'respond') and context.is_implementation:
         import implementation_flows
         implementation_flows.require_current(context)
         _guard_task_replay(context, data.get('operation_id'))
+    # 旧配布の config hash で発行された未回答の dispatch は、L0 の黙った再発行に乗せず止めて案内する（§7.1、U03）。
+    pending = (context.state().get('current') or {}).get('pending') or {}
+    if (data.get('operation') == 'advance' and pending.get('config_sha256')
+            and pending['config_sha256'] != engine_client.validate(context)['config_sha256']):
+        raise ValueError('更新前の配布で発行された未回答の待ち（%s[%s]）があります。更新前の配布で回答して確定するか、'
+                         '該当の操作を取り消してから、新しい配布で進めます' % (pending.get('event', '-'), pending.get('item') or '-'))
     # 旧配布物の host の記録（workflow.host_operations）が途中なら、その配布物で終える。
     legacy = project_progress.workflow(context).get('host_operations', {})
     if any(entry.get('status') != 'finished' for entry in legacy.values()):
@@ -128,7 +137,7 @@ def _guard_task_replay(context, operation_id):
         if unit.get('gate') != gate:
             raise ValueError('task operation belongs to another gate')
     if request['kind'] == 'respond':
-        if request['payload'].get('expected') != _task_review_context(context, record, receipt):
+        if not location_identity.same_binding(request['payload'].get('expected'), _task_review_context(context, record, receipt)):
             raise review_gate.OperationRejected('stale task confirmation; obtain the current review context')
     if entry['status'] == 'saved':
         # Apply is skipped on replay, so its saved raw file must still be the
@@ -147,6 +156,13 @@ def stage_advance_before(data):
     """呼出しの前：Phase 8 の呼出し先、入力の変更（audit）と実行前の確認（preflight）。"""
     context = _context(data)
     call = data['call']
+    if phase_rules.is_management(context.action):
+        # 管理用の action は状態を変えない確認表示なので、毎回出し直す（通過印を残さない）。
+        try:
+            project_progress.redo(context, context.action)
+        except (ValueError, OSError, KeyError):
+            pass
+        return {}
     if _task_gate(data.get('pending')):
         # A live task dispatch already has a publication. Check its identity
         # and inputs before another engine call can consume or refresh it.
@@ -156,7 +172,7 @@ def stage_advance_before(data):
         if engine_client.invoke(active, 'status', call).get('dispatch'):
             gate_exchange.published(active, pending['gate'])
         return {}
-    if context.process == 'implement':
+    if context.is_implementation:
         import implementation_flows
         implementation_flows.require_call(context, call, validate=True)
         implementation_flows.require_current(context)
@@ -184,8 +200,27 @@ def stage_advance_after(data):
     """呼出しの後：完了の記録と、返却の提示（host agent が次にすること）。"""
     outcome, unit = data['outcome'], data.get('pending')
     active = _context(data, unit.get('event') or '', unit.get('item') or '') if unit else _context(data)
+    if phase_rules.is_management(active.action):
+        import mode_switch
+        output = dict(outcome)
+        preview = mode_switch.preview(active)  # L0 は script の出力を返さないので、確認表示は L3 が載せる
+        output.update(preview=preview['text'], switch_allowed=preview['allowed'], reasons=preview['reasons'],
+                      owner_required=preview['owner_required'], owner_candidates=preview['owner_candidates'])
+        output['allowed_actions'] = ['switch-mode'] if preview['allowed'] else []
+        output['next_action'] = ('確認表示を人に示し、確定と回答されたときだけ switch-mode（confirm: true、理由、'
+                                 '必要なら owner）を呼ぶ。確定しなければ何もしない。')
+        return {'output': output}
     if not data.get('failed') and outcome.get('status') in ('emit', 'wait') and _task_gate(outcome):
         return _task_gate_output(data, outcome)
+    if active.kind == 'integration':
+        # 全体結合確認・横断 ACE（記録を書かない）。失敗は分割・送り直し・停止に振り分け、次に呼ぶものを返す（§6.11）。
+        import implementation_project
+        failed = bool(data.get('failed')) or outcome.get('status') == 'fail'
+        if not failed:
+            completion.record(active, data['call'])
+        output = {**outcome, 'allowed_actions': []}
+        output.update(implementation_project.after_run(active, failed))
+        return {'output': output}
     record_completions(active, data['call'])
     if data.get('failed'):
         output = {**outcome, 'allowed_actions': []}
@@ -210,7 +245,7 @@ def stage_submit_prepare(data):
             except ValueError as error:
                 raise ValueError('検査記録の形式に不備があります（%s）。検査役（check-runner）をもう一度実行して '
                                  'inspection_path を書き直し、同じ dispatch で submit し直してください' % error)
-        if context.process == 'implement' and result['status'] == 'completed':
+        if context.is_implementation and result['status'] == 'completed':
             import implementation_checks
             implementation_checks.validate_semantic(context, result)
     else:
@@ -233,7 +268,7 @@ def stage_submit_apply(data):
         if data['report'] == 'wait':
             import host_operations
             host_operations.dispatch(context, 'wait', result, '')
-    elif context.process == 'implement' and data['report'] == 'ok':
+    elif context.is_implementation and data['report'] == 'ok':
         import implementation_checks
         implementation_checks.save_semantic(context, result)
     if data['report'] == 'ok':
@@ -410,14 +445,12 @@ TASK_RESPONSES = ('approve', 'repair', 'hold')
 
 def _task_gate(unit):
     """タスクのアクションの agent（skill）/ human（requiresHuman）のゲートの unit か。"""
-    import implementation_requests
-    return bool(unit and unit.get('gate') and unit.get('event') in implementation_requests.TASK_ACTIONS
+    return bool(unit and unit.get('gate') and phase_rules.implement_kind(unit.get('event') or '') == 'task'
                 and (unit.get('type') == 'skill' or unit.get('requiresHuman')))
 
 
 def _task_wait(context, gate):
-    import implementation_requests
-    return bool(gate) and context.action in implementation_requests.TASK_ACTIONS
+    return bool(gate) and context.kind == 'task'
 
 
 def _task_review_context(context, record, receipt):
@@ -477,7 +510,7 @@ def _task_live_wait(context, gate, expected):
             or (pending.get('item') or '') != context.item or not receipt or receipt.get('status') != 'wait'):
         raise review_gate.OperationRejected('task confirmation requires the actual task specification wait', pending)
     record = gate_exchange.published(context, gate)
-    if expected != _task_review_context(context, record, receipt):
+    if not location_identity.same_binding(expected, _task_review_context(context, record, receipt)):
         raise review_gate.OperationRejected('stale task confirmation; obtain the current review context', pending)
     return receipt, record
 
@@ -509,9 +542,13 @@ def _task_respond_apply(context, data):
 
 
 def stage_respond_reported(data):
-    """報告の後：タスクの確認の修正は、同じタスクをやり直す（L3 の implementation_repair）。"""
+    """報告の後：タスクの確認の修正は、同じタスクをやり直す（L3 の implementation_repair）。
+    tasks の計画停止点で選んだ owner の tasks の修正の要求も、ここで起こす（feature_scope.apply_owner_reopen）。"""
     context = _context(data)
     payload = data['payload']
+    if payload.get('action') == 'accept-plan':
+        import feature_scope
+        feature_scope.apply_owner_reopen(context)
     if _task_wait(context, data.get('gate')) and payload.get('action') == 'repair':
         import implementation_repair
         import implementation_store as store
@@ -571,12 +608,13 @@ def _present(context, outcome):
         result.update(allowed_actions=review_options(active),
                       review_context=review_gate.current(active, outcome['call']),
                       review=review_summary(active), choices=human_choices.review(active))
-        if active.process == 'implement':
+        if active.is_implementation:
             import implementation_checks
             result['report_summary'] = implementation_checks.validate_final(active)['summary']['path']
     elif outcome['status'] == 'wait':
         import human_choices
-        result['allowed_actions'] = ['accept-plan'] + (['change-plan'] if active.process in ('requirements', 'design', 'tasks') else [])
+        result['allowed_actions'] = (['accept-plan'] + (['change-plan'] if active.process in ('requirements', 'design', 'tasks') else [])
+                                     + (['select-scope'] if active.kind == 'plan' else []))
         result['choices'] = human_choices.plan(active)
     else:
         result['allowed_actions'] = []
@@ -634,7 +672,8 @@ def record_completions(context, call):
             try:
                 completion.record(context, call)
             except ValueError:
-                pass
+                if context.kind == 'cross' and engine_client.invoke(context, 'status', call).get('pending') is None:
+                    raise  # feature を持たない action の完了の記録は黙って欠かさない（§6.11）
         return
     pending = engine_client.invoke(context, 'status', call).get('pending')
     later = phase_rules.PROCESS_OF.get(pending.get('event') or '') if pending else None
@@ -660,7 +699,7 @@ def record_completions(context, call):
 
 # --- 回答の読み取り ------------------------------------------------------
 
-_TARGET = r'(全件|束\d+|(?:(feature:[a-z0-9][a-z0-9_-]*|phase|cross)\s+)?(?:(\d+)\s*[〜~]\s*(\d+)|(?:(\d+)-)?(\d+)))'
+_TARGET = r'(全件|束\d+|(?:((?:feature|phase|cross):[a-z0-9][a-z0-9_-]*|phase|cross)\s+)?(?:(\d+)\s*[〜~]\s*(\d+)|(?:(\d+)-)?(\d+)))'
 _CHOICE = r'([A-DＡ-Ｄ]|推奨)(?:\s*[\[［]\s*([^\]］+＋]*?)\s*([+＋])?\s*[\]］])?'
 _ANSWER = re.compile(_TARGET + r'\s*[:：]\s*' + _CHOICE + r'\s*(.*)')
 

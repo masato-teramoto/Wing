@@ -1,7 +1,7 @@
 ---
 feature: issue-request-tutorial
 status: approved
-updated_at: 2026-10-05T19:34:42+09:00
+updated_at: 2026-10-09T18:06:43+09:00
 ---
 
 # 要件定義書

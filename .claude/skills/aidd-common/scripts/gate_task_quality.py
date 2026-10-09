@@ -20,7 +20,7 @@ import task_quality_storage
 
 
 def policy(context):
-    if context.action == requests.FINAL:
+    if requests.kind(context) == 'final':
         value = requests.feature_state(context, context.item)['policy']
     else:
         value = store.read_execution(context)['policy']

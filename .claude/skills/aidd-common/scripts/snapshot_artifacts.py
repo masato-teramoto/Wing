@@ -81,14 +81,13 @@ def capture(context):
     if unreviewed:
         entry["unreviewed"] = {p: {"status": (artifacts.fields(context.path(p)) or {}).get("status"),
                                    "sha256": body_digest(context.path(p))} for p in unreviewed}
-    if context.process == 'implement':
-        import implementation_evidence
-        import implementation_requests
-        state = implementation_requests.feature_state(context, context.item)
-        entry['workspace_code'] = implementation_evidence.inventory(context, state['policy'])
+    import implementation_requests
+    code = implementation_requests.workspace_code(context)
+    if code is not None:
+        entry['workspace_code'] = code
     for relative in targets:
-        if context.process == 'implement':
-            entry['profile'] = 'implementation-code-v1'
+        if context.kind:
+            entry['profile'] = 'implementation-cross-v1' if context.kind == 'cross' else 'implementation-code-v1'
             entry['artifacts'][relative] = {'status': 'readonly', 'sha256': phase_rules.inspection_digest(context, relative)}
             continue
         target = context.path(relative)
@@ -113,7 +112,7 @@ def capture(context):
     latest = previous.latest(context.scope)
     entry["run"] = latest.number + 1 if latest else 1
     entry["record"] = {"bytes": len(data), "sha256": hashlib.sha256(data).hexdigest(), "blocks": len(previous.blocks)}
-    if context.process != 'implement':
+    if not context.kind:
         # 節ごとのハッシュ。再検査では、前回から変わった節だけを意味検査する（差分の検査）。
         import finding_rules
         import project_progress

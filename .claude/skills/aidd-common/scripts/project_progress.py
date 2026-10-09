@@ -39,7 +39,13 @@ def require_current_inputs(context):
 
 
 def signature(context):
-    if context.process == 'implement':
+    if context.kind in ('cross', 'integration'):
+        import implementation_project
+        return implementation_project.signature(context)
+    if context.kind == 'plan':
+        import implementation_requests as implementation
+        return implementation.plan_signature(context, implementation.feature_of(context))
+    if context.is_implementation:
         import implementation_requests as implementation
         return implementation.input_signature(context, implementation.feature_of(context))
     paths = context.upstream()
@@ -48,18 +54,42 @@ def signature(context):
         paths = sorted(p.relative_to(context.root).as_posix() for p in rfp.rglob('*') if p.is_file() and not any(s.startswith('.') for s in p.relative_to(rfp).parts))
     # Approval metadata is mutable; the protected content and authorized task
     # projection are the input version actually used by authoring/inspection.
+    import feature_scope
+    scoped = context.phase >= 4 and bool(context.item) and feature_scope.is_feature(context)
+    docs = phase_rules.config()["rules"]["docs"]["outputs"] if scoped and context.process == "tasks" else ()
     hashes = {p: (hashlib.sha256(Path(context.path(p)).read_bytes()).hexdigest()
-                  if context.process == 'intake' else artifacts.protected_digest(context.path(p))) for p in paths}
+                  if context.process == 'intake' else artifacts.protected_digest(context.path(p))) for p in paths if p not in docs}
+    if docs:
+        # Feature 方式の tasks は docs の固定版を参照する（§6.5）。docs の改訂は C2 の影響評価で受ける。
+        import docs_revision
+        hashes["docs_revision"] = docs_revision.fixed(context, context.item) or "unfixed"
     if context.phase >= 4:
-        hashes[feature_manifest.SOURCE] = feature_manifest.source_hash(context.root)
+        hashes[feature_manifest.SOURCE] = (feature_manifest.projection(context.root, _projected(context)) if scoped
+                                           else feature_manifest.source_hash(context.root))
     return hashes
+
+
+def _projected(context):
+    """射影に入れる行（§6.5）：自 feature と推移閉包 D。共通機能の横断確認・tasks の selection 確認は比較集合 C(p)。"""
+    import feature_scope
+    if context.selection:
+        return context.comparison_features()
+    return [context.item, *feature_scope.closure(context, context.item)]
+
+
+def cross_key(process, selection=""):
+    """workflow.invalidated_cross の鍵。全件の横断確認は工程名、selection 単位は `<工程>:<S>`。
+
+    鍵を分けるので、cross:<S> の確認が全件 cross の失効印を消さない（逆も同じ）。
+    """
+    return process + (":" + selection if selection else "")
 
 
 def redo(context, action, item=None):
     """Called by the stopped host's preflight/action command, never a gate child."""
     common = Path(__file__).resolve().parents[1]
     call = action
-    if phase_rules.PROCESS_OF.get(action) == 'implement':
+    if phase_rules.implement_kind(action) in phase_rules.EVIDENCE_KINDS:
         import implementation_flows
         owner = phase_rules.ExecutionContext(context.root, context.state_path, action, item or '')
         call = implementation_flows.require_call(owner, validate=True)
@@ -74,7 +104,15 @@ def redo(context, action, item=None):
 
 
 def invalidate(context, from_phase, include_current=True, item=None):
-    """Conservative downstream closure; retain artifacts, history and questions."""
+    """Conservative downstream closure; retain artifacts, history and questions.
+
+    全件方式の明示的な全件再計画として残す（計画 v3 §6.5、段階 0 で確定）。一覧順で後続 feature を開き直すので、
+    Feature 方式では呼ばない（失効は入力変更検知・射影・差戻しの範囲で受ける）。
+    """
+    import feature_scope
+    if feature_scope.is_feature(context):
+        raise ValueError("一覧順の全件失効（invalidate）は Feature 方式では使いません。差戻し（reopen）で範囲を指定してください")
+    feature_scope.settle_mode(context)  # 計画了承を消す前に、旧案件の全件方式を書く
     start = from_phase if include_current else from_phase + 1
     import implementation_repair
     implementation_repair.invalidate(context, start, item)
@@ -184,15 +222,17 @@ def rebaseline(context, paths):
 def reopen_consumer(context, changed):
     """Schedule work for this recorded consumer, retaining old review history."""
     import repair_requests
-    if context.process == 'implement':
+    if context.kind:
         import implementation_repair
-        import implementation_requests
-        implementation_repair.invalidate_feature(context, implementation_requests.feature_of(context),
-                                                 retire_plan=any(p.endswith('/tasks.md') for p in changed))
+        implementation_repair.reopen(context, changed)
+    elif context.is_cross and context.selection and _comparison_only(context, changed):
+        # 鮮度（§6.7）：比較相手（利用側 Cons）だけが変わったので失効印は付けず、再実施できるよう通過印だけ消す。
+        redo(context, context.action, context.selection)
     elif context.is_cross or context.action == 'tasks-gate-run':
-        repair_requests._redo_cross(context, context.process)
+        repair_requests._redo_cross(context, context.process, context.selection)
     elif context.action.endswith('-plan'):
-        redo(context, context.action)
+        # Feature 方式の <工程>-plan[S] は S の計画だけを出し直す（item を省くと L0 は全 item の済印を消す）。
+        redo(context, context.action, context.item or None)
     else:
         owner = repair_requests.revise_context(context)
         if repair_requests.pending(owner) is not None:
@@ -208,6 +248,26 @@ def reopen_consumer(context, changed):
     inputs = dict(workflow(context).get('inputs', {}))
     inputs[key(context)] = signature(context)
     save(context, {'inputs': inputs})
+
+
+def _comparison_only(context, changed):
+    """変わった入力が、selection の横断確認の比較相手（S と依存先 D の外の feature の specs）だけか。
+
+    feature に属さない入力（一覧の射影・steering・要求一覧・docs）が変わったら False（失効の側）。
+    """
+    import feature_scope
+    if not changed:
+        return False
+    core = {context.selection, *feature_scope.closure(context, context.selection)}
+    for path in changed:
+        if path == feature_manifest.SOURCE:
+            # 射影は比較集合 C(p) の行を持つので、利用側が増えるだけで変わる（§6.5）。S と D の行の変化は
+            # S・D の成果物の開き直しと、selection の状態の hash の照合（review_decisions）で無効になる。
+            continue
+        parts = path.split('/')
+        if not (len(parts) > 2 and parts[0] == 'specs') or parts[1] in core:
+            return False
+    return True
 
 
 def reopen_edited(context, owner, path):
@@ -307,14 +367,37 @@ def _manifest(context):
         existing = [t for t in docs.artifacts() if Path(docs.path(t)).exists()]
         if existing:
             repair_requests.reopen(docs, existing, "feature 一覧の変更に伴う design の見直しを docs に反映する", "rollback-derived", SYSTEM_ACTOR)
+    import feature_scope
+    feature_scope.settle_mode(context)  # 計画了承を消す前に、旧案件の全件方式を書く
     plans = dict(workflow(context).get("accepted_plans", {}))
-    if change.get("structural"):
+    if change.get("structural") and feature_scope.is_feature(context):
+        plans = _retained_plans(context, plans)
+    elif change.get("structural"):
         plans = {k: v for k, v in plans.items() if k not in ("requirements", "design", "tasks")}
     else:
         plans = {k: dict(v, manifest=source) if isinstance(v, dict) and v.get("manifest") else v for k, v in plans.items()}
     change["needs_replan"] = False
     save(context, {"manifest_change": change, "accepted_plans": plans})
     rebaseline(context, [feature_manifest.SOURCE])
+
+
+def _retained_plans(context, plans):
+    """Feature 方式の一覧の構造変更：射影（S ∪ D）が変わらない feature の計画了承は残す（§6.5、F40）。"""
+    import feature_scope
+    names = {f["name"] for f in context.features()}
+    kept = {}
+    for process, entry in plans.items():
+        if process not in feature_scope.PLAN_PROCESSES or not isinstance(entry, dict):
+            kept[process] = entry
+            continue
+        items = {}
+        for name, value in (entry.get("items") or {}).items():
+            if name in names and value.get("manifest") == feature_scope.plan_digest(context, process, name):
+                items[name] = value
+        kept[process] = dict(entry, items=items) if "items" in entry else entry
+        if process != "requirements":
+            kept[process] = {"items": items}
+    return kept
 
 
 def sync_approved_manifest(context):
@@ -331,10 +414,12 @@ def sync_approved_manifest(context):
 
 def preflight(context):
     """Recheck even when L0 will skip already successful start units."""
+    if phase_rules.is_management(context.action):
+        return None
     require_current_inputs(context)
     if context.process not in phase_rules.RULES:
         raise ValueError("unknown main_flow action")
-    if context.process == 'implement':
+    if context.is_implementation:
         import implementation_requests
         return implementation_requests.preflight(context)
     pending = workflow(context).get("invalidation")
@@ -344,13 +429,26 @@ def preflight(context):
     if context.phase >= 4:
         _manifest(context)
         feature_manifest.load(context.root, context.state_path)
+    import feature_scope
+    if feature_scope.is_feature(context) and context.action == phase_rules.RULES["docs"]["repair"]:
+        import docs_revision
+        docs_revision.accumulate(context)
+    if feature_scope.is_feature(context) and context.process == "tasks" and context.item:
+        import docs_revision
+        rule = phase_rules.RULES["tasks"]
+        docs_revision.ensure_fixed(context, context.item, regenerate=context.action == rule["repair"]
+                                   and _regenerating(context))
     prerequisites.blockers(context)
     prerequisites.check(context)
     rule = phase_rules.RULES[context.process]
+    # implement-plan[S] は計画停止点の経路（記録入力の比較）を通る。了承の照合は implement-select が見る（D-11）。
     if rule["per_feature"] and context.action == rule["generate"]:
-        plan = workflow(context).get("accepted_plans", {}).get(context.process)
-        if not plan or plan.get("manifest") != feature_manifest.source_hash(context.root):
+        import feature_scope
+        if not feature_scope.plan_accepted(context):
             raise ValueError("a current plan must be presented and confirmed before authoring")
+    if context.kind == "cross":
+        import implementation_project
+        implementation_project.prepare_cross_review(context)  # snapshot が束ねる検査対象（§6.11）
     current = signature(context)
     previous = workflow(context).get("inputs", {}).get(key(context))
     if previous is not None and previous != current:
@@ -364,14 +462,29 @@ def preflight(context):
             "targets": context.artifacts(), "upstream": context.upstream(), "inputs": current}
 
 
+def _regenerating(context):
+    """tasks-authoring-revise が docs の影響評価による開き直しを処理する回か。"""
+    import repair_requests
+    request = repair_requests.pending(context)
+    return bool(request) and request.get("origin") == "docs-revision"
+
+
 def audit(context):
     """Standalone host action before choosing work, including an already-done call."""
     require_current_inputs(context)
+    import feature_scope
+    feature_scope.require_no_pending_switch(context)
+    feature_scope.settle_mode(context)
+    feature_scope.apply_owner_reopen(context)  # 直接の accept-plan で保留した owner の修正の要求
     pending = workflow(context).get("invalidation")
     if pending:
         invalidate(context, pending["from_phase"], item=pending.get("item"))
         raise ValueError("interrupted invalidation finished; review the plan")
     sync_approved_manifest(context)
+    import feature_scope
+    if feature_scope.is_feature(context) and (context.state().get("feature_manifest") or {}).get("sha256"):
+        import docs_revision
+        docs_revision.evaluate(context)
     import repair_requests
     repair_requests.resume_unscheduled(context)
     entries = list(workflow(context).get("inputs", {}).items())

@@ -46,8 +46,8 @@ class ExecutionContext:
     """今の unit の文脈。引数を渡さなければ、L0 が unit に渡した環境変数から読む。"""
 
     def __init__(self, root=None, state_path=None, action=None, item=None):
-        self.root = os.path.abspath(root or os.environ.get("AIDD_ROOT") or os.getcwd())
-        self.state_path = state_path or os.environ.get("AIDD_STATE") or self.path(".aidd/phase-progress.json")
+        self.root = os.path.realpath(root or os.environ.get("AIDD_ROOT") or os.getcwd())
+        self.state_path = os.path.realpath(state_path or os.environ.get("AIDD_STATE") or self.path(".aidd/phase-progress.json"))
         self.config = os.environ.get("AIDD_CONFIG") or COMMON
         self.flow = os.environ.get("AIDD_FLOW") or ""
         self.action = action if action is not None else os.environ.get("AIDD_ACTION", "")

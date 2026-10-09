@@ -1,7 +1,7 @@
 ---
 feature: application-status-search
 status: approved
-updated_at: 2026-10-05T20:12:57+09:00
+updated_at: 2026-10-09T18:18:52+09:00
 ---
 
 # 要件定義書

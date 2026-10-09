@@ -3,7 +3,7 @@
   "phase": "design",
   "event": "design-authoring-revise",
   "scope": "feature:property-basic-info",
-  "at": "2026-10-09T12:20:42+09:00",
+  "at": "2026-10-09T18:41:35+09:00",
   "artifacts": {
     "specs/property-basic-info/design.md": {
       "status": "draft",
@@ -11,11 +11,11 @@
     }
   },
   "record": {
-    "bytes": 311379,
-    "sha256": "b7a5e1f049aa9b08a284c7a8b6bcd2ed08bb081e560f9285656d3e3635e152f6",
-    "blocks": 221
+    "bytes": 399728,
+    "sha256": "125137f56e124c995a6e604642927b8d747c8bc98835a1f7ba745467b9f0e4bf",
+    "blocks": 290
   },
-  "run": 7,
+  "run": 8,
   "sections": {
     "specs/property-basic-info/design.md": {
       "": "e3b0c44298fc1c14",
@@ -129,7 +129,7 @@
     }
   },
   "inputs": {
-    ".aidd/feature-list.md": "71a64dc3cbf71bc6ddb02a4dc6f8247344064ca63e8a291e5881763ef59256ae",
+    ".aidd/feature-list.md": "9c8fae4dbc53b2ff6cc98e2476e7c02797d2077359d9b2709d5eff7e5111b642",
     "steering/product.md": "cde5dd8a1007c53f93a270de63e01d294d38f47695e96027d52b6b4862bc149b",
     "steering/tech.md": "58cc32eb0ad29d7b7185bb02e710ce8d882e374f93eb0a609ae293e3903a4966",
     "steering/architecture.md": "98be0c57ba256c0aeaf1a66d69682e63b47d20ec0f91ab776589a54e5eb8c33d",
@@ -139,22 +139,6 @@
     "steering/api-standards.md": "70eca8d2facbf08bfa22cf1ae1e781219ecab2066bb8129bf4a3414b0fdeddc1",
     "specs/property-basic-info/requirements.md": "5f172c4890f034214da64d63ee9eddbb59f2ea979f258073b31cb99122bfa6bc"
   },
-  "previous_run": 6,
-  "changed_sections": {
-    "specs/property-basic-info/design.md": [
-      "技術設計書",
-      "アーキテクチャ（Architecture）",
-      "アーキテクチャ方式と境界図（Architecture Pattern & Boundary Map）",
-      "コンポーネントとインターフェース（Components and Interfaces）",
-      "物件基本情報登録変更",
-      "物件基本情報登録変更 Controller",
-      "API 契約（API Contract）"
-    ]
-  },
-  "changed_own": {
-    "specs/property-basic-info/design.md": [
-      "アーキテクチャ方式と境界図（Architecture Pattern & Boundary Map）",
-      "API 契約（API Contract）"
-    ]
-  }
+  "previous_run": 7,
+  "full_inspection": "上流の入力が前回の検査から変わった（または比べられない）ため、全体を検査する"
 }

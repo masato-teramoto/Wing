@@ -1,0 +1,16 @@
+{
+ "operation_id": "bd8ac65c-6967-4a09-9a16-cbc0189c7e59",
+ "dispatch": {
+  "call": "requirements-authoring-revise",
+  "unit": "requirements-authoring-revise/requirements-authoring-revise[contract-info-download]::end.requirements-check",
+  "event": "requirements-authoring-revise",
+  "item": "contract-info-download",
+  "status": "emit",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": null,
+  "id": "c7b575d4fee846cda26043484cdf95bc"
+ },
+ "result": {
+  "status": "completed"
+ }
+}

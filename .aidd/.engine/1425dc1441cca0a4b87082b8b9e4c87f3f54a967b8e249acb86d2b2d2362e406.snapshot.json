@@ -3,7 +3,7 @@
   "phase": "requirements",
   "event": "requirements-authoring-revise",
   "scope": "feature:contract-info-download",
-  "at": "2026-10-05T20:36:45+09:00",
+  "at": "2026-10-09T18:27:01+09:00",
   "artifacts": {
     "specs/contract-info-download/requirements.md": {
       "status": "draft",
@@ -11,9 +11,64 @@
     }
   },
   "record": {
-    "bytes": 268790,
-    "sha256": "b29f3783095b2ec60e89915bf5d73256421a3294df91245e0e138e50ab42fec9",
-    "blocks": 300
+    "bytes": 306438,
+    "sha256": "a0b1952155f66c425d670c1743c23734214dc0efa3575f1f06a360d33014b639",
+    "blocks": 360
   },
-  "run": 3
+  "run": 4,
+  "sections": {
+    "specs/contract-info-download/requirements.md": {
+      "": "e3b0c44298fc1c14",
+      "要件定義書": "34e85106b94b8276",
+      "概要（Introduction）": "81927b3431b32702",
+      "業務フロー": "4f9e029e9f7b17e4",
+      "スコープの境界（Boundary Context）": "5dabb2907c0dbb39",
+      "対象外": "fa124ea3050ee573",
+      "前提と依存（Dependencies / Assumptions）": "6f3cb8fc6c0b8359",
+      "要件（Requirements）": "017f22f7f403d74f",
+      "要件 1: 契約情報の検索（REQ-036・REQ-037）": "a9f98b09db2873f1",
+      "受け入れ基準（Acceptance Criteria）": "cd8a5fe0dba41e8b",
+      "要件 2: ベンダー／施工会社の権限制御（REQ-038）": "7d7440c3edf6f301",
+      "受け入れ基準（Acceptance Criteria） (2)": "13a725cc220e406f",
+      "要件 3: CSV のダウンロード（REQ-039）": "ac9989304a74bb06",
+      "受け入れ基準（Acceptance Criteria） (3)": "7d79d04e4feea23a",
+      "要件 4: 入力チェック（REQ-063）": "492858c4755c943b",
+      "受け入れ基準（Acceptance Criteria） (4)": "9cb478892faa32ac",
+      "非機能要件（Non-Functional Requirements）": "2333b1ec9d59ec29",
+      "*": "34e85106b94b8276"
+    }
+  },
+  "own_sections": {
+    "specs/contract-info-download/requirements.md": {
+      "": "e3b0c44298fc1c14",
+      "要件定義書": "b69282f692c1fdb9",
+      "概要（Introduction）": "81927b3431b32702",
+      "業務フロー": "4f9e029e9f7b17e4",
+      "スコープの境界（Boundary Context）": "5dabb2907c0dbb39",
+      "対象外": "fa124ea3050ee573",
+      "前提と依存（Dependencies / Assumptions）": "6f3cb8fc6c0b8359",
+      "要件（Requirements）": "2855f05e424bda39",
+      "要件 1: 契約情報の検索（REQ-036・REQ-037）": "a84e6b14dfd5cd2a",
+      "受け入れ基準（Acceptance Criteria）": "cd8a5fe0dba41e8b",
+      "要件 2: ベンダー／施工会社の権限制御（REQ-038）": "7f2e8c2c8b5afd89",
+      "受け入れ基準（Acceptance Criteria） (2)": "13a725cc220e406f",
+      "要件 3: CSV のダウンロード（REQ-039）": "16a639c2d32858a8",
+      "受け入れ基準（Acceptance Criteria） (3)": "7d79d04e4feea23a",
+      "要件 4: 入力チェック（REQ-063）": "acc2170809636bdd",
+      "受け入れ基準（Acceptance Criteria） (4)": "9cb478892faa32ac",
+      "非機能要件（Non-Functional Requirements）": "2333b1ec9d59ec29",
+      "*": "34e85106b94b8276"
+    }
+  },
+  "inputs": {
+    ".aidd/requirement-list.md": "0f27710cd1eb4f103a426cbccec48d5af14f504bd9e40c7f8c697f3ef031c859",
+    ".aidd/feature-list.md": "9c8fae4dbc53b2ff6cc98e2476e7c02797d2077359d9b2709d5eff7e5111b642",
+    "steering/product.md": "cde5dd8a1007c53f93a270de63e01d294d38f47695e96027d52b6b4862bc149b",
+    "steering/tech.md": "58cc32eb0ad29d7b7185bb02e710ce8d882e374f93eb0a609ae293e3903a4966",
+    "steering/architecture.md": "98be0c57ba256c0aeaf1a66d69682e63b47d20ec0f91ab776589a54e5eb8c33d",
+    "steering/security.md": "34061564b8c5b8c28e5ca2f4a9b744b06d9d58417ddbbff7ab150c9ef1027bbf",
+    "steering/non-functional.md": "ae87c72271e4f3d8593e2f666edc7bb0931cf4d0ca78dafbb21ab7264303f0ac",
+    "steering/database.md": "832d98b289c53f8c8adc9a7dfb25bf0f8b1f54b9c1cc473c6480fa9927a20e21",
+    "steering/api-standards.md": "70eca8d2facbf08bfa22cf1ae1e781219ecab2066bb8129bf4a3414b0fdeddc1"
+  }
 }

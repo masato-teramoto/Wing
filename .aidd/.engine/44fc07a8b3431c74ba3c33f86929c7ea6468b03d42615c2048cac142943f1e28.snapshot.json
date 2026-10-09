@@ -3,28 +3,28 @@
   "phase": "design",
   "event": "design-authoring-revise",
   "scope": "feature:issue-request-tutorial",
-  "at": "2026-10-09T13:01:41+09:00",
+  "at": "2026-10-09T19:29:37+09:00",
   "artifacts": {
     "specs/issue-request-tutorial/design.md": {
       "status": "draft",
-      "sha256": "bcad7f98ec585831c7119db075ee27d872ee16eb00345aa75b3b7d78ac9f8542"
+      "sha256": "d7c594a832cbe0fbab57395810305bccadf57f10983df788ca4e850bd0c1084a"
     }
   },
   "record": {
-    "bytes": 338442,
-    "sha256": "55d519f77a683b509dd86568d900e8387109dd6b4db830ef91c7e0c07ae1b1c1",
-    "blocks": 241
+    "bytes": 429524,
+    "sha256": "d92c10f6c0d5d0d1f26370fc39b299179eaef6a89798d87ea39ddf5f6dd1abb7",
+    "blocks": 315
   },
-  "run": 4,
+  "run": 6,
   "sections": {
     "specs/issue-request-tutorial/design.md": {
       "": "e3b0c44298fc1c14",
-      "技術設計書": "f3a53001720df0fa",
+      "技術設計書": "5c8aa8348cda527f",
       "概要（Overview）": "e9c359aaa0522daa",
       "達成目標（Goals）": "bc65bd49352e8b71",
       "やらないこと（Non-Goals）": "9170af358237e6c7",
-      "責務境界（Boundary Commitments）": "895ee1db2f14a6e7",
-      "このスペックが持つ責務（This Spec Owns）": "09a236e0746958d4",
+      "責務境界（Boundary Commitments）": "97d5d849b2101568",
+      "このスペックが持つ責務（This Spec Owns）": "bcdd3b5372371b8f",
       "このスペックが持たない責務（Out of Boundary）": "baca46ea61b63e38",
       "依存してよい対象（Allowed Dependencies）": "00b1ad54f1e764f0",
       "再確認が必要になる変更（Revalidation Triggers）": "e14d626d74e2ae52",
@@ -32,11 +32,11 @@
       "既存アーキテクチャの分析（Existing Architecture Analysis）": "160e3989678f9557",
       "アーキテクチャ方式と境界図（Architecture Pattern & Boundary Map）": "470f8e2ba0f60c30",
       "技術スタック（Technology Stack）": "8386e642b72fcab9",
-      "データモデル（Data Models）": "3da46752b2105542",
+      "データモデル（Data Models）": "58f21b7d112034cc",
       "ドメインモデル（Domain Model）": "38f51c053e1be4b7",
       "論理データモデル（Logical Data Model）": "46a2a054a096b59b",
       "物理データモデル（Physical Data Model）": "1408753cda2a9564",
-      "データ契約と外部連携（Data Contracts & Integration）": "1f0b54e4cad792e9",
+      "データ契約と外部連携（Data Contracts & Integration）": "a4cf93dfed11127f",
       "コンポーネントとインターフェース（Components and Interfaces）": "47df47c46113f6d3",
       "コンポーネント一覧（Summary）": "c661437ea4c6a42e",
       "チュートリアル": "3344cca50c9ece6a",
@@ -65,7 +65,7 @@
       "判断 2: ボタンを押すたびにサーバーで次の画面と入力チェックを決め、JSON で返す": "8ab7f442f346427d",
       "判断 3: 消す操作は「空にする」の印で渡す": "56d75765a3f337b4",
       "補足資料（Supporting References）": "dd254d7ff5361196",
-      "*": "f3a53001720df0fa"
+      "*": "5c8aa8348cda527f"
     }
   },
   "own_sections": {
@@ -76,7 +76,7 @@
       "達成目標（Goals）": "bc65bd49352e8b71",
       "やらないこと（Non-Goals）": "9170af358237e6c7",
       "責務境界（Boundary Commitments）": "319ca7723bda7861",
-      "このスペックが持つ責務（This Spec Owns）": "09a236e0746958d4",
+      "このスペックが持つ責務（This Spec Owns）": "bcdd3b5372371b8f",
       "このスペックが持たない責務（Out of Boundary）": "baca46ea61b63e38",
       "依存してよい対象（Allowed Dependencies）": "00b1ad54f1e764f0",
       "再確認が必要になる変更（Revalidation Triggers）": "e14d626d74e2ae52",
@@ -88,7 +88,7 @@
       "ドメインモデル（Domain Model）": "38f51c053e1be4b7",
       "論理データモデル（Logical Data Model）": "46a2a054a096b59b",
       "物理データモデル（Physical Data Model）": "1408753cda2a9564",
-      "データ契約と外部連携（Data Contracts & Integration）": "1f0b54e4cad792e9",
+      "データ契約と外部連携（Data Contracts & Integration）": "a4cf93dfed11127f",
       "コンポーネントとインターフェース（Components and Interfaces）": "fa0f1a4d81675bb3",
       "コンポーネント一覧（Summary）": "c661437ea4c6a42e",
       "チュートリアル": "b69e6f82e8dc0b15",
@@ -117,11 +117,11 @@
       "判断 2: ボタンを押すたびにサーバーで次の画面と入力チェックを決め、JSON で返す": "8ab7f442f346427d",
       "判断 3: 消す操作は「空にする」の印で渡す": "56d75765a3f337b4",
       "補足資料（Supporting References）": "dd254d7ff5361196",
-      "*": "f3a53001720df0fa"
+      "*": "5c8aa8348cda527f"
     }
   },
   "inputs": {
-    ".aidd/feature-list.md": "71a64dc3cbf71bc6ddb02a4dc6f8247344064ca63e8a291e5881763ef59256ae",
+    ".aidd/feature-list.md": "9c8fae4dbc53b2ff6cc98e2476e7c02797d2077359d9b2709d5eff7e5111b642",
     "steering/product.md": "cde5dd8a1007c53f93a270de63e01d294d38f47695e96027d52b6b4862bc149b",
     "steering/tech.md": "58cc32eb0ad29d7b7185bb02e710ce8d882e374f93eb0a609ae293e3903a4966",
     "steering/architecture.md": "98be0c57ba256c0aeaf1a66d69682e63b47d20ec0f91ab776589a54e5eb8c33d",
@@ -131,23 +131,22 @@
     "steering/api-standards.md": "70eca8d2facbf08bfa22cf1ae1e781219ecab2066bb8129bf4a3414b0fdeddc1",
     "specs/issue-request-tutorial/requirements.md": "3e1042329d04e128a1c95e89adc17075768e5744202d85de60d5704eedf1923e",
     "specs/property-basic-info/design.md": "03331555d6ee0825bd90f023f17f4951d532f97b0f4bde7b7f50878d4cc4da03",
-    "specs/issue-request/design.md": "7bedc0d4618ebcb9a1667ce749bf24513272ac9c19fbdebdfe1ac2954ab67fbb"
+    "specs/issue-request/design.md": "8cf01f68fe35f51ecb925f5258243beb7a476500279d2757c8a0a7788c2917ec"
   },
-  "previous_run": 3,
+  "previous_run": 5,
   "changed_sections": {
     "specs/issue-request-tutorial/design.md": [
       "技術設計書",
-      "コンポーネントとインターフェース（Components and Interfaces）",
-      "チュートリアル",
-      "チュートリアル Controller",
-      "API 契約（API Contract）",
-      "機能固有のエラー処理（Error Handling）"
+      "責務境界（Boundary Commitments）",
+      "このスペックが持つ責務（This Spec Owns）",
+      "データモデル（Data Models）",
+      "データ契約と外部連携（Data Contracts & Integration）"
     ]
   },
   "changed_own": {
     "specs/issue-request-tutorial/design.md": [
-      "API 契約（API Contract）",
-      "機能固有のエラー処理（Error Handling）"
+      "このスペックが持つ責務（This Spec Owns）",
+      "データ契約と外部連携（Data Contracts & Integration）"
     ]
   }
 }

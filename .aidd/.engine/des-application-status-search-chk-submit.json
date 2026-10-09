@@ -1,0 +1,16 @@
+{
+ "operation_id": "80fcb09e-2bf4-4cda-9a3c-3d83b96f79d8",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[application-status-search]::end.design-check",
+  "event": "design-authoring-revise",
+  "item": "application-status-search",
+  "status": "emit",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": null,
+  "id": "1916ddd88bfb46a7b5e70082f7a3ca84"
+ },
+ "result": {
+  "status": "completed"
+ }
+}

@@ -3,7 +3,7 @@
   "phase": "requirements",
   "event": "requirements-authoring-revise",
   "scope": "feature:contract-info-import",
-  "at": "2026-10-05T20:13:29+09:00",
+  "at": "2026-10-09T18:21:03+09:00",
   "artifacts": {
     "specs/contract-info-import/requirements.md": {
       "status": "draft",
@@ -11,9 +11,64 @@
     }
   },
   "record": {
-    "bytes": 232585,
-    "sha256": "b2c0a1c87d3b17c58f7279f56160a9670838cc620cf89155f1680c207e271760",
-    "blocks": 269
+    "bytes": 305471,
+    "sha256": "2c088900f1b1c2c1975f3a8d0edc0955feada3702e83166c9748fc38b6de0d32",
+    "blocks": 357
   },
-  "run": 2
+  "run": 3,
+  "sections": {
+    "specs/contract-info-import/requirements.md": {
+      "": "e3b0c44298fc1c14",
+      "要件定義書": "305e5879ae4c7c7e",
+      "概要（Introduction）": "f84ab7d54edafb27",
+      "業務フロー": "c046027085855394",
+      "スコープの境界（Boundary Context）": "53bb95b58ec5f925",
+      "対象外": "641809a33b5b81f6",
+      "前提と依存（Dependencies / Assumptions）": "b5420e53cc93fcf3",
+      "要件（Requirements）": "f9874ffab8b36a63",
+      "要件 1: 取込の画面（REQ-033）": "218fb2f085d3bc8a",
+      "受け入れ基準（Acceptance Criteria）": "17daf3e24f77a211",
+      "要件 2: 取込バッチ（REQ-034・REQ-035）": "d85f54b49f8d348f",
+      "受け入れ基準（Acceptance Criteria） (2)": "db99c386eac30874",
+      "要件 3: 変更履歴の登録（REQ-035）": "e8e473b8c10af22a",
+      "受け入れ基準（Acceptance Criteria） (3)": "329709fdc91988de",
+      "要件 4: 取込のチェック（REQ-063）": "0cec6f7016a71f39",
+      "受け入れ基準（Acceptance Criteria） (4)": "cbfabfe424df7caa",
+      "非機能要件（Non-Functional Requirements）": "41d0ebafe9bebf38",
+      "*": "305e5879ae4c7c7e"
+    }
+  },
+  "own_sections": {
+    "specs/contract-info-import/requirements.md": {
+      "": "e3b0c44298fc1c14",
+      "要件定義書": "709579124213d648",
+      "概要（Introduction）": "f84ab7d54edafb27",
+      "業務フロー": "c046027085855394",
+      "スコープの境界（Boundary Context）": "53bb95b58ec5f925",
+      "対象外": "641809a33b5b81f6",
+      "前提と依存（Dependencies / Assumptions）": "b5420e53cc93fcf3",
+      "要件（Requirements）": "2855f05e424bda39",
+      "要件 1: 取込の画面（REQ-033）": "a017b064f7d0a5ee",
+      "受け入れ基準（Acceptance Criteria）": "17daf3e24f77a211",
+      "要件 2: 取込バッチ（REQ-034・REQ-035）": "1d6568e0aa2e96e1",
+      "受け入れ基準（Acceptance Criteria） (2)": "db99c386eac30874",
+      "要件 3: 変更履歴の登録（REQ-035）": "a916acf107ddd569",
+      "受け入れ基準（Acceptance Criteria） (3)": "329709fdc91988de",
+      "要件 4: 取込のチェック（REQ-063）": "bde7c3ebef0b8430",
+      "受け入れ基準（Acceptance Criteria） (4)": "cbfabfe424df7caa",
+      "非機能要件（Non-Functional Requirements）": "41d0ebafe9bebf38",
+      "*": "305e5879ae4c7c7e"
+    }
+  },
+  "inputs": {
+    ".aidd/requirement-list.md": "0f27710cd1eb4f103a426cbccec48d5af14f504bd9e40c7f8c697f3ef031c859",
+    ".aidd/feature-list.md": "9c8fae4dbc53b2ff6cc98e2476e7c02797d2077359d9b2709d5eff7e5111b642",
+    "steering/product.md": "cde5dd8a1007c53f93a270de63e01d294d38f47695e96027d52b6b4862bc149b",
+    "steering/tech.md": "58cc32eb0ad29d7b7185bb02e710ce8d882e374f93eb0a609ae293e3903a4966",
+    "steering/architecture.md": "98be0c57ba256c0aeaf1a66d69682e63b47d20ec0f91ab776589a54e5eb8c33d",
+    "steering/security.md": "34061564b8c5b8c28e5ca2f4a9b744b06d9d58417ddbbff7ab150c9ef1027bbf",
+    "steering/non-functional.md": "ae87c72271e4f3d8593e2f666edc7bb0931cf4d0ca78dafbb21ab7264303f0ac",
+    "steering/database.md": "832d98b289c53f8c8adc9a7dfb25bf0f8b1f54b9c1cc473c6480fa9927a20e21",
+    "steering/api-standards.md": "70eca8d2facbf08bfa22cf1ae1e781219ecab2066bb8129bf4a3414b0fdeddc1"
+  }
 }

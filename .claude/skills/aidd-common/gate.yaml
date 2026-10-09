@@ -66,8 +66,10 @@
       - { action: design-plan, hookPoint: start, target_review: ["specs/**"] }
       - { action: tasks-plan, hookPoint: start, target_review: ["specs/**"] }
       - { action: requirements-cross-gate, hookPoint: start, target_review: ["specs/**"] }
+      - { action: implement-cross-gate, hookPoint: start, target_review: [".aidd/implementation/cross-review.json"] }
       - { action: design-cross-gate, hookPoint: start, target_review: ["specs/**"] }
       - { action: tasks-gate-run, hookPoint: start, target_review: ["specs/**"] }
+      - { action: implement-plan, hookPoint: start, target_review: [".aidd/implementation/**"] }
     run: { type: script, target: scripts/sync_features.py }
 
 - gate:
@@ -119,8 +121,12 @@
       - { action: design-plan, hookPoint: start, target_review: ["specs/**"] }
       - { action: tasks-plan, hookPoint: start, target_review: ["specs/**"] }
       - { action: requirements-cross-gate, hookPoint: start, target_review: ["specs/**"] }
+      - { action: implement-cross-gate, hookPoint: start, target_review: [".aidd/implementation/cross-review.json"] }
+      - { action: implement-integration-run, hookPoint: start, target_review: ["**"] }
+      - { action: implement-cross-ace-run, hookPoint: start, target_review: ["**"] }
       - { action: design-cross-gate, hookPoint: start, target_review: ["specs/**"] }
       - { action: tasks-gate-run, hookPoint: start, target_review: ["specs/**"] }
+      - { action: implement-plan, hookPoint: start, target_review: [".aidd/implementation/**"] }
     run: { type: script, target: scripts/check_upstream_approved.py }
 
 - gate:
@@ -172,8 +178,12 @@
       - { action: design-plan, hookPoint: start, target_review: ["specs/**"] }
       - { action: tasks-plan, hookPoint: start, target_review: ["specs/**"] }
       - { action: requirements-cross-gate, hookPoint: start, target_review: ["specs/**"] }
+      - { action: implement-cross-gate, hookPoint: start, target_review: [".aidd/implementation/cross-review.json"] }
+      - { action: implement-integration-run, hookPoint: start, target_review: ["**"] }
+      - { action: implement-cross-ace-run, hookPoint: start, target_review: ["**"] }
       - { action: design-cross-gate, hookPoint: start, target_review: ["specs/**"] }
       - { action: tasks-gate-run, hookPoint: start, target_review: ["specs/**"] }
+      - { action: implement-plan, hookPoint: start, target_review: [".aidd/implementation/**"] }
     run: { type: script, target: scripts/check_no_open_blockers.py }
 
 - gate:
@@ -302,6 +312,7 @@
       - { action: requirements-authoring-generate, hookPoint: end, target_review: ["specs/{item}/requirements.md"] }
       - { action: requirements-authoring-revise, hookPoint: end, target_review: ["specs/{item}/requirements.md"] }
       - { action: requirements-cross-gate, hookPoint: start, target_review: ["specs/**"] }
+      - { action: implement-cross-gate, hookPoint: start, target_review: [".aidd/implementation/cross-review.json"] }
       - { action: design-authoring-generate, hookPoint: end, target_review: ["specs/{item}/design.md"] }
       - { action: design-authoring-revise, hookPoint: end, target_review: ["specs/{item}/design.md"] }
       - { action: design-cross-gate, hookPoint: start, target_review: ["specs/**"] }
@@ -568,6 +579,7 @@
       - { action: requirements-authoring-generate, hookPoint: end, target_review: ["specs/{item}/requirements.md"] }
       - { action: requirements-authoring-revise, hookPoint: end, target_review: ["specs/{item}/requirements.md"] }
       - { action: requirements-cross-gate, hookPoint: end, target_review: ["specs/**"] }
+      - { action: implement-cross-gate, hookPoint: end, target_review: [".aidd/implementation/cross-review.json"] }
       - { action: design-authoring-generate, hookPoint: end, target_review: ["specs/{item}/design.md"] }
       - { action: design-authoring-revise, hookPoint: end, target_review: ["specs/{item}/design.md"] }
       - { action: design-cross-gate, hookPoint: end, target_review: ["specs/**"] }
@@ -619,6 +631,7 @@
       - { action: requirements-authoring-generate, hookPoint: end, target_review: ["specs/{item}/requirements.md"] }
       - { action: requirements-authoring-revise, hookPoint: end, target_review: ["specs/{item}/requirements.md"] }
       - { action: requirements-cross-gate, hookPoint: end, target_review: ["specs/**"] }
+      - { action: implement-cross-gate, hookPoint: end, target_review: [".aidd/implementation/cross-review.json"] }
       - { action: design-authoring-generate, hookPoint: end, target_review: ["specs/{item}/design.md"] }
       - { action: design-authoring-revise, hookPoint: end, target_review: ["specs/{item}/design.md"] }
       - { action: design-cross-gate, hookPoint: end, target_review: ["specs/**"] }
@@ -668,6 +681,7 @@
       - { action: requirements-authoring-generate, hookPoint: end, target_review: ["specs/{item}/requirements.md"] }
       - { action: requirements-authoring-revise, hookPoint: end, target_review: ["specs/{item}/requirements.md"] }
       - { action: requirements-cross-gate, hookPoint: end, target_review: ["specs/**"] }
+      - { action: implement-cross-gate, hookPoint: end, target_review: [".aidd/implementation/cross-review.json"] }
       - { action: design-authoring-generate, hookPoint: end, target_review: ["specs/{item}/design.md"] }
       - { action: design-authoring-revise, hookPoint: end, target_review: ["specs/{item}/design.md"] }
       - { action: design-cross-gate, hookPoint: end, target_review: ["specs/**"] }
@@ -717,6 +731,7 @@
       - { action: requirements-authoring-generate, hookPoint: end, target_review: ["specs/{item}/requirements.md"] }
       - { action: requirements-authoring-revise, hookPoint: end, target_review: ["specs/{item}/requirements.md"] }
       - { action: requirements-cross-gate, hookPoint: end, target_review: ["specs/**"] }
+      - { action: implement-cross-gate, hookPoint: end, target_review: [".aidd/implementation/cross-review.json"] }
       - { action: design-authoring-generate, hookPoint: end, target_review: ["specs/{item}/design.md"] }
       - { action: design-authoring-revise, hookPoint: end, target_review: ["specs/{item}/design.md"] }
       - { action: design-cross-gate, hookPoint: end, target_review: ["specs/**"] }
@@ -780,6 +795,7 @@
           - docs/architecture/data-model.md
           - docs/architecture/system-overview.md
       - { action: requirements-cross-gate, hookPoint: end, target_review: ["specs/**"] }
+      - { action: implement-cross-gate, hookPoint: end, target_review: [".aidd/implementation/cross-review.json"] }
       - { action: design-cross-gate, hookPoint: end, target_review: ["specs/**"] }
       - { action: tasks-gate-run, hookPoint: end, target_review: ["specs/**"] }
     run: { type: script, target: scripts/check_artifacts_approved.py }
@@ -789,6 +805,21 @@
     target_action:
       - { action: implement-gate-run, hookPoint: start, target_review: [".aidd/implementation/**"] }
     run: { type: script, target: scripts/gate_implementation_tools.py }
+
+# Phase 8 の案件レベルの全体結合確認（§6.11、M-10）。`_project.json` の group の checks を unit 内で実行する。
+- gate:
+    name: implementation-integration-tools
+    target_action:
+      - { action: implement-integration-run, hookPoint: start, target_review: ["**"] }
+    run: { type: script, target: scripts/gate_integration_tools.py }
+
+# 横断 ACE（§6.11、L4-5）。execution に依存しない ACE ゲート。ACE 計画のチャンクのファイルを ACE に送り、
+# 結果を passed / split / resend / stop に分類して `cross-ace/<chunk>/result.json` に返す。snapshot・review は差さない。
+- gate:
+    name: cross-code-review
+    target_action:
+      - { action: implement-cross-ace-run, hookPoint: start, target_review: ["**"] }
+    run: { type: script, target: scripts/gate_cross_code_review.py }
 
 - gate:
     name: task-specification-prepare

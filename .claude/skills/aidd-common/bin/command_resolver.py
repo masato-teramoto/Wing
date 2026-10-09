@@ -153,8 +153,8 @@ def _options(argv):
 
 
 def _paths(known):
-    root = os.path.abspath(known.root or PROJECT_ROOT)
-    state = os.path.abspath(known.state) if known.state else os.path.join(root, ".aidd/phase-progress.json")
+    root = os.path.realpath(known.root or PROJECT_ROOT)
+    state = os.path.realpath(known.state or os.path.join(root, ".aidd/phase-progress.json"))
     config = os.path.abspath(known.config or COMMON)
     return root, state, config
 

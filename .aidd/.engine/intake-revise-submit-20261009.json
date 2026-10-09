@@ -1,0 +1,24 @@
+{
+ "operation_id": "be9795f1-b8c6-46f7-b797-f1ffead18b20",
+ "dispatch": {
+  "call": "requirement-intake-revise",
+  "unit": "requirement-intake-revise/requirement-intake-revise[-]::run",
+  "event": "requirement-intake-revise",
+  "item": null,
+  "status": "emit",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": null,
+  "id": "2309e4cfcb444e23956f7ecc6e24679f"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   ".aidd/requirement-list.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [],
+  "return_candidates": [],
+  "summary": "承認後にフロー外で変更（status/updated_at のみ）された要求一覧を確認。本文の修正は不要のため編集せず、再検査・再承認へ回す"
+ }
+}

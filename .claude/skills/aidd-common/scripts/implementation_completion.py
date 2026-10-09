@@ -14,6 +14,7 @@ import uuid
 import implementation_evidence as evidence
 import implementation_reports as reports
 import implementation_store as store
+import location_identity
 
 FIELDS = {'schema', 'identity', 'artifacts', 'current_artifacts', 'inventories',
           'current_optional_artifacts', 'environment_files', 'execution_bindings', 'operations'}
@@ -34,16 +35,19 @@ def proof_path(execution):
             + '/completion-' + str(len(execution.get('retries', []))) + '.json')
 
 
-def _file(context, name, external=False):
+def _file(context, name, external=False, previous_root=None):
     if not isinstance(name, str) or not name:
         raise ValueError('completion evidence requires a file path')
     if external and Path(name).is_absolute():
-        return Path(name)
+        path = location_identity.relocated_file(name, previous_root, context.root)
+        if path.is_relative_to(Path(context.root)):
+            return reports.plain_file(context.root, path.relative_to(context.root).as_posix())
+        return path
     return reports.plain_file(context.root, name)
 
 
-def _hashes(context, names, external=False):
-    return {name: store.digest(_file(context, name, external).read_bytes()) for name in sorted(names)}
+def _hashes(context, names, external=False, previous_root=None):
+    return {name: store.digest(_file(context, name, external, previous_root).read_bytes()) for name in sorted(names)}
 
 
 def _optional_hashes(context, names):
@@ -105,7 +109,7 @@ def _verify(context, execution, proof, current):
         raise ValueError('completion validation requires a boolean current flag')
     if (not isinstance(proof, dict) or set(proof) != FIELDS
             or type(proof.get('schema')) is not int or proof['schema'] != 1
-            or proof.get('identity') != identity(context, execution)
+            or not location_identity.same_binding(proof.get('identity'), identity(context, execution))
             or any(not isinstance(proof.get(key), dict)
                    for key in ('artifacts', 'current_artifacts', 'current_optional_artifacts', 'execution_bindings', 'operations'))
             or any(not isinstance(proof.get(key), list) for key in ('inventories', 'environment_files'))):
@@ -121,14 +125,17 @@ def _verify(context, execution, proof, current):
                 or type(row['protected']) is not bool):
             raise ValueError('invalid completion inventory')
     if current:
-        if _hashes(context, proof['current_artifacts'], external=True) != proof['current_artifacts']:
+        previous_root = proof['identity']['root']
+        if _hashes(context, proof['current_artifacts'], external=True, previous_root=previous_root) != proof['current_artifacts']:
             raise ValueError('completion evidence current inputs changed')
         if _optional_hashes(context, proof['current_optional_artifacts']) != proof['current_optional_artifacts']:
             raise ValueError('completion evidence current file presence or contents changed')
         if any(store.fingerprint(evidence.inventory(context, execution['policy'], row['protected'])) != row['sha256']
                for row in proof['inventories']):
             raise ValueError('completion evidence input inventory changed')
-        if [_environment(context, row) for row in proof['environment_files']] != proof['environment_files']:
+        environment = [dict(row, **{key: str(location_identity.relocated_file(row[key], previous_root, context.root))
+                                    for key in ('default', 'selected')}) for row in proof['environment_files']]
+        if [_environment(context, row) for row in environment] != environment:
             raise ValueError('completion evidence environment selection changed')
     return proof
 
@@ -152,6 +159,19 @@ def _write_once(target, raw):
         temporary.unlink(missing_ok=True)
 
 
+def portable_snapshot(proof):
+    """Compare dependency snapshots across a move; stored evidence stays intact."""
+    value = copy.deepcopy(proof)
+    root = proof['identity']['root']
+    value['identity'] = location_identity.binding(value['identity'])
+    value['current_artifacts'] = {str(location_identity.relocated_file(name, root, '.')): sha
+                                  for name, sha in value['current_artifacts'].items()}
+    for row in value['environment_files']:
+        for key in ('default', 'selected'):
+            row[key] = str(location_identity.relocated_file(row[key], root, '.'))
+    return value
+
+
 def publish(context, execution, proof):
     """Publish a gate-validated snapshot, rechecking it before either save.
 
@@ -163,11 +183,18 @@ attempt's pointer is replaced only after a new attempt obtains its own proof.
     _verify(context, execution, proof, current=True)
     raw = (json.dumps(proof, ensure_ascii=False, sort_keys=True, indent=2, allow_nan=False) + '\n').encode('utf-8')
     name = proof_path(execution)
+    target = _file(context, name)
+    if target.exists():
+        existing_raw = target.read_bytes()
+        existing = _verify(context, saved, json.loads(existing_raw), current=True)
+        if portable_snapshot(existing) != portable_snapshot(proof):
+            raise ValueError('immutable completion evidence differs; retry requires a new attempt')
+        proof, raw = existing, existing_raw  # Resume a partial publication after moving, without rewriting history.
     pointer = {'path': name, 'sha256': store.digest(raw)}
     previous = saved.get('completion_proof')
     if previous and previous.get('path') == name and previous != pointer:
         raise ValueError('completion evidence pointer differs within the same attempt')
-    _write_once(_file(context, name), raw)
+    _write_once(target, raw)
     # Verify once more after publication, before making this proof reachable.
     _verify(context, saved, proof, current=True)
     saved['completion_proof'] = pointer

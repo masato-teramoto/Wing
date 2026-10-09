@@ -1,0 +1,28 @@
+{
+ "operation_id": "4d738d1d-bff3-4aa3-a666-546397ebccf2",
+ "action": "approve",
+ "dispatch": {
+  "call": "requirement-intake-revise",
+  "unit": "requirement-intake-revise/requirement-intake-revise[-]::end.review",
+  "event": "requirement-intake-revise",
+  "item": null,
+  "status": "wait",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"requirement-intake-revise/requirement-intake-revise[-]::end.review\", \"snapshot\": \"648d5ba6c0edb4ae679a8a184525e95399030d8938b2b7c2ed3825a83d239254\", \"run\": 4, \"inspection_hash\": \"1c15c9ea2b9875722160332b2dbcb891de6ea5a03e53644268968fc58c8a651b\"}\n**Phase 1（要求受入）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 要求の抽出漏れ（最重要。下流のどのゲートでも検出できない）\n- 分類の正しさ\n- 粒度（1 項目に複数要求の混在・過剰な分割）\n- 要約で原文の意図がずれていないか\n- 提案（gap-proposal）への回答\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：要求一覧の書式・ID の形式、RFP との対応（出典の位置）、重複・矛盾の候補、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-1-intake.md`）\n\n### 判断が必要な指摘\n\n**対象**: `.aidd/requirement-list.md`（スコープ: 成果物単位 / 4 回目）\n**実行した層**: ① / ②\n\n**指摘**: なし（0 件。検査は実行済み）\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n判断が揃いました。承認の可否を回答してください（承認する場合は承認者名）。",
+  "id": "a6d378bd953846c2ad513c567d835f60"
+ },
+ "expected": {
+  "root": "/home/kccs/Wing",
+  "state": "/home/kccs/Wing/.aidd/phase-progress.json",
+  "call": "requirement-intake-revise",
+  "event": "requirement-intake-revise",
+  "item": "",
+  "dispatch_id": "a6d378bd953846c2ad513c567d835f60",
+  "unit": "requirement-intake-revise/requirement-intake-revise[-]::end.review",
+  "scope": "phase",
+  "run": 4,
+  "snapshot": "648d5ba6c0edb4ae679a8a184525e95399030d8938b2b7c2ed3825a83d239254",
+  "record_hash": "1c15c9ea2b9875722160332b2dbcb891de6ea5a03e53644268968fc58c8a651b"
+ },
+ "data": {}
+}

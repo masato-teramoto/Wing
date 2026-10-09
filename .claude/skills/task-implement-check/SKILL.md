@@ -6,7 +6,11 @@ disable-model-invocation: true
 
 ## 対象と進め方
 
-入力profileは`implementation-task-review-v1`。contextのrequest/required_pathsを使う。
+入力profileは`implementation-task-review-v1`、または再検証用の`implementation-task-reverify-v1`。contextのrequest/required_pathsを使う。
+`implementation-task-reverify-v1`（承認済みタスクの再検証、計画 v3 §6.5 の 3 段の (2)）ではコードは編集されていない。
+起点は inputs.diffs ではなく request.reverify（変更の集合：変わった共有ファイル・依存先の requirements／design の承認行・
+docs の固定版・steering／Templates・`.claude` 資材の前後の digest）で、これらの変化がこのタスクの完了条件・実コード・テストに
+与える影響を同じ 3 観点で検査する。前後の digest だけで差分本文の無い資材は、実ファイルを読んで確かめる。
 request.taskの完了条件、当該タスクの要件・設計、inputs.diffsを起点に実ファイルを読む。
 required_pathsは編集許可範囲に加え、計画で明示した読取り依存、上流仕様、RED/GREEN/VERIFYの実績を含む。
 source_textを全量転記する必要はない。削除ファイルはdiffで確認する。

@@ -1,7 +1,7 @@
 ---
 feature: property-basic-info
 status: approved
-updated_at: 2026-10-09T12:25:37+09:00
+updated_at: 2026-10-09T18:46:09+09:00
 ---
 
 # 技術設計書

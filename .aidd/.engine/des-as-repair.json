@@ -1,0 +1,30 @@
+{
+ "operation_id": "e2c1d23a-b4f2-43a1-b9ee-922725a4e3d7",
+ "action": "repair",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[application-status-search]::end.review",
+  "event": "design-authoring-revise",
+  "item": "application-status-search",
+  "status": "wait",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[application-status-search]::end.review\", \"snapshot\": \"3b7a15d0a1719162bc319c1944bd7d2e6dc89b8572a3b0f6863c88ce4b8a8119\", \"run\": 6, \"inspection_hash\": \"b5813b089dc5fde86794922c8e503186778748033def59840f7cd238fde98953\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n\n### 前回の検査（5 回目）からの変更\n\n- 上流の入力が前回の検査から変わった（または比べられない）ため、全体を検査する。対象の全体を見てください。\n\n### 判断が必要な指摘\n\n**対象**: `specs/application-status-search/design.md`（スコープ: 成果物単位（application-status-search） / 6 回目）\n**実行した層**: ① / ②\n\n**要判断**（1 件）\n\n| # | 種類 | 対象箇所 | 要約 | AI の推奨 | 判断 |\n|---|---|---|---|---|---|\n| 2 | 文書間の参照 | specs/application-status-search/design.md § 依存してよい対象（Allowed Dependencies） / 依存先（98 行）ほか 1 か所 | feature-list の依存は pbi だけだが、ir design の定義を依存先に挙げている | 修正（本書の書き方は公開契約を読むだけで境界を越えない。宣言とのずれは本書の upstream-carryover の書き方で残せる） | 未回答 |\n\n**AI が修正案で直す軽微**（1 件。判断は不要。修正の回で直し、再検査で確かめます）\n- #1 削除済みの `db-TWTGM100.md` を参照しており、参照先が実在しない\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- #2: 人間による確認（`.aidd/feature-list.md` の application-status-search の依存列に issue-request を足すか。requirements の「前提と依存」も同様）（原因は上流の依存の宣言（feature-list・requirements）が `TWTGM100` を読む実態を含まないこと。本書の記述では解消できない）\n\n**答え方**（後に書いたものが優先。束・範囲でまとめて答えられます）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）。区分を `C[指摘の誤り]` `C[対象外]` `C[後で決める]` `C[解釈で対応]` で付ける。対象外・後で決めるに `+` を付けると（例 `C[後で決める+]`）、次の検査から同じ扱いにします\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n- **推奨** — AI の推奨を採用する（修正なら修正案がそのまま修正の指示になります）\n\n回答例: `1:推奨 / 束1:C[後で決める+] 桁数は design で決める / 3〜5:A / 7:D 次回まで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。根拠と修正案は `詳細 <番号>` で表示します。",
+  "id": "5e0bcf6cfac64de7bbee5339733859ff"
+ },
+ "expected": {
+  "root": "/home/kccs/Wing",
+  "state": "/home/kccs/Wing/.aidd/phase-progress.json",
+  "call": "design-authoring-revise",
+  "event": "design-authoring-revise",
+  "item": "application-status-search",
+  "dispatch_id": "5e0bcf6cfac64de7bbee5339733859ff",
+  "unit": "design-authoring-revise/design-authoring-revise[application-status-search]::end.review",
+  "scope": "feature:application-status-search",
+  "run": 6,
+  "snapshot": "3b7a15d0a1719162bc319c1944bd7d2e6dc89b8572a3b0f6863c88ce4b8a8119",
+  "record_hash": "76dbde25e0a4bc89b5e64f428823662c40c085198fd199de29f32196d5bdd6a8"
+ },
+ "data": {
+  "findings": "all-fixes"
+ }
+}

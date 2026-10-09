@@ -1,0 +1,28 @@
+{
+ "operation_id": "cfbcdb51-c7a7-4c0e-b8e4-871b118f12fe",
+ "action": "approve",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[property-basic-info]::end.review",
+  "event": "design-authoring-revise",
+  "item": "property-basic-info",
+  "status": "wait",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[property-basic-info]::end.review\", \"snapshot\": \"4c101334a318c42820a4cafd5b2aef76cc61c72b6ec72ff3250ebeabed0062c4\", \"run\": 8, \"inspection_hash\": \"2b467c3b42d93e50b3ec2bec75702b8142aa76b15be2d51184d044d3da953f35\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 1 件\n  - TWTGM140 の全 345 列のうち「残りの列」の定義の所在が本書から辿れない（参照先だった ir 側の db 資料が削除済みという事実を含む）（learned:design cross 2-2）\n\n### 前回の検査（7 回目）からの変更\n\n- 上流の入力が前回の検査から変わった（または比べられない）ため、全体を検査する。対象の全体を見てください。\n\n### 判断が必要な指摘\n\n**対象**: `specs/property-basic-info/design.md`（スコープ: 成果物単位（property-basic-info） / 8 回目）\n**実行した層**: ① / ②\n\n**指摘**: なし（0 件。検査は実行済み）\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n判断が揃いました。承認の可否を回答してください（承認する場合は承認者名）。",
+  "id": "238a018e0679423cb0daed13929da28b"
+ },
+ "expected": {
+  "root": "/home/kccs/Wing",
+  "state": "/home/kccs/Wing/.aidd/phase-progress.json",
+  "call": "design-authoring-revise",
+  "event": "design-authoring-revise",
+  "item": "property-basic-info",
+  "dispatch_id": "238a018e0679423cb0daed13929da28b",
+  "unit": "design-authoring-revise/design-authoring-revise[property-basic-info]::end.review",
+  "scope": "feature:property-basic-info",
+  "run": 8,
+  "snapshot": "4c101334a318c42820a4cafd5b2aef76cc61c72b6ec72ff3250ebeabed0062c4",
+  "record_hash": "2b467c3b42d93e50b3ec2bec75702b8142aa76b15be2d51184d044d3da953f35"
+ },
+ "data": {}
+}

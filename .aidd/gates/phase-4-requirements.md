@@ -2298,3 +2298,139 @@ created_at: 2026-10-01T19:25:49+09:00
 | スコープ | 回数 | 確認者 | 日時 | 原本SHA256 |
 |---|---|---|---|---|
 | cross | 3 | Junichi Noumi | 2026-10-07T16:52:26+09:00 | {"specs/property-basic-info/requirements.md": "5f172c4890f034214da64d63ee9eddbb59f2ea979f258073b31cb99122bfa6bc", "specs/issue-request/requirements.md": "a6bfa87614a5044a2ee05f06eea80f9f9e83e431030c7f9fa6a85e54542d807f", "specs/issue-request-tutorial/requirements.md": "3e1042329d04e128a1c95e89adc17075768e5744202d85de60d5704eedf1923e", "specs/print-report/requirements.md": "7d7de30b0895cdabc937b9cce759067c8c0732a2f344d03ae09c469e45743cd8", "specs/application-status-search/requirements.md": "55d9ff1879cc34261f13d0a12fab45b26b91a0783b22e3136a1edc72f808ce82", "specs/contract-info-import/requirements.md": "23cf03a7c36f258901fd28108f2a3c41132bd2639f5475ed681ec077a1e57677", "specs/contract-info-download/requirements.md": "db81769c1f58c458a0583a47ed5daf3a2ffdf8fdee34bd1aa3514a04dcf4a898"} |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:property-basic-info | 14 | 2026-10-09T17:48:50+09:00 | ①② | ["specs/property-basic-info/requirements.md"] | {"specs/property-basic-info/requirements.md": "5f172c4890f034214da64d63ee9eddbb59f2ea979f258073b31cb99122bfa6bc"} | 0 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+
+## 承認
+
+| スコープ | 回数 | 対象成果物 | 承認者 | 承認日時 | 原本SHA256 |
+|---|---|---|---|---|---|
+| feature:property-basic-info | 14 | specs/property-basic-info/requirements.md | masato-teramoto | 2026-10-09T17:51:31+09:00 | 5f172c4890f034214da64d63ee9eddbb59f2ea979f258073b31cb99122bfa6bc |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:issue-request | 4 | 2026-10-09T17:54:40+09:00 | ①② | ["specs/issue-request/requirements.md"] | {"specs/issue-request/requirements.md": "a6bfa87614a5044a2ee05f06eea80f9f9e83e431030c7f9fa6a85e54542d807f"} | 0 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+
+## 承認
+
+| スコープ | 回数 | 対象成果物 | 承認者 | 承認日時 | 原本SHA256 |
+|---|---|---|---|---|---|
+| feature:issue-request | 4 | specs/issue-request/requirements.md | masato-teramoto | 2026-10-09T17:56:50+09:00 | a6bfa87614a5044a2ee05f06eea80f9f9e83e431030c7f9fa6a85e54542d807f |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:issue-request-tutorial | 5 | 2026-10-09T17:58:48+09:00 | ①② | ["specs/issue-request-tutorial/requirements.md"] | {"specs/issue-request-tutorial/requirements.md": "3e1042329d04e128a1c95e89adc17075768e5744202d85de60d5704eedf1923e"} | 0 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+
+## 承認
+
+| スコープ | 回数 | 対象成果物 | 承認者 | 承認日時 | 原本SHA256 |
+|---|---|---|---|---|---|
+| feature:issue-request-tutorial | 5 | specs/issue-request-tutorial/requirements.md | masato-teramoto | 2026-10-09T18:06:43+09:00 | 3e1042329d04e128a1c95e89adc17075768e5744202d85de60d5704eedf1923e |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:print-report | 3 | 2026-10-09T18:09:51+09:00 | ①② | ["specs/print-report/requirements.md"] | {"specs/print-report/requirements.md": "7d7de30b0895cdabc937b9cce759067c8c0732a2f344d03ae09c469e45743cd8"} | 0 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+
+## 承認
+
+| スコープ | 回数 | 対象成果物 | 承認者 | 承認日時 | 原本SHA256 |
+|---|---|---|---|---|---|
+| feature:print-report | 3 | specs/print-report/requirements.md | masato-teramoto | 2026-10-09T18:12:41+09:00 | 7d7de30b0895cdabc937b9cce759067c8c0732a2f344d03ae09c469e45743cd8 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:application-status-search | 3 | 2026-10-09T18:14:49+09:00 | ①② | ["specs/application-status-search/requirements.md"] | {"specs/application-status-search/requirements.md": "55d9ff1879cc34261f13d0a12fab45b26b91a0783b22e3136a1edc72f808ce82"} | 0 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+
+## 承認
+
+| スコープ | 回数 | 対象成果物 | 承認者 | 承認日時 | 原本SHA256 |
+|---|---|---|---|---|---|
+| feature:application-status-search | 3 | specs/application-status-search/requirements.md | masato-teramoto | 2026-10-09T18:18:52+09:00 | 55d9ff1879cc34261f13d0a12fab45b26b91a0783b22e3136a1edc72f808ce82 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-import | 3 | 2026-10-09T18:21:03+09:00 | ①② | ["specs/contract-info-import/requirements.md"] | {"specs/contract-info-import/requirements.md": "23cf03a7c36f258901fd28108f2a3c41132bd2639f5475ed681ec077a1e57677"} | 0 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+
+## 承認
+
+| スコープ | 回数 | 対象成果物 | 承認者 | 承認日時 | 原本SHA256 |
+|---|---|---|---|---|---|
+| feature:contract-info-import | 3 | specs/contract-info-import/requirements.md | masato-teramoto | 2026-10-09T18:24:46+09:00 | 23cf03a7c36f258901fd28108f2a3c41132bd2639f5475ed681ec077a1e57677 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-download | 4 | 2026-10-09T18:27:01+09:00 | ①② | ["specs/contract-info-download/requirements.md"] | {"specs/contract-info-download/requirements.md": "db81769c1f58c458a0583a47ed5daf3a2ffdf8fdee34bd1aa3514a04dcf4a898"} | 0 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+
+## 承認
+
+| スコープ | 回数 | 対象成果物 | 承認者 | 承認日時 | 原本SHA256 |
+|---|---|---|---|---|---|
+| feature:contract-info-download | 4 | specs/contract-info-download/requirements.md | masato-teramoto | 2026-10-09T18:30:20+09:00 | db81769c1f58c458a0583a47ed5daf3a2ffdf8fdee34bd1aa3514a04dcf4a898 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| cross | 4 | 2026-10-09T18:31:22+09:00 | ② | ["specs/property-basic-info/requirements.md","specs/issue-request/requirements.md","specs/issue-request-tutorial/requirements.md","specs/print-report/requirements.md","specs/application-status-search/requirements.md","specs/contract-info-import/requirements.md","specs/contract-info-download/requirements.md"] | {"specs/property-basic-info/requirements.md": "5f172c4890f034214da64d63ee9eddbb59f2ea979f258073b31cb99122bfa6bc", "specs/issue-request/requirements.md": "a6bfa87614a5044a2ee05f06eea80f9f9e83e431030c7f9fa6a85e54542d807f", "specs/issue-request-tutorial/requirements.md": "3e1042329d04e128a1c95e89adc17075768e5744202d85de60d5704eedf1923e", "specs/print-report/requirements.md": "7d7de30b0895cdabc937b9cce759067c8c0732a2f344d03ae09c469e45743cd8", "specs/application-status-search/requirements.md": "55d9ff1879cc34261f13d0a12fab45b26b91a0783b22e3136a1edc72f808ce82", "specs/contract-info-import/requirements.md": "23cf03a7c36f258901fd28108f2a3c41132bd2639f5475ed681ec077a1e57677", "specs/contract-info-download/requirements.md": "db81769c1f58c458a0583a47ed5daf3a2ffdf8fdee34bd1aa3514a04dcf4a898"} | 0 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+
+## 確認
+
+| スコープ | 回数 | 確認者 | 日時 | 原本SHA256 |
+|---|---|---|---|---|
+| cross | 4 | masato-teramoto | 2026-10-09T18:34:30+09:00 | {"specs/property-basic-info/requirements.md": "5f172c4890f034214da64d63ee9eddbb59f2ea979f258073b31cb99122bfa6bc", "specs/issue-request/requirements.md": "a6bfa87614a5044a2ee05f06eea80f9f9e83e431030c7f9fa6a85e54542d807f", "specs/issue-request-tutorial/requirements.md": "3e1042329d04e128a1c95e89adc17075768e5744202d85de60d5704eedf1923e", "specs/print-report/requirements.md": "7d7de30b0895cdabc937b9cce759067c8c0732a2f344d03ae09c469e45743cd8", "specs/application-status-search/requirements.md": "55d9ff1879cc34261f13d0a12fab45b26b91a0783b22e3136a1edc72f808ce82", "specs/contract-info-import/requirements.md": "23cf03a7c36f258901fd28108f2a3c41132bd2639f5475ed681ec077a1e57677", "specs/contract-info-download/requirements.md": "db81769c1f58c458a0583a47ed5daf3a2ffdf8fdee34bd1aa3514a04dcf4a898"} |
