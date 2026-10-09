@@ -1,0 +1,129 @@
+{
+  "$comment": "mockup-manifest.json の雛形。mockup 生成のたびにエージェントが出力する。画面 × 状態は screen-spec.md と 1:1（他 feature の画面の参照行は pages[] に含めない — 所有 feature の mockup が描く。状態が減った改訂では消えたページを pages/ から削る）。共通シェル（ヘッダ・ナビ・パンくず）は画面マップ §4 を生成入力にして全ページに載せる（後付けしない）。他 feature の mockup への遷移リンクは画面マップ §3 にあるものだけ（全画面から 1 画面へ向かう遷移は §3 ④ が根拠）。相手が未生成なら pending として notes[] と checks.links.pending に記録する。視覚仕様は書かない（見た目の正は STYLEGUIDE.md）。styleguide_css はページが参照する複製（pages/tokens/styleguide.css）で、styleguide_css_source が案件直下の正。presented_at / viewed は人が記入する（記入だけは代筆可 — viewed の $comment を見る）。$comment を持つキーは注記で、値ではない。",
+  "feature": "{{FEATURE_NAME}}",
+  "generated_at": null,
+  "inputs": {
+    "$comment": "版はいずれも「参照した時点の版」。本文に効いた改訂かどうかは画面マップ §6-3 の改訂履歴で見る（revision だけ進んで本 feature の確定日時が据え置きなのは正常）。",
+    "screen_spec": ".aidd/screen-design/{{feature}}/screen-spec.md",
+    "screen_spec_status": "confirmed",
+    "screen_map": ".aidd/screen-design/_app-shell/screen-map.md",
+    "screen_map_revision": "{{画面マップの revision}}",
+    "styleguide_version": "{{STYLEGUIDE.md の version}}",
+    "styleguide_css": "pages/tokens/styleguide.css",
+    "styleguide_css_source": "styleguide.css",
+    "design_md_updated_at": "{{design.md の updated_at（鮮度の突合用）}}"
+  },
+  "notice": "画面設計書とスタイルガイドから生成した画面の具体形。構成・項目・状態・文言と案件の見た目の確認用で、挙動は再現していない（JS なし・データは固定値ダミー）。正は画面設計書とスタイルガイドであり、この HTML を実装のソースに使わない。修正は入力を直して再生成する。",
+  "shell": {
+    "applied": true,
+    "nav_source": "screen-map §4",
+    "nav_items": ["{{申請}}", "{{申請状況}}", "{{承認}}", "{{機器管理}}"],
+    "current_item": "{{本 feature に対応するナビ項目}}",
+    "entry": "{{../../_app-shell/pages/s-01-default.html | ../../<feature>/pages/s-01-default.html（流用）}}"
+  },
+  "pages": [
+    {
+      "screen_id": "S-01",
+      "screen": "{{画面名}}",
+      "state": "通常",
+      "file": "s-01-default.html",
+      "components": ["Button", "Field", "Select", "Table", "Pagination"],
+      "requirements": ["1.1"]
+    },
+    {
+      "screen_id": "S-01",
+      "screen": "{{画面名}}",
+      "state": "空",
+      "file": "s-01-empty.html",
+      "components": ["Button", "EmptyState"],
+      "requirements": ["1.1"]
+    }
+  ],
+  "cross_feature_links": [
+    {
+      "from": "s-03-default.html",
+      "to_screen_id": "{{other-feature}}:S-01",
+      "href": "../../{{other-feature}}/pages/s-01-default.html",
+      "source": "screen-map §3",
+      "status": "resolved | pending"
+    }
+  ],
+  "missing": [
+    {
+      "$comment": "missing[] は「画面設計書の要求と器（STYLEGUIDE.md §4）の差」。差は器を足しても要求を引いても閉じるので、決着を resolution に残す（任意キー。無い間は null）。部品のラベルが無い場合もここに追記候補として記録する（起草しない）。",
+      "kind": "component | state | token",
+      "name": "{{STYLEGUIDE.md §4 に無い部品名など}}",
+      "screen_id": "S-02",
+      "state": null,
+      "handling": "作らず記録（STYLEGUIDE.md への追記候補）",
+      "resolution": "{{null（未決）| 作らない | 器を足す | 要求を引く}}",
+      "backlog_id": "{{SGB-1（STYLEGUIDE-backlog.md の行番号。missing[] は再生成で書き直されるため案件の台帳にも残す）}}"
+    }
+  ],
+  "drafted_wording": [
+    {
+      "page": "s-01-validation-error.html",
+      "element": "{{Banner / .field-error / EmptyState など}}",
+      "drafted": "{{画面に出した文言（STYLEGUIDE.md §7 のトーンで起草）}}",
+      "source_code": "{{FORM_VALIDATION_FAILED（画面設計書 §3-x-6 のコード参照形。そのまま描かない）| null（文言そのものが無い状態）}}",
+      "reason": "{{コード参照形は画面設計書の中の書式で画面の文言ではない / 状態の文言が画面設計書に無い}}"
+    }
+  ],
+  "checks": {
+    "palette": {
+      "ran_at": null,
+      "script": "scripts/check-palette.mjs",
+      "scope": ".aidd/screen-design/{{feature}}/pages",
+      "result": "pass | fail",
+      "violations": 0
+    },
+    "links": {
+      "ran_at": null,
+      "script": "scripts/check-links.mjs",
+      "scope": ".aidd/screen-design",
+      "entry": "{{入口ページの相対パス}}",
+      "result": "pass | fail",
+      "broken": 0,
+      "pending": 0,
+      "pending_targets": ["{{other-feature}}"],
+      "reachable_features": ["{{feature}}", "{{other-feature}}"]
+    }
+  },
+  "viewed": {
+    "$comment": "【人】の確定点。判断は人・記入は代筆可で、by（判断した人）と recorded_by（記入した主体。代筆ならその skill 名）を分ける。目視の返し方は指摘だけではないので、questions[]（質問と回答）と verification_requests[]（検算の依頼と結果）を別に持つ。agent_verification は「人が OK と判断したうえでエージェントが確かめた」結果の枠で、人が見た範囲（pages / findings）と混ぜない（任意キー。確かめていなければ null）。見ていないものは見ていないと書く。",
+    "by": null,
+    "at": null,
+    "recorded_by": null,
+    "pages": ["s-01-default.html"],
+    "findings": [],
+    "ok_findings": [],
+    "state_observations": [],
+    "questions": [
+      {
+        "from": "{{人 | 生成側}}",
+        "question": "{{この見え方は意図どおりか、など}}",
+        "answer": "{{回答}}",
+        "answered_at": null
+      }
+    ],
+    "verification_requests": [
+      {
+        "request": "{{例: 閉じるボタンと中身が重なっていないか確かめてほしい}}",
+        "method": "{{確かめ方（測った対象・解像度・測り方）}}",
+        "result": "{{結果。NG は該当ページと値まで}}"
+      }
+    ],
+    "agent_verification": {
+      "by": null,
+      "at": null,
+      "method": "{{何をどう測ったか（対象ページ・解像度・測り方・確かめていない範囲）}}",
+      "results": ["{{測った項目と結果。NG は該当ページと値まで}}"]
+    }
+  },
+  "presented_at": null,
+  "presented_copy": ".aidd/screen-design/{{feature}}/presented/{{yyyy-mm-dd}}/",
+  "notes": [
+    "{{例: 出口 S-03 → other-feature:S-01 は所有側が未生成のため pending（画面マップ §3 #1）}}",
+    "{{例: ナビ項目「機器管理」（feature-d）は未生成のためリンク先なし}}"
+  ]
+}

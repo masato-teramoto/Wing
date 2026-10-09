@@ -1,0 +1,1226 @@
+/* styleguide.css — 契約書発行依頼業務対応（プリセット wing の複製）
+   STYLEGUIDE.md version: 0.3.10（同版。STYLEGUIDE.md を直したら再生成する。0.3.8 / 0.3.9 / 0.3.10 は frontmatter・本文の是正だけで宣言は 0.3.7 と同一）
+   ルート A（既存 UI からの抽出）・方針は既存画面の再現
+   流用元: 既存システム WiNG（建設業務支援システム）の画面ソース抜粋
+     CSS 8 本  — vender/kccs/css/{commons, custom, geframe.commons, login,
+                  wtg/wtg, wtg/wtg003/wtgo004, wtz/wtz001/menu, zzz/zzz010/zzz010}.css
+     テンプレート 14 本 — WEB-INF/pages/{common/header, common/errorArea, common/pager,
+                  common/pageCount, common/emptyMsg, common/waitMsg, common/link,
+                  wtg/wtg004/pwtgo008, wtz/wtz001/menu, error}.html
+                  + 実マークアップ 4 本 {wtg/wtg002/pwtgo004, wtg/wtg002/pwtgo005,
+                  wtg/wtg003/pwtgo006, zoom/zwtz064/zwtz064}.html
+     キャプチャ 5 枚 — 照会画面(一覧)_検索 / 編集画面(詳細)_エラー / メニュー / ZOOM_初期表示 / システムエラー
+   参照のみ（プラグインの既定テーマ・案件の様式ではない）:
+     static/plugins/jquery-ui-1.14.1/{jquery-ui, jquery-ui.theme}.css — .ui-datepicker の骨組みだけ。
+     色・背景画像は 1 つも採っていない（§4-11 の色は本書のトークン）。
+     static/vender/kccs/js/calendar.js — 挙動の確認のみ（様式の抽出元ではない）
+   補完: --color-status-{success,warning,info}* の 9 値は既存 UI に無く、既存のエラー 3 値が
+     Bootstrap 3 の alert-danger そのものである事実に基づき同じ体系から補完した（STYLEGUIDE.md §2）。
+   --color-text-error-title（red）と --color-status-error-detail-surface（palegoldenrod）は
+     §4-13 システムエラー画面のためのキーである（抽出元は error.html / geframe.commons.css。
+     STYLEGUIDE.md §1-1b の #11・§2 の禁止に対する明示の例外）。
+   埋め込んだ画像（生成規約 8 — 相対パスの url() は検査 A-2 の同一性を壊すため data: URI にする）:
+     --asset-header-band … vender/kccs/img/back_ground.gif（ヘッダ左の地紋）
+     --asset-menu-arrow  … vender/kccs/img/menu.gif（入口画面のリンクの矢印・18×18）
+     --asset-logo        … none（WiNG のロゴは在るが別案件のものなので流用しない。
+                             この案件のロゴを用意できたら差し替える — STYLEGUIDE.md §1-1 の #11）
+   本ファイルは生成物であり手で直さない（STYLEGUIDE.md を直して再生成する）。
+
+   注記: 下地・既定の文字・リンクの色を持つクラスが §4 に無いため、body と a を素の要素セレクタで置いている
+   （§4 は部品の様式・§5 レイアウトの原則はクラスを生まない規約のため、既定を置く場所が無い）。 */
+
+:root {
+  /* --- color.brand --- */
+  --color-brand-primary: #0088CC;
+  --color-brand-primary-hover: #26A0DA;
+  --color-brand-on-primary: #FFFFFF;
+  --color-brand-required: #FFD700;
+  --color-brand-accent: #000080;
+
+  /* --- color.surface --- */
+  --color-surface-canvas: #FFFFFF;
+  --color-surface-card: #FFFFFF;
+  --color-surface-header: #FFFFFF;
+  --color-surface-subtle: #FFFDDC;
+  --color-surface-row-odd: #EEEEFF;
+  --color-surface-row-even: #FFFEFE;
+  --color-surface-readonly: #C0C0C0;
+  --color-surface-disabled: #E5E5E5;
+  --color-surface-button: #C0C0C0;
+  --color-surface-button-disabled: #DCDCDC;
+  --color-surface-calendar: #D2691E;
+
+  /* --- color.text --- */
+  --color-text-body: #000000;
+  --color-text-muted: #808080;
+  --color-text-on-dark: #FFFFFF;
+  --color-text-link: #000080;
+  --color-text-link-hover: #C71585;
+  --color-text-disabled: #6D6D6D;
+  --color-text-current: #DC143C;
+  --color-text-watermark: #BCBCBC;
+  --color-text-error-title: #FF0000;
+
+  /* --- color.border --- */
+  --color-border-default: #707070;
+  --color-border-strong: #4B0082;
+  --color-border-grid: #0000FF;
+  --color-border-subtle: #E6E6E6;
+  --color-border-rule: #696969;
+  --color-border-focus: #000000;
+  --color-border-disabled: #BCBCBC;
+  --color-border-button: #F0F0F0;
+  --color-border-button-disabled: #6C6C6C;
+
+  /* --- color.status（状態にだけ使う。error は抽出値・他は補完） --- */
+  --color-status-error: #A94442;
+  --color-status-error-surface: #F2DEDE;
+  --color-status-error-border: #EBCCD1;
+  --color-status-error-field: #FFE4E1;
+  --color-status-success: #3C763D;
+  --color-status-success-surface: #DFF0D8;
+  --color-status-success-border: #D6E9C6;
+  --color-status-warning: #8A6D3B;
+  --color-status-warning-surface: #FCF8E3;
+  --color-status-warning-border: #FAEBCC;
+  --color-status-info: #31708F;
+  --color-status-info-surface: #D9EDF7;
+  --color-status-info-border: #BCE8F1;
+  --color-status-error-detail-surface: #EEE8AA;
+
+  /* --- color.overlay --- */
+  --color-overlay-backdrop: rgba(30,30,30,0.9);
+
+  /* --- typography --- */
+  --typography-family-sans: 'ＭＳ ゴシック', 'MS Gothic', monospace;
+  --typography-family-ui: system-ui;
+  --typography-size-body: 10pt;
+  --typography-size-subtitle: 12pt;
+  --typography-size-title: 18px;
+  --typography-weight-regular: 400;
+  --typography-weight-bold: 700;
+  --typography-line-height-body: normal;
+  --typography-line-height-heading: normal;
+  --typography-line-height-control: 15px;
+  --typography-line-height-confirmation: 22px;
+  --typography-letter-spacing-body: -0.5px;
+  --typography-letter-spacing-label: -0.8px;
+
+  /* --- spacing --- */
+  --spacing-xxs: 1px;
+  --spacing-xs: 2px;
+  --spacing-sm: 5px;
+  --spacing-md: 10px;
+  --spacing-lg: 20px;
+  --spacing-xl: 30px;
+
+  /* --- radius --- */
+  --radius-none: 0;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+
+  /* --- elevation --- */
+  --elevation-none: none;
+  --elevation-inset: inset 1px 1px 2px 1px rgba(0,0,0,0.5);
+
+  /* --- control --- */
+  --control-height: 22px;
+  --control-button-height: 23px;
+  --control-button-width: 23mm;
+  --control-button-width-wide: 30mm;
+  --control-select-height: 19px;
+  --control-icon-button: 22px;
+  --control-icon-button-width: 40px;
+  --control-icon-menu: 18px;
+  --control-row-height: 22px;
+  --control-focus-ring: 1px solid var(--color-border-focus);
+  --control-button-border: 2px outset var(--color-border-button);
+  --control-button-border-disabled: 1px groove var(--color-border-button-disabled);
+  --control-calendar-width: 227px;
+  --control-watermark-size: 72pt;
+  --control-error-title-size: 24px;
+  --control-error-detail-height: 400px;
+  --control-label-width: 120px;
+  /* ヘッダのロゴの枠。固定。asset.logo が none の間もこの幅を確保し、
+     中のシステム名の文字は折り返す（.app-header-logo は white-space: normal を対で持つ）。 */
+  --control-header-logo-width: 90px;
+  --control-width-xs: 37px;
+  --control-width-sm: 81px;
+  --control-width-md: 142px;
+  --control-width-lg: 275px;
+  --control-width-xl: 564px;
+  --control-textarea-width: 524px;
+  --control-textarea-height: 217px;
+
+  /* --- layout --- */
+  --layout-viewport-base: 1024x768;
+  /* 本文幅は 2 段。既定 980px（抽出値・ヘッダと同じ）/ 上限は下記。
+     上限は max-width として持つ — width で固定すると縦スクロールバーの 15px 分だけ
+     横スクロールが出て §5 の禁止に触れる。
+     **max-width であることが「画面が広ければ使う」も同時に満たす**（下記）。 */
+  --layout-content-width: 980px;
+  /* 上限の段。**しきい値（メディアクエリ）は作らない。**
+     max-width は「器が在れば使い、無ければそこまで」なので、
+     上限を「いちばん広い一覧の表が節の中に収まる幅」まで上げるだけで、次の両方が満たせる:
+       - 画面が広いとき … 表がまるごと出る（入れ物のスクロールは 0）
+       - 画面が狭いとき … 本文はビューポート幅までしか広がらず、溢れは .list-scroll が表の中だけで流す
+     **段は 2 つのままで、中間の幅も breakpoint も増えない**（§4-4 B-3 の「段は 2 つだけ」を保つ）。
+     値の出し方: いちばん広い一覧の表の幅（列幅の段の合計 + border-spacing）を測り、
+     表 + 節の枠 1px × 2 + 節の内側 spacing.md × 2 + .app-main の padding-left spacing.lg
+     を切り上げる。**段の値（layout.column）を変えたら測り直す。**
+     **切り替え点を「そのとき見ていた画面の実効幅」にしない** — それは切り替え点ではない。
+     **ヘッダは広げない**（幅は常に 980px）ので、広げた画面ではヘッダと本文の右端がそろわない。 */
+  --layout-content-max-width: 1480px;
+  --layout-pairs-per-row: 4;
+  /* 一覧の表（§4-4 B）の列幅の段。
+     control.width（入力欄の 5 段）とは別の軸である。
+     値は抽出値そのもの — pwtgo004 の一覧は列ヘッダのセルごとに 25 / 105 / 125 / 250px を割り付けている。
+     **段は px で持つ。比率（%）では持てない** — .list-table は width: 100% + table-layout: fixed なので、
+     合計が 100% でない表はブラウザが比率を保ったまま正規化する。帰結として**同じ段名が表ごとに違う幅になり**、
+     同じ段が表をまたぐと 2 倍以上ちがい、段の大小が逆転することもある。
+     「同じ段 = 同じ幅」が立たないので語彙として機能しない。
+     px が成立するには .list-scroll（下の §4-4 B）が対で要る — px の合計が器を超える表は入れ物の中を横に流し、
+     器に満たない表は「吸う列」1 本が余りを吸う。そうして初めて他の列が宣言どおりの px に固定される。
+     ordinal だけは抽出値 25px を使えない（【人】判断）。抽出元の見出しは半角 3 文字の `No.` で
+     25px に収まるが、見出しを日本語（全角混じり）にすると入らない。
+     .list-header は white-space: nowrap（抽出値）なので、25px のままだと見出しが隣の列に
+     食い込んで隣の見出しと地続きの 1 語に読める。
+     段は「最も細い列の見出しの実測幅 + .list-header の左右の余白 2px × 2」を切り上げて決める。
+     **全角・半角・空白が混じる見出しは字数から見積もらず、必ず実測する**
+     （「全角 2 文字ぶん」と見積もって段を決め、実際には 7px はみ出していたという誤りが実際に起きた）。
+     他の細い列に余りが出ても、段は中間を作らないので同じ段に留める（§4-4 B）。 */
+  --layout-column-ordinal: 42px;
+  --layout-column-narrow: 105px;
+  --layout-column-default: 125px;
+  --layout-column-wide: 250px;
+  /* 5 つ目の段。**段は 4 つ**で通していたが、**1 つのセルに入力欄が 2 つ + ボタンが 1 つ入る列**
+     （.field-input-lg 275px × 2 + 区切りの記号 + .btn-icon 40px）が
+     **横並びに約 610px 要り、wide〔250px〕の 2.4 倍**で、既存の 4 段のどれにも入らないため足した。
+     **中間の値ではなく上に 1 段足した形**である（4 段の間は今も作らない）。
+     セルの中を横並びにしたら、横に広がったぶんの幅も段で確保すること（§4-4 B の .control-group）。 */
+  --layout-column-xwide: 620px;
+  --layout-gutter: var(--spacing-xxs);
+  --layout-print-page: A4 portrait;
+  --layout-print-margin: 10mm;
+  --layout-viewport-target: 1280x800;
+
+  /* --- asset（既存 UI の画像。出どころは冒頭コメント） --- */
+  --asset-logo: none;
+  --asset-header-band: url("data:image/gif;base64,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ffYEepOAQAEEhg5F8CDpUqVNmT51GhXqVKlVqV61mhXrVq1duX71GhbsWLFlyZ41mxbtWrVt2b51GxfuXLl16d61mxfvXr19+f71GxjwYMGFCR823PRohQoEGj92HBnyZMmVKV+2nBnzZs2dOX/2HBr0aNGlSZ82nRr1atWtWb92HRv2/2zZtWnftp0b927dvXn/9h0c+HDhxYkfN54c+XLloREQeB4d+nTp1alft54d+3bt3bl/9x4e/Hjx5cmfN58e/Xr17dm/dx8f/nz59enft58f/379/fn/9y9AAAcUsEACDzQwQQQXVLBBBscjIAMCFIhwwgoplBBDCzO8sEMOP9wwRA1H9FDEEkkEEUUTUzyxRRZfXDFGFWd0UcYaaYQRRxtzvLFHHn/cMUgdh/RRyCKJBBJJI5M8skkmn1wySiWndFLKKqmEEksrs7yySy6/3DJMLcf0UswyyQQTTTOZVACBNhGAM04556SzTjvvxDNPPffks08//wQ0UEEHJbRQQ/8PRTRRRRdltFFHH4U0UkknpbRSSy/FNFNNN+U00AwQYACBT0MdVVRQTSX11FJXVbXVVF9FNVZWYZ1VVldtpfXWWnfVtddcf8U1WF6BHVZYX40l9thil1W22WSfRTZaZqGdVlpnraX22mq31bbbbL/FNlxuwR1XXG/NJffcctdVt91030U3XnbhnVded+2l99pQ9z2VX3/7BfhfgQMmeGCDC0b4YIUTZnhhhxuG+GGJI6Z4YosrxvhijTPmeGOPOwb5Y5FDJnlkk0tG+WSVU2Z5ZZdbhvllmWOmeWaba8Y4A5135rlnn38GOmihhya6aKOPRjpppZdmummnn4Y6aqndp6a6aquvxjprrbfmumuvvwY7bLHHJrtss5lmIIO011a7bbbfdjtuuOeWu26677Y7b7z31rtvvv/2O3DABxe8cMIPNzxxxBdXvHHGH3c8csgnl7xyyi+3PHPMN9e8c84/9zx00EcXvXTSTze9b7UZWJv11VuH/XXZWY+d9tldtz133Hevnffbewf+d+F1D5744X03Pnnkly+e+eObh/556ZWPnvrpnbc+e+y3r57767sH/3vxtQ+f/PG9Nz999Ncvn/3z24f/ffnVj5/++d23P3/896+f//v7B+D7AgIAOw==");
+  --asset-menu-arrow: url("data:image/gif;base64,R0lGODlhIgAkAPcAACFjlCljlDFjnDFrnDlrnDlznEJznEJzpUJ7pUpzpUp7nEp7pUqEpVJ7pVJ7rVKEpVKErVp7nFp7pVqEpWOEpWOErWuEpWuMrWuUtXOUrXOUtXOcvXuctYSlvYSlxoylxoytxpStvZStxpylrZyltZyttZytxpy1vZy1xpy1zqWttaW9zqW91q21ta21vbW1tbW1vbW9xrXGzrXG1r29vb3Gzr3O3sbGxsbO1s7Ozs7W3s7e59bW1tbe597e3t7n7+fn5+fn7+fv7+fv9+/v7+/v9+/39/f39/f3//f//////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAAAAAALAAAAAAiACQAAAj+AJUIHEhQoA0MKZIUXMiwIUEQBBKwUOiwokMQBwQ4WFHEoseCIhYIENDARJAjHz+GHEnSBBGUKSuKSMBSQIIQJ2M6nFlTwAIRQmBW3LAAAgQQSJR4MArBwICeNk0ErWgEAYCrDH4UYXAVQACoIxegmNpwCAQAAgAs0NHjAVqwNcW+LHs27YIaONzC7Sk2CF20AAy4iLHg7V6WJYkwNAvYgAoXhQ/zRaG4IOO0jiEbljwyseW6gR9H5lwzgYjKAi+HdqFgM2kCGnzMVaI6c2vSLAlQKJFDdmrQmUe/lkCCxg0eQFDWFu16r+4RL4wjVw6c+esJKl5EPz53uWbOz7XBS0/+u7H1w7qzb58+0MjZAAAKqIDROoB9sAQkQI+eg/3AJBsUgAABE7RAwwUFGGAAAVARYIF6NPRHXkE/zLDCCS4YV8MKKIQwAYO5SQChhEItRIQPOdxwHBBA8JCBAblRsF+E/jV0RIsSEkEEEBzAKAABEcxIokVH7MjiS0V2kFF4/NVI5BElfkAAbBk2OaFOBK1wQAUy3EADjVdiOdAPNuyA4g1DisnQET7wkKaaC93ogw9hwllQkbPZaaOefC4UEAA7");
+}
+
+/* --- 下地と既定の文字（§4 にクラスの置き場が無いため素の要素に置く。冒頭の注記を参照） --- */
+
+body {
+  margin: 0;
+  background: var(--color-surface-canvas);
+  color: var(--color-text-body);
+  font-family: var(--typography-family-sans);
+  font-size: var(--typography-size-body);
+  font-weight: var(--typography-weight-regular);
+  line-height: var(--typography-line-height-body);
+  letter-spacing: var(--typography-letter-spacing-body);
+}
+
+/* 部品クラスを持たない a だけに範囲を絞る（a:not([class])）。
+   a:visited の詳細度（0,1,1）が .btn-icon 等の部品クラス（0,1,0）より高く、
+   部品側の文字色を navy で上書きしていた。部品の色は §4 の各クラスが持つ。 */
+a:not([class]) {
+  color: var(--color-text-link);
+}
+
+a:not([class]):visited {
+  color: var(--color-text-link);
+}
+
+a:not([class]):hover,
+a:not([class]):active {
+  color: var(--color-text-link-hover);
+}
+
+hr {
+  border: 1px solid var(--color-border-rule);
+}
+
+/* ================================================================
+   §4-1. Button
+   ================================================================ */
+
+/* ラベルを箱の中で縦横とも中央に寄せる。
+   inline-block は行ボックスを箱の上端に置くため、height 23px に対し line-height 15px の差
+   （実測で文字の上下の余白が 5.4px ずれる）がそのまま下余白に残っていた。
+   既存 UI の <input type="button"> ではブラウザが値を中央に置くので起きない現象で、
+   mockup が遷移を <a>・操作を <button> で描くために出た（§9 #11 ⑧）。
+   line-height の抽出値 15px は残す — 中央寄せの下では位置を決めない値に戻るだけである。
+   vertical-align: middle（要素どうしの縦位置）とは別物なので両方持つ。 */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: var(--control-button-width);
+  height: var(--control-button-height);
+  padding: 0;
+  border: var(--control-button-border);
+  border-radius: var(--radius-none);
+  background: var(--color-surface-button);
+  color: var(--color-text-body);
+  font-family: var(--typography-family-sans);
+  font-size: var(--typography-size-body);
+  font-weight: var(--typography-weight-regular);
+  line-height: var(--typography-line-height-control);
+  letter-spacing: var(--typography-letter-spacing-body);
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle; /* <a class="btn"> と <button class="btn"> のベースラインの差を消す */
+  cursor: pointer;
+}
+
+.btn:focus {
+  outline: var(--control-focus-ring);
+}
+
+.btn-disabled {
+  display: inline-flex; /* .btn と同じ（実測 7.0px → 0.6px） */
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: var(--control-button-width);
+  height: var(--control-button-height);
+  padding: 0;
+  border: var(--control-button-border-disabled);
+  border-radius: var(--radius-none);
+  background: var(--color-surface-button-disabled);
+  color: var(--color-text-disabled);
+  font-family: var(--typography-family-sans);
+  font-size: var(--typography-size-body);
+  line-height: var(--typography-line-height-control);
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle; /* 要素どうしのベースラインをそろえる */
+  cursor: default;
+  pointer-events: none;
+}
+
+/* 長いラベルの段（§4-1 の幅の段 2 つ目）。.btn / .btn-disabled と併記して使う。
+   出どころ: pwtgo005 / pwtgo006 が長いラベルのボタンにインラインで当てている width: 30mm。
+   .btn-disabled の後ろに宣言する（.btn-disabled の width: 23mm が後勝ちしないようにする —
+   WiNG は commons.css で INPUT.button も INPUT.button_disabled も width: 23mm で同じ幅、30mm はインラインの
+   style なので無効になっても残る＝活性/無効で幅は変わらない）。 */
+.btn-wide {
+  width: var(--control-button-width-wide);
+}
+
+/* ラベルを折り返さない。.btn は width と height を固定で持つのに
+   white-space が normal だったため、幅に入らないラベルは 2 行に折り返し、height: 23px /
+   line-height: 15px なので 2 行目が箱の外にはみ出していた（実測: `変更を破棄して戻る` は
+   1 行に 118px 要るのに .btn-wide の中身は 110px で 8px 足りず、文字が上に 2.7px・下に 2.1px 出ていた）。
+   nowrap にすると横にはみ出す代わりに折り返さなくなる。**幅の段が足りているかは §4-1 の「幅の段」で確かめる** —
+   器は「折り返さない」ことだけを保証し、入るかどうかは段の選択の責任である。 */
+.btn,
+.btn-disabled,
+.btn-wide {
+  white-space: nowrap;
+}
+
+/* 用途が決まった小ボタン（40×22 — 抽出値）。
+   **ズーム専用ではない**。
+   セルの中に入力欄と並べる短いラベル（1〜2 文字）のボタンはすべてこれを使う
+   （明細の日付の `<<` / `>>` は .btn〔23mm = 86.9px〕を使っており、105px の列に入力欄と
+   並べられなかった。40px なら 81 + 40 + 40 = 161px に収まる）。
+   カレンダーの起動ボタン（.btn-icon-calendar）は持たない —
+   既存 UI に実体が無く、カレンダーは日付欄（.field-input-date）から開く。 */
+.btn-icon {
+  display: inline-flex; /* 行間の宣言が無く body の normal を継承していた（実測 6.0px → 0.0px） */
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: var(--control-icon-button-width);
+  height: var(--control-icon-button);
+  padding: 0 var(--spacing-xs); /* 抽出値 INPUT.zoom_button_open の padding-right/left: 2px */
+  border: var(--control-button-border);
+  border-radius: var(--radius-none);
+  background: var(--color-brand-accent);
+  color: var(--color-text-on-dark);
+  font-family: var(--typography-family-sans);
+  font-size: var(--typography-size-body);
+  font-weight: var(--typography-weight-bold);
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle; /* 隣の入力欄より 3px 下にずれていた */
+  cursor: pointer;
+}
+
+.button-area {
+  margin-top: var(--spacing-lg);
+  text-align: left;
+}
+
+/* ================================================================
+   §4-2. 入力欄 Field
+   ================================================================ */
+
+.field-input {
+  box-sizing: border-box;
+  width: var(--control-width-md);
+  max-width: 100%;
+  height: var(--control-height);
+  padding: var(--spacing-xs);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-none);
+  background: var(--color-surface-card);
+  color: var(--color-text-body);
+  font-family: var(--typography-family-sans);
+  font-size: var(--typography-size-body);
+  vertical-align: middle; /* 要素どうしのベースラインをそろえる */
+}
+
+.field-input:hover {
+  border-color: var(--color-brand-primary-hover);
+}
+
+.field-input:focus {
+  outline: none;
+  border-color: var(--color-border-focus);
+}
+
+.field-input-xs {
+  width: var(--control-width-xs);
+}
+
+.field-input-sm {
+  width: var(--control-width-sm);
+}
+
+.field-input-lg {
+  width: var(--control-width-lg);
+  max-width: 100%;
+}
+
+.field-input-xl {
+  width: var(--control-width-xl);
+  max-width: 100%;
+}
+
+.field-input-error {
+  background: var(--color-status-error-field);
+}
+
+.field-input-readonly {
+  background: var(--color-surface-readonly);
+  color: var(--color-text-body);
+}
+
+.field-input-disabled {
+  border-color: var(--color-border-disabled);
+  background: var(--color-surface-disabled);
+  color: var(--color-text-disabled);
+  cursor: default;
+}
+
+/* 日付欄（§4-2）。見た目は .field-input と同じで、幅の段も変えない。
+   違いは押すと §4-11 のカレンダーが開くことだけ（起動ボタンは持たない）。
+   mockup では素の a で描くため（§9 #11 ⑥）、入力欄と同じ見え方になる宣言を持つ。 */
+.field-input-date {
+  display: inline-block;
+  color: var(--color-text-body);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.field-flat {
+  box-sizing: border-box;
+  padding: var(--spacing-xs);
+  border: none;
+  background: transparent;
+  color: var(--color-text-body);
+  font-family: var(--typography-family-sans);
+  font-size: var(--typography-size-body);
+  line-height: var(--typography-line-height-confirmation);
+  overflow: hidden;
+}
+
+.field-textarea {
+  box-sizing: border-box;
+  width: var(--control-textarea-width);
+  max-width: 100%;
+  height: var(--control-textarea-height);
+  padding: var(--spacing-xs);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-none);
+  background: var(--color-surface-card);
+  color: var(--color-text-body);
+  font-family: var(--typography-family-sans);
+  font-size: var(--typography-size-body);
+  white-space: pre-wrap;
+  overflow-y: scroll;
+  resize: none;
+}
+
+.field-textarea:focus {
+  outline: none;
+  border-color: var(--color-border-focus);
+}
+
+.field-textarea-readonly {
+  background: var(--color-surface-card);
+  color: var(--color-text-muted);
+  box-shadow: var(--elevation-inset);
+}
+
+/* ================================================================
+   §4-3. Select / Checkbox / Radio
+   ================================================================ */
+
+.select {
+  box-sizing: border-box;
+  width: var(--control-width-md);
+  max-width: 100%;
+  height: var(--control-select-height);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-none);
+  background: var(--color-surface-card);
+  color: var(--color-text-body);
+  font-family: var(--typography-family-sans);
+  font-size: var(--typography-size-body);
+  vertical-align: middle; /* 要素どうしのベースラインをそろえる */
+}
+
+.select:focus {
+  outline: none;
+  border-color: var(--color-border-focus);
+}
+
+.select-readonly {
+  background: var(--color-surface-readonly);
+}
+
+.select-disabled {
+  border-color: var(--color-border-disabled);
+  background: var(--color-surface-disabled);
+  color: var(--color-text-disabled);
+  cursor: default;
+}
+
+.checkbox:focus-visible {
+  outline: var(--control-focus-ring);
+}
+
+.radio:focus-visible {
+  outline: var(--control-focus-ring);
+}
+
+/* ================================================================
+   §4-4. 表 — A. 条件・入力の表
+   ================================================================ */
+
+/* 条件表の入れ物。§4-4 B の .list-scroll と同じ役割で、条件表の側にだけ無かった。
+   .condition-table は table-layout: auto で幅の宣言を持たないため、中身の最小幅まで広がる。
+   **列幅は行をまたいで共有される**ので、xl（564px）を 1 組だけ置いた行が在ると、
+   同じ表の 4 組の行の 2 列目まで 564px にされ、表が節の内側を超えて**ページ**に横スクロールが出る
+   （ビューポートが狭いほど溢れが大きい）。
+   colspan を撤回したときに入った溢れである（colspan を使っていた間は xl の行が行の残りを
+   ぶち抜いており、2 列目は広がらずに済んでいた）。§4-4 A の「並べ方」の目安は 1 行ずつで考える基準で、
+   この共有を考慮していないため、目安どおりに組んでも溢れる。
+   .section の min-width: 0（§4-5）は節の膨張を止めるが、表が節から溢れるのは止めない。
+   溢れるぶんは**その表の入れ物の中だけ**で流す（ページは動かさない — §5 の但し書き / §9 #13）。
+   モーダルの中の条件表は .dialog-panel 側で width: 100% + table-layout: fixed に固定してあるので
+   溢れないが、入れ物は同じに包む — 包んでも挙動は変わらない。 */
+.condition-scroll {
+  overflow-x: auto;
+}
+
+.condition-table {
+  border-collapse: separate;
+  border-spacing: var(--layout-gutter);
+  background: var(--color-border-grid);
+  font-family: var(--typography-family-sans);
+  font-size: var(--typography-size-body);
+}
+
+/* width を外し、幅を内容相応にする（既存 UI はラベルごとにインラインで幅を割り付けている）。
+   .condition-table は table-layout を指定しない（auto）ため、列は内容の幅で自然に決まる。
+   control-label-width（120px）は既定の目安としてトークンに残すが、CSS では適用しない。 */
+.condition-label {
+  height: var(--control-height);
+  padding: 0 var(--spacing-xs);
+  background: var(--color-brand-primary);
+  color: var(--color-brand-on-primary);
+  font-size: var(--typography-size-body);
+  letter-spacing: var(--typography-letter-spacing-label);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.condition-label-required {
+  height: var(--control-height);
+  padding: 0 var(--spacing-xs);
+  background: var(--color-brand-primary);
+  color: var(--color-brand-required);
+  font-size: var(--typography-size-body);
+  letter-spacing: var(--typography-letter-spacing-label);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.condition-value {
+  padding: 0 var(--spacing-xs);
+  background: var(--color-surface-subtle);
+  color: var(--color-text-body);
+  font-size: var(--typography-size-body);
+  white-space: nowrap;
+}
+
+/* 長い値（lg / xl の入力欄を含む項目）は colspan をページ側で付けて列をぶち抜く。
+   .condition-value 自体に幅は持たせない（内容相応。auto 配置に任せる）。 */
+
+/* ================================================================
+   §4-4. 表 — B. 一覧の表
+   ================================================================ */
+
+.list-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: var(--layout-gutter);
+  background: var(--color-border-grid);
+  font-family: var(--typography-family-sans);
+  font-size: var(--typography-size-body);
+}
+
+/* 段を当てた表は .list-scroll に入れる（§4-4 B / §9 #11 の (10)）。
+   これは「ページの横スクロール」ではなく「表の入れ物の横スクロール」で、
+   【人】判断（ページごとの横スクロールをやめる）に触れない（§5 の但し書き）。
+   抽出元も同じ形 — pwtgo004 の一覧（47 列・合計 7500px）は
+   #freezingDiv > .SearchList_list_block という見出し固定のスクロールペインに入っている。
+
+   表は width: 100% のままでよい（.list-table の宣言をそのまま使う）。table-layout: fixed は
+   ① 表の使用幅を「宣言した列幅の合計」より狭くできない → 合計が器を超える表は器を超えて広がり、
+      入れ物が差を横に流す（列は 1 本も縮まない）
+   ② 幅を宣言していない列が 1 本あると、余りをその列に全部渡す → 他の列は宣言どおりの px のまま
+   という 2 つの性質を持つ。max-width: none だけが要る（.field-* 用の上限を表に効かせないため）。
+
+   width: max-content + min-width: 100% は使わない — max-content は
+   「折り返しが起きない前提」で幅を測るので、吸う列に長い自由文が入ると列ごと広がり、
+   .list-cell の overflow-wrap: anywhere が効かない
+   （anywhere が縮めるのは min-content であって max-content ではない）。
+   width: 100% なら表の幅が確定するので、同じ値が列幅を変えずに折り返す（伸びるのは行の高さだけ）。
+   あわせて ordinal などの列が見出しの幅まで膨らむ現象も消える（そのぶんは吸う列から抜かれていた）。 */
+.list-scroll {
+  overflow-x: auto;
+}
+
+.list-scroll > .list-table {
+  width: 100%;
+  max-width: none;
+}
+
+/* 列幅は <colgroup> の <col> に当てる（§9 #11 の (9)）。
+   table-layout: fixed は「列幅を明示するための宣言」で、明示しなければ列数で等分される
+   （fixed だけを入れて、抽出元が対で持っていた列ごとの割り付けを落とすと等分のままになる）。
+   段は px で持つ（抽出値そのもの）。段を当てない表は従来どおり等分される
+   （.list-scroll に入れないので段を導入する前と同じ挙動 — 既存のページは壊れない）。
+   <col> は幅だけを持つ — 面色と罫線はセル側（.list-header / .list-cell）のままにする。 */
+.list-col-ordinal {
+  width: var(--layout-column-ordinal);
+}
+
+.list-col-narrow {
+  width: var(--layout-column-narrow);
+}
+
+.list-col-default {
+  width: var(--layout-column-default);
+}
+
+.list-col-wide {
+  width: var(--layout-column-wide);
+}
+
+.list-col-xwide {
+  width: var(--layout-column-xwide);
+}
+
+.list-caption {
+  display: block;
+  margin-bottom: var(--spacing-xs);
+  color: var(--color-text-body);
+  font-size: var(--typography-size-body);
+  font-weight: var(--typography-weight-bold);
+  text-align: right;
+}
+
+.list-header {
+  height: var(--control-height);
+  padding: 0 var(--spacing-xs);
+  background: var(--color-brand-primary);
+  color: var(--color-brand-on-primary);
+  font-size: var(--typography-size-body);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.list-row {
+  height: var(--control-row-height);
+}
+
+.list-row:nth-child(odd) {
+  background: var(--color-surface-row-odd);
+}
+
+.list-row:nth-child(even) {
+  background: var(--color-surface-row-even);
+}
+
+/* 列が多い表の 2 段折り返し（§4-4 B-2）。1 件 = 2 行なので 4 行ごとにゼブラを替える。
+   出どころ: custom.css の TABLE.list TR.rows2:nth-child(4n+1 … 4n+4)。
+   見出し行は thead・明細行は tbody に置く前提（§9 #11 の (5)）。 */
+.list-row-2 {
+  height: var(--control-row-height);
+}
+
+.list-row-2:nth-child(4n+1),
+.list-row-2:nth-child(4n+2) {
+  background: var(--color-surface-row-odd);
+}
+
+.list-row-2:nth-child(4n+3),
+.list-row-2:nth-child(4n+4) {
+  background: var(--color-surface-row-even);
+}
+
+.list-cell {
+  padding: var(--spacing-xs);
+  color: var(--color-text-body);
+  font-size: var(--typography-size-body);
+  text-align: left;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+/* 入力欄と、その入力欄に付くボタンを 1 つの群として横に並べる。
+   【人】の申し出「テーブルの中にテキストボックスとボタンが存在する場合に、
+   必ず横並びにしたい」への回答である。
+   .list-cell は white-space: normal（長い値を折り返すため）なので、
+   セルが狭いと入力欄とボタンが縦に積まれる（狭い列では 1 セルが **3 段**になり、
+   行の高さが 3 倍以上になる）。
+   inline-flex + nowrap で群の中では折り返さないようにする。**群の外は従来どおり折り返す**ので、
+   長い自由文の折り返しは壊さない。
+   **群の幅が列に入るかは §4-4 B の段の選択の責任**である（本クラスは折り返さないことだけを保証する）。
+   入らない場合はセルの外に視覚的にはみ出す — 列の境目・表の幅・ページの横スクロールは動かない
+   （§4-4 B「宣言した列幅は見出しの長さに関わらず常に保たれる」と同じ挙動）。 */
+.control-group {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  vertical-align: middle; /* 隣の要素とベースラインをそろえる */
+}
+
+.list-cell-num {
+  padding: var(--spacing-xs);
+  color: var(--color-text-body);
+  font-size: var(--typography-size-body);
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* ================================================================
+   §4-5. Section
+   ================================================================ */
+
+.section {
+  /* ブラウザの既定のスタイルシートが fieldset に min-width: min-content を当てており、
+     これを 0 に戻さないと §4-4 B-1b の .list-scroll が成立しない。
+     器を超える表を入れると、入れ物の中でスクロールする代わりに fieldset 自身が中身の幅まで広がり、
+     .app-main を突き抜けて**ページ**に横スクロールが出る。
+     .list-scroll 側の scrollWidth - clientWidth は 0 のままなので、入れ物だけを見ても気づけない。
+     min-width: 0 にすると fieldset は器の幅に留まり、入れ物が正しく横に流れる。 */
+  min-width: 0;
+  margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-md);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-none);
+  background: var(--color-surface-canvas);
+  box-shadow: var(--elevation-none);
+}
+
+.section-title {
+  padding: 0 var(--spacing-sm);
+  color: var(--color-text-body);
+  font-size: var(--typography-size-body);
+}
+
+/* ================================================================
+   §4-7. Dialog
+   ================================================================ */
+
+.dialog-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--color-overlay-backdrop);
+}
+
+.dialog-panel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-sizing: border-box;
+  width: 70%;
+  max-width: 500px;
+  /* 上の余白は spacing.lg（20px）。.dialog-close は position: absolute で
+     top: spacing.sm（5px）に置かれ、高さ 12.8px なのでパネルの上端から 17.8px を占める。
+     spacing.md（10px）では 7.8px 足りず、閉じるが中身（条件表の 1 行目）に重なる。
+     段を増やさず 1 段上げて 2.2px の余裕を作る。 */
+  padding: var(--spacing-lg) var(--spacing-xl) var(--spacing-md);
+  border-radius: var(--radius-none);
+  background: var(--color-surface-card);
+  box-shadow: var(--elevation-none);
+}
+
+.dialog-close {
+  position: absolute;
+  top: var(--spacing-sm);
+  right: var(--spacing-md);
+  color: var(--color-text-link);
+  cursor: pointer;
+}
+
+/* パネルの中身が使える幅は 440px（500 − spacing.xl × 2）。
+   §4-2 の幅の段（xs〜xl）と control.textarea_width は layout.content_width（980px）の本文を
+   前提に決めた値で、xl（564px）と複数行入力（524px）はこの 440px に入らない。
+   段を選ぶのは画面設計書（§4-7 の「中身の幅」）だが、選び違えても器を突き破らないよう保険を置く。
+   .condition-table は既定では table-layout: auto なので、セルが中身の最小幅まで先に広がり、
+   入力欄の max-width: 100% が効かない（基準そのものが広がるため）。fixed にして初めて効く。
+   ラベルセルは control.label_width（120px。§4-4 A では「既定の目安」として CSS に置いていない値）を
+   ここでだけ当てる — fixed の下で幅を明示しないと 2 列が等分され、ラベルが値と同じ幅になるため。 */
+.dialog-panel .condition-table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.dialog-panel .condition-label,
+.dialog-panel .condition-label-required {
+  width: var(--control-label-width);
+}
+
+/* ================================================================
+   §4-8. Banner（error は抽出値・success / warning / info は補完）
+   ================================================================ */
+
+.banner-error {
+  margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-md);
+  border: 1px solid var(--color-status-error-border);
+  border-radius: var(--radius-md);
+  background: var(--color-status-error-surface);
+  color: var(--color-status-error);
+  font-size: var(--typography-size-body);
+}
+
+.banner-success {
+  margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-md);
+  border: 1px solid var(--color-status-success-border);
+  border-radius: var(--radius-md);
+  background: var(--color-status-success-surface);
+  color: var(--color-status-success);
+  font-size: var(--typography-size-body);
+}
+
+.banner-warning {
+  margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-md);
+  border: 1px solid var(--color-status-warning-border);
+  border-radius: var(--radius-md);
+  background: var(--color-status-warning-surface);
+  color: var(--color-status-warning);
+  font-size: var(--typography-size-body);
+}
+
+.banner-info {
+  margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-md);
+  border: 1px solid var(--color-status-info-border);
+  border-radius: var(--radius-md);
+  background: var(--color-status-info-surface);
+  color: var(--color-status-info);
+  font-size: var(--typography-size-body);
+}
+
+.banner-list {
+  margin: 0;
+  padding-left: var(--spacing-lg);
+}
+
+/* ================================================================
+   §4-9. ページ送り / 空状態 / 処理中
+   ================================================================ */
+
+.pagination {
+  margin-top: var(--spacing-md);
+  color: var(--color-text-body);
+  font-size: var(--typography-size-body);
+  text-align: center;
+}
+
+.pagination-current {
+  margin: 0 var(--spacing-xs);
+  color: var(--color-text-current);
+  font-weight: var(--typography-weight-bold);
+}
+
+.pagination-link {
+  margin: 0 var(--spacing-xs);
+  color: var(--color-text-link);
+}
+
+.pagination-side {
+  margin: 0 var(--spacing-xs);
+  color: var(--color-text-link);
+}
+
+.empty-state {
+  padding: var(--spacing-sm) 0;
+  color: var(--color-text-body);
+  font-size: var(--typography-size-body);
+}
+
+.wait-message {
+  padding: var(--spacing-md);
+  border: 1px solid var(--color-border-default);
+  background: var(--color-surface-card);
+  color: var(--color-text-body);
+  font-size: var(--typography-size-body);
+}
+
+/* ================================================================
+   §4-10. アプリシェル
+   （グローバルナビ・現在地・無効の帯・パンくずは持たない —
+     feature 間の導線は入口画面 .app-menu が担う。STYLEGUIDE.md §4-10）
+   ================================================================ */
+
+/* ヘッダは 2 行の table で組む（§9 #11 ④）。
+   ロゴのセルは rowspan="2"・利用者情報とリンクは 1 行目と 2 行目にそれぞれ td を置く。
+   出どころ: common/header.html（<table class="header" width="980"> の 2 行組み）。 */
+.app-header {
+  box-sizing: border-box;
+  width: var(--layout-content-width);
+  max-width: 100%;
+  border-collapse: collapse;
+  padding: var(--spacing-xs) 0;
+  border-bottom: 4px double var(--color-border-strong);
+  background: var(--color-surface-header);
+  background-image: var(--asset-header-band);
+  background-repeat: no-repeat;
+  background-position: left top;
+  color: var(--color-text-body);
+  font-size: var(--typography-size-body);
+  font-weight: var(--typography-weight-bold);
+}
+
+/* ヘッダの幅は常に 980px で固定する（2026-09-14【人】判断・STYLEGUIDE.md §4-4 B-3）。
+   本文を .app-main-wide で 1280px に広げた画面でもヘッダは広げない — 980px は抽出値
+   （common/header.html の <table class="header" width="980">）で、広げると
+   「既存画面の再現」から離れるため。起草では .app-header-wide を対で当てる案を出したが差し戻された。
+   帰結: 広げた画面ではヘッダと本文の右端がそろわない（⑨ の目視で見る）。 */
+
+/* 枠を 90px で固定する（min-width: 90px + width: auto の「内容相応」ではない）。
+   asset.logo が none の間はシステム名の文字が入り、90px に収まらないので折り返す。
+   white-space: normal は対で必要 — nowrap のままだと指定幅が無視され、セルが内容の
+   最小幅まで広がって枠を確保できない。ヘッダの他のセルは nowrap のまま。
+   「内容相応にする」という前の決着を、別の目的で覆した決着である（STYLEGUIDE.md §4-10）。 */
+.app-header-logo {
+  width: var(--control-header-logo-width);
+  white-space: normal;
+  padding-left: var(--spacing-sm);
+  background-image: var(--asset-logo);
+  background-repeat: no-repeat;
+  background-position: left center;
+  color: var(--color-text-body);
+  font-size: var(--typography-size-body);
+  font-weight: var(--typography-weight-bold);
+  vertical-align: top;
+}
+
+.app-header-meta {
+  padding-right: var(--spacing-md);
+  color: var(--color-text-body);
+  font-size: var(--typography-size-body);
+  text-align: left;
+  white-space: nowrap;
+  vertical-align: top;
+}
+
+.app-header-links {
+  color: var(--color-text-link);
+  font-size: var(--typography-size-body);
+  text-align: right;
+  white-space: nowrap;
+  vertical-align: top;
+}
+
+.app-header-link-disabled {
+  color: var(--color-text-disabled);
+  font-size: var(--typography-size-body);
+  text-decoration: none;
+  cursor: default;
+  pointer-events: none;
+}
+
+.app-main {
+  box-sizing: border-box;
+  position: relative; /* §4-12 の透かしの基準。本文領域の上に重ねるため */
+  padding: var(--spacing-lg) 0 0 var(--spacing-lg);
+  max-width: var(--layout-content-width); /* 既定の段（980px・ヘッダと同じ） */
+  background: var(--color-surface-canvas);
+}
+
+/* 上限の段。980px では一覧が読めないと画面設計書が判断した画面だけに当てる。
+   ヘッダは広げない（上の .app-header のコメント）。max-width で持つので上限より狭い
+   ビューポートではそのぶん狭くなり、横スクロールは出ない（§8）。 */
+.app-main-wide {
+  max-width: var(--layout-content-max-width);
+}
+
+.app-menu-title {
+  display: block;
+  margin-bottom: var(--spacing-md);
+  color: var(--color-text-body);
+  font-size: var(--typography-size-title);
+  font-weight: var(--typography-weight-bold);
+  line-height: var(--typography-line-height-heading);
+  vertical-align: top;
+}
+
+.app-menu {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.app-menu-item {
+  height: 25px;
+  padding-left: calc(var(--control-icon-menu) + var(--spacing-sm));
+  background-image: var(--asset-menu-arrow);
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: var(--control-icon-menu) var(--control-icon-menu);
+  color: var(--color-text-link);
+  font-size: var(--typography-size-subtitle);
+}
+
+.app-menu-item-disabled {
+  height: 25px;
+  padding-left: calc(var(--control-icon-menu) + var(--spacing-sm));
+  background-image: var(--asset-menu-arrow);
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: var(--control-icon-menu) var(--control-icon-menu);
+  color: var(--color-text-disabled);
+  font-size: var(--typography-size-subtitle);
+  text-decoration: none;
+  cursor: default;
+  pointer-events: none;
+}
+
+/* ================================================================
+   §4-11. 月次カレンダー
+   骨組みだけ jQuery UI 1.14.1 の .ui-datepicker を参照（冒頭コメントの「参照のみ」）。
+   色・書体・寸法は本書のトークン。プラグインの既定テーマの色と背景画像は 1 つも採っていない。
+   固定の 1 か月を HTML で描く（JS を書かない — §9-4 / §9-14）。
+   ================================================================ */
+
+.calendar-panel {
+  box-sizing: border-box;
+  width: var(--control-calendar-width);
+  padding: var(--spacing-xs);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-none);
+  background: var(--color-surface-card);
+  box-shadow: var(--elevation-none);
+  font-family: var(--typography-family-sans);
+  font-size: var(--typography-size-body);
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--control-height);
+  padding: 0 var(--spacing-xs);
+  background: var(--color-brand-primary);
+  color: var(--color-brand-on-primary);
+  font-size: var(--typography-size-body);
+}
+
+.calendar-nav {
+  color: var(--color-brand-on-primary);
+  font-size: var(--typography-size-body);
+  text-decoration: underline;
+  white-space: nowrap;
+}
+
+.calendar-title {
+  flex: 1;
+  color: var(--color-brand-on-primary);
+  font-size: var(--typography-size-body);
+  font-weight: var(--typography-weight-bold);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.calendar-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: var(--layout-gutter);
+  background: var(--color-border-grid);
+  font-family: var(--typography-family-sans);
+  font-size: var(--typography-size-body);
+}
+
+.calendar-weekday {
+  height: var(--control-height);
+  padding: 0 var(--spacing-xs);
+  background: var(--color-brand-primary);
+  color: var(--color-brand-on-primary);
+  font-size: var(--typography-size-body);
+  font-weight: var(--typography-weight-bold);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.calendar-day {
+  height: var(--control-row-height);
+  padding: var(--spacing-xs);
+  background: var(--color-surface-card);
+  color: var(--color-text-body);
+  font-size: var(--typography-size-body);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.calendar-day-today {
+  border: var(--control-focus-ring);
+  font-weight: var(--typography-weight-bold);
+}
+
+.calendar-day-selected {
+  background: var(--color-brand-primary);
+  color: var(--color-brand-on-primary);
+}
+
+.calendar-day-outside {
+  color: var(--color-text-disabled);
+  cursor: default;
+  pointer-events: none;
+}
+
+/* ================================================================
+   §4-12. 印刷の透かし
+   抽出元に対応物が無い。§7 の「装飾を作らない」に対する明示の例外（§1-1b の #5）。
+   ================================================================ */
+
+.watermark {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-30deg);
+  color: var(--color-text-watermark);
+  font-family: var(--typography-family-sans);
+  font-size: var(--control-watermark-size);
+  font-weight: var(--typography-weight-bold);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* ================================================================
+   §4-13. システムエラー画面
+   --color-text-error-title / --color-status-error-detail-surface を役割名で持つ。
+   抽出元: error.html（<font size="5" color="red">System Error</font> / table#ValidateErrors）・
+   geframe.commons.css（TD.error_label = navy/白・TD.error_body = palegoldenrod）。
+   シェル（アプリ共通部）のシステムエラー画面専用。§2 の禁止に対する明示の例外（STYLEGUIDE.md §1-1b の #11）。
+   ================================================================ */
+
+.system-error-title {
+  display: block;
+  margin-bottom: var(--spacing-md);
+  color: var(--color-text-error-title);
+  font-family: var(--typography-family-sans);
+  font-size: var(--control-error-title-size);
+  font-weight: var(--typography-weight-bold);
+}
+
+.system-error-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--typography-family-sans);
+  font-size: var(--typography-size-body);
+}
+
+.system-error-label {
+  padding: var(--spacing-xs);
+  background: var(--color-brand-accent);
+  color: var(--color-text-on-dark);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.system-error-body {
+  padding: var(--spacing-xs);
+  background: var(--color-status-error-detail-surface);
+  color: var(--color-text-body);
+  text-align: left;
+}
+
+.system-error-detail {
+  box-sizing: border-box;
+  width: 100%;
+  height: var(--control-error-detail-height);
+  padding: var(--spacing-xs);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-none);
+  background: var(--color-surface-card);
+  color: var(--color-text-muted);
+  font-family: var(--typography-family-sans);
+  font-size: var(--typography-size-body);
+  white-space: pre-wrap;
+  overflow: scroll; /* 縦横スクロール付き（.field-textarea は overflow-y だけ。ここは横も持たせる） */
+  resize: none;
+}
+
+/* ================================================================
+   §8-1. 印刷（クラスは足していない — 既存のクラスの出し分けだけ）
+   ================================================================ */
+
+@page {
+  /* 値の正は tokens の layout.print_page / layout.print_margin。
+     @page はカスタムプロパティを解決しないため生値で書く（生成規約 5）。 */
+  size: A4 portrait;
+  margin: 10mm;
+}
+
+@media print {
+  .app-header-links,
+  .button-area,
+  .pagination,
+  .dialog-backdrop,
+  .dialog-panel {
+    display: none;
+  }
+
+  .watermark {
+    display: block;
+  }
+
+  .app-main {
+    max-width: none;
+    padding: 0;
+  }
+}

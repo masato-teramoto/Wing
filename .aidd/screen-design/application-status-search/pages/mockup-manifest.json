@@ -1,0 +1,381 @@
+{
+  "$comment": "mockup-manifest.json。雛形は mockup-authoring の templates/mockup-manifest.json。画面 × 状態は screen-spec.md §3-1-5 と 1:1。生成器は .aidd/screen-design/_tools/mockup/（shell.mjs + gen-application-status-search.mjs）。",
+  "feature": "application-status-search",
+  "generated_at": "2026-10-09T22:17+09:00",
+  "inputs": {
+    "$comment": "版はいずれも「参照した時点の版」。本文に効いた改訂かどうかは画面マップ §6-3 の改訂履歴で見る。",
+    "screen_spec": ".aidd/screen-design/application-status-search/screen-spec.md",
+    "screen_spec_status": "confirmed",
+    "screen_spec_confirmed_at": "2026-10-09T22:14+09:00",
+    "screen_map": ".aidd/screen-design/_app-shell/screen-map.md",
+    "screen_map_revision": "1",
+    "styleguide_version": "0.3.10",
+    "styleguide_css": "pages/tokens/styleguide.css",
+    "styleguide_css_source": "styleguide.css",
+    "design_md_updated_at": "2026-10-09T13:50:01+09:00"
+  },
+  "notice": "画面設計書とスタイルガイドから生成した画面の具体形。構成・項目・状態・文言と案件の見た目の確認用で、挙動は再現していない（JS なし・データは固定値ダミー）。正は画面設計書とスタイルガイドであり、この HTML を実装のソースに使わない。修正は入力を直して再生成する。",
+  "status": "generated",
+  "shell": {
+    "applied": true,
+    "nav_source": "screen-map §4",
+    "nav_items": [
+      "物件基本情報登録変更（無効表示 — 入口画面のリンク一覧）",
+      "物件契約情報申請状況検索/一覧（入口画面のリンク一覧）"
+    ],
+    "header_links": [
+      "MENU → _app-shell:S-01（pending）",
+      "LOGOUT（無効表示）"
+    ],
+    "current_item": "ヘッダの画面名「[GWTG060]物件契約情報申請状況検索/一覧」（グローバルナビ・パンくずは持たない — STYLEGUIDE.md §4-10 / 画面マップ §4）",
+    "entry": "../../_app-shell/pages/s-01-default.html"
+  },
+  "pages": [
+    {
+      "screen_id": "S-01",
+      "screen": "物件契約情報申請状況検索/一覧",
+      "state": "初期表示",
+      "file": "s-01-initial.html",
+      "components": [
+        "Section",
+        "条件表（.condition-table）",
+        "Field",
+        "Select",
+        "Button"
+      ],
+      "requirements": [
+        "1.1"
+      ]
+    },
+    {
+      "screen_id": "S-01",
+      "screen": "物件契約情報申請状況検索/一覧",
+      "state": "通常",
+      "file": "s-01-default.html",
+      "components": [
+        "Section",
+        "条件表（.condition-table）",
+        "Field",
+        "Select",
+        "Button",
+        "一覧の表（.list-table）",
+        "ページ送り（.pagination）"
+      ],
+      "requirements": [
+        "1.2",
+        "1.3",
+        "1.4",
+        "1.5",
+        "1.7",
+        "2.1",
+        "2.2",
+        "2.3",
+        "2.4",
+        "2.5",
+        "2.7",
+        "2.8",
+        "2.9",
+        "2.10",
+        "3.1",
+        "3.2",
+        "3.3",
+        "3.5"
+      ]
+    },
+    {
+      "screen_id": "S-01",
+      "screen": "物件契約情報申請状況検索/一覧",
+      "state": "検索結果 0 件",
+      "file": "s-01-zero.html",
+      "components": [
+        "Section",
+        "条件表（.condition-table）",
+        "Field",
+        "Select",
+        "Button",
+        "一覧の表（.list-table）",
+        "空状態（.empty-state）"
+      ],
+      "requirements": [
+        "2.6",
+        "3.4"
+      ]
+    },
+    {
+      "screen_id": "S-01",
+      "screen": "物件契約情報申請状況検索/一覧",
+      "state": "ローディング",
+      "file": "s-01-loading.html",
+      "components": [
+        "Section",
+        "条件表（.condition-table）",
+        "Field",
+        "Select",
+        "Button",
+        "処理中（.wait-message）"
+      ],
+      "requirements": []
+    },
+    {
+      "screen_id": "S-01",
+      "screen": "物件契約情報申請状況検索/一覧",
+      "state": "入力エラー",
+      "file": "s-01-input-error.html",
+      "components": [
+        "Banner（.banner-error）",
+        "Section",
+        "条件表（.condition-table）",
+        "Field",
+        "Select",
+        "Button"
+      ],
+      "requirements": [
+        "4.1"
+      ]
+    },
+    {
+      "screen_id": "S-01",
+      "screen": "物件契約情報申請状況検索/一覧",
+      "state": "上限件数超過",
+      "file": "s-01-over-limit.html",
+      "components": [
+        "Banner（.banner-error）",
+        "Section",
+        "条件表（.condition-table）",
+        "Field",
+        "Select",
+        "Button"
+      ],
+      "requirements": [
+        "2.5"
+      ]
+    },
+    {
+      "screen_id": "S-01",
+      "screen": "物件契約情報申請状況検索/一覧",
+      "state": "警告件数超過の確認",
+      "file": "s-01-warning-confirm.html",
+      "components": [
+        "Section",
+        "条件表（.condition-table）",
+        "Field",
+        "Select",
+        "Button",
+        "Dialog"
+      ],
+      "requirements": [
+        "2.5"
+      ]
+    },
+    {
+      "screen_id": "S-01",
+      "screen": "物件契約情報申請状況検索/一覧",
+      "state": "取込中の申請No を押した",
+      "file": "s-01-importing.html",
+      "components": [
+        "Banner（.banner-warning）",
+        "Section",
+        "条件表（.condition-table）",
+        "Field",
+        "Select",
+        "Button",
+        "一覧の表（.list-table）",
+        "ページ送り（.pagination）"
+      ],
+      "requirements": [
+        "2.8"
+      ]
+    },
+    {
+      "screen_id": "S-01",
+      "screen": "物件契約情報申請状況検索/一覧",
+      "state": "社外ユーザー",
+      "file": "s-01-external.html",
+      "components": [
+        "Section",
+        "条件表（.condition-table）",
+        "Field",
+        "Select",
+        "Button",
+        "一覧の表（.list-table）",
+        "ページ送り（.pagination）"
+      ],
+      "requirements": [
+        "1.6",
+        "1.7"
+      ]
+    },
+    {
+      "screen_id": "S-01",
+      "screen": "物件契約情報申請状況検索/一覧",
+      "state": "長文",
+      "file": "s-01-long-text.html",
+      "components": [
+        "Section",
+        "条件表（.condition-table）",
+        "Field",
+        "Select",
+        "Button",
+        "一覧の表（.list-table）",
+        "ページ送り（.pagination）"
+      ],
+      "requirements": [
+        "2.1"
+      ]
+    },
+    {
+      "screen_id": "S-01",
+      "screen": "物件契約情報申請状況検索/一覧",
+      "state": "月次カレンダー",
+      "file": "s-01-calendar.html",
+      "components": [
+        "Section",
+        "条件表（.condition-table）",
+        "Field",
+        "Select",
+        "Button",
+        "Dialog",
+        "月次カレンダー（.calendar-panel）"
+      ],
+      "requirements": [
+        "1.5"
+      ]
+    }
+  ],
+  "cross_feature_links": [
+    {
+      "from": "全ページ（ヘッダのリンク「MENU」）",
+      "to_screen_id": "_app-shell:S-01",
+      "href": "../../_app-shell/pages/s-01-default.html",
+      "source": "screen-map §3 ④",
+      "status": "resolved"
+    },
+    {
+      "from": "全ページ（例外）",
+      "to_screen_id": "_app-shell:S-02",
+      "href": null,
+      "source": "screen-map §3 ④",
+      "status": "リンクを張らない（例外で遷移する先で、画面上の導線ではない）"
+    },
+    {
+      "from": "s-01-default.html ほか一覧のあるページ（申請No のリンク）",
+      "to_screen_id": "—（物件基本情報登録変更画面。画面マップ §3 に無い）",
+      "href": null,
+      "source": "画面設計書 §2 / §5-5 #1・画面マップ §6-2 #2",
+      "status": "pending（href を持たない a で描いた）"
+    }
+  ],
+  "missing": [
+    {
+      "kind": "component",
+      "name": "候補つきの入力欄（データリスト）",
+      "screen_id": "S-01",
+      "state": null,
+      "handling": "作らず記録（#34 発送書類名・#35 案件小ｸﾞﾙｰﾌﾟ は自由入力の Field だけで描いた）",
+      "resolution": null,
+      "backlog_id": "SGB-16"
+    },
+    {
+      "kind": "component",
+      "name": "切り詰めた値の全文を出すツールチップ",
+      "screen_id": "S-01",
+      "state": "長文",
+      "handling": "作らず記録（値は表示バイト数で切って描き、全文の表示は描かない）",
+      "resolution": "器を足す",
+      "backlog_id": "SGB-17"
+    },
+    {
+      "kind": "component",
+      "name": "月次カレンダーの月送り（.calendar-nav）と曜日見出し（.calendar-weekday）の文言",
+      "screen_id": "S-01",
+      "state": "月次カレンダー",
+      "handling": "部品のラベルが無いため起草せず、月送りと曜日見出しを描かない（操作「カレンダーの月を送る」は画面に出ない）",
+      "resolution": null,
+      "backlog_id": "SGB-18"
+    },
+    {
+      "kind": "component",
+      "name": "Dialog の閉じる（.dialog-close）のラベル",
+      "screen_id": "S-01",
+      "state": "月次カレンダー",
+      "handling": "部品のラベルが無いため起草せず、閉じるを描かない（操作「カレンダーを閉じる」は画面に出ない）",
+      "resolution": null,
+      "backlog_id": "SGB-19"
+    }
+  ],
+  "drafted_wording": [
+    {
+      "page": "s-01-over-limit.html",
+      "element": "Banner（.banner-error）",
+      "drafted": "検索結果が上限件数を超えました。条件を絞り込んでください。",
+      "source_code": "DS-100024",
+      "reason": "画面設計書 §3-1-6 が「（既存の文言）」で実文言が無い（§5-4 #5）。design.md の意味「検索結果が上限件数を超えた」と対応「条件を絞り直す」から STYLEGUIDE.md §7 のトーンで起草"
+    },
+    {
+      "page": "s-01-warning-confirm.html",
+      "element": "Dialog の文（p）",
+      "drafted": "検索結果の件数が多くなっています。検索を続行しますか。",
+      "source_code": "DS-100025",
+      "reason": "同上。design.md の意味「検索結果が警告件数を超えた。続行すると検索する」から起草"
+    }
+  ],
+  "checks": {
+    "palette": {
+      "ran_at": "2026-10-09T22:17+09:00",
+      "script": "scripts/check-palette.mjs",
+      "scope": ".aidd/screen-design/application-status-search/pages",
+      "result": "pass",
+      "violations": 0,
+      "tier_b": 0
+    },
+    "links": {
+      "ran_at": "2026-10-09T22:40:18+09:00",
+      "script": "scripts/check-links.mjs",
+      "scope": ".aidd/screen-design",
+      "entry": "_app-shell/pages/s-01-default.html",
+      "result": "pass",
+      "broken": 0,
+      "pending": 0,
+      "pending_targets": [],
+      "reachable_features": [
+        "_app-shell",
+        "application-status-search"
+      ],
+      "$comment": "_app-shell の mockup 生成（2026-10-09T22:40）で pending 11 件が解消したため、--entry を付けて再実行した結果に更新した（HTML は再生成していない — 本文もシェルも不変）"
+    }
+  },
+  "viewed": {
+    "$comment": "【人】の確定点。判断は人・記入は代筆可で、by（判断した人）と recorded_by（記入した主体。代筆ならその skill 名）を分ける。",
+    "by": "toshiya-fukunaga",
+    "at": "2026-10-09T22:31+09:00",
+    "recorded_by": "aidd-system-design",
+    "pages": [],
+    "findings": [],
+    "ok_findings": [
+      "mockup 全体として OK（toshiya-fukunaga の判断。missing[] 4 件・drafted_wording[] 2 件・pending の見え方についての個別の指摘なし）"
+    ],
+    "state_observations": [],
+    "questions": [],
+    "verification_requests": [],
+    "agent_verification": {
+      "by": null,
+      "at": null,
+      "method": null,
+      "results": []
+    },
+    "scope_note": "目視したページの範囲は申告なし（「mockup の方です。ok です」の判断を転記）。どのページを見たかは記録できていない"
+  },
+  "presented_at": null,
+  "presented_copy": ".aidd/screen-design/application-status-search/presented/{{yyyy-mm-dd}}/",
+  "notes": [
+    "ヘッダのリンク「MENU」→ _app-shell:S-01 は _app-shell の mockup 生成（2026-10-09T22:40）で resolved になった（それまでは pending 11 件 = 全 11 ページ × 1 本）。HTML は再生成していない",
+    "ヘッダのリンク「LOGOUT」は行き先（ログイン画面）が本案件の画面に無いため全ページで無効表示（画面マップ §3 ④ / §6-2 #4）",
+    "申請No のリンクは行き先（物件基本情報登録変更画面・property-basic-info）が画面マップ §3 に無いため、href を持たない a で描いた（リンクの見た目で押しても移らない。画面マップ §6-2 #2 / 画面設計書 §5-5 #1）。取込中の行は文字だけ（AC 2.8）",
+    "入口画面のリンク一覧（画面マップ §4-2 の 2 項目）は _app-shell の入口画面が描く。本 feature のページはグローバルナビを持たない（STYLEGUIDE.md §4-10）",
+    "例外の行き先 _app-shell:S-02（システムエラー）は画面上の導線ではないためリンクを張らない",
+    "一覧は列幅の段の合計が本文幅を超えるため .list-scroll の中で横に流れる（余りを吸う列は置かない — 画面設計書 §3-1-2）",
+    "ページ送りは 1 ページ目だけを描き、2・3・次へ＞ は同じ通常のページへのリンクにした（データは固定値）",
+    "生成の手段は .aidd/screen-design/_tools/mockup/（shell.mjs がシェル、gen-application-status-search.mjs が本 feature）。再生成: node .aidd/screen-design/_tools/mockup/gen-application-status-search.mjs <案件ルート>",
+    "操作「カレンダーで日を選ぶ」は日のセルをただの表示として描いた（STYLEGUIDE.md §9 #14 — リンクにしない）。操作「切り詰めた値の全文を見る」は器が無いため画面に出ない（missing[] SGB-17）"
+  ]
+}

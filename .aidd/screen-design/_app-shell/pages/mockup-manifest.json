@@ -1,0 +1,129 @@
+{
+  "feature": "_app-shell",
+  "generated_at": "2026-10-09T22:40:18+09:00",
+  "inputs": {
+    "screen_spec": ".aidd/screen-design/_app-shell/screen-spec.md",
+    "screen_spec_status": "confirmed",
+    "screen_spec_confirmed_at": "2026-10-09T22:38+09:00",
+    "screen_map": ".aidd/screen-design/_app-shell/screen-map.md",
+    "screen_map_revision": "1",
+    "styleguide_version": "0.3.10",
+    "styleguide_css": "pages/tokens/styleguide.css",
+    "styleguide_css_source": "styleguide.css",
+    "design_md_updated_at": null,
+    "steering_sections": [
+      "steering/product.md「開発物の概要・背景」「主要ユースケース」",
+      "steering/tech.md「命名規則」「例外処理 › 例外クラス命名規約」「例外処理 › グローバルハンドラ」",
+      "steering/security.md「認証 › 認証フロー」"
+    ],
+    "generator": ".aidd/screen-design/_tools/mockup/gen-_app-shell.mjs（シェルは同 shell.mjs）"
+  },
+  "notice": "画面設計書とスタイルガイドから生成した画面の具体形。構成・項目・状態・文言と案件の見た目の確認用で、挙動は再現していない（JS なし・データは固定値ダミー）。正は画面設計書とスタイルガイドであり、この HTML を実装のソースに使わない。修正は入力を直して再生成する。",
+  "shell": {
+    "applied": true,
+    "nav_source": "screen-map §4",
+    "nav_items": [
+      "物件基本情報登録変更",
+      "物件契約情報申請状況検索/一覧"
+    ],
+    "current_item": "—（入口画面そのもの。現在地はヘッダの画面名「メニュー」/ S-02 は「システムエラー」）",
+    "entry": "../../_app-shell/pages/s-01-default.html"
+  },
+  "pages": [
+    {
+      "screen_id": "S-01",
+      "screen": "メニュー",
+      "state": "通常",
+      "file": "s-01-default.html",
+      "components": [
+        "アプリシェル（.app-menu-title / .app-menu / .app-menu-item / .app-menu-item-disabled）"
+      ],
+      "requirements": []
+    },
+    {
+      "screen_id": "S-02",
+      "screen": "システムエラー",
+      "state": "通常",
+      "file": "s-02-default.html",
+      "components": [
+        "システムエラー画面（.system-error-title / .system-error-table / .system-error-label / .system-error-body）"
+      ],
+      "requirements": []
+    }
+  ],
+  "cross_feature_links": [
+    {
+      "from": "s-01-default.html（ナビ項目 #2「物件契約情報申請状況検索/一覧」）",
+      "to_screen_id": "application-status-search:S-01",
+      "href": "../../application-status-search/pages/s-01-default.html",
+      "source": "screen-map §3 ① / §4-2 #2",
+      "status": "resolved"
+    },
+    {
+      "from": "s-01-default.html（ナビ項目 #1「物件基本情報登録変更」）",
+      "to_screen_id": "—（property-basic-info。今回の対象外で画面マップ §3 に行が無い）",
+      "href": null,
+      "source": "screen-map §4-2 #1",
+      "status": "無効表示（.app-menu-item-disabled）"
+    },
+    {
+      "from": "s-02-default.html（ヘッダのリンク「MENU」）",
+      "to_screen_id": "_app-shell:S-01",
+      "href": "../../_app-shell/pages/s-01-default.html",
+      "source": "screen-map §3 ④",
+      "status": "resolved"
+    }
+  ],
+  "missing": [],
+  "drafted_wording": [],
+  "checks": {
+    "palette": {
+      "ran_at": "2026-10-09T22:40:18+09:00",
+      "script": "scripts/check-palette.mjs",
+      "scope": ".aidd/screen-design/_app-shell/pages",
+      "result": "pass",
+      "violations": 0,
+      "tier_b_undefined_classes": 0
+    },
+    "links": {
+      "ran_at": "2026-10-09T22:40:18+09:00",
+      "script": "scripts/check-links.mjs",
+      "scope": ".aidd/screen-design",
+      "entry": "_app-shell/pages/s-01-default.html",
+      "result": "pass",
+      "broken": 0,
+      "pending": 0,
+      "pending_targets": [],
+      "reachable_features": [
+        "_app-shell",
+        "application-status-search"
+      ]
+    }
+  },
+  "viewed": {
+    "by": "toshiya-fukunaga",
+    "at": "2026-10-09T22:47+09:00",
+    "recorded_by": "aidd-system-design",
+    "pages": [
+      "s-01-default.html",
+      "s-02-default.html"
+    ],
+    "findings": [],
+    "ok_findings": [],
+    "state_observations": [],
+    "questions": [],
+    "verification_requests": [],
+    "agent_verification": null,
+    "scope_note": "開発者の応答は「okです。」のみで、見たページ・観点の範囲の申告はない。pages[] は目視を依頼した全ページを写したもの"
+  },
+  "presented_at": null,
+  "presented_copy": ".aidd/screen-design/_app-shell/presented/{{yyyy-mm-dd}}/",
+  "notes": [
+    "ナビ項目 #1「物件基本情報登録変更」は property-basic-info が今回の対象外でリンク先が無いため、無効表示（.app-menu-item-disabled）で置いた（画面マップ §4-2 #1。文言は仮 — 画面マップ §6-2 #1）。",
+    "S-01 ではヘッダのリンク「MENU」を無効表示にした（自己参照 — 画面マップ §3 ④ / §4-1）。「LOGOUT」は全ページで無効表示（行き先が本案件に無い — 画面マップ §6-2 #4）。",
+    "S-02 の種別「システムエラー」とメッセージの文言は画面設計書 §3-2-6 の仮置き（§5-4 #1）をそのまま描いた。mockup で起草したものではないので drafted_wording[] には入れていない。",
+    "S-02 は例外の種類ごとの違いを 1 状態に畳んでいる（画面設計書 §5-1 #1）。GEF-000000 の 1 例だけを描いた。",
+    "S-02 は全画面からの例外の遷移先だが、画面上の導線ではないためどのページからもリンクしていない（到達性の未到達は正常）。",
+    "本 mockup の生成で application-status-search の全ページのヘッダのリンク「MENU」（pending 11 件）が解消した。application-status-search は HTML を再生成せず manifest の checks と cross_feature_links[].status だけを更新した（本文もシェルも変わらないため）。"
+  ]
+}

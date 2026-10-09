@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>物件契約情報申請状況検索/一覧 - WiNG</title>
+<link rel="stylesheet" href="tokens/styleguide.css">
+</head>
+<body>
+<table class="app-header">
+  <tr>
+    <td class="app-header-logo" rowspan="2">WiNG</td>
+    <td class="app-header-meta">利用者 : サンプル 利用者</td>
+    <td class="app-header-meta">画面名 : [GWTG060]物件契約情報申請状況検索/一覧</td>
+    <td class="app-header-links"></td>
+  </tr>
+  <tr>
+    <td class="app-header-meta">所属 : サンプル部</td>
+    <td class="app-header-meta"></td>
+    <td class="app-header-links">[<a href="../../_app-shell/pages/s-01-default.html">MENU</a>] [<span class="app-header-link-disabled">LOGOUT</span>]</td>
+  </tr>
+</table>
+<main class="app-main">
+<fieldset class="section">
+<legend class="section-title">検索条件</legend>
+<div class="condition-scroll">
+<table class="condition-table">
+<tr><td class="condition-label">申請No</td><td class="condition-value"><input type="text" class="field-input " value=""></td><td class="condition-label">稟議ﾊﾞｰｺｰﾄﾞNo</td><td class="condition-value"><input type="text" class="field-input field-input-lg" value=""></td><td class="condition-label">基地局番号</td><td class="condition-value"><input type="text" class="field-input " value=""></td></tr>
+<tr><td class="condition-label">ｴﾘｱ</td><td class="condition-value"><select class="select"><option selected></option></select></td><td class="condition-label">基地局名</td><td class="condition-value"><input type="text" class="field-input field-input-lg" value=""></td><td class="condition-label">ｽﾃｰﾀｽ</td><td class="condition-value"><select class="select"><option selected></option></select></td></tr>
+<tr><td class="condition-label">状態</td><td class="condition-value"><select class="select"><option selected></option></select></td><td class="condition-label">契約稟議起案担当者</td><td class="condition-value"><input type="text" class="field-input field-input-lg" value=""></td><td class="condition-label">更新者</td><td class="condition-value"><input type="text" class="field-input " value=""></td></tr>
+<tr><td class="condition-label">契約稟議起案会社名</td><td class="condition-value"><select class="select"><option selected></option></select></td><td class="condition-label">契約稟議起案所属①</td><td class="condition-value"><input type="text" class="field-input field-input-lg" value=""></td><td class="condition-label">依頼内容</td><td class="condition-value"><select class="select"><option selected></option><option>稟議依頼</option><option>再製本依頼</option></select></td></tr>
+<tr><td class="condition-label">施策</td><td class="condition-value"><select class="select"><option selected></option></select></td><td class="condition-label">契約稟議起案所属②</td><td class="condition-value"><input type="text" class="field-input field-input-lg" value=""></td><td class="condition-label">押印種別</td><td class="condition-value"><select class="select"><option selected></option></select></td></tr>
+<tr><td class="condition-label">進捗検索(日数)</td><td class="condition-value"><input type="text" class="field-input field-input-xs" value=""></td><td class="condition-label">発送書類名</td><td class="condition-value"><input type="text" class="field-input field-input-lg" value=""></td><td class="condition-label">進捗検索(選択)</td><td class="condition-value"><select class="select"><option selected>以上</option><option>以下</option></select></td></tr>
+<tr><td class="condition-label">転貸借契約種別</td><td class="condition-value"><select class="select"><option selected></option></select></td><td class="condition-label">案件小ｸﾞﾙｰﾌﾟ</td><td class="condition-value"><input type="text" class="field-input field-input-lg" value=""></td><td class="condition-label"></td><td class="condition-value"></td></tr>
+</table>
+</div>
+<div class="condition-scroll">
+<table class="condition-table">
+<tr><td class="condition-label">起案日時</td><td class="condition-value"><a class="field-input field-input-sm field-input-date" href="s-01-calendar.html"></a> <input type="text" class="field-input field-input-sm" value="00:00"> 〜 <a class="field-input field-input-sm field-input-date" href="s-01-calendar.html"></a> <input type="text" class="field-input field-input-sm" value="23:59"></td><td class="condition-label">稟議承認日</td><td class="condition-value"><a class="field-input field-input-sm field-input-date" href="s-01-calendar.html"></a> 〜 <a class="field-input field-input-sm field-input-date" href="s-01-calendar.html"></a></td></tr>
+<tr><td class="condition-label">申請日時</td><td class="condition-value"><a class="field-input field-input-sm field-input-date" href="s-01-calendar.html"></a> <input type="text" class="field-input field-input-sm" value="00:00"> 〜 <a class="field-input field-input-sm field-input-date" href="s-01-calendar.html"></a> <input type="text" class="field-input field-input-sm" value="23:59"></td><td class="condition-label">初回支払日</td><td class="condition-value"><a class="field-input field-input-sm field-input-date" href="s-01-calendar.html"></a> 〜 <a class="field-input field-input-sm field-input-date" href="s-01-calendar.html"></a></td></tr>
+<tr><td class="condition-label">確認日時</td><td class="condition-value"><a class="field-input field-input-sm field-input-date" href="s-01-calendar.html"></a> <input type="text" class="field-input field-input-sm" value="00:00"> 〜 <a class="field-input field-input-sm field-input-date" href="s-01-calendar.html"></a> <input type="text" class="field-input field-input-sm" value="23:59"></td><td class="condition-label">発送希望日</td><td class="condition-value"><a class="field-input field-input-sm field-input-date" href="s-01-calendar.html"></a> 〜 <a class="field-input field-input-sm field-input-date" href="s-01-calendar.html"></a></td></tr>
+</table>
+</div>
+</fieldset>
+<div class="button-area">
+<a class="btn" href="s-01-default.html">検索(F)</a>
+<a class="btn" href="s-01-initial.html">ｸﾘｱ(R)</a>
+<a class="btn" href="s-01-default.html">CSV出力(O)</a>
+</div>
+</main>
+<div class="dialog-backdrop">
+<div class="dialog-panel">
+<div class="calendar-panel">
+<div class="calendar-header"><span class="calendar-title">2026年10月</span></div>
+<table class="calendar-table">
+<tr><td class="calendar-day calendar-day-outside">27</td><td class="calendar-day calendar-day-outside">28</td><td class="calendar-day calendar-day-outside">29</td><td class="calendar-day calendar-day-outside">30</td><td class="calendar-day">1</td><td class="calendar-day">2</td><td class="calendar-day">3</td></tr>
+<tr><td class="calendar-day">4</td><td class="calendar-day">5</td><td class="calendar-day">6</td><td class="calendar-day">7</td><td class="calendar-day">8</td><td class="calendar-day calendar-day-today">9</td><td class="calendar-day">10</td></tr>
+<tr><td class="calendar-day">11</td><td class="calendar-day">12</td><td class="calendar-day">13</td><td class="calendar-day">14</td><td class="calendar-day">15</td><td class="calendar-day">16</td><td class="calendar-day">17</td></tr>
+<tr><td class="calendar-day">18</td><td class="calendar-day">19</td><td class="calendar-day">20</td><td class="calendar-day">21</td><td class="calendar-day">22</td><td class="calendar-day">23</td><td class="calendar-day">24</td></tr>
+<tr><td class="calendar-day">25</td><td class="calendar-day">26</td><td class="calendar-day">27</td><td class="calendar-day">28</td><td class="calendar-day">29</td><td class="calendar-day">30</td><td class="calendar-day">31</td></tr>
+</table>
+</div>
+</div>
+</div>
+</body>
+</html>
