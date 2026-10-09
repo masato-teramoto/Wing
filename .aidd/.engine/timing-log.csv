@@ -241,3 +241,44 @@
 2026-10-08 19:54:43,5,contract-info-download,3,修正提出・AI検査開始,design-check 3 回目
 2026-10-08 19:58:22,5,contract-info-download,3,AI検査終了・レビュー提示,design-check 3 回目 指摘 0 件
 2026-10-08 20:00:58,5,contract-info-download,3,承認,design 承認
+2026-10-08 20:04:10,5,design-cross-gate,1,AI検査開始,横断確認 1 回目
+2026-10-08 20:18:10,5,design-cross-gate,1,AI検査終了・レビュー提示,横断確認 1 回目 指摘 9 件
+2026-10-08 20:40:53,5,design-cross-gate,1,判断記録,横断確認 1 回目
+2026-10-08 20:48:00,5,property-basic-info,cross1,修正提出・AI検査開始,横断確認 1 回目の修正
+2026-10-08 20:52:34,5,property-basic-info,cross1,AI検査終了・レビュー提示,横断確認の修正の再検査 指摘 2 件（軽微）
+2026-10-08 21:48:47,5,property-basic-info,cross1,中断,横断確認の修正 run 6 のレビュー（軽微 2 件）の修正に回すかの回答待ちで中断
+2026-10-09 12:15:39,5,property-basic-info,cross1,再開,横断確認の修正 run 6 のレビューを再提示
+2026-10-09 12:20:47,5,property-basic-info,cross1,修正提出・AI検査開始,run 6 軽微 2 件の修正
+2026-10-09 12:23:30,5,property-basic-info,cross1,AI検査終了・レビュー提示,run 7 指摘 0 件
+2026-10-09 12:26:49,5,property-basic-info,cross1,承認,横断確認の修正 run 7 承認
+2026-10-09 12:30:42,5,issue-request,cross1,修正提出・AI検査開始,横断確認 1 回目 #4 #5 の修正
+2026-10-09 12:34:23,5,issue-request,cross1,AI検査終了・レビュー提示,run 7 指摘 2 件（軽微）
+2026-10-09 12:45:44,5,issue-request,cross1,修正提出・AI検査開始,run 7 軽微 2 件の修正
+2026-10-09 12:47:53,5,issue-request,cross1,AI検査終了・レビュー提示,run 8 指摘 0 件
+2026-10-09 12:51:10,5,issue-request,cross1,承認,横断確認の修正 run 8 承認
+2026-10-09 12:53:09,5,issue-request-tutorial,cross1,修正提出・AI検査開始,横断確認 1 回目 #4 の修正
+2026-10-09 12:57:07,5,issue-request-tutorial,cross1,AI検査終了・レビュー提示,run 3 指摘 2 件
+2026-10-09 13:01:46,5,issue-request-tutorial,cross1,修正提出・AI検査開始,run 3 #2 の修正
+2026-10-09 13:04:14,5,issue-request-tutorial,cross1,AI検査終了・レビュー提示,run 4 指摘 0 件
+2026-10-09 13:05:51,5,issue-request-tutorial,cross1,承認,横断確認の修正 run 4 承認
+2026-10-09 13:07:49,5,print-report,cross1,修正提出・AI検査開始,横断確認 1 回目 #4 の修正
+2026-10-09 13:10:37,5,print-report,cross1,AI検査終了・レビュー提示,run 5 指摘 0 件
+2026-10-09 13:12:04,5,print-report,cross1,承認,横断確認の修正 run 5 承認
+2026-10-09 13:13:56,5,application-status-search,cross1,修正提出・AI検査開始,横断確認 1 回目 #9 の修正
+2026-10-09 13:17:48,5,application-status-search,cross1,AI検査終了・レビュー提示,run 3 指摘 1 件
+2026-10-09 13:33:43,5,application-status-search,cross1,修正提出・AI検査開始,run 3 #1 の修正
+2026-10-09 13:36:45,5,application-status-search,cross1,AI検査終了・レビュー提示,run 4 指摘 1 件（軽微）
+2026-10-09 13:41:12,5,application-status-search,cross1,修正提出・AI検査開始,run 4 軽微 1 件の修正
+2026-10-09 13:44:55,5,application-status-search,cross1,AI検査終了・レビュー提示,run 5 指摘 0 件
+2026-10-09 13:50:30,5,application-status-search,cross1,承認,横断確認の修正 run 5 承認
+2026-10-09 13:53:01,5,contract-info-import,cross1,修正提出・AI検査開始,cross1-ci-revise-submit
+2026-10-09 13:57:28,5,contract-info-import,cross1,AI検査終了・レビュー提示,run 5 指摘 1 件
+2026-10-09 14:06:42,5,contract-info-import,cross1,修正提出・AI検査開始,cross1-ci-run5-revise-submit
+2026-10-09 14:10:09,5,contract-info-import,cross1,AI検査終了・レビュー提示,run 6 指摘 0 件
+2026-10-09 14:12:35,5,contract-info-import,cross1,承認,横断確認の修正 run 6 承認
+2026-10-09 14:15:45,5,contract-info-download,cross1,修正提出・AI検査開始,cross1-cd-revise-submit
+2026-10-09 14:20:29,5,contract-info-download,cross1,AI検査終了・レビュー提示,run 4 指摘 2 件
+2026-10-09 14:22:13,5,contract-info-download,cross1,承認,横断確認の修正 run 4 承認
+2026-10-09 14:23:24,5,design-cross-gate,cross1,AI検査開始,横断確認 2 回目
+2026-10-09 14:34:04,5,design-cross-gate,cross1,AI検査終了・レビュー提示,横断確認 2 回目 指摘 3 件
+2026-10-09 14:39:24,5,design-cross-gate,cross1,確認,横断確認 2 回目 確認

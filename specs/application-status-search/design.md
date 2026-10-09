@@ -1,7 +1,7 @@
 ---
 feature: application-status-search
 status: approved
-updated_at: 2026-10-08T15:44:50+09:00
+updated_at: 2026-10-09T13:50:01+09:00
 ---
 
 # 技術設計書
@@ -111,7 +111,7 @@ updated_at: 2026-10-08T15:44:50+09:00
 > _書き方_: 1 項目 1 行（例: 契約の形（API・イベント・型の定義）の変更、データ所有権の移動、依存方向の変更、起動・実行時の前提条件の変更）。
 
 - `TWTGM080`・`TWTGM100`・`TWTGM140`・`TWTGM180` の比べる列・出す列の変更（pbi design・ir design）
-- `/wtg070/pushApplicationNo`・`/wtg070/returnList` の口の変更（pbi design）
+- `/wtg070/pushApplicationNo`・`/wtg070/returnList`・`/wtg070/deleteShinse`（削除の後の戻り先）の口の変更（pbi design）
 - 取込中の印（`JOTAI_KBN`＝'06'）の付け方・戻し方の変更（契約局取込）
 - 社外ユーザーの範囲の決まり（`getExternalScope`）の変更
 - コードマスタ（`P26`〜`P32`・`P35`・`P53`・`P71`・`M11`・`C01`・`C06`・`P01`・`P02`）の意味の変更
@@ -249,7 +249,7 @@ flowchart LR
 - **API**: 画面以外から呼ばれる API は持たない（`steering/api-standards.md` の本プロジェクトでの扱い）。画面の要求は `##### API 契約（API Contract）` のフォーム送信だけ
 - **イベント**: 持たない。メッセージングを使わない（`steering/tech.md` の `## コアテクノロジ`）
 - **サービス間**: 申請状況一覧と契約情報取込バッチは同じ DB を共有する。取込中（`JOTAI_KBN`＝'06'）の申請は一覧でリンクにせず、リンクを押した時点で取込中になっていれば `WTG-100018` で止める（Q-DS-AS-009）
-- **物件基本情報登録変更との口**（pbi design）：申請No のリンクは `/wtg060/detail` で受け、取込中でなければ `forward:/wtg070/pushApplicationNo`（申請No を渡す）。物件基本情報登録変更画面（と契約局取込）の戻るは `/wtg070/returnList` から `/wtg060/return` に戻り、セッションの条件で前に見ていたページを再検索する（2.7・2.10）。pbi design は `/wtg070/returnList` の戻り先を `/wtg060` と書いているが、本書の `/wtg060/return` に直す（`/wtg060` は条件のセッションを消す初期表示のため）。pbi design は Phase 5 の最後にまとめて直す（upstream-carryover。design-check 1 回目 #1）
+- **物件基本情報登録変更との口**（pbi design）：申請No のリンクは `/wtg060/detail` で受け、取込中でなければ `forward:/wtg070/pushApplicationNo`（申請No を渡す）。物件基本情報登録変更画面の戻るは `/wtg070/returnList` から `/wtg060/return` に戻り、セッションの条件で前に見ていたページを再検索する（2.7・2.10）。契約情報取込画面の実行（`/wtg090/execute`）の後も `forward:/wtg060/return` で戻り、セッションの条件で前に見ていたページを再検索する（未検索なら初期表示）（横断確認 1 回目 #9）。物件基本情報登録変更画面で申請を削除した後（`/wtg070/deleteShinse`）も `/wtg060/return` で受け、セッションの条件で前に見ていたページを再検索する（削除した申請は一覧から消える。未検索なら初期表示）。pbi design の `/wtg070/deleteShinse` の Response は「申請状況一覧（GWTG060）へ戻る」だけで受ける URL を書いていないので、`/wtg070/returnList` と同じく Phase 5 の最後にまとめて直す（upstream-carryover。design-check 3 回目 #1）。pbi design は `/wtg070/returnList` の戻り先を `/wtg060` と書いているが、本書の `/wtg060/return` に直す（`/wtg060` は条件のセッションを消す初期表示のため）。pbi design は Phase 5 の最後にまとめて直す（upstream-carryover。design-check 1 回目 #1）
 - **CSV**（Q-DS-AS-010）：1 行の bean（`Pwtgo060SearchInfo`）に `@CsvEntity`、14 項目に `@CsvColumn(name = 見出し)` を付け、`CsvUtils.save(list, stream, "MS932", CsvUtils.defaultCsvConfig(), new CsvEntityListHandler<>(Pwtgo060SearchInfo.class))` で書く。見出し行は `@CsvEntity`（header の既定は true）が書く。0 件・上限超えでは、要素が null 1 つのリストを渡して見出しだけにする。`CsvUtils` の入出力は変えない。返し方は `Content-Disposition: attachment`・`application/octet-stream` のダウンロード。出力管理（`TZZZM027`）は使わない
 
 ## コンポーネントとインターフェース（Components and Interfaces）
@@ -308,6 +308,8 @@ flowchart LR
   - 申請状況検索一覧画面のテンプレートとスクリプト — フォーム送信（重要度: 高）
   - メニュー — 初期表示（重要度: 高）
   - 物件基本情報登録変更画面（`/wtg070/returnList`）— 戻り（重要度: 高）
+  - 契約情報取込画面（`/wtg090/execute` の後）— 戻り（重要度: 中。横断確認 1 回目 #9）
+  - 物件基本情報登録変更画面（`/wtg070/deleteShinse` の後）— 戻り。`/wtg060/return` で受ける（重要度: 中。design-check 3 回目 #1）
 - **呼び出し先（Outbound）**:
   - 申請状況検索一覧 Service — すべての処理（重要度: 高）
 - **外部（External）**:
@@ -613,7 +615,7 @@ wing/src/main/
 | 既存の検索一覧の手本 | ページング・セッション・戻り・一覧から詳細画面への forward・LIKE の書き方 | `wing/src/main/java/jp/co/kccs/wt/function/wtg/wtg002/controller/Pwtgo004Controller.java`・`wing/src/main/resources/jp/co/kccs/wt/function/wtg/wtg002/Pwtgo004Mapper.xml` |
 | 件数の共通処理とダウンロード | 1 ページの件数・上限件数・警告件数（`P01`・`P02`）、ページング、ファイルの返し方 | `wing/src/main/java/jp/co/kccs/wt/common/service/ServiceBase.java` |
 | 日時の範囲の手本 | 時刻の初期値と秒の付け方、日付・時刻のキー | `wing/src/main/java/jp/co/kccs/wt/function/wtl/wtl020/service/Pwtlo021Service.java` |
-| 物件基本情報登録変更との口と CSV の共通部品 | `/wtg070/pushApplicationNo`・`/wtg070/returnList`、`getExternalScope`、`CsvUtils` | `specs/property-basic-info/design.md` |
+| 物件基本情報登録変更との口と CSV の共通部品 | `/wtg070/pushApplicationNo`・`/wtg070/returnList`・`/wtg070/deleteShinse`、`getExternalScope`、`CsvUtils` | `specs/property-basic-info/design.md` |
 
 ---
 

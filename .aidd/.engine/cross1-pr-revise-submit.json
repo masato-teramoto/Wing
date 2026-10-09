@@ -1,0 +1,24 @@
+{
+ "operation_id": "9c909841f8994e829368c1c6932ca433",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[print-report]::run",
+  "event": "design-authoring-revise",
+  "item": "print-report",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "ffcad5385ef24191b5696355e33aacd0"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/print-report/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [],
+  "return_candidates": [],
+  "summary": "横断確認 1 回目 #4：PWTGO072・PWTGO073 の ZMENUAUTH の行を PWTGO070 を登録するメニューすべてにメニューID ごとに 1 行とそろえた（認証・認可、移行方針、移行対象ファイル一覧）。上流の pbi・ir design の変更は print-report design の記述と食い違わないことを確認"
+ }
+}

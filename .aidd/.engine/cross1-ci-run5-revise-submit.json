@@ -1,0 +1,31 @@
+{
+ "operation_id": "7ee20b89ca3e4d28ab17d16b73a45953",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[contract-info-import]::run",
+  "event": "design-authoring-revise",
+  "item": "contract-info-import",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "08530e95e29b4376a0cab31b94c91671"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/contract-info-import/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "design",
+    "scope": "feature:contract-info-import",
+    "run": 5,
+    "number": 1
+   }
+  ],
+  "return_candidates": [],
+  "summary": "run 5 #1：リバースデータの契約基本_受電方法を、検査表 ※8 の成形のあと P43 の名称で照合し、無い値はエラーにせず受電方法のコードを反映しないと直した。古い契約は WTG-000072・利用者が CSV を直す、の文は削除"
+ }
+}

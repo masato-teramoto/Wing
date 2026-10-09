@@ -1,0 +1,31 @@
+{
+ "operation_id": "c9d3bff7f8a448bf985fb9d94a904a70",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[application-status-search]::run",
+  "event": "design-authoring-revise",
+  "item": "application-status-search",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "61cf59b480b94eb2ae3d891bb0812dcf"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/application-status-search/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "design",
+    "scope": "feature:application-status-search",
+    "run": 4,
+    "number": 1
+   }
+  ],
+  "return_candidates": [],
+  "summary": "run 4 #1：再確認が必要になる変更と補足資料の口の一覧に /wtg070/deleteShinse を追記"
+ }
+}

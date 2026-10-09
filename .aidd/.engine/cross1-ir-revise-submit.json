@@ -1,0 +1,24 @@
+{
+ "operation_id": "4a3f54323fe24138b3fa2f52be73509f",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[issue-request]::run",
+  "event": "design-authoring-revise",
+  "item": "issue-request",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "215a9ba8f5a84009a40e792987bcdae8"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/issue-request/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [],
+  "return_candidates": [],
+  "summary": "横断確認 1 回目 #4：移行方針と移行対象ファイル一覧に ZMENUAUTH の PWTGO080 の行（PWTGO070 と同じ［WTG070］［WTG060］のメニューごとに 1 行）を追加。#5：/wtg080/calcTaxAdjustment・/wtg080/changeKeiyakuSyubetsuTutorial の失敗時の画面のスクリプトの扱いを、データ契約・呼び出し元・API 契約の表に追記。物件基本情報登録変更の design の変更は、ir design の記述と食い違う箇所が無いことを確認"
+ }
+}

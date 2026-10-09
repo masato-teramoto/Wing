@@ -1,0 +1,1530 @@
+{
+ "unit": "design-authoring-revise/design-authoring-revise[property-basic-info]::end.design-check",
+ "target": "design-check",
+ "calls": [
+  "format-conformance",
+  "traceability",
+  "traceability",
+  "steering-conformance",
+  "evidence-guard",
+  "external-integration-contract-explicitness",
+  "dependency-boundary-conformance",
+  "finding-verification",
+  "gate-report"
+ ],
+ "isAgent": true,
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[property-basic-info]::end.design-check",
+  "event": "design-authoring-revise",
+  "item": "property-basic-info",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "8377876bb02743d68645d46a1b4a72ba"
+ },
+ "context": {
+  "event": "design-authoring-revise",
+  "item": "property-basic-info",
+  "scope": "feature:property-basic-info",
+  "targets": [
+   "specs/property-basic-info/design.md"
+  ],
+  "review_targets": [
+   "specs/property-basic-info/design.md"
+  ],
+  "upstream": [
+   ".aidd/feature-list.md",
+   "steering/product.md",
+   "steering/tech.md",
+   "steering/architecture.md",
+   "steering/security.md",
+   "steering/non-functional.md",
+   "steering/database.md",
+   "steering/api-standards.md",
+   "specs/property-basic-info/requirements.md"
+  ],
+  "unreviewed_inputs": [],
+  "gate_record_path": "C:\\project\\Wing\\.aidd\\gates\\phase-5-design.md",
+  "authoring_inputs": [
+   ".aidd/feature-list.md",
+   "steering/product.md",
+   "steering/tech.md",
+   "steering/architecture.md",
+   "steering/security.md",
+   "steering/non-functional.md",
+   "steering/database.md",
+   "steering/api-standards.md",
+   "specs/property-basic-info/requirements.md"
+  ],
+  "snapshot_path": "C:\\project\\Wing\\.aidd\\.engine\\f5157258f5e2fcec040d4777af2a8b542d1c0d49608f43e2159ddb3d429bc881.snapshot.json",
+  "snapshot": {
+   "schema": 2,
+   "phase": "design",
+   "event": "design-authoring-revise",
+   "scope": "feature:property-basic-info",
+   "at": "2026-10-09T12:20:42+09:00",
+   "artifacts": {
+    "specs/property-basic-info/design.md": {
+     "status": "draft",
+     "sha256": "03331555d6ee0825bd90f023f17f4951d532f97b0f4bde7b7f50878d4cc4da03"
+    }
+   },
+   "record": {
+    "bytes": 311379,
+    "sha256": "b7a5e1f049aa9b08a284c7a8b6bcd2ed08bb081e560f9285656d3e3635e152f6",
+    "blocks": 221
+   },
+   "run": 7,
+   "sections": {
+    "specs/property-basic-info/design.md": {
+     "": "e3b0c44298fc1c14",
+     "技術設計書": "28d078b901c4b1a2",
+     "概要（Overview）": "3ed2f734d8c668cc",
+     "達成目標（Goals）": "8e9415d4ffa5adf3",
+     "やらないこと（Non-Goals）": "6f339bad2a937fec",
+     "責務境界（Boundary Commitments）": "0d9b6c6a18fc1984",
+     "このスペックが持つ責務（This Spec Owns）": "70b329d8df2efb23",
+     "このスペックが持たない責務（Out of Boundary）": "67881c61f365fcff",
+     "依存してよい対象（Allowed Dependencies）": "bc002fd1c05445e3",
+     "再確認が必要になる変更（Revalidation Triggers）": "b57f6f088c7f83c5",
+     "アーキテクチャ（Architecture）": "e6d70b10e568bd50",
+     "既存アーキテクチャの分析（Existing Architecture Analysis）": "6077bd0ac4c2ffc8",
+     "アーキテクチャ方式と境界図（Architecture Pattern & Boundary Map）": "6c6219e0e10a2e84",
+     "技術スタック（Technology Stack）": "0c7a515f60ed18f0",
+     "データモデル（Data Models）": "7d83f1d0a844fa89",
+     "ドメインモデル（Domain Model）": "1521a35540b89e47",
+     "論理データモデル（Logical Data Model）": "8492485f71cbabad",
+     "物理データモデル（Physical Data Model）": "326cd3a168eafcf4",
+     "データ契約と外部連携（Data Contracts & Integration）": "1171344e293d5cab",
+     "コンポーネントとインターフェース（Components and Interfaces）": "a38bfc1400116df3",
+     "コンポーネント一覧（Summary）": "f08e3c6d30f846d0",
+     "WTG 共通": "3e49c28d5e1c2411",
+     "WTG 申請状態サービス": "265031feffe7714a",
+     "サービスインターフェース（Service Interface）": "10426e3187b931e8",
+     "状態管理（State Management）": "86e4d8f084f2e2ed",
+     "物件基本情報登録変更": "dfcad75b8d233062",
+     "物件基本情報登録変更 Controller": "03f52e0aa0a267a8",
+     "API 契約（API Contract）": "aff7cba2154021be",
+     "文書バーコード Controller・Service・Mapper": "f7c41eb0c775177c",
+     "サービスインターフェース（Service Interface） (2)": "c2c3a01b8302fc85",
+     "API 契約（API Contract） (2)": "362a0bf9d1b62db4",
+     "処理フロー（System Flows）": "f6b63442a353542d",
+     "機能固有のエラー処理（Error Handling）": "5fa8bf2e4fd9cc92",
+     "バリデーション設計": "852abaf4e270780e",
+     "機能固有エラーコード": "881718abbd537614",
+     "エラー時の分岐フロー": "3b8cc360f105a2b3",
+     "ファイル配置計画（File Structure Plan）": "aec6efe07800f1ba",
+     "変更する既存ファイル（Modified Files）": "698c7e4c9adedfb0",
+     "追加検討事項（Additional Considerations）": "82177ff263eb3d9d",
+     "セキュリティ上の考慮（Security Considerations）": "df254a006d67eb4b",
+     "性能とスケーラビリティ（Performance & Scalability）": "20536a97ef9b0fc6",
+     "移行方針（Migration Strategy）": "e333b6437e8bba24",
+     "移行対象ファイル一覧": "41fe5fbce7ea7be0",
+     "テスト体制 / テスト仕様": "ee77f066a9a13576",
+     "テスト戦略（Testing Strategy）": "2598a953f6040625",
+     "設計判断（Design Decisions）": "cc9728503e49a540",
+     "判断 1: 承認フローの規則を WTG 共通のサービスに置く": "05a17cb20e063bf9",
+     "判断 2: 申請単位の排他を物件申請情報の排他用の値 1 つで行う": "37d7311cefd4b06a",
+     "判断 3: 機能固有のメッセージキーを `WTG-1000xx` の番号帯で追加する": "93fa128763127167",
+     "判断 4: URL は既存の規約（/機能ID/アクション）にそろえ、CSRF の照合の設定は変えない": "846ea5971c131ace",
+     "補足資料（Supporting References）": "d838c25e7ca835b9",
+     "*": "28d078b901c4b1a2"
+    }
+   },
+   "own_sections": {
+    "specs/property-basic-info/design.md": {
+     "": "e3b0c44298fc1c14",
+     "技術設計書": "e09e65c2203d8317",
+     "概要（Overview）": "2544a1450bea786c",
+     "達成目標（Goals）": "8e9415d4ffa5adf3",
+     "やらないこと（Non-Goals）": "6f339bad2a937fec",
+     "責務境界（Boundary Commitments）": "319ca7723bda7861",
+     "このスペックが持つ責務（This Spec Owns）": "70b329d8df2efb23",
+     "このスペックが持たない責務（Out of Boundary）": "67881c61f365fcff",
+     "依存してよい対象（Allowed Dependencies）": "bc002fd1c05445e3",
+     "再確認が必要になる変更（Revalidation Triggers）": "b57f6f088c7f83c5",
+     "アーキテクチャ（Architecture）": "d884ae957d36c25c",
+     "既存アーキテクチャの分析（Existing Architecture Analysis）": "6077bd0ac4c2ffc8",
+     "アーキテクチャ方式と境界図（Architecture Pattern & Boundary Map）": "6c6219e0e10a2e84",
+     "技術スタック（Technology Stack）": "0c7a515f60ed18f0",
+     "データモデル（Data Models）": "7f56063d2219091b",
+     "ドメインモデル（Domain Model）": "1521a35540b89e47",
+     "論理データモデル（Logical Data Model）": "8492485f71cbabad",
+     "物理データモデル（Physical Data Model）": "326cd3a168eafcf4",
+     "データ契約と外部連携（Data Contracts & Integration）": "1171344e293d5cab",
+     "コンポーネントとインターフェース（Components and Interfaces）": "9a746a3c31f1fc6c",
+     "コンポーネント一覧（Summary）": "f08e3c6d30f846d0",
+     "WTG 共通": "5987f06387419f66",
+     "WTG 申請状態サービス": "ed059f7ceda891b2",
+     "サービスインターフェース（Service Interface）": "10426e3187b931e8",
+     "状態管理（State Management）": "86e4d8f084f2e2ed",
+     "物件基本情報登録変更": "970e86775354d4fd",
+     "物件基本情報登録変更 Controller": "af1873a9f71b755c",
+     "API 契約（API Contract）": "aff7cba2154021be",
+     "文書バーコード Controller・Service・Mapper": "6149db3e508b9334",
+     "サービスインターフェース（Service Interface） (2)": "c2c3a01b8302fc85",
+     "API 契約（API Contract） (2)": "362a0bf9d1b62db4",
+     "処理フロー（System Flows）": "f6b63442a353542d",
+     "機能固有のエラー処理（Error Handling）": "09b360f7a41a8b96",
+     "バリデーション設計": "852abaf4e270780e",
+     "機能固有エラーコード": "881718abbd537614",
+     "エラー時の分岐フロー": "3b8cc360f105a2b3",
+     "ファイル配置計画（File Structure Plan）": "a0500904127db47e",
+     "変更する既存ファイル（Modified Files）": "698c7e4c9adedfb0",
+     "追加検討事項（Additional Considerations）": "5935df48a68c4bd5",
+     "セキュリティ上の考慮（Security Considerations）": "df254a006d67eb4b",
+     "性能とスケーラビリティ（Performance & Scalability）": "20536a97ef9b0fc6",
+     "移行方針（Migration Strategy）": "17afc23e04b786d9",
+     "移行対象ファイル一覧": "41fe5fbce7ea7be0",
+     "テスト体制 / テスト仕様": "ee77f066a9a13576",
+     "テスト戦略（Testing Strategy）": "2598a953f6040625",
+     "設計判断（Design Decisions）": "ffd9306c7a606ca3",
+     "判断 1: 承認フローの規則を WTG 共通のサービスに置く": "05a17cb20e063bf9",
+     "判断 2: 申請単位の排他を物件申請情報の排他用の値 1 つで行う": "37d7311cefd4b06a",
+     "判断 3: 機能固有のメッセージキーを `WTG-1000xx` の番号帯で追加する": "93fa128763127167",
+     "判断 4: URL は既存の規約（/機能ID/アクション）にそろえ、CSRF の照合の設定は変えない": "846ea5971c131ace",
+     "補足資料（Supporting References）": "d838c25e7ca835b9",
+     "*": "28d078b901c4b1a2"
+    }
+   },
+   "inputs": {
+    ".aidd/feature-list.md": "71a64dc3cbf71bc6ddb02a4dc6f8247344064ca63e8a291e5881763ef59256ae",
+    "steering/product.md": "cde5dd8a1007c53f93a270de63e01d294d38f47695e96027d52b6b4862bc149b",
+    "steering/tech.md": "58cc32eb0ad29d7b7185bb02e710ce8d882e374f93eb0a609ae293e3903a4966",
+    "steering/architecture.md": "98be0c57ba256c0aeaf1a66d69682e63b47d20ec0f91ab776589a54e5eb8c33d",
+    "steering/security.md": "34061564b8c5b8c28e5ca2f4a9b744b06d9d58417ddbbff7ab150c9ef1027bbf",
+    "steering/non-functional.md": "ae87c72271e4f3d8593e2f666edc7bb0931cf4d0ca78dafbb21ab7264303f0ac",
+    "steering/database.md": "832d98b289c53f8c8adc9a7dfb25bf0f8b1f54b9c1cc473c6480fa9927a20e21",
+    "steering/api-standards.md": "70eca8d2facbf08bfa22cf1ae1e781219ecab2066bb8129bf4a3414b0fdeddc1",
+    "specs/property-basic-info/requirements.md": "5f172c4890f034214da64d63ee9eddbb59f2ea979f258073b31cb99122bfa6bc"
+   },
+   "previous_run": 6,
+   "changed_sections": {
+    "specs/property-basic-info/design.md": [
+     "技術設計書",
+     "アーキテクチャ（Architecture）",
+     "アーキテクチャ方式と境界図（Architecture Pattern & Boundary Map）",
+     "コンポーネントとインターフェース（Components and Interfaces）",
+     "物件基本情報登録変更",
+     "物件基本情報登録変更 Controller",
+     "API 契約（API Contract）"
+    ]
+   },
+   "changed_own": {
+    "specs/property-basic-info/design.md": [
+     "アーキテクチャ方式と境界図（Architecture Pattern & Boundary Map）",
+     "API 契約（API Contract）"
+    ]
+   }
+  },
+  "findings_path": "C:\\project\\Wing\\.aidd\\.engine\\f5157258f5e2fcec040d4777af2a8b542d1c0d49608f43e2159ddb3d429bc881.findings.json",
+  "findings": [],
+  "questions": null,
+  "finding_rules": ".claude/skills/finding-rules/SKILL.md",
+  "confirmed_answers": [
+   {
+    "key": "design-authoring-generate[application-status-search]",
+    "questions": [
+     {
+      "id": "Q-DS-AS-001",
+      "target": "specs/application-status-search/design.md",
+      "location": "ファイル配置計画、API 契約（Controller）、要件 1・2",
+      "question": "プログラムID・URL・メニュー。1. 申請状況検索一覧（GWTG060）のプログラムID と機能ID - 下書きの案：プログラムID `PWTGO060`、機能ID `WTG060`、URL `/wtg060`、パッケージ `function/wtg/wtg060`（URL は pbi design の `/wtg060` に合わせる。物件基本情報登録変更の `PWTGO070`・`/wtg070` と同じ付け方） 2. メニューの名前 - 下書きの案：「[WTG060]物件契約情報申請状況検索」",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-application-status-search.md）"
+     },
+     {
+      "id": "Q-DS-AS-002",
+      "target": "specs/application-status-search/design.md",
+      "location": "画面設計（API 契約）、バリデーション設計、要件 1.1〜1.5・4.1",
+      "question": "検索条件 38 項目と、比べる列。検索条件の全部の項目と、比べる列を決めます（Phase 4 ゲート #2・#7 で design に回したもの）。 下の表の下書きを直してください。★は下書きを決められなかった項目です。 発行依頼書（`TWTGM100`）の列の型・桁は issue-request の design が持つので、ここでは「どの項目と比べるか」だけを聞きます。 | No | 画面の項目名 | 一致 | 比べる列（下書きの案） | 入力の形（下書きの案） | |---|---|---|---|---| | 1 | 申請No | 前方 | `TWTGM080.Application_No` | テキスト、半角英数 11 桁まで | | 2 | 稟議バーコードNo | 前方 | `TWTGM140.Ringi_Barcode_No`（どの行かは Q-DS-AS-003） | テキスト、半角英数記号 25 桁まで | | 3 | 基地局番号 | 前方 | `TWTGM080.Kichikyoku_No`（Q-DS-AS-003） | テキスト、半角英数 9 桁まで | | 4 | 発送書類名 | 前方 | ★どの列か（`TWTGM080` には発送書類有無ﾌﾗｸﾞしか無い） | ★ | | 5 | 基地局名 | 部分 | `TWTGM080.Kichikyoku_Name`（Q-DS-AS-003） | テキスト 120 桁まで | | 6 | 更新者名 | 部分 | `TWTGM080.UpdatedPerson_Name` | テキスト 20 桁まで | | 7 | 起案の所属① | 部分 | `TWTGM100` の契約稟議起案者_所属名① | テキスト 100 桁まで | | 8 | 起案の所属② | 部分 | `TWTGM100` の契約稟議起案者_所属名② | テキスト 100 桁まで | | 9 | 起案担当者 | 部分 | `TWTGM100` の契約稟議起案者_氏名 | テキスト 100 桁まで | | 10 | 案件小グループ | 部分 | ★`TWTGM140` の案件小グループ名か、`TWTGM100`／`TWTGM140` の案件小グループコードか | テキスト | | 11 | エリア | 完全 | `TWTGM080.Area_Cd` | コンボ（`C01`） | | 12 | 審査フェーズ | 完全 | `TWTGM080.Status` | コンボ（`P28`）、1 つだけ選ぶ | | 13 | 状態 | 完全 | `TWTGM080.JOTAI_KBN` | コンボ（`P27`）、1 つだけ選ぶ | | 14 | 依頼内容 | 完全 | `TWTGM080.Irai_Naiyo`（名称の文字列） | コンボ（`P29` の名称）。★修正稟議依頼を選択肢に入れるか（入れるなら「\"稟議依頼\" かつ 元申請No あり」で絞る） | | 15 | 施策 | 完全 | `TWTGM080.SHISAKU_CD` | コンボ（`P30`） | | 16 | 起案会社 | 完全 | `TWTGM100` の契約稟議起案者_会社コード | ★Q-DS-AS-005 | | 17 | 押印種別 | 完全 | ★`TWTGM140` の UQ押印種別か | ★コンボ（どのコードマスタか） | | 18 | 転貸借の契約種別 | 完全 | ★`TWTGM140` の転貸借_契約種別か | ★コンボ（どのコードマスタか） | | 19〜22 | 起案日時 From・To（日付＋時刻） | 範囲 | `TWTGM080` の★初回申請依頼日時か申請依頼日時か（Q-DS-AS-006 の「起案日」と同じ列） | 日付 YYYY/MM/DD＋時刻 HH:MM | | 23・24 | 稟議承認日 From・To | 範囲 | ★`TWTGM080.Kessai_DateTime_From`（決裁日時）の日付部分か | 日付 YYYY/MM/DD | | 25・26 | 初回支払日 From・To | 範囲 | ★`TWTGM100` の初回支払1〜4_初回支払日のどれか（いずれか 1 つでも範囲に入れば該当？）、または `TWTGM140` の支払日か | 日付 YYYY/MM/DD | | 27〜30 | 申請日時 From・To（日付＋時刻） | 範囲 | `TWTGM080.Application_Date` | 日付＋時刻 | | 31・32 | 発送希望日 From・To | 範囲 | `TWTGM080.Hasso_Kibo_Date`（yyyyMMdd） | 日付 YYYY/MM/DD | | 33〜36 | 確認日時 From・To（日付＋時刻） | 範囲 | `TWTGM080.Check_DateTime_From` | 日付＋時刻 | | 37・38 | 進捗の日数 From・To | 範囲 | Q-DS-AS-004 | 半角数字 3 桁まで（社外ユーザーには出さない） | 教えてほしいこと 1. ★の項目の答え 2. 項目の数え方が合っているか（日時の範囲を「日付 From・時刻 From・日付 To・時刻 To」の 4 つと数えると 38 になります） 3. 桁数・文字種の下書き（DB の列の桁に合わせた）でよいか。違う項目だけ教えてください",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-application-status-search.md）"
+     },
+     {
+      "id": "Q-DS-AS-003",
+      "target": "specs/application-status-search/design.md",
+      "location": "画面設計（API 契約）、Mapper の SQL、要件 1.2〜1.4・2.1",
+      "question": "契約局情報（複数行）にある項目の比べ方。稟議バーコードNo・押印種別・転貸借の契約種別・案件小グループ（`TWTGM140` の項目なら）は、契約局ごとに行があります。 一覧の稟議バーコードNo は「代表局のもの」（2.1）と決まっていますが、検索条件はまだ決まっていません。 - A：代表局（連番 1）の行だけと比べる - B：どれか 1 行でも合えば該当にする 項目ごとに A／B を教えてください。 基地局番号・基地局名は `TWTGM080`（代表局と同じ値。pbi design の `WTG-100019`）と比べる下書きです。契約局の 2 行目以降の基地局でも探せるようにするなら教えてください。",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-application-status-search.md）"
+     },
+     {
+      "id": "Q-DS-AS-004",
+      "target": "specs/application-status-search/design.md",
+      "location": "ドメインモデル、画面設計、要件 1.5・1.6",
+      "question": "進捗の日数。「進捗の日数」は何から何までの日数ですか。 - 下書きの案：最新の申請依頼日時（`TWTGM080.Application_Req_DateTime`）の翌日から今日までの営業日の数。休日は `WTI/CODE/C06` の会社ごとの登録で除く - ほかの候補：今の番になってからの日数（承認履歴 `TWTGM180` の最新の行の日時から今日まで）、初回申請依頼日時から今日まで - 承認済・完了や取下げの申請も数えるか（数えるなら、決裁日時で止めるか） - 起点の日を 0 日目と数えるか 1 日目と数えるか - 一覧・CSV には出さない（14 列に無い）でよいか",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-application-status-search.md）"
+     },
+     {
+      "id": "Q-DS-AS-005",
+      "target": "specs/application-status-search/design.md",
+      "location": "画面設計、セキュリティ上の考慮、要件 1.4・1.6・1.7",
+      "question": "起案会社の条件と、社外ユーザーの固定値。Phase 4 ゲート #4 で「社外ユーザーは、起案会社に自社の会社名を初期値で入れて変更不可、所属①②は空で変更不可」と決まっています。 次が決まっていません。 1. 起案会社の入力の形と選択肢の出所 - 下書きの案：コンボ。選択肢は `P71` の行（値は文字項目2 の会社コード、表示は名称）。発行依頼書の契約稟議起案者_会社コードと完全一致で比べる - wing のログインユーザーから会社名は取れません（「コードで確かめたこと」17）。社外ユーザーの「自社の会社名」は、権限区分をキー3 にして引いた `P71` の行の名称でよいか 2. 社外ユーザーで、固定した起案会社を検索の条件にも加えるか（食い違い） - 1.7 の範囲は「起案会社が自社の申請」**または**「本人が登録した申請」です - 固定した起案会社を条件に加えると、本人が登録した他社の申請と、発行依頼書がまだ無い申請（起案会社が空）が一覧に出なくなります - A：画面に表示するだけで、条件には加えない（範囲は `getExternalScope` だけで絞る） - B：条件にも加える（1.7 の「本人が登録した申請」のうち、自社でないものは出ない）",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-application-status-search.md）"
+     },
+     {
+      "id": "Q-DS-AS-006",
+      "target": "specs/application-status-search/design.md",
+      "location": "画面設計、論理データモデル、要件 2.1〜2.4",
+      "question": "一覧の 14 列の出し方。下の表の下書きを直してください。★は決められなかったものです。 | 列 | 出す値（下書きの案） | |---|---| | 申請No | `TWTGM080.Application_No`。取込中でなければリンク | | 依頼内容 | `Irai_Naiyo` をそのまま（修正稟議も \"稟議依頼\"。pbi の画面と同じ）。★修正稟議を「修正稟議依頼」と出し分けるか | | 審査フェーズ | `P28` の名称。再申請なら後ろに「(再申請)」。★「再申請」は何で判定するか（下書き：申請回数 `Application_Count` が 2 以上） | | 状態 | `P27` の名称 | | 稟議バーコードNo | `TWTGM140` の連番 1 の行の `Ringi_Barcode_No` | | 基地局番号 | `TWTGM080.Kichikyoku_No` | | 基地局名 | `TWTGM080.Kichikyoku_Name`。複数局なら「基地局名 他n局」。★「複数局」の判定（下書き：`TWTGM140` の行が 2 行以上）と n（下書き：行数－1）。単独複数局ﾌﾗｸﾞ（`Tandoku_Fukusu_Flg`）が \"1\" でも行が 1 行のときは付けない、でよいか | | 案件小グループ | ★コードか名称か、どの表の値か（Q-DS-AS-002 No.10 と同じ） | | 起案会社名 | `TWTGM100` の契約稟議起案者_会社名 | | エリア | ★`C01` の名称だけか、「エリアコード:名称」か（pbi の画面は「エリアコード:名称」） | | 起案担当者 | `TWTGM100` の契約稟議起案者_氏名 | | 起案日 | ★初回申請依頼日時か、最新の申請依頼日時か。YYYY/MM/DD | | 発送希望日 | `Hasso_Kibo_Date` を YYYY/MM/DD | | 施策 | `P30` の名称 | - 発行依頼書・契約局情報がまだ無い申請も一覧に出し、その列は空にする（外部結合）でよいか - 並びは申請No の降順（2.4）だけで、列見出しでの並べ替えは付けない、でよいか",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-application-status-search.md）"
+     },
+     {
+      "id": "Q-DS-AS-007",
+      "target": "specs/application-status-search/design.md",
+      "location": "バリデーション設計、要件 1.1・1.5・4.1",
+      "question": "範囲の条件の決まり。Phase 4 ゲート #8 で design に回したものです。既存のコード（「コードで確かめたこと」10〜13）に合わせた下書きです。 1. 両端を含む（`>=`・`<=`）。片方だけの入力も受け付ける — 下書きのとおりでよいか 2. 開始が終了より後のとき - A：検査しない（既存の Pwtgo004 と同じ。0 件になる） - B：既存の `ZZZ-000001`「{0}:日付の範囲指定が不正です」で止める（進捗の日数も同じキーでよいか） 3. 日時の範囲は、To の時刻に秒 59 を付けて比べる（23:59 は 23:59:59 まで含む）。日付があり時刻が空なら `WTL-000008` で止める — 既存の Pwtlo021 と同じでよいか 4. 日付・時刻の形式誤りは、日付だけの項目は `WTG-000003`、日時の項目は `GEF-000025`（日付）・`WTL-000007`（時刻）。数字の誤りは `GEF-000014`「{0}:数値を入力して下さい」。新しいキーは作らない、でよいか",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-application-status-search.md）"
+     },
+     {
+      "id": "Q-DS-AS-008",
+      "target": "specs/application-status-search/design.md",
+      "location": "依存してよい対象、性能とスケーラビリティ、要件 2.5・3.3",
+      "question": "1 ページの件数と上限件数のコードマスタの行。既存の共通処理（「コードで確かめたこと」1〜3）は、プログラムID の行が無ければ ALL の行を使います。 1. `WTZ/PARAM/P01`・`P02` にこの画面（キー3＝プログラムID）の行を足すか。足すなら値（1 ページの件数、上限件数、警告件数）。足さないなら ALL の行を使う - 値の登録は、ほかのコードマスタと同じく発注者が行う、でよいか 2. 警告件数（`DS-100025` の確認）を画面の検索で使うか（使わないなら数値項目2 を -1 にする） 3. CSV 出力では警告の確認を出さず、上限件数を超えたら見出し行だけを出す（3.4）、でよいか",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-application-status-search.md）"
+     },
+     {
+      "id": "Q-DS-AS-009",
+      "target": "specs/application-status-search/design.md",
+      "location": "機能固有エラーコード、API 契約、要件 2.7・2.8",
+      "question": "取込中の申請と WTG-100018。pbi design は「取込中の申請は一覧で遷移させず、一覧が既存の `WTG-100018`「取込処理中のため登録画面へ遷移できません」を出す」と書いています。 しかし `WTG-100018` は今の wing にありません（「コードで確かめたこと」15）。また 2.8 では取込中の申請はリンクにしないので、通常はこのメッセージを出す場面がありません。 1. `WTG-100018` を本 feature で新しく追加するか。種別は Warning、文言は上のとおりでよいか 2. 出す場面 - 下書きの案：リンクを押すと一覧の Controller（`/wtg060/detail`）が申請を読み直し、その間に取込中になっていたら `WTG-100018` を出して一覧を出し直す。取込中でなければ `forward:/wtg070/pushApplicationNo` へ送る（既存の Pwtgo004 の `detail` と同じ作り） 3. pbi design の「既存の」の表記は、上流の開き直しの一覧（`.aidd/.engine/upstream-carryover.md`）に足すか",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-application-status-search.md）"
+     },
+     {
+      "id": "Q-DS-AS-010",
+      "target": "specs/application-status-search/design.md",
+      "location": "データ契約と外部連携、API 契約、要件 3.1〜3.5",
+      "question": "CSV の細部。requirements で決まっている（14 列・MS932・カンマ・見出し行あり・ファイル名・範囲・0 件と上限超えは見出しだけ）以外を決めます。 下書きは pbi design の `CsvUtils.defaultCsvConfig()` に合わせました。 | 項目 | 下書きの案 | |---|---| | 囲み | 全項目をダブルクォートで囲む。値の中の \" は \"\" | | 改行コード | CRLF | | NULL | 空文字 | | 見出し行の文言 | 一覧の列名と同じ（申請No、依頼内容、審査フェーズ、状態、稟議バーコードNo、基地局番号、基地局名、案件小グループ、起案会社名、エリア、起案担当者、起案日、発送希望日、施策） | | 値の形 | 一覧と同じ（名称に変えたもの、「(再申請)」、「他n局」、日付は YYYY/MM/DD） | | ファイル名の時刻 | `WTG060_yyyyMMddHHmmss.csv`（出力した時刻） | | 返し方 | ダウンロード（`Content-Disposition: attachment`）。出力管理（`TZZZM027`）は使わない | | URL | `/wtg060/download`（CSRF の照合の対象外。更新しないため） | あわせて、Phase 4 ゲート #10 で design に回したもの： - 検索条件に形式の誤りがあるとき CSV 出力を押したら、検索と同じ入力チェックをして、エラーメッセージを画面に出し、CSV を出さない — でよいか",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-application-status-search.md）"
+     }
+    ],
+    "answers": [
+     "[answer-ds-as-20261008-1504.txt]\n回答者 Junichi Noumi\nQ-DS-AS-001〜010（application-status-search design）の回答。2026-10-08 15:04 受領。大きな表は別ファイル（_handoff\\phase5-application-status-search-conditions.md）。\n\n以下が Q-DS-AS-001〜010 の回答です。このまま記録して、物件契約情報申請状況検索一覧の design を書き起こしてください。\n\n## 先に：requirements から意図して外れる点（upstream-carryover に記録してください）\n次の点は、requirements（application-status-search）から意図して外れます。upstream-carryover に記録し、Phase 5 の最後にまとめて直します。\n- 1.1：進捗検索(選択) の初期値は「以上」。社外ユーザーの起案会社は自社の名前を入れて表示する（1.6 の「変更させない」に合わせた初期値）\n- 2.3：「他n局」は基地局名だけでなく基地局番号にも付ける（Q-DS-AS-006）\n- 3.1：CSV の 13 列目の見出しは「発注希望日」（画面の列見出しは「発送希望日」のまま。Q-DS-AS-010）\n\n## Q-DS-AS-001\n1. プログラムID `PWTGO060`、機能ID `WTG060`、画面ID `GWTG060`、URL `/wtg060`、パッケージ `function/wtg/wtg060`。下書きの案のとおり。Controller に `@FuncID(\"PWTGO060\")`。\n   - アクション（すべて `/wtg060/<名前>` の 1 段）：\n     | URL | メソッド | 用途 |\n     |---|---|---|\n     | `/wtg060`（空のパス） | GET・POST | 初期表示（メニューから。パラメータ FunctionID）。検索条件のセッションを消す |\n     | `/wtg060/search` | POST | 検索（1 ページ目） |\n     | `/wtg060/page` | POST | ページ送り（selectPage） |\n     | `/wtg060/clear` | POST | クリア（初期表示と同じ） |\n     | `/wtg060/return` | GET・POST | 物件基本情報登録変更・契約局取込から戻る（セッションの条件で、前に見ていたページを再検索） |\n     | `/wtg060/detail` | POST | 申請No リンク（取込中の確認 → `forward:/wtg070/pushApplicationNo`） |\n     | `/wtg060/csv` | POST | CSV 出力 |\n   - 画面ファイル `wtg/wtg060/pwtgo060.html`・`pwtgo060Script.html`。クラスは Controller・Service・Form・Mapper（＋xml）・bean（`Pwtgo060CondInfo` 検索条件の入力、`Pwtgo060SearchCond` SQL に渡す条件、`Pwtgo060SearchInfo` 一覧と CSV の 1 行）。\n2. メニューの名前は「[WTG060]物件契約情報申請状況検索/一覧」（「/一覧」まで付ける）。\n\n## Q-DS-AS-002\n- 38 項目の全部と比べる列は `_handoff\\phase5-application-status-search-conditions.md` に置いた。その表のとおりにしてください。\n- 下書きから変わる主な点\n  - 基地局番号・基地局名・稟議バーコードNo・押印種別・転貸借の契約種別は `TWTGM140`（契約局情報）と比べる。`TWTGM080` ではない。\n  - ★No.4 発送書類名：入力はデータリスト（候補は `P32` の名称）＋自由入力 256 桁。`TWTGM140` の 6 つの書類コード列（P32 のキー3）と、6 つのフリーフォーム列（前方一致）のどれかが合えば該当。\n  - ★No.10 案件小グループ：入力はデータリスト（候補は `WTZ/MASTER/M11` の名称）＋自由入力 50 桁。比べる値は「M11 の名称（`TWTGM100.Anken_Syo_Grp_Cd` で引く）→ 無ければ P35 の名称（`TWTGM100.Sonota1` で引く）→ 無ければ `TWTGM100.Sonota1_Freeform`」を部分一致。一覧の列と同じ値。\n  - ★No.14 依頼内容：選択肢は `P29` の 2 つ（稟議依頼・再製本依頼）だけ。修正稟議の選択肢は作らない。選んだ行の名称で `Irai_Naiyo` と比べる。\n  - ★No.17 押印種別：`TWTGM140.UQ_Sealer_Kind`、コンボは `WTG/PARAM/P31`。\n  - ★No.18 転貸借の契約種別：`TWTGM140.Contract_Syubetsu`、コンボは `WTG/PARAM/P53`。\n  - 起案日時・稟議承認日・申請日時・確認日時は `TWTGM080` の日時列ではない。承認履歴 `TWTGM180` の**最新の審査回**の行のうち、判定が 01（申請依頼）・04（承認）・02（申請）・03（確認）の行の `Last_UpdatedDT` と比べる。\n  - ★初回支払日：`TWTGM100.First_Pay_Day1`〜`4` のどれかが範囲に入れば該当（From・To は別々に「1〜4 のどれか」で比べる）。\n  - 起案会社：コンボ `P26`（値はキー3、表示は名称）。`TWTGM100.Keiyaku_Ringi_Kiansha_Kaisha_Cd` と完全一致。\n- 数え方：38 で合っています。ただし 37・38 は「進捗の日数 From・To」ではありません。No.36 進捗検索(日数)（半角数字 **2 桁**）＋No.37 進捗検索(選択)（「以上」「以下」、初期値「以上」）で、No.38 は転貸借契約種別です。\n- 桁・文字種：表の桁を使ってください（画面設計の入力バイト数）。下書きとの違いは、基地局名 120・更新者 20・所属①② 100・起案担当者 100 は同じ。進捗の日数は 3 桁ではなく 2 桁。稟議バーコードNo は 25 桁（「-」を含むので半角英数記号で可）。\n\n## Q-DS-AS-003\n- `TWTGM140` は**全部の契約局の行**と外部結合して比べる。どの行でも 1 行合えば該当（B）。対象：稟議バーコードNo・基地局番号・基地局名・押印種別・転貸借の契約種別・発送書類名。\n- 案件小グループは `TWTGM100` の値（申請ごとに 1 つ）と比べるので A/B は無い。\n- 基地局番号・基地局名も `TWTGM140` と比べる（2 行目以降の契約局でも探せる）。契約局がまだ無い申請は、この 2 項目を入れると当たらない。\n- 一覧の稟議バーコードNo は連番 1 の行の値（Q-DS-AS-006）。検索と表示で見る行が違う点に注意。\n\n## Q-DS-AS-004\n- 進捗の日数＝**最初の申請依頼**から今日までの営業日の数。\n  - 起点：`TWTGM180` の審査回 1・審査権限 '01'（起案者）・判定 '01'（申請依頼）の行の `Last_UpdatedDT`。最新の申請依頼日時や今の番になった日ではない。\n  - 数え方：起点の日付を 0 日目とし、翌日から今日までの日数から、その間の休日（`WTI/CODE/C06`、会社コード＝申請の会社コード。数値項目1 が yyyyMMdd）の数を引く。\n  - 承認済・完了・取下げの申請も止めずに数える（決裁日時で止めない）。申請依頼の行が無い申請（未起案）は日数が無いので、日数を入れて検索すると当たらない。\n- 条件：「以上」なら 日数 ≧ 入力値、「以下」なら 日数 ≦ 入力値。\n- 一覧・CSV には出さない（14 列に無い）。それでよい。\n- 社外ユーザーには日数・以上/以下の 2 項目を出さない（条件にもならない）。\n\n## Q-DS-AS-005\n1. 起案会社\n   - コンボ。選択肢は `WTG/PARAM/P26` の行（値はキー3 の 001〜005、表示は名称）、先頭に空行。条件は `TWTGM100.Keiyaku_Ringi_Kiansha_Kaisha_Cd` ＝ 選んだキー3。\n   - 社外ユーザーの「自社の会社名」は、`P71`（キー3＝ログインの権限区分）の**文字項目2** をキー3 にして引いた `P26` の行の名称。P71 の行の名称（権限区分の名前）ではない。初期表示・検索後の再表示・戻りのたびにこの値を入れ、変更不可（disabled）にする。所属①②は空で変更不可。\n   - 社内／社外の判定：P71 の行の文字項目1 が '1' なら社外。行が無ければ社内。\n2. **A**：画面に出すだけで、起案会社コードの条件には加えない（disabled の項目は送られないので、条件は空のまま）。範囲は次の絞り込みだけで決める。\n   - 社外：WTG 申請状態サービスの `getExternalScope` を使う。`( TWTGM100.Keiyaku_Ringi_Kiansha_Kaisha_Cd ＝ 自社の会社コード（P71 の文字項目2） OR TWTGM080.RegisteredPerson ＝ ログインのユーザーID )` を**括弧でくくって** AND で足す（requirements 1.7 のとおり会社コードで比べる）。括弧が無いと OR が会社の条件まで外してしまうので、必ずくくる。\n   - 社内：`TWTGM080.CompanyCD ＝ ログイン会社コード` だけ（会社の全件）。この条件は社外にも常に付ける。\n\n## Q-DS-AS-006\n| 列 | 出す値 |\n|---|---|\n| 申請No | `TWTGM080.Application_No`。状態 `JOTAI_KBN` が '06'（取込中）ならリンクにせず文字だけ |\n| 依頼内容 | `Irai_Naiyo` をそのまま。修正稟議も \"稟議依頼\"（出し分けない） |\n| 審査フェーズ | `P28` の名称。その申請の `TWTGM180` の MAX(審査回) が 2 以上なら後ろに「(再申請)」 |\n| 状態 | `P27` の名称 |\n| 稟議バーコードNo | `TWTGM140` の連番 1 の行の `Ringi_Barcode_No`（連番 1 の行と別に外部結合する） |\n| 基地局番号 | `TWTGM080.Kichikyoku_No`。複数局なら後ろに「他n局」（**基地局番号にも付ける**） |\n| 基地局名 | `TWTGM080.Kichikyoku_Name`。複数局なら後ろに「他n局」 |\n| 案件小グループ | 名称。M11 の名称（`TWTGM100.Anken_Syo_Grp_Cd`）→ 無ければ P35 の名称（`TWTGM100.Sonota1`）→ 無ければ `TWTGM100.Sonota1_Freeform` |\n| 起案会社名 | `TWTGM100.Keiyaku_Ringi_Kiansha_Kaisha_Name` |\n| エリア | 「エリアコード:名称」（`C01`）。コードが空なら空 |\n| 起案担当者 | `TWTGM100.Keiyaku_Ringi_Kiansha_Name` |\n| 起案日 | `TWTGM180` の最新の審査回の、審査権限 '01'（起案者）の行の `Last_UpdatedDT` を YYYY/MM/DD |\n| 発送希望日 | `Hasso_Kibo_Date` を YYYY/MM/DD |\n| 施策 | `P30` の名称 |\n\n- 「他n局」：単独複数局ﾌﾗｸﾞが \"0\" なら付けない。\"0\" 以外で、`TWTGM140` の行数が 2 以上なら「他（行数－1）局」。行が 0〜1 行なら付けない。下書きのとおりでよい。\n- 長い値は表示バイト数で切り、ツールチップで全部を出す：基地局名 16、案件小グループ 15、起案会社名 22、エリア 15、起案担当者 10（バイト）。CSV は切らない。\n- 発行依頼書・契約局情報・承認履歴が無い申請も出す（すべて外部結合）。その列は空。\n- 並びは申請No の降順だけ。列見出しでの並べ替えは付けない。\n\n## Q-DS-AS-007\n1. 下書きのとおり。両端を含む（`>=`・`<=`）。片方だけも受け付ける。\n2. **A**：検査しない（0 件になるだけ）。進捗の日数も同じ。\n3. To の時刻に秒 59、From に秒 00 を付けて比べる（下書きのとおり）。稟議承認日（日付だけ）は From 00:00:00・To 23:59:59 で比べる。日付があって時刻が空のときは、エラーにせず、その端を条件から外す（時刻の初期値 00:00／23:59 が入っているので通常は空にならない）。\n4. 形式の検査は下書きのキーでよい。新しいキーは作らない。日付だけの項目 `WTG-000003`、日時の項目は `GEF-000025`（日付）・`WTL-000007`（時刻）、進捗の日数の数字の誤り `GEF-000014`。桁は画面の maxlength で抑え、桁を超える値はサーバーでも同じ桁で検査する。\n\n## Q-DS-AS-008\n1. `WTZ/PARAM/P01` はこの画面の行（キー3＝`PWTGO060`、名称「[GWTG060]物件契約情報申請状況検索/一覧」、数値項目1＝**50**）を足す。`P02` はこの画面の行を足さず、ALL の行を使う。コードマスタの行は、PJ45 で足すほかのコードマスタの行と同じ扱いで登録する。\n2. 共通処理（`validateSearchLimitCount`）をそのまま使う。警告の確認も共通処理のまま（数値項目2 を -1 にはしない。ALL の行の値で動く）。\n3. 下書きのとおり。CSV では警告の確認を出さない。上限件数を超えたとき・0 件のときは見出し行だけを出す。\n\n## Q-DS-AS-009\n1. `WTG-100018` を本 feature で**新規追加**する（今の wing に無い）。種別 Warning、文言「取込処理中のため登録画面へ遷移できません」。\n2. 下書きの案のとおり。`/wtg060/detail` で、`TWTGM080` の 会社コード＝ログイン会社・申請No＝押した申請No・**`JOTAI_KBN` = '06'（取込中）** の行があれば、`WTG-100018` を BindingResult に積み、セッションの条件で今のページを再検索して一覧を出し直す。無ければ `forward:/wtg070/pushApplicationNo`。比べるのは `Status`（審査フェーズ P28。06 は無い）ではなく `JOTAI_KBN`（P27）。取込中にするのは契約局取込（WTG090）が取込の開始時に付け、終わったら元に戻す。\n3. 足す。pbi design の「既存の `WTG-100018`」は「本 feature で新規追加する `WTG-100018`」に直す。\n\n## Q-DS-AS-010\n| 項目 | 答え |\n|---|---|\n| 囲み | 全項目をダブルクォートで囲む。値の中の \" は \"\"（`CsvUtils.defaultCsvConfig()`） |\n| 改行コード | CRLF |\n| NULL | 空文字 |\n| 見出し行の文言 | 次の 14 個をこの表記で：`申請No,依頼内容,ｽﾃｰﾀｽ,状態,稟議ﾊﾞｰｺｰﾄﾞNo,基地局番号,基地局名,案件小ｸﾞﾙｰﾌﾟ,起案会社名,ｴﾘｱ,起案担当者,起案日,発注希望日,施策`（半角カナ。13 列目は「発注希望日」） |\n| 値の形 | 一覧と同じ（名称、「(再申請)」、「他n局」、エリアは「コード:名称」、日付 YYYY/MM/DD）。表示バイト数で切らず全部出す |\n| ファイル名 | `WTG060_yyyyMMddHHmmss.csv`（出力した時刻） |\n| 返し方 | ダウンロード（`Content-Disposition: attachment`、`application/octet-stream`）。出力管理（`TZZZM027`）は使わない |\n| URL | **`/wtg060/csv`**（POST）。CSRF の照合の対象（regist・update など）に入らない名前なので、servlet-context.xml は変えない |\n| 作り方 | 1 行の bean（`Pwtgo060SearchInfo`）に `@CsvEntity`、14 項目に `@CsvColumn(name = 見出し)`。`CsvUtils.save(list, stream, \"MS932\", CsvUtils.defaultCsvConfig(), new CsvEntityListHandler<>(Pwtgo060SearchInfo.class))`。見出し行は `@CsvEntity`（header の既定は true）が書くので、`CsvUtils` の入出力は変えない。0 件・上限超えでは、要素が null 1 つのリストを渡すと見出しだけになる |\n\n- CSV の条件は、**押した時点の画面の入力**を使う（前に検索した条件ではない）。絞り込み・上限件数は検索と同じ。\n- 入力に形式の誤りがあるとき：下書きのとおり。検索と同じ入力チェックをし、エラーメッセージを画面に出して CSV は出さない。\n"
+    ],
+    "answered_by": "Junichi Noumi",
+    "answered_at": "2026-10-08T15:05:55+09:00"
+   },
+   {
+    "key": "design-authoring-generate[contract-info-download]",
+    "questions": [
+     {
+      "id": "Q-DS-CD-001",
+      "target": "specs/contract-info-download/design.md",
+      "location": "データモデル（CSV の形）、補足資料、要件 3.1",
+      "question": "CSV の 381 列の項目定義（リバースデータ）。381 列の項目の並びと、各列の取得元が必要です。 物件基本情報登録変更のときの `csv-layout-wtg070.md` と同じ形の表をいただけますか。 | No | 見出し（項目名） | 取得元（`TWTGM010`〜`TWTGM070` の列、コードマスタの名称、空 など） | あわせて次を教えてください。 1. CSV の 1 行は、契約基本情報（`TWTGM010`）の「計画基地局番号＋枝番」の 1 件でよいですか。 - 下書きの案：はい。GWTG004 の一覧の 1 行と同じ単位です（コードで確かめたこと 2）。 2. 1 件の契約に複数ある行（契約者情報 `TWTGM020`、契約支払情報 `TWTGM030`、支払金額 `TWTGM040`、契約書 `TWTGM050`）を、381 列のどの枠にどの順で入れますか。 - 例：契約者・関係者①〜⑤に `TWTGM020` を契約者番号の昇順で入れる、など。 3. `TWTGM060` は使いますか。使うなら何の表で、どの列に出しますか（コードで確かめたこと 3）。 4. 見出し行の文字は、表の「見出し（項目名）」のとおりでよいですか。 5. 書き方は物件基本情報登録変更の CSV と同じでよいですか。 - 下書きの案：`CsvUtils.defaultCsvConfig()` のとおり、カンマ区切り、改行 CRLF、全項目をダブルクォートで囲む、NULL は空文字、日付は yyyy/MM/dd（`specs/property-basic-info/design.md:394`）。 6. この定義の置き場所はどこにしますか。 - 下書きの案：契約情報取込が読む形なので、`specs/contract-info-import/csv-layout-reverse.md` に置き、契約情報取込の design が正として持ちます。本 feature の design はそれを参照し、取得元（既存の契約情報の列）の対応だけを本 feature の補足資料に置きます。",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-contract-info-download.md）"
+     },
+     {
+      "id": "Q-DS-CD-002",
+      "target": "specs/contract-info-download/design.md",
+      "location": "データモデル（論理・物理）、ファイル配置計画、要件 3.6",
+      "question": "作業用テーブル。Phase 4 の判断（指摘 6）で、作業用テーブルとその中身は design で書くことになっています。 既存に使える表は無いので（コードで確かめたこと 22）、新しく作る前提で次を教えてください。 1. テーブル名 - 下書きの案：`TWTGF100`（契約情報ダウンロード作業。`F`＝トラン。`steering/database.md` の命名） 2. 持つ列 - 下書きの案：共通列（会社コード・登録者・登録日時・更新者・更新日時・排他フラグ）、ユーザーID、出力順（Int）、計画基地局番号、枝番。一意キーは会社コード＋ユーザーID＋出力順。 - 別の案：381 列の値をそのまま持つ。 3. 使い方 - 下書きの案：ダウンロードのたびに、ログインユーザーの行を全部消す。選んだ行のキーを、並び順（コードで確かめたこと 15）の順で入れる。この表と `TWTGM010`〜`TWTGM070` を結合して CSV を作る。出力の後も行は残し、次のダウンロードで消す。 4. 同じ人が 2 つのウインドウで同時にダウンロードした場合の扱い - 下書きの案：特に防がない（後から実行した方が行を消して作り直す）。 5. DDL を作る元の DB レイアウトは、どなたが用意しますか（`steering/database.md` の「DDL の作成」）。",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-contract-info-download.md）"
+     },
+     {
+      "id": "Q-DS-CD-003",
+      "target": "specs/contract-info-download/design.md",
+      "location": "画面設計、要件 1.4",
+      "question": "一覧の 19 項目と一覧の並び順。GWTG004 の一覧は、No. とチェックボックス（対象）を除いて 45 項目あります（`pwtgo004.html:331-408`）。 このうちのどの 19 項目を出すか教えてください。 19 項目に No. とチェックボックスを含むかも教えてください。 下書きの案（No. とチェックボックスは数えない）： | 順 | 項目 | 取得元 | |---|---|---| | 1 | 基地局番号 | `TWTGM010.Kichikyoku_No` | | 2 | 枝番 | `TWTGM010.Plan_SiteID_Branch` | | 3 | 登録状態 | `P21` の名称 | | 4 | 計画基地局番号 | `TWTGM010.Keikaku_Kichikyoku_No` | | 5 | 計画基地局名 | `TWTGM010.Keikaku_Kichikyoku_Name` | | 6 | 基地局名 | `TWTGM010.Kichikyoku_Name` | | 7 | ロケーションID | `TWTBM010.LOCATION_ID` | | 8 | 代表契約局番 | `TWTGM010.Represent_Contract_No` | | 9 | 代表契約枝番 | `TWTGM010.Represent_Contract_Branch_No` | | 10 | 転貸借 | `C39` の名称 | | 11 | 都道府県 | `M05` の名称 | | 12 | 市区町村 | `M04` の名称 | | 13 | 字、番地 | `TWTGM010.ADDRESS3` | | 14 | 建物、ビル | `TWTGM010.ADDRESS4` | | 15 | 住所(ｶﾅ) | `TWTGM010.KANA` | | 16 | 契約先名/法人名 | `TWTGM020.Name` | | 17 | 契約先名/法人名(ｶﾅ) | `TWTGM020.Name_Kana` | | 18 | 契約終了日 | `TWTGM010.Contract_Finish_Date` | | 19 | 更新形態 | `P07` の名称 | あわせて次を教えてください。 1. 一覧の並び順は、GWTG004 と同じ（基地局番号・枝番の昇順。コードで確かめたこと 7）ですか。CSV と同じ（今の申請の基地局番号が先頭、枝番の降順）ですか。 - 下書きの案：CSV と同じ並び。選ぶ行と出る行の順がそろうため。 2. GWTG004 の基地局番号のリンク（変更／参照画面へ移る）は付けますか。 - 下書きの案：付けない。ラベルで表示する。",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-contract-info-download.md）"
+     },
+     {
+      "id": "Q-DS-CD-004",
+      "target": "specs/contract-info-download/design.md",
+      "location": "画面設計、要件 1.2・1.3",
+      "question": "検索条件「転貸借契約書名」の定義。「転貸借契約書名」は GWTG004 の検索条件にありません（コードで確かめたこと 5）。 1.3 の「GWTG004 と同じ定義」が使えないため、入力の形と検索のしかたを教えてください。 - 下書きの案：プルダウン（コードマスタ `WTG/PARAM/P15`。先頭は空）で、`TWTGM010.MOVE_LEASE_CONTRACT` と一致するものを出す。GWTG004 が一覧の名称に `P15` を使っているため（`Pwtgo004Mapper.xml:326-330`）。",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-contract-info-download.md）"
+     },
+     {
+      "id": "Q-DS-CD-005",
+      "target": "specs/contract-info-download/design.md",
+      "location": "バリデーション設計、要件 4.1",
+      "question": "検索条件の桁数・形式のチェック。GWTG004 はサーバーで桁も形式も見ていません（コードで確かめたこと 6）。 4.1 のため、項目ごとの条件を決める必要があります。 必須の項目はありません（Phase 4 の判断 指摘 2）。 下書きの案（桁は GWTG004 の画面の最大桁。キーは物件基本情報登録変更の design と同じ既存のもの）： | 項目 | 最大桁 | 形式 | エラーのキー | |---|---|---|---| | 計画基地局番号 | 9 | 半角英数 | 桁 `GEF-000003`・形式 `WTX-100012` | | 計画基地局名 | 120 | なし | `GEF-000003` | | 枝番 | 5 | 半角英数 | `GEF-000003`・`WTX-100012` | | 契約者番号 | 20 | 半角英数 | `GEF-000003`・`WTX-100012` | | ロケーションID | 20 | 半角英数 | `GEF-000003`・`WTX-100012` | | 代表契約局番号 | 9 | 半角英数 | `GEF-000003`・`WTX-100012` | | 代表契約枝番 | 5 | 半角英数 | `GEF-000003`・`WTX-100012` | | 建物ビル | 100 | なし | `GEF-000003` | | 基地局番号 | 9 | 半角英数 | `GEF-000003`・`WTX-100012` | | 基地局名 | 120 | なし | `GEF-000003` | | 法人名または個人名 | 60 | なし | `GEF-000003` | | 法人名または個人名（カナ） | 80 | なし（全角・半角を問わない） | `GEF-000003` | | 登録状態・転貸借・転貸借契約書名 | ― | プルダウンの値だけ（チェックしない） | ― | 1. 各項目の最大桁と形式はこれでよいですか。 2. 桁は文字数で数えますか、バイト数で数えますか。 - 下書きの案：物件基本情報登録変更の design が使う共通の桁数チェックに合わせる。 3. 注意：物件基本情報登録変更の design は `WTX-100012`（半角英数字で入力してください）と `WTCheckUtils` を既存として挙げています。ただし wing の `messages.properties` に `WTX-100012` の行は無く、`WTCheckUtils` は WTX 側（`WTX/WEB-INF/src/jp/co/kccs/wt/util/WTCheckUtils.java`）にあります。形式の誤りのキーと文言をどうするか教えてください。 - 下書きの案：物件基本情報登録変更で足すキーと同じものを使う（重ねて足さない）。",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-contract-info-download.md）"
+     },
+     {
+      "id": "Q-DS-CD-006",
+      "target": "specs/contract-info-download/design.md",
+      "location": "画面設計、状態管理、要件 1.4・1.5・3.1",
+      "question": "ページをまたいだ選択と、全選択・全解除。Phase 4 の判断（指摘 10）で、design で決めることになっています。 既存の GWTG004 は、表示中のページの選択だけを送ります（コードで確かめたこと 10）。 1. ページを移ったときに、前のページで選んだ行を覚えておきますか。 - A：覚えておく（セッションに選んだ行のキーを持ち、全ページの選んだ行を出力する） - B：覚えない（ダウンロードで出すのは表示中のページの選んだ行だけ） - 下書きの案：A。3.4 で件数の上限を設けないため。 2. 全選択・全解除のボタンは置きますか。置くなら、範囲は表示中のページだけですか、検索結果の全件ですか。 - 下書きの案：GWTG004 と同じ全選択(X)・全解除(Y) を置き、範囲は表示中のページだけ。 3. 検索し直したとき、それまでの選択は消してよいですか。 - 下書きの案：消す。",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-contract-info-download.md）"
+     },
+     {
+      "id": "Q-DS-CD-007",
+      "target": "specs/contract-info-download/design.md",
+      "location": "画面設計、性能とスケーラビリティ、要件 1.5・3.4",
+      "question": "1 ページ 100 件と、検索件数の上限。1 ページの件数と検索の上限は、コードマスタ `WTZ/PARAM/P01`・`P02` から取る作りです（コードで確かめたこと 8）。 1. 1 ページ 100 件はどう実現しますか。 - 下書きの案：`P01` にキー3＝`PWTGO100`、数値1＝100 の行を足す。既存の `selectListSize` をそのまま使う。 - 別の案：画面の中で 100 に固定し、`P01` を見ない。 2. 検索件数の上限と警告（`P02`。`DS-100024`・`DS-100025`）は、この画面の検索にも掛けますか。 - 下書きの案：GWTG004 と同じに掛ける。`P02` には本画面の行を足さず、ALL の行を使う。CSV の出力件数（3.4）には掛けない。 3. コードマスタに行を足す場合、データの登録はどなたが行いますか（DDL・データの移行の手順に入れるか）。",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-contract-info-download.md）"
+     },
+     {
+      "id": "Q-DS-CD-008",
+      "target": "specs/contract-info-download/design.md",
+      "location": "ファイル配置計画、API 契約（Controller）、セキュリティ、要件 1.1・3.1",
+      "question": "画面のボタン、プログラムID、URL、画面を使える人。1. プログラムID・機能ID・パッケージ・URL - 下書きの案：プログラムID `PWTGO100`、機能ID `WTG100`、パッケージ `function/wtg/wtg100`、URL `/wtg100`（初期表示）・`/wtg100/search`・`/wtg100/page`・`/wtg100/clear`・`/wtg100/download`。物件基本情報登録変更（`PWTGO070`・`/wtg070`）の決め方に合わせました。 2. 画面のボタン - 下書きの案：検索(F)・ｸﾘｱ(R)・全選択(X)・全解除(Y)・ﾀﾞｳﾝﾛｰﾄﾞ・閉じる。閉じるはウインドウを閉じるだけ。 3. ダウンロードした後、画面はどうしますか。 - 下書きの案：画面はそのまま（検索結果と選択を残す）。ファイルだけを受け取る。 4. 画面を使えるかの判定（`ZMENUAUTH`） - この画面は物件基本情報登録変更から別ウインドウで開くので、セッションのメニューID は物件基本情報登録変更のものになります（コードで確かめたこと 20）。 - 下書きの案：物件基本情報登録変更のメニューID ＋ `PWTGO100` の行を、物件基本情報登録変更を使える権限区分と同じだけ `ZMENUAUTH` に足す。 - この行の登録はどなたが行いますか。",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-contract-info-download.md）"
+     },
+     {
+      "id": "Q-DS-CD-009",
+      "target": "specs/contract-info-download/design.md",
+      "location": "コンポーネントとインターフェース、セキュリティ、要件 1.1・1.6・3.5",
+      "question": "受け取った申請No の扱い。1. 「今の申請の基地局番号」は、物件申請情報（`TWTGM080`）の `Kichikyoku_No` でよいですか。契約情報（`TWTGM010`）の `Kichikyoku_No` と比べます。 - 複数局の申請でも、物件申請情報の基地局番号（代表局）の 1 つだけを見る、でよいですか。契約局情報（`TWTGM140`）の全部の基地局番号は見ない、でよいですか。 - 下書きの案：どちらも、はい。 2. 開いたとき・ダウンロードのときに、その申請で契約局DL を使えるか（物件基本情報登録変更の `canOperate`。番・依頼内容・状態）を確かめ直しますか。 - 下書きの案：確かめ直さない。ボタンの出し分けと `/wtg070/keyakuDl` の判定は物件基本情報登録変更が持つため。 3. 申請No が無い、または物件申請情報に無い場合はどうしますか。 - 下書きの案：エラーにせず画面を開く。先頭にする行が無いものとして、基地局番号の順に並べる（Phase 4 の判断 指摘 5）。 4. 社外ユーザーの範囲（物件基本情報登録変更の `getExternalScope`。自社の契約稟議起案会社か本人の登録）を、受け取った申請No にも当てますか。 - 下書きの案：当てない。申請No は並び順に使うだけで、申請の内容を画面にも CSV にも出さないため。 5. 申請No は画面の隠し項目で持ちますか、セッションで持ちますか。 - 下書きの案：セッション（別ウインドウを開いたときに受け取り、検索・ページ・ダウンロードで使う）。",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-contract-info-download.md）"
+     },
+     {
+      "id": "Q-DS-CD-010",
+      "target": "specs/contract-info-download/design.md",
+      "location": "エラー処理、機能固有エラーコード、要件 3.3・4.1",
+      "question": "メッセージキーと文言。1. 1 行も選ばずにダウンロードした場合（3.3）のメッセージ - 下書きの案：既存の `GEF-000057`（{0}:対象を選択してください）を使い、{0} は「出力対象」にする。GWTG004 と同じキーです（コードで確かめたこと 11）。 - 別の案：新しいキーを `WTG-1000xx` の帯に足す。その場合は番号と文言を指定してください。 2. 入力チェックのメッセージは Q-DS-CD-005 のキーでよいですか。 3. 本画面で新しく足すメッセージキーはありませんか。 - 下書きの案：無い（0 件は共通の「該当するデータはありません」。コードで確かめたこと 9）。 ## 他の feature に関わる点 - **契約情報取込（contract-info-import）**：381 列の定義（Q-DS-CD-001）は取込の requirements 2.2 が「design で定める」としています。本 feature の design は、取込の design より先に書くことになります。定義の正を取込側に置くなら、取込の design はその表を引き継ぐ必要があります。 - **契約情報取込と物件基本情報登録変更**：取込の requirements 2.1 は「1 行目を見出し行」とします。物件基本情報登録変更の出力 CSV は見出し行が無く、1 行目が発行依頼書（188 項目）です（`specs/property-basic-info/design.md:394`）。取込の 2.2 は発行依頼書データを 228 列としています。物件基本情報登録変更の CSV が取込でそのまま読めるかは、取込の design で確かめる必要があります。本 feature の CSV には見出し行を付けます（Phase 4 の判断 指摘 8）。 - **共通部品 `CsvUtils`（物件基本情報登録変更が作る）**：物件基本情報登録変更の CSV は見出し行が無いため、見出し行を書く使い方を `save` が持つか確かめる必要があります。持たなければ、本 feature で見出し行を先頭の要素として渡すか、部品に引数を足します。 - **メッセージキーの帯**：新しいキーを `WTG-1000xx` に足す場合、物件基本情報登録変更の design の判断 3 のとおり、docs の統合で番号の重なりを確かめます。 - **`ZMENUAUTH` の登録**：別ウインドウの画面（本画面の `PWTGO100`、物件基本情報登録変更の `PWTGO073`・`PWTGO072`）は、物件基本情報登録変更のメニューID で権限を引きます。どの行を足すかを、案件全体でそろえる必要があります。 - **物件基本情報登録変更の既存キーの記載**：pbi design が既存とする `WTX-100012`・`WTX-100011`・`WTX-100005` は wing の `messages.properties` にありません（`WTX-1000xx` は `WTX-100013` の 1 行だけ。`messages.properties:401`）（`grep \"WTX-100012\"` は WTX の画面だけに該当）。pbi の実装で確かめる必要があります（Q-DS-CD-005 の 3）。 - **steering/security.md の書き方**：285 行目は既存の契約情報の絞り込みを「既存の WTB と同じ計…（全文は _handoff/questions-phase5-contract-info-download.md）",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-contract-info-download.md）"
+     }
+    ],
+    "answers": [
+     "[answer-ds-cd-20261008-1845.txt]\n回答者 Junichi Noumi\nQ-DS-CD-001〜010（contract-info-download design）の回答。2026-10-08 18:45 受領。大きな表は別ファイル（_handoff\\csv-layout-wtg100.md・_handoff\\work-tables-wtg100.md）。以下は貼り付けの原文。\n\n以下が Q-DS-CD-001〜010 の回答です。このまま記録して、契約情報ダウンロードの design を書き起こしてください。\n\n## 先に：上流から意図して外れる点（upstream-carryover に記録してください）\n次の点は、上流から意図して外れます。upstream-carryover に記録し、Phase 5 の最後にまとめて直します。\n- requirements（contract-info-download）1.3：検索条件の「代表契約局番号」と「代表契約枝番」は、GWTG004 の一致ではなく前方一致にする。「転貸借契約書名」は GWTG004 に無いので、Q-DS-CD-004 で定める。\n- requirements（contract-info-download）2.1・2.2：「計画マスタ（`TWTBM080`）」は「工事案件マスタ（`TWTBM080`）」の書き誤り。条件は「工事案件マスタに行が無い、または値のある区分に合う行がある」（コードで確かめたこと 13 の訂正）。\n- requirements（contract-info-download）4.1：サーバーでは検索条件の桁と形式のチェックをしない。画面の入力桁（maxlength）と IME の入力モードで、桁を超えて入力させないことで満たす（Q-DS-CD-005）。\n- steering security.md 285 行目（既存の契約情報の絞り込み「既存の WTB と同じ方式」）：比べる列と、値のある区分だけで絞る点は既存の WTB と同じ。ただし工事案件マスタ（`TWTBM080`）に行が無い契約情報は出す点が既存の WTB（`EXISTS` だけ）と違う。\n\n## コードで確かめたことへの訂正\n- 13：`TWTBM080` は工事案件マスタです。計画マスタは `TWTBM010` です。\n  - 条件は「工事案件マスタに行が無い、または条件に合う行がある」です。どれか 1 行が合えば出す、という考え方は案のとおりです。\n  - 結合の順は次のとおりです：契約基本情報 →（会社コード・計画基地局番号）→ 計画マスタ `TWTBM010` →（会社コード・計画基地局番号）→ 工事案件マスタ `TWTBM080`。\n  - 計画マスタに無い契約情報も、工事案件マスタの行が無いものとして出します。\n- 4：代表契約局番号と代表契約枝番は前方一致にしてください（一致ではありません）。そのほかの 13 項目は表のとおりです。\n- 22：新しい作業用テーブルの名前は `TWTGF…` ではありません。`TWTGD050`・`TWTGD060` です（Q-DS-CD-002）。\n\n## Q-DS-CD-001 CSV の 381 列\n381 列の表は `_handoff\\csv-layout-wtg100.md` に置きました。見出し、値を取る列、元の表の列の順に並べています。これを design の正とします。\n1. はい。1 行は、契約基本情報（`TWTGM010`）の「計画基地局番号＋枝番」1 件です。\n2. 契約者と支払情報は、次のように入れます。\n   - 契約者①〜⑤：`TWTGM020` から、関係_地位に「旧」を含む行を除きます。残りを契約者区分の昇順、契約者番号の昇順に並べ、1〜5 番目を入れます。\n   - 支払情報①〜④：`TWTGM030` のうち、支払有効期間TO が空の行を使います。支払内容区分の昇順に並べ、1〜4 番目を入れます。\n   - どちらも、枠を超えた行は出さず、足りない枠は空にします。\n   - `TWTGM040`・`TWTGM050` は使いません。\n3. `TWTGM060` は使いません。\n4. 見出し行の文字は、表の「見出し」の列のとおりです。\n   - 見出しは、作業用テーブル `TWTGD060` の列の表示名です（例「契約基本_計画基地局番号」「契約者①_契約者番号」「支払情報①_支払番号」）。\n   - No 6 と No 44 は、同じ見出し「契約基本_基地局名_ｶﾅ」になります。値は、No 6 が基地局名_ｶﾅ、No 44 が予備項目3 です。\n5. はい。`CsvUtils.defaultCsvConfig()` のとおりです。\n   - 日付は、表で `YYYY/MM/DD` にしている列だけをその形で出します。ほかの列は元の値のままです。\n   - 見出し行は、`CsvEntityListHandler` が `TWTGD060` の `@CsvColumn(name=…)` から出します。\n   - 0 件のときは、見出し行だけを出します。\n6. 出力の定義（`TWTGD060` の列と取得元）は、本 feature の補足資料（`specs/contract-info-download/csv-layout-wtg100.md`）に置いてください。\n   - 契約情報取込の design はすでに承認済みで、取り込む側の定義（リバースの表）を持っています。2 つの表の列の並びが同じであることを、全機能をまたいだ確認で確かめてください。\n   - 取込の design は直しません。\n\n## Q-DS-CD-002 作業用テーブル\n表は `_handoff\\work-tables-wtg100.md` に置きました。これを design の正とします。\n1. テーブルは 2 つです。\n   - `TWTGD050`（発行依頼書リバースデータ）\n   - `TWTGD060`（発行依頼書フォーマット）\n   - あわせて、ビュー `VWTGM010`（発行依頼書リバースデータビュー）を作ります。\n2. 列は次のとおりです。381 列の値をそのまま持つ形で、下書きの「別の案」に近いものです。\n   - `TWTGD050`：60 列（実行ユーザーID・データ種別・処理順・計画基地局番号・枝番・項目1〜50・検索条件 4 列・処理順2）\n   - `TWTGD060`：実行ユーザーID と、CSV の 381 列\n   - どちらも、共通列・主キー・一意キー・索引は持ちません。\n3. 使い方は次のとおりです。\n   1. 出力のたびに、ログインユーザーの行を両方のテーブルから消します。\n   2. `VWTGM010` から `TWTGD050` を作ります。\n   3. `TWTGD050` から `TWTGD060` を作ります（基本 → 契約者 → 支払の順に更新）。\n   4. `TWTGD060` を並び順で読んで、CSV にします。\n   - 行は残し、次の出力のときに消します。\n   - 消す・作る・読むは 1 つのトランザクションで行います（読み取り専用にはしません）。\n4. 同じ人が 2 つのウインドウで同時に出力した場合は、特に防ぎません。\n5. DDL（2 つのテーブルとビュー）は、別表の列定義（列名・型・桁）、「VWTGM010」、「絞り込みと処理順2」をもとに、本 feature の tasks で作ってください。\n\n## Q-DS-CD-003 一覧の 19 項目と並び順\n19 項目には、対象（チェックボックス）と No. を含みます。\n| 順 | 項目 | 取得元 | 表示 |\n|---|---|---|---|\n| 1 | 対象 | チェックボックス | 中央 |\n| 2 | No | 連番 | 5 桁 |\n| 3 | 基地局番号 | `TWTGM010.Kichikyoku_No` | 全部表示 |\n| 4 | 枝番 | `TWTGM010.Plan_SiteID_Branch` | 全部表示 |\n| 5 | 登録状態 | `P21` の「キー3:名称」 | 全部表示 |\n| 6 | 基地局名 | `TWTGM010.Kichikyoku_Name` | 20 バイト＋ツールチップ |\n| 7 | ロケーションID | `TWTBM010.LOCATION_ID` | 全部表示 |\n| 8 | 都道府県 | `TWTGM010.ADDRESS_CD1` の `M05` 名称 | 8 バイト |\n| 9 | 市区町村 | `TWTGM010.ADDRESS_CD2` の `M04` 名称 | 12 バイト＋ツールチップ |\n| 10 | 字、番地 | `TWTGM010.ADDRESS3` | 20 バイト＋ツールチップ |\n| 11 | 建物、ﾋﾞﾙ | `TWTGM010.ADDRESS4` | 20 バイト＋ツールチップ |\n| 12 | 契約先/法人名 | `TWTGM020.Name` | 20 バイト＋ツールチップ |\n| 13 | 契約先/法人名(ｶﾅ) | `TWTGM020.Name_Kana` | 同上 |\n| 14 | 契約先/所属部署名 | `TWTGM020.Belonging_Post` | 同上 |\n| 15 | 契約先/都道府県 | `TWTGM020.Address_CD1` の `M05` 名称 | 8 バイト＋ツールチップ |\n| 16 | 契約先/市区町村 | `TWTGM020.Address_CD2` の `M04` 名称 | 12 バイト＋ツールチップ |\n| 17 | 契約先/字、番地 | `TWTGM020.Address3` | 20 バイト＋ツールチップ |\n| 18 | 契約先/建物、ﾋﾞﾙ | `TWTGM020.Address4` | 同上 |\n| 19 | 受電方法 | `TWTGM010.Elect_Kind`（1:電力会社直受／2:ﾃﾅﾝﾄ受電／3:ａｕ受電） | 20 バイト＋ツールチップ |\n- 「契約先/…」の 7 項目は、GWTG004 と同じ取り方です（`Pwtgo004Service` の契約者の整理）。契約者区分 1 の行のうち、契約者番号の降順で先頭の 1 行を使います。\n1. 一覧の並びは GWTG004 と同じです。\n   - 並びのキー（すべて昇順）：会社コード・基地局番号・枝番・基地局名・契約者名・住居の都道府県コード・市区町村コード・字地番・建物ビル。\n   - 今の申請の基地局番号を先頭にするのは、CSV だけです。\n2. 基地局番号のリンクは付けず、ラベルで表示します。\n\n## Q-DS-CD-004 転貸借契約書名\n案のとおりです。\n- コンボボックスで、コードマスタ `WTG/PARAM/P15` の「キー3:名称」を表示順に出し、先頭は空にします。\n- `TWTGM010.MOVE_LEASE_CONTRACT` と一致する行を検索します。\n\n## Q-DS-CD-005 検索条件の桁数・形式のチェック\nサーバーでは、検索条件の桁数・形式のチェックをしません。\n- サーバーで行う入力チェックは、出力のときの未選択チェック（GEF-000057）だけです。\n- 検索条件は、画面の入力桁（maxlength）と IME の入力モードで制限します。\n- 要件 4.1 は、画面で桁を超えて入力させないことで満たします（先頭の「意図して外れる点」）。\n\n| 項目 | 入力桁 | IME |\n|---|---|---|\n| 計画基地局番号 | 9 | 半角英数 |\n| 計画基地局名 | 120 | ひらがな |\n| 枝番 | 5 | 半角英数 |\n| 契約者番号 | 20 | 半角英数 |\n| ロケーションID | 20 | 半角英数 |\n| 代表契約局番 | 9 | 半角英数 |\n| 代表契約枝番 | 5 | 半角英数 |\n| 建物、ﾋﾞﾙ | 100 | ひらがな |\n| 基地局番号 | 9 | 半角英数 |\n| 基地局名 | 120 | ひらがな |\n| 法人名/個人名 | 60 | ひらがな |\n| 法人名/個人名(ｶﾅ) | 80 | ひらがな |\n| 登録状態・転貸借・転貸借契約書名 | コンボ | ― |\n1. 桁は表のとおりです。形式のチェックはしません。\n2. サーバーでチェックしないので、文字数かバイト数かは問いません。画面の maxlength で数えます。\n3. 形式のチェックをしないので、`WTX-100012` は本 feature では使いません。\n\n## Q-DS-CD-006 ページをまたいだ選択と全選択・全解除\n1. B（覚えない）です。出力するのは、表示中のページで選んだ行だけです。\n2. 全選択(X)・全解除(Y) を置きます。範囲は、表示中のページだけです。\n3. 検索し直したときやページを移ったときは、それまでの選択を残しません。\n\n## Q-DS-CD-007 1 ページ 100 件と検索件数の上限\n1. 案のとおりです。\n   - コードマスタ `WTZ/PARAM/P01` に、次の行を足します：キー3＝`PWTGO100`、名称「[GWTG100]契約情報ﾀﾞｳﾝﾛｰﾄﾞ画面」、表示順 55、数値1＝100。\n   - 件数は `selectListSize` で取ります。\n2. この画面の検索には、件数の上限と警告（`P02`・`DS-100024`・`DS-100025`）を掛けません。CSV の件数にも上限はありません。\n3. 投入の文と手順は本 feature の tasks で作り、投入は発注者が導入手順書に沿って行います。\n\n## Q-DS-CD-008 ボタン・プログラムID・URL・画面を使える人\n1. プログラムID・パッケージ・URL は次のとおりです。\n   - プログラムID は `PWTGO100` です（`@FuncID(\"PWTGO100\")`）。\n   - パッケージは `function/wtg/wtg100` です（`@RequestMapping(\"/wtg100\")`）。\n   - URL：\n     - `\"\"`（初期表示。GET/POST。パラメータ `FunctionID` と申請No）\n     - `search`\n     - `page`（パラメータ `selectPage`）\n     - `clear`\n     - `csv`（出力。`download` ではありません）\n   - 物件基本情報登録変更は、`/wtg100?FunctionID=WTG100` に申請No を足して、ポップアップで開きます。\n   - CSRF の照合設定は変えません。\n2. ボタンは 検索(F)・ｸﾘｱ(R)・全選択(X)・全解除(Y)・出力(E) の 5 つです。閉じるボタンは置きません（ウインドウはブラウザーで閉じます）。\n3. 出力の後も、画面はそのままです（検索結果と選択を残します）。\n   - 未選択でエラーのときは、検索結果を残したまま同じ画面にエラーを出し、CSV は返しません。\n4. 案のとおりです。\n   - 物件基本情報登録変更を開くメニューのメニューID と `PWTGO100` の組を、`ZMENUAUTH` に足します。\n   - 足す数は、物件基本情報登録変更を使える権限区分と同じだけです。\n   - 投入の文と手順は本 feature の tasks で作り、投入は発注者が導入手順書に沿って行います（7 の 3 と同じ）。\n\n## Q-DS-CD-009 受け取った申請No の扱い\n1. はい。\n   - `TWTGM080` を、会社コード＝ログイン会社、申請No＝受け取った申請No で引いて、`Kichikyoku_No` を取ります。\n   - この値と、契約情報の基地局番号（`TWTGM010.Kichikyoku_No`）を比べます。\n   - 複数局の申請でも、見るのは `TWTGM080` の基地局番号 1 つだけです。`TWTGM140` は見ません。\n   - 並びは次のように作ってください。同じ行を 2 回出さないためです。\n     `ORDER BY CASE WHEN 基地局番号 = (上の値) THEN 1 ELSE 2 END, 基地局番号 昇順, 枝番 降順, 基地局名, 契約者①の法人名/個人名, 住居の都道府県コード・市区町村コード・字地番・建物ビル`\n2. 開いたとき・出力のときに、その申請で使えるかを確かめ直しはしません。\n3. 申請No が無い、または物件申請情報に無いときは、エラーにせず画面を開きます。先頭にする行が無いものとして並べます。\n4. 社外ユーザーの範囲は当てません。\n5. 申請No は、画面の隠し項目で持ちます（`FunctionID` と同じ持ち方）。出力のときに、フォームと一緒に送ります。\n\n## Q-DS-CD-010 メッセージ\n1. 既存の `GEF-000057` を使い、{0} は「対象」にします。GWTG004 と同じで、表示は「対象:対象を選択してください」です。\n2. 入力チェックのメッセージはありません（Q-DS-CD-005）。\n3. 新しく足すメッセージキーはありません。検索が 0 件のときは、共通の「該当するデータはありません」を出します。\n\n## 他の feature に関わる点について\n- 381 列の定義：上の Q-DS-CD-001 の 6 のとおりです。\n- 物件基本情報登録変更の CSV が取込で読めるか：契約情報取込の design で扱い済みです（upstream-carryover に記録済み）。\n- `CsvUtils` の見出し行：部品に引数は足しません。`CsvEntityListHandler` の見出しの出力を使います。0 件のときは、空の要素を 1 つ渡して見出し行だけを出します。\n- pbi の `WTX-100012` の件：本 feature では使わないので、関係しません。\n- `ZMENUAUTH` の登録：Q-DS-CD-008 の 4 のとおりです。\n- steering security.md 285 行目：先頭の「意図して外れる点」に入れました。\n"
+    ],
+    "answered_by": "Junichi Noumi",
+    "answered_at": "2026-10-08T18:46:37+09:00"
+   },
+   {
+    "key": "design-authoring-generate[contract-info-import]",
+    "questions": [
+     {
+      "id": "Q-DS-CI-001",
+      "target": "specs/contract-info-import/design.md",
+      "location": "データ契約と外部連携、補足資料、要件 2.1・2.2・4.3",
+      "question": "リバースデータ（381 列）の項目定義。`csv-layout-wtg070.md` には 188 項目と 228 項目しかありません。 381 列の項目定義が、承認済みの文書のどこにもありません。 `csv-layout-wtg070.md` と同じ形の資料をいただけますか。 | No | 項目名 | 入れる先（`TWTGM140` の列／`TWTGM100` の列／保存しない） | 名称で入るか、コードで入るか | - 「マイナンバーを受け取った日」は 228 列には無いので、381 列にある列と考えています。テーブルには保存しない（`steering/security.md`）ので、「保存しない」の列になります。 - 重複の検査に使う「計画基地局番号」（4.3）の列番号も必要です。",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-contract-info-import.md）"
+     },
+     {
+      "id": "Q-DS-CI-002",
+      "target": "specs/contract-info-import/design.md",
+      "location": "データ契約と外部連携、要件 2.1・2.2・2.5",
+      "question": "発行依頼書データ（228 列）と、物件基本情報登録変更の出力 CSV との違い。食い違いがあり、design だけでは決められません。 - 取込の要件 2.1：1 行目は見出し行、2 行目からが契約局 1 件ずつ。 - pbi design の出力 CSV：見出し行は無く、1 行目が発行依頼書（188 項目）、2 行目からが契約局（228 項目）。pbi design は「契約情報取込で読める形」と書いています。 どれにしますか。 - A：発行依頼書データは「1 行目が見出し行＋2 行目から 228 項目」の別のファイルとする。出力 CSV はそのままでは取り込めない。 - B：出力 CSV をそのまま取り込めるようにする。1 行目（188 項目）は見出し行として読み飛ばし、列の数も確かめない。1 行目の発行依頼書の内容は使わない（2.5 のとおり、最初の契約局の行から作る）。 - C：その他（具体的に） あわせて、見出し行の列の数も確かめるか（既存は確かめて `WTG-000036`。コード #9）を教えてください。",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-contract-info-import.md）"
+     },
+     {
+      "id": "Q-DS-CI-003",
+      "target": "specs/contract-info-import/design.md",
+      "location": "データモデル、バッチ / ジョブ契約、要件 2.4・2.5",
+      "question": "ファイルの値をテーブルの列に入れる決まり。`csv-layout-wtg070.md` は出す向きの定義です。取り込む向きで、次を決める必要があります。 1. コード値の列（都道府県・契約種別・税区分など）は、ファイルの名称をコードマスタで引いてコードにするか。 - 下書きの案：既存の取込と同じく名称で引く（コード #11）。`TWTGM140` に名称の列（例「契約種別名」）があれば、名称もそのまま入れる。名称が無ければ `WTG-000072`。 2. `TWTGM140` の計画基地局番号（必須の列）は、228 列に無い。どう入れるか。 - 下書きの案：基地局番号で計画マスタ（BM010）を引いて入れる（pbi の画面と同じ）。 3. ファイルに無い列を、洗替の前の値から引き継ぐか、空にするか。 - `TWTGM140`：一時保存フラグ・物件名ほか - `TWTGM100`：188 項目のうち 228 列に無いもの（例：作成組織、発送先、支払の項目） - 下書きの案：一時保存フラグは \"0\"。ほかは表で指定してください。 4. `TWTGM100` に、最初のデータ行のどの列を入れるか（2.5）。 - 下書きの案：項目名が同じ列（関係者①〜⑤、案件グループ、その他①〜④ など）を入れる。対応表をいただけるとそのまま書きます。 5. ファイルの 1 列目の稟議バーコードNo は使わず、2.6 で付け直す、でよいか。",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-contract-info-import.md）"
+     },
+     {
+      "id": "Q-DS-CI-004",
+      "target": "specs/contract-info-import/design.md",
+      "location": "バッチ / ジョブ契約、要件 2.6",
+      "question": "稟議バーコードNo の付け方（2.6）。1. 組み立ては、発行依頼書登録変更の発番（`specs/issue-request/requirements.md` の 3.2）と同じでよいか。 - 基地局番号＋\"-\"＋エリア接頭語（担当エリアで `P34` を引いた文字項目1）＋受付No＋\"-\"＋契約区分 2. 受付No が空のとき（発番の前の起案者の取込）はどうするか。 - 下書きの案：稟議バーコードNo を空（NULL）にする。発番で付く。",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-contract-info-import.md）"
+     },
+     {
+      "id": "Q-DS-CI-005",
+      "target": "specs/contract-info-import/design.md",
+      "location": "バッチ / ジョブ契約、データ契約、要件 2.7・2.8",
+      "question": "物件申請情報（TWTGM080）の、状態と単独複数局フラグ以外の更新。1. 取込の後に、物件申請情報の基地局番号・計画基地局番号・基地局名などを、連番 1 の契約局に合わせて書き換えるか。 - 書き換えないと、pbi の「更新」で `WTG-100019`（連番 1 と一致しない）が出ることがあります。 - 下書きの案：書き換えない（物件申請情報の項目は物件基本情報登録変更画面で直す）。 2. 更新者名（`UpdatedPerson_Name`）に何を入れるか。 - 下書きの案：タスクを登録した人のユーザー名（ユーザー管理マスタで引く）。",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-contract-info-import.md）"
+     },
+     {
+      "id": "Q-DS-CI-006",
+      "target": "specs/contract-info-import/design.md",
+      "location": "バッチ / ジョブ契約、状態管理、要件 1.7・1.8・2.7",
+      "question": "多重実行の防ぎ方（1.8）と、取込中にする時期。タスクを登録してから、バッチが動き出すまでに間があります。 バッチが動き出してから取込中（06）にすると、その間に同じ申請No のタスクがもう 1 件登録できます。 どれにしますか。 - A：画面がタスクを登録するときに、同じトランザクションで状態を取込中（06）にする。取込中なら実行を受け付けない。バッチは終わったら元に戻す。 - B：画面は、同じ申請No の待機中・処理中のタスク（`STaskList`）があれば実行を受け付けない。取込中にするのはバッチが動き出したとき。 - C：その他（具体的に） あわせて教えてください。 1. 元に戻す「元の状態」をどこに持つか。 - 下書きの案：タスクのパラメータに元の状態区分を入れる。 2. バッチが動き出したときに、申請の審査フェーズ・状態が 14.5 の条件をまだ満たすかを確かめ直すか（B のときに必要）。 3. 実行を受け付けないときのメッセージ。 - 下書きの案：番・状態が合わないときは pbi と同じ `WTG-100030`。取込中のときは新しいキー（文言は Q-DS-CI-012）。",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-contract-info-import.md）"
+     },
+     {
+      "id": "Q-DS-CI-007",
+      "target": "specs/contract-info-import/design.md",
+      "location": "バッチ / ジョブ契約（失敗時の復旧手順）、要件 2.7",
+      "question": "取込中（06）のまま残ったときの戻し方。バッチのエンジンが止まった、タスクが消えた、などで元に戻す更新が動かないと、申請は取込中のまま、どの操作も受け付けません（pbi の 6.4）。 戻す手順をどうしますか。 - A：運用で DB を直接直す（手順は導入手順書・運用手順に書く）。 - B：画面に戻す手段を作る（requirements に無いので要件の追加になります）。 - C：その他（具体的に）",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-contract-info-import.md）"
+     },
+     {
+      "id": "Q-DS-CI-008",
+      "target": "specs/contract-info-import/design.md",
+      "location": "データモデル、バッチ / ジョブ契約、要件 3.1・3.2",
+      "question": "変更履歴とトラン（3.1・3.2）。1. 「トラン」のテーブル名と列。 - 下書きの案：`TWTGM100`・`TWTGM140` と同じ列に、タスクの ID を足した新しいトラン（種別 F。例 `TWTGF100`・`TWTGF140`）。使い終わったら消す。 2. 洗替の前と後の行を、何で突き合わせるか。 - 洗替で連番が付け直されるため、連番で比べると、並びが変わっただけの行も「変わった」になります。 - 下書きの案：`TWTGM140` は計画基地局番号（または基地局番号＋枝番）で突き合わせる。`TWTGM100` は申請No で 1 行どうし。 3. 洗替で無くなった行（前にあって後に無い）は、取込前の内容を履歴に登録するか。新しく増えた行は登録しない、でよいか。 4. 比べる列は、発行依頼書登録変更と同じ範囲（`TWTGA130` は契約区分以降、`TWTGA150` は申請No 以降。issue-request の 7.1・7.2）でよいか。 5. 履歴の行の付帯の列（履歴の連番・変更日時・変更者・変更の種類など）に、取込では何を入れるか。 - 列の定義は issue-request の design が持つ前提です。「取込による変更」と分かる値を入れるかを教えてください。",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-contract-info-import.md）"
+     },
+     {
+      "id": "Q-DS-CI-009",
+      "target": "specs/contract-info-import/design.md",
+      "location": "データモデル、要件 2.9",
+      "question": "契約文書情報（TWTGM110）の消し方（2.9）。pbi design は `TWTGM110` を「行は物理削除しない。有効・無効は削除フラグで表す」としています。 取込の 2.9 は「行を消さなければならない」です。 どちらにしますか。 - A：物理削除する（取込だけの例外とし、pbi design の記述と並べて書く）。 - B：削除フラグを \"1\"（無効）にする。 - C：その他（具体的に）",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-contract-info-import.md）"
+     },
+     {
+      "id": "Q-DS-CI-010",
+      "target": "specs/contract-info-import/design.md",
+      "location": "バリデーション設計、要件 4.2・4.3",
+      "question": "区分 3 の列ごとの検査（必須・桁・形式・コードの存在）。発行依頼書登録変更の入力チェック（issue-request の要件 9）が基準ですが、issue-request の design はまだありません。 列ごとの検査をどこから決めますか。 - A：列ごとの検査の表をいただく（コード #10 の形：項目名・必須・桁・文字種・日付形式）。 - B：桁・型は `TWTGM140`・`TWTGM100` の列の定義から、必須は issue-request の 9.2〜9.4 から、コードの存在は名称で引けるかで決める。表は design で作り、レビューで確かめていただく。 - C：その他（具体的に） あわせて、重複の検査（4.3）の比べ方を教えてください。 - 下書きの案：基地局番号は「基地局番号＋枝番」で比べる。2 行目以降で前の行と同じなら、その行をエラーにする。",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-contract-info-import.md）"
+     },
+     {
+      "id": "Q-DS-CI-011",
+      "target": "specs/contract-info-import/design.md",
+      "location": "バリデーション設計、要件 4.4・4.6",
+      "question": "整合の検査の全部（4.4）と、郵便番号と住所の警告（4.6）。requirements は「検査の全部は design で定める」としています。次の一覧をいただけますか。 1. KDDI転貸借契約書と契約種別の組合せ：許す組合せ（または許さない組合せ）の表 2. 日付の前後：開始と終了の組の一覧（例：契約期間_開始日と終了日、転貸借_契約開始日と ? ） 3. 組で入れる項目：組の一覧（例：調整額と調整理由。既存の `WTG-000084` と同じ考え方か） 4. 郵便番号と住所の警告（4.6） - 対象の列（関係者①〜⑤の郵便番号と都道府県・市区町村？ 契約局の住所？） - 比べ方（住所マスタ ZM400 を郵便番号で引き、都道府県と市区町村の名称が一致するか、など）",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-contract-info-import.md）"
+     },
+     {
+      "id": "Q-DS-CI-012",
+      "target": "specs/contract-info-import/design.md",
+      "location": "機能固有エラーコード、ログ、要件 4.5〜4.8",
+      "question": "エラー・警告・件数のメッセージ。1. 行番号つきのエラーは、既存のキー（コード #12）を使ってよいか。新しいキーが要るものは、番号と種別と文言を教えてください。 - 下書きの案で新しく要りそうなもの：ファイル内の基地局番号の重複、ファイル内の計画基地局番号の重複、KDDI転貸借契約書と契約種別の組合せ、日付の前後、組で入れる項目、郵便番号と住所の不一致（警告）、取込中の申請への実行（画面） - 番号は pbi と同じ `WTG-1000xx` の帯でよいか。 2. 新しいキーは、wing の `messages.properties` と、バッチが読む JAVA-KIT の DB（コード #13）の両方に入れる、でよいか。 3. エラーの文に、ファイルの値を入れてよいか。 - 既存の `WTG-000072` は値を入れます（コード #11）。 - 契約者の氏名・住所・連絡先はログに出しません（`steering/non-functional.md`）。マイナンバーを受け取った日の出し方は本 design で決めます（`steering/security.md`）。 - 下書きの案：個人情報の列とマイナンバーを受け取った日は、行番号と項目名だけを出し、値は出さない。ほかの列は既存どおり値を出す。 4. 件数のメッセージの文言。 - 下書きの案：「契約情報ﾃﾞｰﾀ {0}件 取込みました（正常：{1}件 /異常：{2}件）」。件数の単位はデータ行（契約局）の数。 5. 警告だけで終わったときの終了の状態。 - 下書きの案：警告終了（`CODE_WARNING`。一覧で「警告終了」。コード #15）。 6. エラーが詳細の表示の上限（`P14/DISPLAY_LIMIT`。コード #16）を超えたときは、上限までの表示でよいか。",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-contract-info-import.md）"
+     },
+     {
+      "id": "Q-DS-CI-013",
+      "target": "specs/contract-info-import/design.md",
+      "location": "ファイル配置計画、変更する既存ファイル、要件 2.11",
+      "question": "取り込んだファイルの保存（2.11）。既存の取込バッチは、処理の後に取込ファイルを消します（コード #6）。 1. 保存先とファイル名。 - 下書きの案：pbi の契約稟議ファイルと同じ形で、`swf.upload.directory.root`＋新しいキー（例 `swf.upload.directory.wtg090=/wtg/wtg090`）＋`/{申請No}` に、「申請No_yyyyMMddHHmmss_元のファイル名」で置く。 2. エラーで全件取り消したときも保存するか。 3. 保存したファイルを消す時期（世代・日数）を決めるか。 - 下書きの案：消さない（既存 WiNG の運用に従う）。 4. アップロードの出力コードは `PWTGB090` でよいか（`TZZZM026` に行が要ります。コード #4）。",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-contract-info-import.md）"
+     },
+     {
+      "id": "Q-DS-CI-014",
+      "target": "specs/contract-info-import/design.md",
+      "location": "移行方針、移行対象ファイル一覧",
+      "question": "導入時に登録するタスクとマスタの値。新しいタスクと画面を動かすには、次の行が DB に要ります。値と、誰が投入するか（pbi と同じく導入手順書に沿って発注者が投入する、でよいか）を教えてください。 | 登録先 | 要るもの | 下書きの案 | |---|---|---| | `SBatchInfo`・`SLocalization` | タスクID（GUID）、キュー、タスク名 | タスク名「契約情報取込」。キューは既存の WTG の取込（PWTGB040 など）と同じ | | `TZZZM026` | 出力コード `PWTGB090` の出力先 | 既存の `PWTGB040` と同じ出力先 | | `ZMENUAUTH` | プログラム `PWTGO090` を使える会社とメニュー | GWTG070 を使える権限と同じ | | VE の定義 | 取込バッチが使う VE（`TWTGM080`・`TWTGM100`・`TWTGM140`・`TWTGM110`・`TWTGA130`・`TWTGA150`・トラン・コードマスタ・計画マスタ） | VE の ID は誰が払い出すか | | JAVA-KIT のメッセージ | Q-DS-CI-012 の新しいキー | ― | キューの多重度（同じキューのタスクを 1 件ずつ動かすか）が分かれば、Q-DS-CI-006 の設計に使います。",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-contract-info-import.md）"
+     },
+     {
+      "id": "Q-DS-CI-015",
+      "target": "specs/contract-info-import/design.md",
+      "location": "API 契約（Controller）、ファイル配置計画、要件 1.1〜1.7",
+      "question": "取込画面（GWTG090）の動き。1. プログラムID は `PWTGO090`、パッケージは `function/wtg/wtg090/` でよいか。 2. GWTG070 から渡された値（14.6）を、画面のあいだどこに持つか。 - 下書きの案：申請No だけをセッションに置き、実行のときに申請No で物件申請情報と発行依頼書を引き直す。番・状態の判定（1.7）は WTG 申請状態サービスの `canOperate`（契約局取込）で行う。引き直すので、画面の隠し項目を書き換えられても影響しない。 - 引き直さずに渡された値をそのまま使う方がよければ、そう教えてください。 3. ファイルの種類の部品と値。 - 下書きの案：ラジオボタン。値は \"1\"：リバースデータ（初期値）、\"2\"：発行依頼書データ。コードマスタは作らない。 4. 各ボタンの動き。 | ボタン | 下書きの案 | |---|---| | 参照 | ファイルを選ぶ（ブラウザのファイル選択） | | 実行 | 「実行します。よろしいですか？」で確かめ、`/wtg090/execute` へ送る。タスクを登録して、物件契約情報申請状況検索一覧（GWTG060）へ移る | | クリア | ファイルの選択を消し、ファイルの種類をリバースデータに戻す | | 処理状況 | `/zzz010/` へ。戻り先は `/wtg090/return` で、戻ったら同じ申請No で取込画面を出し直す | | 戻る | 物件基本情報登録変更画面へ戻る（pbi の `/wtg070/return`。セッションの申請No で出し直す） | 5. 実行の後に移る GWTG060 は、どの検索条件で出すか。 - 下書きの案：pbi の `/wtg070/returnList` と同じく、セッションに置いた一覧の検索条件で再検索する。 6. タスクのパラメータに何を入れ、どれを一覧に出すか（`g_` の付くものだけ一覧に出ます。コード #17）。 - 下書きの案：保存したファイル名、ファイルの種類、申請No、元の状態区分、14.6 の値。一覧には `g_FileName`（元のファイル名）と `g_ApplicationNo`（申請No）を出す。 7. ファイルの種類が未選択のとき（ラジオで初期値があるので起きない想定）のメッセージは要るか。",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-contract-info-import.md）"
+     }
+    ],
+    "answers": [
+     "[answer-ds-ci-20261008-1551.txt]\n回答者 Junichi Noumi\nQ-DS-CI-001〜015（contract-info-import design）の回答。2026-10-08 15:51 受領。大きな表は別ファイル（_handoff\\phase5-contract-info-import-reverse-381.md・_handoff\\phase5-contract-info-import-mapping.md・_handoff\\phase5-contract-info-import-checks.md）。\n\n以下が Q-DS-CI-001〜015 の回答です。このまま記録して、契約情報取込の design を書き起こしてください。\n\n## 先に：上流から意図して外れる点（upstream-carryover に記録してください）\n次の点は、上流の文書から意図して外れます。upstream-carryover に記録し、Phase 5 の最後にまとめて直します。\n- 物件基本情報登録変更の design（391 行目付近）：「契約情報取込で読める形」とあるが、出力 CSV（見出し行なし、1 行目 188 列）はそのままでは取り込めない（requirements 2.1 は 1 行目が見出し行）。2 行目以降の 228 列が取込の 228 列と同じ並び、と直す。取込の側は requirements 2.1 のとおり（Q-DS-CI-002）\n- steering non-functional.md（ログに住所を出さない）：取込の警告 WTG-200009 と WTG-000072 の警告は、行番号と一緒に郵便番号・都道府県・市区町村・字、番地の値をバッチ処理状況の詳細に出す（利用者が直す行を見つけるため。Q-DS-CI-012）\n- steering security.md（担当者の氏名は機密）：取込のタスクのパラメータに申請者と起案者の氏名を入れ、バッチ処理状況一覧に出る（Q-DS-CI-015 の 6）\n\n## Q-DS-CI-001 リバースデータ（381 列）の項目定義\n\n_handoff\\phase5-contract-info-import-reverse-381.md に置きました。No・項目名・型・バイト数・必須・入れる先（TWTGM140 の列／TWTGM100 の列）の表です。\n\n- 列の並びと見出しは、contract-info-download の _handoff\\csv-layout-wtg100.md と同じです（ダウンロードで出したファイルをそのまま取り込む）。見出しの文字は一部違いますが（「ｶﾅ」と「カナ」、No.44）、取込は見出しの文字を見ないので問題ありません。\n- 入れる先が空の列（250 列）は取り込みません。どのテーブルにも保存しません。\n- マイナンバーを受け取った日は No.68・95・122・149・176（契約者①〜⑤_ﾏｲﾅﾝﾊﾞｰ受領日）です。保存しません。検査もしません。メッセージにもログにも値を出しません。\n- 重複の検査に使う計画基地局番号は No.1（契約基本_計画基地局番号）です。\n- 名称で入るかコードで入るか：リバースデータはコードの列（都道府県ｺｰﾄﾞ・市区町村ｺｰﾄﾞなど）はコードのまま入れます。名称の列（関係_地位、法人_個人区分、都道府県、市区町村など）は名称でコードマスタを引いてコードを入れ、名称の列には名称をそのまま入れます。どれを引くかは mapping.md の「(n)」で示しています。\n- リバースデータに無い列は入れません（NULL）。発行依頼書情報は、ほとんどの列が NULL になります（mapping.md の 2 のリバースデータの列で「―」のもの）。\n\n## Q-DS-CI-002 発行依頼書データ（228 列）と出力 CSV の違い\n\n**A** です。発行依頼書データは「1 行目が見出し行、2 行目から 1 行 228 列」のファイルです。物件基本情報登録変更の出力 CSV（見出し行なし、1 行目 188 列）は、そのままでは取り込めません。\n\n- 見出し行も列の数を確かめます。228 列（リバースデータは 381 列）でなければ `ZZZ-000056`（ファイル形式が違います）で止めます。見出し行は列の数だけを確かめ、値は確かめません。\n- 出力 CSV を取り込むには、1 行目（188 列）を 228 列の見出し行に置き換える必要があります。2 行目以降の 228 列は、そのまま取込の 228 列と同じ並びです。\n- 発行依頼書情報は、最初のデータ行（ファイルの 2 行目）から作ります（2.5 のとおり）。\n\n## Q-DS-CI-003 ファイルの値をテーブルの列に入れる決まり\n\n列ごとの決まりは _handoff\\phase5-contract-info-import-mapping.md に置きました。要点は次のとおりです。\n\n1. はい、下書きのとおりです。コードの列は、ファイルの名称でコードマスタを引いてキー3 を入れます。名称の列（「〜名」「(ﾌﾘｰﾌｫｰﾑ)」）にはファイルの名称をそのまま入れます。名称が引けないときは、検査の段階で `WTG-000072` になります（取り込まない）。\n2. はい、下書きのとおりです。発行依頼書データでは、契約基地局番号で計画マスタ（BM010）を引き、計画基地局番号・計画基地局名・基地局名・基地局名(ｶﾅ) を入れます（ｶﾅは半角ｶﾀｶﾅにする）。リバースデータでは計画基地局番号はファイルの値を入れ、基地局名などは計画マスタから入れます。\n3. 洗替の前の値は、次のものだけを引き継ぎます。ほかのファイルに無い列は NULL です。\n   - TWTGM140：引き継ぐ列は無い。一時保存フラグは \"0\"。\n   - TWTGM100：担当エリア・担当エリア名は洗替の前の TWTGM100 から。契約稟議起案者の会社コード・所属名①②・氏名は、物件基本情報登録変更画面から渡された値（requirements 2.5。会社名は会社コードで P26 を引く）。リバースデータのときは起案者の列は入れない。一時保存フラグは \"0\"。\n     - mapping.md の 2 の No.348・350〜352 にある「(40)GM100．…」（洗替の前の値）は、この渡された値に読み替えてください。渡される値は物件基本情報登録変更画面が洗替の前の TWTGM100 から出したものなので、中身は同じです。\n   - TWTGM100 の申請No・受付No・申請者は、物件基本情報登録変更画面から渡された値。\n   - TWTGM100 の契約区分：申請の審査フェーズが未起案(00)・起案済(01)のときは、計画基地局番号で工事案件マスタ（BM080、主幹部署 \"B02\"）が引ければ \"003\"（鉄道）。引けなければ既存の共通部品 WTKeikakuJudgeUtils.chkKichikyoku（X-11）で、返り値が \"S\" か \"D\" なら \"001\"（オープン）、ほかは \"002\"（屋内）。値は P78 のキー3。それ以外の審査フェーズのときは、渡された契約区分。\n4. mapping.md の 2（TWTGM100）の表のとおりです。発行依頼書データとリバースデータで分けて書いています。\n5. はい。ファイルの 1 列目の稟議バーコードNo は使わず、2.6 で付け直します。\n\n## Q-DS-CI-004 稟議バーコードNo の付け方\n\n1. はい。issue-request の 3.2 と同じです。契約基地局番号＋\"-\"＋エリア接頭語（渡された担当エリアで P34 を引いた文字項目1）＋受付No＋\"-\"＋契約区分（渡された値）。\n2. 受付No が空のとき（発番の前）は NULL です。下書きのとおりです。\n3. リバースデータのときは稟議バーコードNo を入れません（NULL）。\n\n## Q-DS-CI-005 物件申請情報（TWTGM080）の更新\n\n1. **書き換えます**。取込の終わりに、最初のデータ行の基地局番号（発行依頼書データは契約基地局番号、リバースデータは契約基本_基地局番号）で計画マスタ（BM010）を引き、計画基地局番号・計画基地局名・基地局番号・基地局名・基地局名(ｶﾅ)・エリアコードを入れ直します。単独複数局フラグ（データ行が 2 行以上なら \"1\"、1 行なら \"0\"）も同じ更新で入れます。\n2. 更新者名は、タスクを登録した人のユーザー名（ユーザー管理マスタで引く）。下書きのとおりです。取込中にする更新と元に戻す更新でも、更新者・更新日時・更新者名を入れます。\n\n## Q-DS-CI-006 多重実行の防ぎ方と、取込中にする時期\n\n**B** にしてください。取込中（06）にするのは、バッチが動き出したときです。\n\n- 画面：実行のときに、同じ申請No の待機中・処理中のタスク（`STaskList`）があれば受け付けません。\n- バッチ：動き出したときに状態区分を読み、すでに取込中（06）なら何も変えずにエラーで終わります（元に戻す更新もしない）。\n1. 元の状態は、バッチが動き出したときに読んだ状態区分を、バッチの中で持ちます。タスクのパラメータには入れません。\n2. 審査フェーズ・状態（14.5）は確かめ直しません。\n3. 番・状態が合わないとき、同じ申請No のタスクがあるときは、どちらも `WTG-100030` で同じ画面に戻してください。新しいキーは作りません。\n\n## Q-DS-CI-007 取込中のまま残ったときの戻し方\n\n**A** です。運用で DB を直して戻します（導入手順書・運用手順に書く）。画面の手段は作りません。\nバッチの本体がエラーで止まったときは、元に戻す更新が必ず動くようにしてください（本体と別のトランザクションで、本体の結果によらず実行する）。\n\n## Q-DS-CI-008 変更履歴とトラン\n\n1. トランは **TWTGV050（契約局情報ﾄﾗﾝ）と TWTGV030（発行依頼書情報ﾄﾗﾝ）** です。新しく作るのではなく、発行依頼書登録変更（issue-request）と同じテーブルを使います。\n   - 列は TWTGM140・TWTGM100 と同じです。タスクの ID の列はありません。主キーは無く、一意キーは TWTGV050＝会社コード＋申請No＋連番＋計画基地局番号、TWTGV030＝会社コード＋申請No。列の定義は issue-request の design に置きます。\n   - 使い終わっても消しません。取込のはじめに、その申請No のトランの行を消してから、洗替の前の TWTGM140・TWTGM100 をそのまま写します（DELETE→INSERT）。\n2. 連番で突き合わせます。並びが変わった行も「変わった」として履歴に入ります。\n3. 前にあって後に無い行、後にだけある行は、どちらも履歴に登録しません。両方にある連番の行で、内容が違うものだけ登録します。\n4. はい。TWTGA150 は申請No 以降、TWTGA130 は契約区分以降を比べます（登録者・登録日時・更新者・更新日時・排他フラグは比べない）。\n5. 付帯の列はありません。履歴の行は、トランの行（洗替の前の行）の全列をそのまま入れます。登録者・更新日時なども前の行の値のままです。「取込による変更」と分かる値は入れません。\n\n処理の順は次のとおりです。\nTWTGV050 の洗替 → TWTGV030 の洗替 → TWTGM140 を削除 → TWTGM100 を削除 → データ行ごとに TWTGM140 を登録（最初のデータ行で TWTGM100 も登録）→ TWTGA150 に登録 → TWTGA130 に登録 → TWTGM110 を削除 → TWTGM080 を更新。\n\n## Q-DS-CI-009 契約文書情報（TWTGM110）の消し方\n\n**A** です。物理削除します。取込の後に、その申請No の TWTGM110 のうち、稟議バーコードNo が TWTGM140 に無くなった行を消します。\n- リバースデータの取込では稟議バーコードNo が NULL になるので、その申請No の行は全部消えます。\n- pbi design の「行は物理削除しない」は、物件基本情報登録変更の画面での扱いです。取込は例外として並べて書いてください。\n\n## Q-DS-CI-010 区分 3 の列ごとの検査\n\n**A** です。表は _handoff\\phase5-contract-info-import-checks.md に置きました（228 列は 1-2、381 列は 2-2）。\n- 重複の検査は、発行依頼書データは**契約基地局番号だけ**で比べます（枝番は入れない）。リバースデータは計画基地局番号だけで比べます。前の行と同じ値の行（2 回目以降）をエラーにします。`WTG-200010`。\n\n## Q-DS-CI-011 整合の検査と郵便番号の警告\n\nchecks.md の 1-3・1-4・2-3 に全部書きました。要点は次のとおりです。\n1. KDDI転貸借契約書と転貸借_契約種別：許す組合せは 16 通り（KDDI⇒UQ・UQ⇒KDDI・OCT⇒UQ・UQ⇒OCT の 新設・増設・変更・解約）。これ以外は `WTG-200008`。表は checks.md の 1-4。\n2. 日付の前後：契約期間_契約開始日と契約終了日、初回支払内容_支払①〜④ の対象期間FROM と TO。両方入っているときだけ、開始が後なら `WTG-000078`。\n3. 組で入れる項目：初回支払内容_支払①〜④ の対象期間FROM と TO（片方だけはエラー）、初回支払の税区分と支払内容の税区分（支払内容側に値があるときは一致すること）。どちらも `WTG-200012`。ほかに、条件つきの必須（調整額があれば調整理由、発送先が「元請」なら支社 など）があり、表の注記に書いています。\n4. 郵便番号と住所（警告）：\n   - 発行依頼書データ：契約者・関係者①〜⑤の郵便番号で郵便番号-住所マスタ（ZM400）を引き、都道府県名・市区町村名が一致し、町域名が字、番地と前方一致するか。一つでも合わなければ `WTG-200009`（警告）。ほかに、住居表示・登記表示・契約者・関係者①〜⑤の「都道府県＋市区町村」の名称の組がコードマスタに無ければ `WTG-000072`（警告）。\n   - リバースデータ：契約者①〜⑤の郵便番号・都道府県・市区町村・字、番地をそれぞれ ZM400 と比べ、合わなければ `WTG-200009`（警告）。\n   - 警告は取込を止めません。\n\n## Q-DS-CI-012 エラー・警告・件数のメッセージ\n\n1. 既存のキーと、次のキーを使います。番号の帯は WTG-2000xx です（WTG-1000xx ではない）。\n   | キー | 文言 | 使うところ |\n   |---|---|---|\n   | WTG-200008 | 行数[{0}]:{1}[{2}]:入力が不正です | 許す値でない、KDDI の組合せ、金額・部数 |\n   | WTG-200009 | 行数[{0}]:{1}[{2}]:郵便番号と住所情報が一致しません。 | 郵便番号と住所の警告 |\n   | WTG-200010 | 行数[{0}]:{1}がCSVﾌｧｲﾙで重複しています | ファイルの中の重複 |\n   | WTG-200011 | 行数[{0}]:{1}[{2}]:固定電話は10桁、IP電話は11桁で入力してください。 | 電話番号の桁 |\n   | WTG-200012 | 行数[{0}]:{1}、{2}はｾｯﾄで入力してください | 組で入れる項目 |\n   | WTX-200001（既存） | 行数[{0}]:{1}:必ず入力してください | 条件つきの必須 |\n   | WTX-200022（既存） | 行数[{0}]:{1}:[{2}]{3}に登録されていません | 計画マスタ・契約基本情報マスタに無い |\n   | WTG-000072・WTG-000078（既存） | （既存の文言） | コードマスタに無い、日付の前後 |\n   | ZZZ-000056（既存） | ﾌｧｲﾙ形式が違います | 列の数（見出し行も） |\n   | GEF-000058（既存） | （既存の文言） | ファイルが無い |\n   - 画面の取込中・タスクありは Q-DS-CI-006 のとおり `WTG-100030` で、新しいキーは要りません。\n2. WTG-200008〜200012 はバッチが読む JAVA-KIT のメッセージ（DB）にだけ足します。wing の messages.properties には足しません（画面では使わない）。\n3. 各メッセージの {2} に入れる値は checks.md の「置換文字」のとおりです（コードマスタの名称・郵便番号・都道府県と市区町村・金額・電話番号（WTG-200011）などの値を入れる）。氏名・メールアドレス・マイナンバーを受け取った日の値を入れるメッセージはありません。取り込んだファイルの行をそのままログに出すことはしないでください。\n4. 文言は「契約情報ﾃﾞｰﾀ {0}件 取込みました（正常：{1}件 (ﾜｰﾆﾝｸﾞ：{2}件) /異常：{3}件）」です。件数はデータ行（契約局）の数、ワーニングは警告の件数です。エラーで取り消したときは {0}・{1} を 0、{3} はエラーのあった行の数にします。\n5. 警告だけのときは正常終了です（警告終了にはしない）。警告はバッチ処理状況の詳細に出ます。\n6. はい。既存の上限までの表示でかまいません。\n\n## Q-DS-CI-013 取り込んだファイルの保存\n\n1. 別の場所には移しません。アップロードした場所（出力コード `PWTGB090` の出力先。`FileUploadService` が「PWTGB090.ユーザーID.yyyyMMddHHmmss.csv」で置き、出力履歴に登録する）に置いたままにします。バッチは処理の後にファイルを**消しません**（既存の取込バッチと違う点）。\n2. はい。エラーで取り消したときも残します。\n3. 消す時期は決めません（既存 WiNG の運用に従う）。\n4. はい、`PWTGB090` です。\n\n## Q-DS-CI-014 導入時に登録するタスクとマスタの値\n\n投入の文（INSERT 文など）と手順は本 feature の tasks で作り、投入の実施は発注者が導入手順書に沿って行います（印刷・閲覧用帳票と同じ分担）。\n| 登録先 | 値 |\n|---|---|\n| SBatchInfo・SLocalization | タスクID `A8B36D2BB98F419FB0718303BCA2C9B6`、タスク名「契約情報取込」、キューは既存の WTG の取込（PWTGB040 など）と同じ |\n| TZZZM026 | 出力コード `PWTGB090`。出力先は既存の PWTGB040 と同じ |\n| ZMENUAUTH | プログラム `PWTGO090`。使える会社とメニューは GWTG070 と同じ |\n| VE の定義 | 取込バッチが使うのは TWTGM080・TWTGM100・TWTGM110・TWTGM140・TWTGA130・TWTGA150・TWTGV030・TWTGV050・TWTZM010（更新者名）・TWTZM040・TWTBM010・TWTBM080・TWTGM010（リバースの検査）・郵便番号-住所マスタ。VE の ID は開発側が払い出し、定義は導入手順書で投入する |\n| JAVA-KIT のメッセージ | WTG-200008〜200012 |\n\nキューの多重度は既存のキューのまま（変えない）にしてください。多重実行は Q-DS-CI-006 の画面とバッチの確かめで防ぎます。\n\n## Q-DS-CI-015 取込画面（GWTG090）の動き\n\n1. はい。プログラムID `PWTGO090`、パッケージ `function/wtg/wtg090/`。\n2. GWTG070 から渡された値（14.6 の 9 項目）は、画面を出すときにセッションに置き、実行のときはセッションの値をそのままタスクのパラメータにします（DB から引き直さない）。番・状態の判定（1.7）は、実行のときに申請No で物件申請情報を引いて `canOperate`（契約局取込）で行います。\n3. **コンボボックス**（ラジオではない）。値は \"0\"：ﾘﾊﾞｰｽﾃﾞｰﾀ（初期値）、\"1\"：発行依頼書ﾃﾞｰﾀ。空欄は無し。コードマスタは作りません。\n4. ボタン\n   | ボタン | 動き |\n   |---|---|\n   | 参照 | ファイルを選ぶ |\n   | 実行(E) | 「実行します。よろしいですか？」で確かめ、`/wtg090/execute`。タスクを登録して `forward:/wtg060/return`（物件契約情報申請状況検索一覧） |\n   | ｸﾘｱ(R) | `/wtg090/clear`。ファイルの選択を消し、ファイルの種類をリバースデータに戻す（セッションの値は残す） |\n   | 処理状況(L) | `/wtg090/taskList`。`forward:/zzz010/`。戻り先 `/wtg090/return`、機能ID WTG090、会社・事業所・グループID（ログインユーザーのデフォルトグループ。権限グループ単位で表示）。戻ったらセッションの値で取込画面を出し直す |\n   | 戻る(C) | `/wtg090/back`。物件基本情報登録変更画面を申請No で出し直す |\n5. はい。`/wtg060/return` で、セッションに置いた一覧の検索条件で再検索します。\n6. パラメータは次のとおりです。`g_` の付くものは一覧に出ます。\n   - `CsvFileName`（サーバーに置いたファイル名）\n   - `g_CsvFileName`（元のファイル名）、`g_FileType`（ファイルの種類）、`g_ApplicationNo`（申請No）、`g_UketsukeNo`、`g_KeiyakuKbn`、`g_AreaCd`、`g_ApplicationName`（申請者）、`g_KeiyakuRingiKianshaKaishaCd`、`g_KeiyakuRingiKianshaShozoku1`、`g_KeiyakuRingiKianshaShozoku2`、`g_KeiyakuRingiKianshaName`\n   - 元の状態区分は入れません（Q-DS-CI-006）。\n7. 要りません（コンボボックスで空欄が無い）。\n"
+    ],
+    "answered_by": "Junichi Noumi",
+    "answered_at": "2026-10-08T15:53:49+09:00"
+   },
+   {
+    "key": "design-authoring-generate[issue-request-tutorial]",
+    "questions": [
+     {
+      "id": "Q-DS-TU-001",
+      "target": "specs/issue-request-tutorial/design.md",
+      "location": "アーキテクチャ方式と境界図、ファイル配置計画、設計判断、要件 1.1・1.10・1.11",
+      "question": "ポップアップの作り方と、閉じ方の食い違い。requirements 1.10 は「転貸借契約書の画面の OK 以外で閉じさせない」としています。一方、別ウインドウ（`window.open`）では、ブラウザーの × ボタンを消せません。既存の画面にも閉じるのを止める処理はありません（確かめたこと 3〜5）。 次のどれにするか選んでください。 - A：別ウインドウで作る（既存の作り。確かめたこと 1・2・13）。画面には OK 以外の閉じるボタンを置かない。ブラウザーの × で閉じられることは防げないので、design に「× で閉じた場合は、それまでに入れた値だけが親画面に残る」と書く。1.11 の「ウインドウを閉じて終える」も × で閉じる。 - B：発行依頼書登録変更画面の中のダイアログ（jQuery UI dialog）で作る。× ボタンと Esc での閉じ方を消せる。1.11 のときだけ閉じるボタンを出す。wing では初めての作りになる（確かめたこと 4）。プログラムID・URL は持たず、発行依頼書登録変更画面のテンプレートとスクリプトの一部になる。 - C：その他",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-issue-request-tutorial.md）"
+     },
+     {
+      "id": "Q-DS-TU-002",
+      "target": "specs/issue-request-tutorial/design.md",
+      "location": "コンポーネントとインターフェース（API 契約）、セキュリティ上の考慮、要件 1.2・1.11",
+      "question": "サーバーを使うかと、開くときの確かめ方。チュートリアルは保存をしません（2.4）。そのため、ブラウザーの中だけでも作れます。 1. 開くときに、サーバーで「登録・変更できる人と状態か」（1.2）を確かめるか。 - A：確かめる。開くときに申請No を渡し、WTG 申請状態サービスで判定する。できない場合はポップアップに `WTG-100030` を出し、契約種別の画面を出さない。 - B：確かめない。チュートリアル設定ボタンを出すかどうか（issue-request が持つ）だけで制御する。チュートリアルはデータベースを読み書きしないため。 2. 1.11 で確かめる契約区分は、どちらの値か。 - 下書きの案：発行依頼書登録変更画面に今表示している値（未保存の変更を含む）。チュートリアルは画面の項目へ値を入れるものなので、画面の値に合わせる。 - ほか：データベースに保存済みの値 3. Q-DS-TU-001 で A（別ウインドウ・`@FuncID(\"PWTGO081\")`）の場合、`ZMENUAUTH` に PWTGO081 の行が要ります（確かめたこと 9）。導入手順書で発注者が投入する、でよいか。どのメニューID の下に登録するか（例：物件基本情報登録変更と同じ「[WTG070]物件契約情報登録」）。",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-issue-request-tutorial.md）"
+     },
+     {
+      "id": "Q-DS-TU-003",
+      "target": "specs/issue-request-tutorial/design.md",
+      "location": "ドメインモデル、要件 1.4・1.11",
+      "question": "契約区分のコード値。契約区分（`WTG/PARAM/P78`）のどのコードが鉄道・オープン・屋内にあたるか教えてください。 | 契約区分 | P78 のコード（キー3） | 名称 | |---|---|---| | 鉄道 | | | | オープン | | | | 屋内 | | | コードではなく名称で判定する場合は、そう書いてください。",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-issue-request-tutorial.md）"
+     },
+     {
+      "id": "Q-DS-TU-004",
+      "target": "specs/issue-request-tutorial/design.md",
+      "location": "処理フロー、状態管理（画面の遷移）、要件 1.3〜1.9・2.3（ゲート1-6）",
+      "question": "14 の画面の選択肢と、進む先の全部。画面ごとの選択肢（ボタン）と入力欄、押したときに進む画面を、次の表で教えてください。requirements と Phase 4 の回答で分かっている分は埋めてあります。 | 画面 | 出す条件 | 選択肢（ボタン）・入力欄 | 押したときに進む画面 | |---|---|---|---| | 契約種別（屋外） | 契約区分が鉄道・オープン | KDDI⇒UQ・UQ⇒KDDI・OCT⇒UQ・UQ⇒OCT × 新設・増設・変更・解約（16 個） | 解約 → 着工予定日。それ以外 → ? | | 契約種別（屋内） | 契約区分が屋内 | KDDI⇒UQ・UQ⇒KDDI × 新設・変更・解約（6 個） | 解約 → 着工予定日。新設・変更 → 料金種別 | | 料金種別 | 屋内 | ? | ? | | 局種別 | ? | ?（「鋼管柱」は OCT⇒UQ では出さない。「エントランス増設工事・UPS工事のみ」は増設のときだけ出す） | ? | | 設置設備 | ? | ? | ? | | 設置設備のSystem数 | ? | ? | ? | | 設置設備のRRH数 | ? | ? | ? | | 設置設備のSystem構成 | ? | ? | ? | | 受電方法 | ? | ? | ? | | UPS工事 | ? | 24時間・3時間・?（ほかにあれば） | 24時間 → 設置設備。3時間 → 賃料増額の有無 | | 賃料増額の有無 | ? | 賃料の増額無し・?（増額有り？） | 増額無し → ?（賃料【月額】は変えない）。増額有り → 増額月額賃料？ | | 増額月額賃料 | ? | 入力欄（半角数字 12 桁まで）と反映ボタン | ? | | 着工予定日 | ? | 入力欄（初期値は今日。カレンダー）と反映ボタン | ? | | au設備の消費電力 | ? | 入力欄（半角数字 10 桁まで）と反映ボタン | ? | | 転貸借契約書 | 最後の画面 | OK・?（ほかの選択肢があれば） | OK → 閉じる | 特に次の 2 点を確かめたいです。 1. Phase 4 の回答に「局種別で『受電のみ』を選ぶと、そのあとの画面が変わる」とあります（requirements には書いていません）。どの画面へ進むように変わりますか。 2. UPS工事で「24時間」を選ぶと設置設備へ戻ります。設置設備の画面を 2 回目に通るとき、その後の進み方は 1 回目と同じですか（同じなら、再び UPS工事に来たときに繰り返しになります）。",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-issue-request-tutorial.md）"
+     },
+     {
+      "id": "Q-DS-TU-005",
+      "target": "specs/issue-request-tutorial/design.md",
+      "location": "ドメインモデル、データ契約と外部連携、要件 2.1〜2.3（ゲート1-4）",
+      "question": "選択から設定値への対応。選択または入力ごとに、発行依頼書登録変更画面のどの項目へ何を入れるかを、次の表で教えてください。入れる先は、そのとき表示している契約局の項目です（確かめたこと 10）。 | 画面 | 選択肢・入力 | 入れる先の項目 | 入れる値（コード値、または文字列の形） | |---|---|---|---| | 契約種別 | 例：KDDI⇒UQ 新設 | 契約種別 | ? | | 料金種別 | | ?（入れないなら「なし」） | | | 局種別 | | 局種別 | ? | | 設置設備 | | 設置設備 | ? | | System数・RRH数・System構成 | | 電気料【月額】（System選択またはW数） | ?（例：「2System」のように組み立てるか） | | 受電方法・UPS工事 | | ?（入れないなら「なし」） | | | 増額月額賃料 | 入力値 | 賃料【月額】 | ?（入力した数字のまま、でよいか） | | 着工予定日 | 入力値 | 着工予定日 | ?（YYYY/MM/DD のまま、でよいか） | | au設備の消費電力 | 入力値 | 電気料【月額】（System選択またはW数） | ?（例：「350W」のように単位を付けるか） | | 転貸借契約書 | OK | 転貸借の契約形態（KDDI転貸借契約書） | ?（どの選択から何の文字列を作るか） | あわせて教えてください。 1. 契約種別・局種別・設置設備のコード値の表（コードマスタの識別は issue-request の design で決めるので、ここでは「選択肢 → コード値」の対応だけでかまいません）。 2. 電気料【月額】に、System 数などから作る値と au設備の消費電力の値の両方が入る道筋がある場合、後から入れたほうで上書きする、でよいか（2.2 の上書きのとおり）。",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-issue-request-tutorial.md）"
+     },
+     {
+      "id": "Q-DS-TU-006",
+      "target": "specs/issue-request-tutorial/design.md",
+      "location": "コンポーネント（画面）、補足資料、要件 1.12（ゲート1-1）",
+      "question": "各画面の説明と例の文言。各画面に出す「選び方の説明」と「例」の文言を決める必要があります。 - A：いま 14 画面分を回答する（画面ごとに説明と例の文言）。 - B：文言をまとめた資料を渡す。design にはその資料を「正」として補足資料に載せる（物件基本情報登録変更の CSV の項目定義と同じ扱い）。 - C：その他",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-issue-request-tutorial.md）"
+     },
+     {
+      "id": "Q-DS-TU-007",
+      "target": "specs/issue-request-tutorial/design.md",
+      "location": "処理フロー、機能固有のエラー処理、要件 2.1・2.2（ゲート1-7）",
+      "question": "入れる先の項目が入力できない状態のときと、親画面が無いとき。1. 発行依頼書登録変更画面で、入れる先の項目が入力できない状態のとき（例：複数局モードの項目の制御で入力できない項目）、チュートリアルはどうするか。 - A：入力できない状態でも値を入れる - B：その項目には入れず、黙って次の画面へ進む - C：その項目には入れず、メッセージを出して次の画面へ進む（メッセージの文言も教えてください） 2. Q-DS-TU-001 で A（別ウインドウ）の場合、チュートリアルの途中で親画面が閉じられた、または別の画面へ移ったとき、どうするか。 - 下書きの案：値を入れられないので、ポップアップに「発行依頼書登録変更画面が見つかりません」を出し、OK 以外でも閉じてよいことにする。 - ほか：何もしない（値が入らないだけ）",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-issue-request-tutorial.md）"
+     },
+     {
+      "id": "Q-DS-TU-008",
+      "target": "specs/issue-request-tutorial/design.md",
+      "location": "バリデーション設計、機能固有エラーコード、要件 1.11・3.2〜3.4（ゲート1-8）",
+      "question": "入力チェックの場所とメッセージ。1. チェックをどこで行うか。 - A：ブラウザーのスクリプトで行う。文言はテンプレートでメッセージキーから引いてスクリプトに渡す（wing では初めての作り。確かめたこと 7）。 - B：入力ごとにサーバーへ送って確かめる（画面は再読込しない非同期の要求）。 - C：その他 2. 使うメッセージキー。下書きの案は既存のキーを使うものです（確かめたこと 8）。 | チェック | 下書きの案 | 表示の例 | |---|---|---| | 増額月額賃料・au設備の消費電力が半角数字でない | `WTG-000023` | 増額月額賃料:半角数字以外が入力されています | | 増額月額賃料が 12 桁・au設備の消費電力が 10 桁を超える | `GEF-000003` | 増額月額賃料:桁数が制限を超えています | | 着工予定日が YYYY/MM/DD の形でない | `WTG-000003` | 着工予定日:日付が不正です | | 着工予定日が実在しない日付（例 2026/02/30） | `WTG-000003`（形の誤りと同じ扱い） | 着工予定日:日付が不正です | | 契約区分が鉄道・オープン・屋内のどれでもない（1.11） | 新しいキー `WTG-1000xx`（番号を指定してください）。種別 Warning、文言「契約区分を入力してください」 | 契約区分を入力してください | 1.11 の文言は既存の `WTG-000002`（`{0}:入力して下さい`）では「契約区分:入力して下さい」になり、requirements の文言と合いません。そのため新しいキーにしています。キーを持たずに画面へ直接書く場合は、そう書いてください。 3. 着工予定日に過去の日付を入れてよいか。 - 下書きの案：入れてよい（requirements に制限が無いため）。止める場合は既存の `GEF-000020` を使う。 4. 着工予定日の初期値「今日」は、サーバーの日付と利用者の PC の日付のどちらか。 - 下書きの案：サーバーの日付（ポップアップを出すときにテンプレートへ入れる）。Q-DS-TU-001 で B の場合は、発行依頼書登録変更画面を表示したときのサーバーの日付。",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-issue-request-tutorial.md）"
+     }
+    ],
+    "answers": [
+     "[answer-ds-tu-20261008-1138.txt]\n回答者 Junichi Noumi\nQ-DS-TU-001〜008（issue-request-tutorial design）の回答。2026-10-08 11:38 受領。大きな表は別ファイル（_handoff\\phase5-issue-request-tutorial-flow.md・_handoff\\phase5-issue-request-tutorial-mapping.md）。\n\n以下が Q-DS-TU-001〜008 の回答です。このまま記録して、チュートリアルの design を書き起こしてください。\n\n## 先に：requirements から意図して外れる点（upstream-carryover に記録してください）\n次の点は、requirements（issue-request-tutorial）から意図して外れます。upstream-carryover に「requirements（issue-request-tutorial）」として記録し、Phase 5 の最後にまとめて直します。\n- 1.3：画面は 14 ではなく 11。設置設備のRRH数・設置設備のSystem構成・UPS工事の 3 画面は使わない（業務の見直しで廃止された）\n- 1.8：「鋼管柱」は KDDI⇒UQ のときだけ出す（OCT⇒UQ に加えて UQ⇒KDDI・UQ⇒OCT でも出さない）。「エントランス増設工事・UPS工事のみ」の扱いは 1.8 のとおり\n- 1.9：UPS工事の画面が無いので削る\n- 1.10：ブラウザーの × で閉じることは防げない（Q-DS-TU-001）\n- 2.1：入れる項目に「転貸情報の有無」を足す（8 項目。Q-DS-TU-005）\n- 2.2：設計で「空にする」と決めた操作（設置設備・電気料を消す）は、「入れる値が空なら変えない」の例外（Q-DS-TU-005）\n\n## Q-DS-TU-001 ポップアップの作り方\nA（別ウインドウ）。\n- 既存のズーム画面と同じ作りで `window.open` して POST で開く。親画面から渡す値は契約区分（Q-DS-TU-002）。\n- 置き場所は確かめたこと 13 と違う。チュートリアルは独立した機能ID（WTG081、画面ID GWTG081、プログラムID PWTGO081）を持つので、親の wtg080 ではなく自分のパッケージに置く。\n  - Controller：`function/wtg/wtg081`、`@RequestMapping(\"/wtg081\")`、`@FuncID(\"PWTGO081\")`\n  - テンプレート：`pages/wtg/wtg081/pwtgo081.html`・`pwtgo081Script.html`。開く処理は `pages/wtg/wtg081/pwtgo081ZoomForm.html` に置き、発行依頼書登録変更画面のテンプレートから読み込む。\n  - ウインドウの大きさは `wing-web.properties` に `ZOOM_DEFINE.pwtgo081=1000px,600px` を足す。\n- 画面には OK 以外の閉じるボタンを置かない。ブラウザーの × は防げないので、design に「× で閉じた場合は、それまでに入れた値だけが親画面に残る」と書く。1.11 の「ウインドウを閉じて終える」も × で閉じる。\n- 値はボタンを押すたびに親画面へ入れる（2.1）。OK でまとめて返す作りにはしない。\n\n## Q-DS-TU-002 サーバーと、開くときの確かめ方\n1. B（確かめない）。開けるかどうかは、チュートリアル設定ボタンを出すかどうか（issue-request）だけで決める。チュートリアルは発行依頼書のデータを読み書きしない。\n   - ただしサーバーは使う。ボタンを押すたびに押したボタンをサーバーへ送り、次の画面の内容と入力チェックの結果を JSON で受け取る（Q-DS-TU-008）。\n   - URL：`/wtg081`（開く。POST、パラメータ FunctionID と keiyakuKbn）、`/wtg081/next`（ボタンを押したとき。POST、JSON を返す）。\n2. 下書きの案のとおり。発行依頼書登録変更画面にいま表示している契約区分（未保存の変更を含む）を、開くときに渡す。\n3. はい。PWTGO081 の行が要る（`/wtg081` はアクセス制御の対象）。導入手順書で発注者が投入する。メニューID は、PWTGO080 を登録するメニューと同じものすべてに登録する（発行依頼書登録変更画面を開けるメニューから開くため）。\n\n## Q-DS-TU-003 契約区分のコード値\nコードで判定する。コードマスタ WTG/PARAM/P78。\n| 契約区分 | P78 のコード（キー3） | 名称 |\n|---|---|---|\n| オープン | 001 | ｵｰﾌﾟﾝ |\n| 屋内 | 002 | 屋内 |\n| 鉄道 | 003 | 鉄道 |\n- 002 なら屋内の契約種別の画面、001・003 なら屋外の契約種別の画面。\n- 渡された契約区分が P78 に無い（空を含む）ときが 1.11 のエラー。\n\n## Q-DS-TU-004 画面の選択肢と進む先\n`_handoff\\phase5-issue-request-tutorial-flow.md` に置いた。これを design の正とする。要点は次のとおり。\n- 画面は 11（先頭の「意図して外れる点」のとおり）。\n- 進み方は 3 通り。KDDI⇒UQ と OCT⇒UQ は同じ進み方、UQ⇒KDDI と UQ⇒OCT は同じ進み方、屋内は別。\n- 設置設備の WiMAX2・WiMAX1_2、System数の 3台は無い。局種別の「エントランス増設工事・UPS工事のみ」は増設のときだけ出す（1.8 のとおり）。\n- 1：局種別で「受電のみ」を押すと、KDDI⇒UQ・OCT⇒UQ では、設置設備の次（WiMAX のとき）または System数の次が着工予定日になる（受電方法・増額月額賃料を飛ばす）。UQ⇒KDDI・UQ⇒OCT では au設備の消費電力へ進み、その次が着工予定日になる。\n- 2：UPS工事の画面を使わないので、「24時間」で設置設備へ戻る道は無く、繰り返しは起きない。\n\n## Q-DS-TU-005 選択から設定値への対応\n`_handoff\\phase5-issue-request-tutorial-mapping.md` に置いた。これを design の正とする。要点は次のとおり。\n- 契約種別のボタンで、契約種別と契約形態の KDDI転貸借契約書の 2 項目を入れる。契約種別は屋外 P53（01〜16）、屋内 P37（1〜6）。KDDI転貸借契約書は P41 のコードで、P53・P37 の文字項目2 に対応が入っている。\n- 確かめたこと 10 の補足：KDDI転貸借契約書はフリーフォームだけでなく、P41 のプルダウン（列 KDDI_Rental_Contract）がある。チュートリアルは P41 のコードを入れる。電気料【月額】もコードの列とフリーフォームの列があり、画面は文字を入力できるリスト。チュートリアルは名称の文字列（「諸元の設備による」「1台」「個別精算」など）を入れる。\n- 7 項目のほかに、UQ⇒KDDI の受電方法で「KDDI受電」を押したとき「転貸情報の有無」に有（P59 01）を入れる。\n- 設計で「空にする」と決まっている操作がある（UQ⇒KDDI・UQ⇒OCT の局種別・受電方法で設置設備を空にする、など）。これは 2.2 の「入れる値が空」とは別の、値を消す操作として扱う。\n- 増額月額賃料は入力した数字のまま。着工予定日は YYYY/MM/DD のまま。au設備の消費電力は数字の末尾に W を付ける（例 350W）。\n- あわせて 1：コード値の表は同じファイルの 2・3 に載せた。\n- あわせて 2：はい。電気料【月額】は後から入れたほうで上書きする。\n\n## Q-DS-TU-006 各画面の説明と例の文言\nB。文言は `_handoff\\phase5-issue-request-tutorial-flow.md` の 4（画面ごとの見出し・説明・例）と 2（ボタン横のラベルの出し分け）にまとめた。design は補足資料としてこれを正にする。\n\n## Q-DS-TU-007 入れる先が入力できないときと、親画面が無いとき\n1. B。その項目には入れず、メッセージを出さずに次の画面へ進む。発行依頼書登録変更画面の項目の制御（入力できない項目は値を持たない）を優先する。\n   - 例：UQ⇒OCT・OCT⇒UQ では「転貸情報の有無」が入力できないので、有を入れない。\n   - 契約種別を入れたときは、発行依頼書登録変更画面の契約種別の変更時の処理（局種別・設置設備・電気料のリストの入れ直し、ラベルの変更、入力可否の切替）を先に動かし、そのあとで残りの値を入れる。\n2. ほか（何もしない）。値が入らないだけにする。新しいメッセージは作らない。OK を押せばウインドウは閉じる。\n\n## Q-DS-TU-008 入力チェックの場所とメッセージ\n1. B。ボタンを押すたびにサーバーへ送り（`/wtg081/next`）、チェックの結果を JSON（結果とメッセージの一覧）で受け取る。エラーならポップアップにメッセージを出し、値を入れず、画面を進めない。画面を再読込しない非同期の要求なので、BindingResult で同じ画面へ戻す作りにはしない。\n2. メッセージキー（文言に項目名は付けない）\n   | チェック | キー | 表示 |\n   |---|---|---|\n   | 増額月額賃料・au設備の消費電力が半角数字でない | WTX-100005（Warning、新規追加。物件基本情報登録変更の電話番号でも使うので、messages.properties には 1 回だけ足す） | 数字で入力してください |\n   | 桁 | 入力欄の最大桁（12・10）で止める。それを超えて入力できないので、チェックとメッセージは持たない | － |\n   | 着工予定日が YYYY/MM/DD の形でない | WTX-100013（既存） | 日付(例:2000/01/01)で入力してください |\n   | 着工予定日が実在しない日付（例 2026/02/30） | WTX-100013（形の誤りと同じ。厳密に日付として解釈できなければエラー） | 日付(例:2000/01/01)で入力してください |\n   | 契約区分が鉄道・オープン・屋内のどれでもない（1.11） | WTG-100015（Warning、新規追加） | 契約区分を入力してください |\n   - チェックの順：契約区分 → 増額月額賃料 → 着工予定日。エラーがあればそこで止める。\n   - 入力欄が空のときはチェックしない（3.5）。\n3. 下書きの案のとおり。過去の日付も入れてよい（チェックしない）。\n4. 利用者の PC の日付。着工予定日の画面を出すときに、スクリプトで今日の日付（YYYY/MM/DD）を入力欄に入れる。\n"
+    ],
+    "answered_by": "Junichi Noumi",
+    "answered_at": "2026-10-08T11:40:34+09:00"
+   },
+   {
+    "key": "design-authoring-generate[issue-request]",
+    "questions": [
+     {
+      "id": "Q-DS-IR-016",
+      "target": "specs/issue-request/design.md",
+      "location": "API 契約、ファイル配置計画",
+      "question": "URL と別ウインドウ。1. 一時保存・発番の URL のアクション名（`/wtg080/<アクション>`）。CSRF の照合に乗るのは末尾が update・regist・delete・approved・reset・execute・upload のものだけです（物件基本情報登録変更と同じ扱い）。 2. サンプル文設定・契約者情報挿入の別ウインドウ（ズーム）のプログラムID と URL。 3. `/wtg080/changeKeiyakuSyubetsuTutorial` と `/wtg080/calcTaxAdjustment` は、値だけを JSON で返す（画面は再読込しない）でよいか。",
+      "reason_unanswered": "回答（Q-DS-IR-001〜015）と既存のコードからは決められないため"
+     },
+     {
+      "id": "Q-DS-IR-017",
+      "target": "specs/issue-request/design.md",
+      "location": "コンポーネント、依存してよい対象、item-rules.md §8",
+      "question": "契約区分の自動設定の「WTE の業務ルール X-11」。wing・WTX・WTX_Common のコードに、X-11 にあたる処理が見つかりませんでした。また steering は、ほかの機能パッケージの Service を呼ぶことを禁じています。 1. X-11 の中身（計画基地局番号から何を見て \"S\"・\"D\" を返すか）。 2. どこに作るか（例：この feature の Service に同じ判定を書く／WTE 側の共通部品として作る）。",
+      "reason_unanswered": "回答（Q-DS-IR-001〜015）と既存のコードからは決められないため"
+     },
+     {
+      "id": "Q-DS-IR-018",
+      "target": "specs/issue-request/design.md",
+      "location": "移行方針",
+      "question": "税率マスタ（TWTZM370）の投入する行。`db-TWTZM370.md` の投入する行は「案」と書かれています。この値で確定でよいか。",
+      "reason_unanswered": "回答（Q-DS-IR-001〜015）と既存のコードからは決められないため"
+     },
+     {
+      "id": "Q-DS-IR-019",
+      "target": "specs/issue-request/design.md",
+      "location": "ドメインモデル（複数局の更新）、要件 5.3",
+      "question": "複数局を発行依頼書編集（2）で更新したときの金額。複数局の発行依頼書編集の画面には、合計した金額が出ます。ここで金額を変えて更新したときの扱いを決めてください。 - A：TWTGM100 の金額は入力した値で上書きし、次に契約局（1・3）を更新したときに合計で入れ直される - B：複数局の発行依頼書編集では、金額の項目を入力不可にする（合計を表示するだけ） - C：その他",
+      "reason_unanswered": "回答（Q-DS-IR-001〜015）と既存のコードからは決められないため"
+     },
+     {
+      "id": "Q-DS-IR-020",
+      "target": "specs/issue-request/design.md",
+      "location": "データ契約（変更履歴の手順）、要件 7.2",
+      "question": "発番で全契約局の稟議バーコードNo を付けるときの変更履歴。トランに写すのは「開いている連番」の TWTGM140 だけなので、発番（や担当エリア・契約区分を変えての付け直し）でほかの契約局の稟議バーコードNo が変わっても、その契約局の変更履歴は残りません。 - A：それでよい（開いている契約局の分だけ残す） - B：稟議バーコードNo を書き換えるすべての契約局をトランに写し、変更履歴を残す - C：その他",
+      "reason_unanswered": "回答（Q-DS-IR-001〜015）と既存のコードからは決められないため"
+     },
+     {
+      "id": "Q-DS-IR-021",
+      "target": "specs/issue-request/design.md",
+      "location": "ドメインモデル、要件（物件基本情報登録変更の WTG-100019）",
+      "question": "物件申請情報（TWTGM080）の基地局番号の更新と WTG-100019。回答（Q-DS-IR-007 の 7.）では、発行依頼書編集（2）か単独局の更新で TWTGM080 の基地局番号・基地局名・エリアコードを書き換えます。このとき次の 2 つで、物件基本情報登録変更の「基地局番号が契約局情報の連番 1 と一致する」（`WTG-100019`）が崩れます。 - 複数局で発行依頼書編集（2）から更新すると、TWTGM080 は変わるが連番 1 の TWTGM140 は変わらない - 連番 1 を基地局番号リンク（1）から更新すると、TWTGM140 は変わるが TWTGM080 は変わらない どうそろえるか決めてください（例：TWTGM080 を書き換えるのは「連番 1 の基地局番号が変わったとき」に限り、どの開き方でも連番 1 にそろえる、など）。",
+      "reason_unanswered": "回答（Q-DS-IR-001〜015）と既存のコードからは決められないため"
+     },
+     {
+      "id": "Q-DS-IR-022",
+      "target": "specs/issue-request/design.md",
+      "location": "依存してよい対象、コンポーネント（物件基本情報登録変更の design の公開契約）",
+      "question": "物件基本情報登録変更が持つデータの読み書き。次の 3 点は、物件基本情報登録変更の design（承認済み）の公開契約に口がありません。 1. TWTGM080 の 基地局番号・基地局名・エリアコード と排他用の値（`ExclusiveFG`）の書き換え（Q-DS-IR-021） 2. `getApplication` が返す値に、単独複数局ﾌﾗｸﾞと申請依頼日時（税額の起案日）が入るか（今は「…ほか」） 3. 申請者の表示に使う、承認履歴（TWTGM180）の判定 \"02\" の最終更新者名の読み取り どう扱うか決めてください。 - A：WTG 申請状態サービスに口を足す（物件基本情報登録変更の design を、Phase 5 の最後にまとめて直す一覧に入れる）。発行依頼書登録変更の design は、その口を使う前提で書く - B：発行依頼書登録変更の Mapper から直接読む・書く（steering の「ほかの機能の持ち物は直接書かない」から外れる） - C：その他",
+      "reason_unanswered": "回答（Q-DS-IR-001〜015）と既存のコードからは決められないため"
+     },
+     {
+      "id": "Q-DS-IR-023",
+      "target": "specs/issue-request/design.md",
+      "location": "ドメインモデル（複数局の金額の合計）",
+      "question": "コードとフリーフォームの組の項目の合計。金額の項目のうち、コードの列と (ﾌﾘｰﾌｫｰﾑ) の列が組になっているもの（例：電気料【月額】）は、合計をどちらの列に入れるか（数値の合計・文字のどちらも）決めてください。 - A：(ﾌﾘｰﾌｫｰﾑ) の列に入れ、コードの列は連番 1 の値 - B：両方の列を、それぞれ同じ規則で合計する - C：その他",
+      "reason_unanswered": "回答（Q-DS-IR-001〜015）と既存のコードからは決められないため"
+     }
+    ],
+    "answers": [
+     "[answer-ds-ir-20261008-0837-Q016-023.txt]\n回答者 Junichi Noumi\nQ-DS-IR-016〜023（issue-request design の追加の質問）の回答。2026-10-08 08:37 受領。\n\n### Q-DS-IR-016 URL と別ウインドウ\n\n1. アクション名\n   - 発番：`/wtg080/issue`\n   - 一時保存：`/wtg080/tempSave`\n   - どちらも CSRF の照合の対象外のままにします（照合設定は変えません。物件基本情報登録変更と同じ扱い）。\n2. 別ウインドウ（ズーム）は既存のズームの仕組み（`ZoomUtils`・`/zoom/wait`）で開きます。\n   | ボタン | プログラムID | URL |\n   |---|---|---|\n   | サンプル文設定 | ZWTZ076（サンプル文設定ズーム） | `/zoom/zwtz076` |\n   | KDDI契約者情報挿入 | ZWTZ074（KDDI契約者情報挿入ズーム） | `/zoom/zwtz074` |\n   | OCT契約者情報挿入 | ZWTZ075（OCT契約者情報挿入ズーム） | `/zoom/zwtz075` |\n   - 3 つとも今回新しく作ります。`/zoom/**` は既存の設定でアクセス制御とトークン作成の対象外です。\n3. はい、それでよいです。どちらも値だけを JSON で返し、画面は再読込しません（`@ResponseBody`）。\n   - `/wtg080/changeKeiyakuSyubetsuTutorial`：契約区分と契約種別を受け取り、局種別と設置設備のプルダウンの選択肢（2 つのリスト）を返します。\n   - `/wtg080/calcTaxAdjustment`：金額・税区分・税額・調整額・対象期間を受け取り、金額・税額・調整額を返します。\n\n### Q-DS-IR-017 契約区分の自動設定の「X-11」\n\n1. X-11 は、既存の共通部品 `WTKeikakuJudgeUtils.chkKichikyoku`（`wing/src/main/java/jp/co/kccs/wt/common/utils/WTKeikakuJudgeUtils.java`）のことです。今の wing にあります。\n   - 中身：計画基地局番号の 1 文字目をキーにして、局種別判定マスタ（コードマスタ `WTZ/MASTER/M09`）を引きます。2〜6 文字目を文字項目2〜6 と比べ（\"*\" は何でも一致）、下 3 桁が数値1〜数値2 の範囲に入る行の数値5 で判定します。\n     - 1：オープン。1 文字目が \"D\" なら \"D\"、それ以外は \"S\" を返す\n     - 2：\"N\"（インドア）\n     - 3：\"R\"（レピータ）\n     - 4：\"W\"（WiFi）\n     - 判定できないとき：空を返し、`WTZ-000013` を BindingResult に積む\n   - 契約区分の決め方（審査フェーズが未起案・起案済で、依頼内容が再製本でないときだけ）\n     1. 計画基地局番号で工事案件マスタ（主幹部署 \"B02\"）が引ければ \"341\"（鉄道）\n     2. 引けなければ X-11 を呼び、\"S\" か \"D\" なら \"241\"（オープン）\n     3. それ以外は \"141\"（屋内）。判定できないときも \"141\" にします。積まれた `WTZ-000013` は画面に出しません（自動設定は利用者の入力を止めない）\n2. 作る場所：新しく作りません。この feature の Service から、既存の共通部品 `WTKeikakuJudgeUtils` を直接呼んでください。`common/utils` はほかの機能のパッケージではないので、steering の禁止には当たりません。\n\n### Q-DS-IR-018 税率マスタ（TWTZM370）の投入する行\n\n案の 4 行（0.03 1989/04/01、0.05 1997/04/01、0.08 2014/04/01、0.10 2019/10/01）で確定です。\n\n### Q-DS-IR-019 複数局を発行依頼書編集（2）で更新したときの金額\n\nA です。\n- 金額の項目は入力できるままにします。TWTGM100 の金額は入力した値で上書きします。合計し直しはしません。\n- 次に契約局（1・3）を更新したときに、全契約局の合計で入れ直します。\n- 発行依頼書編集（2）では、複数局のとき TWTGM140 は更新しません（Q-DS-IR-005 のとおり）。\n\n### Q-DS-IR-020 発番で全契約局の稟議バーコードNo を付けるときの変更履歴\n\nB です。\n- トラン（TWTGV050）には、開いている連番だけでなく、その申請No の**全契約局**を写します（削除→登録）。キーは申請No だけです。\n- 変更履歴（TWTGA150）は契約局ごとに TWTGM140 とトランを比べます（申請No 以降の項目）。違いがある契約局の分だけトランから登録します。\n- 発番の時だけでなく、更新でトランに写すときもすべて同じ手順です。担当エリア・契約区分の変更による付け直しも同じです。発行依頼書側（TWTGV030・TWTGA130）は今のままでよいです。\n\n### Q-DS-IR-021 TWTGM080 の基地局番号の更新と WTG-100019\n\nQ-DS-IR-007 の 7. を取り消します。発行依頼書登録変更は、TWTGM080 の基地局番号・基地局名・エリアコードを**書き換えません**。発番のとき `recordNumbering` を通して書くものだけです。\n\nそろえるのは物件基本情報登録変更の側です。\n- 申請情報欄の基地局番号の初期表示：発行依頼書（TWTGM100）がある申請では、契約局情報の連番 1 の基地局番号を表示します。無い申請では、これまでどおり TWTGM080 の値を表示します。\n- 利用者が物件基本情報登録変更で「更新」すると、その値で TWTGM080 が書き換わり、WTG-100019 も通ります。\n- 発行依頼書登録変更で連番 1 の基地局番号を変えてから、物件基本情報登録変更で更新されるまでは、TWTGM080 は古い値のままです。それでよいです。\n- この初期表示の決まりは、物件基本情報登録変更の design に足してください（Phase 5 の最後にまとめて直す一覧へ）。\n\nなお、TWTGM100 の基地局番号は、契約局（基地局番号リンク）から更新したときに連番 1 の値で入れ直します（Q-DS-IR-005 の ③）。\n\n### Q-DS-IR-022 物件基本情報登録変更が持つデータの読み書き\n\n1. 口は要りません。Q-DS-IR-021 のとおり、発行依頼書登録変更は TWTGM080 の基地局番号・基地局名・エリアコードを書かないためです。TWTGM080 の排他用の値は、発番の `recordNumbering` が扱います。\n2. A です。`getApplication` の出力に、単独複数局ﾌﾗｸﾞ（`Tandoku_Fukusu_Flg`）と申請依頼日時（`Application_Req_DateTime`）を明記してください。\n3. A です。WTG 申請状態サービスに読み取りの口を足します（例：`getApplicantName`）。\n   - 入力：会社コード・申請No\n   - 出力：承認履歴（TWTGM180）の行のうち、審査回＝今の申請回数、判定 \"02\" のもので、最終更新日時がいちばん新しい行の最終更新者名（`Last_UpdatedPerson_Name`）。無ければ空\n   - ユーザー管理マスタ（ZM010）とは結合しません\n- 物件基本情報登録変更の design は、Phase 5 の最後にまとめて直す一覧に入れてください（2・3 と Q-DS-IR-021 の初期表示）。\n\n### Q-DS-IR-023 コードとフリーフォームの組の項目の合計\n\nA です。\n- (ﾌﾘｰﾌｫｰﾑ) の列に合計を入れます。値は、画面の値と、ほかの契約局の (ﾌﾘｰﾌｫｰﾑ) 列の値の合計です。数値にできない値の扱いは Q-DS-IR-005 の合計の規則のとおりです。対象がすべて文字列なら連番 1 の値を入れます。\n- コードの列には連番 1 の値をそのまま入れます。合計はしません。\n- 組になっていない税額・調整額は、それぞれの列を同じ規則で合計します。\n"
+    ],
+    "answered_by": "Junichi Noumi",
+    "answered_at": "2026-10-08T08:37:47+09:00"
+   },
+   {
+    "key": "design-authoring-generate[print-report]",
+    "questions": [
+     {
+      "id": "Q-DS-PR-001",
+      "target": "specs/print-report/design.md",
+      "location": "ファイル配置計画、依存してよい対象、要件 1（1.1・1.2）",
+      "question": "帳票の原本（Excel テンプレート）の提供と置き場。原本の Excel が案件の中にありません（確かめたこと 1）。 1. 原本の .xlsx をいただけますか。セル位置は原本を見て design に書きます。 2. 原本の置き場（サーバー上のパス）と、そのパスを持つプロパティのキーを決めてください。 - 下書きの案：`wing-web.properties` に `report.template.wtg072=<パス>/RWTG070.xlsx` を足す（確かめたこと 5 のバッチと同じく、パスをプロパティで持つ） 3. 原本を案件のリポジトリのどこに置くか（例 `wing/src/main/resources/report/RWTG070.xlsx` に置いて、配備でサーバーへ写す）。 4. 原本のフォントは何か。サーバーの OpenOffice にそのフォントが入っているか（無いと PDF の見た目がずれます）。",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-print-report.md）"
+     },
+     {
+      "id": "Q-DS-PR-002",
+      "target": "specs/print-report/design.md",
+      "location": "処理フロー、コンポーネント（帳票作成）、要件 1（1.3〜1.8）",
+      "question": "シート構成と、閲覧・印刷でのページの組み方。1. 原本のシート構成を教えてください。 - 下書きの案：1 つのブックに「表紙」「発行依頼書」「契約局情報」の 3 シート。A4 縦と印刷範囲は原本で設定済み 2. 閲覧・印刷で出さないページの外し方。 - 下書きの案：PDF に変換する前に、出さないシートを POI で消す（OpenOffice はブックの全シートを PDF にするため） 3. 契約局情報が 1 ページに入らないときの作り方。 - 1 ページに何行まで入れるか - 下書きの案 A：契約局情報のシートを必要な数だけコピーして増やす - 下書きの案 B：1 つのシートに行を足し、決まった行数ごとに改ページを入れる 4. ページ番号の書式と場所（例「1/3」をシートの右下）。番号は契約局情報のページの中で数えるか、帳票全体で数えるか。",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-print-report.md）"
+     },
+     {
+      "id": "Q-DS-PR-003",
+      "target": "specs/print-report/design.md",
+      "location": "データ契約と外部連携、コンポーネント（帳票作成）、要件 1（1.9）",
+      "question": "表紙の項目とセルの対応。1.9 の項目ごとに、取得元とセル位置を表で教えてください。原本をいただければ、セル位置は原本から読みます。 | 表紙の項目 | 取得元（テーブル・列、またはコードマスタの名称） | セル | 備考 | |---|---|---|---| | 代表局番号 | 案：`TWTGM140` 連番 1 の代表局番号＋枝番 | | 枝番を付けるか | | 提出日 | Q-DS-PR-004 | | | | 申請者・確認者・決裁者の印 | Q-DS-PR-004 | | | | 決裁日 | 案：`TWTGM080.Kessai_DateTime_From` | | 未決裁なら空 | | 基地局番号と基地局名 | 案：`TWTGM140` 連番 1 | | 複数局で「〜他n局」にするか | | 所在地 | | | 住居と登記のどちらか | | 起案の部署と氏名 | 案：発行依頼書の契約稟議起案者の会社名・所属名①②・氏名 | | | | 案件グループ | | | 大グループ・小グループのどちらか、両方か | | 締結者 | | | 関係者のどれか | | 支払の内容 | | | 支払内容1〜4、初回支払内容1〜4 のどれまでか。複数局で合計するか | | 契約期間 | | | | | 受電方法 | | | コードの名称で出すか | | 賃料 | | | | | 製本と押印の種別 | 案：`TWTGM140` 連番 1 の製本種別・UQ押印種別の名称 | | | | 部数 | | | | | 添付資料 | 案：発行依頼書の添付資料(契約書)①〜・添付資料(補足)① 〜 | | 何件まで出すか | | QR コード | Q-DS-PR-008 | | | | （ほかに出す項目） | | | 1.9 の「など」に当たるもの | 複数局の申請で、表紙の値を発行依頼書（申請に 1 行）と契約局情報の 1 行目（代表局）のどちらから取るかも、項目ごとに教えてください。",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-print-report.md）"
+     },
+     {
+      "id": "Q-DS-PR-004",
+      "target": "specs/print-report/design.md",
+      "location": "データ契約と外部連携、要件 1（1.9）",
+      "question": "表紙の「印」と提出日の取り方。1. 申請者・確認者・決裁者の印の欄に何を出すか。 - 下書きの案：承認履歴（`TWTGM180`）の今の審査回で、判定が 02（申請）・03（確認）・04（承認）の最新の行の最終更新者名と日付を出す。まだ行が無ければ空にする - 再製本依頼は確認者がいないので、確認者の欄を空にするか - 申請者の印は「申請」と「確認」（申請者が確認作業中の 03）のどちらの行で取るか 2. 提出日に何を出すか。 - 案 A：申請依頼日時（`TWTGM080.Application_Req_DateTime`） - 案 B：発番日時（`TWTGM080.Hatsuban_Uketsuke_DateTime`） - 案 C：帳票を出力した日",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-print-report.md）"
+     },
+     {
+      "id": "Q-DS-PR-005",
+      "target": "specs/print-report/design.md",
+      "location": "データ契約と外部連携、コンポーネント（帳票作成）、要件 1（1.10）",
+      "question": "発行依頼書のページの項目とセルの対応。1.10 の項目ごとに、取得元とセル位置を表で教えてください。列の型・桁は聞きません。 | 発行依頼書の項目 | 取得元（発行依頼書・契約局情報の項目名、またはコードマスタの名称） | セル | 備考 | |---|---|---|---| | 関係者①〜⑤ | | | 各関係者でどの項目を出すか（区分・地位・氏名・住所・電話・メール・FAX など） | | 契約の内容 | | | | | 支払の内容 | | | | | 製本の情報 | | | | | 添付資料 | | | | | （ほかに出す項目） | | | 1.10 の「など」に当たるもの | 複数局の申請では、閲覧で出す発行依頼書のページは代表局の分の 1 ページだけでよいか（1.5 は 3 ページ）。",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-print-report.md）"
+     },
+     {
+      "id": "Q-DS-PR-006",
+      "target": "specs/print-report/design.md",
+      "location": "コンポーネント（帳票作成）、要件 1（1.8）",
+      "question": "契約局情報のページの項目。1. No は契約局情報の連番（`Renban`）をそのまま出すか、1 からの通し番号か。 2. 基地局番号に枝番を付けるか。 3. 見出しの欄に、申請No・稟議バーコードNo・代表局番号などを出すか。出すならセル位置。 4. 単独局の申請を閲覧・印刷するときは、契約局情報のページを出さない（1.4・1.6）でよいか。複数局で契約局が 1 件だけのときも出すか。",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-print-report.md）"
+     },
+     {
+      "id": "Q-DS-PR-007",
+      "target": "specs/print-report/design.md",
+      "location": "データ契約と外部連携、要件 1",
+      "question": "値の書式。帳票に入れる値の書式を決めてください。 | 種類 | 下書きの案 | |---|---| | 日付 | yyyy/MM/dd（西暦） | | 金額 | 3 桁ごとのカンマ。単位「円」は原本の文字で持つ | | コード値 | コードマスタの名称（出力 CSV と同じ。`specs/property-basic-info/csv-layout-wtg070.md`） | | 値が空 | 空のセルのままにする | | 長い文字列 | 原本のセルの「縮小して全体を表示」または折り返しに任せ、プログラムで切らない |",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-print-report.md）"
+     },
+     {
+      "id": "Q-DS-PR-008",
+      "target": "specs/print-report/design.md",
+      "location": "コンポーネント（QR 生成）、要件 2（2.1・2.2）",
+      "question": "QR コードの中身・大きさ・位置。1. 中身は稟議バーコードNo の文字列だけでよいか（前後に何も付けない）。 2. 大きさと位置（貼るセルの範囲、または縦横の mm）。 3. 誤り訂正のレベルと余白。 - 下書きの案：誤り訂正 M、余白 1 モジュール、PNG にして指定のセルに貼る 4. 稟議バーコードNo が空のとき（2.2）、QR の場所は空白のままでよいか。",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-print-report.md）"
+     },
+     {
+      "id": "Q-DS-PR-009",
+      "target": "specs/print-report/design.md",
+      "location": "API 契約、要件 1（1.4〜1.7）・要件 3（3.1・3.2）",
+      "question": "閲覧と印刷の区別をどう受け渡すか（食い違い）。物件基本情報登録変更の design は `/wtg072/search` の入力を「申請No」だけにしています（確かめたこと 14）。 閲覧と印刷で出すページと応答の形が違うので、どちらかを受け取る必要があります。 - 案 A：同じ URL に出力区分（1:閲覧 / 2:印刷）を足す。物件基本情報登録変更の design の API 契約の表に入力を 1 つ足す - 案 B：URL を分ける（例 `/wtg072/search` を閲覧、`/wtg072/print` を印刷） あわせて、閲覧の別ウインドウの開き方（フォームの `target` に別ウインドウ名を付ける、ウインドウの大きさ）は物件基本情報登録変更の画面のスクリプトが持つ、でよいか。",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-print-report.md）"
+     },
+     {
+      "id": "Q-DS-PR-010",
+      "target": "specs/print-report/design.md",
+      "location": "API 契約、要件 3（3.1〜3.3）",
+      "question": "応答の形とファイル名。1. 応答のヘッダ。 - 下書きの案：閲覧は `Content-Type: application/pdf` と `Content-Disposition: inline; filename=\"<稟議バーコードNo>.pdf\"`。印刷は既存の `downloadFile` と同じ `attachment`（確かめたこと 6） - キャッシュさせないヘッダ（`Cache-Control: no-store`）を付けるか（帳票に個人情報が載るため） 2. ファイル名の稟議バーコードNo は代表局（連番 1）のものでよいか。 3. 代表局の稟議バーコードNo が空のとき（2.2 で QR を出さない場合）、ファイル名をどうするか。 - 案 A：申請No.pdf - 案 B：出力しない（エラーにする）",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-print-report.md）"
+     },
+     {
+      "id": "Q-DS-PR-011",
+      "target": "specs/print-report/design.md",
+      "location": "セキュリティ上の考慮、コンポーネント、要件 3（3.4・3.5）",
+      "question": "出力の条件のサーバー側での確かめ方。ボタンを出す条件（6.9）は物件基本情報登録変更の Service が判定します（確かめたこと 15）。帳票の要求が直接送られたときも、サーバーで同じ条件を確かめる必要があります。 1. 判定のしかた。 - 案 A：同じ `wtg070` パッケージにある物件基本情報登録変更の Service の 6.9 の判定を呼ぶ - 案 B：6.9 の判定を WTG 申請状態サービスに移し、両方から呼ぶ（物件基本情報登録変更の design の変更になる） 2. 条件に合わないときの扱い。 - 下書きの案：既存の `WTG-100030` で止める - 申請が無い・社外ユーザーの範囲外のときも同じでよいか 3. 発行依頼書が無い、または契約局情報の 1 行目が無いとき（前提が崩れたとき）のメッセージ。 4. 帳票の機能ID（`@FuncID(\"PWTGO072\")`）のメニュー権限（`ZMENUAUTH`）の行が要ります（確かめたこと 10）。行の登録は誰が・どの資料で行うか。",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-print-report.md）"
+     },
+     {
+      "id": "Q-DS-PR-012",
+      "target": "specs/print-report/design.md",
+      "location": "ファイル配置計画、処理フロー、要件 3（3.6）・要件 4（4.2）",
+      "question": "一時ファイルの置き場・名前・消す時期。wing には今使える一時フォルダの設定がありません（確かめたこと 7）。 1. 置き場のパスと、そのプロパティのキー。 - 下書きの案：`wing-web.properties` に `report.temp.directory.wtg072` を足す 2. 置き場が無いとき（4.2）、フォルダを自動で作らずにエラーにする、でよいか。 3. ファイル名。 - 下書きの案：`<申請No>_<ユーザーID>_<yyyyMMddHHmmssSSS>.xlsx` と同じ名前の `.pdf`（同時に出しても重ならないように） 4. 消す時期。 - 下書きの案：PDF を応答に書き出した後に、成功・失敗を問わず Excel と PDF の両方を消す - 消すのに失敗したときは、ログに出して利用者には知らせない、でよいか",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-print-report.md）"
+     },
+     {
+      "id": "Q-DS-PR-013",
+      "target": "specs/print-report/design.md",
+      "location": "依存してよい対象、性能とスケーラビリティ、エラー時の分岐フロー、要件 4（4.1）",
+      "question": "OpenOffice への接続と失敗の扱い。steering はサーバー上の OpenOffice（localhost の 8100 番）と jodconverter 2.2.1 を決めています。 1. 接続先（ホスト・ポート）をプロパティに持つか、プログラムに書くか。 - 下書きの案：`wing-web.properties` に `report.openoffice.host=localhost`・`report.openoffice.port=8100` を足す 2. 接続できないときと、変換に失敗したときを分けるか。 - 下書きの案：分けない。どちらもログに ERROR とスタックトレースを出し、利用者には同じメッセージを出す（4.1） 3. 同時に複数の人が出したときの扱い。 - 下書きの案：要求ごとに接続して、変換が終わったら切る。変換は 1 件ずつ順に行う（同時に変換しない） 4. 待ち時間の上限を設けるか（例：接続 10 秒）。設けるなら値。",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-print-report.md）"
+     },
+     {
+      "id": "Q-DS-PR-014",
+      "target": "specs/print-report/design.md",
+      "location": "機能固有エラーコード、エラー時の分岐フロー、要件 1（1.2）・要件 4（4.1・4.2）",
+      "question": "エラーの表示先とメッセージキー・文言。1. エラーをどこに出すか。 - 閲覧は別ウインドウで開くので、そのウインドウにエラー画面（`ExceptionResolver`。確かめたこと 11）を出す、でよいか - 印刷は同じウインドウからダウンロードするので、エラー画面に移ると物件基本情報登録変更画面から離れます。案 A：印刷も別ウインドウで開き、そこにエラー画面を出す。案 B：物件基本情報登録変更画面に戻してメッセージを出す 2. メッセージキーと文言を決めてください。property-basic-info では `WTG-1000xx` のキーを指定いただきました。 | 場面 | 下書きの案（キー） | 下書きの案（文言） | |---|---|---| | 原本が無い（1.2） | `WTG-1000xx`（新規） | 帳票のテンプレートが見つかりません | | 一時ファイルの置き場が無い（4.2） | `WTG-1000xx`（新規） | 帳票の作成に必要なフォルダがありません | | PDF への変換・OpenOffice への接続に失敗（4.1） | `DS-100015`（既存） | 帳票の出力に失敗しました | | 出力の条件に合わない（3.4・3.5） | `WTG-100030`（既存） | 既存の文言 | | 発行依頼書・契約局情報の 1 行目が無い | `WTG-1000xx`（新規） | |",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-print-report.md）"
+     },
+     {
+      "id": "Q-DS-PR-015",
+      "target": "specs/print-report/design.md",
+      "location": "技術スタック、要件 2",
+      "question": "zxing 3.4.1 と Java 7 の食い違い。steering は QR の生成に zxing 3.4.1 を決めています（`steering/tech.md:73`）。 zxing は 3.4.0 から Java 8 以上が必要です（zxing の CHANGES「3.4.0 (19 May 2019) - Requires Java 8+」）。 本番の実行環境は JDK 1.7 です（`steering/tech.md` のコアテクノロジ、`wing/pom.xml:18-19`）。 開発端末は JDK 1.8 なのでコンパイルは通りますが、本番で動きません。どれにしますか。 - 案 A：Java 7 で動く最後の版の zxing 3.3.3（core と javase）にする。steering の版を直す - 案 B：本番の JDK を 1.8 に上げる - 案 C：そのほか",
+      "reason_unanswered": "承認済みの上流と既存のコードからは決められないため（_handoff/questions-phase5-print-report.md）"
+     }
+    ],
+    "answers": [
+     "[answer-ds-pr-20261008-1225.txt]\n回答者 Junichi Noumi\nQ-DS-PR-001〜015（print-report design）の回答。2026-10-08 12:25 受領。大きな表は別ファイル（_handoff\\phase5-print-report-items.md）、原本は _handoff\\BaseStationRentContractIssuingOrderForm.xlsm。\n\n以下が Q-DS-PR-001〜015 の回答です。このまま記録して、印刷・閲覧用帳票の design を書き起こしてください。\n\n## 先に：上流から意図して外れる点（upstream-carryover に記録してください）\n次の点は、requirements（print-report）・steering から意図して外れます。upstream-carryover に記録し、Phase 5 の最後にまとめて直します。\n- requirements 1.10：製本の情報と添付資料は、発行依頼書のページには出さない（その行は隠す）。表紙に出す（Q-DS-PR-005）\n- requirements 3.3：代表局の稟議バーコードNo が万一空のときは、ファイル名を「申請No.pdf」にする（Q-DS-PR-010）\n- 物件基本情報登録変更の design：`/wtg072/search` の入力を 3 つ（申請No・閲覧か印刷か・単独複数局フラグ）にし、GET と POST の両方を受ける（Q-DS-PR-009。carryover の既存の行「/wtg072/search が閲覧か印刷かを受け取れない」を、この内容で置き換える）\n- steering tech.md の zxing 3.4.1 は変えない。本番の Java の版との関係は Q-DS-PR-015 のとおり\n\n帳票の項目の一覧（入力フォームに入れる値 247 項目、表紙・発行依頼書・契約局情報の出力項目、値の取り方）は `_handoff\\phase5-print-report-items.md` に置きました。表紙と発行依頼書の項目は、この一覧のとおりに design に書いてください。\n\n## Q-DS-PR-001\n1. 原本は、利用者が今使っている Excel マクロツール「基地局賃貸契約書発行依頼書」（.xlsm。.xlsx ではありません）です。ファイル名は `BaseStationRentContractIssuingOrderForm.xlsm` です。`_handoff` フォルダに `BaseStationRentContractIssuingOrderForm.xlsm` を置きました。セルの位置は原本を見て design に書いてください（一覧の 5 章に、分かっているセルの例を載せています）。\n2. 置き場はプロパティで持ちます。`wing-web.properties` に次の 2 つのキーを足します。\n   - `ORIGINAL_EXCEL_FILE_DIR`：原本を置くフォルダ（末尾に区切り文字を付ける。開発機は `C:\\\\format\\\\`）\n   - `ORIGINAL_EXCEL_FILE_NAME`：`BaseStationRentContractIssuingOrderForm.xlsm`\n   - パスは「フォルダ＋ファイル名」で組み立てます。下書きの `report.template.wtg072` は使いません。\n3. リポジトリでは `wing/src/main/webapp/static/manual/BaseStationRentContractIssuingOrderForm.xlsm` に置き、配備のときに 2. のフォルダへ写します。\n4. フォントは原本のまま（ＭＳ Ｐゴシック、ＭＳ ゴシック、HG丸ｺﾞｼｯｸM-PRO など）にします。サーバーの OpenOffice に入っているフォントは本番の環境に従い、見た目のずれは総合テストで確かめます。design で新しくフォントを指定することはしません。\n\n## Q-DS-PR-002\n1. 原本のシートは次の 5 つです。すべて A4 縦で、印刷範囲は原本で決まっています（表紙は A2:W86）。\n   | シート | 原本での状態 | 帳票 |\n   |---|---|---|\n   | 【UQ決裁用】表紙 | 非表示 | 計算用（PDF には出さない） |\n   | 【UQ決裁用】表紙_PDF出力用 | 表示 | 表紙（RWTG070） |\n   | 入力フォーム | 非表示 | DB の値の入れ先。閲覧では発行依頼書のページ（RWTG071）として出す |\n   | 複数局用入力フォーム | 非表示 | 契約局情報のページ（RWTG072） |\n   | プルダウン設定 | 非表示 | コード値と消費税の基準日（PDF には出さない） |\n2. シートは消しません。PDF に出すシートだけを表示にし、出さないシートは非表示のままにします（OpenOffice は非表示のシートを PDF に出しません）。\n   - 閲覧：入力フォームを表示にし、印刷範囲を A1:AQ113 にします。UQ担当者入力欄から案件Gまでの行・契約に関する特記事項の行・添付資料の行は、行を隠して出しません（一覧の 3 章「入力フォーム (契約情報)」の特記事項）。\n   - 複数局（閲覧・印刷とも）：複数局用入力フォームを表示にします。\n   - 単独局か複数局かは、申請の単独複数局フラグ（`TWTGM080.Tandoku_Fukusu_Flg`）で決めます。契約局の件数では決めません。\n3. 1 ページに 40 局まで入れます。案 A にします。41 局目からは複数局用入力フォームのシートをコピーして増やし、40 局ずつ入れます。印刷範囲は各シートとも A1:X70 です。\n4. ページ番号は、契約局情報のページの右のフッターに「n/総ページ」で入れます。数えるのは契約局情報のページの中だけです。発行依頼書のページは「1/1」にします。表紙にはページ番号を付けません。\n\n## Q-DS-PR-003\n一覧の 2 章（入力フォームに入れる値）と 3 章の「【UQ決裁用】表紙」（出力項目 156 個と枠外項目）のとおりです。表紙は、入力フォームに入れた値から作ります。下書きの表とのちがいは次のとおりです。\n| 表紙の項目 | 取り方 |\n|---|---|\n| 代表局番号 | 発行依頼書の代表局番号と枝番。「（代表局番号：　<代表局番号>_<枝番>　）」の形 |\n| 決裁日 | `TWTGM080` の決裁日時は使いません。承認履歴の承認（Q-DS-PR-004）の行の最終更新日です |\n| 基地局番号・基地局名 | 発行依頼書の基地局番号と基地局名。基地局名に「　他n局」が含まれていれば 2 行に分けます |\n| 所在地 | 住居表示（住所）と登記表示の両方を出します |\n| 起案の部署と氏名 | 上：会社名＋所属名①＋所属名②。中：所属名①＋\" \"＋所属名②。下：氏名 |\n| 案件グループ | 大グループと小グループの両方。それぞれコードと名称 |\n| 締結者 | 契約者区分が「契約者」の関係者から、決まった順で並べた 1 番目と 2 番目（左右の欄）。郵便番号・住所・名前 |\n| 支払の内容 | 継続支払は支払内容1〜4、初回支払は初回支払1〜4。合計はしません |\n| 受電方法・製本種別・押印種別・部数など | コードマスタの名称 |\n| 添付資料 | 契約書①〜⑤と補足①〜⑤の 10 件 |\n| QR コード | Q-DS-PR-008 |\n複数局でも、表紙の値は発行依頼書（`TWTGM100`）から取ります。契約局情報から取るのは、代表局（連番 1）の稟議バーコードNo だけです。\n\n## Q-DS-PR-004\n1. 印の欄には、その人の名前の姓（ユーザー名を空白で分けた先頭）を出します。決裁日の欄は MM/dd にします。名前が無い印は、図形の線を白にして見せません。取り方は次のとおりです（一覧の 4.2）。\n   - 稟議依頼・修正稟議依頼：今の審査回の承認履歴（`TWTGM180`）から、通番の降順で最新の 1 件を取ります。\n     - 申請者：審査権限 02・判定 02（申請）。その後に確認者の差戻し（審査権限 03・判定 05）がある行は除きます。\n     - 確認者：審査権限 03・判定 03（確認）。その後に承認者の差戻し（審査権限 04・判定 05）がある行は除きます。\n     - 決裁者：審査権限 04・判定 04（承認）。決裁日はこの行の最終更新日です。\n   - 再製本依頼：元申請（`TWTGM080.Moto_Application_No`）の承認履歴から、審査権限 02・03・04 ごとに最新の 1 件を取ります。確認者の欄も元申請の確認者で埋めます（空にはしません）。\n   - 名前は、承認履歴の最終更新者（ユーザーID）でユーザー管理マスタ（`TWTZM010`）を引いて取ります。承認履歴の最終更新者名は使いません。\n2. 提出日は案 A・B・C のどれでもありません。申請の申請日時（`TWTGM080.Application_Date`）を yyyy/m/d にして「提出日　　<日付>」と出します。値が無ければ「提出日　　」だけにします。\n\n## Q-DS-PR-005\n発行依頼書のページ（RWTG071「入力フォーム (契約情報)」）は、入力フォームの基本情報から下を出したものです。項目は一覧の 2 章の No.28〜237（基本情報・契約形態・関係者①〜⑤・契約内容・支払内容・初回支払内容・転貸借・備考）です。\n- 関係者①〜⑤で出す項目：契約者区分・関係（地位）・法人個人区分・契約者番号・法人名（氏名）とフリガナ・役職氏名とフリガナ・郵便番号・都道府県・市区町村・字番地・建物ビル・TEL（固定）・TEL（携帯）・Email・FAX。契約者区分が空の関係者の欄は隠します。\n- 製本の情報と添付資料は、発行依頼書のページには出しません（その行は隠します）。表紙に出します。\n- 複数局でも、発行依頼書のページは 1 ページです（発行依頼書は申請に 1 行のため）。\n\n## Q-DS-PR-006\n1. No は 1 からの通し番号です。連番はそのまま出しません。\n2. 基地局番号は契約局情報の基地局番号だけを出します。枝番は付けません。\n3. 見出しの欄はプログラムで値を入れません。原本の見出しのままにします。\n4. 単独局（単独複数局フラグが 0）の申請では、契約局情報のページを出しません。複数局（フラグが 1）なら、契約局が 1 件でも出します。担当エリアの名称が「光インフラ」のときだけ、物件名の列も出します。それ以外は物件名の列を隠します。\n\n## Q-DS-PR-007\n| 種類 | 書式 |\n|---|---|\n| 日付 | yyyy/m/d（月日の 0 埋めなし。申請日・契約開始日・契約終了日・初回支払の対象期間・初回支払日・着工予定日） |\n| 受付No | 6 桁の 0 埋め |\n| 金額 | 入力フォームでは 3 桁ごとのカンマ。マイナスは赤字。表紙の金額は「\\」＋カンマ、マイナスは「▲\\」＋カンマで赤字 |\n| コード値 | コードマスタの名称（一覧の 4.1 の表） |\n| 値が空 | 空のセルのままにします。表紙の □/■ のように、原本の決まりがある項目は一覧のとおりにします |\n| 長い文字列 | 原本のセルの設定に任せます。プログラムで切りません |\n\n## Q-DS-PR-008\n1. 中身は稟議バーコードNo の文字列だけです。前後に何も付けません。\n2. 【UQ決裁用】表紙_PDF出力用のシートの V78 から X80 の手前まで（0 始まりで列 21〜23、行 77〜79）に、60×60 ピクセルの PNG を貼ります。\n3. 誤り訂正と余白は zxing の既定のままにします（指定しない）。\n4. 稟議バーコードNo が空なら QR を貼りません。その場所は空白のままです。\n\n## Q-DS-PR-009\n案 A・B のどちらでもなく、同じ URL `/wtg072/search` に次の 3 つを渡します。物件基本情報登録変更の design の API 契約は、この形に直してください（誤りの指摘 4 で予告したもの）。\n| 名前 | 値 |\n|---|---|\n| `hdnApplicationNo` | 申請No |\n| `hdnBrowseBtnClickFlag` | \"1\"＝閲覧、それ以外（\"0\"）＝印刷 |\n| `hdnSingleDepSwitchClickFlag` | 申請の単独複数局フラグ（`Tandoku_Fukusu_Flg`）。\"0\"＝単独局、\"1\"＝複数局 |\n- 閲覧と印刷の両方で、3 つを URL のクエリに付けて送ります。メソッドは GET と POST の両方を受けます。\n- 別ウインドウの開き方は、物件基本情報登録変更の画面のスクリプトが持ちます。閲覧ボタンは、ほかの別ウインドウと同じく `/zoom/wait` を名前 \"zoom\" のウインドウで開きます。そのあと、そのウインドウを target にしてフォームを送ります。大きさは `ZOOM_DEFINE.zwtz072=1100px,600px` を使います（スクロールとサイズ変更はできる）。印刷ボタンは target を付けずに、画面のフォームをそのまま送ります。\n\n## Q-DS-PR-010\n1. ヘッダは `Content-Type: application/pdf` です。閲覧は `Content-Disposition: inline; filename=\"<稟議バーコードNo>.pdf\"`、印刷は `attachment; filename=\"<稟議バーコードNo>.pdf\"` にします。`Cache-Control` は足しません（既存のダウンロードと同じ）。\n2. ファイル名は、QR と同じ代表局（連番 1）の稟議バーコードNo です。\n3. 出力できる条件（発番済）の申請では、代表局の稟議バーコードNo は空になりません。万一空のときは、案 A の申請No.pdf にします。\n\n## Q-DS-PR-011\n1. 案 A です。同じ `wtg070` パッケージにある物件基本情報登録変更の Service の 6.9 の判定を呼びます。物件基本情報登録変更の design は変えません。判定の中身は 6.9 のとおりです。\n   - 組織がプロセス管理4G（権限区分 \"G6\"）であること。\n   - 稟議依頼・修正稟議依頼では申請者・確認者・承認者、再製本依頼では起案者・申請者・承認者であること。\n   - 契約局情報と発行依頼書が登録済であること。\n   - 発番済であること。発番済とは、稟議依頼・修正稟議依頼ではステータスが受付済（02）以降のことです。再製本依頼は常に発番済です。\n2. 条件に合わないときは `WTG-100030` で止めます。申請が無いとき、社外ユーザーの範囲の外のときも同じです。この URL には自分の画面が無いので、`ApplicationException` を投げてエラー画面に出します（Q-DS-PR-014）。\n3. 発行依頼書、または契約局情報の 1 行目が無いときも、2. と同じく `WTG-100030` です（3.4 の「登録されている」に当たるため）。新しいキーは足しません。\n4. メニュー権限 `ZMENUAUTH` には、物件基本情報登録変更を開くメニューの行に、プログラムID `PWTGO072` の行を足します（会社コード・メニューID・プログラムID）。足す行はリリースのデータ投入（INSERT 文）として tasks に入れます。`PWTGO073` も同じ扱いです。\n\n## Q-DS-PR-012\n1. 置き場はプロパティでは持ちません。コードマスタ `TWTZM040` の 種別コード \"WTG\"・キー1 \"PARAM\"・キー2 \"P89\"・キー3 \"01\"（名称「ファイル一時出力ディレクトリ」）の文字項目1 から取ります。本番の値は `/home/const/temp/download/` です（末尾に区切り文字を付ける）。この行は新しく追加します。\n2. 案のとおり、フォルダは自動で作りません。値が空のとき・フォルダが無いときは `DS-000084`（ファイル名(ファイルパス)が存在しません）で止めます。\n3. ファイル名は下書きの案にします。同時に出しても重ならないためです。\n   - 編集用 Excel：`<yyyyMMddHHmmssSSS>_<ユーザーID>_<申請No>_編集用_<原本のファイル名>`\n   - PDF：上の名前＋\".pdf\"\n   - QR の画像を一時ファイルにするときも同じ頭の名前にします。\n   - 利用者に見せるファイル名（稟議バーコードNo.pdf）は、応答のヘッダにだけ付けます。\n4. 消す時期は下書きの案のとおりです。\n   - 成功でも失敗でも、作った Excel・PDF・QR の画像を `finally` の `Files.deleteIfExists` で消します。PDF を応答に書き出したあとも、途中で失敗したときも消します。\n   - 消すのに失敗したときは、ログに出すだけで利用者には知らせません。\n\n## Q-DS-PR-013\n1. 接続先はプロパティに持たず、localhost の 8100 番をプログラムに書きます（jodconverter の `SocketOpenOfficeConnection(8100)`）。\n2. 案のとおり、接続の失敗と変換の失敗は分けません。どちらもログに ERROR とスタックトレースを出し、利用者には `DS-100015`（帳票の出力に失敗しました）を出します。PDF は出しません（4.1）。\n3. 要求ごとに接続し、変換が終わったら `finally` で切ります。順に並べる仕組み（同時に変換しない制御）は作りません。\n4. 待ち時間の上限は設けません。\n\n## Q-DS-PR-014\n1. エラーは、この URL の応答として既存のエラー画面（`ExceptionResolver`）に出します。\n   - 閲覧は別ウインドウに出ます。\n   - 印刷は、物件基本情報登録変更画面のウインドウがエラー画面に替わります。案 A・B のどちらにもしません。\n   - やり直しは「各画面での再操作」です。利用者は物件基本情報登録変更画面を開き直して、閲覧・印刷を押し直します。\n2. キーはすべて wing にある既存のものを使い、新しいキーは足しません。\n| 場面 | キー | 文言 |\n|---|---|---|\n| 原本のフォルダが無い（1.2） | `DS-000084` | ファイル名(ファイルパス)が存在しません |\n| 原本のファイルが無い（1.2） | `GEF-000058` | {0}:指定されたﾌｧｲﾙが何らかの理由により処理出来ません… |\n| 一時ファイルの置き場が無い（4.2） | `DS-000084` | ファイル名(ファイルパス)が存在しません |\n| PDF への変換・OpenOffice への接続に失敗（4.1） | `DS-100015` | 帳票の出力に失敗しました |\n| 出力の条件に合わない（3.4・3.5）、発行依頼書・契約局情報の 1 行目が無い | `WTG-100030` | 既存の文言 |\n- `GEF-000058` の {0} には「原本エクセルファイル」を入れます。\n\n## Q-DS-PR-015\n案 C です。zxing は 3.4.1（core と javase）のまま使い、steering の版は変えません。\n- 本番の実行環境で zxing 3.4.1 が動くか（Java の版）は、導入のときに発注者の環境で確かめます。総合テストの確認事項に入れてください。\n- 帳票で使うのは `QRCodeWriter.encode` と `MatrixToImageWriter.toBufferedImage` だけです。\n"
+    ],
+    "answered_by": "Junichi Noumi",
+    "answered_at": "2026-10-08T12:27:56+09:00"
+   },
+   {
+    "key": "design-authoring-generate[property-basic-info]",
+    "questions": [],
+    "answers": [
+     "差戻し: 次のとおり直す（回答者 Junichi Noumi、2026-10-07 の Q-DS-PBI-011 その3・その4 と指示による）。(1) 2.5 を「申請者は、受付済・回覧中、受付済・確認中、申請済・差戻し から申請できる」に直す（受付済・確認中は申請者が確認作業中である印で担当者の段階ではない。確認者・承認者は飛ばさないので 3.8 の段階を飛ばす操作にはあたらない）。(2) 受付済・確認中 で申請者が「確認」を押してもステータス・状態区分は変わらない（承認履歴に判定 03 の行を残すだけ）、を足す。(3) 3.9 の再製本の申請者の操作「確認」を「申請」に直す（3.3 と同じ。再製本の申請者に「確認」ボタンは無い）。(4) 4.5 を「番が回っている起案者・申請者・確認者は取下げを受け付ける。承認者は取下げを持たない」に直す。(5) 4.3 と 4.5 に「ただし、稟議・修正稟議の 起案済・回覧中（発番前）は除く」を足す。(6) 12.1 の括弧書き「発行依頼書情報 TWTGM100 は読むだけ」を feature 一覧の注記に合わせて直す（物件基本情報登録変更は TWTGM100 を、申請の削除では削除し、再製本・修正稟議では複製する）。"
+    ],
+    "answered_by": "Junichi Noumi",
+    "answered_at": "2026-10-07T15:46:10+09:00"
+   },
+   {
+    "key": "feature-decomposition-generate[]",
+    "questions": [
+     {
+      "id": "Q-FEA-001",
+      "target": ".aidd/feature-list.md",
+      "location": "依存列：property-basic-info（優先度1）と issue-request（優先度2）",
+      "question": "物件基本情報の帳票（REQ-016：表紙情報・発行依頼書・契約局情報）は、issue-request が持つ TWTGM100・TWTGM140 を出力するため、property-basic-info → issue-request の依存（発行依頼書を先に作る）になります。一方、発行依頼書が物件申請情報（TWTGM080）にひもづくなら issue-request → property-basic-info です。どちらの向きか教えてください。前者の場合、いただいた優先度（070 が 1 番）と逆になるため、並び順の入れ替えも必要です。両方向とも必要な場合は循環になるため、依存の見直し方を教えてください。",
+      "reason_unanswered": "承認済み入力と計画了承時の回答からは決まらないため"
+     },
+     {
+      "id": "Q-FEA-002",
+      "target": ".aidd/feature-list.md",
+      "location": "想定規模：property-basic-info（大）",
+      "question": "対応要求が17件（登録変更・承認フロー・ステータスと履歴・ファイル登録・CSV 出力・帳票・文書バーコード）あり、想定規模を「大」と判断しました。分割案は (a) 物件基本情報の登録変更と承認フロー、(b) 帳票 PWTGO072（RWTG070）、(c) 文書バーコード生成ポップアップ の3つです。この分割を採るか、計画了承時の6分割のまま進めるか教えてください。",
+      "reason_unanswered": "承認済み入力と計画了承時の回答からは決まらないため"
+     },
+     {
+      "id": "Q-FEA-003",
+      "target": ".aidd/feature-list.md",
+      "location": "## 依存関係図（任意）<FEATURE_DEPENDENCY_DIAGRAM>",
+      "question": "依存は表だけで追える本数です。図を作らない場合の不要理由（例：依存が少なく表だけで追えるため）を教えてください。",
+      "reason_unanswered": "承認済み入力と計画了承時の回答からは決まらないため"
+     },
+     {
+      "id": "Q-FEA-004",
+      "target": ".aidd/feature-list.md",
+      "location": "feature 名（6行）",
+      "question": "feature 名は、Phase 1 の回答で使われた issue-request-tutorial・contract-info-import に合わせ、ほかを property-basic-info・issue-request・application-status-search・contract-info-download としました。この名前でよいか教えてください。",
+      "reason_unanswered": "承認済み入力と計画了承時の回答からは決まらないため"
+     }
+    ],
+    "answers": [
+     "Q-FEA-001：依存の向きは issue-request が property-basic-info に依存する（発行依頼書は TWTGM080 に会社コードと申請No でひもづき、申請No は物件基本情報の側で採番する）。循環を解くため、帳票 PWTGO072（帳票ID RWTG070）を別の feature にし、property-basic-info と issue-request の両方に依存させる\nQ-FEA-002：分割は帳票だけとする。登録変更と承認フローと文書バーコードのポップアップは property-basic-info に残す。feature は7つで、優先度は property-basic-info、issue-request、issue-request-tutorial、帳票、application-status-search、contract-info-import、contract-info-download の順\nQ-FEA-003：依存関係図は不要（依存は一覧表の依存の列で足りるため）\nQ-FEA-004：名前はこのままでよい。帳票の feature は print-report とする\n追加：contract-info-import は property-basic-info と issue-request に依存する（取込バッチが TWTGM080 を参照し、TWTGM100 と TWTGM140 を更新するため）"
+    ],
+    "answered_by": "Junichi Noumi",
+    "answered_at": "2026-10-01T18:33:57+09:00"
+   },
+   {
+    "key": "requirement-intake-generate[]",
+    "questions": [
+     {
+      "id": "Q-INTAKE-001",
+      "target": ".aidd/requirement-list.md",
+      "location": "## 廃止済み要求 の表（<RETIRED_REQUIREMENT_ID_N> / <RETIRED_REQUIREMENT_TEXT_N> / <RETIRED_DATE_N> / <RETIRED_REASON_N> の1行）",
+      "question": "初回作成のため廃止済み要求は0件です。この4つの記入欄を「不要理由」を添えて残してよいですか。よい場合は、記載する不要理由の文言をお知らせください。",
+      "reason_unanswered": "記入欄を埋める・不要とする根拠はRFPに無く、不要理由は人間が明記したものに限られるため"
+     }
+    ],
+    "answers": [
+     "Q-INTAKE-001：REQ-040・REQ-041 を廃止済み要求に移してください。廃止日 2026-10-01、廃止理由「作成組織検索（ZOOM）画面は 2024/6/25 の方針変更で廃止（Zoom管理台帳 改訂52）。作成組織は発行依頼書登録変更画面で直接入力する」。ほかに廃止する要求はありません。"
+    ],
+    "answered_by": "Junichi Noumi",
+    "answered_at": "2026-10-01T13:09:05+09:00"
+   },
+   {
+    "key": "requirements-authoring-generate[application-status-search]",
+    "questions": [
+     {
+      "id": "Q-RQ-AS-001",
+      "target": "specs/application-status-search/requirements.md",
+      "location": "業務フロー",
+      "question": "今の手順はほかの feature と同じでよいですか。この画面を誰が、何のために使うかを教えてください。",
+      "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+     },
+     {
+      "id": "Q-RQ-AS-002",
+      "target": "specs/application-status-search/requirements.md",
+      "location": "検索条件。REQ-006",
+      "question": "検索項目（20 項目程度）の一覧と、項目ごとの一致のしかた（完全一致・部分一致・範囲）、初期値、必須の有無を教えてください。",
+      "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+     },
+     {
+      "id": "Q-RQ-AS-003",
+      "target": "specs/application-status-search/requirements.md",
+      "location": "一覧",
+      "question": "一覧に出す項目、並び順、1 ページの件数、検索結果の上限件数、0 件のときの表示を教えてください。一覧から物件基本情報登録変更画面へ移る方法（申請No のリンクなど）と、新規登録のボタンがあるかも教えてください。物件基本情報登録変更の 10.3・15.4 は、戻るときに「申請状況一覧の画面」へ戻るとしています。このとき検索条件を残すかも教えてください。",
+      "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+     },
+     {
+      "id": "Q-RQ-AS-004",
+      "target": "specs/application-status-search/requirements.md",
+      "location": "CSV 出力。REQ-007",
+      "question": "CSV の列と順番、文字コード・区切り文字・見出し行の有無、ファイル名、出力の上限件数、出力できる人を教えてください。",
+      "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+     },
+     {
+      "id": "Q-RQ-AS-005",
+      "target": "specs/application-status-search/requirements.md",
+      "location": "権限",
+      "question": "社外ユーザーの絞り込みは、物件基本情報登録変更の 6.5 と同じ（契約稟議起案会社が自社の申請と、本人が登録した申請だけ）でよいですか。",
+      "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+     },
+     {
+      "id": "Q-RQ-AS-006",
+      "target": "specs/application-status-search/requirements.md",
+      "location": "前提・未確定事項・非機能",
+      "question": "この feature に固有の前提と、design の前に決めておく事項を教えてください。非機能と扱う個人情報も教えてください。",
+      "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+     }
+    ],
+    "answers": [
+     "Q-RQ-AS-001：\n今の手順は、ほかの feature と同じでよい。\n承認フローの担当者と起案者が、自分の関わる申請を探して、物件基本情報登録変更画面を開くために使う。\nメニューから最初に開く画面である。\n\nQ-RQ-AS-002：\n検索条件は約38項目で、どれも必須ではない。初期値は空とする。\nただし、時刻の範囲の初期値は 00:00〜23:59 とする。\n一致のしかたは次のとおり。\n・前方一致：申請No、稟議バーコードNo、基地局番号、発送書類名\n・部分一致：基地局名、更新者名、起案の所属①②、起案担当者、案件小グループ\n・完全一致：エリア、審査フェーズ、状態、依頼内容、施策、起案会社、押印種別、転貸借の契約種別\n・範囲：起案日時、稟議承認日、初回支払日、申請日時、発送希望日、確認日時、進捗の日数（営業日で数える）\n社外ユーザーには、起案会社と所属を変えさせず、進捗の検索は出さない。\n項目の全部は、design の画面設計で定める。\n\nQ-RQ-AS-003：\n一覧の項目は14とする。\n・申請No（リンク）、依頼内容、審査フェーズ（再申請のときは「(再申請)」を付ける）、状態\n・稟議バーコードNo（代表局のもの）、基地局番号、基地局名（複数局は「〜他n局」）\n・案件小グループ、起案会社名、エリア、起案担当者、起案日、発送希望日、施策\n並び順は、申請No の降順とする。\n1ページの件数と、検索結果の上限件数は、コードマスタの設定値に従う。上限を超えたときはエラーメッセージを表示する。\n0件のときは、該当なしのメッセージを表示する。\n申請No のリンクを押すと、物件基本情報登録変更画面へ移る。\n状態が取込中の申請は、リンクにしない。\n新規登録のボタンは置かない。新規の登録は、メニューから物件基本情報登録変更画面を開いて行う。\n物件基本情報登録変更画面から戻ったときは、前の検索条件を残して、もう一度検索する。\n\nQ-RQ-AS-004：\nCSV の列は、一覧と同じ14列を同じ順に出す。\n文字コードは Shift_JIS（MS932）、区切りはカンマ、見出し行を付ける。\nファイル名は「WTG060_年月日時分秒.csv」とする。\n上限件数は、画面の検索と同じとする。0件や上限を超えたときは、見出し行だけを出す。\n出せるのは、この画面を使える全員である。出す範囲は、画面の検索と同じ絞り込みに従う。\n\nQ-RQ-AS-005：\n物件基本情報登録変更の 6.5 と同じでよい。\n契約稟議起案会社が自社（P71 の文字項目2 の会社コード）の申請と、本人が登録した申請だけを出す。\n\nQ-RQ-AS-006：\n固有の前提は無い。design の前に決めておく事項も無い。\n非機能は、ほかの feature と同じ扱いでよい。\n扱う個人情報は、起案担当者と更新者の氏名である。"
+    ],
+    "answered_by": "Junichi Noumi",
+    "answered_at": "2026-10-05T11:11:55+09:00"
+   },
+   {
+    "key": "requirements-authoring-generate[contract-info-download]",
+    "questions": [
+     {
+      "id": "Q-RQ-CD-001",
+      "target": "specs/contract-info-download/requirements.md",
+      "location": "業務フロー",
+      "question": "今の手順はほかの feature と同じでよいですか。ダウンロードを誰が、何のために行うかを教えてください。",
+      "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+     },
+     {
+      "id": "Q-RQ-CD-002",
+      "target": "specs/contract-info-download/requirements.md",
+      "location": "検索画面。REQ-037",
+      "question": "検索条件と表示項目は既存の GWTG004（契約情報検索／一覧）と同一とあります。既存の GWTG004 のコードを正として写す形でよいか、違う点があるかを教えてください。",
+      "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+     },
+     {
+      "id": "Q-RQ-CD-003",
+      "target": "specs/contract-info-download/requirements.md",
+      "location": "CSV。REQ-039",
+      "question": "CSV は契約情報取込の形式と同じでよいですか。ファイル名、出力の上限件数、検索結果の一部だけを選んで出せるかも教えてください。",
+      "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+     },
+     {
+      "id": "Q-RQ-CD-004",
+      "target": "specs/contract-info-download/requirements.md",
+      "location": "権限。REQ-038",
+      "question": "WTB と同様のベンダー／施工会社の権限制御の、具体的な絞り込みの条件を教えてください。steering は、WTB の計画マスタ（TWTBM080）による方式を WTG の新しいデータには使わないとしています。契約情報（既存の WTG のデータ）には WTB の方式を使うのかも教えてください。",
+      "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+     },
+     {
+      "id": "Q-RQ-CD-005",
+      "target": "specs/contract-info-download/requirements.md",
+      "location": "前提・未確定事項・非機能",
+      "question": "この feature に固有の前提と、design の前に決めておく事項を教えてください。非機能と扱う個人情報も教えてください。",
+      "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+     }
+    ],
+    "answers": [
+     "Q-RQ-CD-001：\n今の手順は、ほかの feature と同じでよい。\n起案者・申請者・確認者が、既存の契約情報を取り出し、取込用の CSV を作るために使う。\n物件基本情報登録変更画面の契約局DL ボタンから、ポップアップで開く。\n\nQ-RQ-CD-002：\n既存の GWTG004 をそのまま写すのではなく、その一部を使う。\n検索条件は次の15項目とする。\n・登録状態、計画基地局番号、計画基地局名、枝番、契約者番号、ロケーションID\n・代表契約局番号、代表契約枝番、転貸借、建物ビル、基地局番号、基地局名\n・転貸借契約書名、法人名または個人名、法人名または個人名（カナ）\n一覧は19項目とし、出す行を選ぶチェックボックスを付ける。\n1ページは100件とする。\nREQ-037 の「同一の検索条件・表示項目」は、GWTG004 と同じ項目の定義と検索のしかたを使う、という意味に読む。\n項目の全部は、design の画面設計で定める。\n\nQ-RQ-CD-003：\nCSV は、契約情報取込のリバースデータと同じ 381列の形式とする。文字コードは MS932 とする。\nファイル名は「WTG100_年月日時分秒.csv」とする。\nチェックボックスで選んだ行だけを出す。1行も選んでいないときは、エラーメッセージを表示する。\n出力の上限件数は設けない。\n並び順は、今の申請の基地局を先頭にし、あとは基地局番号の昇順、枝番の降順とする。\n\nQ-RQ-CD-004：\n契約情報は既存の WTG のデータなので、WTB と同じ方式で絞り込む。\n計画基地局が計画マスタ（TWTBM080）に無い契約情報は出す。\n計画マスタにある場合は、BSベンダー会社がログインユーザーのベンダー区分と同じとき、または元請会社がログインユーザーの施工会社区分と同じときだけ出す。\nsteering の「TWTBM080 を WTG の新しいデータに使わない」は、本案件で新しく作るテーブルのことと読む。\n\nQ-RQ-CD-005：\n出力の前に、ログインユーザーの作業用テーブルの行を消して作り直す。\ndesign の前に決めておく事項は無い。\n非機能は、ほかの feature と同じ扱いでよい。\n扱う個人情報は、契約者の氏名・住所・電話番号・メールアドレスである。"
+    ],
+    "answered_by": "Junichi Noumi",
+    "answered_at": "2026-10-05T13:04:50+09:00"
+   },
+   {
+    "key": "requirements-authoring-generate[contract-info-import]",
+    "questions": [
+     {
+      "id": "Q-RQ-CI-001",
+      "target": "specs/contract-info-import/requirements.md",
+      "location": "業務フロー",
+      "question": "今の手順はほかの feature と同じでよいですか。取込を誰が、何のために、どの時点で行うかを教えてください。",
+      "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+     },
+     {
+      "id": "Q-RQ-CI-002",
+      "target": "specs/contract-info-import/requirements.md",
+      "location": "画面 GWTG090。REQ-033",
+      "question": "画面の項目（取込ファイルの選択、取込の区分など）とボタンを教えてください。物件基本情報登録変更の 14.6 から渡される値（申請No・受付No・契約区分・担当エリア・申請者・契約稟議起案者の会社コードと所属名①②と氏名）を、この画面で何に使うかも教えてください。実行の結果を、バッチ処理状況一覧（/zzz010/）で確かめる形でよいですか。",
+      "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+     },
+     {
+      "id": "Q-RQ-CI-003",
+      "target": "specs/contract-info-import/requirements.md",
+      "location": "取込ファイルの形式",
+      "question": "CSV の列と順番、文字コード、見出し行の有無、1 行が何に当たるか（契約局情報 1 局など）を教えてください。物件基本情報登録変更の 9.1 の出力 CSV と、契約情報ダウンロードの CSV は、この取込と同じ形式ですか。",
+      "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+     },
+     {
+      "id": "Q-RQ-CI-004",
+      "target": "specs/contract-info-import/requirements.md",
+      "location": "新規・変更・削除。REQ-034",
+      "question": "行ごとに新規・変更・削除をどう見分けるか、行を特定するキー、更新するテーブル（TWTGM100・TWTGM140 など）を教えてください。feature 一覧の注記で、契約情報取込が TWTGM140 を更新するかはこの feature で扱うとしています。更新するかどうかを教えてください。",
+      "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+     },
+     {
+      "id": "Q-RQ-CI-005",
+      "target": "specs/contract-info-import/requirements.md",
+      "location": "洗替。REQ-035",
+      "question": "洗替の単位（申請No ごとなど）と対象のテーブルを教えてください。洗替の前の内容を変更履歴（TWTGA130・TWTGA150）に残すかも教えてください。steering の既定では、洗替は履歴テーブルへ退避してから削除し、入れ直します。",
+      "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+     },
+     {
+      "id": "Q-RQ-CI-006",
+      "target": "specs/contract-info-import/requirements.md",
+      "location": "チェックとエラー",
+      "question": "行のチェック内容（発行依頼書登録変更画面のチェックに合わせる、と Q-RQ-IR-010 で回答済み）のほかに、取込に固有のチェックがあれば教えてください。1 行でもエラーがあれば全件を取り消すか（steering の既定）、エラーの内容をどこに出すか、取込を実行できる人と申請の状態も教えてください。",
+      "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+     },
+     {
+      "id": "Q-RQ-CI-007",
+      "target": "specs/contract-info-import/requirements.md",
+      "location": "前提・未確定事項・非機能",
+      "question": "この feature に固有の前提と、design の前に決めておく事項を教えてください。非機能と扱う個人情報も教えてください。",
+      "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+     }
+    ],
+    "answers": [
+     "Q-RQ-CI-001：\n今の手順は、ほかの feature と同じでよい。\n起案者・申請者・確認者が、自分の番のときに、契約局情報と発行依頼書をまとめて CSV で登録・更新するために使う。\n物件基本情報登録変更画面の契約局取込ボタンから開く。\n\nQ-RQ-CI-002：\n画面の項目は、「ファイルの種類」と「登録するファイル」の2つで、どちらも必須とする。\nファイルの種類は「リバースデータ」と「発行依頼書データ」から選ぶ。初期値はリバースデータとする。\nボタンは、参照、実行、クリア、処理状況、戻るの5つとする。\n物件基本情報登録変更画面から渡された値は、画面には出さず、取込の処理に渡す。\n・申請No は、洗替の単位に使う。\n・受付No と契約区分は、稟議バーコードNo を付けるのに使う。\n・申請者と受付No などは、発行依頼書に入れる。\n取込はバッチで行い、結果はバッチ処理状況一覧（/zzz010/）で確かめる形でよい。処理状況ボタンでその画面へ移る。\n実行したあとは、物件契約情報申請状況検索一覧の画面へ移る。\n\nQ-RQ-CI-003：\nファイルは CSV で、文字コードは Windows-31J、1行目は見出し行とする。\n2行目からの1行が、契約局1件に当たる。\n列の数は、ファイルの種類で違う。\n・発行依頼書データ：228列\n・リバースデータ：381列\n物件基本情報登録変更の 9.1 の出力 CSV は、発行依頼書データと同じ 228列の形式とする。\n契約情報ダウンロードの CSV は、リバースデータと同じ 381列の形式とする。\n列の全部と順番は、design の帳票設計で定める。\n\nQ-RQ-CI-004：\n行ごとに新規・変更・削除を見分けることはしない。\n申請No ごとに、今ある行を全部消してから、ファイルの内容を入れ直す（洗替）。\n更新するテーブルは次のとおり。\n・契約局情報（TWTGM140）：更新する。ファイルの1行を1件とし、連番はファイルの中の順とする。\n・発行依頼書（TWTGM100）：ファイルの最初のデータ行の内容で登録する。\n・物件申請情報（TWTGM080）：取込のあいだは状態を取込中にし、終わったら元の状態に戻す。単独局か複数局かは、データ行が1行なら単独局、2行以上なら複数局とする。\n・契約文書情報（TWTGM110）：契約局情報に無くなった稟議バーコードNo の行を消す。\n既存の契約情報のテーブルは更新しない。\n本 feature も TWTGM140 を洗替で更新することは、本 feature の requirements の Boundary Context に書く。feature 一覧の注記は直さない（Phase 3 の5回目の判断による）。\n\nQ-RQ-CI-005：\n洗替の単位は申請No で、対象は契約局情報と発行依頼書である。\n洗替の前の内容をトランに写し、洗替の後で比べて、変わった行について取込前の内容を変更履歴に残す。\n・契約局情報の変更履歴は TWTGA150 に残す。\n・発行依頼書の変更履歴は TWTGA130 に残す。\nsteering の product.md は、issue-request が変更履歴を残すきっかけを書いている。本 feature の取込も変更履歴を残すきっかけになる。これは product.md の「履歴に残す項目ときっかけは各 feature で決める」による。\n\nQ-RQ-CI-006：\nチェックは区分ごとに行い、ある区分でエラーが出たら、次の区分には進まない。\n・画面：ファイルが選ばれているか、0バイトでないか、拡張子が .csv か\n・区分1：ファイルがあるか\n・区分2：列の数がファイルの種類と合っているか\n・区分3：必須・桁・形式、コードの存在、ファイルの中の重複、項目どうしの整合\n重複は、発行依頼書データでは基地局番号で、リバースデータでは計画基地局番号で見る。\n整合は、KDDI転貸借契約書と契約種別の組合せ、日付の開始と終了の前後、組で入れる項目などを見る。\n1件でもエラーがあれば、全件を取り消し、取込の件数を0にする。\n郵便番号と住所が合わないときは、警告として取込を続ける。\nエラーと警告は、バッチ処理状況の詳細に、行番号を付けて出す。\n最後に、取り込んだ件数と、正常・異常の件数を出す。\n取込を実行できる人と申請の状態は、property-basic-info の契約局取込ボタンの条件に従う。\n\nQ-RQ-CI-007：\n取り込んだファイルは、サーバーに保存する。画面からダウンロードはできない。\n同じ申請No の取込が同時に走らないようにする。方法は design で定める。\ndesign の前に決めておく事項は無い。\n非機能は、ほかの feature と同じ扱いでよい。\n扱う個人情報は、契約者の氏名・住所・電話番号・メールアドレスと、マイナンバーを受け取った日である。"
+    ],
+    "answered_by": "Junichi Noumi",
+    "answered_at": "2026-10-05T11:32:59+09:00"
+   },
+   {
+    "key": "requirements-authoring-generate[issue-request-tutorial]",
+    "questions": [
+     {
+      "id": "Q-RQ-TU-001",
+      "target": "specs/issue-request-tutorial/requirements.md",
+      "location": "## 業務フロー — 現状の業務手順（Before）・システム導入後（After）・人が介在するステップ",
+      "question": "今の手順は property-basic-info・issue-request と同じ（Excel マクロで作成し、紙で回覧・製本）でよいかを教えてください。チュートリアルを使うときの流れ（誰が、どの時点で開き、何を答え、どう終えるか）も教えてください。",
+      "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+     },
+     {
+      "id": "Q-RQ-TU-002",
+      "target": "specs/issue-request-tutorial/requirements.md",
+      "location": "要件 1（チュートリアル画面の表示と切替）1.2",
+      "question": "26 のフォーム（画面）の一覧と、どの選択肢を選ぶとどのフォームへ進むか（分かれ方と順番）を教えてください。各フォームに出す入力欄と例、戻る・中止などの操作、チュートリアルを開ける人と申請の状態（発行依頼書を登録・変更できるときと同じか）も教えてください。",
+      "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+     },
+     {
+      "id": "Q-RQ-TU-003",
+      "target": "specs/issue-request-tutorial/requirements.md",
+      "location": "要件 2（発行依頼書の項目への設定）2.1",
+      "question": "選んだ値と入力した値を、発行依頼書のどの項目へ設定するかを教えてください（転貸借の欄と KDDI転貸借契約書の項目のそれぞれ）。設定するきっかけ（最後のフォームで確定したとき等）、すでに値がある項目を上書きするか、設定した値を発行依頼書登録変更画面の更新まで保存しないのかも教えてください。",
+      "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+     },
+     {
+      "id": "Q-RQ-TU-004",
+      "target": "specs/issue-request-tutorial/requirements.md",
+      "location": "## 前提と依存 — 前提・未確定事項／## 非機能要件 — 可用性・運用監視の検証方法、アクセシビリティ、多言語・地域対応、プライバシー、監査",
+      "question": "本 feature に固有の前提と、design に進む前に決めておく事項があれば教えてください。非機能は property-basic-info・issue-request と同じ扱いでよいか、扱う個人情報（契約者の氏名・住所など）があるか、監査として記録するものがあるかも教えてください。",
+      "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+     }
+    ],
+    "answers": [
+     "Q-RQ-TU-001：\n今の手順は、ほかの2つの機能と同じでよい。\nチュートリアルは、発行依頼書登録変更画面のチュートリアル設定ボタンで開く。\n開くのは、その画面で発行依頼書を入力している利用者である。\n利用者は、表示される画面ごとにボタンを選び、必要な画面では値を入力する。\n最後の転貸借契約書の画面で OK を押すと、チュートリアルを閉じる。\n\nQ-RQ-TU-002：\nREQ-029 の「26フォーム」は古い数である。\n今は、1つのポップアップの中で、次の14の画面を切り替える（Phase 1 の3回目 #2 の判断）。\n・契約種別、料金種別、局種別、設置設備、設置設備のSystem数、設置設備のRRH数、設置設備のSystem構成\n・受電方法、UPS工事、賃料増額の有無、増額月額賃料、着工予定日、au設備の消費電力、転貸借契約書\n画面の順番は、選んだボタンによって分かれる。主な分かれ方は次のとおり。\n・最初の画面は契約種別である。契約局が屋内なら、屋内用の契約種別画面を出す。屋内かどうかは発行依頼書の契約区分で決める。\n・屋外の契約種別は、KDDI⇒UQ、UQ⇒KDDI、OCT⇒UQ、UQ⇒OCT の4つで、それぞれに新設・増設・変更・解約がある。\n・屋内の契約種別は、KDDI⇒UQ、UQ⇒KDDI の2つで、それぞれに新設・変更・解約がある。屋内では、契約種別の次に料金種別の画面を出す。\n・解約を選ぶと、着工予定日の画面へ進む。\n・局種別で「受電のみ」を選ぶと、そのあとの画面が変わる。\n・局種別の「鋼管柱」は、OCT⇒UQ のときは出さない。「エントランス増設工事・UPS工事のみ」は、増設のときだけ出す。\n・UPS工事で「24時間」を選ぶと設置設備へ、「3時間」を選ぶと賃料増額の有無へ進む。\n各画面のボタン・入力欄・例と、分かれ方の全部は、design の画面設計で定める。\n戻るボタンと中止ボタンは無い。閉じるのは、最後の画面の OK だけとする。\nチュートリアルを開けるのは、発行依頼書登録変更画面で入力できる人と申請の状態のとき（Q-RQ-IR-002 と同じ）とする。\n\nQ-RQ-TU-003：\n発行依頼書登録変更画面の次の項目に値を入れる。\n・契約種別、転貸借の契約形態（KDDI転貸借契約書）、局種別、設置設備\n・電気料【月額】（System選択またはW数）、賃料【月額】、着工予定日\n値は、各画面でボタンを押したとき、または入力した値を反映するボタンを押したときに入れる。\nすでに値がある項目は上書きする。入れる値が空のときは、元の値を変えない。\n「賃料の増額無し」を選んだときは、賃料【月額】を変えずに次の画面へ進む。\nチュートリアルは画面の項目に入れるだけで、データベースには保存しない。\n保存は、発行依頼書登録変更画面で更新したときに行う。\n入力欄の条件は次のとおり。\n・増額月額賃料：半角数字12桁まで\n・着工予定日：YYYY/MM/DD の形。初期値は今日の日付。カレンダーから選べる。\n・au設備の消費電力：半角数字10桁まで\n・契約区分が鉄道・オープン・屋内のどれでもないときは、「契約区分を入力してください」と表示して、チュートリアルを始めない。\n・必須の入力欄は無い。\n\nQ-RQ-TU-004：\nこの機能に固有の前提は、発行依頼書の契約区分が入力されていること（屋内かどうかの判定に使う）である。\ndesign の前に決めておく事項は無い。\n非機能は、ほかの2つと同じ扱いでよい。\n扱う個人情報は無い。\n監査として記録するものは無い。変更履歴は、発行依頼書登録変更画面で更新したときに issue-request が残す。"
+    ],
+    "answered_by": "Junichi Noumi",
+    "answered_at": "2026-10-02T12:58:50+09:00"
+   },
+   {
+    "key": "requirements-authoring-generate[issue-request]",
+    "questions": [
+     {
+      "id": "Q-RQ-IR-011",
+      "target": "specs/issue-request/requirements.md",
+      "location": "要件 2（権限による画面の制御）2.3／要件 3（契約書の発番）3.7",
+      "question": "Q-RQ-IR-007 は「発番の後は、担当エリアと契約区分も変えさせない」とし、Q-RQ-IR-003 は「発番の後に担当エリアを変えたときは、受付No を採番し直す」としています。発番の後に担当エリアを変えられるのはどの場合か（たとえば、基地局番号リンクから入ったときだけ変えさせないのか）を教えてください。",
+      "reason_unanswered": "2 つの回答が、発番後の担当エリアの変更について逆の結果を定めているため"
+     }
+    ],
+    "answers": [
+     "Q-RQ-IR-011：発番の後は、どこから入っても担当エリアと契約区分を変えさせない。\nQ-RQ-IR-003 の「発番の後に担当エリアを変えたときは、受付No を採番し直す」は取り消す。\n差戻し候補 1（feature 一覧の REQ-023）：差し戻さない。\nREQ-023 は、この画面が単独複数局フラグに従って表示と計算を切り替えることで満たすと読む。\n切り替えるのは、金額の合計、基地局名の「〜他n局」、複数局モードでの発行依頼書編集の制御である。\nフラグそのものの切替は、property-basic-info の 14.1 が行う。"
+    ],
+    "answered_by": "Junichi Noumi",
+    "answered_at": "2026-10-02T12:09:17+09:00"
+   },
+   {
+    "key": "requirements-authoring-generate[print-report]",
+    "questions": [
+     {
+      "id": "Q-RQ-PR-001",
+      "target": "specs/print-report/requirements.md",
+      "location": "業務フロー",
+      "question": "今の手順は、ほかの feature と同じ（Excel マクロで作成し、紙で回覧・製本）でよいですか。帳票を誰が、どの時点で閲覧・印刷するかを教えてください。",
+      "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+     },
+     {
+      "id": "Q-RQ-PR-002",
+      "target": "specs/print-report/requirements.md",
+      "location": "帳票の構成と出力項目。REQ-016",
+      "question": "表紙情報・発行依頼書・契約局情報のそれぞれに出す項目を教えてください。ページの構成（複数局のとき、契約局情報は局ごとに 1 ページかなど）と、原本の Excel テンプレートがあるかも教えてください。",
+      "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+     },
+     {
+      "id": "Q-RQ-PR-003",
+      "target": "specs/print-report/requirements.md",
+      "location": "QR コード。REQ-017",
+      "question": "QR コードに入れる値（申請No、稟議バーコードNo など）を教えてください。",
+      "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+     },
+     {
+      "id": "Q-RQ-PR-004",
+      "target": "specs/print-report/requirements.md",
+      "location": "閲覧と印刷。REQ-018",
+      "question": "閲覧は別ウインドウの PDF 表示です。印刷は何をするか（PDF のダウンロード、ブラウザの印刷など）を教えてください。出力できる申請の審査フェーズ・状態、出力できる人（物件基本情報登録変更の 6.9 のプロセス管理4G だけか）、ファイル名も教えてください。",
+      "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+     },
+     {
+      "id": "Q-RQ-PR-005",
+      "target": "specs/print-report/requirements.md",
+      "location": "異常時と記録",
+      "question": "PDF への変換に失敗したとき（OpenOffice が動いていないなど）の扱いと、出力したことを記録するかを教えてください。",
+      "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+     },
+     {
+      "id": "Q-RQ-PR-006",
+      "target": "specs/print-report/requirements.md",
+      "location": "前提・未確定事項・非機能",
+      "question": "この feature に固有の前提と、design の前に決めておく事項を教えてください。非機能はほかの feature と同じ扱いでよいか、帳票に載る個人情報（契約者の氏名・住所・連絡先、担当者の連絡先）があるかも教えてください。",
+      "reason_unanswered": "承認済み入力に具体的な値が無く、推測で書けないため"
+     }
+    ],
+    "answers": [
+     "Q-RQ-PR-001：\n今の手順は、ほかの feature と同じでよい。\n帳票は、物件基本情報登録変更画面の閲覧ボタンと印刷ボタンで出す。\n出すのは、発番の後の申請者・確認者・承認者（再製本は起案者も）で、組織がプロセス管理4G の利用者である。\n主に、決裁に回す前の確認と、製本のための印刷に使う。\n\nQ-RQ-PR-002：\n原本の Excel のテンプレートがある。原本をコピーして値を入れ、PDF に変換して出す。原本が無いときはエラーにする。\nページは A4 縦で、次のように組む。\n・閲覧で単独局：表紙と発行依頼書の2ページ\n・閲覧で複数局：表紙、発行依頼書、契約局情報の3ページ\n・印刷で単独局：表紙の1ページ\n・印刷で複数局：表紙と契約局情報の2ページ\n契約局情報には、全部の契約局を連番の順に、No・基地局番号・基地局名で並べる。1ページに入らないときはページを分け、ページ番号を付ける。\n表紙には、代表局番号、提出日、申請者・確認者・決裁者の印、決裁日、基地局番号と基地局名、所在地、起案の部署と氏名、案件グループ、締結者、支払の内容、契約期間、受電方法、賃料、製本と押印の種別、部数、添付資料、QR コードなどを出す。\n発行依頼書には、関係者①〜⑤、契約の内容、支払の内容、製本の情報、添付資料などを出す。\n各ページの項目の全部と配置は、design の帳票設計で定める。\n\nQ-RQ-PR-003：\nQR コードには、代表局（契約局情報の1行目）の稟議バーコードNo を入れる。\n稟議バーコードNo が空のときは、QR コードを出さない。\n\nQ-RQ-PR-004：\n閲覧は、別ウインドウで PDF を表示する。\n印刷は、PDF をダウンロードさせる。\nファイル名は、どちらも「稟議バーコードNo.pdf」とする。\n出せる人と申請の状態は、property-basic-info の閲覧ボタン・印刷ボタンの条件に従う。契約局情報と発行依頼書が登録済みで、発番の後であること。\n作った Excel と PDF は、出したあとにサーバーから消す。\n\nQ-RQ-PR-005：\nPDF への変換に失敗したときは、エラーをログに残す。利用者はボタンを押し直してやり直す。\n一時ファイルを置く場所が無いときは、エラーメッセージを表示して止める。\n帳票を出したことは記録しない。\n\nQ-RQ-PR-006：\n前提は、申請に発行依頼書と、契約局情報の1行目があることである。\ndesign の前に決めておく事項は無い。\n非機能は、ほかの feature と同じ扱いでよい。\n帳票には個人情報が載る。関係者①〜⑤の氏名・住所・電話番号・メールアドレス・FAX、起案者の氏名、申請者・確認者・決裁者の氏名である。"
+    ],
+    "answered_by": "Junichi Noumi",
+    "answered_at": "2026-10-02T15:38:42+09:00"
+   },
+   {
+    "key": "requirements-authoring-generate[property-basic-info]",
+    "questions": [
+     {
+      "id": "Q-RQ-PBI-010",
+      "target": "specs/property-basic-info/requirements.md",
+      "location": "要件 9 の前後（契約局情報の登録・変更と契約局取込）",
+      "question": "Phase 3 への差戻しの回答で、契約局情報（TWTGM140）は本画面で登録・更新・削除し、契約局取込のボタンも本画面にあるとされました。契約局情報の登録・変更のしかた（行の追加・削除など）と、契約局取込の内容（取込ファイルの形式、取り込み方（追加か洗替か）、エラー時の扱い、使える人と状態）を教えてください。あわせて、これを REQ-008（物件基本情報の登録・変更）の詳細として扱ってよいか、要求一覧に無い新しい要求として Phase 1 に戻すかを教えてください。",
+      "reason_unanswered": "承認済み入力と回答からは決まらないため"
+     },
+     {
+      "id": "Q-RQ-PBI-011",
+      "target": "specs/property-basic-info/requirements.md",
+      "location": "要件 6（6.5 社外ユーザーの対象）",
+      "question": "社外ユーザーの対象は「契約稟議起案会社が自社の申請」で、その値は発行依頼書の会社名です。発行依頼書がまだ登録されていない申請（起案直後など）を、社外ユーザーに表示・操作させるかを教えてください（例：起案した会社のユーザーには見せる、など）。",
+      "reason_unanswered": "承認済み入力と回答からは決まらないため"
+     }
+    ],
+    "answers": [
+     "Q-RQ-PBI-010：REQ-008 の詳細として扱い、Phase 1 には戻さない。\n・契約局取込ボタンは、申請No などを渡して契約情報取込の画面（GWTG090）へ移る。取込の形式、方式、エラー時の扱いは contract-info-import で定める。\n・契約局情報追加ボタンは、発行依頼書登録変更の画面（GWTG080）へ移る。行の追加は issue-request で行う。\n・この画面で行うのは、契約局情報の並替え、削除、出力と、単独局と複数局の切替。\n・並替えと削除と出力は、複数局モードのときだけ使える。\n・1行目は移動も削除もできない。並替え先は数字で、件数以内とする。\n・使えるのは番が回っている起案者、申請者、確認者で、それぞれの番の状態のときだけ。\nQ-RQ-PBI-011：社外ユーザーに見せるのは、次のどちらかに当たる申請とする。\n・発行依頼書の契約稟議起案会社が自社の申請。\n・社外ユーザー本人が登録した申請（発行依頼書が未登録でもよい）。"
+    ],
+    "answered_by": "Junichi Noumi",
+    "answered_at": "2026-10-01T19:25:25+09:00"
+   },
+   {
+    "key": "steering-authoring-generate[]",
+    "questions": [
+     {
+      "id": "Q-STR-110b",
+      "target": "steering/security.md",
+      "location": "#### トークン / セッションのライフサイクル — リフレッシュトークン寿命、#### 権限モデル — 禁止、### パスワード / MFA — パスワード強度・パスワードリセット・MFA・アカウントロックの解除方法（計6欄）",
+      "question": "回答は「パスワードの強度、リセット、MFA、ロックの解除は不要（既存のログイン機能に従い、本」で切れています。不要理由の続きを教えてください。リフレッシュトークン寿命と、権限を実装するときの禁止事項（例：権限名をコードに直接書かない）は回答に含まれていなかったので、あわせて教えてください（不要なら理由）。",
+      "reason_unanswered": "回答 Q-STR-110〜114 の貼り付けで文字が欠けており、欠けた部分を推測で補えないため"
+     },
+     {
+      "id": "Q-STR-111b",
+      "target": "steering/non-functional.md",
+      "location": "## 環境 — 開発環境の用途・データ・デプロイ元、環境運用ルール（計4欄）",
+      "question": "回答は「環境は開発（開発者の端末）、検証機、  ト用データ、…」「環境運用のルー」で切れています。開発環境の用途とデータ（「…ト用データ」の部分）、開発環境のデプロイ元、環境運用のルールをもう一度教えてください。",
+      "reason_unanswered": "回答 Q-STR-110〜114 の貼り付けで文字が欠けており、欠けた部分を推測で補えないため"
+     },
+     {
+      "id": "Q-STR-112b",
+      "target": "steering/non-functional.md",
+      "location": "#### ログフィールド標準 — フィールドの表（5欄）",
+      "question": "回答は「フィールドのの出力形式に従う」と一部が欠けています。この文をもう一度教えてください（例：「フィールドは定めない。既存の出力形式に従う」なら不要理由として記載します）。",
+      "reason_unanswered": "回答 Q-STR-110〜114 の貼り付けで文字が欠けており、欠けた部分を推測で補えないため"
+     },
+     {
+      "id": "Q-STR-113b",
+      "target": "steering/non-functional.md",
+      "location": "### リトライ — 戦略・冪等キー（2欄）",
+      "question": "回答は「再試行の戦略と 呼ばず、再試行の仕組みも既存に無いため）」と大半が欠けています。もう一度教えてください。",
+      "reason_unanswered": "回答 Q-STR-110〜114 の貼り付けで文字が欠けており、欠けた部分を推測で補えないため"
+     },
+     {
+      "id": "Q-STR-114b",
+      "target": "steering/database.md",
+      "location": "## マイグレーション（ルール・内容）とインデックス方針（計3欄）",
+      "question": "回答は「DDL は DB レイ 順書に従って発注者が適用する」「インデックスは主キーと検索条件に使う列に  する」と一部が欠けています。この 2 文をもう一度教えてください（止めずに変える手順は不要として反映済み）。",
+      "reason_unanswered": "回答 Q-STR-110〜114 の貼り付けで文字が欠けており、欠けた部分を推測で補えないため"
+     }
+    ],
+    "answers": [
+     "Q-STR-110b\n・パスワードの強度、リセット、MFA、ロックの解除は不要。\n・理由：既存のログイン機能に従い、本案件では変えないため。\n・リフレッシュトークンの寿命は不要。\n・理由：トークンは使わず、Java のセッションで認証するため。\n・権限の禁止事項1：権限の判定を機能ごとに作らない。\n・既存の AccessControlInterceptor と権限の設定を使う。\n・権限の禁止事項2：画面の表示だけで制御しない。\n・サーバー側でも権限を判定する。\n\nQ-STR-111b\n・開発環境の用途：開発者の端末での実装と単体確認。\n・開発環境のデータ：開発用のテストデータ。\n・開発環境のデプロイ元：開発者の端末でビルドしたもの。\n・環境運用のルールは不要。\n・理由：既存 WiNG の運用に従うため。\n\nQ-STR-112b\n・ログのフィールドは新しく定めない。\n・既存の log4j2.xml の出力形式に従う。\n\nQ-STR-113b\n・再試行の戦略と冪等キーは不要。\n・理由：外部サービスを呼ばず、既存にも仕組みが無いため。\n\nQ-STR-114b\n・DDL は DB レイアウト設計書を元に作る。\n・適用は導入手順書に従い、発注者が行う。\n・インデックスは主キーと検索条件に使う列に付ける。\n・インデックスは DB レイアウト設計書で定義する。"
+    ],
+    "answered_by": "Junichi Noumi",
+    "answered_at": "2026-10-01T17:00:19+09:00"
+   }
+  ],
+  "learned": [],
+  "previous_findings": [
+   {
+    "run": 1,
+    "number": 1,
+    "観点": "format-conformance",
+    "種類": "",
+    "対象箇所": "specs/property-basic-info/design.md `## 設計判断（Design Decisions）`〜`## 補足資料（Supporting References）`（行878〜917）",
+    "対象の語": "",
+    "要約": "見出し構造がテンプレートと一致しない。`## 設計判断` の `_分担_` 注記（行881）が「比較表や調査資料そのものは `」の位置で途切れ、その続きに `### 判断 4: 更新系の要求の URL を CSRF の照合に乗る末尾にそろえる` が注記の文として入っているため、判断 4 は見出しになっていない（行883〜887 の本文は見出しを持たない）。行889 にテンプレートに無い見出し「## 補足資料（Supporting References）`。ここには選択肢を比べて選んだことだけを書く。」があり、`## 補足資料（Supporting References）` 相当の見出しが2回（行889・行917）現れる。その結果、`### 判断 1`〜`### 判断 3`（行893・901・909）とテンプレートの `_書き方_` 注記（行891）が `## 設計判断` ではなく行889 の見出しの下に位置している",
+    "判断": "修正",
+    "理由": "",
+    "解消": true
+   },
+   {
+    "run": 1,
+    "number": 2,
+    "観点": "format-conformance",
+    "種類": "",
+    "対象箇所": "specs/property-basic-info/design.md `### 移行方針（Migration Strategy）`（行831・832）",
+    "対象の語": "",
+    "要約": "プレースホルダー削除: テンプレートの `<DSN_MIGRATION_ROLLBACK>`・`<DSN_MIGRATION_CHECKPOINT>` が残置されず、「不要：…」の文だけに置き換わっている。不要理由は書かれているが、プレースホルダーを不要理由付きで残す規約（status-protocol §7「どちらの系統も削除しない」）を満たしていない（同書の行143・441・510・598・876 はプレースホルダーを残して不要理由を併記している）",
+    "判断": "修正",
+    "理由": "",
+    "解消": true
+   },
+   {
+    "run": 1,
+    "number": 3,
+    "観点": "format-conformance",
+    "種類": "",
+    "対象箇所": "specs/property-basic-info/design.md `### テスト体制 / テスト仕様`（行852〜856）",
+    "対象の語": "",
+    "要約": "プレースホルダー削除: テンプレートの `<DSN_TEST_OWNER>`・`<DSN_TEST_ENVIRONMENT>`・`<DSN_TEST_PERIOD>`・`<DSN_TEST_ESCALATION>`・`<DSN_TEST_SPEC_LINK>` が残置されず、「不要：試験仕様書と計画書で扱う（Q-DS-PBI-015）」の文だけに置き換わっている。不要理由付きでプレースホルダーを残す規約（status-protocol §7）を満たしていない",
+    "判断": "修正",
+    "理由": "",
+    "解消": true
+   },
+   {
+    "run": 1,
+    "number": 4,
+    "観点": "format-conformance",
+    "種類": "",
+    "対象箇所": "specs/property-basic-info/design.md `### コンポーネント一覧（Summary）` の「文書バーコード Controller・Service・Mapper」行（行430）と `### 物件基本情報登録変更` 配下の `#### 文書バーコード Controller・Service・Mapper`（行502・592）",
+    "対象の語": "",
+    "要約": "一覧ではドメイン / レイヤを「文書バーコード / Controller・Service・Mapper」としているが、詳細は `### 物件基本情報登録変更` の見出しの下に置かれ、`### 文書バーコード` のドメイン見出しが無い。テンプレートの「各行は下の詳細と対応し、コンポーネント名・ドメイン / レイヤ・目的・受け入れ基準ID は同じ値を書く」と、一覧と詳細の見出し構造が対応していない",
+    "判断": "修正",
+    "理由": "",
+    "解消": true
+   },
+   {
+    "run": 2,
+    "number": 1,
+    "観点": "traceability",
+    "種類": "",
+    "対象箇所": "specs/property-basic-info/design.md `### 論理データモデル（Logical Data Model）` の参照整合性のルール（行249）／ specs/property-basic-info/requirements.md 15.1・15.2",
+    "対象の語": "",
+    "要約": "ID対応あり・内容未充足（意味判定）。15.2 は「再製本依頼の起案済・差戻しの申請を、文書バーコードが未生成なら削除する」ことを求めるが、design は「削除ボタンは起案者の番の未起案・下書きのときだけ出す（15.2、Q-DS-PBI-007）」としており、再製本依頼の起案済・差戻しで削除する経路が design のどこにも無い。あわせて、15.1 は未起案・下書きの削除に条件を付けていないが、design は「稟議依頼・修正稟議依頼は受付No が NULL のときだけ」「再製本依頼は文書バーコードが 0 件のときだけ」という 15.1 に無い条件を未起案・下書きの削除にも掛けている",
+    "判断": "修正",
+    "理由": "",
+    "解消": true
+   },
+   {
+    "run": 2,
+    "number": 2,
+    "観点": "traceability",
+    "種類": "",
+    "対象箇所": "specs/property-basic-info/design.md `### ドメインモデル（Domain Model）` の複製の不変条件（行230）・`### データ契約と外部連携` の稟議バーコードNo の注記（行390）・`## 処理フロー` の主要な判断（行662）／ requirements.md 7.3・3.7",
+    "対象の語": "",
+    "要約": "ID対応あり・内容未充足（意味判定）。7.3 は「契約局情報の全行と発行依頼書を新しい申請No で複製し、受付No と稟議バーコードNo は再製本では引き継ぎ、修正稟議では空にする」ことを求めるが、design が複製の内容を書いているのは物件申請情報（`TWTGM080`）の列だけで、本 feature が定義を持つ契約局情報（`TWTGM140`）の全行を新しい申請No で登録すること、その `Ringi_Barcode_No` を再製本では引き継ぎ修正稟議では空にすることが書かれていない。再製本が元の稟議の稟議バーコードを使う（3.7）ことの実現手段も、この複製に依存したまま示されていない",
+    "判断": "修正",
+    "理由": "",
+    "解消": true
+   },
+   {
+    "run": 2,
+    "number": 3,
+    "観点": "traceability",
+    "種類": "",
+    "対象箇所": "specs/property-basic-info/design.md `#### WTG 申請状態サービス` の `canOperate`（行473）・`##### API 契約` の `/wtg070/stationKind/update`（行550）・他画面への遷移（行561〜563）・単独局か複数局か（行585）／ requirements.md 14.5",
+    "対象の語": "",
+    "要約": "ID対応あり・内容未充足（意味判定）。14.5 は「単独局・複数局の切替、契約局取込、契約局DL、契約局情報追加は、稟議依頼・修正稟議依頼で起案者・申請者・確認者が自分の番のときだけ受け付け、それ以外（再製本依頼を含む）は受け付けない」ことを求めるが、design にはこの条件（特に再製本依頼では受け付けないこと）の記述が無い。`canOperate` の操作の一覧にもこれらの操作は無く、該当 API の Errors は「業務、排他」だけで、どの条件で拒否するかが示されていない",
+    "判断": "修正",
+    "理由": "",
+    "解消": true
+   },
+   {
+    "run": 2,
+    "number": 4,
+    "観点": "traceability",
+    "種類": "",
+    "対象箇所": "specs/property-basic-info/design.md `##### API 契約` の `/wtg070/station/update`・`/wtg070/station/delete`（行551・552）・契約局情報欄の列（行586）／ requirements.md 14.2",
+    "対象の語": "",
+    "要約": "ID対応あり・内容未充足（意味判定）。14.2 は「契約局情報の並替え・削除は、稟議依頼・修正稟議依頼の複数局の申請で起案者・申請者・確認者が自分の番のときだけ使え、それ以外は使わせない」ことを求めるが、design に書かれている制約は 1 行目（代表局）を並べ替え・削除できないこと（14.3）だけで、依頼内容（再製本依頼を除く）・単独局か複数局か・番による制限の記述が無い",
+    "判断": "修正",
+    "理由": "",
+    "解消": true
+   },
+   {
+    "run": 2,
+    "number": 5,
+    "観点": "traceability",
+    "種類": "",
+    "対象箇所": "specs/property-basic-info/design.md `## コンポーネントとインターフェース（Components and Interfaces）`・`## 機能固有のエラー処理（Error Handling）`／ steering/non-functional.md `## 信頼性・観測性` 冒頭の分担・`### ログ方針`",
+    "対象の語": "",
+    "要約": "可観測性のうち「ログ」の柱が未反映。steering/non-functional.md は「フィーチャー固有のログ項目は design の Components と Error Handling」に書くとし、ERROR は `ExceptionResolver`、INFO は `LoggingInterceptor` で出す方針を定めているが、design にはこの feature のログ出力（既存のインターセプタとハンドラに任せるのか、承認フローの操作・ファイル登録・CSV 出力などで固有に出す項目があるのか）の記述が無い。ログに関する記述は「担当者の氏名と連絡先をログに出さない」（行808）だけである",
+    "判断": "修正",
+    "理由": "",
+    "解消": true
+   },
+   {
+    "run": 2,
+    "number": 6,
+    "観点": "traceability",
+    "種類": "",
+    "対象箇所": "specs/property-basic-info/design.md `## コンポーネントとインターフェース（Components and Interfaces）`／ steering/non-functional.md `### 監視 / ヘルス` の分担",
+    "対象の語": "",
+    "要約": "可観測性のうち「メトリクス」の柱が未反映。steering/non-functional.md は「機能固有の監視項目は design の Components and Interfaces」に書くとしているが、design には本 feature の監視項目の有無（無いならその旨）の記述が無い",
+    "判断": "修正",
+    "理由": "",
+    "解消": true
+   },
+   {
+    "run": 2,
+    "number": 7,
+    "観点": "steering-conformance",
+    "種類": "",
+    "対象箇所": "specs/property-basic-info/design.md `### 技術スタック（Technology Stack）` の Infrastructure / Runtime 行（行186）／ steering/tech.md `### 必須ツール`・`## コアテクノロジ`",
+    "対象の語": "",
+    "要約": "矛盾。steering/tech.md は必須ツールの JDK を「1.7（1.7.0.55）／コンパイルと実行」と定めているが、design は「開発端末の JDK 1.8（-source/-target 1.7）。1.7 系の JDK は開発端末に入れない（Q-DS-PBI-014）」としており両立しない。steering と design のどちらを直すかの確認が要る",
+    "判断": "対応せず進める",
+    "理由": "steering の JDK 1.7 は、本番の実行環境とビルドの指定（-source/-target 1.7）を指すものと読みます。開発端末でテストを動かす JDK は、steering の対象外です。steering の追記（開発端末のテスト実行は JDK 1.8 で -source/-target 1.7）は、次に steering を開き直すときにまとめて行います。",
+    "解消": false
+   },
+   {
+    "run": 2,
+    "number": 8,
+    "観点": "steering-conformance",
+    "種類": "",
+    "対象箇所": "specs/property-basic-info/design.md `### 技術スタック（Technology Stack）`（行185）・`### データ契約と外部連携` の CSV の形（行394）・`## ファイル配置計画`（行770）／ steering/architecture.md `### 共通基盤（shared）`",
+    "対象の語": "",
+    "要約": "矛盾。design は orangesignal-csv を「本 feature だけで使う」とする一方、それを使う `CsvUtils` を共通基盤 `jp.co.kccs.wt.common.utils` に新しく置くとしている。steering/architecture.md の共通基盤は「複数の機能で使う処理」に限り、「特定の画面や業務にだけ使う処理」は `function/<サブシステム>/<機能ID>/` か `function/<サブシステム>/common/` に置くと定めている。複数機能で使う前提なのか、本 feature だけで使うのかが steering の配置条件と食い違う",
+    "判断": "修正",
+    "理由": "",
+    "解消": true
+   },
+   {
+    "run": 2,
+    "number": 9,
+    "観点": "steering-conformance",
+    "種類": "",
+    "対象箇所": "specs/property-basic-info/design.md `#### 物件基本情報登録変更 Controller` と `#### 文書バーコード Controller・Service・Mapper` の `##### API 契約（API Contract）`（行537〜558・行637〜641）、`## 設計判断` 判断 4（行909〜915）／ steering/tech.md `## 命名規則` の URL",
+    "対象の語": "",
+    "要約": "逸脱。steering/tech.md の URL の規約は「`/<機能ID小文字>` ＋ `/<アクション>`」だが、design は `/wtg070/request/execute`・`/wtg070/station/update` など機能ID の後に 2 段のパスを置き、文書バーコードのポップアップは機能ID WTG070 のパッケージに置きながら URL を `/wtg073` としている。steering に無い URL の組み立て方であり、steering と design のどちらを直すかの確認が要る",
+    "判断": "修正",
+    "理由": "",
+    "解消": true
+   },
+   {
+    "run": 2,
+    "number": 10,
+    "観点": "steering-conformance",
+    "種類": "",
+    "対象箇所": "specs/property-basic-info/design.md `#### WTG 申請状態サービス` の `transit`・`recordNumbering` のエラー（行474・475）、`### 機能固有エラーコード` の `WTG-100030`・既存の排他エラー（行719・722）／ steering/tech.md `### 例外処理フロー`・`### グローバルハンドラ`",
+    "対象の語": "",
+    "要約": "矛盾。design は業務エラーを `ApplicationException`、排他を `ExclusiveException` として投げ、いずれも「200（同じ画面に戻す）」としている。steering/tech.md は Controller では例外を個別に捕まえずグローバルハンドラ（`ExceptionResolver`）に任せ、Controller から出た例外はエラー画面へ遷移させると定めており、例外で同じ画面に戻す扱いと両立しない",
+    "判断": "修正",
+    "理由": "",
+    "解消": true
+   },
+   {
+    "run": 2,
+    "number": 11,
+    "観点": "steering-conformance",
+    "種類": "",
+    "対象箇所": "specs/property-basic-info/design.md `### ドメインモデル（Domain Model）` の依頼内容の不変条件（行226）／ steering/database.md `## 設計思想`・`## 型の指針`",
+    "対象の語": "",
+    "要約": "矛盾。steering/database.md は区分値をコードマスタ `TWTZM040` で管理し、区分値・フラグは「文字列のコード」で持ち意味は `TWTZM040` に持つと定めているが、design は依頼内容（`P29`）を「コード値ではなく名称の文字列で持つ」としている（Q-DS-PBI-002）。steering と design のどちらを直すかの確認が要る",
+    "判断": "対応せず進める",
+    "理由": "依頼内容は、既存の稟議関連の作りに合わせて名称の文字列（\"稟議依頼\"・\"再製本依頼\"）で持ちます。steering の型の指針の例外として、次に steering を開き直すときにまとめて追記します。",
+    "解消": false
+   },
+   {
+    "run": 2,
+    "number": 12,
+    "観点": "steering-conformance",
+    "種類": "",
+    "対象箇所": "specs/property-basic-info/design.md `### 物理データモデル（Physical Data Model）` の `TWTGM180` の判定（行342）・`TWTGM170` の権限ID（行351）・`TWTGM140` の連番（行308）・`TWTGM090` の SEQ（行328）・`TWTGM180` の審査回・通番（行337・338）／ steering/database.md `## 設計思想`・`## 型の指針`",
+    "対象の語": "",
+    "要約": "矛盾。steering/database.md は区分値をコードマスタ `TWTZM040` で管理し、ID・番号は「0 詰めの文字列」とすると定めているが、design は判定（`Hantei`）と権限ID（`Kengen_ID`）を「コードマスタは作らず、値は DB レイアウトの備考に書く」とし、連番・SEQ・審査回・通番を Int としている。steering と design のどちらを直すかの確認が要る",
+    "判断": "対応せず進める",
+    "理由": "判定・権限ID はこの feature の中だけで使う値で、コードマスタを足すと発注者の投入作業が増えるため、DB レイアウトの備考で管理します。連番・SEQ・審査回・通番は、並べ替えや MAX＋1 の計算に使う数値なので Int で持ちます。どちらも steering の例外として、次に steering を開き直すときにまとめて追記します。",
+    "解消": false
+   },
+   {
+    "run": 2,
+    "number": 13,
+    "観点": "steering-conformance",
+    "種類": "",
+    "対象箇所": "specs/property-basic-info/design.md `### セキュリティ上の考慮（Security Considerations）` の組織の判定（行807）・`#### WTG 申請状態サービス` の `getExternalScope`（行476）／ steering/security.md `#### 所有権・エンティティ境界`・`### 認証 → 認可の契約（AuthContext）`",
+    "対象の語": "",
+    "要約": "矛盾。steering/security.md は `P71` の「キー3 がログインユーザーのグループ」とし、AuthContext では権限区分（`Kengen_Kbn`）と所属グループ（グループID・既定区分・事業所コード）を別の項目として定めている。design は「グループ」を権限区分と読み替え、所属グループ（`TWTZM020`）は使わないとしている。steering の「グループ」の記述と design の判定方法のどちらを直すかの確認が要る",
+    "判断": "対応せず進める",
+    "理由": "steering の「グループ」は権限区分（TWTZM010.Kengen_Kbn）を指す、と読みます（Q-DS-PBI-009 の回答のとおり）。steering の文言は、次に開き直すときに直します。",
+    "解消": false
+   },
+   {
+    "run": 2,
+    "number": 14,
+    "観点": "external-integration-contract-explicitness",
+    "種類": "",
+    "対象箇所": "specs/property-basic-info/design.md `### データ契約と外部連携` の進捗管理DB インポート用 CSV の形（行391〜395）・`### このスペックが持たない責務` の後のフェーズに回す作業（行92）",
+    "対象の語": "",
+    "要約": "進捗管理DB へ渡す CSV のインターフェース仕様が明示されていない。文字コード・区切り・囲み・改行・ファイル名は書かれているが、1 行目 188 項目・2 行目以降 228 項目の項目の並びと各項目の出し方（名称への変換を含む）は「Phase 8 で回答者から受け取る」とされ design に無い。並びは「契約情報取込の取込レイアウトと同じ」とする一方、contract-info-import の design が「本書のこの形に合わせる」としており、項目定義の正がどこにも書かれていない",
+    "判断": "修正",
+    "理由": "",
+    "解消": true
+   },
+   {
+    "run": 3,
+    "number": 1,
+    "観点": "traceability",
+    "種類": "",
+    "対象箇所": "specs/property-basic-info/design.md `#### WTG 申請状態サービス` の `canOperate`（行476）・`##### API 契約` の `/wtg070/henshu`（行563）・契約局情報の操作の条件（行598）・`### 機能固有エラーコード` の `WTG-100022`（行733）／ specs/property-basic-info/requirements.md 14.11",
+    "対象の語": "",
+    "要約": "ID対応あり・内容未充足（意味判定）。14.11 は「発行依頼書編集ボタンを、稟議依頼・修正稟議依頼の申請で起案者・申請者・確認者が自分の番のときだけ使えるようにし（複数局で契約局情報が無い場合を除く）、それ以外は使わせない」ことを求めている。しかし design に書かれているのは、複数局で契約局情報が無いときの `WTG-100022`（14.12）だけである。依頼内容（再製本依頼を除く）・番・担当による制限の記述が無い。`canOperate` の操作の一覧にも発行依頼書編集が無く、`/wtg070/henshu` の Errors に挙げた `WTG-100030` をどの条件で返すかが示されていない",
+    "判断": "修正",
+    "理由": "",
+    "解消": true
+   },
+   {
+    "run": 3,
+    "number": 2,
+    "観点": "steering-conformance",
+    "種類": "",
+    "対象箇所": "specs/property-basic-info/design.md `##### サービスインターフェース` の `transit`・`recordNumbering`（行477・478）、`##### 状態管理` の並行制御（行503）、文書バーコードの `generate`・`update`（行639・640）、`### 機能固有エラーコード` の表の後の注記（行739）／ steering/tech.md `### 例外処理フロー`（画面：業務ロジック の行）・`## コード規約` の排他制御、steering/database.md `## 整合性`",
+    "対象の語": "",
+    "要約": "矛盾。steering/tech.md は、業務上の失敗を `ApplicationException` の派生（排他は `ExclusiveException`）としてメッセージキー付きで投げると定めている。排他制御も「`ExclusiveFG` が一致しなければ `ExclusiveException` を投げる」としている（`BindingResult` に積む方式は入力チェックの行だけ）。一方 design は、業務エラーと排他エラーを例外にせず `BindingResult` に積み（`WTG-100030` は `result.reject`、`GEF-000027` は `rejectValue`）、`ApplicationException`・`ExclusiveException` は使わないとしている。design はこれを「`steering/tech.md` の方式」「`steering/tech.md` の排他制御」として引いているが、引いた steering の記述とは両立しない。steering と design のどちらを直すかの確認が要る",
+    "判断": "修正",
+    "理由": "",
+    "解消": true
+   },
+   {
+    "run": 3,
+    "number": 3,
+    "観点": "steering-conformance",
+    "種類": "",
+    "対象箇所": "specs/property-basic-info/design.md `##### API 契約` の注記（行538）と API の一覧（行545〜566・652〜654）、`## 設計判断` の判断 4（行926〜932）、`### セキュリティ上の考慮（Security Considerations）` の CSRF の対策（行821）／ steering/security.md `## 攻撃対策（主要パターン）` の CSRF の行、steering/architecture.md `### フロントエンド（FE）` の境界",
+    "対象の語": "",
+    "要約": "違反（design 自身も食い違いを書いている）。steering/security.md は更新系の要求で `_csrf` を照合するとし、architecture.md は更新系のフォーム送信に `_csrf` を付けるとしている。しかし design は、`/wtg070/shinseIrai`・`/wtg070/check`・`/wtg070/shinse`・`/wtg070/sashimodoshi`・`/wtg070/cancel`・`/wtg070/deleteShinse`・`/wtg070/Shusei`・`/wtg070/Saisehon`・`/wtg070/tandokuFukusu`・`/wtg070/sort`・`/wtg070/deleteContract`・`/wtg070/insertFile`・`/wtg070/commitFile`・`/wtg070/deleteFile`・`/wtg073/create` などの更新系の URL を照合なしで進めるとしている。また、同じ design の `### セキュリティ上の考慮` は「更新系の要求はすべて既存の `_csrf` トークンを照合する URL 名に置く」と書いており、判断 4 と API 契約の注記に対して design の中で矛盾している。steering と design のどちらを直すかの確認が要る",
+    "判断": "修正",
+    "理由": "",
+    "解消": true
+   },
+   {
+    "run": 3,
+    "number": 4,
+    "観点": "evidence-guard",
+    "種類": "",
+    "対象箇所": "specs/property-basic-info/design.md `#### WTG 申請状態サービス` の `canOperate` の「処理状況」（行476）、`##### API 契約` の `/wtg070/taskList`・`/wtg070/return`（行566・567）",
+    "対象の語": "",
+    "要約": "根拠の飛躍。処理状況のボタンと操作（バッチ処理状況一覧 `/zzz010/` への遷移と、そこからの戻り）は、requirements.md の受け入れ基準にも扱う範囲にも無い。それなのに `canOperate` では、14.2・14.5 を根拠に挙げた操作の一覧に含めている。14.2・14.5 が挙げる操作は単独局・複数局の切替、契約局取込、契約局DL、契約局情報追加、契約局情報の並替え・削除で、処理状況は含まれない。API の 2 行には出典の記載が無く、出典として示されているのは `canOperate` の「設計検査 2 回目の指示」だけである",
+    "判断": "対応せず進める",
+    "理由": "処理状況は、契約局取込（14.5）で起動したバッチの進み具合を、既存のバッチ処理状況一覧で見るための遷移です。この feature の業務ルールや更新は持たないので、requirements には足さず、design だけに置きます。canOperate の根拠は「14.5 の契約局取込に付随する遷移（requirements に受け入れ基準なし）」と書き直してください。",
+    "解消": false
+   },
+   {
+    "run": 4,
+    "number": 1,
+    "観点": "traceability",
+    "種類": "",
+    "対象箇所": "specs/property-basic-info/design.md `### ドメインモデル（Domain Model）` の「発番後」「発番済」の判定（行238）・複製の不変条件（行230）・`### セキュリティ上の考慮` の組織の判定（行824）／ specs/property-basic-info/requirements.md 6.9・3.7・11.2・7.3",
+    "対象の語": "",
+    "要約": "ID対応あり・内容未充足（意味判定）。6.9 は、再製本依頼では起案者・申請者・承認者の番で、契約局情報と発行依頼書が登録済みかつ発番済みなら閲覧・印刷ボタンを出すことを求めている。しかし design は「発番済」を「審査フェーズが受付済（02）以降」で判定するとしている。再製本依頼の審査フェーズは未起案 00 → 起案済 01 → 申請済 03 → 承認済 05 と進み、受付済 02 を通らない（遷移表）。このため、起案者の番（未起案・下書き、起案済・差戻し）と申請者の番の起案済・回覧中では、この判定が成り立たず、ボタンが出ない。また design は「受付No が NULL でないこと」と「受付済（02）以降」は「どちらで見ても結果は同じ」としている。しかし再製本では、複製のときに受付No を元の申請から引き継ぐ（行230、7.3）。そのため未起案・起案済の段階でも受付No は NULL でなく、二つの判定の結果が分かれる。11.2 は再製本依頼を発番後として扱うとしており、6.9 の「発番済み」を再製本でどう判定するかが design に書かれていない（判定方法は Q-DS-PBI-007 の回答による）",
+    "判断": "修正",
+    "理由": "",
+    "解消": true
+   },
+   {
+    "run": 4,
+    "number": 2,
+    "観点": "traceability",
+    "種類": "",
+    "対象箇所": "specs/property-basic-info/design.md `##### API 契約` の `/wtg070/addKeyaku`・`/wtg070/henshu`・`/wtg070/hakkoLink` の行（行563）、`#### WTG 申請状態サービス` の `canOperate`（行476）、番の表の稟議・修正稟議 起案済 01・回覧中 02 の行（行495）、他の画面への遷移（行574）／ specs/property-basic-info/requirements.md 14.13",
+    "対象の語": "",
+    "要約": "ID対応あり・内容不整合（意味判定）。行563 の Errors は、基地局番号リンクを「`canOperate` の条件を満たさずに要求したとき」に `WTG-100030` で止めるとしている。しかし `canOperate` の操作の一覧（行476）に基地局番号リンクは無く、どの条件で受け付けるかが定義されていない。仮に契約局情報追加・発行依頼書編集と同じ条件（14.5 の番）を当てはめると、申請者の番の起案済・回覧中は条件に含まれない。一方で行495 は、申請者がこの状態で基地局番号リンクから発行依頼書登録変更画面へ行って発番するとしているため、同じ design の中で両立しない。14.13 は、基地局番号リンクを押したらその契約局の発行依頼書登録変更画面へ遷移することを求めており、番や依頼内容による制限は書かれていない",
+    "判断": "修正",
+    "理由": "",
+    "解消": true
+   },
+   {
+    "run": 5,
+    "number": 1,
+    "観点": "traceability",
+    "種類": "",
+    "対象箇所": "specs/property-basic-info/design.md `##### 状態管理（State Management）` の番の表の「稟議・修正稟議 起案済 01・回覧中 02」の行（行495）・`#### WTG 申請状態サービス` の `canOperate`（行476）・`##### API 契約` の `/wtg070/update`・`/wtg070/tandokuFukusu`・`/wtg070/addKeyaku`・`/wtg070/keyakuTorikomi`・`/wtg070/keyakuDl`（行545・555・563・565・566）／ specs/property-basic-info/requirements.md 1.3・6.7・14.5",
+    "対象の語": "",
+    "要約": "ID対応あり・内容不整合（意味判定）。design は、稟議依頼・修正稟議依頼の起案済・回覧中を申請者の番としている。そのうえで、この状態では本画面に更新ボタンを出さないとしている（行495）。また `canOperate` の単独局と複数局の切替・契約局取込・契約局DL・契約局情報追加の条件でも、申請者の番を受付済・回覧中、受付済・確認中、申請済・差戻しだけとし、この状態を外している（行476）。一方 requirements は次のことを求めている。1.3 は、起案者・申請者・確認者が自分の番なら物件基本情報の項目と契約局情報の変更を許すこと。6.7 は、申請者の番（稟議依頼・修正稟議依頼）で更新ボタンを表示すること。14.5 は、申請者が自分の番なら切替・契約局取込・契約局DL・契約局情報追加を受け付けること。どれにも起案済・回覧中を除く記述は無く、この状態を除外しているのは 4.3・4.5（差戻し・取下げ）だけである。design の扱いは Q-DS-PBI-011 の回答（起案済・回覧中ではどの担当にも更新などのボタンを出さない）と設計検査 2 回目の指示に基づくが、承認済みの requirements とは両立しない",
+    "判断": "対応せず進める",
+    "理由": "requirements 1.3・6.7・14.5 の「自分の番」は、状態遷移表でその担当の操作が定義されている状態を指す、と読みます。稟議依頼・修正稟議依頼の 起案済・回覧中 は申請者の番ですが、定義されている操作は発行依頼書登録変更の画面での発番だけです。本画面の更新・切替・契約局取込・契約局DL・契約局情報追加は、定義されていないので受け付けません（4.3・4.5 の除外と同じ考え方）。requirements の文言（1.3・6.7・14.5 に「稟議依頼・修正稟議依頼の起案済・回覧中を除く」を足す）は、次に物件基本情報登録変更の requirements を開き直すときにまとめて直します。",
+    "解消": false
+   },
+   {
+    "run": 5,
+    "number": 2,
+    "観点": "traceability",
+    "種類": "",
+    "対象箇所": "specs/property-basic-info/design.md `#### WTG 申請状態サービス` の `canOperate`（行476「契約局情報追加・並替え・削除は、さらに複数局のときだけ可」）・契約局情報の操作の条件（行599）・`##### API 契約` の `/wtg070/addKeyaku`（行563）／ specs/property-basic-info/requirements.md 14.5・14.7",
+    "対象の語": "",
+    "要約": "ID対応あり・内容不整合（意味判定）。14.5 は、稟議依頼・修正稟議依頼で起案者・申請者・確認者が自分の番なら契約局情報追加を受け付けることを求めており、単独局か複数局かの条件を付けていない（複数局に限るのは 14.2 の並替え・削除だけ）。一方 design は、契約局情報追加を複数局のときだけ可とし、単独局では拒否する（ボタンを出さず、要求が来たら `WTG-100030`）。この扱いは設計検査 2 回目の指示（「契約局情報追加は、さらに複数局モードのときだけ」）に基づくが、requirements 14.5 とは両立しない",
+    "判断": "対応せず進める",
+    "理由": "契約局情報追加は、契約局を複数持つ申請に行を足す操作です。単独局モードでは、契約局は1行だけで、発行依頼書編集から登録します。そのため、ボタンは複数局モードのときだけ出します。requirements 14.5 に「契約局情報追加は複数局のときだけ」を足すのは、次に開き直すときにまとめて行います。",
+    "解消": false
+   },
+   {
+    "run": 5,
+    "number": 3,
+    "観点": "steering-conformance",
+    "種類": "",
+    "対象箇所": "specs/property-basic-info/design.md `### 物理データモデル（Physical Data Model）` の `TWTGM170` の権限ID（行351）・`#### WTG 申請状態サービス` の `getAuthorities`（行475）・`### セキュリティ上の考慮（Security Considerations）` の認証・認可（行824）／ steering/security.md `#### 権限モデル`（定義の置き場・禁止）、specs/property-basic-info/requirements.md `## 前提と依存（Dependencies / Assumptions）` の前提 1",
+    "対象の語": "",
+    "要約": "矛盾。steering/security.md の権限モデルは、承認フローの申請者・確認者・承認者の権限の定義の置き場を「`TWTGM170`（審査権限マスタ）とその権限コード `P82`」とし、番の判定を `TWTGM170` と `P82` 以外の仕組みで作らないと定めている。requirements の前提も、`TWTGM170` に申請者・確認者・承認者の権限（`P82` の 02〜04）が登録されているとしている。一方 design は、`TWTGM170` の権限ID を `P82` とは別の、このテーブル専用の値（1:稟議依頼-申請者〜5:再製本-承認者）とし、番の判定はこの値で行うとしている。`P82` は承認履歴の審査権限にだけ使う（Q-DS-PBI-006）。2 回目の指摘 12 が扱ったのは、権限ID のコードマスタを作らない点（steering/database.md）である。`P82` を権限コードとする security.md と requirements の前提との食い違いは扱っていない。steering・requirements と design のどちらを直すかの確認が要る",
+    "判断": "対応せず進める",
+    "理由": "TWTGM170 の権限ID は、DB レイアウトで定めた、このテーブル専用の値（1:稟議依頼-申請者〜5:再製本-承認者）です。稟議依頼と再製本依頼で権限を分けて持つ必要があり、P82（01〜04）では表せないためです。番の判定は TWTGM170 で行い、P82 は承認履歴の審査権限に使う、という役割分担は変えません。steering/security.md の権限モデルと、requirements の前提（P82 の 02〜04）の書き換えは、次に開き直すときにまとめて行います。",
+    "解消": false
+   },
+   {
+    "run": 6,
+    "number": 1,
+    "観点": "dependency-boundary-conformance",
+    "種類": "文書間の参照",
+    "対象箇所": "specs/property-basic-info/design.md § API 契約（API Contract） / `/wtg070/pushApplicationNo` ほか 1 か所",
+    "対象の語": "/wtg090/back の戻り先",
+    "要約": "取込画面からの戻りの受け口 pushApplicationNo の Request と開く経路に、取込画面が無い",
+    "判断": "修正",
+    "理由": "軽微（AIDD 内部の決まりごと）のため、AI が修正案で直す",
+    "解消": false
+   },
+   {
+    "run": 6,
+    "number": 2,
+    "観点": "dependency-boundary-conformance",
+    "種類": "文書間の参照",
+    "対象箇所": "specs/property-basic-info/design.md § アーキテクチャ方式と境界図（Architecture Pattern & Boundary Map） / 契約情報取込バッチ ほか 1 か所",
+    "対象の語": "取込による TWTGM080 の基地局番号ほかと単独複数局フラグの更新",
+    "要約": "境界図が取込バッチの TWTGM080 の書込みを「状態を直接更新」だけとし、持たない責務の記述と合わない",
+    "判断": "修正",
+    "理由": "軽微（AIDD 内部の決まりごと）のため、AI が修正案で直す",
+    "解消": false
+   }
+  ],
+  "repair": {
+   "event": "design-authoring-revise",
+   "item": "property-basic-info",
+   "targets": [
+    "specs/property-basic-info/design.md"
+   ],
+   "findings": [
+    {
+     "phase": "design",
+     "scope": "feature:property-basic-info",
+     "run": 6,
+     "number": 1,
+     "instruction": "行544 の Request を「申請No（申請状況一覧から。契約情報取込画面の戻る `/wtg090/back` からは、セッションの申請No を付けた forward で受ける）」に直す。行579 の「この画面を開く経路」に「契約情報取込画面の戻る（`/wtg090/back`）からは `forward:/wtg070/pushApplicationNo` で申請No を受けて開き直す（横断確認 1 回目 #8）」を足す",
+     "instruction_source": "AI の修正案"
+    },
+    {
+     "phase": "design",
+     "scope": "feature:property-basic-info",
+     "run": 6,
+     "number": 2,
+     "instruction": "行163 のラベルを「物件申請情報の状態・基地局番号ほか・単独複数局フラグを直接更新」に直す。行597 の末尾に「契約情報取込の後は、取込が最初のデータ行の基地局番号で計画マスタを引いて入れ直した値になる（`### このスペックが持たない責務（Out of Boundary）`、ci design）」を足す",
+     "instruction_source": "AI の修正案"
+    }
+   ],
+   "instruction": "",
+   "origin": "finding",
+   "actor": "Junichi Noumi",
+   "at": "2026-10-09T12:18:53+09:00",
+   "scheduled": "2026-10-09T12:18:54+09:00",
+   "id": "0a9532362df15c4481159dedbff57e49a3582ed64d9882f8f923013292558796",
+   "operation_id": "ac3c0c3f708b4033a315c48525a65b27"
+  },
+  "inspection_path": "C:\\project\\Wing\\.aidd\\.engine\\f5157258f5e2fcec040d4777af2a8b542d1c0d49608f43e2159ddb3d429bc881.inspection.md"
+ }
+}

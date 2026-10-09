@@ -1,15 +1,15 @@
 {
   "event": "design-authoring-revise",
   "scope": "feature:issue-request-tutorial",
-  "run": 2,
-  "snapshot": "abd43f0aafba8e37ad504d95b2e9c4e33e5dc4cad44ff7bde46c0f9ac86383c7",
-  "record_bytes": 139482,
-  "record_hash": "60e5c98a09103ee7d419909e1da231cf48fd8433b21aa23d1f2c7ba9237cc622",
+  "run": 4,
+  "snapshot": "5136b2479044e161daeba25e6fd744e1dac2272bb0d7152c35f7be4b28f7d9d6",
+  "record_bytes": 339083,
+  "record_hash": "3d116551a4b21ce3e5050224ce8187566be4459553df38328a9b485ffe93fa16",
   "targets": [
     "specs/issue-request-tutorial/design.md"
   ],
   "hashes": {
-    "specs/issue-request-tutorial/design.md": "c7f8713531fc963780c2491a50671b52e4cf15f36cb990cd416b9352b2d8c831"
+    "specs/issue-request-tutorial/design.md": "bcad7f98ec585831c7119db075ee27d872ee16eb00345aa75b3b7d78ac9f8542"
   },
   "inputs": {
     ".aidd/feature-list.md": "71a64dc3cbf71bc6ddb02a4dc6f8247344064ca63e8a291e5881763ef59256ae",
@@ -21,7 +21,7 @@
     "steering/database.md": "832d98b289c53f8c8adc9a7dfb25bf0f8b1f54b9c1cc473c6480fa9927a20e21",
     "steering/api-standards.md": "70eca8d2facbf08bfa22cf1ae1e781219ecab2066bb8129bf4a3414b0fdeddc1",
     "specs/issue-request-tutorial/requirements.md": "3e1042329d04e128a1c95e89adc17075768e5744202d85de60d5704eedf1923e",
-    "specs/property-basic-info/design.md": "0829e28f5d3a4e0db44e191b174e2518eb0af483f10814026003e86d90d8c7df",
-    "specs/issue-request/design.md": "a543916db8517b94bdbefb90769055130c7b2e00eeb99f9027bf9f66402a5d63"
+    "specs/property-basic-info/design.md": "03331555d6ee0825bd90f023f17f4951d532f97b0f4bde7b7f50878d4cc4da03",
+    "specs/issue-request/design.md": "7bedc0d4618ebcb9a1667ce749bf24513272ac9c19fbdebdfe1ac2954ab67fbb"
   }
 }

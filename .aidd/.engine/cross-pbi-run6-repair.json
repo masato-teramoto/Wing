@@ -1,0 +1,30 @@
+{
+ "operation_id": "ac3c0c3f708b4033a315c48525a65b27",
+ "action": "repair",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[property-basic-info]::end.review",
+  "event": "design-authoring-revise",
+  "item": "property-basic-info",
+  "status": "wait",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[property-basic-info]::end.review\", \"snapshot\": \"2f38edff48a6feb1459afd98d8af1cf04a93d765bf065cf6dd8d8ae56eb8db9a\", \"run\": 6, \"inspection_hash\": \"19e25ce8b53d114d31b9c0a23c323402ea148cf8e3f88bdf2121cb407e2f3182\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 11 件\n  - 開発端末の JDK 1.8 と steering/tech.md の JDK 1.7 の矛盾（verify:重複（前回 2-7 で人が対応せず進めると判断済み。upstream-carryover の steering tech.md の項目））\n  - 依頼内容を名称の文字列で持つことと steering/database.md の矛盾（verify:重複（前回 2-11 で人が対応せず進めると判断済み））\n  - 判定・権限ID をコードマスタにせず連番などを Int とすることと steering/database.md の矛盾（verify:重複（前回 2-12 で人が対応せず進めると判断済み））\n  - P71 のキー3 の「グループ」を権限区分と読むことと steering/security.md の矛盾（verify:重複（前回 2-13 で人が対応せず進めると判断済み））\n  - 処理状況（/wtg070/taskList・/wtg070/return）に受け入れ基準が無い（verify:重複（前回 3-4 で人が対応せず進めると判断済み。canOperate の根拠は指示どおり書き直されている））\n  - 起案済・回覧中の申請者の番で更新などを受け付けないことと requirements 1.3・6.7・14.5 の不整合（verify:重複（前回 5-1 で人が対応せず進めると判断済み））\n  - 契約局情報追加を複数局に限ることと requirements 14.5 の不整合（verify:重複（前回 5-2 で人が対応せず進めると判断済み））\n  - TWTGM170 の権限ID を P82 と別体系にすること（行173 の「TWTGM170・P82 だけで判定」の文を含む）と steering/security.md・requirements の前提の矛盾（verify:重複（前回 5-3 で人が対応せず進めると判断済み。同じ原因））\n  - CSRF の照合を servlet-context.xml の末尾一致の URL だけにすることと steering/security.md の食い違い（verify:重複（前回 3-3 の判断で design に意図した外れとして明記済み。upstream-carryover の steering security.md の項目））\n  - 業務エラー・排他を BindingResult で返すことと steering/tech.md の食い違い（verify:重複（前回 3-2 の判断で design に意図した外れとして明記済み。upstream-carryover の steering tech.md の項目））\n\n### 判断が必要な指摘\n\n**対象**: `specs/property-basic-info/design.md`（スコープ: 成果物単位（property-basic-info） / 6 回目）\n**実行した層**: ① / ②\n\n**AI が修正案で直す軽微**（2 件。判断は不要。修正の回で直し、再検査で確かめます）\n- #1 取込画面からの戻りの受け口 pushApplicationNo の Request と開く経路に、取込画面が無い\n- #2 境界図が取込バッチの TWTGM080 の書込みを「状態を直接更新」だけとし、持たない責務の記述と合わない\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n修正（A）と AI が直す軽微は、修正の指示を書かずに修正の回へ回せます（repair の findings に \"all-fixes\"）。AI の推奨を採用していない修正には、修正の指示を書いてください。\n承認を問う前に必要なこと: 未解消: feature:property-basic-info / run 6 / #1 / 未解消: feature:property-basic-info / run 6 / #2",
+  "id": "f79646f629504b9a81538ffee2185580"
+ },
+ "expected": {
+  "root": "C:\\project\\Wing",
+  "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+  "call": "design-authoring-revise",
+  "event": "design-authoring-revise",
+  "item": "property-basic-info",
+  "dispatch_id": "f79646f629504b9a81538ffee2185580",
+  "unit": "design-authoring-revise/design-authoring-revise[property-basic-info]::end.review",
+  "scope": "feature:property-basic-info",
+  "run": 6,
+  "snapshot": "2f38edff48a6feb1459afd98d8af1cf04a93d765bf065cf6dd8d8ae56eb8db9a",
+  "record_hash": "b7a5e1f049aa9b08a284c7a8b6bcd2ed08bb081e560f9285656d3e3635e152f6"
+ },
+ "data": {
+  "findings": "all-fixes"
+ }
+}

@@ -1,0 +1,16 @@
+{
+ "operation_id": "49b7bc99fb704de48b69bc3c67668a05",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[property-basic-info]::end.design-check",
+  "event": "design-authoring-revise",
+  "item": "property-basic-info",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "00ccf11fc96c47c3bede40b61b9c9dee"
+ },
+ "result": {
+  "status": "completed"
+ }
+}

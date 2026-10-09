@@ -1,0 +1,16 @@
+{
+ "operation_id": "a14f28feaf984df9820c05695b2ea235",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[issue-request]::end.design-check",
+  "event": "design-authoring-revise",
+  "item": "issue-request",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "62e9923d26f945179dd82a1f2381a0db"
+ },
+ "result": {
+  "status": "completed"
+ }
+}

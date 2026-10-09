@@ -1,0 +1,30 @@
+{
+ "operation_id": "2814b290e12d426a830637f53692259a",
+ "action": "repair",
+ "dispatch": {
+  "call": "design-cross-gate",
+  "unit": "design-cross-gate/design-cross-gate[-]::end.review",
+  "event": "design-cross-gate",
+  "item": null,
+  "status": "wait",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-cross-gate/design-cross-gate[-]::end.review\", \"snapshot\": \"5eb8a9a46f531b5b4eaa8ea4564effa56789f2c3fc625bfa96395506b6af42d8\", \"run\": 1, \"inspection_hash\": \"8cfd3a633b414c3aad0a7f1ee3f0cd9ad8771ec1530dc46c954b44d961286be0\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 9 件\n  - pbi→ir（TWTGM100 の読取り・削除・複製）と ir→pbi（WTG 申請状態サービス）の組は Phase 3 で扱った循環と同じ根本原因で、新しい閉路を構成しない（answer:feature-decomposition-generate[]）\n  - pbi 画面→/wtg072/search と print-report Service→pbi Service（6.9 の判定）の組。判定の置き場は回答で案A（pbi Service を呼ぶ）に決定済み（answer:design-authoring-generate[print-report]）\n  - 戻る・コールバックの遷移と function/wtg/common の共通部品への呼出しで、feature 間の閉路を構成しない（verify:画面の戻り・コールバックと WTG 共通部品への呼出しは feature 間の依存の辺にならない）\n  - 作業用テーブル TWTGD050・TWTGD060 が共通列を持たない（steering/database.md の共通カラム）（answer:design-authoring-generate[contract-info-download]）\n  - 増額分賃料・消費電力の桁をサーバーで検査しない（steering/security.md の入力検証）（answer:design-authoring-generate[issue-request-tutorial]）\n  - 画面の業務エラーを例外にせず BindingResult で返す（steering/tech.md の例外処理フロー）（verify:既決（upstream-carryover「tech.md：画面の業務エラー・排他は BindingResult で返してよい場合」））\n  - /wtg100/csv が作業用テーブルを書くが CSRF の照合に乗らない（steering/security.md の攻撃対策）（verify:既決（upstream-carryover「security.md 攻撃対策：CSRF は末尾一致の対象だけを照合する」））\n  - 出力 CSV の 228 列と取込の形、/wtg070/keyakuDl・/wtg072/search・/wtg070/returnList・発行依頼書登録変更との口、既存とした WTX-100005・WTX-100011・WTX-100012・WTG-100018 の他 feature との食い違い（verify:既決（upstream-carryover の pbi design の項目））\n  - チュートリアルとの受け渡し（json.clear・入れる順・入れる項目）の食い違い（verify:既決（upstream-carryover の ir design の項目））\n\n### 判断が必要な指摘\n\n**対象**: `specs/property-basic-info/design.md` / `specs/issue-request/design.md` / `specs/issue-request-tutorial/design.md` / `specs/print-report/design.md` / `specs/application-status-search/design.md` / `specs/contract-info-import/design.md` / `specs/contract-info-download/design.md`（スコープ: 横断 / 1 回目）\n**実行した層**: ②（形式検査を持たない横断スコープのため ② のみ）\n\n**重大**（6 件。1 件ずつ判断してください）\n\n| # | 種類 | 対象箇所 | 要約 | AI の推奨 | 判断 |\n|---|---|---|---|---|---|\n| 1 | 業務の欠落・矛盾 | specs/contract-info-download/design.md § データ契約と外部連携（Data Contracts & Integration） / 契約情報取込との口 ほか 1 か所 | 契約情報DLの381列のうちコードの列の値が、取込側の検査（名称で照合）と合わない | 質問（取込ファイルの値の形をどちらに合わせるかは業務の決定で、回答者の判断が要るため） | 未回答 |\n| 2 | 業務の欠落・矛盾 | specs/contract-info-import/design.md § ドメインモデル（Domain Model） / 洗替と変更履歴の順 ほか 2 か所 | 取込が登録し直す発行依頼書・契約局の行の排他用の値が決まっておらず、発行依頼書画面の排他の前提と合わない | 修正（ir design が前提として明記した事項を ci design に書き足すだけで、業務の新しい事実は要らないため） | 未回答 |\n| 3 | 業務の欠落・矛盾 | specs/property-basic-info/design.md § このスペックが持たない責務（Out of Boundary） / 契約情報取込 ほか 3 か所 | 取込がTWTGM080の基地局番号群と単独複数局ﾌﾗｸﾞを書き換えるが、持ち主のpbi designに書かれていない | 修正（承認済みの ci requirements 2.8 と ci design で決まっている内容を、持ち主の pbi design に書き足すだけのため） | 未回答 |\n| 4 | 業務の欠落・矛盾 | specs/property-basic-info/design.md § 移行方針（Migration Strategy） / 移行対象ファイル一覧 ほか 5 か所 | 物件基本情報・発行依頼書のZMENUAUTHの行が定義されず、子画面の行の決め方も別々 | 質問（どのメニュー（権限区分）に登録するかは発注者の運用で決まり、design からは決められないため） | 未回答 |\n| 6 | 業務の欠落・矛盾 | specs/property-basic-info/design.md § バリデーション設計 / 文書バーコード 書類種別 ほか 2 か所 | WTG-000072を物件基本情報は行番号なしの文言で、取込は行番号付きで使い形が食い違う | 質問（画面に出すキーと文言は回答者が決める事項のため（pbi の他のメッセージも回答者の指定による）） | 未回答 |\n| 7 | 業務の欠落・矛盾 | specs/property-basic-info/design.md § ドメインモデル（Domain Model） / 文書バーコードNo ほか 2 か所 | 文書バーコードNoはP78の文字項目2、稟議バーコードNoは文字項目1で契約区分を表し食い違う | 質問（どちらの記述も回答者の回答に基づき、業務上の正しい値は回答者しか決められないため） | 未回答 |\n\n**要判断**（3 件）\n\n| 束 | 観点 | 種類 | 件数 | 番号 | AI の推奨（先頭の指摘） |\n|---|---|---|---|---|---|\n| 束1 | ssot-consistency | 文書間の参照 | 2 | #8 #9 | 修正（既存の口を指定するだけで、業務の新しい事実は要らないため） |\n\n| # | 種類 | 対象箇所 | 要約 | AI の推奨 | 判断 |\n|---|---|---|---|---|---|\n| 5 | 業務のあいまい・不足 | steering/api-standards.md § エラーハンドリング（API 契約） / 共通エラー形式 ほか 4 か所 | 画面内でJSONを返す口が3 featureに増えたが、エラーの返し方の規約が無く形がそろわない | 質問（steering に規約を足すか（Phase 2 の開き直し）は回答者の判断が要るため） | 未回答 |\n\n束の内訳（束でまとめて答えるか、番号で 1 件ずつ答えてください）\n\n- [束1] #8 取込画面の戻る（/wtg090/back）が送る物件基本情報登録変更の口が書かれていない\n- [束1] #9 取込の実行後に/wtg060/returnへ来る経路が、申請状況一覧のdesignで違って書かれている\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- #5: Phase 2（steering/api-standards.md）（画面内の JSON の口のエラーの返し方の規約が steering に無く、置くかどうかは steering の開き直しで決めるため）\n\n**答え方**（後に書いたものが優先。束・範囲でまとめて答えられます）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）。区分を `C[指摘の誤り]` `C[対象外]` `C[後で決める]` `C[解釈で対応]` で付ける。対象外・後で決めるに `+` を付けると（例 `C[後で決める+]`）、次の検査から同じ扱いにします\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n- **推奨** — AI の推奨を採用する（修正なら修正案がそのまま修正の指示になります）\n\n回答例: `1:推奨 / 束1:C[後で決める+] 桁数は design で決める / 3〜5:A / 7:D 次回まで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。根拠と修正案は `詳細 <番号>` で表示します。",
+  "id": "a4f32601e64f48d2b52f091629782670"
+ },
+ "expected": {
+  "root": "C:\\project\\Wing",
+  "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+  "call": "design-cross-gate",
+  "event": "design-cross-gate",
+  "item": "",
+  "dispatch_id": "a4f32601e64f48d2b52f091629782670",
+  "unit": "design-cross-gate/design-cross-gate[-]::end.review",
+  "scope": "cross",
+  "run": 1,
+  "snapshot": "5eb8a9a46f531b5b4eaa8ea4564effa56789f2c3fc625bfa96395506b6af42d8",
+  "record_hash": "65d4df3d6febeed015443dbc4cc1cae14772475c5c95ae9bbdfab25b17c7c541"
+ },
+ "data": {
+  "findings": "all-fixes"
+ }
+}

@@ -1,0 +1,24 @@
+{
+ "operation_id": "bebb1abf22584bc184128589ba83448b",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[application-status-search]::run",
+  "event": "design-authoring-revise",
+  "item": "application-status-search",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "6d32e823966c41b1b9d2dfc4d9046f22"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/application-status-search/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [],
+  "return_candidates": [],
+  "summary": "横断確認 1 回目 #9：物件基本情報登録変更との口から「（と契約局取込）」を削り、契約情報取込画面の実行後の forward:/wtg060/return の戻りを追記。Controller の呼び出し元に契約情報取込画面を追加。上流の pbi design の変更は AS design の記述と食い違わないことを確認"
+ }
+}

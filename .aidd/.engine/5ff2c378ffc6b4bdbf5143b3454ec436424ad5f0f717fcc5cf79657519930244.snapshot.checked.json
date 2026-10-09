@@ -1,15 +1,15 @@
 {
   "event": "design-authoring-revise",
   "scope": "feature:issue-request",
-  "run": 6,
-  "snapshot": "d503696b75672b9927beeb8cc0599b949a6c596a904a57504507f662f654dfe4",
-  "record_bytes": 119933,
-  "record_hash": "f1e9f34a429140159034c7e2d573127f5f1ba76e2a67e4898bceb21aeed4ce35",
+  "run": 8,
+  "snapshot": "5030e813ca4ad5f557854bfab5281ebaea89c86ab50ff8688a3f6d07f3f0c87f",
+  "record_bytes": 324503,
+  "record_hash": "85012fe8233b909e4e8404970ca0142438be4f2d4d95bebd0afcf5dbe43f7150",
   "targets": [
     "specs/issue-request/design.md"
   ],
   "hashes": {
-    "specs/issue-request/design.md": "a543916db8517b94bdbefb90769055130c7b2e00eeb99f9027bf9f66402a5d63"
+    "specs/issue-request/design.md": "7bedc0d4618ebcb9a1667ce749bf24513272ac9c19fbdebdfe1ac2954ab67fbb"
   },
   "inputs": {
     ".aidd/feature-list.md": "71a64dc3cbf71bc6ddb02a4dc6f8247344064ca63e8a291e5881763ef59256ae",
@@ -21,6 +21,6 @@
     "steering/database.md": "832d98b289c53f8c8adc9a7dfb25bf0f8b1f54b9c1cc473c6480fa9927a20e21",
     "steering/api-standards.md": "70eca8d2facbf08bfa22cf1ae1e781219ecab2066bb8129bf4a3414b0fdeddc1",
     "specs/issue-request/requirements.md": "a6bfa87614a5044a2ee05f06eea80f9f9e83e431030c7f9fa6a85e54542d807f",
-    "specs/property-basic-info/design.md": "0829e28f5d3a4e0db44e191b174e2518eb0af483f10814026003e86d90d8c7df"
+    "specs/property-basic-info/design.md": "03331555d6ee0825bd90f023f17f4951d532f97b0f4bde7b7f50878d4cc4da03"
   }
 }

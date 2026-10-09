@@ -1,0 +1,18 @@
+{
+  "status": "ok",
+  "action": "reopen",
+  "result": {
+    "event": "design-authoring-revise",
+    "item": "issue-request",
+    "targets": [
+      "specs/issue-request/design.md"
+    ],
+    "findings": [],
+    "instruction": "入力変更の影響を確認し、反映・再検査する: specs/property-basic-info/design.md\ndesign 横断確認 1 回目の判断（2026-10-08、Junichi Noumi）で、発行依頼書登録変更の design を直す。対象は横断の指摘 #4・#5。\n\n#4（判断「4:A」。回答の原文）：PWTGO070・PWTGO080 は［WTG070］と［WTG060］のメニュー（権限区分ごとに分かれていれば、そのすべて）に登録する。子画面（072・073・081・090・100）は「PWTGO070 を登録するメニューすべてに、メニューID ごとに 1 行」にそろえる。投入の文と手順は各 feature の tasks で作り、投入は発注者が導入手順書に沿って行う。\n→ ir design の移行方針（移行対象ファイル一覧を含む）に「ZMENUAUTH：PWTGO080 の行を、PWTGO070 と同じ［WTG070］物件契約情報登録と［WTG060］物件契約情報申請状況検索/一覧のメニュー（権限区分ごとに分かれていれば、そのすべて）に、メニューID ごとに 1 行登録する。投入の文と手順は tasks で作り、投入は発注者が導入手順書に沿って行う（横断確認 1 回目 #4）」を足す。\n\n#5（判断「5:A 修正案の B」）：画面内の JSON の口のエラーの返し方の規約は steering に置かず不要のままとし、各 design に口ごとの失敗時の扱いを書く。\n→ ir design の /wtg080/calcTaxAdjustment と /wtg080/changeKeiyakuSyubetsuTutorial について、口が失敗したとき（予期しない例外で既存の ExceptionResolver がエラー画面を返すとき）の画面のスクリプトの扱いを書く。calcTaxAdjustment は金額・税額・調整額に値を入れず、入力済みの値を変えない。changeKeiyakuSyubetsuTutorial は局種別と設置設備のプルダウンの選択肢を入れ直さず、今の選択肢と値を変えない。API 契約の表の Errors 欄と、データ契約と外部連携に画面の要求をフォーム送信だけと書いている箇所があれば、非同期の口があることとそろえる（物件基本情報登録変更の design の /wtg070/inputHassoKiboDate の書き方に合わせる）。\n\nあわせて、物件基本情報登録変更の design が横断確認の修正で変わった（入力変更の影響の確認）。上の指摘に関係しない節は変えない。",
+    "origin": "upstream-change",
+    "actor": "AIDD（変更の自動検知）",
+    "at": "2026-10-09T12:25:48+09:00",
+    "scheduled": "2026-10-09T12:28:12+09:00",
+    "id": "9061b9359ee840a0fb971e8c693063b269147436a68323d3122060dec5ff0812"
+  }
+}

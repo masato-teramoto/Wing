@@ -1,7 +1,7 @@
 ---
 feature: issue-request
 status: approved
-updated_at: 2026-10-08T11:30:08+09:00
+updated_at: 2026-10-09T12:50:27+09:00
 ---
 
 # 技術設計書
@@ -91,7 +91,7 @@ updated_at: 2026-10-08T11:30:08+09:00
   - チュートリアル（GWTG081）の画面と、そこで選ぶ値 → `specs/issue-request-tutorial/design.md`
   - CSV による発行依頼書と契約局情報の更新（洗替と、そのときの変更履歴の登録）→ `specs/contract-info-import/design.md`
   - 帳票の中身 → `specs/print-report/design.md`
-  - コードマスタ（`TWTZM040`）・採番マスタ（`TWTZM050`）の行と、`TWTGM160`・`TWTZM370` の値の投入、記入例の中身 → 発注者（`### 移行方針（Migration Strategy）`、Q-DS-IR-009・Q-DS-IR-010・Q-DS-IR-012）
+  - コードマスタ（`TWTZM040`）・採番マスタ（`TWTZM050`）・メニュー権限（`ZMENUAUTH`。`PWTGO080` の行）の行と、`TWTGM160`・`TWTZM370` の値の投入、記入例の中身 → 発注者（`### 移行方針（Migration Strategy）`、Q-DS-IR-009・Q-DS-IR-010・Q-DS-IR-012、横断確認 1 回目 #4）
 - **後のフェーズに回す作業**:
   - 画面の配置・見た目と、画面部品の属性（入力バイト数・IME など）：Phase 8 の実装で決める（物件基本情報登録変更と同じ。回答者 Junichi Noumi、2026-10-07）
   - 記入例の中身（`/static/manual/pwgto080Sample.html`）：Phase 8 で発注者から受け取る（Q-DS-IR-010）
@@ -174,7 +174,7 @@ flowchart LR
 - **ドメイン / 機能の切り分け**: 発行依頼書と契約局情報の表示・入力チェック・更新・一時保存・発番・税額計算・変更履歴は本画面の Service、関係者欄の並替え・削除と、サンプル文・記入例・契約者情報挿入・発送先追記の画面への入力は画面のスクリプトとズーム、審査フェーズ・状態・承認履歴は WTG 申請状態サービス
 - **既存パターンとの整合**: 画面ごとに `function/wtg/<機能ID>/` の controller・service・mapper・form・bean を置く既存の置き方に従う（`steering/architecture.md` の `## 配置原則`）。機能ID は `WTG080`、プログラムID は `PWTGO080`（物件基本情報登録変更の回答「他の機能も今回と同じ規則」。`.aidd/.engine/answer-ds-pbi-20261006-1507-Q001-add.txt`）
 - **新規コンポーネントを置く理由**: 発行依頼書登録変更は新しい画面で、既存の画面に同じ責務のものが無い（`requirements.md` の要件 1）
-- **steering との整合**: 新しい技術・外部連携・メッセージングを持ち込まない（`steering/tech.md`）。画面内の非同期の取得（税額計算）は、既存の画面内の JSON 取得と同じ扱いで、画面以外から呼ばれる API にしない（`steering/api-standards.md` の本プロジェクトでの扱い）。権限は `AccessControlInterceptor` と `TWTGM170` で判定する（`steering/security.md` の `#### 権限モデル`）
+- **steering との整合**: 新しい技術・外部連携・メッセージングを持ち込まない（`steering/tech.md`）。画面内の非同期の取得（税額計算 `/wtg080/calcTaxAdjustment`、契約種別による選択肢 `/wtg080/changeKeiyakuSyubetsuTutorial`）は、既存の画面内の JSON 取得と同じ扱いで、画面以外から呼ばれる API にしない（`steering/api-standards.md` の本プロジェクトでの扱い）。権限は `AccessControlInterceptor` と `TWTGM170` で判定する（`steering/security.md` の `#### 権限モデル`）
 
 ### 技術スタック（Technology Stack）
 
@@ -269,7 +269,7 @@ flowchart LR
 
 > _書き方_: API はリクエスト / レスポンスの schema・検証・シリアライズ形式、イベントは schema・バージョニング・互換性、サービス間は分散トランザクション（Saga / 2PC など）と整合性の方針を書く。
 
-- **API**: 画面以外から呼ばれる API は持たない（`steering/api-standards.md` の本プロジェクトでの扱い）。画面の要求は `##### API 契約（API Contract）` のフォーム送信と、画面内の非同期の取得（税額計算）だけ
+- **API**: 画面以外から呼ばれる API は持たない（`steering/api-standards.md` の本プロジェクトでの扱い）。画面の要求は `##### API 契約（API Contract）` のフォーム送信と、画面内で値を返す非同期の口 `/wtg080/calcTaxAdjustment`（税額計算）・`/wtg080/changeKeiyakuSyubetsuTutorial`（契約種別による選択肢）だけ。口が失敗したとき（予期しない例外で既存の `ExceptionResolver` がエラー画面を返すとき）、画面のスクリプトは、税額計算では金額・税額・調整額に値を入れず入力済みの値を変えない。契約種別による選択肢では局種別と設置設備のプルダウンの選択肢を入れ直さず、今の選択肢と値を変えない（横断確認 1 回目 #5。エラーの返し方の規約は steering に置かず、口ごとに書く）
 - **イベント**: 持たない。メッセージングを使わない（`steering/tech.md` の `## コアテクノロジ`）
 - **サービス間**: wing の画面と契約情報取込バッチは同じ DB を共有する。取込中（06）の申請は WTG 申請状態サービスの番の判定で「番なし」になり、本画面でも更新・一時保存・発番を受け付けない（pbi design の番の表）。画面の更新・一時保存は開いている `TWTGM100`・`TWTGM140` の行の `ExclusiveFG` を照合し、取込が行を書き換えた後の古い画面からの更新を排他エラーにする（取込が書き換えた行の `ExclusiveFG` を新しい値にすることを前提にする）
 - **変更履歴の手順**（更新・発番のとき。一時保存では行わない。契約情報取込も同じ手順で使う。Q-DS-IR-013）
@@ -345,7 +345,7 @@ flowchart LR
 
 **依存関係**:
 - **呼び出し元（Inbound）**:
-  - 発行依頼書登録変更画面のテンプレートとスクリプト — フォーム送信と税額計算の非同期の取得（重要度: 高）
+  - 発行依頼書登録変更画面のテンプレートとスクリプト — フォーム送信と、税額計算・契約種別による選択肢の非同期の取得（重要度: 高）
   - 物件基本情報登録変更画面（GWTG070）— 契約局情報追加・発行依頼書編集・基地局番号リンクから画面を開く（重要度: 高）
 - **呼び出し先（Outbound）**:
   - 発行依頼書登録変更 Service — すべての処理（重要度: 高）
@@ -369,8 +369,8 @@ flowchart LR
 | POST | `/wtg080/update` | 申請No、連番、遷移元、画面の項目、排他用の値 | 画面を redirect で表示し直す（1.1・1.9） | 入力（`### バリデーション設計`）、業務（`WTG-100030`、遷移元 3 で発行依頼書が無いとき `WTG-100040`）、排他（`GEF-000027`） |
 | POST | `/wtg080/tempSave` | 申請No、連番、遷移元、画面の項目、排他用の値 | 画面を redirect で表示し直す（1.8、Q-DS-IR-016） | 入力（基地局番号の必須と数値の形式だけ。9.7）、業務（`WTG-100030`、遷移元 3 で発行依頼書が無いとき `WTG-100040`）、排他（`GEF-000027`） |
 | POST | `/wtg080/issue` | 申請No、連番、遷移元、担当エリア、契約区分、代表基地局番号、枝番、排他用の値 | 画面を redirect で表示し直す（受付No・稟議バーコードNo を表示。要件 3、Q-DS-IR-016）。確認は画面で「発番します。よろしいですか？」 | 入力（担当エリア・契約区分の必須 `WTG-000002`。9.3）、業務（`WTG-100030`）、排他（`GEF-000027`） |
-| POST | `/wtg080/calcTaxAdjustment` | 申請No、支払内容か初回支払内容かと番号（1〜4）、変えた項目、金額、税区分、税額、調整額、対象期間FROM・TO | 金額・税額・調整額を JSON で返す（`@ResponseBody`。画面は再読込しない）（要件 6、Q-DS-IR-011・Q-DS-IR-016） | なし（計算できないときは税額をそのまま、調整額を空で返す） |
-| POST | `/wtg080/changeKeiyakuSyubetsuTutorial` | 契約区分、契約種別 | 局種別と設置設備のプルダウンの選択肢（2 つのリスト）を JSON で返す（`@ResponseBody`。画面は再読込しない）（Q-DS-IR-016） | なし |
+| POST | `/wtg080/calcTaxAdjustment` | 申請No、支払内容か初回支払内容かと番号（1〜4）、変えた項目、金額、税区分、税額、調整額、対象期間FROM・TO | 金額・税額・調整額を JSON で返す（`@ResponseBody`。画面は再読込しない）（要件 6、Q-DS-IR-011・Q-DS-IR-016） | なし（計算できないときは税額をそのまま、調整額を空で返す）。口が失敗したとき（予期しない例外で既存の `ExceptionResolver` がエラー画面を返すとき）は、画面のスクリプトは金額・税額・調整額に値を入れず、入力済みの値を変えない（横断確認 1 回目 #5） |
+| POST | `/wtg080/changeKeiyakuSyubetsuTutorial` | 契約区分、契約種別 | 局種別と設置設備のプルダウンの選択肢（2 つのリスト）を JSON で返す（`@ResponseBody`。画面は再読込しない）（Q-DS-IR-016） | なし。口が失敗したとき（予期しない例外で既存の `ExceptionResolver` がエラー画面を返すとき）は、画面のスクリプトは選択肢を入れ直さず、今の選択肢と値を変えない（横断確認 1 回目 #5） |
 | GET・POST | `/zoom/zwtz076` | なし | サンプル文設定ズーム（ZWTZ076）。既存のズームの仕組み（`ZoomUtils`・`/zoom/wait`）で開き、選んだサンプル文を本画面へ戻す（4.2・4.3、Q-DS-IR-016） | なし |
 | GET・POST | `/zoom/zwtz074`・`/zoom/zwtz075` | なし | KDDI契約者情報挿入ズーム（ZWTZ074）・OCT契約者情報挿入ズーム（ZWTZ075）。押したボタンの契約者情報を本画面へ戻す（4.4・4.5、Q-DS-IR-016） | なし |
 | GET・POST | `/wtg080/return` | 申請No | 物件基本情報登録変更の初期表示（`/wtg070/`）へ申請No を渡して forward（確認は画面で「編集中の内容を破棄して戻ります。よろしいですか？」）（Q-DS-IR-002） | なし |
@@ -709,6 +709,7 @@ wing/src/main/
   - 新しいテーブル（`TWTGM100`・`TWTGA130`・`TWTGA150`・`TWTGV030`・`TWTGV050`・`TWTGM160`・`TWTZM370`）は DB レイアウトから DDL を作り、導入手順書に沿って発注者が適用する。既存データの移行は無い（どれも新しいテーブル）（`steering/database.md` の `## マイグレーション`）
   - 値の投入：`TWTGM160` の 25 件（案件小グループは `M11` のキー3、その他①は `P35` のキー3 に置き換えて投入する）、`TWTZM370` の 4 行（0.03 1989/04/01、0.05 1997/04/01、0.08 2014/04/01、0.10 2019/10/01。Q-DS-IR-018）、採番マスタ `TWTZM050` の受付No の行（グループID `WTG080`、識別コード＝担当エリアのコード（`P34` のキー3。01〜12 の 12 行）、プレフィックス 空、最小値 1、現在値 0、最大値 999999、採番区分 01、MAX区分 "0"）、本 feature が使うコードマスタ `TWTZM040` の行（`specs/issue-request/item-rules.md` の選択肢の元）は、導入手順書に沿って投入する（Q-DS-IR-009・Q-DS-IR-011・Q-DS-IR-012）
   - 物件基本情報登録変更の design の採番マスタの申請No の行は「MAX区分 1（ローテーションなし）」と書いているが、`NumberingService` では "0" がローテーション無し（`wing/src/main/java/jp/co/kccs/wt/common/service/NumberingService.java:56`〜`60`）。申請No の行も "0" にする（Q-DS-IR-012）。pbi design は Phase 5 の最後にまとめて直す（upstream-carryover）
+  - `ZMENUAUTH`：`PWTGO080` の行を、`PWTGO070` と同じ［WTG070］物件契約情報登録と［WTG060］物件契約情報申請状況検索/一覧のメニュー（権限区分ごとに分かれていれば、そのすべて）に、メニューID ごとに 1 行登録する。投入の文と手順は tasks で作り、投入は発注者が導入手順書に沿って行う（横断確認 1 回目 #4）
 - **ロールバックを実施する条件**: <DSN_MIGRATION_ROLLBACK>（不要：既存データの移行は無く、新しいテーブルと追加するマスタの行は導入手順書に沿って発注者が適用・投入する — Q-DS-PBI-015 と同じ）
 - **検証チェックポイント**: <DSN_MIGRATION_CHECKPOINT>（不要：既存データの移行は無く、テストの詳細は試験仕様書に書く — Q-DS-PBI-015 と同じ）
 
@@ -725,6 +726,7 @@ wing/src/main/
 | `TWTGM160` | 新規 | 25 件 | DDL を発注者が適用し、`specs/issue-request/db-TWTGM160.md` の投入データを導入手順書に沿って投入 | ― |
 | `TWTZM370` | 新規 | 4 件（`specs/issue-request/db-TWTZM370.md` の投入する行。Q-DS-IR-018） | DDL を発注者が適用し、行を導入手順書に沿って投入 | ― |
 | `TWTZM050`（`WTG080` の行）・`TWTZM040`（本 feature が使うコードの行） | 更新（行の追加） | `TWTZM050` は 12 行、`TWTZM040` は本 feature が使うコード値の数 | 導入手順書に沿って投入 | ― |
+| `ZMENUAUTH`（`PWTGO080` の行） | 更新（行の追加） | `PWTGO070` を登録するメニューの数（［WTG070］と［WTG060］のメニュー。権限区分ごとに分かれていればそのすべて）と同じ行数 | 導入手順書に沿って投入（横断確認 1 回目 #4） | ― |
 
 ### テスト体制 / テスト仕様
 

@@ -3,23 +3,23 @@
   "phase": "design",
   "event": "design-authoring-revise",
   "scope": "feature:contract-info-download",
-  "at": "2026-10-08T19:54:37+09:00",
+  "at": "2026-10-09T14:15:39+09:00",
   "artifacts": {
     "specs/contract-info-download/design.md": {
       "status": "draft",
-      "sha256": "3babb9106f4ffd54b78ce57c1b82ca8b530200d4dd20fe1ced3223ac96066233"
+      "sha256": "e365aaa3c25a50d9a24dad8e438b02ebc77d61278d53da5492b16a4a793311a1"
     }
   },
   "record": {
-    "bytes": 268769,
-    "sha256": "63a663f3e74aa3b080683d4c28a23e03cd5d0fd57111ac73da276497ef92ae0f",
-    "blocks": 200
+    "bytes": 366445,
+    "sha256": "61211268ae4d0ee765666b52eb6dcdadf1c755efad8387acde98a90abea7bd28",
+    "blocks": 273
   },
-  "run": 3,
+  "run": 4,
   "sections": {
     "specs/contract-info-download/design.md": {
       "": "e3b0c44298fc1c14",
-      "技術設計書": "d1183ac186f9b07b",
+      "技術設計書": "1d8ad91c22e2a9a9",
       "概要（Overview）": "469d08bea45c729d",
       "達成目標（Goals）": "8e0a1a270f5a959e",
       "やらないこと（Non-Goals）": "f07287047c6b877e",
@@ -32,11 +32,11 @@
       "既存アーキテクチャの分析（Existing Architecture Analysis）": "9234bf3022f94cfe",
       "アーキテクチャ方式と境界図（Architecture Pattern & Boundary Map）": "42f46079ffa3ef6c",
       "技術スタック（Technology Stack）": "8386e642b72fcab9",
-      "データモデル（Data Models）": "dafe7831b0f8edab",
-      "ドメインモデル（Domain Model）": "82fd8c56ffaae770",
+      "データモデル（Data Models）": "1becc65f799fbac9",
+      "ドメインモデル（Domain Model）": "18e479dcc2533ef7",
       "論理データモデル（Logical Data Model）": "f432f40c70a6c6ac",
       "物理データモデル（Physical Data Model）": "e835de1ac038d3f4",
-      "データ契約と外部連携（Data Contracts & Integration）": "dff0f16b070e29b6",
+      "データ契約と外部連携（Data Contracts & Integration）": "9d6a013334cd9247",
       "コンポーネントとインターフェース（Components and Interfaces）": "fcf4bae1fa3eb899",
       "コンポーネント一覧（Summary）": "b9ef209057739dd1",
       "契約情報ダウンロード": "bc933b0a15335c37",
@@ -51,11 +51,11 @@
       "エラー時の分岐フロー": "e97a4c78c1fcd3fe",
       "ファイル配置計画（File Structure Plan）": "10b923f12f060aff",
       "変更する既存ファイル（Modified Files）": "f5985c698bede00a",
-      "追加検討事項（Additional Considerations）": "79d8e948dc2791c8",
-      "セキュリティ上の考慮（Security Considerations）": "3babf986ebf373fb",
+      "追加検討事項（Additional Considerations）": "e0b1fc44d6b3cf4f",
+      "セキュリティ上の考慮（Security Considerations）": "4485da1cfa71a7b0",
       "性能とスケーラビリティ（Performance & Scalability）": "bc5e1b61218fcc6a",
-      "移行方針（Migration Strategy）": "4758b1a7378866f8",
-      "移行対象ファイル一覧": "62f9d863327522c3",
+      "移行方針（Migration Strategy）": "058843152ae91526",
+      "移行対象ファイル一覧": "4102a61c5a8f8fb5",
       "テスト体制 / テスト仕様": "f53c0fc38f1073f2",
       "テスト戦略（Testing Strategy）": "cd06e13b71e0ad6d",
       "設計判断（Design Decisions）": "970a7baebfd73374",
@@ -63,7 +63,7 @@
       "判断 2: ページをまたいだ選択は覚えない": "7a6c0f26c89e35fe",
       "判断 3: 工事案件マスタに行が無い契約情報は絞り込みで落とさない": "632b08b6f9014d10",
       "補足資料（Supporting References）": "b7c642edd2a84eca",
-      "*": "d1183ac186f9b07b"
+      "*": "1d8ad91c22e2a9a9"
     }
   },
   "own_sections": {
@@ -83,10 +83,10 @@
       "アーキテクチャ方式と境界図（Architecture Pattern & Boundary Map）": "42f46079ffa3ef6c",
       "技術スタック（Technology Stack）": "8386e642b72fcab9",
       "データモデル（Data Models）": "7f56063d2219091b",
-      "ドメインモデル（Domain Model）": "82fd8c56ffaae770",
+      "ドメインモデル（Domain Model）": "18e479dcc2533ef7",
       "論理データモデル（Logical Data Model）": "f432f40c70a6c6ac",
       "物理データモデル（Physical Data Model）": "e835de1ac038d3f4",
-      "データ契約と外部連携（Data Contracts & Integration）": "dff0f16b070e29b6",
+      "データ契約と外部連携（Data Contracts & Integration）": "9d6a013334cd9247",
       "コンポーネントとインターフェース（Components and Interfaces）": "fa0f1a4d81675bb3",
       "コンポーネント一覧（Summary）": "b9ef209057739dd1",
       "契約情報ダウンロード": "6e35ee962efbb66a",
@@ -102,10 +102,10 @@
       "ファイル配置計画（File Structure Plan）": "a92b5f2930dc2c2b",
       "変更する既存ファイル（Modified Files）": "f5985c698bede00a",
       "追加検討事項（Additional Considerations）": "5935df48a68c4bd5",
-      "セキュリティ上の考慮（Security Considerations）": "3babf986ebf373fb",
+      "セキュリティ上の考慮（Security Considerations）": "4485da1cfa71a7b0",
       "性能とスケーラビリティ（Performance & Scalability）": "bc5e1b61218fcc6a",
-      "移行方針（Migration Strategy）": "6aad39509037f696",
-      "移行対象ファイル一覧": "62f9d863327522c3",
+      "移行方針（Migration Strategy）": "7c14cc475c9cf667",
+      "移行対象ファイル一覧": "4102a61c5a8f8fb5",
       "テスト体制 / テスト仕様": "f53c0fc38f1073f2",
       "テスト戦略（Testing Strategy）": "cd06e13b71e0ad6d",
       "設計判断（Design Decisions）": "ffd9306c7a606ca3",
@@ -113,7 +113,7 @@
       "判断 2: ページをまたいだ選択は覚えない": "7a6c0f26c89e35fe",
       "判断 3: 工事案件マスタに行が無い契約情報は絞り込みで落とさない": "632b08b6f9014d10",
       "補足資料（Supporting References）": "b7c642edd2a84eca",
-      "*": "d1183ac186f9b07b"
+      "*": "1d8ad91c22e2a9a9"
     }
   },
   "inputs": {
@@ -126,21 +126,10 @@
     "steering/database.md": "832d98b289c53f8c8adc9a7dfb25bf0f8b1f54b9c1cc473c6480fa9927a20e21",
     "steering/api-standards.md": "70eca8d2facbf08bfa22cf1ae1e781219ecab2066bb8129bf4a3414b0fdeddc1",
     "specs/contract-info-download/requirements.md": "db81769c1f58c458a0583a47ed5daf3a2ffdf8fdee34bd1aa3514a04dcf4a898",
-    "specs/property-basic-info/design.md": "0829e28f5d3a4e0db44e191b174e2518eb0af483f10814026003e86d90d8c7df",
-    "specs/issue-request/design.md": "a543916db8517b94bdbefb90769055130c7b2e00eeb99f9027bf9f66402a5d63",
-    "specs/contract-info-import/design.md": "4c8a75122096a3b0e11bc9879722b86ecf6a395fe1f145a45958d88a0f58b135"
+    "specs/property-basic-info/design.md": "03331555d6ee0825bd90f023f17f4951d532f97b0f4bde7b7f50878d4cc4da03",
+    "specs/issue-request/design.md": "7bedc0d4618ebcb9a1667ce749bf24513272ac9c19fbdebdfe1ac2954ab67fbb",
+    "specs/contract-info-import/design.md": "f8c85c02fe3eac668a090b8cb084d4319381ea95428d4c25c7149c98c569bebc"
   },
-  "previous_run": 2,
-  "changed_sections": {
-    "specs/contract-info-download/design.md": [
-      "技術設計書",
-      "データモデル（Data Models）",
-      "物理データモデル（Physical Data Model）"
-    ]
-  },
-  "changed_own": {
-    "specs/contract-info-download/design.md": [
-      "物理データモデル（Physical Data Model）"
-    ]
-  }
+  "previous_run": 3,
+  "full_inspection": "上流の入力が前回の検査から変わった（または比べられない）ため、全体を検査する"
 }

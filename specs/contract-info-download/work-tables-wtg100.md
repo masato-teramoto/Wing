@@ -1,6 +1,6 @@
 # 契約情報ダウンロード（WTG100）作業用テーブルとビュー
 
-> 回答者 Junichi Noumi が渡した作業用テーブルとビュー（`_handoff/work-tables-wtg100.md`、Q-DS-CD-002 の回答の別表。design-check 1 回目・2 回目の判断のときに差し替え）を、本 feature の補足資料として写したもの。design.md が参照する正。
+> 回答者 Junichi Noumi が渡した作業用テーブルとビュー（`_handoff/work-tables-wtg100.md`、Q-DS-CD-002 の回答の別表。design-check 1 回目・2 回目の判断と design 横断確認 1 回目 #1 の判断のときに差し替え）を、本 feature の補足資料として写したもの。design.md が参照する正。
 
 Q-DS-CD-002 の回答の別表。新しく作るのは次の 3 つ。
 
@@ -103,9 +103,9 @@ Q-DS-CD-002 の回答の別表。新しく作るのは次の 3 つ。
 | 3 | 計画基地局番号 | 契約基本情報ﾏｽﾀ.KEIKAKU_KICHIKYOKU_NO | 計画基地局番号 | 契約者情報ﾏｽﾀ.KEIKAKU_KICHIKYOKU_NO | 計画基地局番号 | 契約支払情報ﾏｽﾀ．KEIKAKU_KICHIKYOKU_NO |
 | 4 | 計画基地局枝番 | 契約基本情報ﾏｽﾀ.PLAN_SITEID_BRANCH | 計画基地局枝番 | 契約者情報ﾏｽﾀ.PLAN_SITEID_BRANCH | 計画基地局枝番 | 契約支払情報ﾏｽﾀ.PLAN_SITEID_BRANCH |
 | 5 | 計画基地局名 | 契約基本情報ﾏｽﾀ.KEIKAKU_KICHIKYOKU_NAME | 契約者番号 | 契約者情報ﾏｽﾀ.CONSTRACT_CD | 支払番号 | 契約支払情報ﾏｽﾀ.PAY_CD |
-| 6 | 計画基地局名_ｶﾅ | 契約基本情報ﾏｽﾀ.PLAN_STATION_KANA | 契約者区分 | 契約者情報ﾏｽﾀ.CONSTRACT_KBN (1:契約者、2:関係者) | 支払番号枝番 | 契約支払情報ﾏｽﾀ.PAY_CD_BRANCH |
+| 6 | 計画基地局名_ｶﾅ | 契約基本情報ﾏｽﾀ.PLAN_STATION_KANA | 契約者区分 | 契約者情報ﾏｽﾀ.CONSTRACT_KBN を名称にする（1→「契約者」、2→「関係者」） | 支払番号枝番 | 契約支払情報ﾏｽﾀ.PAY_CD_BRANCH |
 | 7 | 基地局番号 | 契約基本情報ﾏｽﾀ.KICHIKYOKU_NO | 関係_地位 | 契約者情報ﾏｽﾀ.RELATION | 支払内容区分 | 契約支払情報ﾏｽﾀ.FEE_MANAGE_KIND |
-| 8 | 基地局名 | 契約基本情報ﾏｽﾀ.KICHIKYOKU_NAME | 法人_個人区分 | 契約者情報ﾏｽﾀ.CORP_PRIV_KBN (1:法人、2:個人) | 支払内容区分_名称 | ｺｰﾄﾞﾏｽﾀ.名称('WTG',PARAM,'P17') |
+| 8 | 基地局名 | 契約基本情報ﾏｽﾀ.KICHIKYOKU_NAME | 法人_個人区分 | 契約者情報ﾏｽﾀ.CORP_PRIV_KBN を名称にする（1→「法人」、2→「個人」。P06 の名称と同じ） | 支払内容区分_名称 | ｺｰﾄﾞﾏｽﾀ.名称('WTG',PARAM,'P17') |
 | 9 | 基地局名_ｶﾅ | 契約基本情報ﾏｽﾀ.STATION_KANA | 法人名_個人名 | 契約者情報ﾏｽﾀ.NAME | 支払内容詳細区分 | 契約支払情報ﾏｽﾀ.FEE_MANAGE_KIND_SHOSAI |
 | 10 | データ確定 | 契約基本情報ﾏｽﾀ.DATA_FIX_FLG (0:未確定、1:確定) | 法人名_個人名ｶﾅ | 契約者情報ﾏｽﾀ.NAME_KANA | 支払内容詳細区分_名称 | ｺｰﾄﾞﾏｽﾀ.名称('WTG',CODE,'C02') |
 | 11 | 登録状態 | 契約基本情報ﾏｽﾀ.STATUS_KIND \|\| ':' \|\| ｺｰﾄﾞﾏｽﾀ.名称('WTG',PARAM,'P21') | 所属部署名 | 契約者情報ﾏｽﾀ.BELONGING_POST | 支払内容その他 | 契約支払情報ﾏｽﾀ.OTHER_PAYMENT_NAME |
@@ -134,7 +134,7 @@ Q-DS-CD-002 の回答の別表。新しく作るのは次の 3 つ。
 | 34 | 更新年数_年単位 | 契約基本情報ﾏｽﾀ.UPDATE_YEAR | - | - | 継続消費税調整理由 | 契約支払情報ﾏｽﾀ. COUNT_TAX_ADJUSTMENTS_REASON |
 | 35 | 更新通知日_ヶ月前まで | 契約基本情報ﾏｽﾀ.UPDATE_NOTICE | - | - | 継続消費税調整理由_名称 | ｺｰﾄﾞﾏｽﾀ.名称('WTG',PARAM,'P16') |
 | 36 | 更新形態 | 契約基本情報ﾏｽﾀ.UPDATE_PATTERN (ｺｰﾄﾞﾏｽﾀ.名称('WTG',PARAM,'P07')) | - | - | 継続消費税備考 | 契約支払情報ﾏｽﾀ. COUNT_TAX_ADJUSTMENTS_MEMO |
-| 37 | 受電方法 | 契約基本情報ﾏｽﾀ.ELECT_KIND (1:電力会社直受、2:テナント受電、3:ａｕ受電) | - | - | 支払有効期間FROM | 契約支払情報ﾏｽﾀ.PAY_EFFECTIVE_FROM |
+| 37 | 受電方法 | 契約基本情報ﾏｽﾀ.YOBI_KOMOKU4（予備項目4）に値があればその値。空なら ELECT_KIND を文字にする（1→「1:電力会社直受」、2→「2:テナント受電」、3→「3:ａｕ受電」） | - | - | 支払有効期間FROM | 契約支払情報ﾏｽﾀ.PAY_EFFECTIVE_FROM |
 | 38 | 転貸借契約書ｺｰﾄﾞ | 契約基本情報ﾏｽﾀ.MOVE_LEASE_CONTRACT | - | - | 支払有効期間TO | 契約支払情報ﾏｽﾀ.PAY_EFFECTIVE_TO |
 | 39 | 転貸借契約書名 | ｺｰﾄﾞﾏｽﾀ.名称('WTG',PARAM,'P15') | - | - | 月額契約金額_税抜 | TO_CHAR( 契約支払情報ﾏｽﾀ.MONTHLY_PAYMENT ) |
 | 40 | 代表契約番号 | 契約基本情報ﾏｽﾀ.REPRESENT_CONTRACT_NO | - | - | 月額有効期間FROM | 契約支払情報ﾏｽﾀ. MONTHLY_PAY_EFFECTIVE_FROM |

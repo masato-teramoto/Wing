@@ -1,0 +1,90 @@
+{
+  "status": "ok",
+  "action": "respond",
+  "result": {
+    "status": "wait",
+    "allowed_actions": [
+      "decision",
+      "decisions",
+      "approve"
+    ],
+    "review_context": {
+      "root": "C:\\project\\Wing",
+      "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+      "call": "design-authoring-revise",
+      "event": "design-authoring-revise",
+      "item": "contract-info-download",
+      "dispatch_id": "f6aa59d4fc4d45d2bfe9973e70934b09",
+      "unit": "design-authoring-revise/design-authoring-revise[contract-info-download]::end.review",
+      "scope": "feature:contract-info-download",
+      "run": 4,
+      "snapshot": "06f917a71e648f66a14376158684604f83f6caef63167e611d66b63e6388e668",
+      "record_hash": "e007f98ea7a5b4e6dfa401b10961ff797d850196cab51daf9bb0a7892896e9c7"
+    },
+    "review": [
+      {
+        "scope": "feature:contract-info-download",
+        "run": 4,
+        "number": 1,
+        "current": true,
+        "decision": "対応せず進める",
+        "reason": "Phase 5 の最後の上流まとめ直しと横断確認で扱う",
+        "open": false,
+        "resolved": false,
+        "description": "意味判定（要件 3.1・3.5、ID 対応あり・内容があいまい）。横断確認 1 回目 #1 の反映で、ビュー VWTGM010 の 2契約者の「契約者区分」の列は CONSTRACT_KBN を名称（1→「契約者」、2→「関係者」）にした値になった（`work-tables-wtg100.md` の列一覧 No 6、`csv-layout-wtg100.md` の No 48）。一方、本文は処理順2 を「計画基地局番号＋枝番ごとに契約者区分・契約者番号の昇順の番号」（§物理データモデル VWTGM010）、「契約者区分の昇順・契約者番号の昇順で 1〜5 番目を入れる」（§ドメインモデル CSV の契約者①〜⑤）とだけ書き、並べるのがコードか名称の列かを書いていない。名称で並べると、文字コード・照合順によっては「関係者」が「契約者」より前になり、契約者①に入る行が変わる。出力の定義（本書の正）は「契約者区分（CONSTRACT_KBN）の昇順」（`csv-layout-wtg100.md` の「契約者①〜⑤・支払情報①〜④の入れ方」）とコードで並べると書いており、本文だけがあいまい。作業用テーブルの表の「VWTGM010 の絞り込みと処理順2」も「契約者区分」とだけ書く。他の箇所：§ドメインモデル（Domain Model） / CSV の契約者①〜⑤",
+        "location": "specs/contract-info-download/design.md § 物理データモデル（Physical Data Model） / VWTGM010 ほか 1 か所",
+        "kind": "業務のあいまい・不足",
+        "severity": "要判断",
+        "summary": "契約者①〜⑤の並びの「契約者区分」が、名称にした列かコードか本文で読めない",
+        "suggestion": "§物理データモデルの VWTGM010 の 2契約者を「処理順2＝計画基地局番号＋枝番ごとに契約者区分のコード（`CONSTRACT_KBN`。名称にする前の値）・契約者番号の昇順の番号」に、§ドメインモデルの契約者①〜⑤を「契約者区分のコード（`CONSTRACT_KBN`）の昇順・契約者番号の昇順で 1〜5 番目を入れる」に直す（出力の定義の書き方に合わせる）",
+        "recommendation": "修正：業務の新しい事実は要らず、本書の正である出力の定義が CONSTRACT_KBN で並べると書いているので、本文をそれに合わせれば足りるため",
+        "decided_by": "Junichi Noumi"
+      },
+      {
+        "scope": "feature:contract-info-download",
+        "run": 4,
+        "number": 2,
+        "current": true,
+        "decision": "対応せず進める",
+        "reason": "Phase 5 の最後の上流まとめ直しと横断確認で扱う",
+        "open": false,
+        "resolved": false,
+        "description": "意味判定（要件 3.1、ID 対応あり・内容があいまい）。今回足した文は「日付は…その形で出し、ほかの列は元の値のまま。ただし、契約者①〜⑤_契約者区分は「契約者」「関係者」、法人_個人区分は「法人」「個人」…、契約基本_受電方法は…の文字にして、ビュー VWTGM010 で出す」と、元の値から変える列をこの 3 つに限るように読める。出力の定義（本書の正）の No 9 契約基本_登録状態は「契約基本情報ﾏｽﾀ.STATUS_KIND || ':' || ｺｰﾄﾞﾏｽﾀ.名称('WTG',PARAM,'P21')」（`csv-layout-wtg100.md` No 9、`work-tables-wtg100.md` 列一覧 No 11）で、コードに名称をつないだ値を出すが、本文の例外に入っていない。§データ契約と外部連携の「契約情報取込との口」も、渡す値の形を契約者区分・法人_個人区分・受電方法（名称）と消費税扱い（コード）だけで書いている。出力の定義が正なので実装の値は決まるが、本文の「ほかの列は元の値のまま」と食い違って読める",
+        "location": "specs/contract-info-download/design.md § ドメインモデル（Domain Model） / CSV の値の形",
+        "kind": "業務のあいまい・不足",
+        "severity": "要判断",
+        "summary": "CSV の値の形で名称にする列を 3 つだけ挙げ、登録状態の「コード:名称」が抜けている",
+        "suggestion": "§ドメインモデルの CSV の文を「値はすべて文字列で、列ごとの値は出力の定義の取得元のとおり。日付は出力の定義で `YYYY/MM/DD` にしている列だけをその形で出し、ほかの日付の列は元の値のまま。契約基本_登録状態は「コード:名称」（`P21`）、契約者①〜⑤_契約者区分は…（以下、今の文のとおり）」に直す。「契約情報取込との口」の値の形は「列ごとの値は出力の定義のとおり。取込が照合に使う列のうち、契約者区分・法人_個人区分・受電方法は名称（文字）、消費税扱いはコードで渡す」とする",
+        "recommendation": "修正：業務の新しい事実は要らず、本書の正である出力の定義に書いてある値の形を本文の例外に足せば足りるため",
+        "decided_by": "Junichi Noumi"
+      }
+    ],
+    "choices": {
+      "kind": "approve",
+      "questions": [
+        {
+          "id": "approve",
+          "header": "承認",
+          "question": "判断が揃いました。承認しますか？",
+          "options": [
+            {
+              "label": "承認する",
+              "description": "回答者の名前で承認を記録する",
+              "answer": "approve"
+            },
+            {
+              "label": "承認しない",
+              "description": "判断を変える・修正を指示する",
+              "answer": "hold"
+            }
+          ],
+          "multiSelect": false
+        }
+      ]
+    },
+    "next_action": "提示文をそのまま示し、choices の選択肢を選択式の質問で出して、人に選んでもらってください。検査結果を確認し、重大と要判断の指摘に A〜D か「推奨」で答えてください（束・範囲でまとめて答えられます）。修正（A）と AI が直す軽微があれば repair（findings: \"all-fixes\"）で修正に回し、判断が揃い修正が無ければ承認者名を回答してください。",
+    "operation_id": "8c51f81e256f41998b5c10e2695a2066",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

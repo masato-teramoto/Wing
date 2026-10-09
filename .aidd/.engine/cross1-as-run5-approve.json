@@ -1,0 +1,28 @@
+{
+ "operation_id": "440f1ef9a46143d7a871216dae747775",
+ "action": "approve",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[application-status-search]::end.review",
+  "event": "design-authoring-revise",
+  "item": "application-status-search",
+  "status": "wait",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[application-status-search]::end.review\", \"snapshot\": \"18725a5b316cf8658fbc1553d4402eb3201b772fa937312ee46bc7852370851e\", \"run\": 5, \"inspection_hash\": \"5367c9b426e53719e803acc176189d014a1ae14aeea9978755d873b3fc1c6ca7\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 再検査で出なくなり、解消を記録した指摘 1 件\n  - #4-1 削除の後の戻り（deleteShinse）が再確認の対象と補足資料の口の一覧に無い\n\n### 前回の検査（4 回目）からの変更\n\n- `specs/application-status-search/design.md`：再確認が必要になる変更（Revalidation Triggers）、補足資料（Supporting References）\n  - 修正の指示に無い節の変更：補足資料（Supporting References）（意図した変更か確かめてください）\n\n### 判断が必要な指摘\n\n**対象**: `specs/application-status-search/design.md`（スコープ: 成果物単位（application-status-search） / 5 回目）\n**実行した層**: ① / ②\n\n**指摘**: なし（0 件。検査は実行済み）\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n判断が揃いました。承認の可否を回答してください（承認する場合は承認者名）。",
+  "id": "dfb61914e0774ade8792f555b1d5c543"
+ },
+ "expected": {
+  "root": "C:\\project\\Wing",
+  "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+  "call": "design-authoring-revise",
+  "event": "design-authoring-revise",
+  "item": "application-status-search",
+  "dispatch_id": "dfb61914e0774ade8792f555b1d5c543",
+  "unit": "design-authoring-revise/design-authoring-revise[application-status-search]::end.review",
+  "scope": "feature:application-status-search",
+  "run": 5,
+  "snapshot": "18725a5b316cf8658fbc1553d4402eb3201b772fa937312ee46bc7852370851e",
+  "record_hash": "3c460aa3887f15fd4f7498f6c70a639e19a3009395fd431e2ee2aff29517ccf6"
+ },
+ "data": {}
+}

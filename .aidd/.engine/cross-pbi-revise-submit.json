@@ -1,0 +1,61 @@
+{
+ "operation_id": "057223f26ef54e26a106ce38816908cd",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[property-basic-info]::run",
+  "event": "design-authoring-revise",
+  "item": "property-basic-info",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "35139d1b876d45c99c28e05d984e3244"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/property-basic-info/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "design",
+    "scope": "cross",
+    "run": 1,
+    "number": 3
+   },
+   {
+    "phase": "design",
+    "scope": "cross",
+    "run": 1,
+    "number": 4
+   },
+   {
+    "phase": "design",
+    "scope": "cross",
+    "run": 1,
+    "number": 5
+   },
+   {
+    "phase": "design",
+    "scope": "cross",
+    "run": 1,
+    "number": 6
+   },
+   {
+    "phase": "design",
+    "scope": "cross",
+    "run": 1,
+    "number": 7
+   },
+   {
+    "phase": "design",
+    "scope": "cross",
+    "run": 1,
+    "number": 8
+   }
+  ],
+  "return_candidates": [],
+  "summary": "横断確認 1 回目 #3：持たない責務の契約情報取込の行に取込が書き換える TWTGM080 の列を足し、単独局か複数局かに取込の後の表示を足した。#4：移行方針と移行対象に ZMENUAUTH（PWTGO070 を［WTG070］と［WTG060］のメニューに、子画面もそろえる）を足した。#5（案 B）：データ契約の API に /wtg070/inputHassoKiboDate と失敗時の扱いを書き、API 契約の Errors にも書いた。#6（案 A）：WTG-000072 の {0} 空・{1}「書類種別」・{2} 選んだコードを書いた。#7（案 B）：文書バーコードNo の契約区分は P78 の文字項目2（1 桁）で、稟議バーコードNo（文字項目1）とは別の決まりと書いた。#8：Controller の呼び出し元に /wtg090/back からの戻りを足した。要件トレーサビリティ自己診断（property-basic-info）：変更は既存の受け入れ基準の記述の補足だけで、対応の欠けは無い。"
+ }
+}

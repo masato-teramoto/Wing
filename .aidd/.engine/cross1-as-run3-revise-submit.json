@@ -1,0 +1,31 @@
+{
+ "operation_id": "c0bbca3df0f1401699f4910a2dc7ace4",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[application-status-search]::run",
+  "event": "design-authoring-revise",
+  "item": "application-status-search",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "9e2c321b118c4c1299ba2e18af4d73f6"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/application-status-search/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "design",
+    "scope": "feature:application-status-search",
+    "run": 3,
+    "number": 1
+   }
+  ],
+  "return_candidates": [],
+  "summary": "run 3 #1：削除の後（/wtg070/deleteShinse）も /wtg060/return で受けて前の条件で再検索することを、物件基本情報登録変更との口と Controller の呼び出し元に追記。pbi design の deleteShinse の Response は upstream-carryover に追加"
+ }
+}

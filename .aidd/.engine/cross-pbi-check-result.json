@@ -1,0 +1,119 @@
+{
+  "status": "ok",
+  "action": "submit",
+  "result": {
+    "unit": "design-authoring-revise/design-authoring-revise[property-basic-info]::end.review",
+    "flow": "design-authoring-revise",
+    "event": "design-authoring-revise",
+    "item": "property-basic-info",
+    "gate": "review",
+    "hookPoint": "end",
+    "name": "review",
+    "type": "script",
+    "target": "scripts/approval.py",
+    "isAgent": false,
+    "requiresHuman": true,
+    "calls": [],
+    "targetReview": [
+      "specs/property-basic-info/design.md"
+    ],
+    "status": "wait",
+    "call": "design-authoring-revise",
+    "dispatch": {
+      "call": "design-authoring-revise",
+      "unit": "design-authoring-revise/design-authoring-revise[property-basic-info]::end.review",
+      "event": "design-authoring-revise",
+      "item": "property-basic-info",
+      "status": "wait",
+      "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+      "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[property-basic-info]::end.review\", \"snapshot\": \"2f38edff48a6feb1459afd98d8af1cf04a93d765bf065cf6dd8d8ae56eb8db9a\", \"run\": 6, \"inspection_hash\": \"19e25ce8b53d114d31b9c0a23c323402ea148cf8e3f88bdf2121cb407e2f3182\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 11 件\n  - 開発端末の JDK 1.8 と steering/tech.md の JDK 1.7 の矛盾（verify:重複（前回 2-7 で人が対応せず進めると判断済み。upstream-carryover の steering tech.md の項目））\n  - 依頼内容を名称の文字列で持つことと steering/database.md の矛盾（verify:重複（前回 2-11 で人が対応せず進めると判断済み））\n  - 判定・権限ID をコードマスタにせず連番などを Int とすることと steering/database.md の矛盾（verify:重複（前回 2-12 で人が対応せず進めると判断済み））\n  - P71 のキー3 の「グループ」を権限区分と読むことと steering/security.md の矛盾（verify:重複（前回 2-13 で人が対応せず進めると判断済み））\n  - 処理状況（/wtg070/taskList・/wtg070/return）に受け入れ基準が無い（verify:重複（前回 3-4 で人が対応せず進めると判断済み。canOperate の根拠は指示どおり書き直されている））\n  - 起案済・回覧中の申請者の番で更新などを受け付けないことと requirements 1.3・6.7・14.5 の不整合（verify:重複（前回 5-1 で人が対応せず進めると判断済み））\n  - 契約局情報追加を複数局に限ることと requirements 14.5 の不整合（verify:重複（前回 5-2 で人が対応せず進めると判断済み））\n  - TWTGM170 の権限ID を P82 と別体系にすること（行173 の「TWTGM170・P82 だけで判定」の文を含む）と steering/security.md・requirements の前提の矛盾（verify:重複（前回 5-3 で人が対応せず進めると判断済み。同じ原因））\n  - CSRF の照合を servlet-context.xml の末尾一致の URL だけにすることと steering/security.md の食い違い（verify:重複（前回 3-3 の判断で design に意図した外れとして明記済み。upstream-carryover の steering security.md の項目））\n  - 業務エラー・排他を BindingResult で返すことと steering/tech.md の食い違い（verify:重複（前回 3-2 の判断で design に意図した外れとして明記済み。upstream-carryover の steering tech.md の項目））\n\n### 判断が必要な指摘\n\n**対象**: `specs/property-basic-info/design.md`（スコープ: 成果物単位（property-basic-info） / 6 回目）\n**実行した層**: ① / ②\n\n**AI が修正案で直す軽微**（2 件。判断は不要。修正の回で直し、再検査で確かめます）\n- #1 取込画面からの戻りの受け口 pushApplicationNo の Request と開く経路に、取込画面が無い\n- #2 境界図が取込バッチの TWTGM080 の書込みを「状態を直接更新」だけとし、持たない責務の記述と合わない\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n修正（A）と AI が直す軽微は、修正の指示を書かずに修正の回へ回せます（repair の findings に \"all-fixes\"）。AI の推奨を採用していない修正には、修正の指示を書いてください。\n承認を問う前に必要なこと: 未解消: feature:property-basic-info / run 6 / #1 / 未解消: feature:property-basic-info / run 6 / #2",
+      "id": "f79646f629504b9a81538ffee2185580"
+    },
+    "label": "design-authoring-revise / design-authoring-revise [property-basic-info]",
+    "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[property-basic-info]::end.review\", \"snapshot\": \"2f38edff48a6feb1459afd98d8af1cf04a93d765bf065cf6dd8d8ae56eb8db9a\", \"run\": 6, \"inspection_hash\": \"19e25ce8b53d114d31b9c0a23c323402ea148cf8e3f88bdf2121cb407e2f3182\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 11 件\n  - 開発端末の JDK 1.8 と steering/tech.md の JDK 1.7 の矛盾（verify:重複（前回 2-7 で人が対応せず進めると判断済み。upstream-carryover の steering tech.md の項目））\n  - 依頼内容を名称の文字列で持つことと steering/database.md の矛盾（verify:重複（前回 2-11 で人が対応せず進めると判断済み））\n  - 判定・権限ID をコードマスタにせず連番などを Int とすることと steering/database.md の矛盾（verify:重複（前回 2-12 で人が対応せず進めると判断済み））\n  - P71 のキー3 の「グループ」を権限区分と読むことと steering/security.md の矛盾（verify:重複（前回 2-13 で人が対応せず進めると判断済み））\n  - 処理状況（/wtg070/taskList・/wtg070/return）に受け入れ基準が無い（verify:重複（前回 3-4 で人が対応せず進めると判断済み。canOperate の根拠は指示どおり書き直されている））\n  - 起案済・回覧中の申請者の番で更新などを受け付けないことと requirements 1.3・6.7・14.5 の不整合（verify:重複（前回 5-1 で人が対応せず進めると判断済み））\n  - 契約局情報追加を複数局に限ることと requirements 14.5 の不整合（verify:重複（前回 5-2 で人が対応せず進めると判断済み））\n  - TWTGM170 の権限ID を P82 と別体系にすること（行173 の「TWTGM170・P82 だけで判定」の文を含む）と steering/security.md・requirements の前提の矛盾（verify:重複（前回 5-3 で人が対応せず進めると判断済み。同じ原因））\n  - CSRF の照合を servlet-context.xml の末尾一致の URL だけにすることと steering/security.md の食い違い（verify:重複（前回 3-3 の判断で design に意図した外れとして明記済み。upstream-carryover の steering security.md の項目））\n  - 業務エラー・排他を BindingResult で返すことと steering/tech.md の食い違い（verify:重複（前回 3-2 の判断で design に意図した外れとして明記済み。upstream-carryover の steering tech.md の項目））\n\n### 判断が必要な指摘\n\n**対象**: `specs/property-basic-info/design.md`（スコープ: 成果物単位（property-basic-info） / 6 回目）\n**実行した層**: ① / ②\n\n**AI が修正案で直す軽微**（2 件。判断は不要。修正の回で直し、再検査で確かめます）\n- #1 取込画面からの戻りの受け口 pushApplicationNo の Request と開く経路に、取込画面が無い\n- #2 境界図が取込バッチの TWTGM080 の書込みを「状態を直接更新」だけとし、持たない責務の記述と合わない\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n修正（A）と AI が直す軽微は、修正の指示を書かずに修正の回へ回せます（repair の findings に \"all-fixes\"）。AI の推奨を採用していない修正には、修正の指示を書いてください。\n承認を問う前に必要なこと: 未解消: feature:property-basic-info / run 6 / #1 / 未解消: feature:property-basic-info / run 6 / #2",
+    "allowed_actions": [
+      "decision",
+      "decisions",
+      "resolve",
+      "repair"
+    ],
+    "review_context": {
+      "root": "C:\\project\\Wing",
+      "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+      "call": "design-authoring-revise",
+      "event": "design-authoring-revise",
+      "item": "property-basic-info",
+      "dispatch_id": "f79646f629504b9a81538ffee2185580",
+      "unit": "design-authoring-revise/design-authoring-revise[property-basic-info]::end.review",
+      "scope": "feature:property-basic-info",
+      "run": 6,
+      "snapshot": "2f38edff48a6feb1459afd98d8af1cf04a93d765bf065cf6dd8d8ae56eb8db9a",
+      "record_hash": "b7a5e1f049aa9b08a284c7a8b6bcd2ed08bb081e560f9285656d3e3635e152f6"
+    },
+    "review": [
+      {
+        "scope": "feature:property-basic-info",
+        "run": 6,
+        "number": 1,
+        "current": true,
+        "decision": "修正",
+        "reason": "軽微（AIDD 内部の決まりごと）のため、AI が修正案で直す",
+        "open": true,
+        "resolved": false,
+        "description": "横断確認 1 回目 #8 の修正で、物件基本情報登録変更 Controller の呼び出し元（Inbound）に「契約情報取込画面（`/wtg090/back`）— 戻り。セッションの申請No を付けて `forward:/wtg070/pushApplicationNo` で受ける（重要度: 中。横断確認 1 回目 #8）」（行524）が足された。一方、契約情報取込が依存する公開の口である API 契約の表の `/wtg070/pushApplicationNo` の行（行544）は Request を「申請No（申請状況一覧から）」のままとしている。`- **この画面を開く経路**`（行579）も「新規登録はメニュー…、既存の申請は、申請状況一覧（GWTG060）の申請No のリンクから…（`/wtg070/pushApplicationNo`）」だけを挙げ、契約情報取込画面からの戻りが無い。同じ design の中で、呼び出し元の記述と口の契約の記述がそろっていない（ci design §API 契約 `/wtg090/back` の「物件基本情報登録変更画面を申請No で出し直す」が使う口）",
+        "location": "specs/property-basic-info/design.md § API 契約（API Contract） / `/wtg070/pushApplicationNo` ほか 1 か所",
+        "kind": "文書間の参照",
+        "severity": "軽微",
+        "summary": "取込画面からの戻りの受け口 pushApplicationNo の Request と開く経路に、取込画面が無い",
+        "suggestion": "行544 の Request を「申請No（申請状況一覧から。契約情報取込画面の戻る `/wtg090/back` からは、セッションの申請No を付けた forward で受ける）」に直す。行579 の「この画面を開く経路」に「契約情報取込画面の戻る（`/wtg090/back`）からは `forward:/wtg070/pushApplicationNo` で申請No を受けて開き直す（横断確認 1 回目 #8）」を足す",
+        "recommendation": "修正：人の判断で決まった #8 の口を、同じ design の口の表と開く経路にそろえるだけで、業務の新しい事実は要らないため",
+        "decided_by": "system（自動）"
+      },
+      {
+        "scope": "feature:property-basic-info",
+        "run": 6,
+        "number": 2,
+        "current": true,
+        "decision": "修正",
+        "reason": "軽微（AIDD 内部の決まりごと）のため、AI が修正案で直す",
+        "open": true,
+        "resolved": false,
+        "description": "横断確認 1 回目 #3 の修正で、§このスペックが持たない責務の契約情報取込の行（行84）は「取込バッチ（取込中への状態の変更と戻し、契約局情報・発行依頼書の洗替、取込の終わりの TWTGM080 の計画基地局番号・計画基地局名・基地局番号・基地局名・基地局名(ｶﾅ)・エリアコード・単独複数局フラグ・排他用の値の更新を含む）」に直り、§画面の項目の単独局か複数局か（行599）にも取込の後の表示が足された。一方、境界図（行163）は `BATCH[契約情報取込バッチ contract-info-import] -.物件申請情報の状態を直接更新.-> DB` のままで、取込が TWTGM080 の基地局番号ほか・単独複数局フラグ・排他用の値を書き換えることが図から読めない。あわせて §画面に出さない列（行597）は計画基地局番号・計画基地局名・基地局名・基地局名(ｶﾅ)・エリアｺｰﾄﾞを設定する経路を「更新」と修正稟議・再製本の複製だけとし、取込による入れ直しに触れていない（ci design §洗替と変更履歴の順 6.）。横断確認 1 回目 #3 の指摘内容は境界図も挙げていたが、人が採用した修正案には含まれていなかった",
+        "location": "specs/property-basic-info/design.md § アーキテクチャ方式と境界図（Architecture Pattern & Boundary Map） / 契約情報取込バッチ ほか 1 か所",
+        "kind": "文書間の参照",
+        "severity": "軽微",
+        "summary": "境界図が取込バッチの TWTGM080 の書込みを「状態を直接更新」だけとし、持たない責務の記述と合わない",
+        "suggestion": "行163 のラベルを「物件申請情報の状態・基地局番号ほか・単独複数局フラグを直接更新」に直す。行597 の末尾に「契約情報取込の後は、取込が最初のデータ行の基地局番号で計画マスタを引いて入れ直した値になる（`### このスペックが持たない責務（Out of Boundary）`、ci design）」を足す",
+        "recommendation": "修正：#3 で決まった取込の書込みの範囲を、同じ design の境界図と画面に出さない列にそろえるだけで、業務の新しい事実は要らないため",
+        "decided_by": "system（自動）"
+      }
+    ],
+    "choices": {
+      "kind": "repair",
+      "questions": [
+        {
+          "id": "repair",
+          "header": "修正に回す",
+          "question": "修正（A）の指摘と AI が直す軽微（2 件）を修正の回へ回しますか？",
+          "options": [
+            {
+              "label": "修正案のとおり修正に回す",
+              "description": "推奨を採用した修正と軽微は、修正案がそのまま指示になる",
+              "answer": "repair:all-fixes"
+            },
+            {
+              "label": "修正の指示を自分で書く",
+              "description": "指示を書きたい指摘がある",
+              "answer": "repair:manual"
+            }
+          ],
+          "multiSelect": false
+        }
+      ]
+    },
+    "next_action": "提示文をそのまま示し、choices の選択肢を選択式の質問で出して、人に選んでもらってください。検査結果を確認し、重大と要判断の指摘に A〜D か「推奨」で答えてください（束・範囲でまとめて答えられます）。修正（A）と AI が直す軽微があれば repair（findings: \"all-fixes\"）で修正に回し、判断が揃い修正が無ければ承認者名を回答してください。",
+    "operation_id": "49b7bc99fb704de48b69bc3c67668a05",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

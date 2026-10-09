@@ -1,0 +1,30 @@
+{
+ "operation_id": "8c51f81e256f41998b5c10e2695a2066",
+ "action": "decisions",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[contract-info-download]::end.review",
+  "event": "design-authoring-revise",
+  "item": "contract-info-download",
+  "status": "wait",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[contract-info-download]::end.review\", \"snapshot\": \"06f917a71e648f66a14376158684604f83f6caef63167e611d66b63e6388e668\", \"run\": 4, \"inspection_hash\": \"f3a15482d2dc6ab16de957197dd0a9c7575031d9c441a76dc6ea421f69a526e0\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 6 件\n  - 「ci design は直さない」と書くが、ci design は横断確認の修正で値の形の記述が変わった。381 列の定義の持ち主と取込の design を直さない扱いは Q-DS-CD-001 の 6 の回答のとおり（answer:design-authoring-generate[contract-info-download]）\n  - 一覧の受電方法は「2:ﾃﾅﾝﾄ受電」（半角）、CSV は「2:テナント受電」で表記が違う。一覧の表記は Q-DS-CD-003 の回答のとおり（answer:design-authoring-generate[contract-info-download]）\n  - サーバーで検索条件の桁・形式を確かめない（security.md の入力検証から外れる）。Q-DS-CD-005 の回答で決まり、意図した逸脱として記録済み（answer:design-authoring-generate[contract-info-download]）\n  - 工事案件マスタに行が無い契約情報を出す（security.md 285 行目の既存の WTB と同じ方式から外れる）。回答冒頭の「意図して外れる点」で決まり、記録済み（answer:design-authoring-generate[contract-info-download]）\n  - 開発端末の JDK 1.8（tech.md の JDK 1.7 から外れる）。Q-DS-PBI-014 の回答で決まり、記録済み（answer:design-authoring-generate[property-basic-info]）\n  - pbi design の契約局DL の口は「申請No だけを渡す」で、本書は FunctionID と applicationNo を足す。開き方は Q-DS-CD-008 の 1 の回答のとおりで、pbi design は upstream-carryover で直す（answer:design-authoring-generate[contract-info-download]）\n\n### 前回の検査（3 回目）からの変更\n\n- 上流の入力が前回の検査から変わった（または比べられない）ため、全体を検査する。対象の全体を見てください。\n\n### 判断が必要な指摘\n\n**対象**: `specs/contract-info-download/design.md`（スコープ: 成果物単位（contract-info-download） / 4 回目）\n**実行した層**: ① / ②\n\n**要判断**（2 件）\n\n| 束 | 観点 | 種類 | 件数 | 番号 | AI の推奨（先頭の指摘） |\n|---|---|---|---|---|---|\n| 束1 | traceability | 業務のあいまい・不足 | 2 | #1 #2 | 修正（業務の新しい事実は要らず、本書の正である出力の定義が CONSTRACT_KBN で並べると書いているので、本文をそれに合わせれば足りるため） |\n\n束の内訳（束でまとめて答えるか、番号で 1 件ずつ答えてください）\n\n- [束1] #1 契約者①〜⑤の並びの「契約者区分」が、名称にした列かコードか本文で読めない\n- [束1] #2 CSV の値の形で名称にする列を 3 つだけ挙げ、登録状態の「コード:名称」が抜けている\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n**答え方**（後に書いたものが優先。束・範囲でまとめて答えられます）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）。区分を `C[指摘の誤り]` `C[対象外]` `C[後で決める]` `C[解釈で対応]` で付ける。対象外・後で決めるに `+` を付けると（例 `C[後で決める+]`）、次の検査から同じ扱いにします\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n- **推奨** — AI の推奨を採用する（修正なら修正案がそのまま修正の指示になります）\n\n回答例: `1:推奨 / 束1:C[後で決める+] 桁数は design で決める / 3〜5:A / 7:D 次回まで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。根拠と修正案は `詳細 <番号>` で表示します。",
+  "id": "f6aa59d4fc4d45d2bfe9973e70934b09"
+ },
+ "expected": {
+  "root": "C:\\project\\Wing",
+  "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+  "call": "design-authoring-revise",
+  "event": "design-authoring-revise",
+  "item": "contract-info-download",
+  "dispatch_id": "f6aa59d4fc4d45d2bfe9973e70934b09",
+  "unit": "design-authoring-revise/design-authoring-revise[contract-info-download]::end.review",
+  "scope": "feature:contract-info-download",
+  "run": 4,
+  "snapshot": "06f917a71e648f66a14376158684604f83f6caef63167e611d66b63e6388e668",
+  "record_hash": "f3a15482d2dc6ab16de957197dd0a9c7575031d9c441a76dc6ea421f69a526e0"
+ },
+ "data": {
+  "answer": "束1:C[対象外+] Phase 5 の最後の上流まとめ直しと横断確認で扱う"
+ }
+}

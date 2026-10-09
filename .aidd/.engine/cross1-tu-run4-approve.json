@@ -1,0 +1,28 @@
+{
+ "operation_id": "8a8bdfaa9e984e7a8e226b36a70e9c5f",
+ "action": "approve",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[issue-request-tutorial]::end.review",
+  "event": "design-authoring-revise",
+  "item": "issue-request-tutorial",
+  "status": "wait",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[issue-request-tutorial]::end.review\", \"snapshot\": \"5136b2479044e161daeba25e6fd744e1dac2272bb0d7152c35f7be4b28f7d9d6\", \"run\": 4, \"inspection_hash\": \"3d116551a4b21ce3e5050224ce8187566be4459553df38328a9b485ffe93fa16\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 再検査で出なくなり、解消を記録した指摘 1 件\n  - #3-2 /wtg081/nextが予期しない例外で失敗したときの別ウインドウのスクリプトの扱いが無い\n\n### 前回の検査（3 回目）からの変更\n\n- `specs/issue-request-tutorial/design.md`：API 契約（API Contract）、機能固有のエラー処理（Error Handling）\n  - 修正の指示に無い節の変更：機能固有のエラー処理（Error Handling）（意図した変更か確かめてください）\n\n### 判断が必要な指摘\n\n**対象**: `specs/issue-request-tutorial/design.md`（スコープ: 成果物単位（issue-request-tutorial） / 4 回目）\n**実行した層**: ① / ②\n\n**指摘**: なし（0 件。検査は実行済み）\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n判断が揃いました。承認の可否を回答してください（承認する場合は承認者名）。",
+  "id": "156e12de19d94cc99753600685de10b9"
+ },
+ "expected": {
+  "root": "C:\\project\\Wing",
+  "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+  "call": "design-authoring-revise",
+  "event": "design-authoring-revise",
+  "item": "issue-request-tutorial",
+  "dispatch_id": "156e12de19d94cc99753600685de10b9",
+  "unit": "design-authoring-revise/design-authoring-revise[issue-request-tutorial]::end.review",
+  "scope": "feature:issue-request-tutorial",
+  "run": 4,
+  "snapshot": "5136b2479044e161daeba25e6fd744e1dac2272bb0d7152c35f7be4b28f7d9d6",
+  "record_hash": "c3f9813fe9c020393a2a3c2dff7ecaf4c905c1dddb09ce11d7cbfde2103ddc67"
+ },
+ "data": {}
+}

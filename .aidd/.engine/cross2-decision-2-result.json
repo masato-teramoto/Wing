@@ -1,0 +1,132 @@
+{
+  "status": "ok",
+  "action": "respond",
+  "result": {
+    "status": "wait",
+    "allowed_actions": [
+      "decision",
+      "decisions",
+      "resolve",
+      "repair"
+    ],
+    "review_context": {
+      "root": "C:\\project\\Wing",
+      "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+      "call": "design-cross-gate",
+      "event": "design-cross-gate",
+      "item": "",
+      "dispatch_id": "386418eadcc54a0d9596c4ca630da55a",
+      "unit": "design-cross-gate/design-cross-gate[-]::end.review",
+      "scope": "cross",
+      "run": 2,
+      "snapshot": "ae606b5eac81b67e7eeb09cdede2553064aac3067bac791eff7875e2e7943e38",
+      "record_hash": "fd2852f5456425fec9f8500b9ed30503b648d63742abff898e477a0affbd604e"
+    },
+    "review": [
+      {
+        "scope": "cross",
+        "run": 1,
+        "number": 5,
+        "current": false,
+        "decision": "修正",
+        "reason": "修正案の B",
+        "open": true,
+        "resolved": false,
+        "description": "api-standards.md は「画面以外から呼ばれる API を設けない（回答 7）」として全節を不要とし、§共通エラー形式・§分類も不要。各 design の画面内の非同期の口：pbi /wtg070/inputHassoKiboDate（Errors なし。日付だけを返す）、ir /wtg080/calcTaxAdjustment・/wtg080/changeKeiyakuSyubetsuTutorial（Errors なし。計算できないときは税額そのまま・調整額空）、tutorial /wtg081/next（HTTP 200 で result（ok／error）と messages の配列。error のとき values・clear・next を返さない）。エラーを返す形を定めたのは tutorial だけで、ほかの口でサーバー側が失敗したとき（予期しない例外で ExceptionResolver がエラー画面を返すとき）に画面のスクリプトがどう扱うかは、どの design にも無い。upstream-carryover は api-standards.md について「画面内で JSON を返す口が増える（/wtg081/next、/wtg080/calcTaxAdjustment・/wtg080/changeKeiyakuSyubetsuTutorial）」だけを挙げ、エラーの形と pbi の /wtg070/inputHassoKiboDate は挙げていない。pbi design §データ契約と外部連携は「画面の要求は API 契約のフォーム送信だけ」としており、自身の非同期の口と合わない。",
+        "location": "steering/api-standards.md § エラーハンドリング（API 契約） / 共通エラー形式 ほか 4 か所",
+        "kind": "業務のあいまい・不足",
+        "severity": "要判断",
+        "summary": "画面内でJSONを返す口が3 featureに増えたが、エラーの返し方の規約が無く形がそろわない",
+        "suggestion": "何を決めればよいか：画面内の JSON の口のエラーの返し方を steering に置くか。案A：api-standards.md を開き直すときに §共通エラー形式へ「画面内の JSON の口は HTTP 200 で result（ok／error）と messages（messages.properties の文言の配列）を返す。予期しない例外は既存の ExceptionResolver に任せ、スクリプトは失敗時に値を入れない」を置き、ir・pbi の口もこれに合わせる。案B：規約は置かず不要のままとし、各 design に口ごとの失敗時の扱いを書く。どちらでも upstream-carryover の api-standards.md の項目に /wtg070/inputHassoKiboDate を加え、pbi design §データ契約の「フォーム送信だけ」を直す。",
+        "recommendation": "質問：steering に規約を足すか（Phase 2 の開き直し）は回答者の判断が要るため",
+        "decided_by": "Junichi Noumi"
+      },
+      {
+        "scope": "cross",
+        "run": 2,
+        "number": 1,
+        "current": true,
+        "decision": "対応せず進める",
+        "reason": "案 A の扱い（発行依頼書登録変更の更新・一時保存は TWTGM080 を更新せず、排他用の値が変わるのは発番のときだけ）。pbi design の文言は upstream-carryover に足し、Phase 5 の最後にまとめて直す",
+        "open": false,
+        "resolved": false,
+        "description": "【pbi design の取り決め】§判断 2「どの操作でも TWTGM080 の行を SELECT … FOR UPDATE でロックして ExclusiveFG を照合し、更新のたびに ExclusiveFG を変える」、採用理由「子のテーブルごとに排他を持つと、承認フローの操作と項目の更新が同時に通り、確認していない内容で回覧が進むおそれがある。申請単位で 1 つにすれば、画面を開いた後の変更はすべて検出できる」。§ドメインモデル 集約とトランザクション境界「根は物件申請情報（申請No）で、契約局情報・…・発行依頼書（読取りと削除・複製だけ）がぶら下がる。…申請の排他用の値（ExclusiveFG）を照合してから更新する」。§状態管理 並行制御「契約局情報・契約稟議ファイル・文書バーコードの更新も申請の ExclusiveFG で照合し、申請単位で直列にする」。§データ契約と外部連携（Data Contracts & Integration） サービス間は取込（TWTGM080 の排他用の値を変える）だけを挙げ、発行依頼書登録変更に触れていない。\n【ir design の取り決め】§依存してよい対象 依存の制約・§ドメインモデル 集約とトランザクション境界・§状態管理 並行制御「更新・一時保存の排他は TWTGM100・TWTGM140 の ExclusiveFG だけで行う。TWTGM080 はロックも照合もしない」（design-check 1 回目 #9 の判断）。書いた TWTGM100・TWTGM140 の行の ExclusiveFG だけを新しい値にする。\n【食い違い】同じ「申請」の集約（ir design も「pbi design と同じ」とする）の排他の取り決めが 2 つの design で別の形になっている。ir の更新・一時保存は TWTGM080 の ExclusiveFG を変えないので、物件基本情報登録変更の画面を開いた後に発行依頼書・契約局情報が発行依頼書登録変更で更新されても、物件基本情報登録変更の承認フローの操作（確認・申請・承認など）と契約局情報の並替え・削除は排他エラーにならない。pbi design の判断 2 が避けるとした「確認していない内容で回覧が進む」状態が、同じ番の権限を持つ別の利用者どうしの間で起きうるが、pbi design の判断 2 の採用理由は「すべて検出できる」としたまま。逆向きでは、ir は物件基本情報登録変更の並替え・削除による行の変化を開いていた行の ExclusiveFG の照合（行が無ければ GEF-000027。ir §照合する行が無いときの扱い）で拾う前提だが、pbi design は並替え・削除で TWTGM140 の行の ExclusiveFG をどうするかを書いていない。取込（ci design）については横断確認 1 回目 #2 で両方の排他用の値を変えると決めたが、発行依頼書登録変更と物件基本情報登録変更の間の取り決めはどの design にも無い。",
+        "location": "specs/property-basic-info/design.md § 判断 2: 申請単位の排他を物件申請情報の排他用の値 1 つで行う ほか 4 か所",
+        "kind": "業務の欠落・矛盾",
+        "severity": "重大",
+        "summary": "発行依頼書登録変更の更新は申請の排他用の値を変えず、物件基本情報の排他の前提と食い違う",
+        "suggestion": "何を決めればよいか：物件基本情報登録変更の画面が、開いた後の発行依頼書登録変更による発行依頼書・契約局情報の変更を排他エラーにするか。\n案A：しない（ir design-check 1 回目 #9 の判断のまま）。pbi design の判断 2 の採用による影響と §データ契約と外部連携 サービス間に「発行依頼書登録変更の更新・一時保存は TWTGM080 の排他用の値を変えないので、物件基本情報登録変更の画面を開いた後の発行依頼書・契約局情報の変更は、物件基本情報登録変更の操作では排他エラーにならない（ir design）」を足し、判断 2 の採用理由の「画面を開いた後の変更はすべて検出できる」を「物件基本情報登録変更と取込による変更は検出できる」に直す。§状態管理 並行制御に「契約局情報の並替え・削除では、書き換えた TWTGM140 の行の ExclusiveFG を新しい値にする（発行依頼書登録変更の排他の前提。ir design）」を足す。\n案B：する。WTG 申請状態サービスに申請の排他用の値を新しい値にする口を足し、ir の更新・一時保存の最後に呼ぶ（ir design-check 1 回目 #9 の判断を見直し、pbi の公開契約に口を足す。どちらの design も直す）。",
+        "recommendation": "質問：同時に操作されたときに回覧を止めるかは業務の判断で、ir design-check 1 回目 #9 の判断を見直すかどうかを含むため",
+        "decided_by": "Junichi Noumi"
+      },
+      {
+        "scope": "cross",
+        "run": 2,
+        "number": 2,
+        "current": true,
+        "decision": "対応せず進める",
+        "reason": "pbi design から specs/issue-request/db-TWTGM140.md を指す修正を upstream-carryover に足し、Phase 5 の最後にまとめて直す",
+        "open": false,
+        "resolved": false,
+        "description": "pbi design §このスペックが持つ責務 所有するデータ「契約局情報（TWTGM140）のテーブル定義」、§物理データモデル「全 345 列で、主な列は下の表。残りは発行依頼書の契約局ごとの項目で、契約局取込の形式と同じ並び（Q-DS-PBI-003）」と、主な列の表（13 行と「（残りの列）」の行）。全 345 列の表（列番号・項目名・型・桁）は specs/issue-request/db-TWTGM140.md にあり、ir design §物理データモデルは「定義は物件基本情報登録変更が持つ（pbi design）。…全 345 列は specs/issue-request/db-TWTGM140.md（回答者が渡した DB レイアウト。Q-DS-IR-004）」とする。print-report（§論理データモデル）と ci（§論理データモデル）も TWTGM140 の列を db-TWTGM140.md で引く。持ち主の pbi design はこの資料を参照しておらず、「契約局取込の形式と同じ並び」は db-TWTGM140.md の並び（No.1〜6 の共通列、No.7 申請No、No.8 稟議ﾊﾞｰｺｰﾄﾞNo、No.9 連番、…コードと名称・(ﾌﾘｰﾌｫｰﾑ) の組を含む 345 列）と同じ意味にならない（取込の 228 列とは列の数も違う）。主な列の項目名・型・桁は db-TWTGM140.md と一致しており（Ringi_Barcode_No 25、Renban Int 4、Keikaku_Kichikyoku_No 9 必須、Bukken_Name 100、Draft_Flg 1 など）、内容の食い違いではなく定義の置き場所の問題。表示名だけ、pbi が「代表局番号_枝番」、db-TWTGM140.md が「枝番」（Represent_SiteID_Branch）で違う。",
+        "location": "specs/property-basic-info/design.md § 物理データモデル（Physical Data Model） / TWTGM140 ほか 1 か所",
+        "kind": "工程・文書の分担",
+        "severity": "軽微",
+        "summary": "TWTGM140の全345列の定義がir側の資料にだけあり、持ち主のpbi designは別の言い方で参照しない",
+        "suggestion": "pbi design §物理データモデルの TWTGM140 の行を「…列は下の表。全 345 列の定義（列番号・項目名・型・桁）は specs/issue-request/db-TWTGM140.md（回答者が渡した DB レイアウト。Q-DS-IR-004）を正とする」に、主な列の表の「（残りの列）」の行の許可値を「specs/issue-request/db-TWTGM140.md のとおり」に直す。§補足資料（Supporting References）に同じ資料の行を足す。",
+        "recommendation": "修正：持ち主の design から既にある全列の資料を指すだけで、業務の新しい事実は要らないため",
+        "decided_by": "Junichi Noumi"
+      },
+      {
+        "scope": "cross",
+        "run": 2,
+        "number": 3,
+        "current": true,
+        "decision": "",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "pbi design §API 契約（物件基本情報登録変更 Controller）の「契約局情報欄に出す列」：「発行依頼書（TWTGM100）の関係者1〜5 のうち契約者区分が \"01\"（契約者）で関係(地位) に「旧」を含まない人を…」（Q-DS-PBI-003。.aidd/.engine/answer-ds-pbi-20261007-1300-Q003-2-Q002-10.txt:8）。TWTGM100 の持ち主の ir design は §ドメインモデル 名称の列で「契約者区分名は固定（1→\"契約者\"、2→\"関係者\"）」、§バリデーション設計で「契約者区分は 1・2 だけ」（WTG-100020）とし、specs/issue-request/item-rules.md:57 も「固定の選択肢 1:契約者／2:関係者」。関係者の契約者区分の列（Kankeisha1〜5_Contract_Kbn。db-TWTGM100.md No.51 ほか）には 1 か 2 が入る。pbi 自身の出力 CSV の項目定義（specs/property-basic-info/csv-layout-wtg070.md:20 ほか）も「関係者1_契約区分=\"1\"の場合\"契約者\"」で、同じ feature の中でも値が合わない。このままでは契約局情報欄の契約者が誰も出ない。ci・cd は名称「契約者」「関係者」で受け渡し、print-report は名称「契約者」で選んでおり、\"01\" を使うのは pbi のこの箇所だけ。",
+        "location": "specs/property-basic-info/design.md § API 契約（API Contract） / 契約局情報欄に出す列",
+        "kind": "業務の欠落・矛盾",
+        "severity": "重大",
+        "summary": "契約局情報欄の契約者の条件が契約者区分 \"01\" で、発行依頼書の値（1:契約者）と合わない",
+        "suggestion": "何を決めればよいか：契約局情報欄の契約者の条件の値。\n案A：pbi design を「契約者区分が \"1\"（契約者）」に直す（ir design・item-rules.md・pbi の csv-layout-wtg070.md と同じ値）。\n案B：契約者区分を \"01\"・\"02\" の 2 桁にそろえる（ir design・item-rules.md の選択肢と名称の入れ方、pbi の出力 CSV の項目定義、ci の取込の値の入れ方を直す）。",
+        "recommendation": "質問：pbi の値は回答（Q-DS-PBI-003 の補足）によるため取り違えかを回答者に確かめる必要がある。持ち主の ir design とほかの feature はどれも 1・2 なので、案 A のほうが直す箇所が少ない",
+        "decided_by": ""
+      }
+    ],
+    "choices": {
+      "kind": "decisions",
+      "questions": [
+        {
+          "id": "3",
+          "header": "#3 重大",
+          "question": "契約局情報欄の契約者の条件が契約者区分 \"01\" で、発行依頼書の値（1:契約者）と合わない（業務の欠落・矛盾・重大）にどう対応しますか？ AI からの質問：pbi の値は回答（Q-DS-PBI-003 の補足）によるため取り違えかを回答者に確かめる必要がある。持ち主の ir design とほかの feature はどれも 1・2 なので、案 A のほうが直す箇所が少ない　答えて直す場合は「その他」に `3:A <回答>` と入力（回答が修正の指示になる）。差戻し（B）・未対応（D）・別の理由は「その他」で入力",
+          "options": [
+            {
+              "label": "A 修正",
+              "description": "この工程で直す（修正案：何を決めればよいか：契約局情報欄の契約者の条件の値。\n案A：pbi design を「契約者区分が \"1\"（契約者）」に）",
+              "answer": "3:A"
+            },
+            {
+              "label": "C 後で決める",
+              "description": "後の工程で決める事項なので、今は直さずに進める",
+              "answer": "3:C[後で決める] 後の工程で決める"
+            },
+            {
+              "label": "C 対象外",
+              "description": "この工程の対象外なので、直さずに進める",
+              "answer": "3:C[対象外] この工程の対象外"
+            }
+          ],
+          "multiSelect": false
+        }
+      ]
+    },
+    "next_action": "提示文をそのまま示し、choices の選択肢を選択式の質問で出して、人に選んでもらってください。検査結果を確認し、重大と要判断の指摘に A〜D か「推奨」で答えてください（束・範囲でまとめて答えられます）。修正（A）と AI が直す軽微があれば repair（findings: \"all-fixes\"）で修正に回し、判断が揃い修正が無ければ承認者名を回答してください。",
+    "operation_id": "224bcc7c929d4829960c6229cb504ec1",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

@@ -1,15 +1,15 @@
 {
   "event": "design-authoring-revise",
   "scope": "feature:property-basic-info",
-  "run": 5,
-  "snapshot": "3a8e9966cb6da5e8939b7235d89f7f1fb4defd22eade17785cd44eddbf7520d6",
-  "record_bytes": 39818,
-  "record_hash": "1eba44b0aa268896164efd874da484395a3a7db31f636ef9c09a39240391e566",
+  "run": 7,
+  "snapshot": "d0603d9a041b7ea0a0115f44ff7cfda7189e4da8fb68be3410de801b7c69cd51",
+  "record_bytes": 314050,
+  "record_hash": "2943123b9fda7a9fc09832e947c0a3f0264df38bde52afe6f510561a105766d8",
   "targets": [
     "specs/property-basic-info/design.md"
   ],
   "hashes": {
-    "specs/property-basic-info/design.md": "0829e28f5d3a4e0db44e191b174e2518eb0af483f10814026003e86d90d8c7df"
+    "specs/property-basic-info/design.md": "03331555d6ee0825bd90f023f17f4951d532f97b0f4bde7b7f50878d4cc4da03"
   },
   "inputs": {
     ".aidd/feature-list.md": "71a64dc3cbf71bc6ddb02a4dc6f8247344064ca63e8a291e5881763ef59256ae",

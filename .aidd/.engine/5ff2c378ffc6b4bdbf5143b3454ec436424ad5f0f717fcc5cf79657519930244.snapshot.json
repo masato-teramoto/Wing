@@ -3,45 +3,45 @@
   "phase": "design",
   "event": "design-authoring-revise",
   "scope": "feature:issue-request",
-  "at": "2026-10-08T11:25:54+09:00",
+  "at": "2026-10-09T12:45:39+09:00",
   "artifacts": {
     "specs/issue-request/design.md": {
       "status": "draft",
-      "sha256": "a543916db8517b94bdbefb90769055130c7b2e00eeb99f9027bf9f66402a5d63"
+      "sha256": "7bedc0d4618ebcb9a1667ce749bf24513272ac9c19fbdebdfe1ac2954ab67fbb"
     }
   },
   "record": {
-    "bytes": 119319,
-    "sha256": "17404c421052b5a49df84507c2ca02c7f24ab77666e40ff2e807d1a7a4743485",
-    "blocks": 100
+    "bytes": 323889,
+    "sha256": "78ec7c40fd487293aeae4e6ecbd672f192a5e16a04f9413548ba31058041ffc5",
+    "blocks": 230
   },
-  "run": 6,
+  "run": 8,
   "sections": {
     "specs/issue-request/design.md": {
       "": "e3b0c44298fc1c14",
-      "技術設計書": "350f08c301ef4e9d",
+      "技術設計書": "e1c266d92330c370",
       "概要（Overview）": "ee4cc216aa12c646",
       "達成目標（Goals）": "1b19c2fb3a30eb5e",
       "やらないこと（Non-Goals）": "d09643906a1d274e",
-      "責務境界（Boundary Commitments）": "2620e56cef3cfc31",
+      "責務境界（Boundary Commitments）": "b9e6c275a44312f4",
       "このスペックが持つ責務（This Spec Owns）": "b05f42a14e1d13c2",
-      "このスペックが持たない責務（Out of Boundary）": "a01466b7c950ca84",
+      "このスペックが持たない責務（Out of Boundary）": "a9f36e99527a43b5",
       "依存してよい対象（Allowed Dependencies）": "67fc3ea45df9da24",
       "再確認が必要になる変更（Revalidation Triggers）": "0309f2c45422843d",
-      "アーキテクチャ（Architecture）": "7604282c636bdeb3",
+      "アーキテクチャ（Architecture）": "f1e37ca6f23ead50",
       "既存アーキテクチャの分析（Existing Architecture Analysis）": "f0ece32808cb700d",
-      "アーキテクチャ方式と境界図（Architecture Pattern & Boundary Map）": "9f4d1747c39f7f26",
+      "アーキテクチャ方式と境界図（Architecture Pattern & Boundary Map）": "308be747867de5fb",
       "技術スタック（Technology Stack）": "8386e642b72fcab9",
-      "データモデル（Data Models）": "2be0ea3c55433405",
+      "データモデル（Data Models）": "044cb5e63bdc79ab",
       "ドメインモデル（Domain Model）": "0d52f5e247454fcc",
       "論理データモデル（Logical Data Model）": "e77a88f1bc9037ff",
       "物理データモデル（Physical Data Model）": "51eb0ad82e3d6da1",
-      "データ契約と外部連携（Data Contracts & Integration）": "327b095a744627d8",
-      "コンポーネントとインターフェース（Components and Interfaces）": "0f5c30f4a26f4e95",
+      "データ契約と外部連携（Data Contracts & Integration）": "afdcde727ed7cba3",
+      "コンポーネントとインターフェース（Components and Interfaces）": "f2f51758b15510f2",
       "コンポーネント一覧（Summary）": "0d0c5c4a8c41e319",
-      "発行依頼書登録変更": "a0037642d292a0f5",
-      "発行依頼書登録変更 Controller": "5494f865345fffae",
-      "API 契約（API Contract）": "72b785e60330cfab",
+      "発行依頼書登録変更": "b15424663d622026",
+      "発行依頼書登録変更 Controller": "eaa789820b073e8e",
+      "API 契約（API Contract）": "0748f0010460a084",
       "発行依頼書登録変更 Service": "e41ebb9c8c176c68",
       "サービスインターフェース（Service Interface）": "3aa69ba8840c60f1",
       "状態管理（State Management）": "c9b74d7d072004d9",
@@ -52,11 +52,11 @@
       "エラー時の分岐フロー": "75c261559bb0370c",
       "ファイル配置計画（File Structure Plan）": "00a0410cb55477a2",
       "変更する既存ファイル（Modified Files）": "7d878dd796b507e8",
-      "追加検討事項（Additional Considerations）": "560ea761e93d4b8b",
+      "追加検討事項（Additional Considerations）": "492350a90aee37af",
       "セキュリティ上の考慮（Security Considerations）": "bde9fd56df38ec37",
       "性能とスケーラビリティ（Performance & Scalability）": "10670b95b9f226b6",
-      "移行方針（Migration Strategy）": "c6b7ce2152777a0d",
-      "移行対象ファイル一覧": "3c925472da444e50",
+      "移行方針（Migration Strategy）": "bd20ad233f620b6a",
+      "移行対象ファイル一覧": "8504669dceadb715",
       "テスト体制 / テスト仕様": "f53c0fc38f1073f2",
       "テスト戦略（Testing Strategy）": "49ed55a45ff79dd2",
       "設計判断（Design Decisions）": "41849dafb99f39f9",
@@ -66,7 +66,7 @@
       "判断 4: 業務エラーと排他エラーは例外を投げず同じ画面に戻す": "f433145a649bccee",
       "判断 5: URL は既存の規約にそろえ、CSRF の照合の設定は変えない": "66de32a5d090c237",
       "補足資料（Supporting References）": "77b2bf036e78ac85",
-      "*": "350f08c301ef4e9d"
+      "*": "e1c266d92330c370"
     }
   },
   "own_sections": {
@@ -78,23 +78,23 @@
       "やらないこと（Non-Goals）": "d09643906a1d274e",
       "責務境界（Boundary Commitments）": "319ca7723bda7861",
       "このスペックが持つ責務（This Spec Owns）": "b05f42a14e1d13c2",
-      "このスペックが持たない責務（Out of Boundary）": "a01466b7c950ca84",
+      "このスペックが持たない責務（Out of Boundary）": "a9f36e99527a43b5",
       "依存してよい対象（Allowed Dependencies）": "67fc3ea45df9da24",
       "再確認が必要になる変更（Revalidation Triggers）": "0309f2c45422843d",
       "アーキテクチャ（Architecture）": "d884ae957d36c25c",
       "既存アーキテクチャの分析（Existing Architecture Analysis）": "f0ece32808cb700d",
-      "アーキテクチャ方式と境界図（Architecture Pattern & Boundary Map）": "9f4d1747c39f7f26",
+      "アーキテクチャ方式と境界図（Architecture Pattern & Boundary Map）": "308be747867de5fb",
       "技術スタック（Technology Stack）": "8386e642b72fcab9",
       "データモデル（Data Models）": "7f56063d2219091b",
       "ドメインモデル（Domain Model）": "0d52f5e247454fcc",
       "論理データモデル（Logical Data Model）": "e77a88f1bc9037ff",
       "物理データモデル（Physical Data Model）": "51eb0ad82e3d6da1",
-      "データ契約と外部連携（Data Contracts & Integration）": "327b095a744627d8",
+      "データ契約と外部連携（Data Contracts & Integration）": "afdcde727ed7cba3",
       "コンポーネントとインターフェース（Components and Interfaces）": "fa0f1a4d81675bb3",
       "コンポーネント一覧（Summary）": "0d0c5c4a8c41e319",
       "発行依頼書登録変更": "7cf121ba7b9044b8",
-      "発行依頼書登録変更 Controller": "893109754449a10d",
-      "API 契約（API Contract）": "72b785e60330cfab",
+      "発行依頼書登録変更 Controller": "3dc2b17356f1732d",
+      "API 契約（API Contract）": "0748f0010460a084",
       "発行依頼書登録変更 Service": "649e93529cb4482b",
       "サービスインターフェース（Service Interface）": "3aa69ba8840c60f1",
       "状態管理（State Management）": "c9b74d7d072004d9",
@@ -108,8 +108,8 @@
       "追加検討事項（Additional Considerations）": "5935df48a68c4bd5",
       "セキュリティ上の考慮（Security Considerations）": "bde9fd56df38ec37",
       "性能とスケーラビリティ（Performance & Scalability）": "10670b95b9f226b6",
-      "移行方針（Migration Strategy）": "66f52774bbe30e20",
-      "移行対象ファイル一覧": "3c925472da444e50",
+      "移行方針（Migration Strategy）": "f1d738dbb9c5f2c2",
+      "移行対象ファイル一覧": "8504669dceadb715",
       "テスト体制 / テスト仕様": "f53c0fc38f1073f2",
       "テスト戦略（Testing Strategy）": "49ed55a45ff79dd2",
       "設計判断（Design Decisions）": "ffd9306c7a606ca3",
@@ -119,7 +119,7 @@
       "判断 4: 業務エラーと排他エラーは例外を投げず同じ画面に戻す": "f433145a649bccee",
       "判断 5: URL は既存の規約にそろえ、CSRF の照合の設定は変えない": "66de32a5d090c237",
       "補足資料（Supporting References）": "77b2bf036e78ac85",
-      "*": "350f08c301ef4e9d"
+      "*": "e1c266d92330c370"
     }
   },
   "inputs": {
@@ -132,19 +132,22 @@
     "steering/database.md": "832d98b289c53f8c8adc9a7dfb25bf0f8b1f54b9c1cc473c6480fa9927a20e21",
     "steering/api-standards.md": "70eca8d2facbf08bfa22cf1ae1e781219ecab2066bb8129bf4a3414b0fdeddc1",
     "specs/issue-request/requirements.md": "a6bfa87614a5044a2ee05f06eea80f9f9e83e431030c7f9fa6a85e54542d807f",
-    "specs/property-basic-info/design.md": "0829e28f5d3a4e0db44e191b174e2518eb0af483f10814026003e86d90d8c7df"
+    "specs/property-basic-info/design.md": "03331555d6ee0825bd90f023f17f4951d532f97b0f4bde7b7f50878d4cc4da03"
   },
-  "previous_run": 5,
+  "previous_run": 7,
   "changed_sections": {
     "specs/issue-request/design.md": [
       "技術設計書",
-      "機能固有のエラー処理（Error Handling）",
-      "エラー時の分岐フロー"
+      "責務境界（Boundary Commitments）",
+      "このスペックが持たない責務（Out of Boundary）",
+      "アーキテクチャ（Architecture）",
+      "アーキテクチャ方式と境界図（Architecture Pattern & Boundary Map）"
     ]
   },
   "changed_own": {
     "specs/issue-request/design.md": [
-      "エラー時の分岐フロー"
+      "このスペックが持たない責務（Out of Boundary）",
+      "アーキテクチャ方式と境界図（Architecture Pattern & Boundary Map）"
     ]
   }
 }

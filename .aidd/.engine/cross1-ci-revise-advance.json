@@ -1,0 +1,13 @@
+{
+  "status": "fail",
+  "action": "advance",
+  "result": {
+    "status": "fail",
+    "event": "design-authoring-revise",
+    "item": "contract-info-import",
+    "detail": "required upstream artifact is missing or not approved: specs/issue-request/design.md",
+    "allowed_actions": [],
+    "blockers": [],
+    "next_action": "停止しました。理由を確認し、表示された対処（上流の修正・再実行など）を行ってください。"
+  }
+}

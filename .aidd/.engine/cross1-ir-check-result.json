@@ -1,0 +1,119 @@
+{
+  "status": "ok",
+  "action": "submit",
+  "result": {
+    "unit": "design-authoring-revise/design-authoring-revise[issue-request]::end.review",
+    "flow": "design-authoring-revise",
+    "event": "design-authoring-revise",
+    "item": "issue-request",
+    "gate": "review",
+    "hookPoint": "end",
+    "name": "review",
+    "type": "script",
+    "target": "scripts/approval.py",
+    "isAgent": false,
+    "requiresHuman": true,
+    "calls": [],
+    "targetReview": [
+      "specs/issue-request/design.md"
+    ],
+    "status": "wait",
+    "call": "design-authoring-revise",
+    "dispatch": {
+      "call": "design-authoring-revise",
+      "unit": "design-authoring-revise/design-authoring-revise[issue-request]::end.review",
+      "event": "design-authoring-revise",
+      "item": "issue-request",
+      "status": "wait",
+      "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+      "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[issue-request]::end.review\", \"snapshot\": \"c0b0f2f2bf37968ec6788a36f7198ad6de1f6a2bc33d7cfbf942af0425110a1b\", \"run\": 7, \"inspection_hash\": \"8568ddbb9fc07625df39d1ce3d920c4356672246a5a9e3fac95cc854b73ac4eb\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 11 件\n  - 発番で担当エリア等を保存する扱いが要件1.3・1.5・9.3と食い違う（verify:既決（design-check 1 回目 #1・2 回目 #1 で「対応せず進める」と判断済み。upstream-carryover））\n  - 2.1の本人が登録した発行依頼書を申請の登録者で比べており要件と食い違う（verify:既決（design-check 1 回目 #2 で「対応せず進める」と判断済み。upstream-carryover））\n  - 8.1のログインユーザーのグループを権限区分と読み替えている（verify:既決（design-check 1 回目 #3・2 回目 #2 で「対応せず進める」と判断済み。upstream-carryover））\n  - 9.6の所属必須に「選んだ会社が社内」の条件を足している（verify:既決（design-check 1 回目 #4 で「対応せず進める」と判断済み。upstream-carryover））\n  - 契約局情報追加を発行依頼書が登録済みの申請だけにしており1.9から外れる（verify:既決（design-check 4 回目 #1 の判断で決めた逸脱。upstream-carryover））\n  - 業務・排他エラーを例外にせずBindingResultに積む方式がtech.mdと食い違う（verify:既決（design-check 1 回目 #6・2 回目 #3 で「対応せず進める」と判断済み。upstream-carryover））\n  - 開発端末のJDK 1.8がtech.mdの必須ツールJDK 1.7と食い違う（verify:既決（design-check 1 回目 #7 で「対応せず進める」と判断済み。upstream-carryover））\n  - 一時保存・発番がCSRFの照合に乗らずsecurity.mdの攻撃対策と食い違う（answer:design-authoring-generate[issue-request]）\n  - 金額・調整額を文字で持つ型と、トランの種別Vがdatabase.mdと食い違う（answer:design-authoring-generate[issue-request]）\n  - pbi designの公開契約に無い前提（戻りの入口・発番日時・getApplicantName・複製の申請者・基地局番号の初期表示）に依存。今回の pbi design の変更でもこれらは追加されていない（verify:既決（design-check 1 回目 #8・2 回目 #4 で「対応せず進める」と判断済み。upstream-carryover））\n\n### 前回の検査（6 回目）からの変更\n\n- 上流の入力が前回の検査から変わった（または比べられない）ため、全体を検査する。対象の全体を見てください。\n\n### 判断が必要な指摘\n\n**対象**: `specs/issue-request/design.md`（スコープ: 成果物単位（issue-request） / 7 回目）\n**実行した層**: ① / ②\n\n**AI が修正案で直す軽微**（2 件。判断は不要。修正の回で直し、再検査で確かめます）\n- #1 steeringとの整合の行が画面内の非同期の口を税額計算だけとし、契約種別による選択肢の口が抜けている\n- #2 発注者に任せる投入の一覧にZMENUAUTHのPWTGO080の行が無く、移行方針と合わない\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n修正（A）と AI が直す軽微は、修正の指示を書かずに修正の回へ回せます（repair の findings に \"all-fixes\"）。AI の推奨を採用していない修正には、修正の指示を書いてください。\n承認を問う前に必要なこと: 未解消: feature:issue-request / run 7 / #1 / 未解消: feature:issue-request / run 7 / #2",
+      "id": "49cc66e98a3d41fc8ec57240641c0292"
+    },
+    "label": "design-authoring-revise / design-authoring-revise [issue-request]",
+    "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[issue-request]::end.review\", \"snapshot\": \"c0b0f2f2bf37968ec6788a36f7198ad6de1f6a2bc33d7cfbf942af0425110a1b\", \"run\": 7, \"inspection_hash\": \"8568ddbb9fc07625df39d1ce3d920c4356672246a5a9e3fac95cc854b73ac4eb\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 11 件\n  - 発番で担当エリア等を保存する扱いが要件1.3・1.5・9.3と食い違う（verify:既決（design-check 1 回目 #1・2 回目 #1 で「対応せず進める」と判断済み。upstream-carryover））\n  - 2.1の本人が登録した発行依頼書を申請の登録者で比べており要件と食い違う（verify:既決（design-check 1 回目 #2 で「対応せず進める」と判断済み。upstream-carryover））\n  - 8.1のログインユーザーのグループを権限区分と読み替えている（verify:既決（design-check 1 回目 #3・2 回目 #2 で「対応せず進める」と判断済み。upstream-carryover））\n  - 9.6の所属必須に「選んだ会社が社内」の条件を足している（verify:既決（design-check 1 回目 #4 で「対応せず進める」と判断済み。upstream-carryover））\n  - 契約局情報追加を発行依頼書が登録済みの申請だけにしており1.9から外れる（verify:既決（design-check 4 回目 #1 の判断で決めた逸脱。upstream-carryover））\n  - 業務・排他エラーを例外にせずBindingResultに積む方式がtech.mdと食い違う（verify:既決（design-check 1 回目 #6・2 回目 #3 で「対応せず進める」と判断済み。upstream-carryover））\n  - 開発端末のJDK 1.8がtech.mdの必須ツールJDK 1.7と食い違う（verify:既決（design-check 1 回目 #7 で「対応せず進める」と判断済み。upstream-carryover））\n  - 一時保存・発番がCSRFの照合に乗らずsecurity.mdの攻撃対策と食い違う（answer:design-authoring-generate[issue-request]）\n  - 金額・調整額を文字で持つ型と、トランの種別Vがdatabase.mdと食い違う（answer:design-authoring-generate[issue-request]）\n  - pbi designの公開契約に無い前提（戻りの入口・発番日時・getApplicantName・複製の申請者・基地局番号の初期表示）に依存。今回の pbi design の変更でもこれらは追加されていない（verify:既決（design-check 1 回目 #8・2 回目 #4 で「対応せず進める」と判断済み。upstream-carryover））\n\n### 前回の検査（6 回目）からの変更\n\n- 上流の入力が前回の検査から変わった（または比べられない）ため、全体を検査する。対象の全体を見てください。\n\n### 判断が必要な指摘\n\n**対象**: `specs/issue-request/design.md`（スコープ: 成果物単位（issue-request） / 7 回目）\n**実行した層**: ① / ②\n\n**AI が修正案で直す軽微**（2 件。判断は不要。修正の回で直し、再検査で確かめます）\n- #1 steeringとの整合の行が画面内の非同期の口を税額計算だけとし、契約種別による選択肢の口が抜けている\n- #2 発注者に任せる投入の一覧にZMENUAUTHのPWTGO080の行が無く、移行方針と合わない\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n修正（A）と AI が直す軽微は、修正の指示を書かずに修正の回へ回せます（repair の findings に \"all-fixes\"）。AI の推奨を採用していない修正には、修正の指示を書いてください。\n承認を問う前に必要なこと: 未解消: feature:issue-request / run 7 / #1 / 未解消: feature:issue-request / run 7 / #2",
+    "allowed_actions": [
+      "decision",
+      "decisions",
+      "resolve",
+      "repair"
+    ],
+    "review_context": {
+      "root": "C:\\project\\Wing",
+      "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+      "call": "design-authoring-revise",
+      "event": "design-authoring-revise",
+      "item": "issue-request",
+      "dispatch_id": "49cc66e98a3d41fc8ec57240641c0292",
+      "unit": "design-authoring-revise/design-authoring-revise[issue-request]::end.review",
+      "scope": "feature:issue-request",
+      "run": 7,
+      "snapshot": "c0b0f2f2bf37968ec6788a36f7198ad6de1f6a2bc33d7cfbf942af0425110a1b",
+      "record_hash": "78ec7c40fd487293aeae4e6ecbd672f192a5e16a04f9413548ba31058041ffc5"
+    },
+    "review": [
+      {
+        "scope": "feature:issue-request",
+        "run": 7,
+        "number": 1,
+        "current": true,
+        "decision": "修正",
+        "reason": "軽微（AIDD 内部の決まりごと）のため、AI が修正案で直す",
+        "open": true,
+        "resolved": false,
+        "description": "今回の修正（横断確認 1 回目 #5）で、§ データ契約と外部連携（Data Contracts & Integration）の API は「画面の要求は API 契約のフォーム送信と、画面内で値を返す非同期の口 /wtg080/calcTaxAdjustment（税額計算）・/wtg080/changeKeiyakuSyubetsuTutorial（契約種別による選択肢）だけ」となり、§ API 契約（API Contract）の 2 行にも失敗時の扱いが入った。§ 発行依頼書登録変更 Controller の呼び出し元（Inbound）も「税額計算・契約種別による選択肢の非同期の取得」と 2 つを挙げる。一方、§ アーキテクチャ方式と境界図 の「steering との整合」は「画面内の非同期の取得（税額計算）は、既存の画面内の JSON 取得と同じ扱いで、画面以外から呼ばれる API にしない（steering/api-standards.md の本プロジェクトでの扱い）」と税額計算だけを挙げ、/wtg080/changeKeiyakuSyubetsuTutorial が無い。repair の指示「非同期の口があることとそろえる」に対し、同じ文書の中で口の数の記述がそろっていない",
+        "location": "specs/issue-request/design.md § アーキテクチャ方式と境界図（Architecture Pattern & Boundary Map） / steering との整合",
+        "kind": "文書間の参照",
+        "severity": "軽微",
+        "summary": "steeringとの整合の行が画面内の非同期の口を税額計算だけとし、契約種別による選択肢の口が抜けている",
+        "suggestion": "§ アーキテクチャ方式と境界図 の「steering との整合」の該当文を「画面内の非同期の取得（税額計算 `/wtg080/calcTaxAdjustment`、契約種別による選択肢 `/wtg080/changeKeiyakuSyubetsuTutorial`）は、既存の画面内の JSON 取得と同じ扱いで、画面以外から呼ばれる API にしない」に直す",
+        "recommendation": "修正：同じ文書の中の記述をそろえるだけで、業務の新しい事実は要らないため",
+        "decided_by": "system（自動）"
+      },
+      {
+        "scope": "feature:issue-request",
+        "run": 7,
+        "number": 2,
+        "current": true,
+        "decision": "修正",
+        "reason": "軽微（AIDD 内部の決まりごと）のため、AI が修正案で直す",
+        "open": true,
+        "resolved": false,
+        "description": "今回の修正（横断確認 1 回目 #4）で、§ 移行方針（Migration Strategy）に「ZMENUAUTH：PWTGO080 の行を…メニューID ごとに 1 行登録する。投入の文と手順は tasks で作り、投入は発注者が導入手順書に沿って行う」、§ 移行対象ファイル一覧 に ZMENUAUTH（PWTGO080 の行）の行が入った。一方、§ このスペックが持たない責務（Out of Boundary）の発注者の行は「コードマスタ（TWTZM040）・採番マスタ（TWTZM050）の行と、TWTGM160・TWTZM370 の値の投入、記入例の中身 → 発注者（### 移行方針（Migration Strategy）…）」で、ZMENUAUTH の行の投入が無い。移行方針が委譲先として挙げるものと、責務境界の委譲の一覧が対応していない",
+        "location": "specs/issue-request/design.md § このスペックが持たない責務（Out of Boundary） / 発注者",
+        "kind": "文書間の参照",
+        "severity": "軽微",
+        "summary": "発注者に任せる投入の一覧にZMENUAUTHのPWTGO080の行が無く、移行方針と合わない",
+        "suggestion": "§ このスペックが持たない責務（Out of Boundary）の発注者の行を「コードマスタ（`TWTZM040`）・採番マスタ（`TWTZM050`）・メニュー権限（`ZMENUAUTH`。`PWTGO080` の行）の行と、`TWTGM160`・`TWTZM370` の値の投入、記入例の中身 → 発注者（`### 移行方針（Migration Strategy）`、Q-DS-IR-009・Q-DS-IR-010・Q-DS-IR-012、横断確認 1 回目 #4）」に直す",
+        "recommendation": "修正：移行方針に書いた委譲先を責務境界の一覧にも載せるだけで、業務の新しい事実は要らないため",
+        "decided_by": "system（自動）"
+      }
+    ],
+    "choices": {
+      "kind": "repair",
+      "questions": [
+        {
+          "id": "repair",
+          "header": "修正に回す",
+          "question": "修正（A）の指摘と AI が直す軽微（2 件）を修正の回へ回しますか？",
+          "options": [
+            {
+              "label": "修正案のとおり修正に回す",
+              "description": "推奨を採用した修正と軽微は、修正案がそのまま指示になる",
+              "answer": "repair:all-fixes"
+            },
+            {
+              "label": "修正の指示を自分で書く",
+              "description": "指示を書きたい指摘がある",
+              "answer": "repair:manual"
+            }
+          ],
+          "multiSelect": false
+        }
+      ]
+    },
+    "next_action": "提示文をそのまま示し、choices の選択肢を選択式の質問で出して、人に選んでもらってください。検査結果を確認し、重大と要判断の指摘に A〜D か「推奨」で答えてください（束・範囲でまとめて答えられます）。修正（A）と AI が直す軽微があれば repair（findings: \"all-fixes\"）で修正に回し、判断が揃い修正が無ければ承認者名を回答してください。",
+    "operation_id": "a14f28feaf984df9820c05695b2ea235",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

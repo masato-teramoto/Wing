@@ -1,0 +1,30 @@
+{
+ "operation_id": "0897cd692ac0474cb9c79d6a25af9139",
+ "action": "repair",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[application-status-search]::end.review",
+  "event": "design-authoring-revise",
+  "item": "application-status-search",
+  "status": "wait",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[application-status-search]::end.review\", \"snapshot\": \"2ed02180bf53cc838e7d75d8099e651df79e83e0ea71c6a174fa409d73c7c4a5\", \"run\": 4, \"inspection_hash\": \"607e211de069b45a68ca71489da695912a9e088da173a510bcf247b1840d55aa\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 再検査で出なくなり、解消を記録した指摘 1 件\n  - #3-1 申請の削除の後に一覧へ戻るときの受け口（/wtg060 か /wtg060/return か）が決まっていない\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 1 件\n  - `/wtg070/returnList` の戻り先を pbi design の `/wtg060` ではなく `/wtg060/return` とする（回答 Q-DS-AS-001 で決まり、本書に意図した逸脱と upstream-carryover を明記。pbi design は `/wtg060` のまま）（answer:design-authoring-generate[application-status-search]）\n\n### 前回の検査（3 回目）からの変更\n\n- `specs/application-status-search/design.md`：データ契約と外部連携（Data Contracts & Integration）、申請状況検索一覧 Controller\n  - 修正の指示に無い節の変更：データ契約と外部連携（Data Contracts & Integration）（意図した変更か確かめてください）\n\n### 判断が必要な指摘\n\n**対象**: `specs/application-status-search/design.md`（スコープ: 成果物単位（application-status-search） / 4 回目）\n**実行した層**: ① / ②\n\n**AI が修正案で直す軽微**（1 件。判断は不要。修正の回で直し、再検査で確かめます）\n- #1 削除の後の戻り（deleteShinse）が再確認の対象と補足資料の口の一覧に無い\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n修正（A）と AI が直す軽微は、修正の指示を書かずに修正の回へ回せます（repair の findings に \"all-fixes\"）。AI の推奨を採用していない修正には、修正の指示を書いてください。\n承認を問う前に必要なこと: 未解消: feature:application-status-search / run 4 / #1",
+  "id": "057850b623314ad7b0822ece281ff22c"
+ },
+ "expected": {
+  "root": "C:\\project\\Wing",
+  "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+  "call": "design-authoring-revise",
+  "event": "design-authoring-revise",
+  "item": "application-status-search",
+  "dispatch_id": "057850b623314ad7b0822ece281ff22c",
+  "unit": "design-authoring-revise/design-authoring-revise[application-status-search]::end.review",
+  "scope": "feature:application-status-search",
+  "run": 4,
+  "snapshot": "2ed02180bf53cc838e7d75d8099e651df79e83e0ea71c6a174fa409d73c7c4a5",
+  "record_hash": "9cc7e7a7f5234e4131b0e772c238d92453fc587b42a23503da8b3c1fad9a70b3"
+ },
+ "data": {
+  "findings": "all-fixes"
+ }
+}

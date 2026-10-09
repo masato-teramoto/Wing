@@ -1,0 +1,16 @@
+{
+ "operation_id": "7bb9fbca1e424cc68804bca9bdf373fc",
+ "dispatch": {
+  "call": "design-cross-gate",
+  "unit": "design-cross-gate/design-cross-gate[-]::run",
+  "event": "design-cross-gate",
+  "item": null,
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "8fdc4e9ca0424b48b2b9879214fb8c4d"
+ },
+ "result": {
+  "status": "completed"
+ }
+}

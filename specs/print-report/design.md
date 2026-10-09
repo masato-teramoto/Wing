@@ -1,7 +1,7 @@
 ---
 feature: print-report
 status: approved
-updated_at: 2026-10-08T14:39:02+09:00
+updated_at: 2026-10-09T13:11:35+09:00
 ---
 
 # 技術設計書
@@ -529,7 +529,7 @@ wing/src/main/
   - 申請No の書き換えで他社・他人の申請を出す → 同上（`getExternalScope` と 6.9 の判定）
   - 閲覧か印刷か・単独局か複数局かの書き換え → ページの組合せが変わるだけで、出せる申請の範囲は変わらない
   - 一時ファイルの残り（個人情報を含む Excel・PDF）→ 成功でも失敗でも `finally` で消す。名前にユーザーID と申請No とミリ秒の時刻を付け、ほかの要求のファイルと重ねない（3.6、Q-DS-PR-012）
-- **認証・認可**: 画面を使えるかは既存の `AccessControlInterceptor`（`ZMENUAUTH`）で判定する。`PWTGO072` の行は、物件基本情報登録変更を開くメニューの行に足す（Q-DS-PR-011 の 4）。出力の条件は物件基本情報登録変更 Service の 6.9 の判定と、WTG 申請状態サービスの社外ユーザーの範囲で決める
+- **認証・認可**: 画面を使えるかは既存の `AccessControlInterceptor`（`ZMENUAUTH`）で判定する。`PWTGO072` の行は、`PWTGO070` を登録するメニュー（［WTG070］と［WTG060］のメニュー。権限区分ごとに分かれていればそのすべて）すべてに、メニューID ごとに 1 行足す（Q-DS-PR-011 の 4、横断確認 1 回目 #4）。出力の条件は物件基本情報登録変更 Service の 6.9 の判定と、WTG 申請状態サービスの社外ユーザーの範囲で決める
 - **データ保護 / プライバシー**: 帳票に関係者①〜⑤の氏名・住所・電話番号・メールアドレス・FAX、起案者の氏名、申請者・確認者・決裁者の氏名を載せる。出せるのは 6.9 の判定に合う利用者だけで、サーバーには残さず、ログにも出さない（`requirements.md` の非機能要件のプライバシー、`steering/security.md` の `## 機密データ`）
 
 ### 性能とスケーラビリティ（Performance & Scalability）
@@ -552,7 +552,7 @@ wing/src/main/
 - **段階分け**:
   - 原本 `BaseStationRentContractIssuingOrderForm.xlsm` を、リポジトリの `wing/src/main/webapp/static/manual/` から、配備のときに `ORIGINAL_EXCEL_FILE_DIR` のフォルダへ写す。配備の手順は本 feature の tasks で作り、実施は導入手順書に沿って発注者が行う（Q-DS-PR-001、design-check 1 回目 #5 の判断）
   - コードマスタ `TWTZM040` に WTG/PARAM/P89 キー3 "01"（名称「ファイル一時出力ディレクトリ」、文字項目1 は本番 `/home/const/temp/download/`）の行を足す。INSERT 文は本 feature の tasks で作り、投入は導入手順書に沿って発注者が行う。そのフォルダは発注者が作っておく（自動で作らない）（Q-DS-PR-012）
-  - `ZMENUAUTH` に `PWTGO072` の行（会社コード・物件基本情報登録変更を開くメニューID・プログラムID）を、リリースのデータ投入（INSERT 文）として足す。`PWTGO073` も同じ扱い。INSERT 文は本 feature の tasks で作り、投入は導入手順書に沿って発注者が行う（Q-DS-PR-011 の 4、design-check 1 回目 #5 の判断）
+  - `ZMENUAUTH` に `PWTGO072` の行（会社コード・メニューID・プログラムID）を、`PWTGO070` を登録するメニュー（［WTG070］と［WTG060］のメニュー。権限区分ごとに分かれていればそのすべて）すべてに、メニューID ごとに 1 行、リリースのデータ投入（INSERT 文）として足す。`PWTGO073` も同じ扱い（横断確認 1 回目 #4）。INSERT 文は本 feature の tasks で作り、投入は導入手順書に沿って発注者が行う（Q-DS-PR-011 の 4、design-check 1 回目 #5 の判断）
 - **ロールバックを実施する条件**: <DSN_MIGRATION_ROLLBACK>（不要：既存データの移行は無く、追加するマスタの行と原本は導入手順書に沿って発注者が投入・配備する — Q-DS-PBI-015 と同じ）
 - **検証チェックポイント**: <DSN_MIGRATION_CHECKPOINT>（不要：既存データの移行は無く、テストの詳細は試験仕様書に書く — Q-DS-PBI-015 と同じ）
 
@@ -567,7 +567,7 @@ wing/src/main/
 |---|---|---|---|---|
 | 原本 `BaseStationRentContractIssuingOrderForm.xlsm` | 新規 | 1 ファイル | 配備のときに `ORIGINAL_EXCEL_FILE_DIR` へ写す | ― |
 | `TWTZM040`（WTG/PARAM/P89 キー3 "01"） | 更新（行の追加） | 1 行 | 導入手順書に沿って投入 | ― |
-| `ZMENUAUTH`（`PWTGO072`・`PWTGO073` の行） | 更新（行の追加） | 物件基本情報登録変更を開くメニューの数 × 2 | リリースのデータ投入（INSERT 文） | ― |
+| `ZMENUAUTH`（`PWTGO072`・`PWTGO073` の行） | 更新（行の追加） | `PWTGO070` を登録するメニューの数 × 2（メニューID ごとに `PWTGO072`・`PWTGO073` を 1 行ずつ。横断確認 1 回目 #4） | リリースのデータ投入（INSERT 文） | ― |
 
 ### テスト体制 / テスト仕様
 

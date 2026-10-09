@@ -1,0 +1,37 @@
+{
+ "operation_id": "0d28e3321d4f43079b32cc2c30ded1d9",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[property-basic-info]::run",
+  "event": "design-authoring-revise",
+  "item": "property-basic-info",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "7e65ce43c8464bf0939dac26db7a93ce"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/property-basic-info/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "design",
+    "scope": "feature:property-basic-info",
+    "run": 6,
+    "number": 1
+   },
+   {
+    "phase": "design",
+    "scope": "feature:property-basic-info",
+    "run": 6,
+    "number": 2
+   }
+  ],
+  "return_candidates": [],
+  "summary": "run 6 #1：pushApplicationNo の Request と開く経路に契約情報取込画面の戻り（/wtg090/back）を追記。#2：境界図の取込バッチのラベルを状態・基地局番号ほか・単独複数局フラグの更新に直し、画面に出さない列に取込後の値を追記"
+ }
+}

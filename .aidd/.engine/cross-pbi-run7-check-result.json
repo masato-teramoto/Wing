@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "action": "submit",
+  "result": {
+    "unit": "design-authoring-revise/design-authoring-revise[property-basic-info]::end.review",
+    "flow": "design-authoring-revise",
+    "event": "design-authoring-revise",
+    "item": "property-basic-info",
+    "gate": "review",
+    "hookPoint": "end",
+    "name": "review",
+    "type": "script",
+    "target": "scripts/approval.py",
+    "isAgent": false,
+    "requiresHuman": true,
+    "calls": [],
+    "targetReview": [
+      "specs/property-basic-info/design.md"
+    ],
+    "status": "wait",
+    "call": "design-authoring-revise",
+    "dispatch": {
+      "call": "design-authoring-revise",
+      "unit": "design-authoring-revise/design-authoring-revise[property-basic-info]::end.review",
+      "event": "design-authoring-revise",
+      "item": "property-basic-info",
+      "status": "wait",
+      "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+      "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[property-basic-info]::end.review\", \"snapshot\": \"d0603d9a041b7ea0a0115f44ff7cfda7189e4da8fb68be3410de801b7c69cd51\", \"run\": 7, \"inspection_hash\": \"2943123b9fda7a9fc09832e947c0a3f0264df38bde52afe6f510561a105766d8\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 再検査で出なくなり、解消を記録した指摘 2 件\n  - #6-1 取込画面からの戻りの受け口 pushApplicationNo の Request と開く経路に、取込画面が無い\n  - #6-2 境界図が取込バッチの TWTGM080 の書込みを「状態を直接更新」だけとし、持たない責務の記述と合わない\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 4 件\n  - TWTGM170 の権限ID を P82 と別体系にすること（行173 の「TWTGM170・P82 だけで判定」の文を含む）と steering/security.md・requirements の前提の矛盾（verify:重複（前回 5-3 で人が対応せず進めると判断済み。今回の変更は行163 の境界図のラベルだけで、行173 は変わっていない））\n  - CSRF の照合を servlet-context.xml の末尾一致の URL だけにすることと steering/security.md の食い違い（verify:重複（前回 3-3 の判断で design に意図した外れとして明記済み。upstream-carryover の steering security.md の項目））\n  - 起案済・回覧中の申請者の番の扱い・契約局情報追加を複数局に限ることと requirements 1.3・6.7・14.5 の不整合（verify:重複（前回 5-1・5-2 で人が対応せず進めると判断済み））\n  - 依存する design・既存コードと合わない記述のうち、upstream-carryover.md に人が挙げたもの（/wtg072/search の入力（行571）、/wtg070/returnList の戻り先（行572）、発行依頼書登録変更への遷移の値と戻りの入口（行576）、/wtg100 の FunctionID・applicationNo（行577））（verify:既知の食い違い（.aidd/.engine/upstream-carryover.md に人の判断で挙げ、Phase 5 の最後にまとめて直すと決めたもの。今回の修正の範囲（6-1・6-2）の外））\n\n### 前回の検査（6 回目）からの変更\n\n- `specs/property-basic-info/design.md`：アーキテクチャ方式と境界図（Architecture Pattern & Boundary Map）、API 契約（API Contract）\n\n### 判断が必要な指摘\n\n**対象**: `specs/property-basic-info/design.md`（スコープ: 成果物単位（property-basic-info） / 7 回目）\n**実行した層**: ① / ②\n\n**指摘**: なし（0 件。検査は実行済み）\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n判断が揃いました。承認の可否を回答してください（承認する場合は承認者名）。",
+      "id": "a1f19cb8638d471ab2a4ccb54f143ca3"
+    },
+    "label": "design-authoring-revise / design-authoring-revise [property-basic-info]",
+    "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[property-basic-info]::end.review\", \"snapshot\": \"d0603d9a041b7ea0a0115f44ff7cfda7189e4da8fb68be3410de801b7c69cd51\", \"run\": 7, \"inspection_hash\": \"2943123b9fda7a9fc09832e947c0a3f0264df38bde52afe6f510561a105766d8\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 再検査で出なくなり、解消を記録した指摘 2 件\n  - #6-1 取込画面からの戻りの受け口 pushApplicationNo の Request と開く経路に、取込画面が無い\n  - #6-2 境界図が取込バッチの TWTGM080 の書込みを「状態を直接更新」だけとし、持たない責務の記述と合わない\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 4 件\n  - TWTGM170 の権限ID を P82 と別体系にすること（行173 の「TWTGM170・P82 だけで判定」の文を含む）と steering/security.md・requirements の前提の矛盾（verify:重複（前回 5-3 で人が対応せず進めると判断済み。今回の変更は行163 の境界図のラベルだけで、行173 は変わっていない））\n  - CSRF の照合を servlet-context.xml の末尾一致の URL だけにすることと steering/security.md の食い違い（verify:重複（前回 3-3 の判断で design に意図した外れとして明記済み。upstream-carryover の steering security.md の項目））\n  - 起案済・回覧中の申請者の番の扱い・契約局情報追加を複数局に限ることと requirements 1.3・6.7・14.5 の不整合（verify:重複（前回 5-1・5-2 で人が対応せず進めると判断済み））\n  - 依存する design・既存コードと合わない記述のうち、upstream-carryover.md に人が挙げたもの（/wtg072/search の入力（行571）、/wtg070/returnList の戻り先（行572）、発行依頼書登録変更への遷移の値と戻りの入口（行576）、/wtg100 の FunctionID・applicationNo（行577））（verify:既知の食い違い（.aidd/.engine/upstream-carryover.md に人の判断で挙げ、Phase 5 の最後にまとめて直すと決めたもの。今回の修正の範囲（6-1・6-2）の外））\n\n### 前回の検査（6 回目）からの変更\n\n- `specs/property-basic-info/design.md`：アーキテクチャ方式と境界図（Architecture Pattern & Boundary Map）、API 契約（API Contract）\n\n### 判断が必要な指摘\n\n**対象**: `specs/property-basic-info/design.md`（スコープ: 成果物単位（property-basic-info） / 7 回目）\n**実行した層**: ① / ②\n\n**指摘**: なし（0 件。検査は実行済み）\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n判断が揃いました。承認の可否を回答してください（承認する場合は承認者名）。",
+    "allowed_actions": [
+      "approve"
+    ],
+    "review_context": {
+      "root": "C:\\project\\Wing",
+      "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+      "call": "design-authoring-revise",
+      "event": "design-authoring-revise",
+      "item": "property-basic-info",
+      "dispatch_id": "a1f19cb8638d471ab2a4ccb54f143ca3",
+      "unit": "design-authoring-revise/design-authoring-revise[property-basic-info]::end.review",
+      "scope": "feature:property-basic-info",
+      "run": 7,
+      "snapshot": "d0603d9a041b7ea0a0115f44ff7cfda7189e4da8fb68be3410de801b7c69cd51",
+      "record_hash": "23823d19d9d3f9a85ea1cac06b38e8589c69ea4a56c592a9a36d3793c4247fe6"
+    },
+    "review": [],
+    "choices": {
+      "kind": "approve",
+      "questions": [
+        {
+          "id": "approve",
+          "header": "承認",
+          "question": "判断が揃いました。承認しますか？",
+          "options": [
+            {
+              "label": "承認する",
+              "description": "回答者の名前で承認を記録する",
+              "answer": "approve"
+            },
+            {
+              "label": "承認しない",
+              "description": "判断を変える・修正を指示する",
+              "answer": "hold"
+            }
+          ],
+          "multiSelect": false
+        }
+      ]
+    },
+    "next_action": "提示文をそのまま示し、choices の選択肢を選択式の質問で出して、人に選んでもらってください。検査結果を確認し、重大と要判断の指摘に A〜D か「推奨」で答えてください（束・範囲でまとめて答えられます）。修正（A）と AI が直す軽微があれば repair（findings: \"all-fixes\"）で修正に回し、判断が揃い修正が無ければ承認者名を回答してください。",
+    "operation_id": "5d80c58e6caa4c53875c9285c4a0cc4d",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

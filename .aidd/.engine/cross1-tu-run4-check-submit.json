@@ -1,0 +1,16 @@
+{
+ "operation_id": "6010f6c8ab4843718d64dd42adc29e70",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[issue-request-tutorial]::end.design-check",
+  "event": "design-authoring-revise",
+  "item": "issue-request-tutorial",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "aa4104728ee94000b2f4416c9d2b79aa"
+ },
+ "result": {
+  "status": "completed"
+ }
+}

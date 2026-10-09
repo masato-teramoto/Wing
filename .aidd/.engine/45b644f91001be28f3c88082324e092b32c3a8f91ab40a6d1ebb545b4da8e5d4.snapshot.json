@@ -3,23 +3,23 @@
   "phase": "design",
   "event": "design-authoring-revise",
   "scope": "feature:contract-info-import",
-  "at": "2026-10-08T18:26:59+09:00",
+  "at": "2026-10-09T14:06:37+09:00",
   "artifacts": {
     "specs/contract-info-import/design.md": {
       "status": "draft",
-      "sha256": "4c8a75122096a3b0e11bc9879722b86ecf6a395fe1f145a45958d88a0f58b135"
+      "sha256": "f8c85c02fe3eac668a090b8cb084d4319381ea95428d4c25c7149c98c569bebc"
     }
   },
   "record": {
-    "bytes": 237218,
-    "sha256": "761ceb672b9ffcb42f1df808f1be86b1de0c5255b112c3fe94351db29fb9e6d8",
-    "blocks": 180
+    "bytes": 364187,
+    "sha256": "576dd7dd0f7b9aa9da0d020fd6d12aa14b53be9f1866f3a29035c62b5ef0898b",
+    "blocks": 268
   },
-  "run": 4,
+  "run": 6,
   "sections": {
     "specs/contract-info-import/design.md": {
       "": "e3b0c44298fc1c14",
-      "技術設計書": "048b77694281100c",
+      "技術設計書": "d4439040773decc8",
       "概要（Overview）": "a5cb1e1ec64162a2",
       "達成目標（Goals）": "e50b7f4e16ddba9b",
       "やらないこと（Non-Goals）": "495f7c254a925dd8",
@@ -32,21 +32,21 @@
       "既存アーキテクチャの分析（Existing Architecture Analysis）": "858a37a590c289e1",
       "アーキテクチャ方式と境界図（Architecture Pattern & Boundary Map）": "9299178a17421c9f",
       "技術スタック（Technology Stack）": "8386e642b72fcab9",
-      "データモデル（Data Models）": "7ca24355d92991d9",
-      "ドメインモデル（Domain Model）": "2658968d8f53f618",
+      "データモデル（Data Models）": "03ab9aa511ef8177",
+      "ドメインモデル（Domain Model）": "29101ac4582235c8",
       "論理データモデル（Logical Data Model）": "748c288b8256108a",
       "物理データモデル（Physical Data Model）": "2b92dae40040d47b",
-      "データ契約と外部連携（Data Contracts & Integration）": "9f01921c05b45687",
-      "コンポーネントとインターフェース（Components and Interfaces）": "55513da0ea38f583",
+      "データ契約と外部連携（Data Contracts & Integration）": "99e96020e8c1d7b4",
+      "コンポーネントとインターフェース（Components and Interfaces）": "20621133fa2190d5",
       "コンポーネント一覧（Summary）": "4dea0f6480a708fa",
-      "契約情報取込": "f9033d290b59c4ea",
-      "取込画面 Controller": "42a1be99bda44eee",
-      "API 契約（API Contract）": "a2f98fb6f000562f",
+      "契約情報取込": "8cf0e6764563791f",
+      "取込画面 Controller": "710f3194ecd2e160",
+      "API 契約（API Contract）": "a07c8c098a7c75c6",
       "取込画面 Service": "05674186d3fe50e6",
       "サービスインターフェース（Service Interface）": "bba2eb33f856375f",
-      "取込バッチ": "6b96c09a1e37ea4c",
+      "取込バッチ": "96387a59ca17c695",
       "バッチ / ジョブ契約（Batch / Job Contract）": "bc4641086284ba38",
-      "状態管理（State Management）": "1ff9dcce62ded540",
+      "状態管理（State Management）": "73546dda75a33f07",
       "処理フロー（System Flows）": "4e232383087891f5",
       "機能固有のエラー処理（Error Handling）": "d05eb9fc0ac422ba",
       "バリデーション設計": "c079a088446ab563",
@@ -54,11 +54,11 @@
       "エラー時の分岐フロー": "ebbd6fb1ce594060",
       "ファイル配置計画（File Structure Plan）": "9d04d2fea38a1d7e",
       "変更する既存ファイル（Modified Files）": "1529807211c90e5b",
-      "追加検討事項（Additional Considerations）": "40727410a017d6b4",
-      "セキュリティ上の考慮（Security Considerations）": "b348e213f308c54c",
+      "追加検討事項（Additional Considerations）": "6bf6d5b8b263cb82",
+      "セキュリティ上の考慮（Security Considerations）": "199aaba68e646030",
       "性能とスケーラビリティ（Performance & Scalability）": "d551eb510e32fd39",
-      "移行方針（Migration Strategy）": "4f362b8eb1f1343b",
-      "移行対象ファイル一覧": "9e872e84f5d31356",
+      "移行方針（Migration Strategy）": "3917c9c3421e131f",
+      "移行対象ファイル一覧": "16fe45cb3312654c",
       "テスト体制 / テスト仕様": "f53c0fc38f1073f2",
       "テスト戦略（Testing Strategy）": "4e7ded270bccf1c9",
       "設計判断（Design Decisions）": "463001b344860861",
@@ -66,7 +66,7 @@
       "判断 2: 元に戻す更新は本体と別のトランザクションで必ず動かし、それでも残ったら運用で戻す": "0d79b3a6bcf966c8",
       "判断 3: 取り込んだファイルは消さずに残す": "d01f88b4d585e7b2",
       "補足資料（Supporting References）": "2479f06a9bd48202",
-      "*": "048b77694281100c"
+      "*": "d4439040773decc8"
     }
   },
   "own_sections": {
@@ -86,20 +86,20 @@
       "アーキテクチャ方式と境界図（Architecture Pattern & Boundary Map）": "9299178a17421c9f",
       "技術スタック（Technology Stack）": "8386e642b72fcab9",
       "データモデル（Data Models）": "7f56063d2219091b",
-      "ドメインモデル（Domain Model）": "2658968d8f53f618",
+      "ドメインモデル（Domain Model）": "29101ac4582235c8",
       "論理データモデル（Logical Data Model）": "748c288b8256108a",
       "物理データモデル（Physical Data Model）": "2b92dae40040d47b",
-      "データ契約と外部連携（Data Contracts & Integration）": "9f01921c05b45687",
+      "データ契約と外部連携（Data Contracts & Integration）": "99e96020e8c1d7b4",
       "コンポーネントとインターフェース（Components and Interfaces）": "596c52c2870f12f7",
       "コンポーネント一覧（Summary）": "4dea0f6480a708fa",
       "契約情報取込": "85ce1dc20e1dde0f",
       "取込画面 Controller": "ba79b0b51dbf1b89",
-      "API 契約（API Contract）": "a2f98fb6f000562f",
+      "API 契約（API Contract）": "a07c8c098a7c75c6",
       "取込画面 Service": "2d7e62df468e54d2",
       "サービスインターフェース（Service Interface）": "bba2eb33f856375f",
       "取込バッチ": "c7dda4e9e48c4418",
       "バッチ / ジョブ契約（Batch / Job Contract）": "bc4641086284ba38",
-      "状態管理（State Management）": "1ff9dcce62ded540",
+      "状態管理（State Management）": "73546dda75a33f07",
       "処理フロー（System Flows）": "4e232383087891f5",
       "機能固有のエラー処理（Error Handling）": "71efccfdf25c2e9c",
       "バリデーション設計": "c079a088446ab563",
@@ -108,10 +108,10 @@
       "ファイル配置計画（File Structure Plan）": "2483982e7c0f904f",
       "変更する既存ファイル（Modified Files）": "1529807211c90e5b",
       "追加検討事項（Additional Considerations）": "5935df48a68c4bd5",
-      "セキュリティ上の考慮（Security Considerations）": "b348e213f308c54c",
+      "セキュリティ上の考慮（Security Considerations）": "199aaba68e646030",
       "性能とスケーラビリティ（Performance & Scalability）": "d551eb510e32fd39",
-      "移行方針（Migration Strategy）": "af0d0f5adb1f1a62",
-      "移行対象ファイル一覧": "9e872e84f5d31356",
+      "移行方針（Migration Strategy）": "17a8a0c5497bfac4",
+      "移行対象ファイル一覧": "16fe45cb3312654c",
       "テスト体制 / テスト仕様": "f53c0fc38f1073f2",
       "テスト戦略（Testing Strategy）": "4e7ded270bccf1c9",
       "設計判断（Design Decisions）": "ffd9306c7a606ca3",
@@ -119,7 +119,7 @@
       "判断 2: 元に戻す更新は本体と別のトランザクションで必ず動かし、それでも残ったら運用で戻す": "0d79b3a6bcf966c8",
       "判断 3: 取り込んだファイルは消さずに残す": "d01f88b4d585e7b2",
       "補足資料（Supporting References）": "2479f06a9bd48202",
-      "*": "048b77694281100c"
+      "*": "d4439040773decc8"
     }
   },
   "inputs": {
@@ -132,30 +132,20 @@
     "steering/database.md": "832d98b289c53f8c8adc9a7dfb25bf0f8b1f54b9c1cc473c6480fa9927a20e21",
     "steering/api-standards.md": "70eca8d2facbf08bfa22cf1ae1e781219ecab2066bb8129bf4a3414b0fdeddc1",
     "specs/contract-info-import/requirements.md": "23cf03a7c36f258901fd28108f2a3c41132bd2639f5475ed681ec077a1e57677",
-    "specs/property-basic-info/design.md": "0829e28f5d3a4e0db44e191b174e2518eb0af483f10814026003e86d90d8c7df",
-    "specs/issue-request/design.md": "a543916db8517b94bdbefb90769055130c7b2e00eeb99f9027bf9f66402a5d63"
+    "specs/property-basic-info/design.md": "03331555d6ee0825bd90f023f17f4951d532f97b0f4bde7b7f50878d4cc4da03",
+    "specs/issue-request/design.md": "7bedc0d4618ebcb9a1667ce749bf24513272ac9c19fbdebdfe1ac2954ab67fbb"
   },
-  "previous_run": 3,
+  "previous_run": 5,
   "changed_sections": {
     "specs/contract-info-import/design.md": [
       "技術設計書",
       "データモデル（Data Models）",
-      "ドメインモデル（Domain Model）",
-      "コンポーネントとインターフェース（Components and Interfaces）",
-      "契約情報取込",
-      "取込画面 Service",
-      "サービスインターフェース（Service Interface）",
-      "機能固有のエラー処理（Error Handling）",
-      "バリデーション設計",
-      "機能固有エラーコード"
+      "ドメインモデル（Domain Model）"
     ]
   },
   "changed_own": {
     "specs/contract-info-import/design.md": [
-      "ドメインモデル（Domain Model）",
-      "サービスインターフェース（Service Interface）",
-      "バリデーション設計",
-      "機能固有エラーコード"
+      "ドメインモデル（Domain Model）"
     ]
   }
 }

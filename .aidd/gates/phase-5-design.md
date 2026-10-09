@@ -1452,3 +1452,640 @@ created_at: 2026-10-07T16:53:31+09:00
 | スコープ | 回数 | 対象成果物 | 承認者 | 承認日時 | 原本SHA256 |
 |---|---|---|---|---|---|
 | feature:contract-info-download | 3 | specs/contract-info-download/design.md | Junichi Noumi | 2026-10-08T20:00:35+09:00 | 3babb9106f4ffd54b78ce57c1b82ca8b530200d4dd20fe1ced3223ac96066233 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| cross | 1 | 2026-10-08T20:04:01+09:00 | ② | ["specs/property-basic-info/design.md","specs/issue-request/design.md","specs/issue-request-tutorial/design.md","specs/print-report/design.md","specs/application-status-search/design.md","specs/contract-info-import/design.md","specs/contract-info-download/design.md"] | {"specs/property-basic-info/design.md":"0829e28f5d3a4e0db44e191b174e2518eb0af483f10814026003e86d90d8c7df","specs/issue-request/design.md":"a543916db8517b94bdbefb90769055130c7b2e00eeb99f9027bf9f66402a5d63","specs/issue-request-tutorial/design.md":"c7f8713531fc963780c2491a50671b52e4cf15f36cb990cd416b9352b2d8c831","specs/print-report/design.md":"0290e7db58d30e25be4cb376978f5783a22fdb69718de5ba0c38ad157aad2f80","specs/application-status-search/design.md":"4644f42d210af2d852c7456f3387ac7540ec0fee02a5a0909a66dab3b7ca9b39","specs/contract-info-import/design.md":"4c8a75122096a3b0e11bc9879722b86ecf6a395fe1f145a45958d88a0f58b135","specs/contract-info-download/design.md":"3babb9106f4ffd54b78ce57c1b82ca8b530200d4dd20fe1ced3223ac96066233"} | 9 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | ssot-consistency | 業務の欠落・矛盾 | 重大 | 4af627819b5fa3fe | dff0f16b070e29b6 | specs/contract-info-download/design.md § データ契約と外部連携（Data Contracts &amp; Integration） / 契約情報取込との口 ほか 1 か所 | リバースデータ 381 列の値の形 | 契約情報DLの381列のうちコードの列の値が、取込側の検査（名称で照合）と合わない | 【列の並び（回答者が求めた確認）】specs/contract-info-download/csv-layout-wtg100.md と、ci design が正とする _handoff/phase5-contract-info-import-reverse-381.md の No 1〜381 の項目名を突き合わせ、並びは全列で一致した。見出しの文字の違いは No 17・23・64・91・118・145・172（ｶﾅ と カナ）と No 44（予備項目3 の見出しが「契約基本_基地局名_ｶﾅ」）だけで、ci design は「見出しの文字は見ない」（§ドメインモデル ファイルの形）ので並びの問題は無い。&#10;【値の形の食い違い】CD design §ドメインモデル CSV「値はすべて文字列。日付は出力の定義で YYYY/MM/DD にしている列だけをその形で出し、ほかの列は元の値のまま」。csv-layout の取得元は No 48 契約者①_契約者区分＝CONSTRACT_KBN（1:契約者、2:関係者）、No 50 法人_個人区分＝CORP_PRIV_KBN（1:法人、2:個人）、No 35 受電方法＝ELECT_KIND（1:電力会社直受…）、No 197 支払情報①_消費税扱い＝TAX_KIND（名称は No 198）。取込側の検査表（_handoff/phase5-contract-info-import-checks.md 2-3）は、No 10 系 契約者区分「"契約者"または"関係者"以外の場合ｴﾗｰ」（WTG-200008）、No 11 系 法人_個人区分＝(4) P06 の名称で照合、No 9 受電方法＝(3) P43 の名称で照合、No 32 系 消費税扱い＝(10) P10 の名称で照合（WTG-000072）。コードのまま出すと取込の区分3 でエラーになり全件取り消しになるおそれがあり、CD の目的「選んだ行を契約情報取込にそのまま使える 381 列の CSV」（§概要）と食い違う。取込側の中でも、対応表（_handoff/phase5-contract-info-import-mapping.md No 177 ほか）は消費税扱いをコードのまま税区分へ入れるとしており、検査表と対応表が食い違う。 | 何を決めればよいか：契約者①〜⑤_契約者区分・法人_個人区分、契約基本_受電方法、支払情報①〜④_消費税扱いの値を、コードと名称のどちらで受け渡すか。案A：VWTGM010 でこれらを名称（"契約者"／"関係者"、P06・P43 の名称）にして出し、消費税扱いは取込の検査をキー3（コード）での照合に直す。案B：CD はコードのまま出し、取込のリバースデータの検査（(3)(4)(10)・契約者区分の許可値）と対応表をコードでの照合・変換に直す。決めた側の design（CD の csv-layout の取得元、または ci が正とする検査表・対応表）に書く。 | 質問：取込ファイルの値の形をどちらに合わせるかは業務の決定で、回答者の判断が要るため | 確認済み |  |  |
+| 2 | ssot-consistency | 業務の欠落・矛盾 | 重大 | f62888f61f945a6b | 2658968d8f53f618 | specs/contract-info-import/design.md § ドメインモデル（Domain Model） / 洗替と変更履歴の順 ほか 2 か所 | 洗替後の TWTGM100・TWTGM140 の排他用の値 | 取込が登録し直す発行依頼書・契約局の行の排他用の値が決まっておらず、発行依頼書画面の排他の前提と合わない | ir design §データ契約と外部連携 サービス間「画面の更新・一時保存は開いている TWTGM100・TWTGM140 の行の ExclusiveFG を照合し、取込が行を書き換えた後の古い画面からの更新を排他エラーにする（取込が書き換えた行の ExclusiveFG を新しい値にすることを前提にする）」。ir は TWTGM080 をロックも照合もしない（§状態管理 並行制御）。ci design §洗替と変更履歴の順 2・3 は TWTGM140・TWTGM100 を削除して登録し直すが、登録する行の ExclusiveFG の値を書いていない（6. で TWTGM080 にだけ「新しい排他用の値」を入れる）。ci §データ契約 サービス間と §取込バッチ 状態管理 並行制御は「取込の後、TWTGM080 の排他用の値が変わるので、取込の前に開いていた画面からの更新は排他エラーになる（pbi design）」とし、TWTGM080 を照合しない発行依頼書登録変更画面には当てはまらない。登録する行に値を入れない（NULL）と、取込の後に開いた画面からの照合も成り立たなくなるおそれがある。 | ci design §洗替と変更履歴の順 3. に「登録する TWTGM140・TWTGM100 の行の ExclusiveFG には新しいランダム値を入れる（発行依頼書登録変更画面の排他の前提。ir design のサービス間）」を足す。§データ契約 サービス間と §状態管理 並行制御の文を「物件基本情報登録変更は TWTGM080 の、発行依頼書登録変更は TWTGM100・TWTGM140 の排他用の値が変わるので、取込の前に開いていた画面からの更新は排他エラーになる」に直す。 | 修正：ir design が前提として明記した事項を ci design に書き足すだけで、業務の新しい事実は要らないため | 確認済み |  |  |
+| 3 | ssot-consistency | 業務の欠落・矛盾 | 重大 | f49c875611067fe5 | c68162ff8af41143 | specs/property-basic-info/design.md § このスペックが持たない責務（Out of Boundary） / 契約情報取込 ほか 3 か所 | 取込による TWTGM080 の基地局番号ほかと単独複数局フラグの更新 | 取込がTWTGM080の基地局番号群と単独複数局ﾌﾗｸﾞを書き換えるが、持ち主のpbi designに書かれていない | ci design §このスペックが持つ責務「取込の終わりの基地局番号ほかと単独複数局フラグの更新（2.8・Q-DS-CI-005）」、§洗替と変更履歴の順 6.「TWTGM080 の計画基地局番号・計画基地局名・基地局番号・基地局名・基地局名(ｶﾅ)・エリアコードを入れ直し、単独複数局フラグ（データ行が 2 行以上なら "1"、1 行なら "0"）と新しい排他用の値を入れる」。TWTGM080 の持ち主の pbi design は、取込に任せる範囲を「取込中への状態の変更と契約局情報の洗替」とだけ書き（§このスペックが持たない責務）、境界図も「物件申請情報の状態を直接更新」だけ。§画面の項目「単独局か複数局か（14.1・14.8）：契約局の件数からは決めず、『複数局切替』『単独局切替』ボタンで選ぶ」、§画面に出さない列「計画基地局番号…エリアｺｰﾄﾞは『更新』のときに…設定する」としており、取込が件数で単独複数局フラグを決めることと基地局番号群を書き換えることが無い。ir design §このスペックが持たない責務も「TWTGM080 の基地局番号・基地局名・エリアコードを契約局情報の連番 1 にそろえること → pbi（Q-DS-IR-021）」とし、取込の書換えに触れていない。同じ列を 2 つの feature が別の規則で書く（所有の二重化）が、持ち主の側で整理されておらず、upstream-carryover の pbi design の項目にも無い。 | pbi design §このスペックが持たない責務の契約情報取込の行を「契約情報取込画面（GWTG090）と取込バッチ（取込中への状態の変更と戻し、契約局情報・発行依頼書の洗替、取込の終わりの TWTGM080 の計画基地局番号・計画基地局名・基地局番号・基地局名・基地局名(ｶﾅ)・エリアコード・単独複数局フラグ・排他用の値の更新を含む）→ specs/contract-info-import/design.md」に直す。§画面の項目の単独局か複数局かに「契約情報取込の後は、取込がデータ行の数で設定した値で表示する（ci design・ci requirements 2.8）」を足す。upstream-carryover の pbi design の項目に加える。 | 修正：承認済みの ci requirements 2.8 と ci design で決まっている内容を、持ち主の pbi design に書き足すだけのため | 確認済み |  |  |
+| 4 | ssot-consistency | 業務の欠落・矛盾 | 重大 | 019af6a02c9711bd | 7399bb248ad30103 | specs/property-basic-info/design.md § 移行方針（Migration Strategy） / 移行対象ファイル一覧 ほか 5 か所 | ZMENUAUTH の PWTGO070・PWTGO080 の行 | 物件基本情報・発行依頼書のZMENUAUTHの行が定義されず、子画面の行の決め方も別々 | AccessControlInterceptor はセッションのメニューID と @FuncID で ZMENUAUTH を引き、行が無ければ拒否する（wing/src/main/java/jp/co/kccs/wt/common/interceptor/AccessControlInterceptor.java:45〜54）。pbi design と ir design の移行方針・移行対象ファイル一覧には PWTGO070・PWTGO080 の ZMENUAUTH の行が無い（AS design は PWTGO060 の行を移行に挙げている）。一方、子画面の行は親の登録を基準に書かれている：print-report「PWTGO072・PWTGO073 の行を物件基本情報登録変更を開くメニューの行に足す（メニューの数 × 2）」、cd「物件基本情報登録変更を開くメニューのメニューID と PWTGO100 の組を、物件基本情報登録変更を使える権限区分と同じ数だけ」、ci「PWTGO090 の行は GWTG070 と同じ会社とメニュー（GWTG070 と同じメニューの数）」、tutorial「PWTGO081 の行は PWTGO080 を登録するメニューと同じものすべて」。基準の「物件基本情報登録変更を開くメニュー」「PWTGO080 を登録するメニュー」はどの design にも定義が無く、数え方も「メニューの数」と「権限区分の数」でそろっていない。物件基本情報登録変更はメニュー［WTG070］から開くほか、申請状況一覧（［WTG060］のメニュー）から forward:/wtg070/pushApplicationNo で開く（pbi design §この画面を開く経路、AS design §API 契約）ので、セッションのメニューID が WTG060 のものになる経路でも PWTGO070 とその先の PWTGO072・073・080・081・090・100 の行が要る。 | 何を決めればよいか：PWTGO070 と PWTGO080 を登録するメニュー（［WTG070］物件契約情報登録と［WTG060］物件契約情報申請状況検索/一覧のメニューID。権限区分ごとにメニューが分かれるならそのすべて）。決めたら、pbi design の移行方針に「ZMENUAUTH：PWTGO070 の行を［WTG070］と［WTG060］のメニューに登録する」、ir design の移行方針に「ZMENUAUTH：PWTGO080 の行を PWTGO070 と同じメニューに登録する」を足し、print-report・cd・ci・tutorial の行の決め方を「PWTGO070 を登録するメニューすべて」にそろえる。 | 質問：どのメニュー（権限区分）に登録するかは発注者の運用で決まり、design からは決められないため | 確認済み |  |  |
+| 5 | ssot-consistency | 業務のあいまい・不足 | 要判断 | b5e399ce0ef107c0 | 4e9c4f854a971cdf | steering/api-standards.md § エラーハンドリング（API 契約） / 共通エラー形式 ほか 4 か所 | 画面内 JSON の口のエラー形状 | 画面内でJSONを返す口が3 featureに増えたが、エラーの返し方の規約が無く形がそろわない | api-standards.md は「画面以外から呼ばれる API を設けない（回答 7）」として全節を不要とし、§共通エラー形式・§分類も不要。各 design の画面内の非同期の口：pbi /wtg070/inputHassoKiboDate（Errors なし。日付だけを返す）、ir /wtg080/calcTaxAdjustment・/wtg080/changeKeiyakuSyubetsuTutorial（Errors なし。計算できないときは税額そのまま・調整額空）、tutorial /wtg081/next（HTTP 200 で result（ok／error）と messages の配列。error のとき values・clear・next を返さない）。エラーを返す形を定めたのは tutorial だけで、ほかの口でサーバー側が失敗したとき（予期しない例外で ExceptionResolver がエラー画面を返すとき）に画面のスクリプトがどう扱うかは、どの design にも無い。upstream-carryover は api-standards.md について「画面内で JSON を返す口が増える（/wtg081/next、/wtg080/calcTaxAdjustment・/wtg080/changeKeiyakuSyubetsuTutorial）」だけを挙げ、エラーの形と pbi の /wtg070/inputHassoKiboDate は挙げていない。pbi design §データ契約と外部連携は「画面の要求は API 契約のフォーム送信だけ」としており、自身の非同期の口と合わない。 | 何を決めればよいか：画面内の JSON の口のエラーの返し方を steering に置くか。案A：api-standards.md を開き直すときに §共通エラー形式へ「画面内の JSON の口は HTTP 200 で result（ok／error）と messages（messages.properties の文言の配列）を返す。予期しない例外は既存の ExceptionResolver に任せ、スクリプトは失敗時に値を入れない」を置き、ir・pbi の口もこれに合わせる。案B：規約は置かず不要のままとし、各 design に口ごとの失敗時の扱いを書く。どちらでも upstream-carryover の api-standards.md の項目に /wtg070/inputHassoKiboDate を加え、pbi design §データ契約の「フォーム送信だけ」を直す。 | 質問：steering に規約を足すか（Phase 2 の開き直し）は回答者の判断が要るため | 確認済み |  |  |
+| 6 | ssot-consistency | 業務の欠落・矛盾 | 重大 | 83bc4c1e4e4b5e0f | a9e28e65a11d6d47 | specs/property-basic-info/design.md § バリデーション設計 / 文書バーコード 書類種別 ほか 2 か所 | WTG-000072 | WTG-000072を物件基本情報は行番号なしの文言で、取込は行番号付きで使い形が食い違う | 既存の wing/src/main/resources/messages.properties:490 は「WTG-000072=行数[{0}]:{1}[{2}]:ｺｰﾄﾞﾏｽﾀに登録されていません」（行番号・項目名・値の 3 つの置換文字）。ci design は取込の区分3・警告でこの形のまま使う（検査表の置換文字 {0}：行数／{1}：項目名／{2}：値）。pbi design §バリデーション設計（文書バーコード 書類種別）・§文書バーコード サービスインターフェース generate・§API 契約 /wtg073/create は「WTG-000072（既存）／ｺｰﾄﾞﾏｽﾀに登録されていません」としてポップアップに出し、置換文字を決めていない。そのまま出すと「行数[]:…」の形で表示される。同じキーを 2 つの feature が別の形で使っている（正は既存の messages.properties）。 | 何を決めればよいか：文書バーコードの書類種別の誤りに出すキー。案A：WTG-000072 のまま、{0} を空、{1} に「書類種別」、{2} に選んだコードを入れると pbi design に書く。案B：行番号の無い既存の WTG-000029（{0}:ﾏｽﾀに存在しません）に替え、{0} に「書類種別」を入れる。案C：WTG-1000xx の帯に新しいキーを足す。 | 質問：画面に出すキーと文言は回答者が決める事項のため（pbi の他のメッセージも回答者の指定による） | 確認済み |  |  |
+| 7 | ssot-consistency | 業務の欠落・矛盾 | 重大 | 03c48a9140c67b07 | c1d39a16c92a1369 | specs/property-basic-info/design.md § ドメインモデル（Domain Model） / 文書バーコードNo ほか 2 か所 | バーコードの契約区分の文字（P78） | 文書バーコードNoはP78の文字項目2、稟議バーコードNoは文字項目1で契約区分を表し食い違う | pbi design「文書バーコードNo ＝ 基地局番号＋"-"＋エリア接頭語＋受付No＋"-"＋契約区分＋書類種別コード＋件数。…契約区分は TWTGM100.Keiyaku_Kbn をキー3 にして WTG/PARAM/P78 を引いた文字項目2」（Q-DS-PBI-007。.aidd/.engine/answer-ds-pbi-20261007-1421-Q007.txt:30）。ir design「稟議バーコードNo：その契約局の基地局番号（枝番なし）＋"-"＋P34 の文字項目1＋受付No＋"-"＋契約区分をキー3 にした P78 の文字項目1（ｵｰﾌﾟﾝ 241／屋内 141／鉄道 341）。TWTGM100.Keiyaku_Kbn の値そのものでも、P78 の文字項目2 でもない」（Q-DS-IR-012）。ci design の稟議バーコードNo も文字項目1（ir design の 3.2 と同じ形）。文書バーコードNo の先頭は稟議バーコードNo と同じ並び（基地局番号-エリア接頭語＋受付No-契約区分）で、文書バーコードは稟議バーコードNo ごとに件数を振る（11.7）が、契約区分の部分だけ引く文字項目が違う。意図した違いか取り違えかが design から読み取れない。 | 何を決めればよいか：文書バーコードNo の契約区分の部分に P78 の文字項目1（241／141／341）と文字項目2 のどちらを使うか。案A：文字項目1 にそろえ、文書バーコードNo の先頭が稟議バーコードNo と一致するようにする（pbi design を直し、upstream-carryover の pbi design の項目に加える）。案B：文字項目2 のままとし、稟議バーコードNo と別の文字を使う理由を pbi design に書く。 | 質問：どちらの記述も回答者の回答に基づき、業務上の正しい値は回答者しか決められないため | 確認済み |  |  |
+| 8 | ssot-consistency | 文書間の参照 | 軽微 | eee1ee888cb3f794 | 9f01921c05b45687 | specs/contract-info-import/design.md § データ契約と外部連携（Data Contracts &amp; Integration） / 物件基本情報登録変更との口 ほか 1 か所 | /wtg090/back の戻り先 | 取込画面の戻る（/wtg090/back）が送る物件基本情報登録変更の口が書かれていない | ci design §物件基本情報登録変更との口「戻るは /wtg090/back から物件基本情報登録変更画面を申請No で出し直す」、§API 契約 /wtg090/back「物件基本情報登録変更画面を申請No で出し直す」とあり、pbi design のどの口へ送るかが無い。pbi design の口は /wtg070（新規）・/wtg070/pushApplicationNo（申請状況一覧から申請No）・/wtg070/search・/wtg070/return（セッションの申請No。バッチ処理状況一覧から）で、物件基本情報登録変更 Controller の呼び出し元（Inbound）にも契約情報取込は無い。upstream-carryover の pbi design の項目は発行依頼書登録変更からの戻りの入口だけを挙げている。 | ci design の /wtg090/back を「セッションの申請No を付けて forward:/wtg070/pushApplicationNo へ送り、物件基本情報登録変更画面を出し直す」と書く。pbi design の物件基本情報登録変更 Controller の呼び出し元に「契約情報取込画面（/wtg090/back）— 戻り（重要度: 中）」を足す（upstream-carryover の pbi design の項目に加える）。 | 修正：既存の口を指定するだけで、業務の新しい事実は要らないため | 確認済み |  |  |
+| 9 | ssot-consistency | 文書間の参照 | 軽微 | 38c36e3db826a92d | b5ec17b2034b8e18 | specs/application-status-search/design.md § データ契約と外部連携（Data Contracts &amp; Integration） / 物件基本情報登録変更との口 ほか 1 か所 | /wtg060/return の呼び出し元 | 取込の実行後に/wtg060/returnへ来る経路が、申請状況一覧のdesignで違って書かれている | ci design §API 契約 /wtg090/execute「タスクを登録して forward:/wtg060/return」、§アーキテクチャ方式と境界図（取込画面 Controller から申請状況検索一覧へ forward /wtg060/return）。AS design §データ契約と外部連携「物件基本情報登録変更画面（と契約局取込）の戻るは /wtg070/returnList から /wtg060/return に戻り」とし、取込画面の実行の後に直接 /wtg060/return へ来る経路を書いていない（取込画面の戻る /wtg090/back は物件基本情報登録変更へ戻る）。AS design §申請状況検索一覧 Controller の呼び出し元（Inbound）にも契約情報取込が無い。 | AS design §物件基本情報登録変更との口の「（と契約局取込）」を削り、「契約情報取込画面の実行（/wtg090/execute）の後も forward:/wtg060/return で戻り、セッションの条件で前に見ていたページを再検索する（未検索なら初期表示）」を足す。§申請状況検索一覧 Controller の呼び出し元に「契約情報取込画面（/wtg090/execute の後）— 戻り（重要度: 中）」を足す。 | 修正：ci design の確定した遷移に合わせて記述を直すだけのため | 確認済み |  |  |
+
+### 差戻し先候補
+
+| 指摘番号 | 宛先 | 理由 |
+|---|---|---|
+| 5 | Phase 2（steering/api-standards.md） | 画面内の JSON の口のエラーの返し方の規約が steering に無く、置くかどうかは steering の開き直しで決めるため |
+
+### 除外
+
+| 観点 | 対象箇所 | 要約 | 除外の出典 |
+|---|---|---|---|
+| dependency-cycle-detection | specs/property-basic-info/design.md § データ契約と外部連携（Data Contracts &amp; Integration） | pbi→ir（TWTGM100 の読取り・削除・複製）と ir→pbi（WTG 申請状態サービス）の組は Phase 3 で扱った循環と同じ根本原因で、新しい閉路を構成しない | answer:feature-decomposition-generate[] |
+| dependency-cycle-detection | specs/print-report/design.md § 依存してよい対象（Allowed Dependencies） | pbi 画面→/wtg072/search と print-report Service→pbi Service（6.9 の判定）の組。判定の置き場は回答で案A（pbi Service を呼ぶ）に決定済み | answer:design-authoring-generate[print-report] |
+| dependency-cycle-detection | specs/*/design.md の API 契約（pbi と ci・pbi と AS・ir と tutorial） | 戻る・コールバックの遷移と function/wtg/common の共通部品への呼出しで、feature 間の閉路を構成しない | verify:画面の戻り・コールバックと WTG 共通部品への呼出しは feature 間の依存の辺にならない |
+| steering-conformance | specs/contract-info-download/design.md § 物理データモデル（Physical Data Model） | 作業用テーブル TWTGD050・TWTGD060 が共通列を持たない（steering/database.md の共通カラム） | answer:design-authoring-generate[contract-info-download] |
+| steering-conformance | specs/issue-request-tutorial/design.md § バリデーション設計 | 増額分賃料・消費電力の桁をサーバーで検査しない（steering/security.md の入力検証） | answer:design-authoring-generate[issue-request-tutorial] |
+| steering-conformance | specs/application-status-search/design.md・specs/contract-info-import/design.md § 機能固有のエラー処理（Error Handling） | 画面の業務エラーを例外にせず BindingResult で返す（steering/tech.md の例外処理フロー） | verify:既決（upstream-carryover「tech.md：画面の業務エラー・排他は BindingResult で返してよい場合」） |
+| steering-conformance | specs/contract-info-download/design.md § API 契約（API Contract） | /wtg100/csv が作業用テーブルを書くが CSRF の照合に乗らない（steering/security.md の攻撃対策） | verify:既決（upstream-carryover「security.md 攻撃対策：CSRF は末尾一致の対象だけを照合する」） |
+| ssot-consistency | specs/property-basic-info/design.md § データ契約と外部連携・API 契約・バリデーション設計 | 出力 CSV の 228 列と取込の形、/wtg070/keyakuDl・/wtg072/search・/wtg070/returnList・発行依頼書登録変更との口、既存とした WTX-100005・WTX-100011・WTX-100012・WTG-100018 の他 feature との食い違い | verify:既決（upstream-carryover の pbi design の項目） |
+| ssot-consistency | specs/issue-request/design.md § データ契約と外部連携（チュートリアル（GWTG081）との受け渡し） | チュートリアルとの受け渡し（json.clear・入れる順・入れる項目）の食い違い | verify:既決（upstream-carryover の ir design の項目） |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 |
+|---|---|---|---|---|---|---|
+| cross | 1 | 1 | 修正 | 修正案の A。ビュー VWTGM010 で、契約者区分は「契約者」「関係者」、法人_個人区分は「法人」「個人」（P06 の名称と同じ）にして出す。受電方法は、予備項目4（YOBI_KOMOKU4）に値があればその値、空なら ELECT_KIND を「1:電力会社直受」「2:テナント受電」「3:ａｕ受電」の文字にして出す（予備項目4 が空の古い契約は、取込で WTG-000072 になる。利用者が CSV の受電方法を P43 の名称に直してから取り込む）。消費税扱いはコードのまま出し、取込のリバースデータの検査は ZM040 のキー3 で照合する。_handoff の csv-layout-wtg100.md・work-tables-wtg100.md・phase5-contract-info-import-checks.md を直して差し替えたので、両方の design に反映してください | Junichi Noumi | 2026-10-08T20:40:14+09:00 |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| cross | 1 | 2 | 修正 | AI 推奨を採用: ir design が前提として明記した事項を ci design に書き足すだけで、業務の新しい事実は要らないため | Junichi Noumi | 2026-10-08T20:40:18+09:00 |  |  | 採用 |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| cross | 1 | 3 | 修正 | AI 推奨を採用: 承認済みの ci requirements 2.8 と ci design で決まっている内容を、持ち主の pbi design に書き足すだけのため | Junichi Noumi | 2026-10-08T20:40:22+09:00 |  |  | 採用 |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 |
+|---|---|---|---|---|---|---|
+| cross | 1 | 4 | 修正 | 。PWTGO070・PWTGO080 は［WTG070］と［WTG060］のメニュー（権限区分ごとに分かれていれば、そのすべて）に登録する。子画面（072・073・081・090・100）は「PWTGO070 を登録するメニューすべてに、メニューID ごとに 1 行」にそろえる。投入の文と手順は各 feature の tasks で作り、投入は発注者が導入手順書に沿って行う | Junichi Noumi | 2026-10-08T20:40:26+09:00 |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 |
+|---|---|---|---|---|---|---|
+| cross | 1 | 5 | 修正 | 修正案の B | Junichi Noumi | 2026-10-08T20:40:30+09:00 |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 |
+|---|---|---|---|---|---|---|
+| cross | 1 | 6 | 修正 | 修正案の A | Junichi Noumi | 2026-10-08T20:40:33+09:00 |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 |
+|---|---|---|---|---|---|---|
+| cross | 1 | 7 | 修正 | 修正案の B。文書バーコードNo の契約区分は 1 桁（屋内 1・オープン 2・鉄道 3。P78 の文字項目2）で、稟議バーコードNo の 3 桁（文字項目1）とは別の決まりなので、文字項目2 のままとする。理由を物件基本情報の design に書く | Junichi Noumi | 2026-10-08T20:40:37+09:00 |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| cross | 1 | 8 | 修正 | AI 推奨を採用: 既存の口を指定するだけで、業務の新しい事実は要らないため | Junichi Noumi | 2026-10-08T20:40:41+09:00 |  |  | 採用 |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| cross | 1 | 9 | 修正 | AI 推奨を採用: ci design の確定した遷移に合わせて記述を直すだけのため | Junichi Noumi | 2026-10-08T20:40:45+09:00 |  |  | 採用 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:property-basic-info | 6 | 2026-10-08T20:47:56+09:00 | ①② | ["specs/property-basic-info/design.md"] | {"specs/property-basic-info/design.md":"8bf1b6e70ae1125231d30b793d1c166820906f3216ea6dd53688a5d8bd5f1805"} | 2 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | dependency-boundary-conformance | 文書間の参照 | 軽微 | f7f47595859a3059 | 4faaa8c31d7f8a71 | specs/property-basic-info/design.md § API 契約（API Contract） / `/wtg070/pushApplicationNo` ほか 1 か所 | /wtg090/back の戻り先 | 取込画面からの戻りの受け口 pushApplicationNo の Request と開く経路に、取込画面が無い | 横断確認 1 回目 #8 の修正で、物件基本情報登録変更 Controller の呼び出し元（Inbound）に「契約情報取込画面（`/wtg090/back`）— 戻り。セッションの申請No を付けて `forward:/wtg070/pushApplicationNo` で受ける（重要度: 中。横断確認 1 回目 #8）」（行524）が足された。一方、契約情報取込が依存する公開の口である API 契約の表の `/wtg070/pushApplicationNo` の行（行544）は Request を「申請No（申請状況一覧から）」のままとしている。`- **この画面を開く経路**`（行579）も「新規登録はメニュー…、既存の申請は、申請状況一覧（GWTG060）の申請No のリンクから…（`/wtg070/pushApplicationNo`）」だけを挙げ、契約情報取込画面からの戻りが無い。同じ design の中で、呼び出し元の記述と口の契約の記述がそろっていない（ci design §API 契約 `/wtg090/back` の「物件基本情報登録変更画面を申請No で出し直す」が使う口） | 行544 の Request を「申請No（申請状況一覧から。契約情報取込画面の戻る `/wtg090/back` からは、セッションの申請No を付けた forward で受ける）」に直す。行579 の「この画面を開く経路」に「契約情報取込画面の戻る（`/wtg090/back`）からは `forward:/wtg070/pushApplicationNo` で申請No を受けて開き直す（横断確認 1 回目 #8）」を足す | 修正：人の判断で決まった #8 の口を、同じ design の口の表と開く経路にそろえるだけで、業務の新しい事実は要らないため | 確認済み |  |  |
+| 2 | dependency-boundary-conformance | 文書間の参照 | 軽微 | 9e6c49a89cd1ebed | 6f49f48b6f626167 | specs/property-basic-info/design.md § アーキテクチャ方式と境界図（Architecture Pattern &amp; Boundary Map） / 契約情報取込バッチ ほか 1 か所 | 取込による TWTGM080 の基地局番号ほかと単独複数局フラグの更新 | 境界図が取込バッチの TWTGM080 の書込みを「状態を直接更新」だけとし、持たない責務の記述と合わない | 横断確認 1 回目 #3 の修正で、§このスペックが持たない責務の契約情報取込の行（行84）は「取込バッチ（取込中への状態の変更と戻し、契約局情報・発行依頼書の洗替、取込の終わりの TWTGM080 の計画基地局番号・計画基地局名・基地局番号・基地局名・基地局名(ｶﾅ)・エリアコード・単独複数局フラグ・排他用の値の更新を含む）」に直り、§画面の項目の単独局か複数局か（行599）にも取込の後の表示が足された。一方、境界図（行163）は `BATCH[契約情報取込バッチ contract-info-import] -.物件申請情報の状態を直接更新.-&gt; DB` のままで、取込が TWTGM080 の基地局番号ほか・単独複数局フラグ・排他用の値を書き換えることが図から読めない。あわせて §画面に出さない列（行597）は計画基地局番号・計画基地局名・基地局名・基地局名(ｶﾅ)・エリアｺｰﾄﾞを設定する経路を「更新」と修正稟議・再製本の複製だけとし、取込による入れ直しに触れていない（ci design §洗替と変更履歴の順 6.）。横断確認 1 回目 #3 の指摘内容は境界図も挙げていたが、人が採用した修正案には含まれていなかった | 行163 のラベルを「物件申請情報の状態・基地局番号ほか・単独複数局フラグを直接更新」に直す。行597 の末尾に「契約情報取込の後は、取込が最初のデータ行の基地局番号で計画マスタを引いて入れ直した値になる（`### このスペックが持たない責務（Out of Boundary）`、ci design）」を足す | 修正：#3 で決まった取込の書込みの範囲を、同じ design の境界図と画面に出さない列にそろえるだけで、業務の新しい事実は要らないため | 確認済み |  |  |
+
+### 除外
+
+| 観点 | 対象箇所 | 要約 | 除外の出典 |
+|---|---|---|---|
+| steering-conformance | specs/property-basic-info/design.md § 技術スタック（Technology Stack） / Infrastructure / Runtime | 開発端末の JDK 1.8 と steering/tech.md の JDK 1.7 の矛盾 | verify:重複（前回 2-7 で人が対応せず進めると判断済み。upstream-carryover の steering tech.md の項目） |
+| steering-conformance | specs/property-basic-info/design.md § ドメインモデル（Domain Model） / 依頼内容 | 依頼内容を名称の文字列で持つことと steering/database.md の矛盾 | verify:重複（前回 2-11 で人が対応せず進めると判断済み） |
+| steering-conformance | specs/property-basic-info/design.md § 物理データモデル（Physical Data Model） / 判定・権限ID・連番ほか | 判定・権限ID をコードマスタにせず連番などを Int とすることと steering/database.md の矛盾 | verify:重複（前回 2-12 で人が対応せず進めると判断済み） |
+| steering-conformance | specs/property-basic-info/design.md § セキュリティ上の考慮（Security Considerations） / 組織の判定 | P71 のキー3 の「グループ」を権限区分と読むことと steering/security.md の矛盾 | verify:重複（前回 2-13 で人が対応せず進めると判断済み） |
+| evidence-guard | specs/property-basic-info/design.md § サービスインターフェース（Service Interface） / canOperate の処理状況 ほか 2 か所 | 処理状況（/wtg070/taskList・/wtg070/return）に受け入れ基準が無い | verify:重複（前回 3-4 で人が対応せず進めると判断済み。canOperate の根拠は指示どおり書き直されている） |
+| traceability | specs/property-basic-info/design.md § 状態管理（State Management） / 稟議・修正稟議 起案済 01・回覧中 02 ほか 1 か所 | 起案済・回覧中の申請者の番で更新などを受け付けないことと requirements 1.3・6.7・14.5 の不整合 | verify:重複（前回 5-1 で人が対応せず進めると判断済み） |
+| traceability | specs/property-basic-info/design.md § サービスインターフェース（Service Interface） / canOperate の契約局情報追加 | 契約局情報追加を複数局に限ることと requirements 14.5 の不整合 | verify:重複（前回 5-2 で人が対応せず進めると判断済み） |
+| steering-conformance | specs/property-basic-info/design.md § アーキテクチャ方式と境界図（Architecture Pattern &amp; Boundary Map） / steering との整合 ほか 2 か所 | TWTGM170 の権限ID を P82 と別体系にすること（行173 の「TWTGM170・P82 だけで判定」の文を含む）と steering/security.md・requirements の前提の矛盾 | verify:重複（前回 5-3 で人が対応せず進めると判断済み。同じ原因） |
+| steering-conformance | specs/property-basic-info/design.md § API 契約（API Contract） / 注記 ほか 2 か所 | CSRF の照合を servlet-context.xml の末尾一致の URL だけにすることと steering/security.md の食い違い | verify:重複（前回 3-3 の判断で design に意図した外れとして明記済み。upstream-carryover の steering security.md の項目） |
+| steering-conformance | specs/property-basic-info/design.md § 機能固有エラーコード / 表の後の注記 | 業務エラー・排他を BindingResult で返すことと steering/tech.md の食い違い | verify:重複（前回 3-2 の判断で design に意図した外れとして明記済み。upstream-carryover の steering tech.md の項目） |
+| dependency-boundary-conformance | specs/property-basic-info/design.md § ドメインモデル（Domain Model） / 申請No の採番 ほか 13 か所 | 依存する design・既存コードと合わない記述のうち、upstream-carryover.md「物件基本情報登録変更の design（承認済み。開き直して直す）」ほかに人が挙げたもの（MAX区分（行237）、発行依頼書登録変更への遷移の GET の値と戻りの入口（行576）、複製の TWTGM100 の申請者、recordNumbering の発番日時・更新者名・判定 11（行478）、WTX-100011・WTX-100012・WTX-100005 を既存とした記述（行708・713・925）、WTG-100018 を既存とした記述（行743）、/wtg072/search の入力（行571）、基地局番号の初期表示、getApplication の出力（行473）、getApplicantName、/wtg070/returnList の戻り先（行572）、CSV の「契約情報取込で読める形」（行391）、TWTGM110 を物理削除しない記述への取込の例外（行263・618）、/wtg100 の FunctionID・applicationNo（行577）） | verify:既知の食い違い（.aidd/.engine/upstream-carryover.md に人の判断で挙げ、Phase 5 の最後にまとめて直すと決めたもの。今回の修正の範囲（横断確認 1 回目 #3〜#8）の外） |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| feature:property-basic-info | 6 | 1 | 修正 | 軽微（AIDD 内部の決まりごと）のため、AI が修正案で直す | system（自動） | 2026-10-08T20:52:29+09:00 |  |  |  |
+| feature:property-basic-info | 6 | 2 | 修正 | 軽微（AIDD 内部の決まりごと）のため、AI が修正案で直す | system（自動） | 2026-10-08T20:52:29+09:00 |  |  |  |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:property-basic-info | 7 | 2026-10-09T12:20:42+09:00 | ①② | ["specs/property-basic-info/design.md"] | {"specs/property-basic-info/design.md":"03331555d6ee0825bd90f023f17f4951d532f97b0f4bde7b7f50878d4cc4da03"} | 0 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+
+### 除外
+
+| 観点 | 対象箇所 | 要約 | 除外の出典 |
+|---|---|---|---|
+| steering-conformance | specs/property-basic-info/design.md § アーキテクチャ方式と境界図（Architecture Pattern &amp; Boundary Map） / steering との整合 | TWTGM170 の権限ID を P82 と別体系にすること（行173 の「TWTGM170・P82 だけで判定」の文を含む）と steering/security.md・requirements の前提の矛盾 | verify:重複（前回 5-3 で人が対応せず進めると判断済み。今回の変更は行163 の境界図のラベルだけで、行173 は変わっていない） |
+| steering-conformance | specs/property-basic-info/design.md § API 契約（API Contract） / 注記 | CSRF の照合を servlet-context.xml の末尾一致の URL だけにすることと steering/security.md の食い違い | verify:重複（前回 3-3 の判断で design に意図した外れとして明記済み。upstream-carryover の steering security.md の項目） |
+| traceability | specs/property-basic-info/design.md § API 契約（API Contract） / `/wtg070/addKeyaku`・`/wtg070/henshu` | 起案済・回覧中の申請者の番の扱い・契約局情報追加を複数局に限ることと requirements 1.3・6.7・14.5 の不整合 | verify:重複（前回 5-1・5-2 で人が対応せず進めると判断済み） |
+| dependency-boundary-conformance | specs/property-basic-info/design.md § API 契約（API Contract） / `/wtg072/search` ほか 3 か所 | 依存する design・既存コードと合わない記述のうち、upstream-carryover.md に人が挙げたもの（/wtg072/search の入力（行571）、/wtg070/returnList の戻り先（行572）、発行依頼書登録変更への遷移の値と戻りの入口（行576）、/wtg100 の FunctionID・applicationNo（行577）） | verify:既知の食い違い（.aidd/.engine/upstream-carryover.md に人の判断で挙げ、Phase 5 の最後にまとめて直すと決めたもの。今回の修正の範囲（6-1・6-2）の外） |
+
+## 解消
+
+| スコープ | 回数 | 指摘番号 | 再検査スコープ | 再検査回数 | 確認者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:property-basic-info | 6 | 1 | feature:property-basic-info | 7 | system（自動）：再検査で再検出なし | 2026-10-09T12:23:25+09:00 |
+| feature:property-basic-info | 6 | 2 | feature:property-basic-info | 7 | system（自動）：再検査で再検出なし | 2026-10-09T12:23:25+09:00 |
+
+## 承認
+
+| スコープ | 回数 | 対象成果物 | 承認者 | 承認日時 | 原本SHA256 |
+|---|---|---|---|---|---|
+| feature:property-basic-info | 7 | specs/property-basic-info/design.md | Junichi Noumi | 2026-10-09T12:25:37+09:00 | 03331555d6ee0825bd90f023f17f4951d532f97b0f4bde7b7f50878d4cc4da03 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:issue-request | 7 | 2026-10-09T12:30:38+09:00 | ①② | ["specs/issue-request/design.md"] | {"specs/issue-request/design.md":"441ecb00e6dd9f455e6d5dfbd0de9c9249c120a980a4eac8d38d5d2cd5659c2c"} | 2 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | traceability | 文書間の参照 | 軽微 | 30e46cc005de5942 | 9f4d1747c39f7f26 | specs/issue-request/design.md § アーキテクチャ方式と境界図（Architecture Pattern &amp; Boundary Map） / steering との整合 | 画面内の非同期の口 | steeringとの整合の行が画面内の非同期の口を税額計算だけとし、契約種別による選択肢の口が抜けている | 今回の修正（横断確認 1 回目 #5）で、§ データ契約と外部連携（Data Contracts &amp; Integration）の API は「画面の要求は API 契約のフォーム送信と、画面内で値を返す非同期の口 /wtg080/calcTaxAdjustment（税額計算）・/wtg080/changeKeiyakuSyubetsuTutorial（契約種別による選択肢）だけ」となり、§ API 契約（API Contract）の 2 行にも失敗時の扱いが入った。§ 発行依頼書登録変更 Controller の呼び出し元（Inbound）も「税額計算・契約種別による選択肢の非同期の取得」と 2 つを挙げる。一方、§ アーキテクチャ方式と境界図 の「steering との整合」は「画面内の非同期の取得（税額計算）は、既存の画面内の JSON 取得と同じ扱いで、画面以外から呼ばれる API にしない（steering/api-standards.md の本プロジェクトでの扱い）」と税額計算だけを挙げ、/wtg080/changeKeiyakuSyubetsuTutorial が無い。repair の指示「非同期の口があることとそろえる」に対し、同じ文書の中で口の数の記述がそろっていない | § アーキテクチャ方式と境界図 の「steering との整合」の該当文を「画面内の非同期の取得（税額計算 `/wtg080/calcTaxAdjustment`、契約種別による選択肢 `/wtg080/changeKeiyakuSyubetsuTutorial`）は、既存の画面内の JSON 取得と同じ扱いで、画面以外から呼ばれる API にしない」に直す | 修正：同じ文書の中の記述をそろえるだけで、業務の新しい事実は要らないため | 確認済み |  |  |
+| 2 | traceability | 文書間の参照 | 軽微 | 54b768f9c4e65964 | a01466b7c950ca84 | specs/issue-request/design.md § このスペックが持たない責務（Out of Boundary） / 発注者 | ZMENUAUTH の PWTGO080 の行 | 発注者に任せる投入の一覧にZMENUAUTHのPWTGO080の行が無く、移行方針と合わない | 今回の修正（横断確認 1 回目 #4）で、§ 移行方針（Migration Strategy）に「ZMENUAUTH：PWTGO080 の行を…メニューID ごとに 1 行登録する。投入の文と手順は tasks で作り、投入は発注者が導入手順書に沿って行う」、§ 移行対象ファイル一覧 に ZMENUAUTH（PWTGO080 の行）の行が入った。一方、§ このスペックが持たない責務（Out of Boundary）の発注者の行は「コードマスタ（TWTZM040）・採番マスタ（TWTZM050）の行と、TWTGM160・TWTZM370 の値の投入、記入例の中身 → 発注者（### 移行方針（Migration Strategy）…）」で、ZMENUAUTH の行の投入が無い。移行方針が委譲先として挙げるものと、責務境界の委譲の一覧が対応していない | § このスペックが持たない責務（Out of Boundary）の発注者の行を「コードマスタ（`TWTZM040`）・採番マスタ（`TWTZM050`）・メニュー権限（`ZMENUAUTH`。`PWTGO080` の行）の行と、`TWTGM160`・`TWTZM370` の値の投入、記入例の中身 → 発注者（`### 移行方針（Migration Strategy）`、Q-DS-IR-009・Q-DS-IR-010・Q-DS-IR-012、横断確認 1 回目 #4）」に直す | 修正：移行方針に書いた委譲先を責務境界の一覧にも載せるだけで、業務の新しい事実は要らないため | 確認済み |  |  |
+
+### 除外
+
+| 観点 | 対象箇所 | 要約 | 除外の出典 |
+|---|---|---|---|
+| traceability | specs/issue-request/design.md § ドメインモデル（Domain Model） / 発番 ほか 2 か所 | 発番で担当エリア等を保存する扱いが要件1.3・1.5・9.3と食い違う | verify:既決（design-check 1 回目 #1・2 回目 #1 で「対応せず進める」と判断済み。upstream-carryover） |
+| traceability | specs/issue-request/design.md § セキュリティ上の考慮（Security Considerations） / 2.1 | 2.1の本人が登録した発行依頼書を申請の登録者で比べており要件と食い違う | verify:既決（design-check 1 回目 #2 で「対応せず進める」と判断済み。upstream-carryover） |
+| traceability | specs/issue-request/design.md § 発行依頼書登録変更 Service / 作成組織 | 8.1のログインユーザーのグループを権限区分と読み替えている | verify:既決（design-check 1 回目 #3・2 回目 #2 で「対応せず進める」と判断済み。upstream-carryover） |
+| traceability | specs/issue-request/design.md § バリデーション設計 / 9.6 | 9.6の所属必須に「選んだ会社が社内」の条件を足している | verify:既決（design-check 1 回目 #4 で「対応せず進める」と判断済み。upstream-carryover） |
+| traceability | specs/issue-request/design.md § サービスインターフェース（Service Interface） / 照合する行が無いときの扱い | 契約局情報追加を発行依頼書が登録済みの申請だけにしており1.9から外れる | verify:既決（design-check 4 回目 #1 の判断で決めた逸脱。upstream-carryover） |
+| steering-conformance | specs/issue-request/design.md § 機能固有エラーコード ほか 2 か所 | 業務・排他エラーを例外にせずBindingResultに積む方式がtech.mdと食い違う | verify:既決（design-check 1 回目 #6・2 回目 #3 で「対応せず進める」と判断済み。upstream-carryover） |
+| steering-conformance | specs/issue-request/design.md § 技術スタック（Technology Stack） / Infrastructure / Runtime | 開発端末のJDK 1.8がtech.mdの必須ツールJDK 1.7と食い違う | verify:既決（design-check 1 回目 #7 で「対応せず進める」と判断済み。upstream-carryover） |
+| steering-conformance | specs/issue-request/design.md § セキュリティ上の考慮（Security Considerations） / CSRF ほか 1 か所 | 一時保存・発番がCSRFの照合に乗らずsecurity.mdの攻撃対策と食い違う | answer:design-authoring-generate[issue-request] |
+| steering-conformance | specs/issue-request/design.md § 論理データモデル（Logical Data Model） / 属性と型 ほか 1 か所 | 金額・調整額を文字で持つ型と、トランの種別Vがdatabase.mdと食い違う | answer:design-authoring-generate[issue-request] |
+| dependency-boundary-conformance | specs/issue-request/design.md § データ契約と外部連携（Data Contracts &amp; Integration） / 物件基本情報登録変更との口 ほか 1 か所 | pbi designの公開契約に無い前提（戻りの入口・発番日時・getApplicantName・複製の申請者・基地局番号の初期表示）に依存。今回の pbi design の変更でもこれらは追加されていない | verify:既決（design-check 1 回目 #8・2 回目 #4 で「対応せず進める」と判断済み。upstream-carryover） |
+| dependency-boundary-conformance | specs/issue-request/design.md § このスペックが持たない責務（Out of Boundary） / 単独局と複数局の切替 ほか 1 か所 | pbi design が契約情報取込による TWTGM080 の基地局番号群・単独複数局ﾌﾗｸﾞの更新を明記したが、本書の委譲の行は pbi だけを挙げる。本書はこれらの列を書かず読むだけで、依存の前提は変わらない | verify:横断確認 1 回目 #3 で扱い済み（持ち主の pbi design・ci design の記述で整理され、本書への修正は指示されていない） |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| feature:issue-request | 7 | 1 | 修正 | 軽微（AIDD 内部の決まりごと）のため、AI が修正案で直す | system（自動） | 2026-10-09T12:34:18+09:00 |  |  |  |
+| feature:issue-request | 7 | 2 | 修正 | 軽微（AIDD 内部の決まりごと）のため、AI が修正案で直す | system（自動） | 2026-10-09T12:34:18+09:00 |  |  |  |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:issue-request | 8 | 2026-10-09T12:45:39+09:00 | ①② | ["specs/issue-request/design.md"] | {"specs/issue-request/design.md":"7bedc0d4618ebcb9a1667ce749bf24513272ac9c19fbdebdfe1ac2954ab67fbb"} | 0 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+
+## 解消
+
+| スコープ | 回数 | 指摘番号 | 再検査スコープ | 再検査回数 | 確認者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:issue-request | 7 | 1 | feature:issue-request | 8 | system（自動）：再検査で再検出なし | 2026-10-09T12:47:48+09:00 |
+| feature:issue-request | 7 | 2 | feature:issue-request | 8 | system（自動）：再検査で再検出なし | 2026-10-09T12:47:48+09:00 |
+
+## 承認
+
+| スコープ | 回数 | 対象成果物 | 承認者 | 承認日時 | 原本SHA256 |
+|---|---|---|---|---|---|
+| feature:issue-request | 8 | specs/issue-request/design.md | Junichi Noumi | 2026-10-09T12:50:27+09:00 | 7bedc0d4618ebcb9a1667ce749bf24513272ac9c19fbdebdfe1ac2954ab67fbb |
+
+## 残件
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 承認スコープ | 承認回数 |
+|---|---|---|---|---|---|---|
+| feature:issue-request | 1 | 2 | 対応せず進める | AI 推奨を採用: 人の回答（Q-DS-IR-014）に従った読み方として design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため | feature:issue-request | 8 |
+| feature:issue-request | 1 | 4 | 対応せず進める | AI 推奨を採用: item-rules.md（回答者が渡した資料）に従った意図的な逸脱として design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため | feature:issue-request | 8 |
+| feature:issue-request | 1 | 7 | 対応せず進める | AI 推奨を採用: pbi design と同じ扱いとして design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため | feature:issue-request | 8 |
+| feature:issue-request | 1 | 8 | 対応せず進める | AI 推奨を採用: design に明記され、pbi design は Phase 5 の最後にまとめて直す方針とされているため。直すまでは pbi の実装がこの前提を満たさない | feature:issue-request | 8 |
+| feature:issue-request | 2 | 1 | 対応せず進める | AI 推奨を採用: 人の回答（Q-DS-IR-001 の C）に従った意図的な逸脱として design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため。ただし承認済み requirements と両立しない状態は残る | feature:issue-request | 8 |
+| feature:issue-request | 2 | 2 | 対応せず進める | AI 推奨を採用: グループを権限区分と読むことは物件基本情報と 1 回目の判断で決まっており、上流の文言は Phase 5 の最後にまとめて直す方針とされているため | feature:issue-request | 8 |
+| feature:issue-request | 2 | 3 | 対応せず進める | AI 推奨を採用: pbi design と同じ扱いとして design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため | feature:issue-request | 8 |
+| feature:issue-request | 2 | 4 | 対応せず進める | AI 推奨を採用: design に明記され、pbi design は Phase 5 の最後にまとめて直す方針とされているため。直すまでは pbi の実装がこの前提を満たさない | feature:issue-request | 8 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:issue-request-tutorial | 3 | 2026-10-09T12:53:04+09:00 | ①② | ["specs/issue-request-tutorial/design.md"] | {"specs/issue-request-tutorial/design.md":"9525adb816abae13d2df2c81482d21aafc3768d27ea27618280a17b15fb1676b"} | 2 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | steering-conformance | 業務の欠落・矛盾 | 重大 | 8495912cc088b0e0 | 8386e642b72fcab9 | specs/issue-request-tutorial/design.md § 技術スタック（Technology Stack） / Infrastructure / Runtime | 開発端末の JDK | 開発端末のJDK 1.8がtech.mdの必須ツールJDK 1.7と食い違う | 矛盾。steering/tech.md `### 必須ツール` は JDK を「1.7（1.7.0.55）／コンパイルと実行（回答 6）」と定め、`## コアテクノロジ` も「1.7（実行環境の JDK は 1.7.0.55）」としているが、design の技術スタックは「開発端末の JDK 1.8（-source/-target 1.7）」を開発端末でのコンパイルと自動テストの実行に使うとしている。design 自身が「steering/tech.md から意図して外れる。上流は Phase 5 の最後にまとめて直す（upstream-carryover）」と書き、根拠を Q-DS-PBI-014（物件基本情報登録変更と同じ）としている。上流の入力が変わったため全体を検査した結果、前回（1 回目 #1、判断「対応せず進める」）と同じ事項が同じ節に残っている（節の内容は 1 回目から変わっていない） | steering/tech.md の `### 必須ツール` に「開発端末は JDK 1.8（-source/-target 1.7）でもよい」を足す（Phase 2 への差戻し、または upstream-carryover での一括修正） | 対応せず進める：pbi design・ir design と同じ扱いとして design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため | 確認済み |  |  |
+| 2 | traceability | 業務のあいまい・不足 | 要判断 | 466a8634bf2378b7 | adc1790ca99a7490 | specs/issue-request-tutorial/design.md § API 契約（API Contract） / 画面のスクリプトの動き ほか 1 か所 | /wtg081/next の失敗時の画面の扱い | /wtg081/nextが予期しない例外で失敗したときの別ウインドウのスクリプトの扱いが無い | 非機能方針の反映を上流→下流で突き合わせた（意味判定：方針の置き場は示されているが、本 feature の口の異常系が未充足）。steering/non-functional.md 冒頭の分担は「機能固有の復旧手順は design.md の ## 機能固有のエラー処理（Error Handling）」とし、steering/api-standards.md は全節不要（回答 7）で画面内 JSON の口のエラーの共通形を持たない。設計横断確認 1 回目 #5（画面内 JSON の口のエラー形状）の判断は「修正案の B」＝「規約は置かず不要のままとし、各 design に口ごとの失敗時の扱いを書く」（.aidd/gates/phase-5-design.md）。これを受けて pbi design §データ契約と外部連携（/wtg070/inputHassoKiboDate）と ir design §データ契約と外部連携・§API 契約（/wtg080/calcTaxAdjustment・/wtg080/changeKeiyakuSyubetsuTutorial）は「口が失敗したとき（予期しない例外で既存の ExceptionResolver がエラー画面を返すとき）、画面のスクリプトは…値を入れず、入力済みの値を変えない（横断確認 1 回目 #5）」を書いた。本書は §機能固有のエラー処理 の返し方で「予期しない例外は既存の ExceptionResolver に任せる」とするだけで、§API 契約 の画面のスクリプトの動きは「result が ok なら…、error なら…」の 2 通りしか書いていない。/wtg081/next が JSON でなくエラー画面を返したときに、スクリプトが親画面へ値を渡すか、画面を進めるか、状態（state）を持ち直すかが決まっていない。§エラー時の分岐フロー にもこの分岐が無い | §API 契約 の画面のスクリプトの動きに「`/wtg081/next` が失敗したとき（予期しない例外で既存の `ExceptionResolver` がエラー画面を返すとき）、スクリプトは親画面へ値を渡さず、画面を進めず、状態を変えない（横断確認 1 回目 #5。ir design・pbi design の口と同じ扱い）」を足し、§機能固有のエラー処理 の返し方にも同じ扱いを 1 文で足す | 修正：横断確認 1 回目 #5 の判断（口ごとに失敗時の扱いを書く）と、ir design・pbi design の同じ種類の口の扱いに合わせて書き足すだけで、業務の新しい事実は要らないため | 確認済み |  |  |
+
+### 差戻し先候補
+
+| 指摘番号 | 宛先 | 理由 |
+|---|---|---|
+| 1 | 人間による確認（steering/tech.md の修正、または本 design の修正） | 開発端末の JDK（Q-DS-PBI-014 の回答）が steering の必須ツールと食い違っている。steering 側を直す場合は Phase 2 が宛先になる |
+
+### 除外
+
+| 観点 | 対象箇所 | 要約 | 除外の出典 |
+|---|---|---|---|
+| traceability | specs/issue-request-tutorial/design.md § ドメインモデル（Domain Model） / 画面と進む先 | 画面を 11 にし、RRH数・System構成・UPS工事の 3 画面を使わない（requirements 1.3・1.9 から外れる） | answer:design-authoring-generate[issue-request-tutorial] |
+| traceability | specs/issue-request-tutorial/design.md § ドメインモデル（Domain Model） / 局種別の出し分け | 鋼管柱を KDDI⇒UQ だけに出す（requirements 1.8 から外れる） | answer:design-authoring-generate[issue-request-tutorial] |
+| traceability | specs/issue-request-tutorial/design.md § 設計判断（Design Decisions） / 判断 1 | ブラウザーの × で閉じることを防がない（requirements 1.10 から外れる） | answer:design-authoring-generate[issue-request-tutorial] |
+| traceability | specs/issue-request-tutorial/design.md § ドメインモデル（Domain Model） / 入れる値 | 入れる先に転貸情報の有無を足して 8 項目にする（requirements 2.1 から外れる） | answer:design-authoring-generate[issue-request-tutorial] |
+| traceability | specs/issue-request-tutorial/design.md § 設計判断（Design Decisions） / 判断 3 | 「空にする」操作で値を消す（requirements 2.2 の例外） | answer:design-authoring-generate[issue-request-tutorial] |
+| traceability | specs/issue-request-tutorial/design.md § このスペックが持たない責務（Out of Boundary） / 1.2 | 開ける人と状態はチュートリアル設定ボタンの表示だけで決め、/wtg081 では確かめない（1.2） | answer:design-authoring-generate[issue-request-tutorial] |
+| traceability | specs/issue-request-tutorial/design.md § バリデーション設計 / 桁 | 桁（12・10）を入力欄の最大桁で止め、検査とメッセージを持たない（3.2・3.3） | answer:design-authoring-generate[issue-request-tutorial] |
+| steering-conformance | specs/issue-request-tutorial/design.md § 機能固有のエラー処理（Error Handling） / 返し方 | 入力チェックの結果を BindingResult でなく JSON の result・messages で返す（tech.md の例外処理フロー） | answer:design-authoring-generate[issue-request-tutorial] |
+| steering-conformance | specs/issue-request-tutorial/design.md § API 契約（API Contract） / /wtg081/next | 画面内で JSON を返す口が 1 つ増える（api-standards.md の「JSON を返すのは既存の 2 か所だけ」） | answer:design-authoring-generate[issue-request-tutorial] |
+| steering-conformance | specs/issue-request-tutorial/design.md § セキュリティ上の考慮（Security Considerations） / 脅威と対策 | 開ける人と状態をサーバー側で判定しない（security.md の禁止「画面の表示だけで制御しない」） | answer:design-authoring-generate[issue-request-tutorial] |
+| dependency-boundary-conformance | specs/issue-request-tutorial/design.md § データ契約と外部連携（Data Contracts &amp; Integration） / 親画面がするとき | json.clear の印・入れる順・入力できない項目に入れないこと・電気料等の切替・整形が ir design の公開契約にまだ無い（本書に upstream-carryover と明記） | answer:design-authoring-generate[issue-request-tutorial] |
+| evidence-guard | specs/issue-request-tutorial/design.md § ファイル配置計画（File Structure Plan） / function/wtg/wtg081 | 機能ID WTG081 の自分のパッケージ・pwtgo081ZoomForm.html・ZOOM_DEFINE.pwtgo081=1000px,600px | answer:design-authoring-generate[issue-request-tutorial] |
+| evidence-guard | specs/issue-request-tutorial/design.md § API 契約（API Contract） / 画面のスクリプトの動き | 着工予定日の初期値を利用者の PC の今日の日付にする | answer:design-authoring-generate[issue-request-tutorial] |
+| traceability | specs/issue-request-tutorial/design.md § 移行方針（Migration Strategy） / ZMENUAUTH | ZMENUAUTH の投入の文と手順を tasks で作ること（横断確認 1 回目 #4 の判断の一部）が本書に無い。タスクの分割は tasks で決める | rule:B-04 |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| feature:issue-request-tutorial | 3 | 1 | 対応せず進める | 前回（1 回目 #1）と同じ指摘で、箇所に変更がない: AI 推奨を採用: pbi design・ir design と同じ扱いとして design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため | system（自動） | 2026-10-09T12:57:02+09:00 |  |  |  |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| feature:issue-request-tutorial | 3 | 2 | 修正 | AI 推奨を採用: 横断確認 1 回目 #5 の判断（口ごとに失敗時の扱いを書く）と、ir design・pbi design の同じ種類の口の扱いに合わせて書き足すだけで、業務の新しい事実は要らないため | Junichi Noumi | 2026-10-09T12:59:43+09:00 |  |  | 採用 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:issue-request-tutorial | 4 | 2026-10-09T13:01:41+09:00 | ①② | ["specs/issue-request-tutorial/design.md"] | {"specs/issue-request-tutorial/design.md":"bcad7f98ec585831c7119db075ee27d872ee16eb00345aa75b3b7d78ac9f8542"} | 0 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+
+## 解消
+
+| スコープ | 回数 | 指摘番号 | 再検査スコープ | 再検査回数 | 確認者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:issue-request-tutorial | 3 | 2 | feature:issue-request-tutorial | 4 | system（自動）：再検査で再検出なし | 2026-10-09T13:04:09+09:00 |
+
+## 承認
+
+| スコープ | 回数 | 対象成果物 | 承認者 | 承認日時 | 原本SHA256 |
+|---|---|---|---|---|---|
+| feature:issue-request-tutorial | 4 | specs/issue-request-tutorial/design.md | Junichi Noumi | 2026-10-09T13:05:22+09:00 | bcad7f98ec585831c7119db075ee27d872ee16eb00345aa75b3b7d78ac9f8542 |
+
+## 残件
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 承認スコープ | 承認回数 |
+|---|---|---|---|---|---|---|
+| feature:issue-request-tutorial | 3 | 1 | 対応せず進める | 前回（1 回目 #1）と同じ指摘で、箇所に変更がない: AI 推奨を採用: pbi design・ir design と同じ扱いとして design に明記され、上流は Phase 5 の最後にまとめて直す方針とされているため | feature:issue-request-tutorial | 4 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:print-report | 5 | 2026-10-09T13:07:43+09:00 | ①② | ["specs/print-report/design.md"] | {"specs/print-report/design.md":"ebfa76def7ce6d9e5503ba27aac9d1ad8b052882340b663b0ced66ab205e5197"} | 0 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+
+### 除外
+
+| 観点 | 対象箇所 | 要約 | 除外の出典 |
+|---|---|---|---|
+| evidence-guard | specs/print-report/design.md § ドメインモデル（Domain Model） / 発行依頼書のページ（RWTG071） | 製本の情報と添付資料を発行依頼書のページに出さない（requirements 1.10 と異なる） | answer:design-authoring-generate[print-report] |
+| evidence-guard | specs/print-report/design.md § ドメインモデル（Domain Model） / ファイル名 | 稟議バーコードNo が空なら申請No.pdf にする（requirements 3.3 と異なる） | answer:design-authoring-generate[print-report] |
+| traceability | specs/print-report/design.md § ドメインモデル（Domain Model） / 契約局情報のページ（RWTG072） | 光インフラのとき物件名の列を出す（1.8 は No・基地局番号・基地局名）、40 局ごとにページを分ける（1.5・1.7 のページ数） | answer:design-authoring-generate[print-report] |
+| steering-conformance | specs/print-report/design.md § 技術スタック（Technology Stack） / 原本 .xlsm | 原本を .xlsm のまま使い、steering/tech.md の「テンプレートは .xlsx」と異なる（upstream-carryover に記録済み） | answer:design-authoring-generate[print-report] |
+| steering-conformance | specs/print-report/design.md § 技術スタック（Technology Stack） / zxing 3.4.1 | zxing 3.4.1 と本番 JDK 1.7 の関係を導入時に発注者の環境で確かめる（Q-DS-PR-015 の案 C） | answer:design-authoring-generate[print-report] |
+| dependency-boundary-conformance | specs/print-report/design.md § データ契約と外部連携（Data Contracts &amp; Integration） / /wtg072/search | pbi design の API 契約の /wtg072/search は POST・入力が申請No だけで、本書の 3 つの入力・GET と POST と異なる（Q-DS-PR-009。upstream-carryover で Phase 5 の最後に直す。本書は未反映である旨を明記済み） | answer:design-authoring-generate[print-report] |
+| dependency-boundary-conformance | specs/print-report/design.md § 依存してよい対象（Allowed Dependencies） / 6.9 の判定 | 物件基本情報登録変更 Service の 6.9 の判定は pbi design のサービスインターフェースに無いが、同じ wtg070 パッケージの部品として呼び pbi design は変えない（Q-DS-PR-011 の 1 の案 A） | answer:design-authoring-generate[print-report] |
+| evidence-guard | specs/print-report/design.md § 移行方針（Migration Strategy） / ZMENUAUTH の PWTGO073 | 文書バーコード（PWTGO073。pbi design の画面）の ZMENUAUTH の行を本 feature で足す（Q-DS-PR-011 の 4「PWTGO073 も同じ扱い」） | answer:design-authoring-generate[print-report] |
+
+## 承認
+
+| スコープ | 回数 | 対象成果物 | 承認者 | 承認日時 | 原本SHA256 |
+|---|---|---|---|---|---|
+| feature:print-report | 5 | specs/print-report/design.md | Junichi Noumi | 2026-10-09T13:11:35+09:00 | ebfa76def7ce6d9e5503ba27aac9d1ad8b052882340b663b0ced66ab205e5197 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:application-status-search | 3 | 2026-10-09T13:13:51+09:00 | ①② | ["specs/application-status-search/design.md"] | {"specs/application-status-search/design.md":"56b1c92fd4bb8cd7362bbb0c0090dedf7aceeb7df6e5e2d7eee1fce86570f7a5"} | 1 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | dependency-boundary-conformance | 業務のあいまい・不足 | 要判断 | cf8f3bf0e455d693 | 4e135cfbb040da62 | specs/application-status-search/design.md § 申請状況検索一覧 Controller ほか 1 か所 | `/wtg070/deleteShinse` の戻り先 | 申請の削除の後に一覧へ戻るときの受け口（/wtg060 か /wtg060/return か）が決まっていない | 依存先の pbi design（approved）§ API 契約の `/wtg070/deleteShinse` は、Response を「申請状況一覧（GWTG060）へ戻る（確認は画面で `WTG-100021`）」と定め、URL を書いていない。&#10;本書 § 申請状況検索一覧 Controller の呼び出し元（Inbound）は、メニュー・画面・物件基本情報登録変更画面（`/wtg070/returnList`）・契約情報取込画面（`/wtg090/execute` の後）だけで、削除の後の戻りが無い。§ データ契約と外部連携の「物件基本情報登録変更との口」も、戻るボタン（returnList）と取込の実行の後だけを書く。&#10;本書の口は、`/wtg060` が「検索条件のセッションを消す初期表示」、`/wtg060/return` が「セッションの条件で前に見ていたページを再検索（未検索なら初期表示）」で、どちらで受けるかで画面の結果が変わる（requirements 2.10「物件基本情報登録変更画面から戻ったとき、前の検索条件を残して、もう一度検索」に削除の後が入るかも決まっていない）。&#10;今回、上流の pbi design が横断確認の修正で変わったため全体を検査して見つけた。回答 Q-DS-AS-001・Q-DS-AS-009 は戻りの口として returnList だけを扱っている。 | 次のどちらかを決める。A：削除の後も `/wtg060/return` で受け、セッションの条件で前に見ていたページを再検索する（削除した申請は一覧から消える。未検索なら初期表示）。B：削除の後は `/wtg060` で受け、初期表示にする。決めた口を § 申請状況検索一覧 Controller の呼び出し元に「物件基本情報登録変更画面（`/wtg070/deleteShinse` の後）— 戻り」として足し、§ データ契約と外部連携の「物件基本情報登録変更との口」にも書く。pbi design の `/wtg070/deleteShinse` の Response に URL が無いことは、returnList と同じく upstream-carryover に足して Phase 5 の最後にまとめて直す | 質問：削除の後に前の条件で再検索するか初期表示にするかは業務の決めごとで、回答と上流からは決められない | 確認済み |  |  |
+
+### 差戻し先候補
+
+| 指摘番号 | 宛先 | 理由 |
+|---|---|---|
+| 1 | specs/property-basic-info/design.md（Phase 5、upstream-carryover でまとめて直す） | `/wtg070/deleteShinse` の Response が「申請状況一覧（GWTG060）へ戻る」だけで、受ける URL（`/wtg060` か `/wtg060/return` か）を書いていない |
+
+### 除外
+
+| 観点 | 対象箇所 | 要約 | 除外の出典 |
+|---|---|---|---|
+| dependency-boundary-conformance | specs/application-status-search/design.md § データ契約と外部連携（Data Contracts &amp; Integration） ほか 1 か所 | `/wtg070/returnList` の戻り先を pbi design の `/wtg060` ではなく `/wtg060/return` とする（回答 Q-DS-AS-001 で決まり、本書に意図した逸脱と upstream-carryover を明記。pbi design は今回の変更後も `/wtg060` のまま） | answer:design-authoring-generate[application-status-search] |
+| dependency-boundary-conformance | specs/application-status-search/design.md § 機能固有エラーコード | pbi design の「既存の WTG-100018」と食い違い、本 feature で新しく足す（回答 Q-DS-AS-009 で決まり、upstream-carryover に記録済み） | answer:design-authoring-generate[application-status-search] |
+| traceability | specs/application-status-search/design.md § ドメインモデル（Domain Model） / 初期値 | 進捗検索(選択) の初期値「以上」と社外ユーザーの起案会社の初期値が、1.1 の「初期値を空」から外れる（回答で意図して外れると決まり、本書にも明記） | answer:design-authoring-generate[application-status-search] |
+| traceability | specs/application-status-search/design.md § ドメインモデル（Domain Model） / 一覧の 14 列 | 「他n局」を基地局番号にも付けるのは 2.3 から外れる（回答 Q-DS-AS-006 で決まり、本書にも明記） | answer:design-authoring-generate[application-status-search] |
+| traceability | specs/application-status-search/design.md § ドメインモデル（Domain Model） / CSV | CSV の見出し（13 列目「発注希望日」、半角カナの表記）が一覧の列名と違う（回答 Q-DS-AS-010 で決まり、本書にも明記） | answer:design-authoring-generate[application-status-search] |
+| evidence-guard | specs/application-status-search/design.md § ドメインモデル（Domain Model） / 検索の範囲 | 社外ユーザーの絞り込みを、検索条件の表の「会社名」ではなく会社コードで比べる（回答 Q-DS-AS-005 の 2 で決まる） | answer:design-authoring-generate[application-status-search] |
+| steering-conformance | specs/application-status-search/design.md § ドメインモデル（Domain Model） / 社外ユーザー | P71 のキー3 を、security.md の「ログインユーザーのグループ」ではなく権限区分とする（回答 Q-DS-AS-005 で決まる） | answer:design-authoring-generate[application-status-search] |
+| steering-conformance | specs/application-status-search/design.md § API 契約（API Contract） | アクション名 csv・page・clear・return・detail が tech.md の URL の例に無い（回答 Q-DS-AS-001・Q-DS-AS-010 で決まり、例は「など」で限定していない） | answer:design-authoring-generate[application-status-search] |
+| evidence-guard | specs/application-status-search/design.md § ドメインモデル（Domain Model） / 検索条件 | 38 項目の入力の形・一致の仕方・比べる列を、回答者が渡した検索条件の表に委ねる（回答 Q-DS-AS-002「その表のとおりにしてください」） | answer:design-authoring-generate[application-status-search] |
+| evidence-guard | specs/application-status-search/design.md § バリデーション設計 | 桁の検査・日付・時刻・数字のキーと、範囲の逆転を検査しないこと（回答 Q-DS-AS-007 で決まり、キーは既存の messages.properties に実在） | answer:design-authoring-generate[application-status-search] |
+| steering-conformance | specs/application-status-search/design.md § 技術スタック（Technology Stack） | 開発端末の JDK 1.8 が、tech.md の JDK 1.7 と食い違う | verify:pbi design（approved）の Q-DS-PBI-014 で人が決めた同じ逸脱で、本書にも意図して外れると明記し、upstream-carryover.md に記録済み。原因は上流の 1 か所で、重複になる |
+| dependency-boundary-conformance | specs/application-status-search/design.md § 依存してよい対象（Allowed Dependencies） | feature-list の依存の列に無い issue-request の TWTGM100 を読む | verify:issue-request design（approved）が下流の読む形を公開契約にしており、内部実装への依存ではない |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:application-status-search | 3 | 1 | 修正 | 修正案の A（削除の後も /wtg060/return で受け、前の条件で再検索する。未検索なら初期表示。pbi design の deleteShinse の Response は returnList と同じく upstream-carryover に足す） | Junichi Noumi | 2026-10-09T13:31:26+09:00 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:application-status-search | 4 | 2026-10-09T13:33:37+09:00 | ①② | ["specs/application-status-search/design.md"] | {"specs/application-status-search/design.md":"e02dc7e42b09f7b5cd83f753e6b18b9a9d9f62d0353a23f842c755944a019449"} | 1 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | dependency-boundary-conformance | 文書間の参照 | 軽微 | de8b2e8cf82ffd19 | 417b93b82ea8f372 | specs/application-status-search/design.md § 再確認が必要になる変更（Revalidation Triggers） ほか 1 か所 | `/wtg070/deleteShinse` の口 | 削除の後の戻り（deleteShinse）が再確認の対象と補足資料の口の一覧に無い | 今回の修正（design-check 3 回目 #1 の修正案 A）で、§ 申請状況検索一覧 Controller の呼び出し元（Inbound）に「物件基本情報登録変更画面（`/wtg070/deleteShinse` の後）— 戻り。`/wtg060/return` で受ける」が、§ データ契約と外部連携の「物件基本情報登録変更との口」に削除の後も `/wtg060/return` で受けることが足され、本書は pbi design の `/wtg070/deleteShinse` に新しく依存するようになった。&#10;一方、同じ口の一覧を持つ次の 2 か所は returnList までで、deleteShinse を挙げていない。&#10;・§ 再確認が必要になる変更（Revalidation Triggers）：「`/wtg070/pushApplicationNo`・`/wtg070/returnList` の口の変更（pbi design）」&#10;・§ 補足資料（Supporting References）の「物件基本情報登録変更との口と CSV の共通部品」の行：「`/wtg070/pushApplicationNo`・`/wtg070/returnList`、`getExternalScope`、`CsvUtils`」&#10;pbi design（approved）§ API 契約の `/wtg070/deleteShinse` の Response は「申請状況一覧（GWTG060）へ戻る」で、受ける URL は upstream-carryover で直す予定のため、pbi 側が変わったときに本書を再確認する対象に入れておく必要がある。修正の中身（削除の後も `/wtg060/return` で受ける）は上流・回答と食い違わない（requirements 2.10、pbi design の deleteShinse は URL を書いていない）。 | § 再確認が必要になる変更 の行を「`/wtg070/pushApplicationNo`・`/wtg070/returnList`・`/wtg070/deleteShinse`（削除の後の戻り先）の口の変更（pbi design）」に直す。§ 補足資料 の「物件基本情報登録変更との口と CSV の共通部品」の行の内容を「`/wtg070/pushApplicationNo`・`/wtg070/returnList`・`/wtg070/deleteShinse`、`getExternalScope`、`CsvUtils`」に直す | 修正：今回足した依存を、同じ口を並べる節に書き足すだけで、業務の新しい事実は要らない | 確認済み |  |  |
+
+### 除外
+
+| 観点 | 対象箇所 | 要約 | 除外の出典 |
+|---|---|---|---|
+| dependency-boundary-conformance | specs/application-status-search/design.md § データ契約と外部連携（Data Contracts &amp; Integration） ほか 1 か所 | `/wtg070/returnList` の戻り先を pbi design の `/wtg060` ではなく `/wtg060/return` とする（回答 Q-DS-AS-001 で決まり、本書に意図した逸脱と upstream-carryover を明記。pbi design は `/wtg060` のまま） | answer:design-authoring-generate[application-status-search] |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| feature:application-status-search | 4 | 1 | 修正 | 軽微（AIDD 内部の決まりごと）のため、AI が修正案で直す | system（自動） | 2026-10-09T13:36:39+09:00 |  |  |  |
+
+## 解消
+
+| スコープ | 回数 | 指摘番号 | 再検査スコープ | 再検査回数 | 確認者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:application-status-search | 3 | 1 | feature:application-status-search | 4 | system（自動）：再検査で再検出なし | 2026-10-09T13:36:39+09:00 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:application-status-search | 5 | 2026-10-09T13:41:07+09:00 | ①② | ["specs/application-status-search/design.md"] | {"specs/application-status-search/design.md":"32696c8e99e895008c9a84e8e9c0f98da61fbd800fb352fd06a5749c8171cc3a"} | 0 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+
+## 解消
+
+| スコープ | 回数 | 指摘番号 | 再検査スコープ | 再検査回数 | 確認者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:application-status-search | 4 | 1 | feature:application-status-search | 5 | system（自動）：再検査で再検出なし | 2026-10-09T13:44:49+09:00 |
+
+## 承認
+
+| スコープ | 回数 | 対象成果物 | 承認者 | 承認日時 | 原本SHA256 |
+|---|---|---|---|---|---|
+| feature:application-status-search | 5 | specs/application-status-search/design.md | Junichi Noumi | 2026-10-09T13:50:01+09:00 | 32696c8e99e895008c9a84e8e9c0f98da61fbd800fb352fd06a5749c8171cc3a |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-import | 5 | 2026-10-09T13:52:55+09:00 | ①② | ["specs/contract-info-import/design.md"] | {"specs/contract-info-import/design.md":"1f0d97d85481240538b33f7067f886ece5c27b89630e2182816191fe0954a11c"} | 1 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | evidence-guard | 業務の欠落・矛盾 | 重大 | ca485ea9b03f2e92 | e997690e4d19bfc1 | specs/contract-info-import/design.md § ドメインモデル（Domain Model） / 入れる値 | 受電方法の照合 | 古い契約の受電方法を WTG-000072 とするが、検査表の※8 の値の成形・未登録時の扱いと食い違う | 区分：根拠の飛躍（本書が正とする検査表と食い違う）。本書 § ドメインモデル「入れる値」（横断確認 1 回目 #1 の反映）は「受電方法は予備項目4 か ELECT_KIND の名称にして出すので、名称で照合する。予備項目4 が空の古い契約から出た受電方法は P43 の名称と合わず WTG-000072 になるので、利用者が CSV の受電方法を P43 の名称に直してから取り込む」と書く。一方、差し替えた検査表 `_handoff/phase5-contract-info-import-checks.md` の 2-2 No.35 契約基本_受電方法には注記 ※8 が付き、※8 は「値の先頭から『1:』または『2:』を削除する／『3』始まりの場合は値を『KDDI受電』とする／その他は何もしない／値成形後、ﾁｪｯｸ処理・更新処理を実施する／ﾁｪｯｸ処理はせず、ｺｰﾄﾞﾏｽﾀに登録されていない値の場合は受電方法の取込内容を反映しない」とする。ELECT_KIND から出る値は「1:電力会社直受」「2:テナント受電」「3:ａｕ受電」（`specs/contract-info-download/csv-layout-wtg100.md` No.35、横断確認 1 回目 #1 の回答）で、※8 はまさにこの形の値を成形してから照合する決まりである。本書はこの成形に触れず、成形しないまま照合して WTG-000072 になるとしている。さらに ※8 の後半（チェックせず、未登録なら反映しない）は、同じ検査表の 2-3 No.9（(3) で取れなければ WTG-000072）とも両立しない。本書は検査表を「列ごとの検査の正」としているため、実装者は ※8 の成形をするか、未登録の値をエラーにするか反映しないだけにするかを決められない。契約者区分（2-3 No.10 ほか：許可値「契約者」「関係者」）・法人_個人区分（2-3 No.11 ほか：(4) P06 の名称）・消費税扱い（(10) の注記：リバースデータはキー3 で照合、対応表どおりコードのまま税区分へ）は本書の記述と検査表・対応表が一致することを確かめた。 | 何を決めればよいか：リバースデータの契約基本_受電方法の扱い。A：検査表 ※8 のとおり、先頭の「1:」「2:」を削り「3」始まりを「KDDI受電」にしてから P43 の名称で照合し、合わなければ WTG-000072（2-3 No.9）。本書の「古い契約は合わず WTG-000072」の文を ※8 の成形を書いた文に直し、※8 の後半（チェックせず反映しない）は検査表から外す。B：※8 の成形をしたうえで、P43 に無い値はエラーにせず受電方法を取り込まない（※8 の後半）。本書と検査表 2-3 No.9 をそのように直す。C：成形しない（本書の今の記述のまま）。検査表の ※8 を外す。 | 質問：本書が正とする検査表と人の回答（横断確認 1 回目 #1）の内容が食い違い、どちらに合わせるかは人が決める業務の事実のため | 確認済み |  |  |
+
+### 除外
+
+| 観点 | 対象箇所 | 要約 | 除外の出典 |
+|---|---|---|---|
+| dependency-boundary-conformance | specs/contract-info-import/design.md § ドメインモデル（Domain Model） / 洗替と変更履歴の順 4. | 契約局情報の変更履歴を連番だけで突き合わせ、ir design の手順（連番＋計画基地局番号で結ぶ）と違う | answer:design-authoring-generate[contract-info-import] |
+| traceability | specs/contract-info-import/design.md § ドメインモデル（Domain Model） / 検査 | 4.3 の「基地局番号」を契約基地局番号だけ（枝番なし）で比べる | answer:design-authoring-generate[contract-info-import] |
+| traceability | specs/contract-info-import/design.md § ドメインモデル（Domain Model） / 稟議バーコードNo | 受付No が空・リバースデータで稟議バーコードNo を付けない（2.6 からの逸脱。明記と持ち越し済み） | answer:design-authoring-generate[contract-info-import] |
+| steering-conformance | specs/contract-info-import/design.md § 機能固有のエラー処理（Error Handling） / ログ | 警告に住所、WTG-200011 に電話番号、タスクのパラメータに氏名を出す（steering からの意図した逸脱。明記と持ち越し済み） | answer:design-authoring-generate[contract-info-import] |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-import | 5 | 1 | 修正 | 修正案の B（※8 の成形のあと P43 で照合し、無い値はエラーにせず受電方法のコードを反映しない。横断確認 1 回目 #1 の「古い契約は WTG-000072」「利用者が CSV を直してから取り込む」は回答者の誤りなので消してください。検査表 _handoff/phase5-contract-info-import-checks.md の 2-3 No.9 は「検査しない」に直しました） | Junichi Noumi | 2026-10-09T14:03:20+09:00 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-import | 6 | 2026-10-09T14:06:37+09:00 | ①② | ["specs/contract-info-import/design.md"] | {"specs/contract-info-import/design.md":"f8c85c02fe3eac668a090b8cb084d4319381ea95428d4c25c7149c98c569bebc"} | 0 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+
+### 除外
+
+| 観点 | 対象箇所 | 要約 | 除外の出典 |
+|---|---|---|---|
+| dependency-boundary-conformance | specs/contract-info-import/design.md § ドメインモデル（Domain Model） / 洗替と変更履歴の順 4. | 契約局情報の変更履歴を連番だけで突き合わせ、ir design の手順（連番＋計画基地局番号で結ぶ）と違う | answer:design-authoring-generate[contract-info-import] |
+| traceability | specs/contract-info-import/design.md § ドメインモデル（Domain Model） / 検査 | 4.3 の「基地局番号」を契約基地局番号だけ（枝番なし）で比べる | answer:design-authoring-generate[contract-info-import] |
+| traceability | specs/contract-info-import/design.md § ドメインモデル（Domain Model） / 稟議バーコードNo | 受付No が空・リバースデータで稟議バーコードNo を付けない（2.6 からの逸脱。明記と持ち越し済み） | answer:design-authoring-generate[contract-info-import] |
+
+## 解消
+
+| スコープ | 回数 | 指摘番号 | 再検査スコープ | 再検査回数 | 確認者 | 日時 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-import | 5 | 1 | feature:contract-info-import | 6 | system（自動）：再検査で再検出なし | 2026-10-09T14:10:03+09:00 |
+
+## 承認
+
+| スコープ | 回数 | 対象成果物 | 承認者 | 承認日時 | 原本SHA256 |
+|---|---|---|---|---|---|
+| feature:contract-info-import | 6 | specs/contract-info-import/design.md | Junichi Noumi | 2026-10-09T14:11:57+09:00 | f8c85c02fe3eac668a090b8cb084d4319381ea95428d4c25c7149c98c569bebc |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-download | 4 | 2026-10-09T14:15:39+09:00 | ①② | ["specs/contract-info-download/design.md"] | {"specs/contract-info-download/design.md":"e365aaa3c25a50d9a24dad8e438b02ebc77d61278d53da5492b16a4a793311a1"} | 2 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | traceability | 業務のあいまい・不足 | 要判断 | 4650f08855d269b0 | e835de1ac038d3f4 | specs/contract-info-download/design.md § 物理データモデル（Physical Data Model） / VWTGM010 ほか 1 か所 | 契約者の処理順2 の並びのキー | 契約者①〜⑤の並びの「契約者区分」が、名称にした列かコードか本文で読めない | 意味判定（要件 3.1・3.5、ID 対応あり・内容があいまい）。横断確認 1 回目 #1 の反映で、ビュー VWTGM010 の 2契約者の「契約者区分」の列は CONSTRACT_KBN を名称（1→「契約者」、2→「関係者」）にした値になった（`work-tables-wtg100.md` の列一覧 No 6、`csv-layout-wtg100.md` の No 48）。一方、本文は処理順2 を「計画基地局番号＋枝番ごとに契約者区分・契約者番号の昇順の番号」（§物理データモデル VWTGM010）、「契約者区分の昇順・契約者番号の昇順で 1〜5 番目を入れる」（§ドメインモデル CSV の契約者①〜⑤）とだけ書き、並べるのがコードか名称の列かを書いていない。名称で並べると、文字コード・照合順によっては「関係者」が「契約者」より前になり、契約者①に入る行が変わる。出力の定義（本書の正）は「契約者区分（CONSTRACT_KBN）の昇順」（`csv-layout-wtg100.md` の「契約者①〜⑤・支払情報①〜④の入れ方」）とコードで並べると書いており、本文だけがあいまい。作業用テーブルの表の「VWTGM010 の絞り込みと処理順2」も「契約者区分」とだけ書く。他の箇所：§ドメインモデル（Domain Model） / CSV の契約者①〜⑤ | §物理データモデルの VWTGM010 の 2契約者を「処理順2＝計画基地局番号＋枝番ごとに契約者区分のコード（`CONSTRACT_KBN`。名称にする前の値）・契約者番号の昇順の番号」に、§ドメインモデルの契約者①〜⑤を「契約者区分のコード（`CONSTRACT_KBN`）の昇順・契約者番号の昇順で 1〜5 番目を入れる」に直す（出力の定義の書き方に合わせる） | 修正：業務の新しい事実は要らず、本書の正である出力の定義が CONSTRACT_KBN で並べると書いているので、本文をそれに合わせれば足りるため | 確認済み |  |  |
+| 2 | traceability | 業務のあいまい・不足 | 要判断 | 162e1f65d2a8cd4f | 18e479dcc2533ef7 | specs/contract-info-download/design.md § ドメインモデル（Domain Model） / CSV の値の形 | CSV の値の形（名称にする列） | CSV の値の形で名称にする列を 3 つだけ挙げ、登録状態の「コード:名称」が抜けている | 意味判定（要件 3.1、ID 対応あり・内容があいまい）。今回足した文は「日付は…その形で出し、ほかの列は元の値のまま。ただし、契約者①〜⑤_契約者区分は「契約者」「関係者」、法人_個人区分は「法人」「個人」…、契約基本_受電方法は…の文字にして、ビュー VWTGM010 で出す」と、元の値から変える列をこの 3 つに限るように読める。出力の定義（本書の正）の No 9 契約基本_登録状態は「契約基本情報ﾏｽﾀ.STATUS_KIND &#124;&#124; ':' &#124;&#124; ｺｰﾄﾞﾏｽﾀ.名称('WTG',PARAM,'P21')」（`csv-layout-wtg100.md` No 9、`work-tables-wtg100.md` 列一覧 No 11）で、コードに名称をつないだ値を出すが、本文の例外に入っていない。§データ契約と外部連携の「契約情報取込との口」も、渡す値の形を契約者区分・法人_個人区分・受電方法（名称）と消費税扱い（コード）だけで書いている。出力の定義が正なので実装の値は決まるが、本文の「ほかの列は元の値のまま」と食い違って読める | §ドメインモデルの CSV の文を「値はすべて文字列で、列ごとの値は出力の定義の取得元のとおり。日付は出力の定義で `YYYY/MM/DD` にしている列だけをその形で出し、ほかの日付の列は元の値のまま。契約基本_登録状態は「コード:名称」（`P21`）、契約者①〜⑤_契約者区分は…（以下、今の文のとおり）」に直す。「契約情報取込との口」の値の形は「列ごとの値は出力の定義のとおり。取込が照合に使う列のうち、契約者区分・法人_個人区分・受電方法は名称（文字）、消費税扱いはコードで渡す」とする | 修正：業務の新しい事実は要らず、本書の正である出力の定義に書いてある値の形を本文の例外に足せば足りるため | 確認済み |  |  |
+
+### 除外
+
+| 観点 | 対象箇所 | 要約 | 除外の出典 |
+|---|---|---|---|
+| traceability | specs/contract-info-download/design.md § このスペックが持たない責務（Out of Boundary） | 「ci design は直さない」と書くが、ci design は横断確認の修正で値の形の記述が変わった。381 列の定義の持ち主と取込の design を直さない扱いは Q-DS-CD-001 の 6 の回答のとおり | answer:design-authoring-generate[contract-info-download] |
+| traceability | specs/contract-info-download/design.md § ドメインモデル（Domain Model） / 一覧の 19 項目 | 一覧の受電方法は「2:ﾃﾅﾝﾄ受電」（半角）、CSV は「2:テナント受電」で表記が違う。一覧の表記は Q-DS-CD-003 の回答のとおり | answer:design-authoring-generate[contract-info-download] |
+| steering-conformance | specs/contract-info-download/design.md § バリデーション設計 | サーバーで検索条件の桁・形式を確かめない（security.md の入力検証から外れる）。Q-DS-CD-005 の回答で決まり、意図した逸脱として記録済み | answer:design-authoring-generate[contract-info-download] |
+| steering-conformance | specs/contract-info-download/design.md § ドメインモデル（Domain Model） / ベンダー／施工会社の絞り込み | 工事案件マスタに行が無い契約情報を出す（security.md 285 行目の既存の WTB と同じ方式から外れる）。回答冒頭の「意図して外れる点」で決まり、記録済み | answer:design-authoring-generate[contract-info-download] |
+| steering-conformance | specs/contract-info-download/design.md § 技術スタック（Technology Stack） | 開発端末の JDK 1.8（tech.md の JDK 1.7 から外れる）。Q-DS-PBI-014 の回答で決まり、記録済み | answer:design-authoring-generate[property-basic-info] |
+| dependency-boundary-conformance | specs/contract-info-download/design.md § データ契約と外部連携（Data Contracts &amp; Integration） / 物件基本情報登録変更との口 | pbi design の契約局DL の口は「申請No だけを渡す」で、本書は FunctionID と applicationNo を足す。開き方は Q-DS-CD-008 の 1 の回答のとおりで、pbi design は upstream-carryover で直す | answer:design-authoring-generate[contract-info-download] |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| feature:contract-info-download | 4 | 1 | 対応せず進める | Phase 5 の最後の上流まとめ直しと横断確認で扱う | Junichi Noumi | 2026-10-09T14:20:41+09:00 | 対象外 | はい | 不採用 |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| feature:contract-info-download | 4 | 2 | 対応せず進める | Phase 5 の最後の上流まとめ直しと横断確認で扱う | Junichi Noumi | 2026-10-09T14:20:46+09:00 | 対象外 | はい | 不採用 |
+
+## 承認
+
+| スコープ | 回数 | 対象成果物 | 承認者 | 承認日時 | 原本SHA256 |
+|---|---|---|---|---|---|
+| feature:contract-info-download | 4 | specs/contract-info-download/design.md | Junichi Noumi | 2026-10-09T14:21:35+09:00 | e365aaa3c25a50d9a24dad8e438b02ebc77d61278d53da5492b16a4a793311a1 |
+
+## 残件
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 承認スコープ | 承認回数 |
+|---|---|---|---|---|---|---|
+| feature:contract-info-download | 4 | 1 | 対応せず進める | Phase 5 の最後の上流まとめ直しと横断確認で扱う | feature:contract-info-download | 4 |
+| feature:contract-info-download | 4 | 2 | 対応せず進める | Phase 5 の最後の上流まとめ直しと横断確認で扱う | feature:contract-info-download | 4 |
+
+## 実行
+
+| スコープ | 回数 | 実行日時 | 実行した層 | 対象成果物 | 原本SHA256 | 指摘件数 |
+|---|---|---|---|---|---|---|
+| cross | 2 | 2026-10-09T14:23:07+09:00 | ② | ["specs/property-basic-info/design.md","specs/issue-request/design.md","specs/issue-request-tutorial/design.md","specs/print-report/design.md","specs/application-status-search/design.md","specs/contract-info-import/design.md","specs/contract-info-download/design.md"] | {"specs/property-basic-info/design.md":"03331555d6ee0825bd90f023f17f4951d532f97b0f4bde7b7f50878d4cc4da03","specs/issue-request/design.md":"7bedc0d4618ebcb9a1667ce749bf24513272ac9c19fbdebdfe1ac2954ab67fbb","specs/issue-request-tutorial/design.md":"bcad7f98ec585831c7119db075ee27d872ee16eb00345aa75b3b7d78ac9f8542","specs/print-report/design.md":"ebfa76def7ce6d9e5503ba27aac9d1ad8b052882340b663b0ced66ab205e5197","specs/application-status-search/design.md":"32696c8e99e895008c9a84e8e9c0f98da61fbd800fb352fd06a5749c8171cc3a","specs/contract-info-import/design.md":"f8c85c02fe3eac668a090b8cb084d4319381ea95428d4c25c7149c98c569bebc","specs/contract-info-download/design.md":"e365aaa3c25a50d9a24dad8e438b02ebc77d61278d53da5492b16a4a793311a1"} | 3 |
+
+### 指摘
+
+| # | 観点 | 種類 | 重大度 | 同一性キー | 節ハッシュ | 対象箇所 | 対象の語 | 要約 | 指摘内容 | 修正案 | 推奨 | 確かめ役 | 判断 | 理由 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | ssot-consistency | 業務の欠落・矛盾 | 重大 | 497e41779641bc48 | 37d7311cefd4b06a | specs/property-basic-info/design.md § 判断 2: 申請単位の排他を物件申請情報の排他用の値 1 つで行う ほか 4 か所 | 申請の排他用の値（TWTGM080.ExclusiveFG）の範囲 | 発行依頼書登録変更の更新は申請の排他用の値を変えず、物件基本情報の排他の前提と食い違う | 【pbi design の取り決め】§判断 2「どの操作でも TWTGM080 の行を SELECT … FOR UPDATE でロックして ExclusiveFG を照合し、更新のたびに ExclusiveFG を変える」、採用理由「子のテーブルごとに排他を持つと、承認フローの操作と項目の更新が同時に通り、確認していない内容で回覧が進むおそれがある。申請単位で 1 つにすれば、画面を開いた後の変更はすべて検出できる」。§ドメインモデル 集約とトランザクション境界「根は物件申請情報（申請No）で、契約局情報・…・発行依頼書（読取りと削除・複製だけ）がぶら下がる。…申請の排他用の値（ExclusiveFG）を照合してから更新する」。§状態管理 並行制御「契約局情報・契約稟議ファイル・文書バーコードの更新も申請の ExclusiveFG で照合し、申請単位で直列にする」。§データ契約と外部連携（Data Contracts &amp; Integration） サービス間は取込（TWTGM080 の排他用の値を変える）だけを挙げ、発行依頼書登録変更に触れていない。&#10;【ir design の取り決め】§依存してよい対象 依存の制約・§ドメインモデル 集約とトランザクション境界・§状態管理 並行制御「更新・一時保存の排他は TWTGM100・TWTGM140 の ExclusiveFG だけで行う。TWTGM080 はロックも照合もしない」（design-check 1 回目 #9 の判断）。書いた TWTGM100・TWTGM140 の行の ExclusiveFG だけを新しい値にする。&#10;【食い違い】同じ「申請」の集約（ir design も「pbi design と同じ」とする）の排他の取り決めが 2 つの design で別の形になっている。ir の更新・一時保存は TWTGM080 の ExclusiveFG を変えないので、物件基本情報登録変更の画面を開いた後に発行依頼書・契約局情報が発行依頼書登録変更で更新されても、物件基本情報登録変更の承認フローの操作（確認・申請・承認など）と契約局情報の並替え・削除は排他エラーにならない。pbi design の判断 2 が避けるとした「確認していない内容で回覧が進む」状態が、同じ番の権限を持つ別の利用者どうしの間で起きうるが、pbi design の判断 2 の採用理由は「すべて検出できる」としたまま。逆向きでは、ir は物件基本情報登録変更の並替え・削除による行の変化を開いていた行の ExclusiveFG の照合（行が無ければ GEF-000027。ir §照合する行が無いときの扱い）で拾う前提だが、pbi design は並替え・削除で TWTGM140 の行の ExclusiveFG をどうするかを書いていない。取込（ci design）については横断確認 1 回目 #2 で両方の排他用の値を変えると決めたが、発行依頼書登録変更と物件基本情報登録変更の間の取り決めはどの design にも無い。 | 何を決めればよいか：物件基本情報登録変更の画面が、開いた後の発行依頼書登録変更による発行依頼書・契約局情報の変更を排他エラーにするか。&#10;案A：しない（ir design-check 1 回目 #9 の判断のまま）。pbi design の判断 2 の採用による影響と §データ契約と外部連携 サービス間に「発行依頼書登録変更の更新・一時保存は TWTGM080 の排他用の値を変えないので、物件基本情報登録変更の画面を開いた後の発行依頼書・契約局情報の変更は、物件基本情報登録変更の操作では排他エラーにならない（ir design）」を足し、判断 2 の採用理由の「画面を開いた後の変更はすべて検出できる」を「物件基本情報登録変更と取込による変更は検出できる」に直す。§状態管理 並行制御に「契約局情報の並替え・削除では、書き換えた TWTGM140 の行の ExclusiveFG を新しい値にする（発行依頼書登録変更の排他の前提。ir design）」を足す。&#10;案B：する。WTG 申請状態サービスに申請の排他用の値を新しい値にする口を足し、ir の更新・一時保存の最後に呼ぶ（ir design-check 1 回目 #9 の判断を見直し、pbi の公開契約に口を足す。どちらの design も直す）。 | 質問：同時に操作されたときに回覧を止めるかは業務の判断で、ir design-check 1 回目 #9 の判断を見直すかどうかを含むため | 確認済み |  |  |
+| 2 | ssot-consistency | 工程・文書の分担 | 軽微 | 16558d74d26814a0 | 326cd3a168eafcf4 | specs/property-basic-info/design.md § 物理データモデル（Physical Data Model） / TWTGM140 ほか 1 か所 | TWTGM140 の全列の定義 | TWTGM140の全345列の定義がir側の資料にだけあり、持ち主のpbi designは別の言い方で参照しない | pbi design §このスペックが持つ責務 所有するデータ「契約局情報（TWTGM140）のテーブル定義」、§物理データモデル「全 345 列で、主な列は下の表。残りは発行依頼書の契約局ごとの項目で、契約局取込の形式と同じ並び（Q-DS-PBI-003）」と、主な列の表（13 行と「（残りの列）」の行）。全 345 列の表（列番号・項目名・型・桁）は specs/issue-request/db-TWTGM140.md にあり、ir design §物理データモデルは「定義は物件基本情報登録変更が持つ（pbi design）。…全 345 列は specs/issue-request/db-TWTGM140.md（回答者が渡した DB レイアウト。Q-DS-IR-004）」とする。print-report（§論理データモデル）と ci（§論理データモデル）も TWTGM140 の列を db-TWTGM140.md で引く。持ち主の pbi design はこの資料を参照しておらず、「契約局取込の形式と同じ並び」は db-TWTGM140.md の並び（No.1〜6 の共通列、No.7 申請No、No.8 稟議ﾊﾞｰｺｰﾄﾞNo、No.9 連番、…コードと名称・(ﾌﾘｰﾌｫｰﾑ) の組を含む 345 列）と同じ意味にならない（取込の 228 列とは列の数も違う）。主な列の項目名・型・桁は db-TWTGM140.md と一致しており（Ringi_Barcode_No 25、Renban Int 4、Keikaku_Kichikyoku_No 9 必須、Bukken_Name 100、Draft_Flg 1 など）、内容の食い違いではなく定義の置き場所の問題。表示名だけ、pbi が「代表局番号_枝番」、db-TWTGM140.md が「枝番」（Represent_SiteID_Branch）で違う。 | pbi design §物理データモデルの TWTGM140 の行を「…列は下の表。全 345 列の定義（列番号・項目名・型・桁）は specs/issue-request/db-TWTGM140.md（回答者が渡した DB レイアウト。Q-DS-IR-004）を正とする」に、主な列の表の「（残りの列）」の行の許可値を「specs/issue-request/db-TWTGM140.md のとおり」に直す。§補足資料（Supporting References）に同じ資料の行を足す。 | 修正：持ち主の design から既にある全列の資料を指すだけで、業務の新しい事実は要らないため | 確認済み |  |  |
+| 3 | ssot-consistency | 業務の欠落・矛盾 | 重大 | 5c529ec1de08da16 | aff7cba2154021be | specs/property-basic-info/design.md § API 契約（API Contract） / 契約局情報欄に出す列 | 関係者の契約者区分の値 | 契約局情報欄の契約者の条件が契約者区分 "01" で、発行依頼書の値（1:契約者）と合わない | pbi design §API 契約（物件基本情報登録変更 Controller）の「契約局情報欄に出す列」：「発行依頼書（TWTGM100）の関係者1〜5 のうち契約者区分が "01"（契約者）で関係(地位) に「旧」を含まない人を…」（Q-DS-PBI-003。.aidd/.engine/answer-ds-pbi-20261007-1300-Q003-2-Q002-10.txt:8）。TWTGM100 の持ち主の ir design は §ドメインモデル 名称の列で「契約者区分名は固定（1→"契約者"、2→"関係者"）」、§バリデーション設計で「契約者区分は 1・2 だけ」（WTG-100020）とし、specs/issue-request/item-rules.md:57 も「固定の選択肢 1:契約者／2:関係者」。関係者の契約者区分の列（Kankeisha1〜5_Contract_Kbn。db-TWTGM100.md No.51 ほか）には 1 か 2 が入る。pbi 自身の出力 CSV の項目定義（specs/property-basic-info/csv-layout-wtg070.md:20 ほか）も「関係者1_契約区分="1"の場合"契約者"」で、同じ feature の中でも値が合わない。このままでは契約局情報欄の契約者が誰も出ない。ci・cd は名称「契約者」「関係者」で受け渡し、print-report は名称「契約者」で選んでおり、"01" を使うのは pbi のこの箇所だけ。 | 何を決めればよいか：契約局情報欄の契約者の条件の値。&#10;案A：pbi design を「契約者区分が "1"（契約者）」に直す（ir design・item-rules.md・pbi の csv-layout-wtg070.md と同じ値）。&#10;案B：契約者区分を "01"・"02" の 2 桁にそろえる（ir design・item-rules.md の選択肢と名称の入れ方、pbi の出力 CSV の項目定義、ci の取込の値の入れ方を直す）。 | 質問：pbi の値は回答（Q-DS-PBI-003 の補足）によるため取り違えかを回答者に確かめる必要がある。持ち主の ir design とほかの feature はどれも 1・2 なので、案 A のほうが直す箇所が少ない | 確認済み |  |  |
+
+### 除外
+
+| 観点 | 対象箇所 | 要約 | 除外の出典 |
+|---|---|---|---|
+| ssot-consistency | specs/contract-info-import/design.md § ドメインモデル（Domain Model） / 洗替と変更履歴の順 4. | 取込の変更履歴の突き合わせが連番だけで、ir design の変更履歴の手順（会社コード・申請No・連番・計画基地局番号で結ぶ）と違う | answer:design-authoring-generate[contract-info-import] |
+| ssot-consistency | specs/application-status-search/design.md § ドメインモデル（Domain Model） / 一覧の 14 列 起案日 | 起案日を審査権限 '01' の行で取り、pbi design で同じ審査権限を持つ起案者の取下げの行も当たりうる | answer:design-authoring-generate[application-status-search] |
+| ssot-consistency | specs/property-basic-info/design.md § API 契約（API Contract）・移行方針・バリデーション設計 | /wtg070/returnList・/wtg070/deleteShinse の戻り先、/wtg070/keyakuDl の渡し方、/wtg072/search の入力、/wtg080/return の受け口、採番の MAX区分、既存とした WTX-100005・WTX-100011・WTX-100012・WTG-100018 の他 feature との食い違い | verify:既決（upstream-carryover の pbi design の項目） |
+| ssot-consistency | specs/issue-request/design.md § 再確認が必要になる変更（Revalidation Triggers） | 契約情報ダウンロードを TWTGM100・TWTGM140 を読む側に挙げている | verify:既決（upstream-carryover「design 横断確認 1 回目の修正の回で C[対象外+]とし、最後にまとめて直すもの」の ir design の項目） |
+| ssot-consistency | specs/issue-request/design.md § データ契約と外部連携（Data Contracts &amp; Integration） / チュートリアル（GWTG081）との受け渡し | チュートリアルとの受け渡し（json.clear・入れる順・入れる項目・契約開始日・電気料の列）の食い違い | verify:既決（upstream-carryover の ir design の項目） |
+| ssot-consistency | specs/contract-info-download/design.md § ドメインモデル（Domain Model） / CSV 契約者①〜⑤の並び | 契約者①〜⑤の並びの契約者区分が名称にした列かコードか読めない | learned:design feature:contract-info-download 4-1 |
+| ssot-consistency | specs/contract-info-download/design.md § ドメインモデル（Domain Model） / CSV の値の形 | CSV の値の形で名称にする列から登録状態の「コード:名称」が抜けている | learned:design feature:contract-info-download 4-2 |
+| ssot-consistency | specs/*/design.md の画面内で JSON を返す口（/wtg070/inputHassoKiboDate・/wtg080/calcTaxAdjustment・/wtg080/changeKeiyakuSyubetsuTutorial・/wtg081/next） | エラーの返し方の規約を steering に置かず、口ごとに失敗時の扱いを書く（形は口ごとに違う） | verify:既決（upstream-carryover「design 横断確認 1 回目で決まったもの」の api-standards.md の項目。横断確認 1 回目 #5 の案 B） |
+| dependency-cycle-detection | specs/property-basic-info/design.md § データ契約と外部連携（Data Contracts &amp; Integration） | pbi→ir（TWTGM100 の読取り・削除・複製）と ir→pbi（WTG 申請状態サービス）の組は Phase 3 で扱った循環と同じ根本原因で、新しい閉路を構成しない | answer:feature-decomposition-generate[] |
+| dependency-cycle-detection | specs/print-report/design.md § 依存してよい対象（Allowed Dependencies） | pbi 画面→/wtg072/search と print-report Service→pbi Service（6.9 の判定）の組。判定の置き場は回答で pbi Service を呼ぶと決定済み | answer:design-authoring-generate[print-report] |
+| dependency-cycle-detection | specs/*/design.md の API 契約（pbi→ci→AS→pbi、pbi と ci・pbi と AS・ir と tutorial） | 画面の遷移・戻り（/wtg090/back・/wtg090/execute の後の /wtg060/return・/wtg060/detail・/wtg070/returnList）・コールバックと、function/wtg/common の共通部品への呼出しで、feature 間の閉路を構成しない | verify:画面の遷移・戻り・コールバックと WTG 共通部品への呼出しは feature 間の依存の辺にならない |
+| steering-conformance | specs/contract-info-download/design.md § 物理データモデル（Physical Data Model） | 作業用テーブル TWTGD050・TWTGD060 が共通列を持たない（steering/database.md の共通カラム） | answer:design-authoring-generate[contract-info-download] |
+| steering-conformance | specs/issue-request-tutorial/design.md § バリデーション設計 | 増額分賃料・消費電力の桁をサーバーで検査しない（steering/security.md の入力検証） | answer:design-authoring-generate[issue-request-tutorial] |
+| steering-conformance | specs/property-basic-info・issue-request・application-status-search・contract-info-import・contract-info-download の design § 機能固有のエラー処理（Error Handling） | 画面の業務エラー・排他を例外にせず BindingResult で返す（print-report は steering/tech.md どおり ApplicationException）。feature ごとに扱いが分かれる | verify:既決（upstream-carryover「tech.md：画面の業務エラー・排他は BindingResult で返してよい場合」） |
+| steering-conformance | specs/property-basic-info・issue-request・contract-info-download の design § API 契約（API Contract） | 更新系の URL（一時保存・発番・並替えほか、/wtg100/csv）が CSRF の照合に乗らない（steering/security.md の攻撃対策） | verify:既決（upstream-carryover「security.md 攻撃対策：CSRF は末尾一致の対象だけを照合する」） |
+| steering-conformance | specs/*/design.md § 技術スタック（Technology Stack） | 開発端末の JDK 1.8（-source/-target 1.7）が steering/tech.md の必須ツール JDK 1.7 と違う | verify:既決（upstream-carryover「tech.md：開発端末のテスト実行は JDK 1.8 で -source/-target 1.7」） |
+| steering-conformance | specs/property-basic-info・issue-request・application-status-search の design § セキュリティ上の考慮（Security Considerations） | P71 のキー3 を権限区分で引く（steering/security.md 285 行目の「ログインユーザーのグループ」） | verify:既決（upstream-carryover「security.md 285 行目」） |
+| steering-conformance | specs/contract-info-import/design.md § 機能固有のエラー処理（Error Handling）・セキュリティ上の考慮 | 警告に住所・電話番号の値を出し、タスクのパラメータに氏名を入れる（steering/non-functional.md・security.md） | verify:既決（upstream-carryover の contract-info-import の項目） |
+| steering-conformance | specs/contract-info-download/design.md § バリデーション設計・ドメインモデル | サーバーで検索条件の桁・形式を確かめない、工事案件マスタに行が無い契約情報を出す（steering/security.md） | verify:既決（upstream-carryover の contract-info-download の項目） |
+| steering-conformance | specs/issue-request/design.md § 物理データモデル（Physical Data Model）・論理データモデル | トランの表の種別 V、金額・調整額を文字列で持つ（steering/database.md） | verify:既決（upstream-carryover の issue-request の項目） |
+| steering-conformance | specs/print-report/design.md § 技術スタック（Technology Stack） | 原本を .xlsm のまま POI で使う（steering/tech.md の「テンプレートは .xlsx」） | verify:既決（upstream-carryover の print-report の項目） |
+
+## 解消
+
+| スコープ | 回数 | 指摘番号 | 再検査スコープ | 再検査回数 | 確認者 | 日時 |
+|---|---|---|---|---|---|---|
+| cross | 1 | 1 | cross | 2 | system（自動）：再検査で再検出なし | 2026-10-09T14:33:58+09:00 |
+| cross | 1 | 2 | cross | 2 | system（自動）：再検査で再検出なし | 2026-10-09T14:33:58+09:00 |
+| cross | 1 | 3 | cross | 2 | system（自動）：再検査で再検出なし | 2026-10-09T14:33:58+09:00 |
+| cross | 1 | 4 | cross | 2 | system（自動）：再検査で再検出なし | 2026-10-09T14:33:58+09:00 |
+| cross | 1 | 6 | cross | 2 | system（自動）：再検査で再検出なし | 2026-10-09T14:33:58+09:00 |
+| cross | 1 | 7 | cross | 2 | system（自動）：再検査で再検出なし | 2026-10-09T14:33:58+09:00 |
+| cross | 1 | 8 | cross | 2 | system（自動）：再検査で再検出なし | 2026-10-09T14:33:58+09:00 |
+| cross | 1 | 9 | cross | 2 | system（自動）：再検査で再検出なし | 2026-10-09T14:33:58+09:00 |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| cross | 2 | 1 | 対応せず進める | 案 A の扱い（発行依頼書登録変更の更新・一時保存は TWTGM080 を更新せず、排他用の値が変わるのは発番のときだけ）。pbi design の文言は upstream-carryover に足し、Phase 5 の最後にまとめて直す | Junichi Noumi | 2026-10-09T14:37:39+09:00 | 後で決める | はい |  |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| cross | 2 | 2 | 対応せず進める | pbi design から specs/issue-request/db-TWTGM140.md を指す修正を upstream-carryover に足し、Phase 5 の最後にまとめて直す | Junichi Noumi | 2026-10-09T14:37:48+09:00 | 後で決める | はい |  |
+
+## 判断
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 判断者 | 日時 | 却下区分 | 今後も同じ扱い | 推奨の採用 |
+|---|---|---|---|---|---|---|---|---|---|
+| cross | 2 | 3 | 対応せず進める | 契約者区分は 1:契約者・2:関係者（"01" は回答者の取り違え）。pbi design の直しは upstream-carryover に足し、Phase 5 の最後にまとめて直す | Junichi Noumi | 2026-10-09T14:37:57+09:00 | 後で決める | はい |  |
+
+## 解消
+
+| スコープ | 回数 | 指摘番号 | 再検査スコープ | 再検査回数 | 確認者 | 日時 |
+|---|---|---|---|---|---|---|
+| cross | 1 | 5 | cross | 2 | Junichi Noumi | 2026-10-09T14:38:32+09:00 |
+
+## 確認
+
+| スコープ | 回数 | 確認者 | 日時 | 原本SHA256 |
+|---|---|---|---|---|
+| cross | 2 | Junichi Noumi | 2026-10-09T14:38:53+09:00 | {"specs/property-basic-info/design.md": "03331555d6ee0825bd90f023f17f4951d532f97b0f4bde7b7f50878d4cc4da03", "specs/issue-request/design.md": "7bedc0d4618ebcb9a1667ce749bf24513272ac9c19fbdebdfe1ac2954ab67fbb", "specs/issue-request-tutorial/design.md": "bcad7f98ec585831c7119db075ee27d872ee16eb00345aa75b3b7d78ac9f8542", "specs/print-report/design.md": "ebfa76def7ce6d9e5503ba27aac9d1ad8b052882340b663b0ced66ab205e5197", "specs/application-status-search/design.md": "32696c8e99e895008c9a84e8e9c0f98da61fbd800fb352fd06a5749c8171cc3a", "specs/contract-info-import/design.md": "f8c85c02fe3eac668a090b8cb084d4319381ea95428d4c25c7149c98c569bebc", "specs/contract-info-download/design.md": "e365aaa3c25a50d9a24dad8e438b02ebc77d61278d53da5492b16a4a793311a1"} |
+
+## 残件
+
+| スコープ | 回数 | 指摘番号 | 判断 | 理由 | 承認スコープ | 承認回数 |
+|---|---|---|---|---|---|---|
+| cross | 2 | 1 | 対応せず進める | 案 A の扱い（発行依頼書登録変更の更新・一時保存は TWTGM080 を更新せず、排他用の値が変わるのは発番のときだけ）。pbi design の文言は upstream-carryover に足し、Phase 5 の最後にまとめて直す | cross | 2 |
+| cross | 2 | 2 | 対応せず進める | pbi design から specs/issue-request/db-TWTGM140.md を指す修正を upstream-carryover に足し、Phase 5 の最後にまとめて直す | cross | 2 |
+| cross | 2 | 3 | 対応せず進める | 契約者区分は 1:契約者・2:関係者（"01" は回答者の取り違え）。pbi design の直しは upstream-carryover に足し、Phase 5 の最後にまとめて直す | cross | 2 |

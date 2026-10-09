@@ -1,0 +1,28 @@
+{
+ "operation_id": "d6b771b3e9da47a7aa6d2f19eb871b42",
+ "action": "approve",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[print-report]::end.review",
+  "event": "design-authoring-revise",
+  "item": "print-report",
+  "status": "wait",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[print-report]::end.review\", \"snapshot\": \"2258f88fe4257a53026dcd119746adbb362665e9bd4f5ed1eca6ab0a568f8021\", \"run\": 5, \"inspection_hash\": \"b8c8e30313dbbf766822b5969b971a3c70cb014b07086994c0fe9ad90898743e\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 8 件\n  - 製本の情報と添付資料を発行依頼書のページに出さない（requirements 1.10 と異なる）（answer:design-authoring-generate[print-report]）\n  - 稟議バーコードNo が空なら申請No.pdf にする（requirements 3.3 と異なる）（answer:design-authoring-generate[print-report]）\n  - 光インフラのとき物件名の列を出す（1.8 は No・基地局番号・基地局名）、40 局ごとにページを分ける（1.5・1.7 のページ数）（answer:design-authoring-generate[print-report]）\n  - 原本を .xlsm のまま使い、steering/tech.md の「テンプレートは .xlsx」と異なる（upstream-carryover に記録済み）（answer:design-authoring-generate[print-report]）\n  - zxing 3.4.1 と本番 JDK 1.7 の関係を導入時に発注者の環境で確かめる（Q-DS-PR-015 の案 C）（answer:design-authoring-generate[print-report]）\n  - pbi design の API 契約の /wtg072/search は POST・入力が申請No だけで、本書の 3 つの入力・GET と POST と異なる（Q-DS-PR-009。upstream-carryover で Phase 5 の最後に直す。本書は未反映である旨を明記済み）（answer:design-authoring-generate[print-report]）\n  - 物件基本情報登録変更 Service の 6.9 の判定は pbi design のサービスインターフェースに無いが、同じ wtg070 パッケージの部品として呼び pbi design は変えない（Q-DS-PR-011 の 1 の案 A）（answer:design-authoring-generate[print-report]）\n  - 文書バーコード（PWTGO073。pbi design の画面）の ZMENUAUTH の行を本 feature で足す（Q-DS-PR-011 の 4「PWTGO073 も同じ扱い」）（answer:design-authoring-generate[print-report]）\n\n### 前回の検査（4 回目）からの変更\n\n- 上流の入力が前回の検査から変わった（または比べられない）ため、全体を検査する。対象の全体を見てください。\n\n### 判断が必要な指摘\n\n**対象**: `specs/print-report/design.md`（スコープ: 成果物単位（print-report） / 5 回目）\n**実行した層**: ① / ②\n\n**指摘**: なし（0 件。検査は実行済み）\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n判断が揃いました。承認の可否を回答してください（承認する場合は承認者名）。",
+  "id": "7818efb222b0462bbd4e8f4703f7457c"
+ },
+ "expected": {
+  "root": "C:\\project\\Wing",
+  "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+  "call": "design-authoring-revise",
+  "event": "design-authoring-revise",
+  "item": "print-report",
+  "dispatch_id": "7818efb222b0462bbd4e8f4703f7457c",
+  "unit": "design-authoring-revise/design-authoring-revise[print-report]::end.review",
+  "scope": "feature:print-report",
+  "run": 5,
+  "snapshot": "2258f88fe4257a53026dcd119746adbb362665e9bd4f5ed1eca6ab0a568f8021",
+  "record_hash": "b8c8e30313dbbf766822b5969b971a3c70cb014b07086994c0fe9ad90898743e"
+ },
+ "data": {}
+}

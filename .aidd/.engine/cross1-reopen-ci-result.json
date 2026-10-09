@@ -1,0 +1,18 @@
+{
+  "status": "ok",
+  "action": "reopen",
+  "result": {
+    "event": "design-authoring-revise",
+    "item": "contract-info-import",
+    "targets": [
+      "specs/contract-info-import/design.md"
+    ],
+    "findings": [],
+    "instruction": "入力変更の影響を確認し、反映・再検査する: specs/property-basic-info/design.md\ndesign 横断確認 1 回目の判断（2026-10-08、Junichi Noumi）で、契約情報取込の design を直す。対象は横断の指摘 #1・#2・#4・#8。\n\n#1（判断「1:A 修正案の A」。回答の原文）：ビュー VWTGM010 で、契約者区分は「契約者」「関係者」、法人_個人区分は「法人」「個人」（P06 の名称と同じ）にして出す。受電方法は、予備項目4（YOBI_KOMOKU4）に値があればその値、空なら ELECT_KIND を「1:電力会社直受」「2:テナント受電」「3:ａｕ受電」の文字にして出す（予備項目4 が空の古い契約は、取込で WTG-000072 になる。利用者が CSV の受電方法を P43 の名称に直してから取り込む）。消費税扱いはコードのまま出し、取込のリバースデータの検査は ZM040 のキー3 で照合する。_handoff の csv-layout-wtg100.md・work-tables-wtg100.md・phase5-contract-info-import-checks.md を直して差し替えたので、両方の design に反映してください。\n→ ci design では、差し替えた _handoff/phase5-contract-info-import-checks.md に合わせて、消費税扱いの検査をキー3（コード）での照合に直し、対応表（消費税扱いをコードのまま税区分へ入れる）と検査表の食い違いを無くす。契約者区分・法人_個人区分・受電方法は名称で照合のままでよいことを確かめる。\n\n#2（判断「推奨」。修正案）：ci design §洗替と変更履歴の順 3. に「登録する TWTGM140・TWTGM100 の行の ExclusiveFG には新しいランダム値を入れる（発行依頼書登録変更画面の排他の前提。ir design のサービス間）」を足す。§データ契約 サービス間と §状態管理 並行制御の文を「物件基本情報登録変更は TWTGM080 の、発行依頼書登録変更は TWTGM100・TWTGM140 の排他用の値が変わるので、取込の前に開いていた画面からの更新は排他エラーになる」に直す。\n\n#4（判断「4:A」。回答の原文）：PWTGO070・PWTGO080 は［WTG070］と［WTG060］のメニュー（権限区分ごとに分かれていれば、そのすべて）に登録する。子画面（072・073・081・090・100）は「PWTGO070 を登録するメニューすべてに、メニューID ごとに 1 行」にそろえる。投入の文と手順は各 feature の tasks で作り、投入は発注者が導入手順書に沿って行う。\n→ ci design の移行方針の PWTGO090 の ZMENUAUTH の行の決め方を「PWTGO070 を登録するメニューすべてに、メニューID ごとに 1 行」に直す。\n\n#8（判断「束1:推奨」。修正案）：ci design の /wtg090/back を「セッションの申請No を付けて forward:/wtg070/pushApplicationNo へ送り、物件基本情報登録変更画面を出し直す」と書く（pbi design は承認済みで、この受け口を書いた）。\n\n上の指摘に関係しない節は変えない。",
+    "origin": "upstream-change",
+    "actor": "AIDD（変更の自動検知）",
+    "at": "2026-10-09T12:26:21+09:00",
+    "scheduled": "2026-10-09T12:27:18+09:00",
+    "id": "6070ac92cf9340ded534eb844a78c68f7230d037a86a52a683f679cf734621ab"
+  }
+}

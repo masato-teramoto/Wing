@@ -1,0 +1,24 @@
+{
+ "operation_id": "e1ae41e2c27d4a4eae095ff8261defb0",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[contract-info-import]::run",
+  "event": "design-authoring-revise",
+  "item": "contract-info-import",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "6b3da04d401a4fefb99d145a520652dc"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/contract-info-import/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [],
+  "return_candidates": [],
+  "summary": "横断確認 1 回目 #1：リバースデータの消費税扱いは P10 をキー3 で照合しコードのまま入れること、契約者区分・法人_個人区分・受電方法は名称で照合すること（古い契約の受電方法の扱い）を追記。#2：登録する TWTGM140・TWTGM100 の ExclusiveFG に新しいランダム値を入れることと、取込後に排他エラーになる画面の範囲を追記。#4：PWTGO090 の ZMENUAUTH の行を PWTGO070 を登録するメニューすべてにメニューID ごとに 1 行とそろえた。#8：/wtg090/back を forward:/wtg070/pushApplicationNo で出し直すと明記。上流の pbi・ir design の変更と食い違わないことを確認"
+ }
+}

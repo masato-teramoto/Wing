@@ -1,0 +1,106 @@
+{
+  "status": "ok",
+  "action": "submit",
+  "result": {
+    "unit": "design-authoring-revise/design-authoring-revise[contract-info-import]::end.review",
+    "flow": "design-authoring-revise",
+    "event": "design-authoring-revise",
+    "item": "contract-info-import",
+    "gate": "review",
+    "hookPoint": "end",
+    "name": "review",
+    "type": "script",
+    "target": "scripts/approval.py",
+    "isAgent": false,
+    "requiresHuman": true,
+    "calls": [],
+    "targetReview": [
+      "specs/contract-info-import/design.md"
+    ],
+    "status": "wait",
+    "call": "design-authoring-revise",
+    "dispatch": {
+      "call": "design-authoring-revise",
+      "unit": "design-authoring-revise/design-authoring-revise[contract-info-import]::end.review",
+      "event": "design-authoring-revise",
+      "item": "contract-info-import",
+      "status": "wait",
+      "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+      "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[contract-info-import]::end.review\", \"snapshot\": \"64573ebf2ea63e8c6e391077db01ac1afba68c9609dedb356aab60d374c82daf\", \"run\": 5, \"inspection_hash\": \"36952ccf366ff1b7fd39311666be92937cb1667026142095d5bac0bb75920b25\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 4 件\n  - 契約局情報の変更履歴を連番だけで突き合わせ、ir design の手順（連番＋計画基地局番号で結ぶ）と違う（answer:design-authoring-generate[contract-info-import]）\n  - 4.3 の「基地局番号」を契約基地局番号だけ（枝番なし）で比べる（answer:design-authoring-generate[contract-info-import]）\n  - 受付No が空・リバースデータで稟議バーコードNo を付けない（2.6 からの逸脱。明記と持ち越し済み）（answer:design-authoring-generate[contract-info-import]）\n  - 警告に住所、WTG-200011 に電話番号、タスクのパラメータに氏名を出す（steering からの意図した逸脱。明記と持ち越し済み）（answer:design-authoring-generate[contract-info-import]）\n\n### 前回の検査（4 回目）からの変更\n\n- 上流の入力が前回の検査から変わった（または比べられない）ため、全体を検査する。対象の全体を見てください。\n\n### 判断が必要な指摘\n\n**対象**: `specs/contract-info-import/design.md`（スコープ: 成果物単位（contract-info-import） / 5 回目）\n**実行した層**: ① / ②\n\n**重大**（1 件。1 件ずつ判断してください）\n\n| # | 種類 | 対象箇所 | 要約 | AI の推奨 | 判断 |\n|---|---|---|---|---|---|\n| 1 | 業務の欠落・矛盾 | specs/contract-info-import/design.md § ドメインモデル（Domain Model） / 入れる値 | 古い契約の受電方法を WTG-000072 とするが、検査表の※8 の値の成形・未登録時の扱いと食い違う | 質問（本書が正とする検査表と人の回答（横断確認 1 回目 #1）の内容が食い違い、どちらに合わせるかは人が決める業務の事実のため） | 未回答 |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n**答え方**（後に書いたものが優先。束・範囲でまとめて答えられます）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）。区分を `C[指摘の誤り]` `C[対象外]` `C[後で決める]` `C[解釈で対応]` で付ける。対象外・後で決めるに `+` を付けると（例 `C[後で決める+]`）、次の検査から同じ扱いにします\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n- **推奨** — AI の推奨を採用する（修正なら修正案がそのまま修正の指示になります）\n\n回答例: `1:推奨 / 束1:C[後で決める+] 桁数は design で決める / 3〜5:A / 7:D 次回まで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。根拠と修正案は `詳細 <番号>` で表示します。",
+      "id": "83fcba3530b44bdda89c9dd93e308918"
+    },
+    "label": "design-authoring-revise / design-authoring-revise [contract-info-import]",
+    "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[contract-info-import]::end.review\", \"snapshot\": \"64573ebf2ea63e8c6e391077db01ac1afba68c9609dedb356aab60d374c82daf\", \"run\": 5, \"inspection_hash\": \"36952ccf366ff1b7fd39311666be92937cb1667026142095d5bac0bb75920b25\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 4 件\n  - 契約局情報の変更履歴を連番だけで突き合わせ、ir design の手順（連番＋計画基地局番号で結ぶ）と違う（answer:design-authoring-generate[contract-info-import]）\n  - 4.3 の「基地局番号」を契約基地局番号だけ（枝番なし）で比べる（answer:design-authoring-generate[contract-info-import]）\n  - 受付No が空・リバースデータで稟議バーコードNo を付けない（2.6 からの逸脱。明記と持ち越し済み）（answer:design-authoring-generate[contract-info-import]）\n  - 警告に住所、WTG-200011 に電話番号、タスクのパラメータに氏名を出す（steering からの意図した逸脱。明記と持ち越し済み）（answer:design-authoring-generate[contract-info-import]）\n\n### 前回の検査（4 回目）からの変更\n\n- 上流の入力が前回の検査から変わった（または比べられない）ため、全体を検査する。対象の全体を見てください。\n\n### 判断が必要な指摘\n\n**対象**: `specs/contract-info-import/design.md`（スコープ: 成果物単位（contract-info-import） / 5 回目）\n**実行した層**: ① / ②\n\n**重大**（1 件。1 件ずつ判断してください）\n\n| # | 種類 | 対象箇所 | 要約 | AI の推奨 | 判断 |\n|---|---|---|---|---|---|\n| 1 | 業務の欠落・矛盾 | specs/contract-info-import/design.md § ドメインモデル（Domain Model） / 入れる値 | 古い契約の受電方法を WTG-000072 とするが、検査表の※8 の値の成形・未登録時の扱いと食い違う | 質問（本書が正とする検査表と人の回答（横断確認 1 回目 #1）の内容が食い違い、どちらに合わせるかは人が決める業務の事実のため） | 未回答 |\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n**答え方**（後に書いたものが優先。束・範囲でまとめて答えられます）\n- **A: 修正** — このフェーズ内で直す\n- **B: 差戻し** — 上流フェーズ / フロー外の不備として戻す\n- **C: 対応せず進める** — 直さずに進める（**理由が必須**）。区分を `C[指摘の誤り]` `C[対象外]` `C[後で決める]` `C[解釈で対応]` で付ける。対象外・後で決めるに `+` を付けると（例 `C[後で決める+]`）、次の検査から同じ扱いにします\n- **D: 未対応** — 今回は判断を保留し、残件として持ち越す（**理由が必須**）\n- **推奨** — AI の推奨を採用する（修正なら修正案がそのまま修正の指示になります）\n\n回答例: `1:推奨 / 束1:C[後で決める+] 桁数は design で決める / 3〜5:A / 7:D 次回まで保留`\n全件を同じ判断にする場合は `全件:A` と書いてください。根拠と修正案は `詳細 <番号>` で表示します。",
+    "allowed_actions": [
+      "decision",
+      "decisions",
+      "resolve",
+      "repair"
+    ],
+    "review_context": {
+      "root": "C:\\project\\Wing",
+      "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+      "call": "design-authoring-revise",
+      "event": "design-authoring-revise",
+      "item": "contract-info-import",
+      "dispatch_id": "83fcba3530b44bdda89c9dd93e308918",
+      "unit": "design-authoring-revise/design-authoring-revise[contract-info-import]::end.review",
+      "scope": "feature:contract-info-import",
+      "run": 5,
+      "snapshot": "64573ebf2ea63e8c6e391077db01ac1afba68c9609dedb356aab60d374c82daf",
+      "record_hash": "36952ccf366ff1b7fd39311666be92937cb1667026142095d5bac0bb75920b25"
+    },
+    "review": [
+      {
+        "scope": "feature:contract-info-import",
+        "run": 5,
+        "number": 1,
+        "current": true,
+        "decision": "",
+        "reason": "",
+        "open": true,
+        "resolved": false,
+        "description": "区分：根拠の飛躍（本書が正とする検査表と食い違う）。本書 § ドメインモデル「入れる値」（横断確認 1 回目 #1 の反映）は「受電方法は予備項目4 か ELECT_KIND の名称にして出すので、名称で照合する。予備項目4 が空の古い契約から出た受電方法は P43 の名称と合わず WTG-000072 になるので、利用者が CSV の受電方法を P43 の名称に直してから取り込む」と書く。一方、差し替えた検査表 `_handoff/phase5-contract-info-import-checks.md` の 2-2 No.35 契約基本_受電方法には注記 ※8 が付き、※8 は「値の先頭から『1:』または『2:』を削除する／『3』始まりの場合は値を『KDDI受電』とする／その他は何もしない／値成形後、ﾁｪｯｸ処理・更新処理を実施する／ﾁｪｯｸ処理はせず、ｺｰﾄﾞﾏｽﾀに登録されていない値の場合は受電方法の取込内容を反映しない」とする。ELECT_KIND から出る値は「1:電力会社直受」「2:テナント受電」「3:ａｕ受電」（`specs/contract-info-download/csv-layout-wtg100.md` No.35、横断確認 1 回目 #1 の回答）で、※8 はまさにこの形の値を成形してから照合する決まりである。本書はこの成形に触れず、成形しないまま照合して WTG-000072 になるとしている。さらに ※8 の後半（チェックせず、未登録なら反映しない）は、同じ検査表の 2-3 No.9（(3) で取れなければ WTG-000072）とも両立しない。本書は検査表を「列ごとの検査の正」としているため、実装者は ※8 の成形をするか、未登録の値をエラーにするか反映しないだけにするかを決められない。契約者区分（2-3 No.10 ほか：許可値「契約者」「関係者」）・法人_個人区分（2-3 No.11 ほか：(4) P06 の名称）・消費税扱い（(10) の注記：リバースデータはキー3 で照合、対応表どおりコードのまま税区分へ）は本書の記述と検査表・対応表が一致することを確かめた。",
+        "location": "specs/contract-info-import/design.md § ドメインモデル（Domain Model） / 入れる値",
+        "kind": "業務の欠落・矛盾",
+        "severity": "重大",
+        "summary": "古い契約の受電方法を WTG-000072 とするが、検査表の※8 の値の成形・未登録時の扱いと食い違う",
+        "suggestion": "何を決めればよいか：リバースデータの契約基本_受電方法の扱い。A：検査表 ※8 のとおり、先頭の「1:」「2:」を削り「3」始まりを「KDDI受電」にしてから P43 の名称で照合し、合わなければ WTG-000072（2-3 No.9）。本書の「古い契約は合わず WTG-000072」の文を ※8 の成形を書いた文に直し、※8 の後半（チェックせず反映しない）は検査表から外す。B：※8 の成形をしたうえで、P43 に無い値はエラーにせず受電方法を取り込まない（※8 の後半）。本書と検査表 2-3 No.9 をそのように直す。C：成形しない（本書の今の記述のまま）。検査表の ※8 を外す。",
+        "recommendation": "質問：本書が正とする検査表と人の回答（横断確認 1 回目 #1）の内容が食い違い、どちらに合わせるかは人が決める業務の事実のため",
+        "decided_by": ""
+      }
+    ],
+    "choices": {
+      "kind": "decisions",
+      "questions": [
+        {
+          "id": "1",
+          "header": "#1 重大",
+          "question": "古い契約の受電方法を WTG-000072 とするが、検査表の※8 の値の成形・未登録時の扱いと食い違う（業務の欠落・矛盾・重大）にどう対応しますか？ AI からの質問：本書が正とする検査表と人の回答（横断確認 1 回目 #1）の内容が食い違い、どちらに合わせるかは人が決める業務の事実のため　答えて直す場合は「その他」に `1:A <回答>` と入力（回答が修正の指示になる）。差戻し（B）・未対応（D）・別の理由は「その他」で入力",
+          "options": [
+            {
+              "label": "A 修正",
+              "description": "この工程で直す（修正案：何を決めればよいか：リバースデータの契約基本_受電方法の扱い。A：検査表 ※8 のとおり、先頭の「1:」「2:」を削り「）",
+              "answer": "1:A"
+            },
+            {
+              "label": "C 後で決める",
+              "description": "後の工程で決める事項なので、今は直さずに進める",
+              "answer": "1:C[後で決める] 後の工程で決める"
+            },
+            {
+              "label": "C 対象外",
+              "description": "この工程の対象外なので、直さずに進める",
+              "answer": "1:C[対象外] この工程の対象外"
+            }
+          ],
+          "multiSelect": false
+        }
+      ]
+    },
+    "next_action": "提示文をそのまま示し、choices の選択肢を選択式の質問で出して、人に選んでもらってください。検査結果を確認し、重大と要判断の指摘に A〜D か「推奨」で答えてください（束・範囲でまとめて答えられます）。修正（A）と AI が直す軽微があれば repair（findings: \"all-fixes\"）で修正に回し、判断が揃い修正が無ければ承認者名を回答してください。",
+    "operation_id": "1f81ef8417aa40e19287b639ae21366c",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

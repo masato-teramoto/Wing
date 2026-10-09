@@ -1,0 +1,7 @@
+{
+  "phase": "design",
+  "event": "design-cross-gate",
+  "scope": "cross",
+  "run": 2,
+  "findings": []
+}

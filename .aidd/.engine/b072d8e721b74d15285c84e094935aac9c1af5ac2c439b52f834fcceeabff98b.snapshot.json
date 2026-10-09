@@ -3,23 +3,23 @@
   "phase": "design",
   "event": "design-authoring-revise",
   "scope": "feature:print-report",
-  "at": "2026-10-08T14:29:40+09:00",
+  "at": "2026-10-09T13:07:43+09:00",
   "artifacts": {
     "specs/print-report/design.md": {
       "status": "draft",
-      "sha256": "0290e7db58d30e25be4cb376978f5783a22fdb69718de5ba0c38ad157aad2f80"
+      "sha256": "ebfa76def7ce6d9e5503ba27aac9d1ad8b052882340b663b0ced66ab205e5197"
     }
   },
   "record": {
-    "bytes": 170085,
-    "sha256": "8194aa41e575fb540840e3c4aa6b41f0e85d50dcbc0513650f0d32c4ff5094f3",
-    "blocks": 137
+    "bytes": 340188,
+    "sha256": "a1e2bb468fb274ea805b3774fc40c25858a3446e136e0ee4f192c4223bb29346",
+    "blocks": 246
   },
-  "run": 4,
+  "run": 5,
   "sections": {
     "specs/print-report/design.md": {
       "": "e3b0c44298fc1c14",
-      "技術設計書": "93a68e4f7b3d8117",
+      "技術設計書": "88c15a3de853440d",
       "概要（Overview）": "32980967e7780b1b",
       "達成目標（Goals）": "63f607cf57083502",
       "やらないこと（Non-Goals）": "9c7924ab3fe08f56",
@@ -51,11 +51,11 @@
       "エラー時の分岐フロー": "ffa9e3d585d12fa6",
       "ファイル配置計画（File Structure Plan）": "ec217b65edc379e0",
       "変更する既存ファイル（Modified Files）": "d8a70e774c2d5cd4",
-      "追加検討事項（Additional Considerations）": "18f4f198f7a44d22",
-      "セキュリティ上の考慮（Security Considerations）": "abb3136fe2b1657b",
+      "追加検討事項（Additional Considerations）": "72f70fb5f5ac7b97",
+      "セキュリティ上の考慮（Security Considerations）": "99cc67425343f4b7",
       "性能とスケーラビリティ（Performance & Scalability）": "1d0c7409fde9eb41",
-      "移行方針（Migration Strategy）": "f8f3b2a92b10ac62",
-      "移行対象ファイル一覧": "5cd2ae4bc7bc9951",
+      "移行方針（Migration Strategy）": "4cdd608ee5eaf243",
+      "移行対象ファイル一覧": "0372d83e05559f92",
       "テスト体制 / テスト仕様": "f53c0fc38f1073f2",
       "テスト戦略（Testing Strategy）": "2bc50319de5453d2",
       "設計判断（Design Decisions）": "f335ff0baa3e0ee3",
@@ -63,7 +63,7 @@
       "判断 2: 表紙は計算用のシートの数式を POI で計算し、その値を PDF 用のシートへ写す": "fea86c807092e91a",
       "判断 3: 出力の条件は物件基本情報登録変更 Service の 6.9 の判定を呼ぶ": "7514b7f0da1d91e8",
       "補足資料（Supporting References）": "f256acbc8375e1b7",
-      "*": "93a68e4f7b3d8117"
+      "*": "88c15a3de853440d"
     }
   },
   "own_sections": {
@@ -102,10 +102,10 @@
       "ファイル配置計画（File Structure Plan）": "b0a426ed0b0df470",
       "変更する既存ファイル（Modified Files）": "d8a70e774c2d5cd4",
       "追加検討事項（Additional Considerations）": "5935df48a68c4bd5",
-      "セキュリティ上の考慮（Security Considerations）": "abb3136fe2b1657b",
+      "セキュリティ上の考慮（Security Considerations）": "99cc67425343f4b7",
       "性能とスケーラビリティ（Performance & Scalability）": "1d0c7409fde9eb41",
-      "移行方針（Migration Strategy）": "839c8103e4b563f4",
-      "移行対象ファイル一覧": "5cd2ae4bc7bc9951",
+      "移行方針（Migration Strategy）": "66c242e5e9a95001",
+      "移行対象ファイル一覧": "0372d83e05559f92",
       "テスト体制 / テスト仕様": "f53c0fc38f1073f2",
       "テスト戦略（Testing Strategy）": "2bc50319de5453d2",
       "設計判断（Design Decisions）": "ffd9306c7a606ca3",
@@ -113,7 +113,7 @@
       "判断 2: 表紙は計算用のシートの数式を POI で計算し、その値を PDF 用のシートへ写す": "fea86c807092e91a",
       "判断 3: 出力の条件は物件基本情報登録変更 Service の 6.9 の判定を呼ぶ": "7514b7f0da1d91e8",
       "補足資料（Supporting References）": "f256acbc8375e1b7",
-      "*": "93a68e4f7b3d8117"
+      "*": "88c15a3de853440d"
     }
   },
   "inputs": {
@@ -126,20 +126,9 @@
     "steering/database.md": "832d98b289c53f8c8adc9a7dfb25bf0f8b1f54b9c1cc473c6480fa9927a20e21",
     "steering/api-standards.md": "70eca8d2facbf08bfa22cf1ae1e781219ecab2066bb8129bf4a3414b0fdeddc1",
     "specs/print-report/requirements.md": "7d7de30b0895cdabc937b9cce759067c8c0732a2f344d03ae09c469e45743cd8",
-    "specs/property-basic-info/design.md": "0829e28f5d3a4e0db44e191b174e2518eb0af483f10814026003e86d90d8c7df",
-    "specs/issue-request/design.md": "a543916db8517b94bdbefb90769055130c7b2e00eeb99f9027bf9f66402a5d63"
+    "specs/property-basic-info/design.md": "03331555d6ee0825bd90f023f17f4951d532f97b0f4bde7b7f50878d4cc4da03",
+    "specs/issue-request/design.md": "7bedc0d4618ebcb9a1667ce749bf24513272ac9c19fbdebdfe1ac2954ab67fbb"
   },
-  "previous_run": 3,
-  "changed_sections": {
-    "specs/print-report/design.md": [
-      "技術設計書",
-      "データモデル（Data Models）",
-      "ドメインモデル（Domain Model）"
-    ]
-  },
-  "changed_own": {
-    "specs/print-report/design.md": [
-      "ドメインモデル（Domain Model）"
-    ]
-  }
+  "previous_run": 4,
+  "full_inspection": "上流の入力が前回の検査から変わった（または比べられない）ため、全体を検査する"
 }

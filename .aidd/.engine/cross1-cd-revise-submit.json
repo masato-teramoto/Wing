@@ -1,0 +1,24 @@
+{
+ "operation_id": "44ee647147b2407ea36dded177b22552",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[contract-info-download]::run",
+  "event": "design-authoring-revise",
+  "item": "contract-info-download",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "3700751d71bd4f5b8e945fd36a5aed6c"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/contract-info-download/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [],
+  "return_candidates": [],
+  "summary": "横断確認 1 回目 #1：補足資料 csv-layout-wtg100.md・work-tables-wtg100.md を差し替えた _handoff から写し直し（契約者区分・法人_個人区分・受電方法を名称にする）、ドメインモデルの CSV と契約情報取込との口に値の形（名称とコード）を追記。#4：PWTGO100 の ZMENUAUTH の行を PWTGO070 を登録するメニューすべてにメニューID ごとに 1 行とそろえた。上流の pbi・ir・ci design の変更と食い違わないことを確認"
+ }
+}

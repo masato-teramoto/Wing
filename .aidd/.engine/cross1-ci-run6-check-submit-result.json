@@ -1,0 +1,79 @@
+{
+  "status": "ok",
+  "action": "submit",
+  "result": {
+    "unit": "design-authoring-revise/design-authoring-revise[contract-info-import]::end.review",
+    "flow": "design-authoring-revise",
+    "event": "design-authoring-revise",
+    "item": "contract-info-import",
+    "gate": "review",
+    "hookPoint": "end",
+    "name": "review",
+    "type": "script",
+    "target": "scripts/approval.py",
+    "isAgent": false,
+    "requiresHuman": true,
+    "calls": [],
+    "targetReview": [
+      "specs/contract-info-import/design.md"
+    ],
+    "status": "wait",
+    "call": "design-authoring-revise",
+    "dispatch": {
+      "call": "design-authoring-revise",
+      "unit": "design-authoring-revise/design-authoring-revise[contract-info-import]::end.review",
+      "event": "design-authoring-revise",
+      "item": "contract-info-import",
+      "status": "wait",
+      "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+      "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[contract-info-import]::end.review\", \"snapshot\": \"eabd33bd9bd8152aa6234177294d0a8b372dae99233b4bff06ff6927380aafc4\", \"run\": 6, \"inspection_hash\": \"d071c4582ebc572b52d68725614f239d2bae4215ec61a62850e652c67cf7029c\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 再検査で出なくなり、解消を記録した指摘 1 件\n  - #5-1 古い契約の受電方法を WTG-000072 とするが、検査表の※8 の値の成形・未登録時の扱いと食い違う\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 3 件\n  - 契約局情報の変更履歴を連番だけで突き合わせ、ir design の手順（連番＋計画基地局番号で結ぶ）と違う（answer:design-authoring-generate[contract-info-import]）\n  - 4.3 の「基地局番号」を契約基地局番号だけ（枝番なし）で比べる（answer:design-authoring-generate[contract-info-import]）\n  - 受付No が空・リバースデータで稟議バーコードNo を付けない（2.6 からの逸脱。明記と持ち越し済み）（answer:design-authoring-generate[contract-info-import]）\n\n### 前回の検査（5 回目）からの変更\n\n- `specs/contract-info-import/design.md`：ドメインモデル（Domain Model）\n\n### 判断が必要な指摘\n\n**対象**: `specs/contract-info-import/design.md`（スコープ: 成果物単位（contract-info-import） / 6 回目）\n**実行した層**: ① / ②\n\n**指摘**: なし（0 件。検査は実行済み）\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n判断が揃いました。承認の可否を回答してください（承認する場合は承認者名）。",
+      "id": "4ede675ffbea4b1fb83b775d670bc90c"
+    },
+    "label": "design-authoring-revise / design-authoring-revise [contract-info-import]",
+    "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"design-authoring-revise/design-authoring-revise[contract-info-import]::end.review\", \"snapshot\": \"eabd33bd9bd8152aa6234177294d0a8b372dae99233b4bff06ff6927380aafc4\", \"run\": 6, \"inspection_hash\": \"d071c4582ebc572b52d68725614f239d2bae4215ec61a62850e652c67cf7029c\"}\n**Phase 5（design 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 設計判断の妥当性\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、要件との対応（トレーサビリティ）、steering の規則との整合、依存の境界・循環、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-5-design.md`）\n- 再検査で出なくなり、解消を記録した指摘 1 件\n  - #5-1 古い契約の受電方法を WTG-000072 とするが、検査表の※8 の値の成形・未登録時の扱いと食い違う\n- 前提（工程の境界・確定した回答・却下から学んだ扱い）などで出さなかった指摘 3 件\n  - 契約局情報の変更履歴を連番だけで突き合わせ、ir design の手順（連番＋計画基地局番号で結ぶ）と違う（answer:design-authoring-generate[contract-info-import]）\n  - 4.3 の「基地局番号」を契約基地局番号だけ（枝番なし）で比べる（answer:design-authoring-generate[contract-info-import]）\n  - 受付No が空・リバースデータで稟議バーコードNo を付けない（2.6 からの逸脱。明記と持ち越し済み）（answer:design-authoring-generate[contract-info-import]）\n\n### 前回の検査（5 回目）からの変更\n\n- `specs/contract-info-import/design.md`：ドメインモデル（Domain Model）\n\n### 判断が必要な指摘\n\n**対象**: `specs/contract-info-import/design.md`（スコープ: 成果物単位（contract-info-import） / 6 回目）\n**実行した層**: ① / ②\n\n**指摘**: なし（0 件。検査は実行済み）\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n判断が揃いました。承認の可否を回答してください（承認する場合は承認者名）。",
+    "allowed_actions": [
+      "approve"
+    ],
+    "review_context": {
+      "root": "C:\\project\\Wing",
+      "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+      "call": "design-authoring-revise",
+      "event": "design-authoring-revise",
+      "item": "contract-info-import",
+      "dispatch_id": "4ede675ffbea4b1fb83b775d670bc90c",
+      "unit": "design-authoring-revise/design-authoring-revise[contract-info-import]::end.review",
+      "scope": "feature:contract-info-import",
+      "run": 6,
+      "snapshot": "eabd33bd9bd8152aa6234177294d0a8b372dae99233b4bff06ff6927380aafc4",
+      "record_hash": "b41b064b1e5f6027bc739520f04244853cafdc0adf590b959289d0167a3100f3"
+    },
+    "review": [],
+    "choices": {
+      "kind": "approve",
+      "questions": [
+        {
+          "id": "approve",
+          "header": "承認",
+          "question": "判断が揃いました。承認しますか？",
+          "options": [
+            {
+              "label": "承認する",
+              "description": "回答者の名前で承認を記録する",
+              "answer": "approve"
+            },
+            {
+              "label": "承認しない",
+              "description": "判断を変える・修正を指示する",
+              "answer": "hold"
+            }
+          ],
+          "multiSelect": false
+        }
+      ]
+    },
+    "next_action": "提示文をそのまま示し、choices の選択肢を選択式の質問で出して、人に選んでもらってください。検査結果を確認し、重大と要判断の指摘に A〜D か「推奨」で答えてください（束・範囲でまとめて答えられます）。修正（A）と AI が直す軽微があれば repair（findings: \"all-fixes\"）で修正に回し、判断が揃い修正が無ければ承認者名を回答してください。",
+    "operation_id": "d743362236e64810bb1c28268b0d27ca",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

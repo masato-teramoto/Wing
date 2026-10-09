@@ -2,6 +2,6 @@
   "phase": "design",
   "event": "design-authoring-revise",
   "scope": "feature:property-basic-info",
-  "run": 5,
+  "run": 7,
   "findings": []
 }

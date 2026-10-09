@@ -62,6 +62,7 @@
 - 3.1：CSV の 13 列目の見出しは「発注希望日」（画面の列見出しは「発送希望日」のまま。Q-DS-AS-010）
 - pbi design：「既存の WTG-100018」を「application-status-search で新規追加する WTG-100018」に直す（Q-DS-AS-009）
 - pbi design：/wtg070/returnList の戻り先を /wtg060 から /wtg060/return に直す（/wtg060 は検索条件のセッションを消す初期表示。application-status-search design-check 1 回目 #1、2026-10-08）
+- pbi design：/wtg070/deleteShinse の Response に、削除の後は /wtg060/return で受けて前の条件で再検索する（未検索なら初期表示）ことを書く（application-status-search design-check 3 回目 #1、2026-10-09）
 
 ## contract-info-import の design で意図して外れたもの（2026-10-08、回答 answer-ds-ci-20261008-1551.txt による）
 - pbi design（391 行目付近）：「契約情報取込で読める形」を「2 行目以降の 228 列が取込の 228 列と同じ並び（1 行目の 188 列は見出し行に置き換える必要がある）」と直す。取込の側は requirements 2.1 のとおり（Q-DS-CI-002）
@@ -80,3 +81,18 @@
 - 全機能をまたいだ確認で：契約情報ダウンロードの出力の定義（specs/contract-info-download/csv-layout-wtg100.md）と契約情報取込のリバースの表の列の並びが同じであることを確かめる（取込の design は直さない。Q-DS-CD-001 の 6）
 - steering security.md の `### 入り口 — 入力検証`（画面の層の桁数・形式のチェック）と `### 共通ルール` 1（入力はサーバー側で必ず検査する）：契約情報ダウンロードはサーバーで検索条件の桁・形式を確かめない（Q-DS-CD-005、design-check 1 回目 #4）
 - pbi design（576 行目付近「/wtg100 を別ウインドウで開き、申請No だけを渡す」）：`/wtg100?FunctionID=WTG100&applicationNo=<申請No>` で開くと直す（FunctionID とパラメータ名 applicationNo を足す。契約情報ダウンロード design-check 1 回目 #6）
+
+## design 横断確認 1 回目で決まったもの（2026-10-08、Junichi Noumi の判断）
+- steering api-standards.md：画面内で JSON を返す口に /wtg070/inputHassoKiboDate も加える。エラーの返し方の規約は steering に置かず、各 design に口ごとの失敗時の扱いを書く（横断確認 1 回目 #5 の案 B）
+- 横断確認の修正で承認済みの design を直接直したもの（上流の文書の直しではないが記録として）：pbi design（#3 取込が書き換える TWTGM080 の列、#4 ZMENUAUTH、#5 inputHassoKiboDate の失敗時、#6 WTG-000072 の置換文字、#7 文書バーコードNo の契約区分は P78 の文字項目2、#8 /wtg090/back の受け口）、ci design（#1・#2・#4・#8）、cd design（#1・#4）、ir・print-report・tutorial design（#4）、ir design（#5）、as design（#9）
+
+## design 横断確認 1 回目の修正の回で C[対象外+] とし、最後にまとめて直すもの（2026-10-09、Junichi Noumi の指示）
+- cd design：VWTGM010 の 2契約者の処理順2 と §ドメインモデルの契約者①〜⑤の並びを「契約者区分のコード（CONSTRACT_KBN。名称にする前の値）の昇順・契約者番号の昇順」と書く（出力の定義に合わせる。cd design-check 4 回目 #1）
+- cd design：§ドメインモデルの CSV の値の形に契約基本_登録状態の「コード:名称」（P21）を足し、列ごとの値は出力の定義のとおりと書く。「契約情報取込との口」も同じ趣旨に直す（cd design-check 4 回目 #2）
+- ir design：128 行目付近で契約情報ダウンロードを TWTGM100・TWTGM140 を読む側に挙げているが、契約情報ダウンロードはこの 2 つを読まない（cd design-check 4 回目の検査役の気づき。指摘外）
+- 横断確認 1 回目 #1 の回答の括弧内「古い契約は取込で WTG-000072」「利用者が CSV を直してから取り込む」は回答者が誤りとして取り消し（ci design-check 5 回目 #1。受電方法は検査表 ※8 の成形のあと P43 で照合し、無ければエラーにせず反映しない）
+
+## design 横断確認 2 回目で C[後で決める+] とし、最後にまとめて直すもの（2026-10-09、Junichi Noumi の判断）
+- pbi design：案 A の扱い。発行依頼書登録変更の更新・一時保存は TWTGM080 を更新せず、排他用の値が変わるのは発番のときだけ。判断 2 の採用理由（「すべて検出できる」）・採用による影響・§データ契約と外部連携のサービス間・§状態管理の並行制御（並替え・削除で書き換えた TWTGM140 の行の ExclusiveFG を新しい値にする）の文言を直す（横断確認 2 回目 #1）
+- pbi design：§物理データモデルの TWTGM140 から specs/issue-request/db-TWTGM140.md（全 345 列。Q-DS-IR-004）を正として指し、「（残りの列）」の行と §補足資料も直す。「契約局取込の形式と同じ並び」の書き方は直す（横断確認 2 回目 #2）
+- pbi design：契約局情報欄の契約者の条件を契約者区分 "1"（1:契約者・2:関係者）に直す。"01" は回答者の取り違え（Q-DS-PBI-003 の補足の回答を訂正。横断確認 2 回目 #3）

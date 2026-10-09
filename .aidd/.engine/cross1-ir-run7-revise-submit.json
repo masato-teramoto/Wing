@@ -1,0 +1,37 @@
+{
+ "operation_id": "b3af166f19a14542a5a6f188ab02d355",
+ "dispatch": {
+  "call": "design-authoring-revise",
+  "unit": "design-authoring-revise/design-authoring-revise[issue-request]::run",
+  "event": "design-authoring-revise",
+  "item": "issue-request",
+  "status": "emit",
+  "config_sha256": "8cfa09d1d9a00ae6c80b68621a6a1aa573c0143d08d7f9282e60a00c4b7add67",
+  "detail": null,
+  "id": "487dc2dd2015490aaa286a0bf2437a11"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/issue-request/design.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "design",
+    "scope": "feature:issue-request",
+    "run": 7,
+    "number": 1
+   },
+   {
+    "phase": "design",
+    "scope": "feature:issue-request",
+    "run": 7,
+    "number": 2
+   }
+  ],
+  "return_candidates": [],
+  "summary": "run 7 #1：steering との整合の行に契約種別による選択肢の口を追記。#2：持たない責務の発注者の行に ZMENUAUTH の PWTGO080 の行の投入を追記"
+ }
+}

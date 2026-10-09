@@ -1,0 +1,73 @@
+{
+  "status": "ok",
+  "action": "respond",
+  "result": {
+    "status": "wait",
+    "allowed_actions": [
+      "decision",
+      "decisions",
+      "resolve",
+      "repair"
+    ],
+    "review_context": {
+      "root": "C:\\project\\Wing",
+      "state": "C:\\project\\Wing\\.aidd\\phase-progress.json",
+      "call": "design-authoring-revise",
+      "event": "design-authoring-revise",
+      "item": "application-status-search",
+      "dispatch_id": "7dee519be84b463b9ee0cd5c0b8438e7",
+      "unit": "design-authoring-revise/design-authoring-revise[application-status-search]::end.review",
+      "scope": "feature:application-status-search",
+      "run": 3,
+      "snapshot": "36c6251ab55f66d272c262c8ade834c104706438cf70ec22e7c6e0f8f1aac038",
+      "record_hash": "0f5cd0e510cf8fdf4a7235b31c163fa8a3c3c066f90f5c5279d2f9e8c00db106"
+    },
+    "review": [
+      {
+        "scope": "feature:application-status-search",
+        "run": 3,
+        "number": 1,
+        "current": true,
+        "decision": "修正",
+        "reason": "修正案の A（削除の後も /wtg060/return で受け、前の条件で再検索する。未検索なら初期表示。pbi design の deleteShinse の Response は returnList と同じく upstream-carryover に足す）",
+        "open": true,
+        "resolved": false,
+        "description": "依存先の pbi design（approved）§ API 契約の `/wtg070/deleteShinse` は、Response を「申請状況一覧（GWTG060）へ戻る（確認は画面で `WTG-100021`）」と定め、URL を書いていない。\n本書 § 申請状況検索一覧 Controller の呼び出し元（Inbound）は、メニュー・画面・物件基本情報登録変更画面（`/wtg070/returnList`）・契約情報取込画面（`/wtg090/execute` の後）だけで、削除の後の戻りが無い。§ データ契約と外部連携の「物件基本情報登録変更との口」も、戻るボタン（returnList）と取込の実行の後だけを書く。\n本書の口は、`/wtg060` が「検索条件のセッションを消す初期表示」、`/wtg060/return` が「セッションの条件で前に見ていたページを再検索（未検索なら初期表示）」で、どちらで受けるかで画面の結果が変わる（requirements 2.10「物件基本情報登録変更画面から戻ったとき、前の検索条件を残して、もう一度検索」に削除の後が入るかも決まっていない）。\n今回、上流の pbi design が横断確認の修正で変わったため全体を検査して見つけた。回答 Q-DS-AS-001・Q-DS-AS-009 は戻りの口として returnList だけを扱っている。",
+        "location": "specs/application-status-search/design.md § 申請状況検索一覧 Controller ほか 1 か所",
+        "kind": "業務のあいまい・不足",
+        "severity": "要判断",
+        "summary": "申請の削除の後に一覧へ戻るときの受け口（/wtg060 か /wtg060/return か）が決まっていない",
+        "suggestion": "次のどちらかを決める。A：削除の後も `/wtg060/return` で受け、セッションの条件で前に見ていたページを再検索する（削除した申請は一覧から消える。未検索なら初期表示）。B：削除の後は `/wtg060` で受け、初期表示にする。決めた口を § 申請状況検索一覧 Controller の呼び出し元に「物件基本情報登録変更画面（`/wtg070/deleteShinse` の後）— 戻り」として足し、§ データ契約と外部連携の「物件基本情報登録変更との口」にも書く。pbi design の `/wtg070/deleteShinse` の Response に URL が無いことは、returnList と同じく upstream-carryover に足して Phase 5 の最後にまとめて直す",
+        "recommendation": "質問：削除の後に前の条件で再検索するか初期表示にするかは業務の決めごとで、回答と上流からは決められない",
+        "decided_by": "Junichi Noumi"
+      }
+    ],
+    "choices": {
+      "kind": "repair",
+      "questions": [
+        {
+          "id": "repair",
+          "header": "修正に回す",
+          "question": "修正（A）の指摘と AI が直す軽微（1 件）を修正の回へ回しますか？",
+          "options": [
+            {
+              "label": "修正案のとおり修正に回す",
+              "description": "推奨を採用した修正と軽微は、修正案がそのまま指示になる",
+              "answer": "repair:all-fixes"
+            },
+            {
+              "label": "修正の指示を自分で書く",
+              "description": "指示を書きたい指摘がある",
+              "answer": "repair:manual"
+            }
+          ],
+          "multiSelect": false
+        }
+      ]
+    },
+    "next_action": "提示文をそのまま示し、choices の選択肢を選択式の質問で出して、人に選んでもらってください。検査結果を確認し、重大と要判断の指摘に A〜D か「推奨」で答えてください（束・範囲でまとめて答えられます）。修正（A）と AI が直す軽微があれば repair（findings: \"all-fixes\"）で修正に回し、判断が揃い修正が無ければ承認者名を回答してください。",
+    "operation_id": "8441bfc741bd4dc0b3cd472fad046bf1",
+    "operation_applied": true
+  },
+  "operation_applied": true
+}

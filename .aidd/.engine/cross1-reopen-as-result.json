@@ -1,0 +1,18 @@
+{
+  "status": "ok",
+  "action": "reopen",
+  "result": {
+    "event": "design-authoring-revise",
+    "item": "application-status-search",
+    "targets": [
+      "specs/application-status-search/design.md"
+    ],
+    "findings": [],
+    "instruction": "入力変更の影響を確認し、反映・再検査する: specs/property-basic-info/design.md\ndesign 横断確認 1 回目の判断（2026-10-08、Junichi Noumi）で、物件契約情報申請状況検索一覧の design を直す。対象は横断の指摘 #9。\n\n#9（判断「束1:推奨」。修正案）：AS design §物件基本情報登録変更との口の「（と契約局取込）」を削り、「契約情報取込画面の実行（/wtg090/execute）の後も forward:/wtg060/return で戻り、セッションの条件で前に見ていたページを再検索する（未検索なら初期表示）」を足す。§申請状況検索一覧 Controller の呼び出し元に「契約情報取込画面（/wtg090/execute の後）— 戻り（重要度: 中）」を足す。\n\nあわせて、上流の物件基本情報登録変更の design が横断確認の修正で変わった（入力変更の影響の確認）。上の指摘に関係しない節は変えない。",
+    "origin": "upstream-change",
+    "actor": "AIDD（変更の自動検知）",
+    "at": "2026-10-09T12:26:13+09:00",
+    "scheduled": "2026-10-09T13:12:16+09:00",
+    "id": "cc8dc7312ac8021f962f566bc1504138d860835bdbbad20933d909b82231d833"
+  }
+}

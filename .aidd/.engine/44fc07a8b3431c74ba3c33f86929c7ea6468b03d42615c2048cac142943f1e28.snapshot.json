@@ -3,23 +3,23 @@
   "phase": "design",
   "event": "design-authoring-revise",
   "scope": "feature:issue-request-tutorial",
-  "at": "2026-10-08T12:02:27+09:00",
+  "at": "2026-10-09T13:01:41+09:00",
   "artifacts": {
     "specs/issue-request-tutorial/design.md": {
       "status": "draft",
-      "sha256": "c7f8713531fc963780c2491a50671b52e4cf15f36cb990cd416b9352b2d8c831"
+      "sha256": "bcad7f98ec585831c7119db075ee27d872ee16eb00345aa75b3b7d78ac9f8542"
     }
   },
   "record": {
-    "bytes": 137702,
-    "sha256": "5124db9c787d2088de0143991714f5aa50d2a48e20f4c5a760cd357a54c12572",
-    "blocks": 112
+    "bytes": 338442,
+    "sha256": "55d519f77a683b509dd86568d900e8387109dd6b4db830ef91c7e0c07ae1b1c1",
+    "blocks": 241
   },
-  "run": 2,
+  "run": 4,
   "sections": {
     "specs/issue-request-tutorial/design.md": {
       "": "e3b0c44298fc1c14",
-      "技術設計書": "7eb9f0c1da9f4139",
+      "技術設計書": "f3a53001720df0fa",
       "概要（Overview）": "e9c359aaa0522daa",
       "達成目標（Goals）": "bc65bd49352e8b71",
       "やらないこと（Non-Goals）": "9170af358237e6c7",
@@ -37,27 +37,27 @@
       "論理データモデル（Logical Data Model）": "46a2a054a096b59b",
       "物理データモデル（Physical Data Model）": "1408753cda2a9564",
       "データ契約と外部連携（Data Contracts & Integration）": "1f0b54e4cad792e9",
-      "コンポーネントとインターフェース（Components and Interfaces）": "38762d9db392da13",
+      "コンポーネントとインターフェース（Components and Interfaces）": "47df47c46113f6d3",
       "コンポーネント一覧（Summary）": "c661437ea4c6a42e",
-      "チュートリアル": "72d77a041564aa99",
-      "チュートリアル Controller": "fde4f39c434caebc",
-      "API 契約（API Contract）": "adc1790ca99a7490",
+      "チュートリアル": "3344cca50c9ece6a",
+      "チュートリアル Controller": "f001dfeb62c74c76",
+      "API 契約（API Contract）": "c4353d4da7337afa",
       "チュートリアル Service": "addbf9c97e0fe290",
       "サービスインターフェース（Service Interface）": "39efba9d85422d28",
       "状態管理（State Management）": "5615259976de3a28",
       "チュートリアル画面のテンプレートとスクリプト": "b8f52335022897c7",
       "処理フロー（System Flows）": "bb415f76dfdfac9e",
-      "機能固有のエラー処理（Error Handling）": "daf4b57a6ff7bb4e",
+      "機能固有のエラー処理（Error Handling）": "97b1ca399ecd70bd",
       "バリデーション設計": "91f548f37b0510bc",
       "機能固有エラーコード": "a81f2142fa130620",
       "エラー時の分岐フロー": "93316eb2d2b47f6f",
       "ファイル配置計画（File Structure Plan）": "f859013292682cad",
       "変更する既存ファイル（Modified Files）": "6e86cf7836801569",
-      "追加検討事項（Additional Considerations）": "60af6dc918f1ab29",
-      "セキュリティ上の考慮（Security Considerations）": "6a8d79c6d7f9a143",
+      "追加検討事項（Additional Considerations）": "54c6e9a3537b3d59",
+      "セキュリティ上の考慮（Security Considerations）": "763aa0c3289137f7",
       "性能とスケーラビリティ（Performance & Scalability）": "8c56fb266bbac6a2",
-      "移行方針（Migration Strategy）": "ac8de0a326d101e1",
-      "移行対象ファイル一覧": "2cedf0a278c0dc84",
+      "移行方針（Migration Strategy）": "e954f89f04114ad1",
+      "移行対象ファイル一覧": "45d98288fd5eba4b",
       "テスト体制 / テスト仕様": "f53c0fc38f1073f2",
       "テスト戦略（Testing Strategy）": "a7746635e9306cad",
       "設計判断（Design Decisions）": "10c26c8b4a799d84",
@@ -65,7 +65,7 @@
       "判断 2: ボタンを押すたびにサーバーで次の画面と入力チェックを決め、JSON で返す": "8ab7f442f346427d",
       "判断 3: 消す操作は「空にする」の印で渡す": "56d75765a3f337b4",
       "補足資料（Supporting References）": "dd254d7ff5361196",
-      "*": "7eb9f0c1da9f4139"
+      "*": "f3a53001720df0fa"
     }
   },
   "own_sections": {
@@ -93,23 +93,23 @@
       "コンポーネント一覧（Summary）": "c661437ea4c6a42e",
       "チュートリアル": "b69e6f82e8dc0b15",
       "チュートリアル Controller": "630feaf155462ced",
-      "API 契約（API Contract）": "adc1790ca99a7490",
+      "API 契約（API Contract）": "c4353d4da7337afa",
       "チュートリアル Service": "eb67620241ec02e9",
       "サービスインターフェース（Service Interface）": "39efba9d85422d28",
       "状態管理（State Management）": "5615259976de3a28",
       "チュートリアル画面のテンプレートとスクリプト": "b8f52335022897c7",
       "処理フロー（System Flows）": "bb415f76dfdfac9e",
-      "機能固有のエラー処理（Error Handling）": "2d490c1efd6a1fb3",
+      "機能固有のエラー処理（Error Handling）": "82ca3d0cf914fb05",
       "バリデーション設計": "91f548f37b0510bc",
       "機能固有エラーコード": "a81f2142fa130620",
       "エラー時の分岐フロー": "93316eb2d2b47f6f",
       "ファイル配置計画（File Structure Plan）": "bc5d1ec169e494f9",
       "変更する既存ファイル（Modified Files）": "6e86cf7836801569",
       "追加検討事項（Additional Considerations）": "5935df48a68c4bd5",
-      "セキュリティ上の考慮（Security Considerations）": "6a8d79c6d7f9a143",
+      "セキュリティ上の考慮（Security Considerations）": "763aa0c3289137f7",
       "性能とスケーラビリティ（Performance & Scalability）": "8c56fb266bbac6a2",
-      "移行方針（Migration Strategy）": "34b6f7b902e2afe8",
-      "移行対象ファイル一覧": "2cedf0a278c0dc84",
+      "移行方針（Migration Strategy）": "05aad30f1cdd6d71",
+      "移行対象ファイル一覧": "45d98288fd5eba4b",
       "テスト体制 / テスト仕様": "f53c0fc38f1073f2",
       "テスト戦略（Testing Strategy）": "a7746635e9306cad",
       "設計判断（Design Decisions）": "ffd9306c7a606ca3",
@@ -117,7 +117,7 @@
       "判断 2: ボタンを押すたびにサーバーで次の画面と入力チェックを決め、JSON で返す": "8ab7f442f346427d",
       "判断 3: 消す操作は「空にする」の印で渡す": "56d75765a3f337b4",
       "補足資料（Supporting References）": "dd254d7ff5361196",
-      "*": "7eb9f0c1da9f4139"
+      "*": "f3a53001720df0fa"
     }
   },
   "inputs": {
@@ -130,28 +130,24 @@
     "steering/database.md": "832d98b289c53f8c8adc9a7dfb25bf0f8b1f54b9c1cc473c6480fa9927a20e21",
     "steering/api-standards.md": "70eca8d2facbf08bfa22cf1ae1e781219ecab2066bb8129bf4a3414b0fdeddc1",
     "specs/issue-request-tutorial/requirements.md": "3e1042329d04e128a1c95e89adc17075768e5744202d85de60d5704eedf1923e",
-    "specs/property-basic-info/design.md": "0829e28f5d3a4e0db44e191b174e2518eb0af483f10814026003e86d90d8c7df",
-    "specs/issue-request/design.md": "a543916db8517b94bdbefb90769055130c7b2e00eeb99f9027bf9f66402a5d63"
+    "specs/property-basic-info/design.md": "03331555d6ee0825bd90f023f17f4951d532f97b0f4bde7b7f50878d4cc4da03",
+    "specs/issue-request/design.md": "7bedc0d4618ebcb9a1667ce749bf24513272ac9c19fbdebdfe1ac2954ab67fbb"
   },
-  "previous_run": 1,
+  "previous_run": 3,
   "changed_sections": {
     "specs/issue-request-tutorial/design.md": [
       "技術設計書",
-      "データモデル（Data Models）",
-      "データ契約と外部連携（Data Contracts & Integration）",
-      "機能固有のエラー処理（Error Handling）",
-      "バリデーション設計",
-      "機能固有エラーコード",
-      "ファイル配置計画（File Structure Plan）",
-      "変更する既存ファイル（Modified Files）"
+      "コンポーネントとインターフェース（Components and Interfaces）",
+      "チュートリアル",
+      "チュートリアル Controller",
+      "API 契約（API Contract）",
+      "機能固有のエラー処理（Error Handling）"
     ]
   },
   "changed_own": {
     "specs/issue-request-tutorial/design.md": [
-      "データ契約と外部連携（Data Contracts & Integration）",
-      "バリデーション設計",
-      "機能固有エラーコード",
-      "変更する既存ファイル（Modified Files）"
+      "API 契約（API Contract）",
+      "機能固有のエラー処理（Error Handling）"
     ]
   }
 }
