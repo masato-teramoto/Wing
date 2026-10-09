@@ -10,3 +10,4 @@
 {"timestamp": "2026-10-09T21:11:21+09:00", "level": "info", "orchestrator_id": "01M4G960KAMZNNXD0YE2DXTNND", "phase_id": "01M4G960KBP1CAVRAM44TCH2C4", "sub_phase_id": "01M4G960KBZCTHR0G7WW1RP47Y", "detail": "終了 docs-integration-generate 結果=人間待ち"}
 {"timestamp": "2026-10-09T21:11:21+09:00", "level": "info", "orchestrator_id": "01M4G960KAMZNNXD0YE2DXTNND", "phase_id": "01M4G960KBP1CAVRAM44TCH2C4", "detail": "終了 docs-integration-generate 結果=人間待ち 残り=1"}
 {"timestamp": "2026-10-09T21:11:21+09:00", "level": "info", "orchestrator_id": "01M4G960KAMZNNXD0YE2DXTNND", "detail": "終了 call(docs-integration-generate) 結果=人間待ち 所要=0m14s"}
+{"timestamp": "2026-10-09T21:13:36+09:00", "level": "info", "orchestrator_id": "01M4G960KAMZNNXD0YE2DXTNND", "phase_id": "01M4G960KBP1CAVRAM44TCH2C4", "sub_phase_id": "01M4G960KBZCTHR0G7WW1RP47Y", "event_id": "01M4G9AJ4WXWYAPJ55ZDKX6DFR", "detail": "終了 scripts/plan.py 結果=成功"}

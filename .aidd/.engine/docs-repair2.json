@@ -1,0 +1,30 @@
+{
+ "operation_id": "ba6f8b7f-697b-4b55-83da-6e4a74e5f742",
+ "action": "repair",
+ "dispatch": {
+  "call": "docs-integration-revise",
+  "unit": "docs-integration-revise/docs-integration-revise[-]::end.review",
+  "event": "docs-integration-revise",
+  "item": null,
+  "status": "wait",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"docs-integration-revise/docs-integration-revise[-]::end.review\", \"snapshot\": \"ec11153e1cf52588573949c9da18d0bbcd242b80c14d6247c97b55dcbe695feb\", \"run\": 2, \"inspection_hash\": \"1b651a64240e8ccb38bcac89fd99b59bc2e8a65e14e2ec96bc82de70698c1a81\"}\n**Phase 6（docs 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 実態との一致\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、design との対応、文書間の参照、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-6-docs.md`）\n- 再検査で出なくなり、解消を記録した指摘 3 件\n  - #1-1 コード定義一覧の行 6 が 3 識別を 1 行に束ね、宣言した単位に反する\n  - #1-3 deleteShinse 後の /wtg060/return 戻りが system-overview に無い\n  - #1-5 A1→B1 の getExternalScope 呼出しが補足 1 の「呼ばず」と食い違う\n\n### 前回の検査（1 回目）からの変更\n\n- `docs/code-design.md`：新しいファイル\n- `docs/architecture/data-model.md`：ER 図、主要エンティティ一覧、ドメイン境界（DB 観点）\n  - 修正の指示に無い節の変更：ドメイン境界（DB 観点）（意図した変更か確かめてください）\n- `docs/architecture/system-overview.md`：ドメイン境界の地図\n\n### 判断が必要な指摘\n\n**対象**: `docs/code-design.md` / `docs/architecture/data-model.md` / `docs/architecture/system-overview.md`（スコープ: 成果物単位 / 2 回目）\n**実行した層**: ① / ②\n\n**AI が修正案で直す軽微**（4 件。判断は不要。修正の回で直し、再検査で確かめます）\n- #1 「PK はユニークキー（AK_…）で主キー制約なし」の出典が無い\n- #2 省略した連番列名 Keikaku_Kichikyoku_No・Tsuban の出典が無い\n- #3 data-model は共通基盤に ZMENUAUTH を置くが system-overview の地図に無い\n- #4 ZMENUAUTH 行の概要の文末が「登録するだけで」で途切れている\n\n**前回までの指摘**（今回件数に含めない）\n- #1-4 メニュー権限 ZMENUAUTH の PWTGO060 行の登録が data-model に載っていない [docs/architecture/data-model.md § 主要エンティティ一覧] — 修正（未解消。再検査で出なくなれば自動で解消を記録します）\n- #1-6 TWTGM080 を PK と描くが pbi design は主キーを持たず一意キー [docs/architecture/data-model.md § ER 図 / TWTGM080] — 修正（未解消。再検査で出なくなれば自動で解消を記録します）\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n修正（A）と AI が直す軽微は、修正の指示を書かずに修正の回へ回せます（repair の findings に \"all-fixes\"）。AI の推奨を採用していない修正には、修正の指示を書いてください。\n承認を問う前に必要なこと: 必要な検査が未完了: phase / 回数 2 / 形式不備で意味検査から外した対象 docs/architecture/data-model.md（形式を直して再検査する）",
+  "id": "60acfdfa73b1470396d51980f9fac068"
+ },
+ "expected": {
+  "root": "/home/kccs/Wing",
+  "state": "/home/kccs/Wing/.aidd/phase-progress.json",
+  "call": "docs-integration-revise",
+  "event": "docs-integration-revise",
+  "item": "",
+  "dispatch_id": "60acfdfa73b1470396d51980f9fac068",
+  "unit": "docs-integration-revise/docs-integration-revise[-]::end.review",
+  "scope": "phase",
+  "run": 2,
+  "snapshot": "ec11153e1cf52588573949c9da18d0bbcd242b80c14d6247c97b55dcbe695feb",
+  "record_hash": "217786c7c2643c2460d0110cbe0214fbf09429ee8a4c55686529ef7cb278457f"
+ },
+ "data": {
+  "findings": "all-fixes"
+ }
+}

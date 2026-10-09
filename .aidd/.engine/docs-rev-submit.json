@@ -1,0 +1,57 @@
+{
+ "operation_id": "b87c2c91-98ee-455f-866a-6f087db5e73d",
+ "dispatch": {
+  "call": "docs-integration-revise",
+  "unit": "docs-integration-revise/docs-integration-revise[-]::run",
+  "event": "docs-integration-revise",
+  "item": null,
+  "status": "emit",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": null,
+  "id": "622c4043131a4b459a0e3a44f6742879"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "docs/code-design.md",
+   "docs/architecture/data-model.md",
+   "docs/architecture/system-overview.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "docs",
+    "scope": "phase",
+    "run": 1,
+    "number": 1
+   },
+   {
+    "phase": "docs",
+    "scope": "phase",
+    "run": 1,
+    "number": 3
+   },
+   {
+    "phase": "docs",
+    "scope": "phase",
+    "run": 1,
+    "number": 4
+   },
+   {
+    "phase": "docs",
+    "scope": "phase",
+    "run": 1,
+    "number": 5
+   },
+   {
+    "phase": "docs",
+    "scope": "phase",
+    "run": 1,
+    "number": 6
+   }
+  ],
+  "return_candidates": [],
+  "summary": "#1 表示順 6 を 3 行に分け、メッセージキーを単位に含める旨を追記。#3 deleteShinse 後の戻りを補足に追加。#4 ZMENUAUTH を主要エンティティに追加。#5 WTG 申請状態サービスは公開契約で呼んでよい旨と B1/B3 の分離。#6 PK がユニークキーである旨と省略列の追記"
+ }
+}

@@ -1,0 +1,50 @@
+{
+ "operation_id": "2d952a3e-ad7e-42a3-9637-73c86d071e1c",
+ "dispatch": {
+  "call": "docs-integration-revise",
+  "unit": "docs-integration-revise/docs-integration-revise[-]::run",
+  "event": "docs-integration-revise",
+  "item": null,
+  "status": "emit",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": null,
+  "id": "5e59d7e1914b4622b36ab59233400b36"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "docs/architecture/data-model.md",
+   "docs/architecture/system-overview.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "docs",
+    "scope": "phase",
+    "run": 2,
+    "number": 1
+   },
+   {
+    "phase": "docs",
+    "scope": "phase",
+    "run": 2,
+    "number": 2
+   },
+   {
+    "phase": "docs",
+    "scope": "phase",
+    "run": 2,
+    "number": 3
+   },
+   {
+    "phase": "docs",
+    "scope": "phase",
+    "run": 2,
+    "number": 4
+   }
+  ],
+  "return_candidates": [],
+  "summary": "#1 PK の説明を出典不要の言い換え（結合キーを示す記号）に直した。#2 出典のない列名を外し、審査回の列名は AS design の記載（Shinsa_Count）に従った。#3 共通基盤の名前を両書で「共通基盤（コードマスタ・メニュー権限）」に揃えた。#4 ZMENUAUTH 行の文を閉じ、読むだけの記述を補った"
+ }
+}

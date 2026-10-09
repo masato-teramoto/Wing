@@ -1,0 +1,7 @@
+{
+  "phase": "docs",
+  "event": "docs-integration-generate",
+  "scope": "phase",
+  "run": 1,
+  "findings": []
+}

@@ -1,0 +1,28 @@
+{
+ "operation_id": "1ce96db8-93d0-41dd-9c0f-d049017edfe4",
+ "action": "approve",
+ "dispatch": {
+  "call": "docs-integration-revise",
+  "unit": "docs-integration-revise/docs-integration-revise[-]::end.review",
+  "event": "docs-integration-revise",
+  "item": null,
+  "status": "wait",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"docs-integration-revise/docs-integration-revise[-]::end.review\", \"snapshot\": \"a35c02fcd6cb85630b5f0ef9297c195b845208279089e472901595a6155e9d3e\", \"run\": 4, \"inspection_hash\": \"75901d4bdfe795f8978af2d17285a6da80a444c0367d2ea077170a64e31d6bc6\"}\n**Phase 6（docs 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 実態との一致\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、design との対応、文書間の参照、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-6-docs.md`）\n- 再検査で出なくなり、解消を記録した指摘 1 件\n  - #3-1 TWTGM180 の概要が進捗の日数を一覧の列のように読める書き方になっている\n\n### 前回の検査（3 回目）からの変更\n\n- `docs/architecture/data-model.md`：主要エンティティ一覧\n\n### 判断が必要な指摘\n\n**対象**: `docs/code-design.md` / `docs/architecture/data-model.md` / `docs/architecture/system-overview.md`（スコープ: 成果物単位 / 4 回目）\n**実行した層**: ① / ②\n\n**指摘**: なし（0 件。検査は実行済み）\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n判断が揃いました。承認の可否を回答してください（承認する場合は承認者名）。",
+  "id": "c7d03224f8194e31a6b33c6129ebe165"
+ },
+ "expected": {
+  "root": "/home/kccs/Wing",
+  "state": "/home/kccs/Wing/.aidd/phase-progress.json",
+  "call": "docs-integration-revise",
+  "event": "docs-integration-revise",
+  "item": "",
+  "dispatch_id": "c7d03224f8194e31a6b33c6129ebe165",
+  "unit": "docs-integration-revise/docs-integration-revise[-]::end.review",
+  "scope": "phase",
+  "run": 4,
+  "snapshot": "a35c02fcd6cb85630b5f0ef9297c195b845208279089e472901595a6155e9d3e",
+  "record_hash": "03f004143664c097e113697b0b464659526791a4ce38b03cf4abfa8b1adafd1e"
+ },
+ "data": {}
+}

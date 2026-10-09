@@ -1,0 +1,33 @@
+{
+ "operation_id": "6e3cb9ac-f4d1-4c99-9a60-71847d88b741",
+ "dispatch": {
+  "call": "docs-integration-revise",
+  "unit": "docs-integration-revise/docs-integration-revise[-]::run",
+  "event": "docs-integration-revise",
+  "item": null,
+  "status": "emit",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": null,
+  "id": "20924229304f4207b968663155ce1414"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "docs/code-design.md",
+   "docs/architecture/data-model.md",
+   "docs/architecture/system-overview.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "docs",
+    "scope": "phase",
+    "run": 3,
+    "number": 1
+   }
+  ],
+  "return_candidates": [],
+  "summary": "TWTGM180 の概要を、起案日（最新の審査回の審査権限 '01' の行）と進捗の日数（検索条件。審査回 1 の申請依頼の行。一覧・CSV には出さない）に書き分けた"
+ }
+}

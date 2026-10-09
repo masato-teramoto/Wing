@@ -1,0 +1,30 @@
+{
+ "operation_id": "5f600bff-4921-4b19-bfb3-b048b592e77f",
+ "action": "repair",
+ "dispatch": {
+  "call": "docs-integration-revise",
+  "unit": "docs-integration-revise/docs-integration-revise[-]::end.review",
+  "event": "docs-integration-revise",
+  "item": null,
+  "status": "wait",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": "AIDD-REVIEW-CONTEXT: {\"unit\": \"docs-integration-revise/docs-integration-revise[-]::end.review\", \"snapshot\": \"40b5c3b124678e788473121d40778323abb57e7c26ecf4a1234d808fc0fbb0cf\", \"run\": 3, \"inspection_hash\": \"107a734748a516ce833528832531dbdd58284500b3d970a198a62a302a89380b\"}\n**Phase 6（docs 作成）の品質ゲートを実行しました。**\n\n### この工程で見る観点\n\n- 実態との一致\n\n### 見なくてよいもの\n\n- L4 が検査済みの項目：書式、design との対応、文書間の参照、出典・根拠の書き方\n- AI 内部のファイル（.aidd/.engine/ の snapshot・検査ブロック、ゲート記録、進行状態）（記録は `.aidd/gates/phase-6-docs.md`）\n- 再検査で出なくなり、解消を記録した指摘 6 件\n  - #1-4 メニュー権限 ZMENUAUTH の PWTGO060 行の登録が data-model に載っていない\n  - #1-6 TWTGM080 を PK と描くが pbi design は主キーを持たず一意キー\n  - #2-1 「PK はユニークキー（AK_…）で主キー制約なし」の出典が無い\n  - #2-2 省略した連番列名 Keikaku_Kichikyoku_No・Tsuban の出典が無い\n  - #2-3 data-model は共通基盤に ZMENUAUTH を置くが system-overview の地図に無い\n  - #2-4 ZMENUAUTH 行の概要の文末が「登録するだけで」で途切れている\n\n### 前回の検査（2 回目）からの変更\n\n- `docs/architecture/data-model.md`：新しいファイル\n- `docs/architecture/system-overview.md`：ドメイン境界の地図\n  - 修正の指示に無い節の変更：ドメイン境界の地図（意図した変更か確かめてください）\n\n### 判断が必要な指摘\n\n**対象**: `docs/code-design.md` / `docs/architecture/data-model.md` / `docs/architecture/system-overview.md`（スコープ: 成果物単位 / 3 回目）\n**実行した層**: ① / ②\n\n**AI が修正案で直す軽微**（1 件。判断は不要。修正の回で直し、再検査で確かめます）\n- #1 TWTGM180 の概要が進捗の日数を一覧の列のように読める書き方になっている\n\n**差戻し先の候補**（ゲートの提示。戻すかどうかは判断に含めてください）\n- なし\n\n修正（A）と AI が直す軽微は、修正の指示を書かずに修正の回へ回せます（repair の findings に \"all-fixes\"）。AI の推奨を採用していない修正には、修正の指示を書いてください。\n承認を問う前に必要なこと: 未解消: phase / run 3 / #1",
+  "id": "90080f2781cc44d3a79e7dd676a2cb75"
+ },
+ "expected": {
+  "root": "/home/kccs/Wing",
+  "state": "/home/kccs/Wing/.aidd/phase-progress.json",
+  "call": "docs-integration-revise",
+  "event": "docs-integration-revise",
+  "item": "",
+  "dispatch_id": "90080f2781cc44d3a79e7dd676a2cb75",
+  "unit": "docs-integration-revise/docs-integration-revise[-]::end.review",
+  "scope": "phase",
+  "run": 3,
+  "snapshot": "40b5c3b124678e788473121d40778323abb57e7c26ecf4a1234d808fc0fbb0cf",
+  "record_hash": "7f7f1281613a68268e6b496c27dbcb0a6b7c9c2c576ece77f2d69e07cacca406"
+ },
+ "data": {
+  "findings": "all-fixes"
+ }
+}

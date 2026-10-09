@@ -1,0 +1,17 @@
+{
+ "operation_id": "6b3d192e-5e4d-4885-b17a-4a4011acf578",
+ "action": "accept-plan",
+ "dispatch": {
+  "call": "docs-integration-generate",
+  "unit": "docs-integration-generate/docs-integration-generate[-]::start.plan",
+  "event": "docs-integration-generate",
+  "item": null,
+  "status": "wait",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": "**Phase 6（docs 作成）に入ります。** 開始前に実行計画を確認してください。\n\n**生成単位**: 抽出は feature 単位・確定は一括。ゲートは 一括 1 回 通します。\n\n**対象 feature と順序**（`.aidd/feature-list.md` の優先度順）\n- 該当なし（feature 単位ではない）\n\n**入力として読むもの**（すべて `approved`）\n- `.aidd/feature-list.md`\n- `steering/product.md`\n- `steering/tech.md`\n- `steering/architecture.md`\n- `steering/security.md`\n- `steering/non-functional.md`\n- `steering/database.md`\n- `steering/api-standards.md`\n- `specs/property-basic-info/requirements.md`\n- `specs/issue-request/requirements.md`\n- `specs/issue-request-tutorial/requirements.md`\n- `specs/print-report/requirements.md`\n- `specs/application-status-search/requirements.md`\n- `specs/contract-info-import/requirements.md`\n- `specs/contract-info-download/requirements.md`\n- `specs/property-basic-info/design.md`\n- `specs/issue-request/design.md`\n- `specs/issue-request-tutorial/design.md`\n- `specs/print-report/design.md`\n- `specs/application-status-search/design.md`\n- `specs/contract-info-import/design.md`\n- `specs/contract-info-download/design.md`\n\n**出力先**: `docs/code-design.md` / `docs/architecture/data-model.md` / `docs/architecture/system-overview.md`（3 ファイル）\n\n**想定される停止回数**: 1 回。作成中に根拠が足りない箇所があれば、その都度質問して停止します。\n\nこの計画で進めてよいか指示してください。",
+  "id": "8374d0fc5c824dfc878d7df18d97e2fd"
+ },
+ "data": {
+  "note": "docs 作成は application-status-search の分のみ。他の feature（property-basic-info・issue-request・issue-request-tutorial・print-report・contract-info-import・contract-info-download）は一切手をつけない。Phase 5・docs で出る他の修正箇所は対象外として記録する（ユーザー指示 2026-10-09）"
+ }
+}

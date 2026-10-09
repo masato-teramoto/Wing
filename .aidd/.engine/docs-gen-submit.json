@@ -1,0 +1,26 @@
+{
+ "operation_id": "7d1d0ac1-0726-41c4-b0b7-48f0a62f21e6",
+ "dispatch": {
+  "call": "docs-integration-generate",
+  "unit": "docs-integration-generate/docs-integration-generate[-]::run",
+  "event": "docs-integration-generate",
+  "item": null,
+  "status": "emit",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": null,
+  "id": "72308f3906694a4c87480af3d964c43d"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "docs/code-design.md",
+   "docs/architecture/data-model.md",
+   "docs/architecture/system-overview.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [],
+  "return_candidates": [],
+  "summary": "application-status-search（GWTG060）の分だけで docs 3 文書を新規作成した（人の明示指示による範囲。他 feature は取り込まない）。残したプレースホルダーには不要理由を添えた"
+ }
+}
