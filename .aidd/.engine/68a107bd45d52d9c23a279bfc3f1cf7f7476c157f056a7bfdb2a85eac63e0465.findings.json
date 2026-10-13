@@ -1,0 +1,7 @@
+{
+  "phase": "tasks",
+  "event": "tasks-gate-run",
+  "scope": "phase:property-basic-info",
+  "run": 1,
+  "findings": []
+}

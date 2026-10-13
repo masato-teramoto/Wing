@@ -1,8 +1,8 @@
 ---
 feature: application-status-search
 execution_mode: feature
-status: draft
-updated_at: 2026-10-09T23:57:47+09:00
+status: approved
+updated_at: 2026-10-13T10:51:35+09:00
 ---
 
 # 実装計画
@@ -47,6 +47,7 @@ updated_at: 2026-10-09T23:57:47+09:00
 
 - UI タスクの単位は、画面設計書 §1 の画面 ID。本 feature の所有画面は `S-01`（物件契約情報申請状況検索/一覧）の 1 つ。`_app-shell:S-01`・`_app-shell:S-02` の参照行は所有 feature（_app-shell）側の画面なので、本 feature の UI タスクにしない。
 - シェル（ヘッダ・ヘッダのリンク・ナビ）と、入口（メニュー）・システムエラーは、feature ごとではなく共通タスク 1 本（タスク 13）にまとめる。`_app-shell` は擬似 feature で `tasks.md` を持たないため、本 feature の `tasks.md` に含める。参照先は `.aidd/screen-design/_app-shell/screen-map.md` の §4 と `.aidd/screen-design/_app-shell/screen-spec.md`。
+- _app-shell の Boundary の扱い（注記表記の早見表の規約の例外）: タスク 13 の `_Boundary:` は `_app-shell` とする。この名前は `design.md` の `### コンポーネント一覧（Summary）` に無い。根拠は `.aidd/screen-design/_app-shell/screen-map.md` の §4 と `.aidd/screen-design/_app-shell/screen-spec.md` である。`_app-shell` は擬似 feature で `design.md` を持たないため、タスク 13 の `_Design:` は既存 wing の共通部が属する `design.md` の節（`## コンポーネントとインターフェース`）を参照するだけにとどめ、`_app-shell` の仕様の正は上の 2 つの画面設計書とする。
 - 画面設計書 §4 の「分母から外した受け入れ基準」は、application-status-search・_app-shell ともに 0 件。UI タスクにならない受け入れ基準は無い。
 - 状態管理（検索条件のセッション）・API 接続・ルーティング（Controller）は UI タスクに含めず、通常の実装タスクとして同じ章（画面）に並べる（タスク 14・15）。
 - バリデーションと API 契約の正は design.md。画面設計書はエラーコード・契約名で参照するだけなので、実装タスクは design.md を併読する前提とする。
@@ -195,7 +196,7 @@ updated_at: 2026-10-09T23:57:47+09:00
 - [ ] 11 検索結果の CSV 出力をテストから作る
   - `Pwtgo060Service` の `outputCsv` を、テストから作る。画面の一覧と同じ 14 列・同じ値の形（切り詰めない）を、`CsvUtils.save(list, stream, "MS932", CsvUtils.defaultCsvConfig(), new CsvEntityListHandler<>(Pwtgo060SearchInfo.class))` で書く。全項目をダブルクォートで囲み（値の中の " は ""）、改行は CRLF、NULL は空文字。ファイル名は `WTG060_yyyyMMddHHmmss.csv`（出力した時刻）。条件は押した時点の画面の入力で、絞り込み（社外ユーザーの範囲）と上限件数は検索と同じにし、警告件数の確認は出さない。検索結果が 0 件、または上限件数を超える場合は、要素が null の 1 つのリストを渡して見出し行だけにする。入力チェックのエラーがあれば CSV を出さず、エラーを積む。更新者の氏名は出力しない。
   - テスト `Pwtgo060ServiceTest` の `outputCsv` で始まるケースを先に作り（Mapper の代わりは手書きの代替クラス）、RED を確認してから実装する。
-  - 観測可能な完了条件: `mvn -f wing/pom.xml test -Dtest=Pwtgo060ServiceTest#outputCsv*` で、同一タスク内の RED から GREEN を確認し、出力のバイト列を MS932 で読み戻して 1 行目が見出し 14 列と一致する・全項目がダブルクォート付き・改行が CRLF・ファイル名が `WTG060_` に 14 桁の数字と `.csv` が続く形・0 件と上限超えで見出し行だけ・入力エラーで出力しない、の各ケースを含めて全件が成功する。
+  - 観測可能な完了条件: `mvn -f wing/pom.xml test -Dtest=Pwtgo060ServiceTest#outputCsv*` で、同一タスク内の RED から GREEN を確認し、出力のバイト列を MS932 で読み戻して 1 行目が見出し 14 列と一致する・全項目がダブルクォート付き・改行が CRLF・ファイル名が `WTG060_` に 14 桁の数字と `.csv` が続く形・0 件と上限超えで見出し行だけ・入力エラーで出力しない・社外ユーザーの範囲と上限件数が検索と同じ条件で CSV にも掛かる（Mapper に渡る条件に範囲の括弧付きの条件と上限件数が入る）、の各ケースを含めて全件が成功する。
   - _Requirements: 3.1, 3.2, 3.3, 3.4, 4.1_
   - _Design: ## データモデル、## コンポーネントとインターフェース_
   - _Boundary: 申請状況検索一覧 Service_
@@ -223,14 +224,17 @@ updated_at: 2026-10-09T23:57:47+09:00
   - 仮置きと但し書き: システムエラーの種別「システムエラー」とメッセージ「処理を続けられませんでした。お手数ですが、メニューからやり直してください。」は仮置き（steering で確定した後に画面設計書を改訂する）。入口のお知らせ欄は置かない。入口のリンクは権限で出し分けず、全項目を表示する。
   - 注記（WTG 以外への波及）: `common/header.html` は WTG 以外を含む 32 のテンプレートが共通で呼んでおり、`menu.html`・`error.html` も WTG 以外の画面から使われる。`steering/product.md` は「WTG 以外の WiNG 機能は改修しない」としているが、本タスクはそれに反して WTG 以外の画面にも変更が及ぶ。人が質問 Q-TK-AS-003 で A（既存 wing の共通ヘッダ・メニュー・エラー画面を画面設計書に合わせて確認・改修する。WTG 以外への波及を上流で許容する）を選んだ事実として、ここに明記する。
   - 画面設計書の参照: `.aidd/screen-design/_app-shell/screen-spec.md` の S-01 メニュー（§3-1-2〜§3-1-6、状態「通常」）と S-02 システムエラー（§3-2-2〜§3-2-6、状態「通常」）、`.aidd/screen-design/_app-shell/screen-map.md` の §3 と §4（§4-1・§4-2）。見比べる mockup は `.aidd/screen-design/_app-shell/pages/` の `s-01-default.html`・`s-02-default.html`。
-  - 観測可能な完了条件: 画面設計書の状態数と同数の状態別レンダリングが確認できる。`mockup-manifest.json` の `pages[]` は 2 件（S-01 通常、S-02 通常）で、各状態の出力を JUnit で確認し、2 件とも成功する。
+  - テスト（状態ごとの出力を確認する JUnit。例 `AppShellRenderTest`）を先に作り、意図した失敗（RED）を確認してから改修する。改修後に同じテストの GREEN と、回帰として `mvn -f wing/pom.xml test` の全件成功を確認する。
+  - 観測可能な完了条件: 画面設計書の状態数と同数の状態別レンダリングが確認できる。`mockup-manifest.json` の `pages[]` は 2 件（S-01 通常、S-02 通常）で、各状態の出力を JUnit で確認し、同一タスク内の RED から GREEN を確認して 2 件とも成功する。`mvn -f wing/pom.xml test` が全件成功する。
   - 観測可能な完了条件: `STYLEGUIDE.md` と `styleguide.css`（案件ルート直下）の変数・部品クラスに従い、改修した箇所に hex 色・px の直書きが 0 件である。`grep -nE '#[0-9a-fA-F]{3,8}|[0-9]+px'` を改修した箇所に当てて 0 件で、使うクラス名がすべて `styleguide.css` に定義されている（改修していない既存の記述は対象外）。
   - 観測可能な完了条件: ナビ項目の遷移先（`/wtg060`）と、ヘッダのリンクの有効・無効の表示が、画面マップ §3 と §4-1 の表と一致する。
-  - 観測可能な完了条件: 既存の呼び出し元（`common/header.html` を呼ぶ他のテンプレート、`error.html` を返す `ExceptionResolver`）が `mvn -f wing/pom.xml package` で終了コード 0 のまま組み立てられ、`git diff --stat` の変更ファイルが上の実装先に挙げたファイルだけである。
+  - 観測可能な完了条件: 既存の呼び出し元（`common/header.html` を呼ぶ他のテンプレート、`error.html` を返す `ExceptionResolver`）が `mvn -f wing/pom.xml package` で終了コード 0 のまま組み立てられ、`git diff --stat` の変更ファイルが、上の実装先に挙げたファイルと、本タスクで追加するテストファイルだけである（それ以外に変更が無い）。
   - _Requirements: —_
   - _Design: ## コンポーネントとインターフェース_
-  - _Boundary: _app-shell（共通シェル・入口・システムエラー。design.md のコンポーネント一覧に無い共通部で、根拠は画面マップ §4 と _app-shell の画面設計書）_
+  - _Boundary: _app-shell_
   - _Depends: 1_
+
+### 申請状況検索一覧（画面）
 
 - [ ] 14 検索の実行・件数の上限・ページ送り・検索条件のセッション（状態管理）をテストから作る
   - `Pwtgo060Service` の `search` を、テストから作る。流れは、入力チェック → 社外ユーザーの値の無効化と範囲 → 条件の組立て → `validateSearchLimitCount`（1 ページの件数は `P01` のこの画面の行の 50、上限件数と警告件数は `P02` の ALL の行。上限を超えたら `DS-100024`、警告件数を超えて確認の印が無ければ `DS-100025` の確認）→ 件数が 0 なら 0 件の状態 → 表示ページの行を取って一覧の値の形にする。検索の成功後に検索条件をセッション（キー "PWTGO060Form"）に置き、初期表示とクリアで消す。ページ送りはセッションの条件でそのページを出す。戻り（`/wtg060/return` 向け）はセッションの条件で前に見ていたページを再検索し（警告の確認は出さない）、未検索なら初期表示にする。
@@ -240,7 +244,7 @@ updated_at: 2026-10-09T23:57:47+09:00
   - _Requirements: 2.5, 2.6, 2.10_
   - _Design: ## データモデル、## 処理フロー、## 機能固有のエラー処理_
   - _Boundary: 申請状況検索一覧 Service_
-  - _Depends: 5, 6, 7, 8, 9, 10_
+  - _Depends: 5, 6, 7, 8, 9, 10, 11, 12_
 
 - [ ] 15 Controller の 7 つの口とルーティングをテストから作る
   - `Pwtgo060Controller`（`@RequestMapping("/wtg060")`・`@FuncID("PWTGO060")`）を、テストから作る。口は `/wtg060`（GET・POST。初期表示）・`/wtg060/search`・`/wtg060/page`・`/wtg060/clear`・`/wtg060/return`（GET・POST）・`/wtg060/detail`・`/wtg060/csv` の 7 つ。入力チェックのエラーは HTTP 200 で同じ画面にメッセージを出す。`/wtg060/detail` は取込中でなければ申請No を渡して `forward:/wtg070/pushApplicationNo`、取込中なら今のページを再検索した同じ画面に `WTG-100018` を出す。`/wtg060/csv` は `Content-Disposition: attachment`・`application/octet-stream` でダウンロードさせる。Mapper を直接呼ばず、ほかの機能パッケージ（`wtg070` ほか）の Service・Mapper を呼ばない。`servlet-context.xml` は変えない。
@@ -257,7 +261,8 @@ updated_at: 2026-10-09T23:57:47+09:00
   - 状態名は画面設計書 §3-1-5 と同じ 11 個: 初期表示・通常・検索結果 0 件・ローディング・入力エラー・上限件数超過・警告件数超過の確認・取込中の申請No を押した・社外ユーザー・長文・月次カレンダー。
   - 画面設計書の参照: `.aidd/screen-design/application-status-search/screen-spec.md` の S-01（§3-1-1〜§3-1-6、状態は §3-1-5、要件被覆は §4）。見比べる mockup は `.aidd/screen-design/application-status-search/pages/` の `s-01-initial.html`・`s-01-default.html`・`s-01-zero.html`・`s-01-loading.html`・`s-01-input-error.html`・`s-01-over-limit.html`・`s-01-warning-confirm.html`・`s-01-importing.html`・`s-01-external.html`・`s-01-long-text.html`・`s-01-calendar.html`。
   - 範囲外の扱い: `mockup-manifest.json` の `missing[]` の 4 件（SGB-16・SGB-17・SGB-18・SGB-19）は、部品が無いため mockup と同じく描かず、完了条件に含めない。生値で補わない。
-  - 観測可能な完了条件: 画面設計書の状態数と同数の状態別レンダリングが確認できる。`mockup-manifest.json` の `pages[]` は 11 件で、各状態のモデルを与えた出力を JUnit で確認し、11 件とも成功する。状態名が画面設計書 §3-1-5 と 1 対 1 で一致する。
+  - テスト（状態ごとの出力を確認する JUnit。例 `Pwtgo060ViewRenderTest`）を先に作り、意図した失敗（RED）を確認してから実装する。実装後に同じテストの GREEN と、回帰として `mvn -f wing/pom.xml test` の全件成功を確認する。
+  - 観測可能な完了条件: 画面設計書の状態数と同数の状態別レンダリングが確認できる。`mockup-manifest.json` の `pages[]` は 11 件で、各状態のモデルを与えた出力を JUnit で確認し、同一タスク内の RED から GREEN を確認して 11 件とも成功する。`mvn -f wing/pom.xml test` が全件成功する。状態名が画面設計書 §3-1-5 と 1 対 1 で一致する。
   - 観測可能な完了条件: `STYLEGUIDE.md` と `styleguide.css`（案件ルート直下）の変数・部品クラスに従い、hex 色・px の直書きが 0 件である。`grep -nE '#[0-9a-fA-F]{3,8}|[0-9]+px'` を `pwtgo060.html` と `pwtgo060Script.html` に当てて 0 件で、使うクラス名がすべて `styleguide.css` に定義されている。
   - 観測可能な完了条件: 社外ユーザーの出力に起案会社の読取専用の選択・所属①②の読取専用の入力があり、進捗検索の 2 項目が無い。通常の出力で取込中の行の申請No がリンクでなく、新規登録のボタンが無い。入力エラーの出力に画面設計書のダミーと同じ形のエラー行（コード付き）がある。
   - _Requirements: 1.1, 1.5, 1.6, 1.7, 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.8, 2.9, 4.1_

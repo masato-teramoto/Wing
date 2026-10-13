@@ -1,0 +1,7 @@
+{
+  "phase": "tasks",
+  "event": "tasks-gate-run",
+  "scope": "phase:application-status-search",
+  "run": 4,
+  "findings": []
+}

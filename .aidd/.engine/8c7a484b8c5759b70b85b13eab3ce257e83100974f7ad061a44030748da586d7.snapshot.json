@@ -3,43 +3,44 @@
   "phase": "tasks",
   "event": "tasks-authoring-revise",
   "scope": "feature:application-status-search",
-  "at": "2026-10-09T23:50:48+09:00",
+  "at": "2026-10-13T10:36:47+09:00",
   "artifacts": {
     "specs/application-status-search/tasks.md": {
       "status": "draft",
-      "sha256": "afa2de5e7a5a68130f521be7e70f213ed05dd075bd087cf90020e023a9dd8a59"
+      "sha256": "30ce9cd5893e48dac13b5f9cd277731a74a87cc9c81bbc8a5087074c0c916a28"
     }
   },
   "record": {
-    "bytes": 16864,
-    "sha256": "57513c385e84ed8b6abb34885dcedb7effc3a770ef2596069d79a50023164ab7",
-    "blocks": 5
+    "bytes": 89319,
+    "sha256": "b497ed8689bf31e2301b111275ccc65b89d0c1f91450938ca518a3e198e16210",
+    "blocks": 58
   },
-  "run": 2,
+  "run": 6,
   "sections": {
     "specs/application-status-search/tasks.md": {
       "": "e3b0c44298fc1c14",
-      "実装計画": "ce79246dc1f96f6e",
+      "実装計画": "6e28e3fdbb129e06",
       "注記表記の早見表": "46aab9d16aa77546",
-      "本計画の前提と規約（画面設計工程の成果物の扱い）": "22f4c064a77db8e5",
+      "本計画の前提と規約（画面設計工程の成果物の扱い）": "318494e6ea8b25fc",
       "対象の範囲": "864e769b8528f1fc",
       "画面設計工程の前提ゲート（担体の値で確認した結果）": "50c65276619125e3",
-      "UI タスクの単位と範囲": "0c989f617a6ce5b5",
+      "UI タスクの単位と範囲": "5954a98d91926af3",
       "feature の着手順": "4e485687fa0e05b7",
       "実装工程への規約": "e66957f45cdf0814",
       "但し書き（未決のまま残す事項）": "79f2ea1e04c3d861",
       "検証の前提": "f370dba64f3131b5",
-      "タスク一覧": "9a4935c78c8c6f34",
+      "タスク一覧": "c1333de467c99be9",
       "基盤・準備": "61a902788bbca577",
       "データアクセス": "8ea3c89962a9d086",
-      "ドメイン / ビジネスロジック": "d5a8e1da45c02a6a",
-      "共通（_app-shell）": "163c35e5512c8cbc",
+      "ドメイン / ビジネスロジック": "df570eaceee5502e",
+      "共通（_app-shell）": "db5e66813961402a",
+      "申請状況検索一覧（画面）": "97279bb631363ed1",
       "横断確認": "85259addd2557d40",
       "実装メモ（Implementation Notes）": "fb2dfbc5f0a2ebc7",
       "決定ログ": "8f39aa9acf1f2078",
       "既知の制約 / 残課題": "0c28dbee39855a57",
       "後続への申し送り": "ea246458e3f38049",
-      "*": "ce79246dc1f96f6e"
+      "*": "6e28e3fdbb129e06"
     }
   },
   "own_sections": {
@@ -50,7 +51,7 @@
       "本計画の前提と規約（画面設計工程の成果物の扱い）": "121496c489c6f59b",
       "対象の範囲": "864e769b8528f1fc",
       "画面設計工程の前提ゲート（担体の値で確認した結果）": "50c65276619125e3",
-      "UI タスクの単位と範囲": "0c989f617a6ce5b5",
+      "UI タスクの単位と範囲": "5954a98d91926af3",
       "feature の着手順": "4e485687fa0e05b7",
       "実装工程への規約": "e66957f45cdf0814",
       "但し書き（未決のまま残す事項）": "79f2ea1e04c3d861",
@@ -58,14 +59,15 @@
       "タスク一覧": "ead049a01fe0f434",
       "基盤・準備": "61a902788bbca577",
       "データアクセス": "8ea3c89962a9d086",
-      "ドメイン / ビジネスロジック": "d5a8e1da45c02a6a",
-      "共通（_app-shell）": "163c35e5512c8cbc",
+      "ドメイン / ビジネスロジック": "df570eaceee5502e",
+      "共通（_app-shell）": "db5e66813961402a",
+      "申請状況検索一覧（画面）": "97279bb631363ed1",
       "横断確認": "85259addd2557d40",
       "実装メモ（Implementation Notes）": "43ac18fdeb302c63",
       "決定ログ": "8f39aa9acf1f2078",
       "既知の制約 / 残課題": "0c28dbee39855a57",
       "後続への申し送り": "ea246458e3f38049",
-      "*": "ce79246dc1f96f6e"
+      "*": "6e28e3fdbb129e06"
     }
   },
   "inputs": {
@@ -81,6 +83,17 @@
     "specs/application-status-search/design.md": "b0d59adc5f67c4377772191bd6d81adc4234cdaf73d7f61c30eac704d697f0fa",
     "docs_revision": "f7251dc8b3ed5ceb8641b0990e817c418de5fece7d221a5c1ccf03808dbb3bad"
   },
-  "previous_run": 1,
-  "full_inspection": "上流の入力が前回の検査から変わった（または比べられない）ため、全体を検査する"
+  "previous_run": 5,
+  "changed_sections": {
+    "specs/application-status-search/tasks.md": [
+      "実装計画",
+      "タスク一覧",
+      "申請状況検索一覧（画面）"
+    ]
+  },
+  "changed_own": {
+    "specs/application-status-search/tasks.md": [
+      "申請状況検索一覧（画面）"
+    ]
+  }
 }

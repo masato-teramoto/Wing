@@ -1,0 +1,30 @@
+{
+ "operation_id": "523614eb-7ca1-456b-825b-854d70a16e9d",
+ "action": "repair",
+ "dispatch": {
+  "call": "tasks-gate-run",
+  "unit": "tasks-gate-run/tasks-gate-run[application-status-search]::run",
+  "event": "tasks-gate-run",
+  "item": "application-status-search",
+  "status": "emit",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": null,
+  "id": "776f3027a1bf4669b9a9854c5a3c7548"
+ },
+ "expected": {
+  "root": "/home/kccs/Wing",
+  "state": "/home/kccs/Wing/.aidd/phase-progress.json",
+  "call": "tasks-gate-run",
+  "event": "tasks-gate-run",
+  "item": "application-status-search",
+  "dispatch_id": "19ffad69e7ca4511915ac9315272a74a",
+  "unit": "tasks-gate-run/tasks-gate-run[application-status-search]::end.review",
+  "scope": "phase:application-status-search",
+  "run": 2,
+  "snapshot": "e65822dd62e225b921f3e8ee6f406806366ece6ac5011f2ca68e10f1c03335c7",
+  "record_hash": "700c489b9f81a787056e43bfcf2ded66ce6daf6e5be4090692be1abb16045b63"
+ },
+ "data": {
+  "findings": "all-fixes"
+ }
+}

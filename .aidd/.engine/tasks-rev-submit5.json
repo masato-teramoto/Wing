@@ -1,0 +1,37 @@
+{
+ "operation_id": "74b83a44-44a2-4227-a2ef-da942a74fa71",
+ "dispatch": {
+  "call": "tasks-authoring-revise",
+  "unit": "tasks-authoring-revise/tasks-authoring-revise[application-status-search]::run",
+  "event": "tasks-authoring-revise",
+  "item": "application-status-search",
+  "status": "emit",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": null,
+  "id": "8d69ad3b4fcc416c95673fbb730c858a"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/application-status-search/tasks.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "tasks",
+    "scope": "feature:application-status-search",
+    "run": 4,
+    "number": 1
+   },
+   {
+    "phase": "tasks",
+    "scope": "feature:application-status-search",
+    "run": 4,
+    "number": 2
+   }
+  ],
+  "return_candidates": [],
+  "summary": "タスク 13 の Boundary 行を _app-shell のみにし、タスク 14 の前に章見出し「申請状況検索一覧（画面）」を足した（番号・依存は不変）"
+ }
+}

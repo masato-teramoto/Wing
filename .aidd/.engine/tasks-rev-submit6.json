@@ -1,0 +1,31 @@
+{
+ "operation_id": "d3d156be-0ca6-4d99-aea4-66657a994f1c",
+ "dispatch": {
+  "call": "tasks-authoring-revise",
+  "unit": "tasks-authoring-revise/tasks-authoring-revise[application-status-search]::run",
+  "event": "tasks-authoring-revise",
+  "item": "application-status-search",
+  "status": "emit",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": null,
+  "id": "53d485563264476b9d1153567ae7762c"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/application-status-search/tasks.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "tasks",
+    "scope": "feature:application-status-search",
+    "run": 5,
+    "number": 1
+   }
+  ],
+  "return_candidates": [],
+  "summary": "タスク 14 の Depends に 11, 12 を足した（完了条件の「タスク 6〜12 の分を含めて全件成功」に合わせた。番号順・循環は不変）"
+ }
+}

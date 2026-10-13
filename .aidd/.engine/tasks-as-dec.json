@@ -1,0 +1,30 @@
+{
+ "operation_id": "87550394-80de-4599-bbe3-cc1346efb406",
+ "action": "decisions",
+ "dispatch": {
+  "call": "tasks-gate-run",
+  "unit": "tasks-gate-run/tasks-gate-run[application-status-search]::run",
+  "event": "tasks-gate-run",
+  "item": "application-status-search",
+  "status": "emit",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": null,
+  "id": "a9370c3bf13e40a18b56ebe830b966a9"
+ },
+ "expected": {
+  "root": "/home/kccs/Wing",
+  "state": "/home/kccs/Wing/.aidd/phase-progress.json",
+  "call": "tasks-gate-run",
+  "event": "tasks-gate-run",
+  "item": "application-status-search",
+  "dispatch_id": "c161de2fd4e3468ca2e85fda1aabc413",
+  "unit": "tasks-gate-run/tasks-gate-run[application-status-search]::end.review",
+  "scope": "phase:application-status-search",
+  "run": 1,
+  "snapshot": "421d7eda232ccb6b82d9fdcf0084aff2855c18e7b02700b31c0dd97f8dfca121",
+  "record_hash": "699f9d3c51042e6c32f3b5c62628440ed5126a68b1cbe400c8f47b09342e0e1b"
+ },
+ "data": {
+  "answer": "feature:application-status-search 5:推奨 / feature:application-status-search 6:推奨 / feature:application-status-search 7:推奨 / feature:application-status-search 1:C[対象外] 推奨が質問または差戻し先が他 feature・steering のため、対象外とする（ユーザー指示 2026-10-10） / feature:application-status-search 2:C[対象外] 推奨が質問または差戻し先が他 feature・steering のため、対象外とする（ユーザー指示 2026-10-10） / feature:application-status-search 3:C[対象外] 推奨が質問または差戻し先が他 feature・steering のため、対象外とする（ユーザー指示 2026-10-10） / feature:application-status-search 4:C[対象外] 推奨が質問または差戻し先が他 feature・steering のため、対象外とする（ユーザー指示 2026-10-10） / feature:application-status-search 8:C[対象外] 推奨が質問または差戻し先が他 feature・steering のため、対象外とする（ユーザー指示 2026-10-10） / phase:application-status-search 1:C[対象外] 推奨が質問または差戻し先が他 feature・steering のため、対象外とする（ユーザー指示 2026-10-10）"
+ }
+}

@@ -1,8 +1,8 @@
 ---
 feature: property-basic-info
 execution_mode: feature
-status: draft
-updated_at: 2026-10-10T00:06:21+09:00
+status: approved
+updated_at: 2026-10-13T09:36:18+09:00
 ---
 
 # 実装計画

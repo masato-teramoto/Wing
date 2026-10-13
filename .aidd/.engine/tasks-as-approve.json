@@ -1,0 +1,28 @@
+{
+ "operation_id": "b731fba2-d88a-45b9-83e8-703ad43ae622",
+ "action": "approve",
+ "dispatch": {
+  "call": "tasks-gate-run",
+  "unit": "tasks-gate-run/tasks-gate-run[application-status-search]::run",
+  "event": "tasks-gate-run",
+  "item": "application-status-search",
+  "status": "emit",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": null,
+  "id": "851303a3bf5e40e8a295b8a68ee5982a"
+ },
+ "expected": {
+  "root": "/home/kccs/Wing",
+  "state": "/home/kccs/Wing/.aidd/phase-progress.json",
+  "call": "tasks-gate-run",
+  "event": "tasks-gate-run",
+  "item": "application-status-search",
+  "dispatch_id": "04f9b13a629849edb28e9d616fed3c16",
+  "unit": "tasks-gate-run/tasks-gate-run[application-status-search]::end.review",
+  "scope": "phase:application-status-search",
+  "run": 4,
+  "snapshot": "b6033948c7f50da76e6ce3cc66240a59f67481a7f7b0c4ebcb79dac2318202ce",
+  "record_hash": "a979c6e27e7545315926a8a354ccbce87de893ef6a7068fae50ae81528f6afe4"
+ },
+ "data": {}
+}

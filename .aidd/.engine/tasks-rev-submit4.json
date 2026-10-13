@@ -1,0 +1,43 @@
+{
+ "operation_id": "357c51e8-6529-4228-970f-1fcf12dc60b3",
+ "dispatch": {
+  "call": "tasks-authoring-revise",
+  "unit": "tasks-authoring-revise/tasks-authoring-revise[application-status-search]::run",
+  "event": "tasks-authoring-revise",
+  "item": "application-status-search",
+  "status": "emit",
+  "config_sha256": "48aa44dcdb7d71481395e0769edd350c3d85c00743a6263cc8a31202e923227c",
+  "detail": null,
+  "id": "57d7156ddc254184b9b5259df0b13a96"
+ },
+ "result": {
+  "status": "completed",
+  "targets": [
+   "specs/application-status-search/tasks.md"
+  ],
+  "questions": [],
+  "open_placeholders": 0,
+  "changed_findings": [
+   {
+    "phase": "tasks",
+    "scope": "feature:application-status-search",
+    "run": 3,
+    "number": 5
+   },
+   {
+    "phase": "tasks",
+    "scope": "feature:application-status-search",
+    "run": 3,
+    "number": 6
+   },
+   {
+    "phase": "tasks",
+    "scope": "feature:application-status-search",
+    "run": 3,
+    "number": 7
+   }
+  ],
+  "return_candidates": [],
+  "summary": "#5 前提節に _app-shell の Boundary の扱い（早見表の規約の例外）を追記しタスク 13 を整合。#6 タスク 13・16 に JUnit 先行・RED→GREEN・mvn test の記述を追加し、タスク 13 の git diff 条件を直した。#7 タスク 11 に AC 3.3 のケースを追加"
+ }
+}
